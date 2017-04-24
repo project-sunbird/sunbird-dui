@@ -1,0 +1,54 @@
+Variable declaration : 
+  All local variables should  start with a small letter and declared at the
+  top of the function
+  
+  use `var` only as most of the project already has a lot of var declarations
+   
+  eg: afterRender() {
+    var  background = "#fffff";
+    var json = {};
+     
+    ....
+    ....
+  }
+   
+Imports
+  use `require` not `import` as the project is already using lot of require
+   
+  Eg: 
+  var ListView = require("@juspay/mystique-backend").androidViews.ListView;
+
+
+Function;
+  Max lines ~ 50 [Shouldnt be  crazy long]
+  See `ComplexToolbar`.js on how to split the render into multiple functions
+
+    
+HorizontalLineLength: 
+    Wrong eg: <LinearLayout orientation="vertical" root="true" width="match_parent" height="match_parent">
+    
+
+    Shouldnt be this much long harder to read
+     
+    <LinearLayout
+      orientation="vertical"
+       root="true"
+       width="match_parent" 
+       height="match_parent">
+        
+
+Events: 
+  All the callbacks should be  of signature   
+   
+    <LinearLayout
+      onClick={this.handle.....}
+      orientation="vertical"
+       root="true"
+       width="match_parent" 
+       height="match_parent">
+       
+
+    where .... can be userNameChange
+    where .... can be userPasswordChange
+    where .... can be submit
+  
