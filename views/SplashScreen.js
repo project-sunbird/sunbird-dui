@@ -26,44 +26,12 @@ class SplashScreen extends View {
     this.buttonList = ["abc"];
     this.buttonList2 = ["del", "abc"];
     this.setIds([
-      'list',"item1","item2"
+      'list', "item1", "item2"
     ]);
   }
 
   afterRender = () => {
-    var listView = this.find("ListView")[0];
 
-		var item11 = (
-		 		<RelativeLayout
- 					clickable = "true"
-		 			width="match_parent">
-		 			<TextView
-	 					id = {this.idSet.item1}
-	 					clickable = "true"
-						background = "#F4f4f4"
-            height = "32"
-            typeface = "bold"
-            color = "#000000"
-            width = "match_parent"
-            textSize = "20"/>
-			    </RelativeLayout>);
-
-		for(var i = 0; i<26 ; i++){
-			var cmd = this.set({
-					      id : this.idSet.item1,
-					      text: i
-				    	});
-      listView.generateListItem(item11,cmd,0);
-		}
-
-		var callback = callbackMapper.map((params) => {
-	      console.info("INDEX : ", params[0]);
-	    });
-
-    listView.setListItem(this.idSet.list,callback,1);
-    setTimeout(() => {
-      window.__runDuiCallback({ event: "step", state: { event: "standard" } });
-    }, 1000);
   }
 
   getMonthName = (monthIndex) => {
@@ -109,28 +77,13 @@ class SplashScreen extends View {
          width="match_parent"
          height="match_parent">
 
-        <ImageView
+        <TextView
+           text="ABCDF"
            margin="20,120,20,20"
            layout_gravity="center"
            height="wrap_content"
-           onClick={this.handleDatePicker}
-           imageUrl="logo_hpcl_full" />
-
-           <ListView
-             id={this.idSet.list}
-             width="match_parent"
-             height="match_parent"/>
-
-          <PageOption
-          buttonItems={this.buttonList}
-          onButtonClick={this.handleClick}
-          />
-
-          <PageOption
-          buttonItems={this.buttonList2}
-          hideDivider="true"
-          onButtonClick={this.handleClick}
-          />
+            />
+         
 
       </LinearLayout>
     );

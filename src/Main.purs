@@ -12,7 +12,7 @@ import Control.Monad.Eff.Exception (Error, message)
 import Data.Either (Either(..))
     
 init = unsafePartial $ do
-  getExceptT "INIT"
+  showUI "INIT_UI" {screen:"INIT"}
    
 main = unsafePartial $ launchAff $ do
   result <- runExceptT init
