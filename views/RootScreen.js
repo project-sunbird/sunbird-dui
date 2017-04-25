@@ -4,10 +4,8 @@ var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
 var RelativeLayout = require("@juspay/mystique-backend").androidViews.RelativeLayout;
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
-var FilterView = require('../components/HPCL/FilterBottomSheet');
 
 var Colors = require("../res/Colors").color;
-var CustomSnackBar = require("../components/HPCL/CustomSnackBar");
 
 class RootScreen extends View {
   constructor(props, children) {
@@ -17,32 +15,11 @@ class RootScreen extends View {
       'root'
     ]);
 
-    this.OTP = null;
     this.setStatusBarColor(Colors.BLACK);
   }
 
   handleStateChange = () => {
     return true;
-  }
-
-  startOTP = () => {
-    OtpJBridge.setOtpRules(JSON.stringify(window.otpRules));
-    this.startSessionOTP();
-
-    OtpJBridge.startOtpAutoRead("2000", "0", "0", "BHIM"); //interval, delay, bank
-  }
-
-  stopOTP = () => {
-    OtpJBridge.stopOtpAutoRead();
-  }
-
-  startSessionOTP = () => {
-    OtpJBridge.setSessionStartForOtp(new Date().getDate().toString());
-  }
-
-  onOtpReceived = (otp) => {
-    this.stopOTP();
-    this.OTP = otp;
   }
 
   setStatusBarColor(color) {
@@ -74,13 +51,6 @@ class RootScreen extends View {
           </RelativeLayout>
 
         </LinearLayout>
-
-        
-        <FilterView />
-         
-        <CustomSnackBar
-          text = "snackBar"/>
-
       </RelativeLayout>
     );
 

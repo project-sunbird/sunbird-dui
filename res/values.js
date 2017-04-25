@@ -1,43 +1,4 @@
-exports.colors = {
-  primary: "#FFCD1C5F",
-  BURGUNDY_DARK_1: "#911C4E",
-  BURGUNDY_DARK_2: "#AE275F",
-  BURGUNDY_DARK_3: "#C0617D",
-  PRIORITY_BANKING: "#B28ABF",
-  PRODUCTS_SERVICES: "#519032",
-  OFFERS: "#CBDB2A",
-  EDGE: "#E9ED9A",
-  SPEEDBANKING_DARK_1: "#006BA6",
-  SPEEDBANKING_DARK_2: "#53B7E8",
-  SPEEDBANKING_DARK_3: "#90CDF0",
-  BLACK: "#000000",
-  BASE_DARK_1: "#FFFFFF",
-  BASE_DARK_2: "#E6E6E6",
-  BASE_DARK_3: "#C8C8C8",
-  BASE_DARK_4: "#A0A0A0",
-  BASE_DARK_5: "#787878",
-  BASE_DARK_6: "#505050",
-  BASE_DARK_7: "#323232",
-  BASE_DARK_8: "#f0f0f0",
-  BASE_DARK_1_1: "#FFF7F6F4",
-  TRANSPARENT : "#00FFFFFF",
-  BASE_BLUE : "#1b3281",
-  PENDING_TEXT : "#F49143",
-  SUCCESS_TEXT : "#27BC5C",
-  FAILURE_TEXT : "#CD252C",
-  PA_TEXT : "#484848",
-  NAME_TEXT : "#FF818181",
-  HORIZONTAL_BACKGROUND : "#CCCCCC",
-  MONEY_SENT_TEXT : "#1B3281",
-  LIGHT_HEADING : "#848484",
-  TEXT_COLOR : "#484848",
-  BASE_WARNING : "#f1c194"
-}
 
-// exports.symbol = {
-//   TICK: JBridge.getsymbols("tick"),
-//   RUPEE: JBridge.getsymbols("rupee")
-// }
 exports.inputType = {
   TYPE_MASK_CLASS: 0x0000000f,
   TYPE_MASK_VARIATION: 0x00000ff0,
@@ -77,31 +38,4 @@ exports.inputType = {
   TYPE_DATETIME_VARIATION_NORMAL: 0x00000000,
   TYPE_DATETIME_VARIATION_DATE: 0x00000010,
   TYPE_DATETIME_VARIATION_TIME: 0x00000020
-}
-
-exports.fontSize = {
-  TITLE : "0,14",
-  HEADING1 : "0,12",
-  HEADING2 : "0,",
-  HEADING3 : "",
-  HEADING4 : "",
-  HEADING5 : "",
-  HEADING6 : "",
-  HUGE : "",
-  VLARGE : "0,8",
-  LARGE : "0,6",
-  NORMAL : "0,4",
-  SMALL :"0,3.5",
-  VSMALL : "",
-  TINY :""
-}
-
-exports.layoutValues = {
-  HUGE : "40",
-  VLARGE : "30",
-  LARGE : "20",
-  NORMAL : "16",
-  SMALL :"10",
-  VSMALL : "5",
-  TINY :"2"
 }
