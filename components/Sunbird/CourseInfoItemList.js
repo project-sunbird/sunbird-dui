@@ -12,6 +12,10 @@ class CourseInfoItem extends View {
     super(props, children);
   }
 
+  handleItemClick = () => {
+    this.props.onItemClick(this.props.item);
+  }
+
 
   getProgressStatus = () => {
     return (<LinearLayout
@@ -47,6 +51,7 @@ class CourseInfoItem extends View {
               height="match_parent"
               width="0"
               weight="1"
+              onClick={this.handleItemClick}
               padding="16,16,32,16"
               orientation="vertical">
               <TextView
@@ -78,8 +83,10 @@ class CourseInfoItem extends View {
     this.layout = (
       <LinearLayout
       width="match_parent"
+      cornerRadius="2"
       height="100"
       margin="0,8,0,8"
+      
       background={window.__Colors.WHITE}>
         <LinearLayout
           width="100"
@@ -89,6 +96,7 @@ class CourseInfoItem extends View {
           gravity="center">
                 <ImageView
                   height="50"
+                  onClick={this.handleItemClick}
                   width="50"
                   imageUrl={this.props.item.courseImage ? this.props.item.courseImage : "ic_account"}/> 
          </LinearLayout>
@@ -150,6 +158,7 @@ class CourseInfoItemList extends View {
       return (<CourseInfoItem
             width="match_parent"
             height="match_parent"
+            onItemClick={this.handleItemClick}
             item={item}/>)
     })
 
@@ -166,6 +175,11 @@ class CourseInfoItemList extends View {
     )
     this.replaceChild(this.idSet.courseContainer, cardLayout.render(), 0);
 
+  }
+
+
+  handleItemClick = (data) => {
+    this.props.onItemSelected(data);
   }
 
 

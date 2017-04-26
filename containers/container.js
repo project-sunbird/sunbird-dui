@@ -12,7 +12,7 @@ const reducer = require("@juspay/mystique-backend").stateManagers.reducer({
 const RootScreen = require("../views/RootScreen");
 const SplashScreen = require("../views/SplashScreen");
 const ChooseCourseScreen = require("../views/CoursesActivity/ChooseCourseScreen");
-
+const CourseInfoScreen = require("../views/CoursesActivity/CourseInfoScreen");
 // ScreenActions
 const RootScreenActions = require("../actions/RootScreenActions");
 
@@ -29,6 +29,10 @@ var determineScreen = (screenName, state) => {
     case "CHOOSE_COURSE":
       screen = new(ChooseCourseScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
+    case "COURSE_INFO_SCREEN":
+      screen = new(CourseInfoScreen(dispatcher, RootScreenActions))(null, null, state);
+      break;
+
   }
 
   return screen;

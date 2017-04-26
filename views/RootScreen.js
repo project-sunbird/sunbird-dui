@@ -9,6 +9,7 @@ var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var TextStyle = require("../res/TextStyle");
 var Symbols = require("../res/Symbols").symbol;
 var Colors = require("../res/Colors").color;
+var Styles = require("../res/Styles");
 
 
 class RootScreen extends View {
@@ -22,6 +23,7 @@ class RootScreen extends View {
     window.__TextStyle = TextStyle;
     window.__Symbols = Symbols;
     window.__Colors = Colors;
+    window.__Styles = Styles;
 
     this.setStatusBarColor(window.__Colors.BLACK);
   }

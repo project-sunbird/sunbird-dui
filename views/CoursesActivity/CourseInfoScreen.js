@@ -10,14 +10,15 @@ var objectAssign = require('object-assign');
 
 window.R = require("ramda");
 
-var CourseInfoItemList = require('../../components/Sunbird/CourseInfoItemList');
+var SimpleToolbar = require('../../components/Sunbird/SimpleToolbar');
+var CropParagraph = require('../../components/Sunbird/CropParagraph');
+var CourseCurriculum = require('../../components/Sunbird/CourseCurriculum');
 
-
-class ChooseCourseScreen extends View {
+class CourseInfoScreen extends View {
   constructor(props, children, state) {
     super(props, children, state);
     this.state = state;
-    this.screenName = "CHOOSE_COURSE"
+    this.screenName = "COURSE_INFO_SCREEN"
   }
 
   afterRender = () => {
@@ -32,31 +33,41 @@ class ChooseCourseScreen extends View {
     this.layout = (
       <LinearLayout
         root="true"
+        background={window.__Colors.WHITE}
         orientation="vertical"
         width="match_parent"
         height="match_parent">
 
+        <SimpleToolbar
+          title="Arithematic-Advanced"
+          width="match_parent"
+          showMenu="true"/>
+
         <ScrollView 
           height="match_parent"
           width="match_parent"
+          padding="16,24,16,16"
           fillViewPort="true">
           <LinearLayout
             height="match_parent"
             width="match_parent"
-            background="#2D61FF"
-            padding="20,170,20,20"
+           
             orientation="vertical">
 
-            <TextView
-              text="Your learning Tracks"
+            <CropParagraph
               height="wrap_content"
               margin="0,0,0,24"
-              style={window.__TextStyle.textStyle.HEADING.LIGHT}/> 
-           
-            <CourseInfoItemList
-              onItemSelected={this.handleItemSelect}
+              width="match_parent"
+              headText={"About the course"}
+              contentText={"This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced"}
+              />
+
+             <CourseCurriculum 
               height="match_parent"
-              width="match_parent"/>
+              width="match_parent"/> 
+
+
+           
            
             </LinearLayout>
               
@@ -70,4 +81,4 @@ class ChooseCourseScreen extends View {
   }
 }
 
-module.exports = Connector(ChooseCourseScreen);
+module.exports = Connector(CourseInfoScreen);
