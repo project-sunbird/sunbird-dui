@@ -11,18 +11,23 @@ module.exports = function(action, payload, state) {
   switch (action) {
     case "INIT_UI":
       localState.isInit = true;
-      localState.currScreen = "SPLASH";
+      localState.currScreen = "CHOOSE_COURSE";
       break;
-      
+
     case "SPLASH":
       localState.isInit = false;
       localState.currScreen = "SPLASH";
       break;
 
+    case "CHOOSE_COURSE":
+      localState.isInit = false;
+      localState.currScreen = "CHOOSE_COURSE";
+      break;
+
     case "GO_BACK":
       break;
-      
-      default :
+
+    default:
       throw new Error("Invalid action Passed : action name" + action);
   }
 

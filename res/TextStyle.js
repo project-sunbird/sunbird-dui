@@ -49,7 +49,8 @@ exports.textStyle = {
     LIGHT : {
       color : Colors.WHITE,
       textSize : Font.fontSize.FONT_20,
-      fontStyle : Font.fontStyle.BOLD
+      fontStyle: Font.fontStyle.BOLD
+
     },
     DARK : {
       color : Colors.PRIMARY_BLACK,

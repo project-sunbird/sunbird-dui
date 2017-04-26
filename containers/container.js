@@ -5,28 +5,32 @@ var dispatcher;
 const ScreenReducer = require("../state_machines/Screens");
 
 const reducer = require("@juspay/mystique-backend").stateManagers.reducer({
-  "SCREEN" : ScreenReducer
+  "SCREEN": ScreenReducer
 });
 
 // Screens
 const RootScreen = require("../views/RootScreen");
 const SplashScreen = require("../views/SplashScreen");
+const ChooseCourseScreen = require("../views/CoursesActivity/ChooseCourseScreen");
 
 // ScreenActions
 const RootScreenActions = require("../actions/RootScreenActions");
- 
+
 var determineScreen = (screenName, state) => {
   var screen;
-   
-  
+
+
   // Space has been added for dir strucuture
   // add accordingly
   switch (state.currScreen) {
     case "SPLASH":
-      screen = new (SplashScreen(dispatcher, RootScreenActions))(null, null, state);
+      screen = new(SplashScreen(dispatcher, RootScreenActions))(null, null, state);
+      break;
+    case "CHOOSE_COURSE":
+      screen = new(ChooseCourseScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
   }
-   
+
   return screen;
 }
 
@@ -35,13 +39,13 @@ var returnIfCached = function(screenName) {
 }
 
 var renderRootScreen = (state, dispatcher) => {
-  window.__ROOTSCREEN = new (RootScreen(dispatcher, RootScreenActions))({}, null, state);
+  window.__ROOTSCREEN = new(RootScreen(dispatcher, RootScreenActions))({}, null, state);
   return window.__ROOTSCREEN;
 }
 
 var updateNode = function(data) {
   var oldScreenId = window.__CACHED_SCREENS[data.action].screen.layout.idSet.id;
-  window.__MODE = (new Date()).getTime()  + " mode";
+  window.__MODE = (new Date()).getTime() + " mode";
   window.__CACHED_SCREENS[data.action].screen = determineScreen(data.action, data.state);
   // delete old id
 }
@@ -52,19 +56,19 @@ window.__CLEAR_STACK = function(screenName) {
 
 var addToStack = function(screenName, screenData) {
   if (typeof screenData.screen.shouldStackScreen !== "undefined" && !screenData.screen.shouldStackScreen)
-  return;
+    return;
 
-  var stackLen =  window.__SCREEN_STACK.length;
+  var stackLen = window.__SCREEN_STACK.length;
 
   if (!stackLen)
-  window.__SCREEN_STACK.push(screenName);
-  else if (window.__SCREEN_STACK[stackLen-1] !== screenName)
-  window.__SCREEN_STACK.push(screenName);
+    window.__SCREEN_STACK.push(screenName);
+  else if (window.__SCREEN_STACK[stackLen - 1] !== screenName)
+    window.__SCREEN_STACK.push(screenName);
 }
 
 var renderScreen = function(data) {
   JBridge.hideKeyboard();
-   
+
   var screen;
   var isCached = false;
   var takeFromCache = true;
@@ -74,7 +78,7 @@ var renderScreen = function(data) {
     isCached = true;
 
     screen = screenData.screen;
-    if (typeof screen.shouldCacheScreen  !== "undefined" && !screen.shouldCacheScreen) {
+    if (typeof screen.shouldCacheScreen !== "undefined" && !screen.shouldCacheScreen) {
       console.info("updating screen ", data.action);
       updateNode(data);
       takeFromCache = false;
@@ -89,11 +93,11 @@ var renderScreen = function(data) {
     }
 
     window.__SCREEN_COUNT++;
-    screenData =  window.__CACHED_SCREENS[data.action];
+    screenData = window.__CACHED_SCREENS[data.action];
   }
 
-  addToStack(data.action,  window.__CACHED_SCREENS[data.action]);
-  return {screen: screenData.screen, isCached: isCached, takeFromCache: takeFromCache}
+  addToStack(data.action, window.__CACHED_SCREENS[data.action]);
+  return { screen: screenData.screen, isCached: isCached, takeFromCache: takeFromCache }
 }
 
 var appendToRoot = function(screen) {
@@ -103,28 +107,28 @@ var appendToRoot = function(screen) {
 
 var getDirection = function() {
   if (window.__CACHED_SCREENS[window.__CURR_SCREEN].timeStamp >= window.__CACHED_SCREENS[window.__PREV_SCREEN].timeStamp)
-  return 1;
+    return 1;
 
   return -1;
 }
 
 var handleGoBack = function(data) {
-  JBridge.hideKeyboard(); 
-   
+  JBridge.hideKeyboard();
+
   var stackLen = window.__SCREEN_STACK.length;
   var cmd = "";
-  if (stackLen == 1)  {
+  if (stackLen == 1) {
     __ROOTSCREEN.minimizeApp();
     return;
   }
-  
+
   var screenData = window.__CACHED_SCREENS[window.__CURR_SCREEN];
   if (screenData.screen.onBackPress) {
-    if (!screenData.screen.onBackPress()){
+    if (!screenData.screen.onBackPress()) {
       console.log("failed");
       return;
     }
-  } 
+  }
 
   window.__PREV_SCREEN = window.__SCREEN_STACK[stackLen - 1];
   window.__CURR_SCREEN = window.__SCREEN_STACK[stackLen - 2];
@@ -139,7 +143,7 @@ var handleScreenActions = function(data) {
 
   console.log("action", data.action)
   console.log("screen", data.state.currScreen)
-   
+
   if (data.action == "GO_BACK") {
     console.log("going back");
     handleGoBack(data);
@@ -151,7 +155,7 @@ var handleScreenActions = function(data) {
     currView = renderRootScreen(data.state, dispatcher);
 
     dispatcher('SCREEN', data.state.currScreen, {});
-    return {render : currView.render()};
+    return { render: currView.render() };
   }
 
   if (window.__CURR_SCREEN == data.action) {
@@ -174,12 +178,12 @@ var handleScreenActions = function(data) {
     appendToRoot(res.screen);
     return {};
   } else if (res.takeFromCache) {
-    window.__ANIMATE_DIR  = getDirection();
+    window.__ANIMATE_DIR = getDirection();
 
     if (res.screen.onPop)
-    res.screen.onPop(data.state);
+      res.screen.onPop(data.state);
   } else {
-    window.__ANIMATE_DIR  = getDirection();
+    window.__ANIMATE_DIR = getDirection();
     appendToRoot(res.screen);
   }
 
@@ -187,11 +191,11 @@ var handleScreenActions = function(data) {
 }
 
 var Containers = {
-  handleStateChange : (data) => {
+  handleStateChange: (data) => {
     var currView;
 
     if (data.stateHandler == "SCREEN")
-    return handleScreenActions(data);
+      return handleScreenActions(data);
 
     currView = window.__CACHED_SCREENS[stateHandler].screen;
     return currView.handleStateChange(data) || {};

@@ -5,7 +5,11 @@ var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout
 var RelativeLayout = require("@juspay/mystique-backend").androidViews.RelativeLayout;
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 
+
+var TextStyle = require("../res/TextStyle");
+var Symbols = require("../res/Symbols").symbol;
 var Colors = require("../res/Colors").color;
+
 
 class RootScreen extends View {
   constructor(props, children) {
@@ -15,7 +19,11 @@ class RootScreen extends View {
       'root'
     ]);
 
-    this.setStatusBarColor(Colors.BLACK);
+    window.__TextStyle = TextStyle;
+    window.__Symbols = Symbols;
+    window.__Colors = Colors;
+
+    this.setStatusBarColor(window.__Colors.BLACK);
   }
 
   handleStateChange = () => {
