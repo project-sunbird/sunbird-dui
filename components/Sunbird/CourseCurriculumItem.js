@@ -59,7 +59,6 @@ class CourseCurriculumItem extends View {
   }
 
   getChapterContent = () => {
-    console.log("IN CHP CONTENT", this.props.item.chapterContent);
 
     var items = this.props.item.chapterContent.map((item) => {
       return (<ChapterItem height="wrap_content"
