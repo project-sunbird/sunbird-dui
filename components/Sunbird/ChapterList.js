@@ -10,7 +10,6 @@ var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 class ChapterItem extends View {
   constructor(props, children) {
     super(props, children);
-    this.color = window.__Colors.DARK_GRAY_44;
     this.setUpUI();
 
   }
@@ -18,30 +17,32 @@ class ChapterItem extends View {
   setUpUI = () => {
     switch (this.props.item.type) {
       case "PLAY":
-        this.imageIcon = "ic_play"
+        this.imageIcon = "ic_action_video"
         break;
       case "QUIZ":
-        this.imageIcon = "ic_quiz"
+        this.imageIcon = "ic_action_quiz"
         break;
       case "ASSIGNMENT":
-        this.imageIcon = "ic_assignment"
+        this.imageIcon = "ic_action_assignment"
         break;
       default:
-        this.imageIcon = "ic_play"
+        this.imageIcon = "ic_action_video"
         break;
     }
 
     this.showExtraContent = this.props.enrolledStatus != undefined ? this.props.enrolledStatus : false;
     this.showResumeContent = false;
+    this.color = window.__Colors.DARK_GRAY;
+
     if (this.showExtraContent) {
       switch (this.props.item.status) {
 
         case "DONE":
-          this.imageIcon += "_done"
+          this.imageIcon = "ic_action_completed"
           this.color = window.__Colors.SUCCESS_GREEN;
           break;
         case "PROGRESS":
-          this.imageIcon += "_progress"
+          this.imageIcon += "_resume"
           this.color = window.__Colors.ORANGE;
           this.showResumeContent = true;
           break;
