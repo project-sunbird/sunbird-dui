@@ -176,4 +176,5 @@ exports.textStyle = {
       fontStyle: Font.fontStyle.SEMIBOLD
     }
   }
+
 };

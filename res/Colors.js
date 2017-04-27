@@ -1,5 +1,6 @@
 exports.color = {
   PRIMARY_BLACK: "#333333",
+  PRIMARY_BLACK_22: "#22333333",
   WHITE: "#FFFFFF",
   PRIMARY_ACCENT: "#007AFF",
   DARK_GRAY: "#979797",
@@ -22,4 +23,6 @@ exports.color = {
   MEDIUM_VIOLET: "#F0E9FD",
   GREEN: "#27BC5C",
   RED: "#D50000",
+  PRIMARY_DARK: "#007AFF",
+  PRIMARY_LIGHT: "#FFFFFF"
 };

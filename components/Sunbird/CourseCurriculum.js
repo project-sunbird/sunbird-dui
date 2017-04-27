@@ -6,30 +6,21 @@ var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 
-var CourseCurriculumItem = require('../Sunbird/CourseCurriculumItem');
+var ChapterList = require('../Sunbird/ChapterList');
 
 class CourseCurriculum extends View {
   constructor(props, children) {
     super(props, children);
 
-    this.props.appendText = this.props.appendText || "";
-
+    this.displayName = "course_curriculumn"
+    this.enrolledStatus = this.props.enrolledStatus == undefined ? false : this.props.enrolledStatus;
 
   }
 
-  getCurriculumnBrief = () => {
-    var data = [{
-      count: "50",
-      type: "Assignments"
-    }, {
-      count: "25",
-      type: "Videos"
-    }, {
-      count: "5",
-      type: "Quizes"
-    }];
 
-    var items = data.map((item, i) => {
+  getCurriculumnBrief = () => {
+
+    var items = this.props.content.courseBrief.map((item, i) => {
       return (<TextView
                 style={window.__TextStyle.textStyle.HINT.REGULAR} 
                 text ={(i==0?"":" | ") +item.count + " "+item.type}/>)
@@ -45,27 +36,24 @@ class CourseCurriculum extends View {
   }
 
 
-  getCurriculumnContent = () => {
-    var data = {
-      chapterName: "Progression",
-      chapterContent: [{
-        name: "Arithemetic Progression",
-        type: "Chapter",
-        status: "DONE"
-      }, {
-        name: "Geometric Progeressions",
-        type: "Chapter",
-        status: "IN_PROGRESS"
-      }, {
-        name: "Quiz 1: 10 questions",
-        type: "Quiz",
-        status: "LEFT"
-      }]
-    }
-    return (
-      <CourseCurriculumItem item={data}/>)
-  }
+  getChapterList = () => {
 
+
+
+    var items = this.props.content.chapterList.map((item) => {
+      return (<ChapterList 
+          item={item} 
+          enrolledStatus={this.enrolledStatus}/>)
+    })
+
+    return (
+      <LinearLayout
+        orientation="vertical"
+        height="wrap_content"
+        width="match_parent">
+        {items}
+      </LinearLayout>);
+  }
 
   render() {
 
@@ -82,7 +70,7 @@ class CourseCurriculum extends View {
 
         {this.getCurriculumnBrief()}  
 
-        {this.getCurriculumnContent()}
+        {this.getChapterList()}
 
        </LinearLayout>
 
