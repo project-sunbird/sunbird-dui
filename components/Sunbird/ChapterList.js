@@ -50,7 +50,7 @@ class ChapterItem extends View {
           break;
 
         default:
-          this.color = window.__Colors.DARK_GRAY_44;
+          this.color = window.__Colors.DARK_GRAY;
           break;
       }
     }

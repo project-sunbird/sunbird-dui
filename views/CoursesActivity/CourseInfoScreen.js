@@ -123,12 +123,10 @@ class CourseInfoScreen extends View {
 
                 <CourseProgress
                     height="wrap_content"
-                    margin="0,0,0,12"
-                    width="match_parent"/>
+                    width="wrap_content"/>
 
                  <CourseCurriculum 
                   height="match_parent"
-                  margin="0,12,0,0"
                   content={this.data}
                   enrolledStatus={true}
                   width="match_parent"/> 

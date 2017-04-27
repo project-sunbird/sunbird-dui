@@ -65,6 +65,7 @@ class CourseCurriculum extends View {
        orientation="vertical"
        width="match_parent">
         <TextView
+          margin="0,24,0,0"
           text="Curriculum" 
           style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
