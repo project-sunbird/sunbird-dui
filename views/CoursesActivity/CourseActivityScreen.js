@@ -5,6 +5,8 @@ var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 var ScrollView = require('@juspay/mystique-backend').androidViews.ScrollView;
 var TextView = require('@juspay/mystique-backend').androidViews.TextView;
+var RatingBar = require('@juspay/mystique-backend').androidViews.RatingBar;
+
 
 
 var objectAssign = require('object-assign');
@@ -20,7 +22,8 @@ class CourseActivityScreen extends View {
     super(props, children, state);
 
     this.setIds([
-      "parentContainer"
+      "parentContainer",
+      "ratingBar"
     ]);
     this.state = state;
     this.screenName = "COURSE_ACTIVITY_SCREEN"
@@ -35,11 +38,17 @@ class CourseActivityScreen extends View {
       ]
     };
     this.selectedAnswer = [];
+    window.ratingChangeCallback = this.ratingChange;
 
   }
 
-  afterRender = () => {
+  ratingChange = (data) => {
+    console.log("RATING CHANGE :", data)
+  }
 
+  afterRender = () => {
+    // id, number of stars, (String) defaultRating , (String) editable
+    JBridge.setUpRatingBAr(this.idSet.ratingBar, 5, "2.5", "false")
   }
 
   handleItemSelect = (index, status) => {
@@ -116,13 +125,11 @@ class CourseActivityScreen extends View {
                 padding="16,24,16,16"
                 orientation="vertical">
 
-
-                <TextView
-                  height="20"
-                  width="match_parent"
-                  text="asdasgduygasyudg asdgasygdysagduyosag dyasgdyasg dysaog doasgd sagd oasygdaos d"
-                  enableEllipse="true" />
-
+                <RatingBar
+                  height="wrap_content"
+                  width="wrap_content"
+                  id={this.idSet.ratingBar} 
+                  margin="20,20,20,20" />
                 {this.getQuestion()}
                   
                 {this.getAnswers()}
