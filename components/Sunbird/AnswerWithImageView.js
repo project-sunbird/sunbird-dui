@@ -10,11 +10,12 @@ var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 
 
-class AnswerView extends View {
+class AnswerWithImageView extends View {
   constructor(props, children) {
     super(props, children);
     this.setIds([
-      "selectorContainer"
+      "selectorContainer",
+      "picassoImageView"
     ]);
     //this.displayName = "answer_view" + (this.props.index != undefined ? ("_" + this.props.index) : "")
     this.displayName = "answer_view";
@@ -38,7 +39,13 @@ class AnswerView extends View {
 
 
   getIndexHolder = () => {
-    return (<TextView text={this.props.index + 1} />)
+    return (<ImageView
+            width="156"
+            height="156"
+            imageFromUrl={this.props.item.imageUrl}
+            id={this.idSet.picassoImageView}
+            margin="0,0,0,0"/>)
+      // imageFromUrl={this.props.item.imageUrl}
   }
 
   getSelectedImage = () => {
@@ -55,44 +62,39 @@ class AnswerView extends View {
 
   }
 
+  afterRender = () => {
+    //setTimeout(() => { JBridge.setImageFromUrl(this.idSet.picassoImageView, this.props.item.imageUrl); }, 500);
+  }
+
   render() {
 
 
     this.layout = (
       <LinearLayout
-      width="match_parent"
+      width="156"
       cornerRadius="5"
       margin="0,0,0,12"
+      afterRender={this.afterRender}
       stroke ={"2," + window.__Colors.PRIMARY_BLACK_66}
-      height="56">
+      height="180">
         <LinearLayout
       width="match_parent"
-      gravity="center_vertical"
+      orientation="vertical"
+      gravity="center_horizontal"
+      padding="1,1,1,1"
       allowMultipleClicks="true"
-      padding="12,8,12,8"
       onClick={this.handleSelectionEvent}
       height="match_parent">
 
-            <RelativeLayout
-              width="40"
-              stroke ={"3," + window.__Colors.PRIMARY_BLACK}
-              cornerRadius="40"
-              margin="0,0,12,0"
-              height="40"
-              root="true"
-              id={this.idSet.selectorContainer}
-              gravity="center"
-              orientation="vertical">
               
               {this.getIndexHolder()}
              
-            </RelativeLayout>
-           <TextView
-            width="wrap_content"
-            height="match_parent"
+            <TextView
+            width="match_parent"
+            height="wrap_content"
             gravity="center"
             text={this.props.item.key}
-            margin="24,0,0,0"
+            margin="0,0,0,0"
             style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>
 
          </LinearLayout> 
@@ -103,4 +105,4 @@ class AnswerView extends View {
   }
 }
 
-module.exports = AnswerView;
+module.exports = AnswerWithImageView;
