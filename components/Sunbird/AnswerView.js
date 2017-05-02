@@ -14,7 +14,9 @@ class AnswerView extends View {
   constructor(props, children) {
     super(props, children);
     this.setIds([
-      "selectorContainer"
+      "selectorContainer",
+      "itemPosition",
+      "itemText"
     ]);
     //this.displayName = "answer_view" + (this.props.index != undefined ? ("_" + this.props.index) : "")
     this.displayName = "answer_view";
@@ -38,7 +40,7 @@ class AnswerView extends View {
 
 
   getIndexHolder = () => {
-    return (<TextView text={this.props.index + 1} />)
+    return (<TextView id = {this.idSet.itemPosition} text={this.props.index + 1} />)
   }
 
   getSelectedImage = () => {
@@ -91,6 +93,7 @@ class AnswerView extends View {
             width="wrap_content"
             height="match_parent"
             gravity="center"
+            id = {this.idSet.itemText}
             text={this.props.item.key}
             margin="24,0,0,0"
             style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>
