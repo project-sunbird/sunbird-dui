@@ -17,7 +17,9 @@ window.R = require("ramda");
 var SimpleToolbar = require('../../components/Sunbird/SimpleToolbar');
 var AnswerView = require('../../components/Sunbird/AnswerView');
 var AnswerWithImageView = require('../../components/Sunbird/AnswerWithImageView');
+var CountDownTimer = require('../../components/Sunbird/CountDownTimer');
 
+CountDownTimer
 class CourseActivityScreen extends View {
   constructor(props, children, state) {
     super(props, children, state);
@@ -376,11 +378,13 @@ class CourseActivityScreen extends View {
               fillViewPort="true">
               <LinearLayout
                 height="match_parent"
-                
                 width="match_parent"
                 padding="16,24,16,16"
                 orientation="vertical">
-
+                <CountDownTimer
+                    height="wrap_content"
+                    totalTime="307"
+                    width="wrap_content" />
                 <RatingBar
                   height="wrap_content"
                   width="wrap_content"
