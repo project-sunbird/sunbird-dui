@@ -3,25 +3,20 @@ var Connector = require("@juspay/mystique-backend").connector;
 var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
-var RelativeLayout = require("@juspay/mystique-backend").androidViews.RelativeLayout;
 
 
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
-var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 
 
 class CountDownTimer extends View {
   constructor(props, children) {
     super(props, children);
     this.setIds([
-      "h0",
       "m0",
       "s0",
       "divider"
     ]);
     this.displayName = "count_down_timer";
-
-
     this.totalTime = parseInt(this.props.totalTime);
 
   }
@@ -29,7 +24,7 @@ class CountDownTimer extends View {
 
   setStartTime = (startTime) => {
     this.totalTime = startTime;
-
+    this.setTime(this.totalTime);
   }
 
   afterRender = () => {
@@ -38,7 +33,7 @@ class CountDownTimer extends View {
   }
 
   handleCountDownFinished = () => {
-
+    this.props.onTimerEnd();
   }
 
   startCountdown = () => {
@@ -70,12 +65,7 @@ class CountDownTimer extends View {
       id: this.idSet.m0,
       text: ("0" + minutes).slice(-2)
     })
-
-
     Android.runInUI(cmd, 0);
-    console.log("SETTING ", seconds, "S:M ", minutes)
-
-
   }
 
 

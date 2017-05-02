@@ -18,6 +18,7 @@ var SimpleToolbar = require('../../components/Sunbird/SimpleToolbar');
 var AnswerView = require('../../components/Sunbird/AnswerView');
 var AnswerWithImageView = require('../../components/Sunbird/AnswerWithImageView');
 var CountDownTimer = require('../../components/Sunbird/CountDownTimer');
+var HorizontalProgressBar = require("../../components/Sunbird/HorizontalProgressBar");
 
 CountDownTimer
 class CourseActivityScreen extends View {
@@ -31,6 +32,7 @@ class CourseActivityScreen extends View {
     ]);
     this.state = state;
     this.screenName = "COURSE_ACTIVITY_SCREEN"
+    this.currentQuestion = "1";
 
     // this.data = {
     //   type: "ASSIGNMENT",
@@ -244,6 +246,7 @@ class CourseActivityScreen extends View {
 
     this.data = {
       type: "ASSIGNMENT",
+      totalQuestion: "7",
       question: "Which type of progression is the following sequence? 3, 5, 8, 12, 17, …",
       answers: [{ key: "Arithemetic", imageUrl: "http://hdwallpaperia.com/wp-content/uploads/2013/11/Skull-Designs-Wallpaper.jpg" },
         { key: "Geometric", imageUrl: "http://hdwallpaperia.com/wp-content/uploads/2013/10/Apple-HD-Wallpapers-640x400.jpg" },
@@ -264,8 +267,6 @@ class CourseActivityScreen extends View {
   }
 
   afterRender = () => {
-    // id, number of stars, (String) defaultRating , (String) editable
-    JBridge.setUpRatingBAr(this.idSet.ratingBar, 5, "2.5", "false")
 
   }
 
@@ -321,6 +322,70 @@ class CourseActivityScreen extends View {
 
     JBridge.recyclerViewAdapter(this.idSet.recylerView, JSON.stringify(jso), 1, 1, 1);
 
+  }
+
+
+  getQuizHead = () => {
+    var layout = (<LinearLayout
+                height="wrap_content"
+                orientation="vertical"
+                margin="0,0,0,24"
+                width="match_parent">
+
+                    <CountDownTimer
+                    height="wrap_content"
+                    totalTime="600"
+                    margin="0,0,0,24"
+                    width="wrap_content" />
+
+                    <TextView
+                     text="Remaining time"
+                     margin="0,0,0,24"
+                     style={window.__TextStyle.textStyle.HINT.REGULAR} />
+
+                    <LinearLayout
+                        width="match_parent"
+                        root="true"
+                        gravity="center_vertical"
+                        height="wrap_content">
+
+                        <TextView
+                            height="match_parent"
+                            width="match_parent"
+                            
+                            text={this.currentQuestion}
+                            style={window.__TextStyle.textStyle.HINT.REGULAR}
+                            width="24" />
+
+                        <TextView
+                            height="match_parent"
+                            width="match_parent"
+                            text="/"
+                            style={window.__TextStyle.textStyle.HINT.REGULAR}
+                            width="24" />
+
+                        <TextView
+                            height="match_parent"
+                            width="match_parent"
+                            text={this.data.totalQuestion}
+                            padding="0,0,12,0"
+                            style={window.__TextStyle.textStyle.HINT.REGULAR}
+                            width="24" />
+
+                         <HorizontalProgressBar 
+                              progressBarColor={window.__Colors.SUCCESS_GREEN}
+                              currentProgress={this.currentQuestion}
+                              totalProgress = {this.data.totalQuestion}
+                              width="0"
+                              weight="1"
+                              height="wrap_content"/>   
+
+
+                     </LinearLayout>   
+
+                </LinearLayout>)
+
+    return layout;
   }
 
   getAnswers = () => {
@@ -381,15 +446,9 @@ class CourseActivityScreen extends View {
                 width="match_parent"
                 padding="16,24,16,16"
                 orientation="vertical">
-                <CountDownTimer
-                    height="wrap_content"
-                    totalTime="307"
-                    width="wrap_content" />
-                <RatingBar
-                  height="wrap_content"
-                  width="wrap_content"
-                  id={this.idSet.ratingBar} 
-                  margin="20,20,20,20" />
+                
+                {this.getQuizHead()}
+                
                 {this.getQuestion()}
                   
                 {this.getAnswers()}

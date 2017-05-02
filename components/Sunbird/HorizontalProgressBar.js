@@ -38,7 +38,7 @@ class HorizontalProgressBar extends View {
         <ViewWidget
           width="0"
           weight={percentL}
-          background={window.__Colors.ORANGE}
+          background={this.props.progressBarColor===undefined?window.__Colors.ORANGE:this.props.progressBarColor}
           height="2"/>
         <ViewWidget
           width="0"
