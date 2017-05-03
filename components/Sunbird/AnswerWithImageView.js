@@ -40,11 +40,11 @@ class AnswerWithImageView extends View {
 
   getIndexHolder = () => {
     return (<ImageView
-            width="156"
-            height="156"
-            imageFromUrl={this.props.item.imageUrl}
-            id={this.idSet.picassoImageView}
-            margin="0,0,0,0"/>)
+              width="156"
+              height="156"
+              imageFromUrl={this.props.item.imageUrl}
+              id={this.idSet.picassoImageView}
+              margin="0,0,0,0"/>)
       // imageFromUrl={this.props.item.imageUrl}
   }
 
