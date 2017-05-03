@@ -11,6 +11,9 @@ module.exports = function(action, payload, state) {
   switch (action) {
     case "INIT_UI":
       localState.isInit = true;
+
+      localState.currScreen = "PROFILE_ACTIVITY_SCREEN";
+      localState.currScreen = "PROFILE_ACTIVITY_SCREEN";
       localState.currScreen = "PROFILE_CERTIFICATION_SCREEN";
       break;
 
@@ -33,10 +36,18 @@ module.exports = function(action, payload, state) {
       localState.isInit = false;
       localState.currScreen = "COURSE_ACTIVITY_SCREEN";
       break;
+    case "PROFILE_ACTIVITY_SCREEN":
+      localState.isInit = false;
+      localState.currScreen = "PROFILE_ACTIVITY_SCREEN";
+      break;
 
     case "PROFILE_ABOUT_SCREEN":
       localState.isInit = false;
       localState.currScreen = "PROFILE_ABOUT_SCREEN";
+      break;
+    case "PROFILE_ACTIVITY_SCREEN":
+      localState.isInit = false;
+      localState.currScreen = "PROFILE_ACTIVITY_SCREEN";
       break;
 
     case "PROFILE_CERTIFICATION_SCREEN":
