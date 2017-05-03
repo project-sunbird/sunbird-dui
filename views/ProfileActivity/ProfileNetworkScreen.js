@@ -61,13 +61,18 @@ class ProfileNetworkScreen extends View {
             padding="12,12,12,12"
 
             >
+            <LinearLayout
+              width="70"
+              height="70"
+              cornerRadius="70">
 
             <ImageView
               height="70"
               width="70"
+              cornerRadius="70"
+              imageUrl= {"ic_account"} />
 
-              imageFromUrl= {this.data.imageUrl} />
-
+              </LinearLayout>
             <LinearLayout
                     height="match_parent"
                     width="0"
