@@ -14,17 +14,11 @@ const SplashScreen = require("../views/SplashScreen");
 const ChooseCourseScreen = require("../views/CoursesActivity/ChooseCourseScreen");
 const CourseInfoScreen = require("../views/CoursesActivity/CourseInfoScreen");
 const CourseActivityScreen = require("../views/CoursesActivity/CourseActivityScreen");
-<<<<<<< HEAD
 const ProfileActivityScreen = require("../views/ProfileActivity/ProfileActivityScreen");
-=======
-<<<<<<< HEAD
 const ProfileActivityScreen = require("../views/ProfileActivity/ProfileActivityScreen");
-=======
->>>>>>> 73a16818c9adf871c5df4fee32bc267b4f540702
 const ProfileAboutScreen = require("../views/ProfileActivity/ProfileAboutScreen");
 const ProfileCertificationScreen = require("../views/ProfileActivity/ProfileCertificationScreen");
->>>>>>> 38d7f690747b4690f220ac9e8cfbff9fe0343192
-
+const ProfileNetworkScreen = require("../views/ProfileActivity/ProfileNetworkScreen");
 
 // ScreenActions
 const RootScreenActions = require("../actions/RootScreenActions");
@@ -56,6 +50,9 @@ var determineScreen = (screenName, state) => {
       break;
     case "PROFILE_CERTIFICATION_SCREEN":
       screen = new(ProfileCertificationScreen(dispatcher, RootScreenActions))(null, null, state);
+      break;
+    case "PROFILE_NETWORK_SCREEN":
+      screen = new(ProfileNetworkScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
 
     case "PROFILE_ACTIVITY_SCREEN":
