@@ -65,11 +65,15 @@ updateState changes state = ExceptT $ pure <$> makeAff(\error success -> updateS
 getLoginStatus response = ExceptT $ pure <$> makeAff(\error success -> getLoginStatus' success error response)
 
 get path headers =
-  makeAff(\error success -> callAPI' success error GET ("http://hpclpp-beta.ap-south-1.elasticbeanstalk.com" <> path) (A.jsonEmptyObject) headers')
+  makeAff(\error success -> callAPI' success error GET ("https://qa.ekstep.in" <> path) (A.jsonEmptyObject) headers')
   where headers' = cons (RequestHeader "Content-Type" "application/json") headers
                             
 post path headers body =
-  makeAff(\error success -> callAPI' success error POST ("http://hpclpp-beta.ap-south-1.elasticbeanstalk.com" <> path) body headers')
+  makeAff(\error success -> callAPI' success error POST ("https://qa.ekstep.in" <> path) body headers')
+  where headers' = cons (RequestHeader "Content-Type" "application/json") headers
+
+delete path headers =
+  makeAff(\error success -> callAPI' success error DELETE ("https://qa.ekstep.in" <> path) (A.jsonEmptyObject) headers')
   where headers' = cons (RequestHeader "Content-Type" "application/json") headers
         
 checkPermission = ExceptT (pure <$> makeAff(\error success -> checkPermission' success error))
@@ -97,6 +101,15 @@ infixr 5 getPropFromPath as #!
                                                                         
 type ExceptionableAff e a = ExceptT Error (Aff e) a
 type ExceptionableEff e a = ExceptT Error (Eff e) a
+
+
+pollTokenStatus token = unsafePartial $ 
+  let requestUrl = "/api/content/v3/hierarchy/" <> token  
+   headers = [(RequestHeader "api_key" registrationToken)]
+  payload = A.fromObject (StrMap.fromFoldable [(Tuple "passcode" (A.fromString passcode))]) in
+  ExceptT $ attempt $ ((post ("/api/v1/employee/" <> employeeId) headers payload))
+ 
+
 
 newRegistrationToken = do
   deviceDetails <- getDeviceDetails

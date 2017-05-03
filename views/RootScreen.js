@@ -10,7 +10,7 @@ var TextStyle = require("../res/TextStyle");
 var Symbols = require("../res/Symbols").symbol;
 var Colors = require("../res/Colors").color;
 var Styles = require("../res/Styles");
-
+var Font = require("../res/Font");
 
 class RootScreen extends View {
   constructor(props, children) {
@@ -24,6 +24,7 @@ class RootScreen extends View {
     window.__Symbols = Symbols;
     window.__Colors = Colors;
     window.__Styles = Styles;
+    window.__Font = Font;
 
     this.setStatusBarColor(window.__Colors.BLACK);
   }
