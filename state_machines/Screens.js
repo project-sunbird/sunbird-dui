@@ -11,7 +11,15 @@ module.exports = function(action, payload, state) {
   switch (action) {
     case "INIT_UI":
       localState.isInit = true;
+<<<<<<< HEAD
       localState.currScreen = "PROFILE_ACTIVITY_SCREEN";
+=======
+<<<<<<< HEAD
+      localState.currScreen = "PROFILE_ACTIVITY_SCREEN";
+=======
+      localState.currScreen = "PROFILE_CERTIFICATION_SCREEN";
+>>>>>>> 38d7f690747b4690f220ac9e8cfbff9fe0343192
+>>>>>>> 73a16818c9adf871c5df4fee32bc267b4f540702
       break;
 
     case "SPLASH":
@@ -33,6 +41,12 @@ module.exports = function(action, payload, state) {
       localState.isInit = false;
       localState.currScreen = "COURSE_ACTIVITY_SCREEN";
       break;
+<<<<<<< HEAD
+    case "PROFILE_ACTIVITY_SCREEN":
+      localState.isInit = false;
+      localState.currScreen = "PROFILE_ACTIVITY_SCREEN";
+      break;
+=======
 
     case "PROFILE_ABOUT_SCREEN":
       localState.isInit = false;
@@ -48,6 +62,7 @@ module.exports = function(action, payload, state) {
       localState.currScreen = "PROFILE_CERTIFICATION_SCREEN";
       break;
 
+>>>>>>> 38d7f690747b4690f220ac9e8cfbff9fe0343192
     case "GO_BACK":
       break;
 

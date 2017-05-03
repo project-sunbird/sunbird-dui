@@ -10,6 +10,7 @@ var ImageView = require('@juspay/mystique-backend').androidViews.ImageView;
 var SimpleToolbar = require('../../components/Sunbird/SimpleToolbar');
 var Colors = require("../../res/Colors").color;
 
+
 var objectAssign = require('object-assign');
 
 window.R = require("ramda");
@@ -169,14 +170,10 @@ class ProfileActivityScreen extends View {
     return layout;
   }
 
-  afterRender = () => {
-
-  }
-
   render() {
     this.layout = (
       <LinearLayout
-        root = "true"
+        root="true"
         orientation="vertical"
         width="match_parent"
         height="match_parent">
@@ -186,13 +183,7 @@ class ProfileActivityScreen extends View {
           invert="true"/>
 
           {this.getHead()}
-
-        <TextView
-          text="HELLO WORLD"
-          height="wrap_content"
-          margin="0,0,0,24"
-          style={window.__TextStyle.textStyle.HINT.GREEN}/>            
-         
+          
       </LinearLayout>
     );
 
