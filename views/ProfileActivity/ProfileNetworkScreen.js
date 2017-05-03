@@ -8,11 +8,11 @@ var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callba
 var ScrollView = require('@juspay/mystique-backend').androidViews.ScrollView;
 var objectAssign = require('object-assign');
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
-var HorizontalProgressBar = require("../../components/Sunbird/HorizontalProgressBar");
+
 
 window.R = require("ramda");
 
-class ProfileCertificationScreen extends View {
+class ProfileNetworkScreen extends View {
   constructor(props, children, state) {
     super(props, children, state);
     this.state = state;
@@ -20,7 +20,7 @@ class ProfileCertificationScreen extends View {
     this.data={
 
       imageUrl: "https://s-media-cache-ak0.pinimg.com/originals/a6/88/32/a68832c79725180370fa5e147b19b8c5.gif",
-      image2: "http://images.cdn1.stockunlimited.net/clipart/bookmark-icon_1910015.jpg"
+      
     }
   }
   
@@ -38,7 +38,7 @@ class ProfileCertificationScreen extends View {
             background={window.__Colors.LIGHT_BLUE_22}>
 
                 <TextView
-                  text="Ongoing "
+                  text="14 Requests Pending "
                   height="wrap_content"
                   style={window.__TextStyle.textStyle.HINT.DARK}/>            
                 <Space
@@ -54,19 +54,21 @@ class ProfileCertificationScreen extends View {
     return layout;
   }
 
-  getData = (name,progressValue,totalValue) => {
+  getData = (name,description) => {
     var layout = (<LinearLayout
             width="match_parent"
             height="wrap_content"
             padding="12,12,12,12"
+
             >
 
             <ImageView
               height="70"
               width="70"
+
               imageFromUrl= {this.data.imageUrl} />
 
-                  <LinearLayout
+            <LinearLayout
                     height="match_parent"
                     width="0"
                     weight="1"
@@ -76,41 +78,18 @@ class ProfileCertificationScreen extends View {
                       <TextView
                         text={name}
                         height="wrap_content"
-                        style={window.__TextStyle.textStyle.HINT.BOLD}/>
-
+                        style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
+                      <Space
+                        width="0"
+                        weight="1" />
                       <TextView
-                        text={"Progress " + progressValue + " / " + totalValue}
+                        text={description}
                         height="wrap_content"
                         style={window.__TextStyle.textStyle.HINT.SEMI}/>  
 
                       <Space
                         width="0"
                         weight="1" />
-
-                      <HorizontalProgressBar 
-                        currentProgress={progressValue}
-                        totalProgress = {totalValue}
-                        width="match_parent"
-                        height="wrap_content"/>  
-
-                  </LinearLayout>
-
-                 <LinearLayout
-                    height="match_parent"
-                    width="wrap_content"
-                    padding="12,12,12,12"
-                    orientation="vertical">
-
-
-                    <ImageView
-                      height="30"
-                      width="30"
-                      imageFromUrl= {this.data.image2} />
-
-                    <TextView
-                        text="LEVEL 2"
-                        height="wrap_content"
-                        style={window.__TextStyle.textStyle.HINT.BLUE}/>
 
                   </LinearLayout>
 
@@ -129,9 +108,9 @@ class ProfileCertificationScreen extends View {
 
           {this.getHeadContent()}
 
-          {this.getData("Chemistry",35,150)}
+          {this.getData("Samit Kumar Ganguli","National School for Children, Pune")}
 
-          {this.getData("Physics",45,100)}
+          
 
 
           
@@ -145,4 +124,4 @@ class ProfileCertificationScreen extends View {
   }
 }
 
-module.exports = Connector(ProfileCertificationScreen);
+module.exports = Connector(ProfileNetworkScreen);

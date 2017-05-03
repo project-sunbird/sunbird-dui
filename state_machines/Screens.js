@@ -11,7 +11,7 @@ module.exports = function(action, payload, state) {
   switch (action) {
     case "INIT_UI":
       localState.isInit = true;
-      localState.currScreen = "PROFILE_CERTIFICATION_SCREEN";
+      localState.currScreen = "PROFILE_NETWORK_SCREEN";
       break;
 
     case "SPLASH":
@@ -42,6 +42,11 @@ module.exports = function(action, payload, state) {
     case "PROFILE_CERTIFICATION_SCREEN":
       localState.isInit = false;
       localState.currScreen = "PROFILE_CERTIFICATION_SCREEN";
+      break;
+
+    case "PROFILE_NETWORK_SCREEN":
+      localState.isInit = false;
+      localState.currScreen = "PROFILE_NETWORK_SCREEN";
       break;
 
     case "GO_BACK":
