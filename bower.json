@@ -38,6 +38,13 @@
     "purescript-distributive": "^2.0.0",
     "purescript-tuples": "^3.0.0",
     "purescript-transformers": "^2.0.1",
-    "purescript-unsafe-coerce": "^2.0.0"
+    "purescript-unsafe-coerce": "^2.0.0",
+    "purescript-prelude": "^2.1.0",
+    "purescript-foreign": "^3.0.0",
+    "purescript-functions": "^2.0.0",
+    "purescript-integers": "^2.0.0",
+    "purescript-globals": "^2.0.0",
+    "purescript-strings": "^2.0.0",
+    "purescript-lists": "^3.0.0"
   }
 }
