@@ -14,8 +14,10 @@ const SplashScreen = require("../views/SplashScreen");
 const ChooseCourseScreen = require("../views/CoursesActivity/ChooseCourseScreen");
 const CourseInfoScreen = require("../views/CoursesActivity/CourseInfoScreen");
 const CourseActivityScreen = require("../views/CoursesActivity/CourseActivityScreen");
+const ProfileActivityScreen = require("../views/ProfileActivity/ProfileActivityScreen");
 const ProfileAboutScreen = require("../views/ProfileActivity/ProfileAboutScreen");
 const ProfileCertificationScreen = require("../views/ProfileActivity/ProfileCertificationScreen");
+
 
 // ScreenActions
 const RootScreenActions = require("../actions/RootScreenActions");
@@ -38,6 +40,9 @@ var determineScreen = (screenName, state) => {
       break;
     case "COURSE_ACTIVITY_SCREEN":
       screen = new(CourseActivityScreen(dispatcher, RootScreenActions))(null, null, state);
+      break;
+    case "PROFILE_ACTIVITY_SCREEN":
+      screen = new(ProfileActivityScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
     case "PROFILE_ABOUT_SCREEN":
       screen = new(ProfileAboutScreen(dispatcher, RootScreenActions))(null, null, state);
