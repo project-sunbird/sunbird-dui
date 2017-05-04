@@ -14,6 +14,7 @@ const SplashScreen = require("../views/SplashScreen");
 const ChooseCourseScreen = require("../views/CoursesActivity/ChooseCourseScreen");
 const CourseInfoScreen = require("../views/CoursesActivity/CourseInfoScreen");
 const CourseActivityScreen = require("../views/CoursesActivity/CourseActivityScreen");
+const ClassSubjectsScreen = require("../views/ClassActivity/ClassSubjectsScreen");
 
 // ScreenActions
 const RootScreenActions = require("../actions/RootScreenActions");
@@ -37,7 +38,9 @@ var determineScreen = (screenName, state) => {
     case "COURSE_ACTIVITY_SCREEN":
       screen = new(CourseActivityScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
-
+    case "CLASS_SUBJECTS_SCREEN":
+      screen = new(ClassSubjectsScreen(dispatcher, RootScreenActions))(null, null, state);
+      break;
   }
 
   return screen;
