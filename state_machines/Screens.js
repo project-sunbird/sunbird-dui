@@ -19,6 +19,11 @@ module.exports = function(action, payload, state) {
       localState.currScreen = "SPLASH";
       break;
 
+    case "HOME":
+      localState.isInit = false;
+      localState.currScreen = "HOME";
+      break;
+
     case "CHOOSE_COURSE":
       localState.isInit = false;
       localState.currScreen = "CHOOSE_COURSE";
