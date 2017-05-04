@@ -11,7 +11,7 @@ module.exports = function(action, payload, state) {
   switch (action) {
     case "INIT_UI":
       localState.isInit = true;
-      localState.currScreen = "PROFILE_ACTIVITY_SCREEN";
+      localState.currScreen = "PROFILE_NETWORK_SCREEN";
       break;
 
     case "SPLASH":

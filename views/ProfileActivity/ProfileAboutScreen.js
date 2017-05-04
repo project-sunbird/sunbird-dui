@@ -30,7 +30,7 @@ class ProfileAboutScreen extends View {
         <TextView
           text="HELLO WORLD"
           height="wrap_content"
-          margin="0,0,0,24"
+          margin="16,16,16,0"
           style={window.__TextStyle.textStyle.HINT.BOLD}/>            
          
       </LinearLayout>
