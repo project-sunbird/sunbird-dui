@@ -21,6 +21,12 @@ class ClassSubjectsScreen extends View {
     this.state = state;
     this.screenName = "CLASS_SUBJECTS_SCREEN"
 
+    this.menuData={
+      url:[
+      {imageUrl: "ic_action_search",title: "hello"}
+      ]
+    }
+
     this.SubscribedData={
       type: "Subjects",
       values:[
@@ -289,7 +295,8 @@ class ClassSubjectsScreen extends View {
             width="match_parent"
             showMenu="true"
             invert="true"
-            onBackPress={this.onHandleBackPress}
+            menuData={this.menuData}
+            
             />
             {this.getHeadContent()}
 

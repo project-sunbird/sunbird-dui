@@ -43,7 +43,7 @@ var determineScreen = (screenName, state) => {
 
     case "CLASS_SUBJECTS_SCREEN":
       screen = new(ClassSubjectsScreen(dispatcher, RootScreenActions))(null, null, state);
-
+      break;
     case "CLASS_HOME_SCREEN":
       screen = new(ClassHomeScreen(dispatcher, RootScreenActions))(null, null, state);
 
