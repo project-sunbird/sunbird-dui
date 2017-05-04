@@ -12,9 +12,7 @@ module.exports = function(action, payload, state) {
     case "INIT_UI":
       localState.isInit = true;
 
-      localState.currScreen = "PROFILE_ACTIVITY_SCREEN";
-      localState.currScreen = "PROFILE_ACTIVITY_SCREEN";
-      localState.currScreen = "PROFILE_CERTIFICATION_SCREEN";
+      localState.currScreen = "PROFILE_NETWORK_SCREEN";
       break;
 
     case "SPLASH":

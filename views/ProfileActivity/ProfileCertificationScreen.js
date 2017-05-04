@@ -18,9 +18,12 @@ class ProfileCertificationScreen extends View {
     this.state = state;
     this.screenName = "PROFILE_CERTIFICATION_SCREEN"
     this.data={
-
+      name: "Chemistry",
+      progressValue: "40",
+      totalValue: "100",
       imageUrl: "https://s-media-cache-ak0.pinimg.com/originals/a6/88/32/a68832c79725180370fa5e147b19b8c5.gif",
-      image2: "http://images.cdn1.stockunlimited.net/clipart/bookmark-icon_1910015.jpg"
+      image2: "http://images.cdn1.stockunlimited.net/clipart/bookmark-icon_1910015.jpg",
+      level: "2"
     }
   }
   
@@ -34,7 +37,7 @@ class ProfileCertificationScreen extends View {
     var layout = (<LinearLayout
             height="45"
             width="match_parent"
-            padding="12,12,12,12"
+            padding="16,16,16,0"
             background={window.__Colors.LIGHT_BLUE_22}>
 
                 <TextView
@@ -54,11 +57,11 @@ class ProfileCertificationScreen extends View {
     return layout;
   }
 
-  getData = (name,progressValue,totalValue) => {
+  getData = () => {
     var layout = (<LinearLayout
             width="match_parent"
             height="wrap_content"
-            padding="12,12,12,12"
+            padding="16,16,16,0"
             >
 
             <ImageView
@@ -70,16 +73,16 @@ class ProfileCertificationScreen extends View {
                     height="match_parent"
                     width="0"
                     weight="1"
-                    padding="12,12,12,12"
+                    padding="16,16,16,16"
                     orientation="vertical">
                       
                       <TextView
-                        text={name}
+                        text={this.data.name}
                         height="wrap_content"
                         style={window.__TextStyle.textStyle.HINT.BOLD}/>
 
                       <TextView
-                        text={"Progress " + progressValue + " / " + totalValue}
+                        text={"Progress " + this.data.progressValue + " / " + this.data.totalValue}
                         height="wrap_content"
                         style={window.__TextStyle.textStyle.HINT.SEMI}/>  
 
@@ -88,8 +91,8 @@ class ProfileCertificationScreen extends View {
                         weight="1" />
 
                       <HorizontalProgressBar 
-                        currentProgress={progressValue}
-                        totalProgress = {totalValue}
+                        currentProgress={this.data.progressValue}
+                        totalProgress = {this.data.totalValue}
                         width="match_parent"
                         height="wrap_content"/>  
 
@@ -98,7 +101,7 @@ class ProfileCertificationScreen extends View {
                  <LinearLayout
                     height="match_parent"
                     width="wrap_content"
-                    padding="12,12,12,12"
+                    padding="16,16,16,0"
                     orientation="vertical">
 
 
@@ -108,7 +111,7 @@ class ProfileCertificationScreen extends View {
                       imageFromUrl= {this.data.image2} />
 
                     <TextView
-                        text="LEVEL 2"
+                        text={"LEVEL "+ this.data.level}
                         height="wrap_content"
                         style={window.__TextStyle.textStyle.HINT.BLUE}/>
 
@@ -129,13 +132,9 @@ class ProfileCertificationScreen extends View {
 
           {this.getHeadContent()}
 
-          {this.getData("Chemistry",35,150)}
-
-          {this.getData("Physics",45,100)}
-
+          {this.getData()}
 
           
-            
 
       </LinearLayout>
           

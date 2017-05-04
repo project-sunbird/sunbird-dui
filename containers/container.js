@@ -15,7 +15,6 @@ const ChooseCourseScreen = require("../views/CoursesActivity/ChooseCourseScreen"
 const CourseInfoScreen = require("../views/CoursesActivity/CourseInfoScreen");
 const CourseActivityScreen = require("../views/CoursesActivity/CourseActivityScreen");
 const ProfileActivityScreen = require("../views/ProfileActivity/ProfileActivityScreen");
-const ProfileActivityScreen = require("../views/ProfileActivity/ProfileActivityScreen");
 const ProfileAboutScreen = require("../views/ProfileActivity/ProfileAboutScreen");
 const ProfileCertificationScreen = require("../views/ProfileActivity/ProfileCertificationScreen");
 const ProfileNetworkScreen = require("../views/ProfileActivity/ProfileNetworkScreen");

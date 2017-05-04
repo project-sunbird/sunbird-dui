@@ -34,7 +34,7 @@ class ProfileNetworkScreen extends View {
     var layout = (<LinearLayout
             height="45"
             width="match_parent"
-            padding="12,12,12,12"
+            padding="16,16,16,0"
             background={window.__Colors.LIGHT_BLUE_22}>
 
                 <TextView
@@ -58,7 +58,7 @@ class ProfileNetworkScreen extends View {
     var layout = (<LinearLayout
             width="match_parent"
             height="wrap_content"
-            padding="12,12,12,12"
+            padding="16,16,16,0"
 
             >
             <LinearLayout
@@ -77,7 +77,7 @@ class ProfileNetworkScreen extends View {
                     height="match_parent"
                     width="0"
                     weight="1"
-                    padding="12,12,12,12"
+                    padding="12,12,12,0"
                     orientation="vertical">
                       
                       <TextView
