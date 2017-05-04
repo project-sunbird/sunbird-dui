@@ -71,7 +71,6 @@ class ListGenerator extends View {
     JBridge.listViewAdapter(
       this.idSet.list,
       JSON.stringify(this.jsonArray),
-      "callback",
       1
     );
   }
