@@ -22,11 +22,9 @@ class ModuleCard extends View {
     this.layout = (
 
       <LinearLayout
-			width="match_parent"
-			height="wrap_content"
 			width="135"
 			height="100"
-			margin="5,5,5,5"
+			margin="16,0,0,0"
 			background = {this.props.item.moduleBackground? this.props.item.moduleBackground : "#229012FE" }
 			orientation="vertical"
 			gravity="center"
@@ -35,14 +33,14 @@ class ModuleCard extends View {
               <ImageView
               	height="32"
               	width="32"
-              	margin="5,5,5,5"
+                margin = "0,0,0,8"
               	imageUrl={this.props.item.moduleImage ? this.props.item.moduleImage : "ic_account"}
               /> 
 
               <TextView
               	text= {this.props.item.moduleName ? this.props.item.moduleName : "Module Name"}
-              	color="#979797"
-              	margin="5,5,5,5"
+              	style={window.__TextStyle.textStyle.HINT.SEMI.LIGHT}
+              	margin = "0,0,0,16"
               	alpha="0.66"
               	/>	
                     		

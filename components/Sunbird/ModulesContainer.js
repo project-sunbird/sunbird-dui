@@ -19,14 +19,16 @@ class ModulesContainer extends View {
 
 
   afterRender = () => {
-    this.indexItems = ["Button", "TextView", "EditText", "ImageView", "Forms", "ITEM 6", "ITEM 7", "ITEM 8", "ITEM 9", "ITEM 10", "ITEM 11", "ITEM 12", "ITEM 13", "ITEM 14", "ITEM 15", "ITEM 16", "ITEM 1", "ITEM 2", "ITEM 3", "ITEM 4", "ITEM 5", "ITEM 6", "ITEM 7", "ITEM 8", "ITEM 9", "ITEM 10", "ITEM 11", "ITEM 12", "ITEM 13", "ITEM 14", "ITEM 15", "ITEM 16", "ITEM 1", "ITEM 2", "ITEM 3", "ITEM 4", "ITEM 5", "ITEM 6", "ITEM 7", "ITEM 8", "ITEM 9", "ITEM 10", "ITEM 11", "ITEM 12", "ITEM 13", "ITEM 14", "ITEM 15", "ITEM 16"];
+    this.indexItems = this.props.moduleData;
     this.tmpArr = [];
+    this.imageUrls = this.props.imageUrls;
     var _this = this;
     for (var i = 0; i < this.indexItems.length; i++) {
 
       var dat = {
         moduleBackground: (i % 2 == 0 ? "#22007aff" : "#229012FE"),
-        moduleName: _this.indexItems[i]
+        moduleName: _this.indexItems[i],
+        moduleImage: _this.imageUrls[i]
       }
       console.log("ADDING")
       _this.tmpArr.push(dat)
@@ -44,7 +46,7 @@ class ModulesContainer extends View {
     var renderItem = (<LinearLayout 
                         height="match_parent" 
                         root="true"
-                        padding="0,20,20,20"
+                        padding="0,16,20,20"
                         orientation="horizontal"
                         layout_gravity="center_horizontal"
                         width="match_parent">
@@ -62,9 +64,8 @@ class ModulesContainer extends View {
 
       <LinearLayout
       width="match_parent"
-      height="wrap_content"
-      width="match_parent"
-      height="437"
+      height="135"
+      margin = "0,0,0,0"
       afterRender={this.afterRender}
       orientation="vertical"
       gravity="center"
@@ -73,8 +74,10 @@ class ModulesContainer extends View {
           <TextView 
           width="match_parent"
           height="wrap_content"
-          margin="0,0,0,20"
+          margin="16,0,0,0"
+          style={window.__TextStyle.textStyle.CARD.TITLE.DARK}
           text="Modules"/>
+
            <HorizontalScrollView
             width = "match_parent"
             height = "match_parent"
