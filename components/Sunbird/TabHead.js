@@ -27,7 +27,7 @@ class TabHeadItem extends View {
     });
     cmd += this.set({
       id: _this.idSet.bottomSelector,
-      visibility: window.__Colors.DARK_GRAY
+      background: window.__Colors.DARK_GRAY
     });
     return cmd;
   }
@@ -41,7 +41,7 @@ class TabHeadItem extends View {
     });
     cmd += this.set({
       id: _this.idSet.bottomSelector,
-      visibility: window.__Colors.PRIMARY_ACCENT
+      background: window.__Colors.PRIMARY_ACCENT
     });
     return cmd;
   }
@@ -70,25 +70,25 @@ class TabHeadItem extends View {
         afterRender = {this.afterRender}
         onClick={this.handleClick}
         gravity="center"
-        height = "49"
+        height = "50"
         orientation="vertical"
         width="match_parent">
 
         <TextView 
-          margin="0,2,0,0"
           id={this.idSet.title}
           text={this.props.item.name}
           color={this.props.item.select=="1"?window.__Colors.PRIMARY_ACCENT:window.__Colors.DARK_GRAY} 
           width="match_parent"
           typeface = "bold"
-          height = "wrap_content"
+          height = "0"
+          weight="1"
           fontstyle ="SourceSansPro/Bold"
           gravity="center"
           textSize={window.__Font.fontSize.FONT_12}/>
 
         <ViewWidget
           height="2"
-          id=-{this.idSet.bottomSelector}
+          id={this.idSet.bottomSelector}
           width="match_parent"
           background={this.props.item.select=="1"?window.__Colors.PRIMARY_ACCENT:window.__Colors.DARK_GRAY}/> 
             
@@ -170,7 +170,7 @@ class TabHead extends View {
       <LinearLayout 
         orientation="vertical" 
         width="match_parent"
-        height = "56"
+        height = "50"
         afterRender={this.renderBottonNavBarItems}
         background={window.__Colors.WHITE}>
         <LinearLayout
