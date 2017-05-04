@@ -8,7 +8,6 @@ var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callba
 var ScrollView = require('@juspay/mystique-backend').androidViews.ScrollView;
 var ImageView = require('@juspay/mystique-backend').androidViews.ImageView;
 var SimpleToolbar = require('../../components/Sunbird/SimpleToolbar');
-var Colors = require("../../res/Colors").color;
 
 var objectAssign = require('object-assign');
 
@@ -19,68 +18,20 @@ class ProfileActivityScreen extends View {
     super(props, children, state);
     this.state = state;
     this.screenName = "PROFILE_ACTIVITY_SCREEN"
-  
+   
+    this.setIds([
+    
+      ])
     this.data = {
       imageUrl: "https://s-media-cache-ak0.pinimg.com/originals/a6/88/32/a68832c79725180370fa5e147b19b8c5.gif",
       connectionUrl : "https://image.freepik.com/free-icon/multiple-users-silhouette_318-49546.jpg",
       certifiedUrl : "https://camo.githubusercontent.com/eed0343c9cbfb1b5371e9d113694ad2ebba8a907/68747470733a2f2f662e636c6f75642e6769746875622e636f6d2f6173736574732f313633393035362f313036333733372f36396662613637342d313265322d313165332d393930642d3463313134353663373462612e706e67",
-      headingName: ""
+      headingName: "",
+      profileName : "Kiran Puppala",
+      cityName : "Bhimavaram, Andhra"
     };
     
   }
-
-//   // afterRender = () => {
-//   //   this.renderTab();
-//   // }
-
-// // handleTabClick = (index) => {
-// //     try {
-// //           var Tab = this.find('tabs')[0];
-// //           var TabList = Tab.getTabList();
-// //           var cmd = '';
-// //     for (var i = 0; i < TabList.length; i++) {
-// //       if (i == index) {
-// //         if (i == 0) {
-// //           // this.renderCompletedTransactionScreen()
-// //           // cmd += this.set({
-// //           //   id: this.idSet.allTransactionsContainer,
-// //           //   visibility: "visible",
-// //           // });
-// //           // cmd += this.set({
-// //           //   id: this.idSet.pendingTransactionsContainer,
-// //           //   visibility: "gone",
-// //           // });
-// //           // cmd += TabList[i].select();
-// //           Tab.showFilter();
-// //         } else if (i == 1) {
-// //           // this.renderPendingTransactionScreen();
-// //           // cmd += this.set({
-// //           //   id: this.idSet.allTransactionsContainer,
-// //           //   visibility: "gone",
-// //           // });
-// //           // cmd += this.set({
-// //           //   id: this.idSet.pendingTransactionsContainer,
-// //           //   visibility: "visible",
-// //           // });
-// //           // cmd += TabList[i].select();
-// //         }
-// //       } else {
-// //         // cmd += TabList[i].unselect();
-// //       }
-// //     }
-// //     // this.index = index;
-// //     // Android.runInUI(cmd, null);
-// //     }catch (error) {
-// //       console.log(error);
-// //     }
-// //   }
-
-
-// renderTab = () => {
-//     var Tab = this.find('tabs')[0];
-//     this.tabsList = [{ "id": "allTransactions", "name": S.ALL , "select": "1" }, { "id": "pendingTransactions", "name": S.PENDING_CAPS, "select": "0" }];
-//     Tab.renderTabItems(this.tabsList);
-//   }
 
 
   getHead = () => {
@@ -104,15 +55,15 @@ class ProfileActivityScreen extends View {
           width = "80"/>  
 
         <TextView
-          text = "Kiran Puppala"
+          text = {this.data.profileName}
           width = "wrap_content"
           height = "wrap_content"
           style={window.__TextStyle.textStyle.HEADING.DARK}/>
         <TextView
-          text = "Bhimavaram, Andhra"
+          text = {this.data.cityName}
           width = "wrap_content"
           height = "wrap_content"
-          style={window.__TextStyle.textStyle.HINT.SEMI}/>
+          style={window.__TextStyle.textStyle.CARD.HEADING}/>
 
           </LinearLayout>
 
@@ -169,9 +120,7 @@ class ProfileActivityScreen extends View {
     return layout;
   }
 
-  afterRender = () => {
 
-  }
 
   render() {
     this.layout = (
@@ -185,14 +134,8 @@ class ProfileActivityScreen extends View {
           width="match_parent"
           invert="true"/>
 
-          {this.getHead()}
-
-        <TextView
-          text="HELLO WORLD"
-          height="wrap_content"
-          margin="0,0,0,24"
-          style={window.__TextStyle.textStyle.HINT.GREEN}/>            
-         
+            {this.getHead()}
+       
       </LinearLayout>
     );
 
