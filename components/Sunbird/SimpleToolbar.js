@@ -15,25 +15,57 @@ var Styles = require("../../res/Styles");
 let IconStyle = Styles.Params.IconStyle;
 
 class SimpleToolbar extends View {
-  constructor(props, children) {
+    constructor(props, children) {
     super(props, children);
     this.displayName = "SimpleToolbar";
   }
 
-  getMenu() {
-    // cant send null some issue with filename of null not defined
-    if (this.props.showMenu == undefined || !this.props.showMenu)
-      return <Space width="0"/>
+  handleMenuClick = (index) => {
+    this.props.onMenuItemClick(index);
+  }
 
-    return (<ImageView  
+
+getMenu() {
+    // cant send null some issue with filename of null not defined
+      if (this.props.showMenu == undefined || !this.props.showMenu)
+        return <Space width="0"/>
+      var lenthOfMenu = Object.keys(this.props.menuData.url).length;
+      var answerCards = "";
+      if(lenthOfMenu<=3) {
+        answerCards = this.props.menuData.url.map((item, index) => {
+           return  <ImageView  
+            style = {IconStyle}
+            popupMenu = {this.props.items}
+            onClick = {() => {this.handleMenuClick(index)}}
+            imageUrl = {item.imageUrl}/> 
+        })
+      }
+      else {
+      answerCards = this.props.menuData.url.map((item, index) => {
+        return this.setMenu(item.imageUrl,index);
+      });
+    }
+    return answerCards;
+  }
+
+
+
+  setMenu = (imageUrl,index) => {
+    if(index <=2) {
+    return  <ImageView  
         style = {IconStyle}
         popupMenu = {this.props.items}
-        onMenuItemClick = {this.props.onMenuItemClick}
-        imageUrl = {"ic_action_overflow"}/>)
+        onClick = {() => {this.handleMenuClick(index)}}
+        popupMenu = {this.homePopUpMenu}
+        onMenuItemClick = {this.more}
+        imageUrl = { (index == 2) ? "ic_action_overflow" : imageUrl}/> 
+    }
+    else {
+      return <Space width="0"/>      
+    }
   }
 
   getBack() {
-    // send hideBack if you want to hide back button
     if (this.props.hideBack != undefined && this.props.hideBack)
       return <Space width="0"/>
 
@@ -51,12 +83,9 @@ class SimpleToolbar extends View {
     if (!this.props.showBack && !this.props.logo)
       margin = "12,0,0,0";
 
-
     return (<TextView margin={margin} 
           style={window.__TextStyle.textStyle.TOOLBAR.HEADING} 
           text={this.props.title}/>)
-
-
 
   }
 
@@ -71,9 +100,7 @@ class SimpleToolbar extends View {
           height: '48'
         }
       }
-      imageUrl = { this.props.logo }
-      />
-    );
+      imageUrl = { this.props.logo }/> );
   }
 
   getIcons = () => {
