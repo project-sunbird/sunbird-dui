@@ -14,6 +14,8 @@ var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var objectAssign = require('object-assign');
 
 var BottomNavBar = require("../components/Sunbird/BottomNavBar")
+var ListGenerator = require("../components/Sunbird/ListGenerator")
+
 
 window.R = require("ramda");
 
@@ -73,7 +75,16 @@ class HomeScreen extends View {
           break;
       }
 
-      var tmp = (<LinearLayout
+      var tmp;
+      if (index == 0) {
+        tmp = (
+
+
+          <ListGenerator/>
+
+        )
+      } else {
+        tmp = (<LinearLayout
         height="match_parent"
         width="match_parent">
           <TextView
@@ -86,6 +97,7 @@ class HomeScreen extends View {
 
 
         </LinearLayout>)
+      }
       jso.push({ view: this.getView(tmp.render()), value: "", viewType: 0 });
       tabData.push({ value: item })
     });
