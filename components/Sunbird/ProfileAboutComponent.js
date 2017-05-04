@@ -8,7 +8,7 @@ var objectAssign = require('object-assign');
 
 window.R = require("ramda");
 
-class ProfileAboutScreen extends View {
+class ProfileAboutComponent extends View {
   constructor(props, children, state) {
     super(props, children, state);
     this.state = state;
@@ -28,9 +28,9 @@ class ProfileAboutScreen extends View {
         height="match_parent">
 
         <TextView
-          text="HELLO WORLD"
+          text="Fully informed about the latest updates in the rules and regulations, our team works closely with you, helping choose the best foreign destination to work in, and preparing a well-presented error-free application."
           height="wrap_content"
-          margin="16,16,16,0"
+          margin="16,12,16,16"
           style={window.__TextStyle.textStyle.HINT.BOLD}/>            
          
       </LinearLayout>
@@ -40,4 +40,4 @@ class ProfileAboutScreen extends View {
   }
 }
 
-module.exports = Connector(ProfileAboutScreen);
+module.exports = ProfileAboutComponent;

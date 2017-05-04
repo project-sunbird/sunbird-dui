@@ -8,16 +8,16 @@ var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callba
 var ScrollView = require('@juspay/mystique-backend').androidViews.ScrollView;
 var objectAssign = require('object-assign');
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
-var HorizontalProgressBar = require("../../components/Sunbird/HorizontalProgressBar");
+var HorizontalProgressBar = require("../Sunbird/HorizontalProgressBar");
 
 window.R = require("ramda");
 
-class ProfileCertificationScreen extends View {
+class ProfileCertificationComponent extends View {
   constructor(props, children, state) {
     super(props, children, state);
     this.state = state;
     this.screenName = "PROFILE_CERTIFICATION_SCREEN"
-    this.data={
+    this.data = {
       name: "Chemistry",
       progressValue: "40",
       totalValue: "100",
@@ -26,32 +26,34 @@ class ProfileCertificationScreen extends View {
       level: "2"
     }
   }
-  
+
 
   afterRender = () => {
 
   }
 
-  getHeadContent = () =>{
+  getHeadContent = () => {
 
     var layout = (<LinearLayout
             height="45"
             width="match_parent"
-            padding="16,16,16,0"
+            padding="16,0,16,0"
             background={window.__Colors.LIGHT_BLUE_22}>
 
                 <TextView
                   text="Ongoing "
-                  height="wrap_content"
-                  style={window.__TextStyle.textStyle.HINT.DARK}/>            
+                  height="match_parent"
+                  gravity="center"
+                  style={window.__TextStyle.textStyle.CARD.HEADING}/>            
                 <Space
                   width ="0"
                   weight="1"/>
 
                 <TextView
                   text="View All"
-                  height="wrap_content"
-                  style={window.__TextStyle.textStyle.HINT.BLUE}/>  
+                  height="match_parent"
+                  gravity="center"
+                  style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>  
 
             </LinearLayout>)
     return layout;
@@ -99,6 +101,7 @@ class ProfileCertificationScreen extends View {
                   </LinearLayout>
 
                  <LinearLayout
+
                     height="match_parent"
                     width="wrap_content"
                     padding="16,16,16,0"
@@ -137,11 +140,11 @@ class ProfileCertificationScreen extends View {
           
 
       </LinearLayout>
-          
+
     );
 
     return this.layout.render();
   }
 }
 
-module.exports = Connector(ProfileCertificationScreen);
+module.exports = ProfileCertificationComponent;

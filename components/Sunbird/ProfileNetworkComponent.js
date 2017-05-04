@@ -12,49 +12,51 @@ var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 
 window.R = require("ramda");
 
-class ProfileNetworkScreen extends View {
+class ProfileNetworkComponent extends View {
   constructor(props, children, state) {
     super(props, children, state);
     this.state = state;
     this.screenName = "PROFILE_CERTIFICATION_SCREEN"
-    this.data={
+    this.data = {
 
       imageUrl: "https://s-media-cache-ak0.pinimg.com/originals/a6/88/32/a68832c79725180370fa5e147b19b8c5.gif",
-      
+
     }
   }
-  
+
 
   afterRender = () => {
 
   }
 
-  getHeadContent = () =>{
+  getHeadContent = () => {
 
     var layout = (<LinearLayout
             height="45"
             width="match_parent"
-            padding="16,16,16,0"
+            padding="16,0,16,0"
             background={window.__Colors.LIGHT_BLUE_22}>
 
                 <TextView
                   text="14 Requests Pending "
-                  height="wrap_content"
-                  style={window.__TextStyle.textStyle.HINT.DARK}/>            
+                  height="match_parent"
+                  gravty="center"
+                  style={window.__TextStyle.textStyle.CARD.HEADING}/>            
                 <Space
                   width ="0"
                   weight="1"/>
 
                 <TextView
                   text="View All"
-                  height="wrap_content"
-                  style={window.__TextStyle.textStyle.HINT.BLUE}/>  
+                  height="match_parent"
+                  gravty="center"
+                  style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>  
 
             </LinearLayout>)
     return layout;
   }
 
-  getData = (name,description) => {
+  getData = (name, description) => {
     var layout = (<LinearLayout
             width="match_parent"
             height="wrap_content"
@@ -122,11 +124,11 @@ class ProfileNetworkScreen extends View {
             
 
       </LinearLayout>
-          
+
     );
 
     return this.layout.render();
   }
 }
 
-module.exports = Connector(ProfileNetworkScreen);
+module.exports = ProfileNetworkComponent;

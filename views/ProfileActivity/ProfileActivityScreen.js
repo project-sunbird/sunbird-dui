@@ -12,6 +12,14 @@ var ImageView = require('@juspay/mystique-backend').androidViews.ImageView;
 var SimpleToolbar = require('../../components/Sunbird/SimpleToolbar');
 var TabHead = require("../../components/Sunbird/TabHead")
 
+//TAB CONTENT
+var ProfileAboutComponent = require("../../components/Sunbird/ProfileAboutComponent")
+var ProfileCertificationComponent = require("../../components/Sunbird/ProfileCertificationComponent")
+var ProfileNetworkComponent = require("../../components/Sunbird/ProfileNetworkComponent")
+
+
+
+
 var objectAssign = require('object-assign');
 
 window.R = require("ramda");
@@ -58,38 +66,26 @@ class ProfileActivityScreen extends View {
 
     var tabData = [];
     var jso = [];
-    this.color = "#123123"
+    var tmp;
     var tabItems = this.tabValues.map((item, index) => {
       switch (index) {
         case 0:
-          this.color = "#123123"
+          tmp = (<ProfileNetworkComponent
+                    height="match_parent"
+                    width="match_parent"/>)
           break;
         case 1:
-          this.color = "#ff0000"
+          tmp = (<ProfileCertificationComponent
+                    height="match_parent"
+                    width="match_parent"/>)
           break;
         case 2:
-          this.color = "#00ff00"
+          tmp = (<ProfileAboutComponent 
+                    height="match_parent"
+                    width="match_parent"/>)
           break;
-        case 3:
-          this.color = "#0000ff"
-          break;
+
       }
-
-      var tmp;
-
-      tmp = (<LinearLayout
-        height="match_parent"
-        width="match_parent">
-          <TextView
-            text={item.name}
-            background={this.color}
-            color="#ffffff"
-            height="match_parent"
-            width="match_parent"
-            gravity="center" />
-
-
-        </LinearLayout>)
 
       jso.push({ view: this.getView(tmp.render()), value: "", viewType: 0 });
       tabData.push({ value: item })
@@ -191,6 +187,7 @@ class ProfileActivityScreen extends View {
   getTabHead = () => {
 
     this.tabBar = (<TabHead
+            margin="0,12,0,0"
             tabItems = {this.tabValues}
             _onClick = {this.handleTabHeadAction} />);
 
@@ -229,7 +226,6 @@ class ProfileActivityScreen extends View {
             {this.getTabHead()}
 
             <ViewPager
-              padding="16,0,16,16"
               height="0"
               weight="1"
               id={this.idSet.viewPagerContainer}
