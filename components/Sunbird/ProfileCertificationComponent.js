@@ -64,11 +64,12 @@ class ProfileCertificationComponent extends View {
             width="match_parent"
             height="wrap_content"
             padding="16,16,16,0"
+            elevation="6"
             >
 
             <ImageView
-              height="70"
-              width="70"
+              height="72"
+              width="72"
               imageFromUrl= {this.data.imageUrl} />
 
                   <LinearLayout

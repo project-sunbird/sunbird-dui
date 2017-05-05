@@ -34,7 +34,7 @@ class ProfileNetworkComponent extends View {
     var layout = (<LinearLayout
             height="45"
             width="match_parent"
-            padding="16,0,16,0"
+            padding="16,14,16,14"
             background={window.__Colors.LIGHT_BLUE_22}>
 
                 <TextView
@@ -60,46 +60,61 @@ class ProfileNetworkComponent extends View {
     var layout = (<LinearLayout
             width="match_parent"
             height="wrap_content"
-            padding="16,16,16,0"
-
+            padding="16,16,0,0"
+            orientation="vertical"
             >
+            
             <LinearLayout
-              width="70"
-              height="70"
-              cornerRadius="70">
+              width="match_parent"
+              height="wrap_content"
+            >
+              <LinearLayout
+                width="40"
+                height="40"
+                cornerRadius="70">
 
-            <ImageView
-              height="70"
-              width="70"
-              cornerRadius="70"
-              imageUrl= {"ic_account"} />
+              <ImageView
+                height="40"
+                width="40"
+                cornerRadius="70"
+                imageUrl= {"ic_account"} />
 
-              </LinearLayout>
-            <LinearLayout
-                    height="match_parent"
-                    width="0"
-                    weight="1"
-                    padding="12,12,12,0"
-                    orientation="vertical">
-                      
-                      <TextView
-                        text={name}
-                        height="wrap_content"
-                        style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
-                      <Space
+                </LinearLayout>
+                <LinearLayout
+                        height="match_parent"
                         width="0"
-                        weight="1" />
-                      <TextView
-                        text={description}
-                        height="wrap_content"
-                        style={window.__TextStyle.textStyle.HINT.SEMI}/>  
+                        weight="1"
+                        padding="16,0,0,3"
+                        orientation="vertical"
+                        layout_gravity="center_vertical"
+                        >
+                          
+                          <TextView
+                            text={name}
+                            height="wrap_content"
+                            style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
+                          <Space
+                            width="0"
+                            weight="1" />
+                          <TextView
+                            margin="0,3,0,0"
+                            text={description}
+                            height="wrap_content"
+                            style={window.__TextStyle.textStyle.HINT.SEMI}/>  
 
-                      <Space
-                        width="0"
-                        weight="1" />
+                          <Space
+                            width="0"
+                            weight="1" />
 
                   </LinearLayout>
 
+              </LinearLayout>
+              <LinearLayout
+                    height="1"
+                    width="match_parent"
+                    margin="0,12,0,0"
+                    background={window.__Colors.DARK_GRAY}
+                     />
           </LinearLayout>)
 
     return layout;
@@ -115,12 +130,12 @@ class ProfileNetworkComponent extends View {
 
           {this.getHeadContent()}
 
+
+
           {this.getData("Samit Kumar Ganguli","National School for Children, Pune")}
 
-          
+          {this.getData("Samit Kumar Ganguli","National School for Children, Pune")}
 
-
-          
             
 
       </LinearLayout>
