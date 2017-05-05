@@ -15,6 +15,7 @@ var objectAssign = require('object-assign');
 
 var BottomNavBar = require("../components/Sunbird/BottomNavBar")
 var ListGenerator = require("../components/Sunbird/ListGenerator")
+var ChooseCourseComponent = require("../components/Sunbird/ChooseCourseComponent")
 
 
 window.R = require("ramda");
@@ -83,6 +84,10 @@ class HomeScreen extends View {
           <ListGenerator/>
 
         )
+      } else if (index == 1) {
+        tmp = (<ChooseCourseComponent
+            height="match_parent"
+            width="match_parent" />)
       } else {
         tmp = (<LinearLayout
         height="match_parent"
