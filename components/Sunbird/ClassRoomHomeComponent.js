@@ -13,24 +13,24 @@ var objectAssign = require('object-assign');
 
 window.R = require("ramda");
 
-var CourseInfoItemList = require('../../components/Sunbird/CourseInfoItemList');
+var CourseInfoItemList = require('../Sunbird/CourseInfoItemList');
 
 
-class ClassHomeScreen extends View {
+class ClassRoomHomeComponent extends View {
   constructor(props, children, state) {
     super(props, children, state);
     this.state = state;
     this.screenName = "CLASS_HOME_SCREEN";
 
     this.moduleData = ["Button", "TextView", "EditText", "ImageView"];
-    this.imageUrls = ["ic_action_overflow","ic_action_close","ic_action_completed","ic_action_overflow"];
+    this.imageUrls = ["ic_action_overflow", "ic_action_close", "ic_action_completed", "ic_action_overflow"];
   }
 
   afterRender = () => {
 
   }
 
-  
+
 
   render() {
     this.layout = (
@@ -82,4 +82,4 @@ class ClassHomeScreen extends View {
   }
 }
 
-module.exports = Connector(ClassHomeScreen);
+module.exports = ClassRoomHomeComponent;

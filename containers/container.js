@@ -11,13 +11,14 @@ const reducer = require("@juspay/mystique-backend").stateManagers.reducer({
 // Screens
 const RootScreen = require("../views/RootScreen");
 const SplashScreen = require("../views/SplashScreen");
-const ChooseCourseScreen = require("../views/CoursesActivity/ChooseCourseScreen");
+const HomeScreen = require("../views/HomeScreen");
+
 const CourseInfoScreen = require("../views/CoursesActivity/CourseInfoScreen");
 const CourseActivityScreen = require("../views/CoursesActivity/CourseActivityScreen");
 
-const ClassSubjectsScreen = require("../views/ClassActivity/ClassSubjectsScreen");
+const ClassRoomSubjectsScreen = require("../views/ClassRoomActivity/ClassRoomSubjectsScreen");
 
-const ClassHomeScreen = require("../views/ClassActivity/ClassHomeScreen");
+
 // ScreenActions
 const RootScreenActions = require("../actions/RootScreenActions");
 
@@ -31,9 +32,10 @@ var determineScreen = (screenName, state) => {
     case "SPLASH":
       screen = new(SplashScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
-    case "CHOOSE_COURSE":
-      screen = new(ChooseCourseScreen(dispatcher, RootScreenActions))(null, null, state);
+    case "HOME":
+      screen = new(HomeScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
+
     case "COURSE_INFO_SCREEN":
       screen = new(CourseInfoScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
@@ -42,12 +44,9 @@ var determineScreen = (screenName, state) => {
       break;
 
     case "CLASS_SUBJECTS_SCREEN":
-      screen = new(ClassSubjectsScreen(dispatcher, RootScreenActions))(null, null, state);
+      screen = new(ClassRoomSubjectsScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
-    case "CLASS_HOME_SCREEN":
-      screen = new(ClassHomeScreen(dispatcher, RootScreenActions))(null, null, state);
 
-      break;
   }
 
   return screen;
