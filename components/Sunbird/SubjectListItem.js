@@ -7,10 +7,11 @@ var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 
 var Space = require('@juspay/mystique-backend').androidViews.Space;
+
 window.R = require("ramda");
 
 
-class ListComponent extends View {
+class SubjectListItem extends View {
   constructor(props, children) {
     super(props, children);
 
@@ -62,10 +63,28 @@ class ListComponent extends View {
 
                   </LinearLayout>
 
+                  <LinearLayout
+                    width="wrap_content"
+                    height="match_parent"
+                    >
+
                   <ImageView
                     height="20"
                     width="20"
-                    imageUrl= {item.logo} />
+                    margin="0,0,16,0"
+                    imageUrl= {item.logo2} 
+                    
+                    />
+                    <Space
+                      height="1"
+                      width="0"
+                      weight="1"/>
+
+                  <ImageView
+                    height="20"
+                    width="20"
+                    imageUrl= {item.logo1} />
+                  </LinearLayout>
         </LinearLayout>
     })
 
@@ -95,4 +114,4 @@ class ListComponent extends View {
   }
 }
 
-module.exports = ListComponent;
+module.exports = SubjectListItem;
