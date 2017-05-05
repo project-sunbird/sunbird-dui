@@ -4,6 +4,8 @@ var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var EditText = require("@juspay/mystique-backend").androidViews.EditText;
 var ListView = require("@juspay/mystique-backend").androidViews.ListView;
+
+var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 
 class ListGenerator extends View {
@@ -35,7 +37,7 @@ class ListGenerator extends View {
             weight="1"
             id = {this.idSet.lItem}
             margin="5,5,5,5"
-            onClick={()=>{console.log("CLICKED L BUTTON OF ",i)}}
+            onClick={()=>{console.log("CLICKED L BUTTON OF ",i); this.indexToModify =i ; this.updateListView() }}
             />
 
             <TextView
@@ -50,17 +52,54 @@ class ListGenerator extends View {
         </LinearLayout>
       )
 
+      var listItemLayout2 = (
+        <LinearLayout
+          >
+        <LinearLayout
+        height="100"
+        margin="12,6,12,6"
+        background="#cccccc"
+        width="match_parent">
+
+            <ImageView
+              width="156"
+              height="156"
+              imageUrl={(i%3)==1?"ic_checked":"ic_unchecked"}
+              margin="0,0,0,0"/>
+          
+
+            <TextView
+            color="#ff0000"
+            weight="1"
+            margin="5,5,5,5"
+             id = {this.idSet.lItem}
+            onClick={()=>{console.log("CLICKED BUTTON OF ",i); this.indexToModify =i ; this.updateListView() }}
+            text={"R of i:"+ i}
+            />
+
+        </LinearLayout>
+
+        </LinearLayout>
+      )
+
       var cmd = this.set({
         id: this.idSet.lItem,
         text: "L of i:" + i
       })
-      cmd += this.set({
-        id: this.idSet.rItem,
-        text: "R of i:" + i
-      })
 
       //cmd = listItemLayout.setValues(item);
-      this.jsonArray.push({ view: this.getView(listItemLayout.render()), value: cmd, viewType: 1 });
+      if (i % 3 == 0) {
+
+        cmd += this.set({
+          id: this.idSet.rItem,
+          text: "R of i:" + i
+        })
+
+        this.jsonArray.push({ view: this.getView(listItemLayout.render()), value: cmd, viewType: 1 });
+      } else {
+        this.jsonArray.push({ view: this.getView(listItemLayout2.render()), value: cmd, viewType: 1 });
+
+      }
     });
   }
 
