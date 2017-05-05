@@ -83,10 +83,6 @@ class ListComponent extends View {
 			orientation="vertical"
 			>
 
-              <TextView
-              	text= {this.props.data.name}
-              	
-              	/>	
                 {this.getData()}
                     		
 	                	
