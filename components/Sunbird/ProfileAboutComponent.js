@@ -4,6 +4,7 @@ var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
 var RelativeLayout = require("@juspay/mystique-backend").androidViews.RelativeLayout;
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
+var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 var objectAssign = require('object-assign');
 
@@ -37,16 +38,13 @@ class ProfileAboutComponent extends View {
   render() {
     var buttonList = ["EDIT PROFILE"];
     this.layout = (
-      <RelativeLayout
-        width="wrap_content"
-        height="wrap_content"
-        >
+    
       <LinearLayout
         root="true"
         orientation="vertical"
         width="match_parent"
         height="match_parent"
-        
+        alignParentTop="true"
         >
 
         <TextView
@@ -54,14 +52,12 @@ class ProfileAboutComponent extends View {
           height="wrap_content"
           margin="16,12,16,16"
           style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>            
-      </LinearLayout>
+      
 
-      <LinearLayout
-        width="match_parent"
-        height="match_parent"
-        alignParentBottom="true,-1"
-      >
 
+      <ViewWidget
+        weight="1"
+        />
        <PageOption
            width="match_parent"
            id={this.idSet.pageOption}
@@ -70,8 +66,7 @@ class ProfileAboutComponent extends View {
 
            onButtonClick={this.handleEnrollClick}/>
       
-      </LinearLayout>
-    </RelativeLayout>
+    </LinearLayout>
     );
 
     return this.layout.render();

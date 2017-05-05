@@ -38,9 +38,20 @@ class ProfileActivityScreen extends View {
       connectionUrl: "https://image.freepik.com/free-icon/multiple-users-silhouette_318-49546.jpg",
       certifiedUrl: "https://camo.githubusercontent.com/eed0343c9cbfb1b5371e9d113694ad2ebba8a907/68747470733a2f2f662e636c6f75642e6769746875622e636f6d2f6173736574732f313633393035362f313036333733372f36396662613637342d313265322d313165332d393930642d3463313134353663373462612e706e67",
       headingName: "",
-      profileName: "Kiran Puppala",
-      cityName: "Bhimavaram, Andhra"
+      profileName: "Vinay Narayana",
+      cityName: "Bhimavaram, Andhra Pradesh"
     };
+
+    this.NetworkData=[
+    {image: "ic_account", name: "Samit Kumar Ganguli", description: "National School for Children, Pune"},
+    {image: "ic_account", name: "Samit Kumar Ganguli", description: "National School for Children, Pune"},
+    {image: "ic_account", name: "Samit Kumar Ganguli", description: "National School for Children, Pune"},
+    {image: "ic_account", name: "Samit Kumar Ganguli", description: "National School for Children, Pune"},
+    {image: "ic_account", name: "Samit Kumar Ganguli", description: "National School for Children, Pune"},
+    {image: "ic_account", name: "Samit Kumar Ganguli", description: "National School for Children, Pune"},
+    {image: "ic_account", name: "Samit Kumar Ganguli", description: "National School for Children, Pune"},
+
+    ]
 
     this.tabValues = [{
         name: "NETWORK",
@@ -62,6 +73,11 @@ class ProfileActivityScreen extends View {
 
 
   }
+
+  handleNetworkAction = () =>{
+    console.log("Network Action");
+  }
+
   afterRender = () => {
 
     var tabData = [];
@@ -72,7 +88,10 @@ class ProfileActivityScreen extends View {
         case 0:
           tmp = (<ProfileNetworkComponent
                     height="match_parent"
-                    width="match_parent"/>)
+                    width="match_parent"
+                    data={this.NetworkData}
+
+                    />)
           break;
         case 1:
           tmp = (<ProfileCertificationComponent

@@ -38,7 +38,7 @@ class ProfileNetworkComponent extends View {
             background={window.__Colors.LIGHT_BLUE_22}>
 
                 <TextView
-                  text="14 Requests Pending "
+                  text={ Object.keys(this.props.data).length + " Requests Pending "} 
                   height="match_parent"
                   gravty="center"
                   style={window.__TextStyle.textStyle.CARD.HEADING}/>            
@@ -56,8 +56,9 @@ class ProfileNetworkComponent extends View {
     return layout;
   }
 
-  getData = (name, description) => {
-    var layout = (<LinearLayout
+  getData = () => {
+    var answerCards = this.props.data.map((item, index) => {
+      return <LinearLayout
             width="match_parent"
             height="wrap_content"
             padding="16,16,0,0"
@@ -77,7 +78,7 @@ class ProfileNetworkComponent extends View {
                 height="40"
                 width="40"
                 cornerRadius="70"
-                imageUrl= {"ic_account"} />
+                imageUrl= {item.image} />
 
                 </LinearLayout>
                 <LinearLayout
@@ -90,7 +91,7 @@ class ProfileNetworkComponent extends View {
                         >
                           
                           <TextView
-                            text={name}
+                            text={item.name}
                             height="wrap_content"
                             style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
                           <Space
@@ -98,7 +99,7 @@ class ProfileNetworkComponent extends View {
                             weight="1" />
                           <TextView
                             margin="0,3,0,0"
-                            text={description}
+                            text={item.description}
                             height="wrap_content"
                             style={window.__TextStyle.textStyle.HINT.SEMI}/>  
 
@@ -115,11 +116,13 @@ class ProfileNetworkComponent extends View {
                     margin="0,12,0,0"
                     background={window.__Colors.DARK_GRAY}
                      />
-          </LinearLayout>)
+          </LinearLayout>
+    })
 
-    return layout;
+    return answerCards;
   }
 
+  
   render() {
     this.layout = (
       <LinearLayout
@@ -130,12 +133,20 @@ class ProfileNetworkComponent extends View {
 
           {this.getHeadContent()}
 
+        
+      <ScrollView 
+        height="0"
+        weight="1"
+        width="match_parent"
+        fillViewPort="true">
 
-
-          {this.getData("Samit Kumar Ganguli","National School for Children, Pune")}
-
-          {this.getData("Samit Kumar Ganguli","National School for Children, Pune")}
-
+        <LinearLayout
+                height="match_parent"
+                width="match_parent"
+                orientation="vertical">
+          {this.getData()}
+        </LinearLayout>
+      </ScrollView>
             
 
       </LinearLayout>
