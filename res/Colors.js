@@ -26,6 +26,7 @@ exports.color = {
   MEDIUM_VIOLET: "#F0E9FD",
   GREEN: "#27BC5C",
   RED: "#D50000",
+  RED_10: "#10D50000",
   PRIMARY_DARK: "#007AFF",
   PRIMARY_LIGHT: "#FFFFFF"
 };

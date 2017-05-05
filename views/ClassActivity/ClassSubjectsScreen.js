@@ -12,6 +12,7 @@ window.R = require("ramda");
 
 
 var SimpleToolbar = require('../../components/Sunbird/SimpleToolbar');
+var ListComponent = require('../../components/Sunbird/ListComponent');
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 var ImageView = require('@juspay/mystique-backend').androidViews.ImageView;
 
@@ -26,6 +27,8 @@ class ClassSubjectsScreen extends View {
       {imageUrl: "ic_action_search",title: "hello"}
       ]
     }
+
+    
 
     this.SubscribedData={
       type: "Subjects",
@@ -163,56 +166,6 @@ class ClassSubjectsScreen extends View {
     return layout;
   }
 
-  getSubscribedSubjects = () => {
-    var answerLayout = this.SubscribedData.values.map((item, index) => {
-      return <LinearLayout
-            width="match_parent"
-            height="wrap_content"
-            padding="16,16,16,16">
-
-            <ImageView
-              height="32"
-              width="32"
-
-              imageUrl= {item.imageUrl} />
-
-            <LinearLayout
-                    height="match_parent"
-                    width="0"
-                    weight="1"
-                    padding="16,0,0,0"
-                    orientation="vertical">
-                      
-                      <TextView
-                        text={item.subject}
-                        height="wrap_content"
-                        style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
-                      <Space
-                        width="0"
-                        weight="1" />
-                      <TextView
-                        text={item.comment}
-                        height="wrap_content"
-                        style={window.__TextStyle.textStyle.HINT.SEMI}/>  
-
-                      <Space
-                        width="0"
-                        weight="1" />
-
-                  </LinearLayout>
-
-                  <ImageView
-                    height="20"
-                    width="20"
-                    imageUrl= {item.logo} />
-        </LinearLayout>
-    })
-
-    
-
-    return answerLayout;
-  }
-
   getSubjectsContent = () =>{
 
     var layout = (<LinearLayout
@@ -238,45 +191,6 @@ class ClassSubjectsScreen extends View {
     return layout;
   }
 
-  getAllSubjects = () => {
-    var answerLayout = this.AllData.values.map((item, index) => {
-      return <LinearLayout
-            width="match_parent"
-            height="wrap_content"
-            padding="16,16,16,16">
-
-            <ImageView
-              height="32"
-              width="32"
-
-              imageUrl= {item.imageUrl} />
-
-            <LinearLayout
-                    height="match_parent"
-                    width="0"
-                    weight="1"
-                    padding="16,0,0,0"
-                    orientation="vertical">
-                      
-                      <TextView
-                        text={item.subject}
-                        height="wrap_content"
-                        style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
-
-                  </LinearLayout>
-
-                  <ImageView
-                    height="20"
-                    width="20"
-                    imageUrl= {item.logo} />
-        </LinearLayout>
-    })
-
-    
-
-    return answerLayout;
-  }
-
   afterRender = () => {
 
   }
@@ -298,6 +212,9 @@ class ClassSubjectsScreen extends View {
             menuData={this.menuData}
             
             />
+
+
+
             {this.getHeadContent()}
 
             <ScrollView 
@@ -310,9 +227,10 @@ class ClassSubjectsScreen extends View {
                 width="match_parent"
                 orientation="vertical">
 
-                
-
-                {this.getSubscribedSubjects()}
+              
+            <ListComponent
+              data={this.SubscribedData}
+            />
 
               </LinearLayout>
 
@@ -332,7 +250,9 @@ class ClassSubjectsScreen extends View {
 
                 
 
-                {this.getAllSubjects()}
+            <ListComponent
+              data={this.AllData}
+            />
 
               </LinearLayout>
 
