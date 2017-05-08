@@ -12,7 +12,7 @@ window.R = require("ramda");
 
 
 var SimpleToolbar = require('../../components/Sunbird/SimpleToolbar');
-var SubjectListItem = require('../../components/Sunbird/SubjectListItem');
+var ClassListItem = require('../../components/Sunbird/ClassListItem');
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 var ImageView = require('@juspay/mystique-backend').androidViews.ImageView;
 
@@ -33,76 +33,58 @@ class ClassSubjectsScreen extends View {
     this.SubscribedData={
       type: "Subjects",
       values:[
-      {imageUrl: "ic_action_search", subject: "Physics", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
-      {imageUrl: "ic_action_search", subject: "Chemistry", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
-      {imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
-      {imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
-      {imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
-      {imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
-      {imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
-      {imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
-      {imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
-      {imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
-      {imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
-      {imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
-      {imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
-      {imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
-      {imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
-      {imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
-      {imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
-      {imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
-      {imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
-      {imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
-      {imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
-      {imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
-      {imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
-      {imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
-      {imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
-      {imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
-      {imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
-      {imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
-      {imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
-      {imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
-      {imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
-      {imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
-      {imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
-      {imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
-      {imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed" },
+      {color: "#10D50000", imageUrl: "ic_action_search", subject: "Physics", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
+      {color: "#F0E9FD", imageUrl: "ic_action_search", subject: "Chemistry", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
+      {color: "#10E3C31C", imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
+      {color: "#10FF9F00", imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
+      {color: "#10D50000", imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
+      {color: "#10D50000", imageUrl: "ic_action_search", subject: "Physics", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
+      {color: "#F0E9FD", imageUrl: "ic_action_search", subject: "Chemistry", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
+      {color: "#10E3C31C", imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
+      {color: "#10FF9F00", imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
+      {color: "#10D50000", imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
+      {color: "#10D50000", imageUrl: "ic_action_search", subject: "Physics", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
+      {color: "#F0E9FD", imageUrl: "ic_action_search", subject: "Chemistry", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
+      {color: "#10E3C31C", imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
+      {color: "#10FF9F00", imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
+      {color: "#10D50000", imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
+      {color: "#10D50000", imageUrl: "ic_action_search", subject: "Physics", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
+      {color: "#F0E9FD", imageUrl: "ic_action_search", subject: "Chemistry", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
+      {color: "#10E3C31C", imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
+      {color: "#10FF9F00", imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
+      {color: "#10D50000", imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
+      {color: "#10D50000", imageUrl: "ic_action_search", subject: "Physics", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
+      {color: "#F0E9FD", imageUrl: "ic_action_search", subject: "Chemistry", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
+      {color: "#10E3C31C", imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
+      {color: "#10FF9F00", imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
+      {color: "#10D50000", imageUrl: "ic_action_search", subject: "Moral Sciences", comment: "CBSE Standard vill", logo1: "ic_action_completed"},
+      
       ]
     }
 
     this.AllData={
       values:[
-      {imageUrl: "ic_action_search", subject: "Geography", logo1: "ic_action_close"},
-      {imageUrl: "ic_action_search", subject: "Chemistry", logo1: "ic_action_close"},
-      {imageUrl: "ic_action_search", subject: "Moral Sciences", logo1: "ic_action_close"},
-      {imageUrl: "ic_action_search", subject: "Geography", logo1: "ic_action_close"},
-      {imageUrl: "ic_action_search", subject: "Chemistry", logo1: "ic_action_close"},
-      {imageUrl: "ic_action_search", subject: "Geography", logo1: "ic_action_close"},
-      {imageUrl: "ic_action_search", subject: "Geography", logo1: "ic_action_close"},
-      {imageUrl: "ic_action_search", subject: "Chemistry", logo1: "ic_action_close"},
-      {imageUrl: "ic_action_search", subject: "Moral Sciences", logo1: "ic_action_close"},
-      {imageUrl: "ic_action_search", subject: "Geography", logo1: "ic_action_close"},
-      {imageUrl: "ic_action_search", subject: "Chemistry", logo1: "ic_action_close"},
-      {imageUrl: "ic_action_search", subject: "Geography", logo1: "ic_action_close"},
-      {imageUrl: "ic_action_search", subject: "Geography", logo1: "ic_action_close"},
-      {imageUrl: "ic_action_search", subject: "Chemistry", logo1: "ic_action_close"},
-      {imageUrl: "ic_action_search", subject: "Geography", logo1: "ic_action_close"},
-      {imageUrl: "ic_action_search", subject: "Chemistry", logo1: "ic_action_close"},
-      {imageUrl: "ic_action_search", subject: "Moral Sciences", logo1: "ic_action_close"},
-      {imageUrl: "ic_action_search", subject: "Geography", logo1: "ic_action_close"},
-      {imageUrl: "ic_action_search", subject: "Chemistry", logo1: "ic_action_close"},
-      {imageUrl: "ic_action_search", subject: "Geography", logo1: "ic_action_close"},
-      {imageUrl: "ic_action_search", subject: "Geography", logo1: "ic_action_close"},
-      {imageUrl: "ic_action_search", subject: "Chemistry", logo1: "ic_action_close"},
-      {imageUrl: "ic_action_search", subject: "Geography", logo1: "ic_action_close"},
-      {imageUrl: "ic_action_search", subject: "Chemistry", logo1: "ic_action_close"},
-      {imageUrl: "ic_action_search", subject: "Moral Sciences", logo1: "ic_action_close"},
-      {imageUrl: "ic_action_search", subject: "Geography", logo1: "ic_action_close"},
-      {imageUrl: "ic_action_search", subject: "Chemistry", logo1: "ic_action_close"},
-      {imageUrl: "ic_action_search", subject: "Geography", logo1: "ic_action_close"},
-      {imageUrl: "ic_action_search", subject: "Geography", logo1: "ic_action_close"},
-      {imageUrl: "ic_action_search", subject: "Chemistry", logo1: "ic_action_close"},
+      {color: "#F0E9FD", imageUrl: "ic_action_search", subject: "Geography", logo1: "ic_action_close"},
+      {color: "#10E3C31C", imageUrl: "ic_action_search", subject: "Chemistry", logo1: "ic_action_close"},
+      {color: "#10FF9F00", imageUrl: "ic_action_search", subject: "Moral Sciences", logo1: "ic_action_close"},
+      {color: "#10D50000", imageUrl: "ic_action_search", subject: "Geography", logo1: "ic_action_close"},
+      {color: "#F0E9FD", imageUrl: "ic_action_search", subject: "Geography", logo1: "ic_action_close"},
+      {color: "#10E3C31C", imageUrl: "ic_action_search", subject: "Chemistry", logo1: "ic_action_close"},
+      {color: "#10FF9F00", imageUrl: "ic_action_search", subject: "Moral Sciences", logo1: "ic_action_close"},
+      {color: "#10D50000", imageUrl: "ic_action_search", subject: "Geography", logo1: "ic_action_close"},
+      {color: "#F0E9FD", imageUrl: "ic_action_search", subject: "Geography", logo1: "ic_action_close"},
+      {color: "#10E3C31C", imageUrl: "ic_action_search", subject: "Chemistry", logo1: "ic_action_close"},
+      {color: "#10FF9F00", imageUrl: "ic_action_search", subject: "Moral Sciences", logo1: "ic_action_close"},
+      {color: "#10D50000", imageUrl: "ic_action_search", subject: "Geography", logo1: "ic_action_close"},
+      {color: "#F0E9FD", imageUrl: "ic_action_search", subject: "Geography", logo1: "ic_action_close"},
+      {color: "#10E3C31C", imageUrl: "ic_action_search", subject: "Chemistry", logo1: "ic_action_close"},
+      {color: "#10FF9F00", imageUrl: "ic_action_search", subject: "Moral Sciences", logo1: "ic_action_close"},
+      {color: "#10D50000", imageUrl: "ic_action_search", subject: "Geography", logo1: "ic_action_close"},
+      {color: "#F0E9FD", imageUrl: "ic_action_search", subject: "Geography", logo1: "ic_action_close"},
+      {color: "#10E3C31C", imageUrl: "ic_action_search", subject: "Chemistry", logo1: "ic_action_close"},
+      {color: "#10FF9F00", imageUrl: "ic_action_search", subject: "Moral Sciences", logo1: "ic_action_close"},
+      {color: "#10D50000", imageUrl: "ic_action_search", subject: "Geography", logo1: "ic_action_close"},
+      
       ]
     }
   }
@@ -164,6 +146,29 @@ class ClassSubjectsScreen extends View {
             </LinearLayout>)
     return layout;
   }
+  getListContent = (data) =>{
+    var layout = (
+      <ScrollView 
+              height="0"
+              weight="1"
+              width="match_parent">
+
+              <LinearLayout
+                height="match_parent"
+                width="match_parent"
+                orientation="vertical">
+
+              
+            <ClassListItem
+              data={data}
+              onShareClick={this.onHandleShareClick}
+            />
+
+              </LinearLayout>
+
+            </ScrollView>)
+    return layout;
+  }
 
   afterRender = () => {
 
@@ -187,50 +192,13 @@ class ClassSubjectsScreen extends View {
             onMenuItemClick={this.onHandleMenuClick}
             />
 
-
-
             {this.getHeadContent()}
 
-            <ScrollView 
-              height="0"
-              weight="1"
-              width="match_parent">
-
-              <LinearLayout
-                height="match_parent"
-                width="match_parent"
-                orientation="vertical">
-
-              
-            <SubjectListItem
-              data={this.SubscribedData}
-            />
-
-              </LinearLayout>
-
-            </ScrollView>
+            {this.getListContent(this.SubscribedData)}
 
             {this.getSubjectsContent()}
 
-            <ScrollView 
-              height="0"
-              weight="1"
-              width="match_parent">
-
-              <LinearLayout
-                height="match_parent"
-                width="match_parent"
-                orientation="vertical">
-
-                
-
-            <SubjectListItem
-              data={this.AllData}
-            />
-
-              </LinearLayout>
-
-            </ScrollView>
+            {this.getListContent(this.AllData)}
 
 
       

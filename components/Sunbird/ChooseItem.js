@@ -10,6 +10,8 @@ var HorizontalScrollView = require("@juspay/mystique-backend").androidViews.Hori
 var Space = require("@juspay/mystique-backend").androidViews.Space;
 var ViewWidget = require('@juspay/mystique-backend').androidViews.ViewWidget;
 var DoubleRadioList = require('../../components/Sunbird/DoubleRadioList');
+var FeatureButton = require('../../components/Sunbird/FeatureButton');
+
 var Styles = require("../../res/Styles");
 
 let IconStyle = Styles.Params.IconStyle;
@@ -22,11 +24,82 @@ class ChooseItem extends View {
     ]);
   }
 
+
+
+  getFeatureButton (){
+
+         return ( <LinearLayout
+            width = "match_parent"
+            alignParentBottom = "true,-1"
+            height = "64"
+            weight = "1"
+            padding = "3,3,3,3"
+            gravity = "center">
+            <FeatureButton
+              weight = "0.5"
+              typeface = "bold"
+              width = "match_parent"
+              height = "64"
+              stroke = {"3," + window.__Colors.DARK_GREEN}
+              background = {window.__Colors.DARK_GREEN}
+              text = {this.props.confirmText || "Confirm"}
+              buttonClick = {this.onConfirm}
+              textColor = {window.__Colors.WHITE}
+              textSize = "18"/>
+          </LinearLayout>)
+
+  }
+
+
+  getRadioList (){
+    return( <LinearLayout
+            alignParentBottom = "true,-1"
+            width = "match_parent"
+            height = "wrap_content"
+            margin = "0,0,0,0"
+            padding = "10,0,10,10"
+            orientation = "vertical"
+            weight = "1">
+              <LinearLayout
+                id={this.idSet.chooseItemContainer}
+                orientation="vertical"
+                height="wrap_content"
+                width="match_parent">
+              </LinearLayout>
+            </LinearLayout>)
+  }
+
+  getHeader (){
+    return(<LinearLayout
+            alignParentBottom = "true,-1"
+            width = "match_parent"
+            height = "wrap_content"
+            margin = "0,16,0,16"
+            padding = "16,0,16,0"
+            weight = "1">
+          <TextView
+           width = "wrap_content"
+           height = "wrap_content"
+           text = {this.props.heading}
+           style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
+
+          <ViewWidget 
+            height = "1"
+            width = "0"
+            weight = "1"/>
+
+          <ImageView
+           width = "24"
+           height = "24"
+           imageUrl = "ic_action_close"/>
+          </LinearLayout>)
+  }
+
  afterRender = () => {
     var renderItem = (
      <LinearLayout
      width = "wrap_content"
-     height = "wrap_content"
+     height = "match_parent"
      orientation = "horizontal">
       <DoubleRadioList items = {this.props.items}/>
       </LinearLayout>
@@ -34,7 +107,6 @@ class ChooseItem extends View {
     this.appendChild(this.idSet.chooseItemContainer, renderItem.render(), 0);
     console.log("AFTER RENDER IS CALLED");
   }
-
 
   render() {
   
@@ -53,45 +125,13 @@ class ChooseItem extends View {
           clickable = "true"
           alignParentBottom = "true,-1"
           background="#ffffff">
-          <LinearLayout
-            alignParentBottom = "true,-1"
-            width = "match_parent"
-            height = "wrap_content"
-            margin = "0,0,0,0"
-            padding = "16,16,16,0"
-            weight = "1">
-          <TextView
-           width = "wrap_content"
-           height = "wrap_content"
-           text = "Please choose the Standard"
-           style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
+          
+         {this.getHeader()}
 
-          <ViewWidget 
-            height = "1"
-            width = "0"
-            weight = "1"/>
+         {this.getRadioList()}
 
-          <ImageView
-           width = "24"
-           height = "24"
-           imageUrl = "ic_action_close"/>
-          </LinearLayout>
-      
-          <LinearLayout
-            alignParentBottom = "true,-1"
-            width = "match_parent"
-            height = "wrap_content"
-            margin = "0,0,0,0"
-            padding = "10,24,10,10"
-            orientation = "vertical"
-            weight = "1">
-              <LinearLayout
-                id={this.idSet.chooseItemContainer}
-                orientation="vertical"
-                height="wrap_content"
-                width="match_parent">
-              </LinearLayout>
-            </LinearLayout>
+         {this.getFeatureButton()}
+            
            
         </LinearLayout>
       </RelativeLayout>
