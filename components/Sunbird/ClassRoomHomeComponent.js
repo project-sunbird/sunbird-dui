@@ -6,49 +6,31 @@ var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var ListView = require('@juspay/mystique-backend').androidViews.ListView;
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 var ScrollView = require('@juspay/mystique-backend').androidViews.ScrollView;
-var ImageView = require('@juspay/mystique-backend').androidViews.ImageView;
-
 var ViewWidget = require('@juspay/mystique-backend').androidViews.ViewWidget;
 var ModulesContainer = require('../../components/Sunbird/ModulesContainer');
-var ChooseItem = require('../../components/Sunbird/ChooseItem');
 
 var objectAssign = require('object-assign');
 
 window.R = require("ramda");
 
-var CourseInfoItemList = require('../../components/Sunbird/CourseInfoItemList');
+var CourseInfoItemList = require('../Sunbird/CourseInfoItemList');
 
 
-class ClassHomeScreen extends View {
+class ClassRoomHomeComponent extends View {
   constructor(props, children, state) {
     super(props, children, state);
     this.state = state;
     this.screenName = "CLASS_HOME_SCREEN";
 
     this.moduleData = ["Button", "TextView", "EditText", "ImageView"];
-    this.imageUrls = ["ic_action_overflow","ic_action_close","ic_action_completed","ic_action_overflow"];
-  
-
-    this.radioList = [{ title : "Class I"},
-                      { title : "Class II"},
-                      { title : "Class III"},
-                      { title : "Class IV"},
-                      { title : "Class V"},
-                      { title : "Class VI"},
-                      { title : "Class VII"},
-                      { title : "Class VIII"},
-                      { title : "Class IX"},
-                      { title : "Class X"},
-                      { title : "Class XI"},
-                      { title : "Class XII"},
-                      ]
+    this.imageUrls = ["ic_action_overflow", "ic_action_close", "ic_action_completed", "ic_action_overflow"];
   }
 
   afterRender = () => {
 
   }
 
-  
+
 
   render() {
     this.layout = (
@@ -88,18 +70,9 @@ class ClassHomeScreen extends View {
 
        <TextView
         text = "View All"
-        style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}
-        margin = "0,0,16,0"
+        style={window.__TextStyle.textStyle.CARD.TITLE.DARK}
+        margin = "0,0,0,0"
         />
-       </LinearLayout>
-       <LinearLayout
-       width = "match_parent"
-       height = "wrap_content">
-       <ChooseItem
-       items = {this.radioList}
-       heading  = ""
-       />
-
        </LinearLayout>
       
       </LinearLayout>
@@ -109,4 +82,4 @@ class ClassHomeScreen extends View {
   }
 }
 
-module.exports = Connector(ClassHomeScreen);
+module.exports = ClassRoomHomeComponent;

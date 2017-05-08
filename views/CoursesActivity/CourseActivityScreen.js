@@ -20,7 +20,7 @@ var AnswerWithImageView = require('../../components/Sunbird/AnswerWithImageView'
 var CountDownTimer = require('../../components/Sunbird/CountDownTimer');
 var HorizontalProgressBar = require("../../components/Sunbird/HorizontalProgressBar");
 
-CountDownTimer
+
 class CourseActivityScreen extends View {
   constructor(props, children, state) {
     super(props, children, state);
