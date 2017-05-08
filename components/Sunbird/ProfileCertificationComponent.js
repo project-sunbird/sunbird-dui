@@ -60,12 +60,18 @@ class ProfileCertificationComponent extends View {
   }
 
   getData = () => {
-    var layout = (<LinearLayout
+    var layout = (
+ <LinearLayout
             width="match_parent"
             height="wrap_content"
-            margin="16,16,16,0"
-            elevation="6"
-            >
+            background= {window.__Colors.PRIMARY_BLACK_22}
+            cornerRadius="4"
+            margin="10,10,10,0">
+      <LinearLayout
+            width="match_parent"
+            height="wrap_content"
+            background= "#ffffff"
+            margin="2,0,2,2">
 
             <LinearLayout
               height="72"
@@ -110,35 +116,45 @@ class ProfileCertificationComponent extends View {
 
                   </LinearLayout>
 
-                 <LinearLayout
+          <LinearLayout
+              height="72"
+              width="72"
+              gravity="center_horizontal"
+              orientation="vertical"
+              background= {window.__Colors.PRIMARY_LIGHT}>
 
-                    height="match_parent"
-                    width="wrap_content"
-                    margin="16,16,16,0"
-                    orientation="vertical">
+              <LinearLayout
+              width = "wrap_content"
+              height = "wrap_content"
+              orientation="vertical"
+              >
 
-                <LinearLayout
-                    height="wrap_content"
-                    width="match_parent"
-                    margin="0,0,7,9"
-                    >
-                    <Space
-                      width="0"
-                      weight="1" />
                     <ImageView
                       height="22"
                       width="16"
+                      margin = "35,0,0,0"
                       imageUrl= {this.data.image2} />
-                    </LinearLayout>
 
-                    <TextView
-                        text={"LEVEL "+ this.data.level}
-                        height="match_parent"
-                        style={window.__TextStyle.textStyle.HINT.BLUE}/>
+          </LinearLayout>
 
-                  </LinearLayout>
+          <LinearLayout
+              width = "wrap_content"
+              height = "wrap_content"
+              orientation="vertical"
+              >
+                      <TextView
+                      text = "LEVEL 2"
+                      margin = "0,23,0,0"
+                      style={window.__TextStyle.textStyle.HINT.BLUE}/>
 
-          </LinearLayout>)
+          </LinearLayout>
+          </LinearLayout>
+
+          </LinearLayout>
+          </LinearLayout>
+
+
+          )
 
     return layout;
   }
@@ -154,8 +170,6 @@ class ProfileCertificationComponent extends View {
           {this.getHeadContent()}
 
           {this.getData()}
-
-          
 
       </LinearLayout>
 
