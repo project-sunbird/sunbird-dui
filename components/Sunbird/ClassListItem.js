@@ -6,7 +6,7 @@ var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 window.R = require("ramda");
-class SubjectListItem extends View {
+class ClassListItem extends View {
   constructor(props, children) {
     super(props, children);
   }
@@ -106,4 +106,4 @@ class SubjectListItem extends View {
     return this.layout.render();
   }
 }
-module.exports = SubjectListItem;
+module.exports = ClassListItem;

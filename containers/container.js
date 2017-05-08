@@ -20,6 +20,8 @@ const ClassSubjectsScreen = require("../views/ClassRoomActivity/ClassSubjectsScr
 const ClassAssignmentsScreen = require("../views/ClassRoomActivity/ClassAssignmentsScreen");
 const ClassHomeScreen = require("../views/ClassRoomActivity/ClassHomeScreen");
 
+const ClassQuizScreen = require("../views/ClassRoomActivity/ClassQuizScreen");
+const ClassLabTestsScreen = require("../views/ClassRoomActivity/ClassLabTestsScreen");
 
 // ScreenActions
 const RootScreenActions = require("../actions/RootScreenActions");
@@ -52,8 +54,17 @@ var determineScreen = (screenName, state) => {
     case "CLASS_ASSIGNMENTS_SCREEN":
       screen = new(ClassAssignmentsScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
+
     case "CLASS_HOME_SCREEN":
       screen = new(ClassHomeScreen(dispatcher, RootScreenActions))(null, null, state);
+      break;
+
+    case "CLASS_QUIZ_SCREEN":
+      screen = new(ClassQuizScreen(dispatcher, RootScreenActions))(null, null, state);
+      break;
+
+    case "CLASS_LAB_TESTS_SCREEN":
+      screen = new(ClassLabTestsScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
   }
 

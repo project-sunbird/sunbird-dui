@@ -12,7 +12,7 @@ window.R = require("ramda");
 
 
 var SimpleToolbar = require('../../components/Sunbird/SimpleToolbar');
-var SubjectListItem = require('../../components/Sunbird/SubjectListItem');
+var ClassListItem = require('../../components/Sunbird/ClassListItem');
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 var ImageView = require('@juspay/mystique-backend').androidViews.ImageView;
 
@@ -146,6 +146,29 @@ class ClassSubjectsScreen extends View {
             </LinearLayout>)
     return layout;
   }
+  getListContent = (data) =>{
+    var layout = (
+      <ScrollView 
+              height="0"
+              weight="1"
+              width="match_parent">
+
+              <LinearLayout
+                height="match_parent"
+                width="match_parent"
+                orientation="vertical">
+
+              
+            <ClassListItem
+              data={data}
+              onShareClick={this.onHandleShareClick}
+            />
+
+              </LinearLayout>
+
+            </ScrollView>)
+    return layout;
+  }
 
   afterRender = () => {
 
@@ -169,50 +192,13 @@ class ClassSubjectsScreen extends View {
             onMenuItemClick={this.onHandleMenuClick}
             />
 
-
-
             {this.getHeadContent()}
 
-            <ScrollView 
-              height="0"
-              weight="1"
-              width="match_parent">
-
-              <LinearLayout
-                height="match_parent"
-                width="match_parent"
-                orientation="vertical">
-
-              
-            <SubjectListItem
-              data={this.SubscribedData}
-            />
-
-              </LinearLayout>
-
-            </ScrollView>
+            {this.getListContent(this.SubscribedData)}
 
             {this.getSubjectsContent()}
 
-            <ScrollView 
-              height="0"
-              weight="1"
-              width="match_parent">
-
-              <LinearLayout
-                height="match_parent"
-                width="match_parent"
-                orientation="vertical">
-
-                
-
-            <SubjectListItem
-              data={this.AllData}
-            />
-
-              </LinearLayout>
-
-            </ScrollView>
+            {this.getListContent(this.AllData)}
 
 
       
