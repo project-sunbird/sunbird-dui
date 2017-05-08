@@ -84,6 +84,10 @@ class ClassRoomHomeComponent extends View {
 
   }
 
+  handleModuleClick = () => {
+    this.props.showScreen("CLASS_SUBJECTS_SCREEN", {});
+  }
+
 
 
   getModuleContent = () => {
@@ -97,6 +101,7 @@ class ClassRoomHomeComponent extends View {
         orientation = "vertical">
 
            <ModulesContainer
+           onClick={this.handleModuleClick}
            item={this.dummyData}/>
        </LinearLayout>)
   }
@@ -132,6 +137,7 @@ class ClassRoomHomeComponent extends View {
     var cards = this.dummyData.map((item) => {
       return (<VideoCard
                 height="wrap_content"
+                item={item}
                 width="match_parent"/>)
     })
 

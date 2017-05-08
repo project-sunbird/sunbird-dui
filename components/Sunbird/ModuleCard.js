@@ -29,6 +29,12 @@ class ModuleCard extends View {
 			orientation="vertical"
 			gravity="center"
 			>
+      <LinearLayout
+        height="match_parent"
+        width="match_parent"
+        orientation="vertical"
+        gravity="center"
+        onClick={this.props._onCLick}>
 					
               <ImageView
               	height="32"
@@ -43,6 +49,7 @@ class ModuleCard extends View {
               	margin = "0,0,0,16"
               	alpha="0.66"
               	/>	
+        </LinearLayout>
                     		
 	                	
        </LinearLayout>

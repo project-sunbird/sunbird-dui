@@ -17,6 +17,10 @@ class ModulesContainer extends View {
     ]);
   }
 
+  handleIndexMenu = (index) => {
+    this.props.onClick(index);
+  }
+
 
   afterRender = () => {
     this.tmpArr = []

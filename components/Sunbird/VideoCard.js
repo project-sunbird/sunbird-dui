@@ -26,6 +26,7 @@ class VideoCard extends View {
       maxWidth="500"
 			height="190"
       cornerRadius="5"
+      margin="0,8,0,8"
 			onClick={this.handleVideoClick}
       orientation="vertical"
 			gravity="center"
