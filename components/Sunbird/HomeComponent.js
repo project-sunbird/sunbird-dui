@@ -8,6 +8,12 @@ var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 
 window.R = require("ramda");
 
+  // this.data={
+  //     name: "Vinay"
+  //   }
+  //   this.recommendedData = ["Organic Chemistry for Standard VII", "Molecular Reactions for Beginners", "Intermediate Metallurgy", "ImageView"];
+  //   this.imageUrls = ["ic_account", "ic_action_close", "ic_action_completed", "ic_account"];
+    
 
 import RecommendedContainer from '../Sunbird/RecommendedContainer';
 
@@ -26,7 +32,7 @@ class HomeComponent extends View {
         height="wrap_content">
 
         <TextView
-          text= "Hi Harish!"
+          text= {"Hi " + this.props.data.name + "!"}
           margin="16,86,16,12"
           style={window.__TextStyle.textStyle.TITLE.DARK}                
           />  
