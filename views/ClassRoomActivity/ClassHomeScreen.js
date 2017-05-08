@@ -26,7 +26,6 @@ class ClassHomeScreen extends View {
     this.screenName = "CLASS_HOME_SCREEN";
 
     this.moduleData = ["Button", "TextView", "EditText", "ImageView"];
-<<<<<<< HEAD:views/ClassActivity/ClassHomeScreen.js
     this.imageUrls = ["ic_action_overflow","ic_action_close","ic_action_completed","ic_action_overflow"];
   
 
@@ -43,9 +42,7 @@ class ClassHomeScreen extends View {
                       { title : "Class XI"},
                       { title : "Class XII"},
                       ]
-=======
     this.imageUrls = ["ic_action_overflow", "ic_action_close", "ic_action_completed", "ic_action_overflow"];
->>>>>>> 0b00c9a9666e49ab61be8bb403be510bf0834380:views/ClassRoomActivity/ClassHomeScreen.js
   }
 
   afterRender = () => {
