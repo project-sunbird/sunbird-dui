@@ -19,16 +19,14 @@ class ModulesContainer extends View {
 
 
   afterRender = () => {
-    this.indexItems = this.props.moduleData;
-    this.tmpArr = [];
-    this.imageUrls = this.props.imageUrls;
+    this.tmpArr = []
     var _this = this;
-    for (var i = 0; i < this.indexItems.length; i++) {
+    for (var i = 0; i < this.props.item.length; i++) {
 
       var dat = {
         moduleBackground: (i % 2 == 0 ? "#22007aff" : "#229012FE"),
-        moduleName: _this.indexItems[i],
-        moduleImage: _this.imageUrls[i]
+        moduleName: _this.props.item[i].moduleData,
+        moduleImage: _this.props.item[i].imageUrls
       }
       console.log("ADDING")
       _this.tmpArr.push(dat)
@@ -64,8 +62,8 @@ class ModulesContainer extends View {
 
       <LinearLayout
       width="match_parent"
-      height="135"
-      margin = "0,0,0,0"
+      height="165"
+      margin = "0,16,0,16"
       afterRender={this.afterRender}
       orientation="vertical"
       gravity="center"

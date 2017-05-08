@@ -6,7 +6,7 @@ var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 
-class ModuleCard extends View {
+class VideoCard extends View {
   constructor(props, children) {
     super(props, children);
 
@@ -22,27 +22,23 @@ class ModuleCard extends View {
     this.layout = (
 
       <LinearLayout
-			width="165"
-			height="130"
-			margin="16,0,0,0"
-			background = {this.props.item.moduleBackground? this.props.item.moduleBackground : "#229012FE" }
-			orientation="vertical"
+			width="match_parent"
+      maxWidth="500"
+			height="190"
+      cornerRadius="5"
+			onClick={this.handleVideoClick}
+      orientation="vertical"
 			gravity="center"
 			>
 					
               <ImageView
-              	height="32"
-              	width="32"
+              	height="match_parent"
+              	width="match_parent"
                 margin = "0,0,0,8"
-              	imageUrl={this.props.item.moduleImage ? this.props.item.moduleImage : "ic_account"}
+              	imageUrl={this.props.item.videoPlaceholder ? this.props.item.videoPlaceholder : "ic_video_placeholder"}
               /> 
 
-              <TextView
-              	text= {this.props.item.moduleName ? this.props.item.moduleName : "Module Name"}
-              	style={window.__TextStyle.textStyle.HINT.SEMI.LIGHT}
-              	margin = "0,0,0,16"
-              	alpha="0.66"
-              	/>	
+              
                     		
 	                	
        </LinearLayout>
@@ -54,4 +50,4 @@ class ModuleCard extends View {
   }
 }
 
-module.exports = ModuleCard;
+module.exports = VideoCard;
