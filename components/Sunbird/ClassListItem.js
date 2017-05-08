@@ -2,33 +2,25 @@ var dom = require("@juspay/mystique-backend").doms.android;
 var Connector = require("@juspay/mystique-backend").connector;
 var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
-
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
-
 var Space = require('@juspay/mystique-backend').androidViews.Space;
-
 window.R = require("ramda");
-
-
-class SubjectListItem extends View {
+class ClassListItem extends View {
   constructor(props, children) {
     super(props, children);
-
   }
-
   getData = () => {
     var answerLayout = this.props.data.values.map((item, index) => {
       return <LinearLayout
             width="match_parent"
             height="wrap_content"
             padding="16,16,16,16">
-
             <LinearLayout
               width="32"
               heigh="32"
               padding="0,0,0,0"
-              background={window.__Colors.RED_10}
+              background={item.color}
               gravity="center"
               >
             <ImageView
@@ -74,7 +66,7 @@ class SubjectListItem extends View {
                     width="20"
                     margin="0,0,16,0"
                     imageUrl= {item.logo2} 
-                    
+                    onClick={this.props.onShareClick}
                     />
                     <Space
                       height="1"
@@ -114,5 +106,4 @@ class SubjectListItem extends View {
     return this.layout.render();
   }
 }
-
-module.exports = SubjectListItem;
+module.exports = ClassListItem;

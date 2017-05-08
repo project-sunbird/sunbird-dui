@@ -132,12 +132,16 @@ class BottomNavBar extends View {
     ]);
 
     this.bottomNavItemList = this.props.tabItems
-
+    this.currentIndex = (this.props.defaultIndex === undefined ? 0 : this.props.defaultIndex)
   }
 
 
 
   handleNavigationChange = (index) => {
+    if (this.currentIndex == index) {
+      return;
+    }
+    this.currentIndex = index;
     var cmd;
     for (var i = 0; i < this.bottomNavItemList.length; i++) {
       if (i == index) {
