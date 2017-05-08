@@ -45,6 +45,7 @@ class SubjectListItem extends View {
                     orientation="vertical">
                       
                       <TextView
+                        onClick={item.onMenuItemClick}
                         text={item.subject}
                         height="wrap_content"
                         style={window.__TextStyle.textStyle.CARD.HEADING}/>

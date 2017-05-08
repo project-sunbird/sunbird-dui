@@ -111,6 +111,10 @@ class ClassSubjectsScreen extends View {
       
   }
 
+  onHandleMenuClick = () =>{
+    console.log("hello");
+  }
+
   getHeadContent = () =>{
 
     var layout = (<LinearLayout
@@ -180,7 +184,7 @@ class ClassSubjectsScreen extends View {
             showMenu="true"
             invert="true"
             menuData={this.menuData}
-            
+            onMenuItemClick={this.onHandleMenuClick}
             />
 
 
