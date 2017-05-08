@@ -18,7 +18,6 @@ const CourseActivityScreen = require("../views/CoursesActivity/CourseActivityScr
 
 const ClassSubjectsScreen = require("../views/ClassRoomActivity/ClassSubjectsScreen");
 const ClassAssignmentsScreen = require("../views/ClassRoomActivity/ClassAssignmentsScreen");
-const ClassHomeScreen = require("../views/ClassRoomActivity/ClassHomeScreen");
 
 const ClassQuizScreen = require("../views/ClassRoomActivity/ClassQuizScreen");
 const ClassLabTestsScreen = require("../views/ClassRoomActivity/ClassLabTestsScreen");
