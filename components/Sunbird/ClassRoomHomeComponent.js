@@ -20,7 +20,6 @@ class ClassRoomHomeComponent extends View {
   constructor(props, children, state) {
     super(props, children, state);
     this.state = state;
-    this.screenName = "CLASS_HOME_SCREEN";
 
     this.moduleData = ["Button", "TextView", "EditText", "ImageView"];
     this.imageUrls = ["ic_action_overflow", "ic_action_close", "ic_action_completed", "ic_action_overflow"];
