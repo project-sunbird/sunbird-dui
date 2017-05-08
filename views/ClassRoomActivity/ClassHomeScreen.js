@@ -98,7 +98,7 @@ class ClassHomeScreen extends View {
        height = "wrap_content">
        <ChooseItem
        items = {this.radioList}
-       heading  = ""
+       heading  = "Please choose the Standard"
        />
 
        </LinearLayout>

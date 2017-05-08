@@ -136,7 +136,6 @@ renderItems() {
           height = "wrap_content">
           {leftBar}
           </LinearLayout>
-
           <LinearLayout
           orientation = "vertical"
           width = "wrap_content"
