@@ -12,7 +12,6 @@ module.exports = function(action, payload, state) {
     case "INIT_UI":
       localState.isInit = true;
       localState.currScreen = "HOME";
-
       break;
 
     case "SPLASH":
@@ -40,9 +39,9 @@ module.exports = function(action, payload, state) {
       localState.currScreen = "CLASS_SUBJECTS_SCREEN";
       break;
 
-    case "CLASS_HOME_SCREEN":
+    case "CLASS_ASSIGNMENTS_SCREEN":
       localState.isInit = false;
-      localState.currScreen = "CLASS_HOME_SCREEN";
+      localState.currScreen = "CLASS_ASSIGNMENTS_SCREEN";
       break;
 
     case "GO_BACK":

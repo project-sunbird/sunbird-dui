@@ -74,7 +74,7 @@ class ModulesContainer extends View {
           <TextView 
           width="match_parent"
           height="wrap_content"
-          margin="16,0,0,0"
+          margin="10,0,0,0"
           style={window.__TextStyle.textStyle.CARD.TITLE.DARK}
           text="Modules"/>
 
