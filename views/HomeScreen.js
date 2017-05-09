@@ -17,6 +17,7 @@ var BottomNavBar = require("../components/Sunbird/BottomNavBar")
 var ListGenerator = require("../components/Sunbird/ListGenerator")
 var ChooseCourseComponent = require("../components/Sunbird/ChooseCourseComponent")
 var ClassRoomHomeComponent = require("../components/Sunbird/ClassRoomHomeComponent")
+var HomeComponent = require('../components/Sunbird/HomeComponent');
 
 
 window.R = require("ramda");
@@ -29,6 +30,12 @@ class HomeScreen extends View {
       "viewPagerContainer",
       "tabLayoutContainer",
     ]);
+    this.Homedata={
+      name: "Vinay"
+    }
+    this.recommendedData = ["Organic Chemistry for Standard VII", "Molecular Reactions for Beginners", "Intermediate Metallurgy", "ImageView"];
+    this.imageUrls = ["ic_account", "ic_action_close", "ic_action_completed", "ic_account"];
+    
     this.screenName = "HOME_SCREEN"
     this.data = ["HOME", "COURSES", "CLASSROOM", "FORUM", "PROFILE"];
     this.tabValues = [{
@@ -80,9 +87,11 @@ class HomeScreen extends View {
       var tmp;
       if (index == 0) {
         tmp = (
-
-
-          <ListGenerator/>
+          <HomeComponent
+          recommendedData={this.recommendedData}
+          imageUrls={this.imageUrls}
+          data={this.Homedata}
+        />
 
         )
       } else if (index == 1) {
