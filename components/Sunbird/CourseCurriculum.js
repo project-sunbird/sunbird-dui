@@ -43,6 +43,7 @@ class CourseCurriculum extends View {
     var items = this.props.content.chapterList.map((item) => {
       return (<ChapterList 
           item={item} 
+          _onClick={this.props.onItemSelected}
           enrolledStatus={this.enrolledStatus}/>)
     })
 

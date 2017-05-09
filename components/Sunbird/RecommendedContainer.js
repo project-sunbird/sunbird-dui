@@ -4,33 +4,31 @@ var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 var HorizontalScrollView = require("@juspay/mystique-backend").androidViews.HorizontalScrollView;
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
+var Space = require('@juspay/mystique-backend').androidViews.Space;
+import RecommendedCard from '../Sunbird/RecommendedCard';
 
-import ModuleCard from '../Sunbird/ModuleCard';
-
-class ModulesContainer extends View {
+class RecommendedContainer extends View {
   constructor(props, children) {
     super(props, children);
 
     this.props.appendText = this.props.appendText || "";
     this.setIds([
-      'modulesContainer'
+      'recommendedContainer'
     ]);
-  }
-
-  handleIndexMenu = (index) => {
-    this.props.onClick(index);
   }
 
 
   afterRender = () => {
-    this.tmpArr = []
+    this.indexItems = this.props.recommendedData;
+    this.tmpArr = [];
+    this.imageUrls = this.props.imageUrls;
     var _this = this;
-    for (var i = 0; i < this.props.item.length; i++) {
+    for (var i = 0; i < this.indexItems.length; i++) {
 
       var dat = {
         moduleBackground: (i % 2 == 0 ? "#22007aff" : "#229012FE"),
-        moduleName: _this.props.item[i].moduleData,
-        moduleImage: _this.props.item[i].imageUrls
+        moduleName: _this.indexItems[i],
+        moduleImage: _this.imageUrls[i]
       }
       console.log("ADDING")
       _this.tmpArr.push(dat)
@@ -39,7 +37,7 @@ class ModulesContainer extends View {
 
     var cards = this.tmpArr.map((item, i) => {
       return (
-        <ModuleCard 
+        <RecommendedCard 
           item={item} 
           index={i} 
           _onClick={this.handleIndexMenu} />)
@@ -55,7 +53,7 @@ class ModulesContainer extends View {
                           {cards}
                     </LinearLayout>);
     console.log(renderItem)
-    this.replaceChild(this.idSet.modulesContainer, renderItem.render(), 0);
+    this.replaceChild(this.idSet.recommendedContainer, renderItem.render(), 0);
   }
 
 
@@ -66,27 +64,41 @@ class ModulesContainer extends View {
 
       <LinearLayout
       width="match_parent"
-      height="165"
-      margin = "0,16,0,16"
+      height="wrap_content"
+      margin = "0,0,0,0"
       afterRender={this.afterRender}
       orientation="vertical"
       gravity="center"
       >
-          
-          <TextView 
-          width="match_parent"
-          height="wrap_content"
-          margin="10,0,0,0"
-          style={window.__TextStyle.textStyle.CARD.TITLE.DARK}
-          text="Modules"/>
 
+          <LinearLayout
+              width="match_parent"
+              height="match_parent"
+              margin = "0,0,0,0"
+              >
+
+          <TextView 
+          margin="16,16,16,16"
+          style={window.__TextStyle.textStyle.CARD.TITLE.DARK}
+          text="Recommended"/>
+          <Space 
+            width="0"
+            weight="1"
+          />
+          <TextView 
+          margin="16,16,16,16"
+          style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}
+          text="View All"/>
+
+
+        </LinearLayout>
            <HorizontalScrollView
             width = "match_parent"
             height = "match_parent"
             scrollBarX="false"
             fillViewport="true">
               <LinearLayout
-                id={this.idSet.modulesContainer}
+                id={this.idSet.recommendedContainer}
                 orientation="vertical"
                 height="wrap_content"
                 width="match_parent"
@@ -104,4 +116,4 @@ class ModulesContainer extends View {
   }
 }
 
-module.exports = ModulesContainer;
+module.exports = RecommendedContainer;

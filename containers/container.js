@@ -13,10 +13,17 @@ const RootScreen = require("../views/RootScreen");
 const SplashScreen = require("../views/SplashScreen");
 const HomeScreen = require("../views/HomeScreen");
 
-const ChooseCourseScreen = require("../views/CoursesActivity/ChooseCourseScreen");
 const CourseInfoScreen = require("../views/CoursesActivity/CourseInfoScreen");
 const CourseActivityScreen = require("../views/CoursesActivity/CourseActivityScreen");
 const ProfileActivityScreen = require("../views/ProfileActivity/ProfileActivityScreen");
+
+const ClassSubjectsScreen = require("../views/ClassRoomActivity/ClassSubjectsScreen");
+const ClassAssignmentsScreen = require("../views/ClassRoomActivity/ClassAssignmentsScreen");
+const ClassHomeScreen = require("../views/ClassRoomActivity/ClassHomeScreen");
+const ClassTestScreen = require("../views/ClassRoomActivity/ClassTestScreen");
+
+const ClassQuizScreen = require("../views/ClassRoomActivity/ClassQuizScreen");
+const ClassLabTestsScreen = require("../views/ClassRoomActivity/ClassLabTestsScreen");
 
 // ScreenActions
 const RootScreenActions = require("../actions/RootScreenActions");
@@ -34,9 +41,7 @@ var determineScreen = (screenName, state) => {
     case "HOME":
       screen = new(HomeScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
-    case "CHOOSE_COURSE":
-      screen = new(ChooseCourseScreen(dispatcher, RootScreenActions))(null, null, state);
-      break;
+
     case "COURSE_INFO_SCREEN":
       screen = new(CourseInfoScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
@@ -44,10 +49,30 @@ var determineScreen = (screenName, state) => {
       screen = new(CourseActivityScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
 
-    case "PROFILE_ACTIVITY_SCREEN":
-      screen = new(ProfileActivityScreen(dispatcher, RootScreenActions))(null, null, state);
+
+    case "CLASS_SUBJECTS_SCREEN":
+      screen = new(ClassSubjectsScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
 
+    case "CLASS_ASSIGNMENTS_SCREEN":
+      screen = new(ClassAssignmentsScreen(dispatcher, RootScreenActions))(null, null, state);
+      break;
+
+    case "CLASS_HOME_SCREEN":
+      screen = new(ClassHomeScreen(dispatcher, RootScreenActions))(null, null, state);
+      break;
+
+    case "CLASS_QUIZ_SCREEN":
+      screen = new(ClassQuizScreen(dispatcher, RootScreenActions))(null, null, state);
+      break;
+
+    case "CLASS_LAB_TESTS_SCREEN":
+      screen = new(ClassLabTestsScreen(dispatcher, RootScreenActions))(null, null, state);
+      break;
+
+    case "CLASS_TEST_SCREEN":
+      screen = new(ClassTestScreen(dispatcher, RootScreenActions))(null, null, state);
+      break;
   }
 
   return screen;

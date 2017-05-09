@@ -6,17 +6,27 @@ var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var ListView = require('@juspay/mystique-backend').androidViews.ListView;
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 var ScrollView = require('@juspay/mystique-backend').androidViews.ScrollView;
+var CollapsingToolbarLayout = require('@juspay/mystique-backend').androidViews.CollapsingToolbarLayout;
+var AppBarLayout = require('@juspay/mystique-backend').androidViews.AppBarLayout;
+
+var ViewWidget = require('@juspay/mystique-backend').androidViews.ViewWidget;
+
 var objectAssign = require('object-assign');
 
 window.R = require("ramda");
 
-var CourseInfoItemList = require('../../components/Sunbird/CourseInfoItemList');
+var CourseInfoItemList = require('../Sunbird/CourseInfoItemList');
 
 
-class ChooseCourseScreen extends View {
+class ChooseCourseComponent extends View {
   constructor(props, children, state) {
     super(props, children, state);
     this.state = state;
+
+    this.setIds([
+      "collapsingToolbar",
+
+    ]);
     this.screenName = "CHOOSE_COURSE"
   }
 
@@ -26,7 +36,10 @@ class ChooseCourseScreen extends View {
 
   handleItemSelect = (data) => {
     console.log("CLICKED :", data);
+    this.props.showScreen("COURSE_INFO_SCREEN", {});
   }
+
+
 
   render() {
     this.layout = (
@@ -36,6 +49,22 @@ class ChooseCourseScreen extends View {
         width="match_parent"
         height="match_parent">
 
+        <AppBarLayout
+          height="170"
+          width="match_parent"
+          padding="16,16,16,16"
+          fillViewPort="true"
+          background="#2D61FF">
+                
+                  <TextView
+                    text="Your learning Tracks"
+                    height="wrap_content"
+                    margin="0,80,0,8"
+                    style={window.__TextStyle.textStyle.HEADING.LIGHT}/> 
+            
+
+           </AppBarLayout>
+
         <ScrollView 
           height="match_parent"
           width="match_parent"
@@ -44,15 +73,9 @@ class ChooseCourseScreen extends View {
             height="match_parent"
             width="match_parent"
             background="#2D61FF"
-            padding="20,170,20,20"
+            padding="20,20,20,20"
             orientation="vertical">
-
-            <TextView
-              text="Your learning Tracks"
-              height="wrap_content"
-              margin="0,0,0,24"
-              style={window.__TextStyle.textStyle.HEADING.LIGHT}/> 
-           
+            
             <CourseInfoItemList
               onItemSelected={this.handleItemSelect}
               height="match_parent"
@@ -70,4 +93,4 @@ class ChooseCourseScreen extends View {
   }
 }
 
-module.exports = Connector(ChooseCourseScreen);
+module.exports = ChooseCourseComponent;

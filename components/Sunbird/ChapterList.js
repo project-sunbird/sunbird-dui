@@ -57,6 +57,9 @@ class ChapterItem extends View {
     }
 
   }
+  handleResume = () => {
+    this.props._onClick();
+  }
 
   render() {
 
@@ -94,6 +97,7 @@ class ChapterItem extends View {
             visibility={this.showResumeContent?"visible":"gone"}
             text="RESUME"
             margin="24,24,0,0"
+            onClick={this.handleResume}
             style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
 
         
@@ -119,6 +123,7 @@ class ChapterList extends View {
     var items = this.props.item.chapterContent.map((item) => {
       return (<ChapterItem height="wrap_content"
                 width="match_parent"
+                _onClick={this.props._onClick}
                 enrolledStatus={this.enrolledStatus}
                 item={item}/>)
     })

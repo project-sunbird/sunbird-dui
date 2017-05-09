@@ -29,6 +29,12 @@ class CourseInfoScreen extends View {
     this.state = state;
     this.screenName = "COURSE_INFO_SCREEN"
 
+    this.menuData = {
+      url: [
+        { imageUrl: "ic_action_search", title: "hello" }
+      ]
+    }
+
     this.data = {
       courseName: "Arithematic-Advanced",
       courseDesc: "This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced",
@@ -104,7 +110,7 @@ class CourseInfoScreen extends View {
   }
 
   handleItemSelect = (data) => {
-    console.log("CLICKED :", data);
+    this.props.showScreen("COURSE_ACTIVITY_SCREEN", {})
   }
 
   getEnrolledContent = () => {
@@ -128,6 +134,7 @@ class CourseInfoScreen extends View {
                  <CourseCurriculum 
                   height="match_parent"
                   content={this.data}
+                  onItemSelected={this.handleItemSelect}
                   enrolledStatus={true}
                   width="match_parent"/> 
 
@@ -150,6 +157,10 @@ class CourseInfoScreen extends View {
     }
   }
 
+  handleBackPress = () => {
+    this.props.showScreen("HOME", {})
+  }
+
 
   render() {
     var buttonList = ["ENROLL NOW"];
@@ -163,6 +174,8 @@ class CourseInfoScreen extends View {
 
         <SimpleToolbar
           title={this.data.courseName}
+          menuData={this.menuData}
+          onBackPress={this.handleBackPress}
           width="match_parent"
           showMenu="true"/>
         <LinearLayout

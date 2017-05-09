@@ -14,8 +14,11 @@ var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var objectAssign = require('object-assign');
 
 var BottomNavBar = require("../components/Sunbird/BottomNavBar")
-var ListGenerator = require("../components/Sunbird/ListGenerator")
 
+var ChooseCourseComponent = require("../components/Sunbird/ChooseCourseComponent")
+var ClassRoomHomeComponent = require("../components/Sunbird/ClassRoomHomeComponent")
+var HomeComponent = require('../components/Sunbird/HomeComponent');
+var ProfileActivityComponent = require('../components/Sunbird/ProfileActivityComponent');
 
 window.R = require("ramda");
 
@@ -27,6 +30,12 @@ class HomeScreen extends View {
       "viewPagerContainer",
       "tabLayoutContainer",
     ]);
+    this.Homedata = {
+      name: "Vinay"
+    }
+    this.recommendedData = ["Organic Chemistry for Standard VII", "Molecular Reactions for Beginners", "Intermediate Metallurgy", "ImageView"];
+    this.imageUrls = ["ic_account", "ic_action_close", "ic_action_completed", "ic_account"];
+
     this.screenName = "HOME_SCREEN"
     this.data = ["HOME", "COURSES", "CLASSROOM", "FORUM", "PROFILE"];
     this.tabValues = [{
@@ -78,11 +87,28 @@ class HomeScreen extends View {
       var tmp;
       if (index == 0) {
         tmp = (
-
-
-          <ListGenerator/>
+          <HomeComponent
+          recommendedData={this.recommendedData}
+          imageUrls={this.imageUrls}
+          data={this.Homedata}
+        />
 
         )
+      } else if (index == 1) {
+        tmp = (<ChooseCourseComponent
+            showScreen = {this.props.showScreen}
+            height="match_parent"
+            width="match_parent" />)
+      } else if (index == 2) {
+        tmp = (<ClassRoomHomeComponent
+            showScreen = {this.props.showScreen}
+            height="match_parent"
+            width="match_parent" />)
+      } else if (index == 4) {
+        tmp = (<ProfileActivityComponent
+            showScreen = {this.props.showScreen}
+            height="match_parent"
+            width="match_parent" />)
       } else {
         tmp = (<LinearLayout
         height="match_parent"
@@ -121,7 +147,7 @@ class HomeScreen extends View {
 
   handleBottomNavBarAction = (index) => {
     console.log("BOT NAV BAR CLICK ", index);
-    JBridge.switchToViewPagerIndex(index + "");
+    JBridge.switchToViewPagerIndex(this.idSet.viewPagerContainer, index + "");
   }
 
   getBottomNavBar = () => {
