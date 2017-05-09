@@ -34,6 +34,12 @@ class CourseActivityScreen extends View {
     this.screenName = "COURSE_ACTIVITY_SCREEN"
     this.currentQuestion = "1";
 
+    this.menuData = {
+      url: [
+        { imageUrl: "ic_action_search", title: "hello" }
+      ]
+    }
+
     // this.data = {
     //   type: "ASSIGNMENT",
     //   question: "Which type of progression is the following sequence? 3, 5, 8, 12, 17, …",
@@ -351,7 +357,7 @@ class CourseActivityScreen extends View {
 
                         <TextView
                             height="match_parent"
-                            width="match_parent"
+                            width="wrap_content"
                             
                             text={this.currentQuestion}
                             style={window.__TextStyle.textStyle.HINT.REGULAR}
@@ -359,14 +365,14 @@ class CourseActivityScreen extends View {
 
                         <TextView
                             height="match_parent"
-                            width="match_parent"
+                            width="wrap_content"
                             text="/"
                             style={window.__TextStyle.textStyle.HINT.REGULAR}
                             width="24" />
 
                         <TextView
                             height="match_parent"
-                            width="match_parent"
+                            width="wrap_content"
                             text={this.data.totalQuestion}
                             padding="0,0,12,0"
                             style={window.__TextStyle.textStyle.HINT.REGULAR}
@@ -390,7 +396,7 @@ class CourseActivityScreen extends View {
 
   getAnswers = () => {
     var answerCards = this.data.answers.map((item, index) => {
-      return <AnswerWithImageView 
+      return <AnswerView 
             item={item}
             index={index}
             onItemSelected={this.handleItemSelect}
@@ -433,6 +439,7 @@ class CourseActivityScreen extends View {
 
         <SimpleToolbar
           title={this.data.type}
+          menuData={this.menuData}
           width="match_parent"/>
         
             <ScrollView 

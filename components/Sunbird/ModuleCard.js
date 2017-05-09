@@ -22,13 +22,19 @@ class ModuleCard extends View {
     this.layout = (
 
       <LinearLayout
-			width="135"
-			height="100"
+			width="165"
+			height="130"
 			margin="16,0,0,0"
 			background = {this.props.item.moduleBackground? this.props.item.moduleBackground : "#229012FE" }
 			orientation="vertical"
 			gravity="center"
 			>
+      <LinearLayout
+        height="match_parent"
+        width="match_parent"
+        orientation="vertical"
+        gravity="center"
+        onClick={this.props._onCLick}>
 					
               <ImageView
               	height="32"
@@ -43,6 +49,7 @@ class ModuleCard extends View {
               	margin = "0,0,0,16"
               	alpha="0.66"
               	/>	
+        </LinearLayout>
                     		
 	                	
        </LinearLayout>

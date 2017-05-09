@@ -96,10 +96,12 @@ class HomeScreen extends View {
         )
       } else if (index == 1) {
         tmp = (<ChooseCourseComponent
+            showScreen = {this.props.showScreen}
             height="match_parent"
             width="match_parent" />)
       } else if (index == 2) {
         tmp = (<ClassRoomHomeComponent
+            showScreen = {this.props.showScreen}
             height="match_parent"
             width="match_parent" />)
       } else {
