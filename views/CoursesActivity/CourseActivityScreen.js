@@ -426,6 +426,10 @@ class CourseActivityScreen extends View {
 
     return answerLayout;
   }
+  handleBackPress = () => {
+    this.state = R.merge(this.state, { event: 'goBack' })
+    window.__runDuiCallback({ action: "goBack" });
+  }
 
 
   render() {
@@ -438,6 +442,7 @@ class CourseActivityScreen extends View {
         height="match_parent">
 
         <SimpleToolbar
+          onBackPress={this.handleBackPress}  
           title={this.data.type}
           menuData={this.menuData}
           width="match_parent"/>

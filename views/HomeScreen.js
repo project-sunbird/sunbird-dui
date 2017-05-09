@@ -66,7 +66,7 @@ class HomeScreen extends View {
 
   handleCourseInfoClick = (data) => {
     this.state = R.merge(this.state, { event: 'showCourseInfo' })
-    window.__runDuiCallback(this.state);
+    window.__runDuiCallback({ action: "showCourseInfo" });
   }
 
   afterRender = () => {

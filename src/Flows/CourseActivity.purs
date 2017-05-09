@@ -1,31 +1,27 @@
 module Flows.CourseActivity where
 
 import Prelude
-import Data.Either (either)
-import Control.Monad.Aff.Console (log, logShow)
-import Control.Monad.Aff (Aff)
-import Network.HTTP.Affjax
-import Control.Monad.Eff.Class (liftEff)
+import Control.Monad.Except.Trans (ExceptT, runExceptT)
+import Partial.Unsafe (unsafePartial)
+import Utils (State, showUI)
+import Flows.CourseActivity
+import Control.Monad.Aff (Aff , launchAff)
 import Control.Monad.Eff.Exception (Error)
-import Data.Argonaut.Core as A
-import Control.Monad.Except.Trans
-import Partial.Unsafe
-import Data.Maybe
-import Utils
-import Data.Foreign
+import Control.Monad    
+import Control.Monad.Eff.Console
+import Control.Monad.Eff.Class(liftEff)
 
 
-showCourseInfoFlow :: forall a b c. (State a) -> ExceptT Error (Aff b) (State c)
+--showCourseInfoFlow :: forall a b c. (State a) -> ExceptT Error (Aff b) (State c)
 showCourseInfoFlow state = do
-  state <- showUI "COURSE_INFO_SCREEN" state
-  case state.event of
+  event <- showUI "COURSE_INFO_SCREEN" {screen:"COURSE_INFO_SCREEN"}
+  case event.action of
     "showCourseActivity" -> showCourseActivityFlow state
     _ ->showCourseInfoFlow state
 
 
-showCourseActivityFlow :: forall a b c. (State a) -> ExceptT Error (Aff b) (State c)
-showCourseActivityFlow state = do
-  state <- showUI "COURSE_ACTIVITY_SCREEN" state
-  case state.event of
-    "home" -> showCourseInfoFlow state
-    _      -> showCourseActivityFlow state
+ showCourseActivityFlow state = do
+   state <- showUI "COURSE_ACTIVITY_SCREEN" {screen:"COURSE_ACTIVITY_SCREEN"}
+   case event.action of
+     "goBack" -> showCourseInfoFlow state
+     _      -> showCourseActivityFlow state

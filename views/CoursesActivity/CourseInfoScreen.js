@@ -110,7 +110,8 @@ class CourseInfoScreen extends View {
   }
 
   handleItemSelect = (data) => {
-    this.props.showScreen("COURSE_ACTIVITY_SCREEN", {})
+    this.state = R.merge(this.state, { event: 'showCourseActivity' })
+    window.__runDuiCallback({ action: "showCourseActivity" });
   }
 
   getEnrolledContent = () => {
