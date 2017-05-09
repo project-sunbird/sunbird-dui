@@ -67,50 +67,34 @@ class HomeScreen extends View {
 
     var tabData = [];
     var jso = [];
+    var tmp;
     this.color = "#123123"
     var tabItems = this.data.map((item, index) => {
       switch (index) {
         case 0:
-          this.color = "#123123"
-          break;
-        case 1:
-          this.color = "#ff0000"
-          break;
-        case 2:
-          this.color = "#00ff00"
-          break;
-        case 3:
-          this.color = "#0000ff"
-          break;
-      }
-
-      var tmp;
-      if (index == 0) {
-        tmp = (
-          <HomeComponent
+          tmp = (
+            <HomeComponent
           recommendedData={this.recommendedData}
           imageUrls={this.imageUrls}
           data={this.Homedata}
         />
 
-        )
-      } else if (index == 1) {
-        tmp = (<ChooseCourseComponent
+          )
+          break;
+        case 1:
+          tmp = (<ChooseCourseComponent
             showScreen = {this.props.showScreen}
             height="match_parent"
             width="match_parent" />)
-      } else if (index == 2) {
-        tmp = (<ClassRoomHomeComponent
+          break;
+        case 2:
+          tmp = (<ClassRoomHomeComponent
             showScreen = {this.props.showScreen}
             height="match_parent"
             width="match_parent" />)
-      } else if (index == 4) {
-        tmp = (<ProfileActivityComponent
-            showScreen = {this.props.showScreen}
-            height="match_parent"
-            width="match_parent" />)
-      } else {
-        tmp = (<LinearLayout
+          break;
+        case 3:
+          tmp = (<LinearLayout
         height="match_parent"
         width="match_parent">
           <TextView
@@ -123,7 +107,32 @@ class HomeScreen extends View {
 
 
         </LinearLayout>)
+          break;
+
+        default:
+          tmp = (<LinearLayout
+        height="match_parent"
+        width="match_parent">
+          <TextView
+            text={item}
+            background={this.color}
+            color="#ffffff"
+            height="match_parent"
+            width="match_parent"
+            gravity="center" />
+
+
+        </LinearLayout>)
+          break;
       }
+
+
+
+      // tmp = (<ProfileActivityComponent
+      //     showScreen = {this.props.showScreen}
+      //     height="match_parent"
+      //     width="match_parent" />)
+
       jso.push({ view: this.getView(tmp.render()), value: "", viewType: 0 });
       tabData.push({ value: item })
     });
@@ -147,7 +156,7 @@ class HomeScreen extends View {
 
   handleBottomNavBarAction = (index) => {
     console.log("BOT NAV BAR CLICK ", index);
-    JBridge.switchToViewPagerIndex(this.idSet.viewPagerContainer, index + "");
+    JBridge.switchToViewPagerIndex(index + "");
   }
 
   getBottomNavBar = () => {
