@@ -15,9 +15,17 @@ import Utils
 import Data.Foreign
 
 
--- showCourseInfo state = do
---   state <- showUI "COURSE_INFO_SCREEN" state
---   state <- updateState {otpStatus: "TESTING"} state
---   sendUpdatedState state
+showCourseInfoFlow :: forall a b c. (State a) -> ExceptT Error (Aff b) (State c)
+showCourseInfoFlow state = do
+  state <- showUI "COURSE_INFO_SCREEN" state
+  case state.event of
+    "showCourseActivity" -> showCourseActivityFlow state
+    _ ->showCourseInfoFlow state
 
 
+showCourseActivityFlow :: forall a b c. (State a) -> ExceptT Error (Aff b) (State c)
+showCourseActivityFlow state = do
+  state <- showUI "COURSE_ACTIVITY_SCREEN" state
+  case state.event of
+    "home" -> showCourseInfoFlow state
+    _      -> showCourseActivityFlow state

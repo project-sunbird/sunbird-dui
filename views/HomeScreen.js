@@ -63,6 +63,12 @@ class HomeScreen extends View {
     ]
   }
 
+
+  handleCourseInfoClick = (data) => {
+    this.state = R.merge(this.state, { event: 'showCourseInfo' })
+    window.__runDuiCallback(this.state);
+  }
+
   afterRender = () => {
 
     var tabData = [];
@@ -83,7 +89,7 @@ class HomeScreen extends View {
           break;
         case 1:
           tmp = (<ChooseCourseComponent
-            showScreen = {this.props.showScreen}
+            showScreen = {this.handleCourseInfoClick}
             height="match_parent"
             width="match_parent" />)
           break;
