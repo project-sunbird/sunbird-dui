@@ -9,9 +9,9 @@ var ScrollView = require('@juspay/mystique-backend').androidViews.ScrollView;
 var objectAssign = require('object-assign');
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var HorizontalProgressBar = require("../Sunbird/HorizontalProgressBar");
-
+var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 window.R = require("ramda");
-
+var Space = require("@juspay/mystique-backend").androidViews.Space;
 class ProfileCertificationComponent extends View {
   constructor(props, children, state) {
     super(props, children, state);
@@ -21,8 +21,8 @@ class ProfileCertificationComponent extends View {
       name: "Chemistry",
       progressValue: "40",
       totalValue: "100",
-      imageUrl: "https://s-media-cache-ak0.pinimg.com/originals/a6/88/32/a68832c79725180370fa5e147b19b8c5.gif",
-      image2: "http://images.cdn1.stockunlimited.net/clipart/bookmark-icon_1910015.jpg",
+      imageUrl: "ic_account",
+      image2: "ic_action_bookmark",
       level: "2"
     }
   }
@@ -60,33 +60,48 @@ class ProfileCertificationComponent extends View {
   }
 
   getData = () => {
-    var layout = (<LinearLayout
+    var layout = (
+ <LinearLayout
             width="match_parent"
             height="wrap_content"
-            padding="16,16,16,0"
-            >
+            background= {window.__Colors.PRIMARY_BLACK_22}
+            cornerRadius="4"
+            margin="10,10,10,0">
+      <LinearLayout
+            width="match_parent"
+            height="wrap_content"
+            background= "#ffffff"
+            margin="2,0,2,2">
 
-            <ImageView
-              height="70"
-              width="70"
-              imageFromUrl= {this.data.imageUrl} />
+            <LinearLayout
+              height="72"
+              width="72"
+              gravity="center"
+              background= {window.__Colors.DARK_VIOLET_10}>
+
+                    <ImageView
+                      height="44"
+                      width="41"
+                      imageUrl= {this.data.imageUrl} />
+
+            </LinearLayout>
 
                   <LinearLayout
                     height="match_parent"
                     width="0"
                     weight="1"
-                    padding="16,16,16,16"
+                    margin="16,16,16,14"
                     orientation="vertical">
                       
                       <TextView
                         text={this.data.name}
                         height="wrap_content"
-                        style={window.__TextStyle.textStyle.HINT.BOLD}/>
+                        style={window.__TextStyle.textStyle.CARD.HEADING}/>
 
                       <TextView
                         text={"Progress " + this.data.progressValue + " / " + this.data.totalValue}
                         height="wrap_content"
-                        style={window.__TextStyle.textStyle.HINT.SEMI}/>  
+                        style={window.__TextStyle.textStyle.HINT.REGULAR}/>  
 
                       <Space
                         width="0"
@@ -96,31 +111,50 @@ class ProfileCertificationComponent extends View {
                         currentProgress={this.data.progressValue}
                         totalProgress = {this.data.totalValue}
                         width="match_parent"
+                        padding="12,12,0,0"
                         height="wrap_content"/>  
 
                   </LinearLayout>
 
-                 <LinearLayout
+          <LinearLayout
+              height="72"
+              width="72"
+              gravity="center_horizontal"
+              orientation="vertical"
+              background= {window.__Colors.PRIMARY_LIGHT}>
 
-                    height="match_parent"
-                    width="wrap_content"
-                    padding="16,16,16,0"
-                    orientation="vertical">
-
+              <LinearLayout
+              width = "wrap_content"
+              height = "wrap_content"
+              orientation="vertical"
+              >
 
                     <ImageView
-                      height="30"
-                      width="30"
-                      imageFromUrl= {this.data.image2} />
+                      height="22"
+                      width="16"
+                      margin = "35,0,0,0"
+                      imageUrl= {this.data.image2} />
 
-                    <TextView
-                        text={"LEVEL "+ this.data.level}
-                        height="wrap_content"
-                        style={window.__TextStyle.textStyle.HINT.BLUE}/>
+          </LinearLayout>
 
-                  </LinearLayout>
+          <LinearLayout
+              width = "wrap_content"
+              height = "wrap_content"
+              orientation="vertical"
+              >
+                      <TextView
+                      text = "LEVEL 2"
+                      margin = "0,23,0,0"
+                      style={window.__TextStyle.textStyle.HINT.BLUE}/>
 
-          </LinearLayout>)
+          </LinearLayout>
+          </LinearLayout>
+
+          </LinearLayout>
+          </LinearLayout>
+
+
+          )
 
     return layout;
   }
@@ -136,8 +170,6 @@ class ProfileCertificationComponent extends View {
           {this.getHeadContent()}
 
           {this.getData()}
-
-          
 
       </LinearLayout>
 
