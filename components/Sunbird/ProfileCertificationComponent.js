@@ -61,7 +61,7 @@ class ProfileCertificationComponent extends View {
 
   getData = () => {
     var layout = (
- <LinearLayout
+      <LinearLayout
             width="match_parent"
             height="wrap_content"
             background= {window.__Colors.PRIMARY_BLACK_22}
@@ -154,7 +154,7 @@ class ProfileCertificationComponent extends View {
           </LinearLayout>
 
 
-          )
+    )
 
     return layout;
   }

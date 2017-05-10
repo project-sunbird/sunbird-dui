@@ -85,7 +85,7 @@ class ProfileNetworkComponent extends View {
                         height="match_parent"
                         width="0"
                         weight="1"
-                        padding="16,0,0,3"
+                        padding="16,0,0,0"
                         orientation="vertical"
                         layout_gravity="center_vertical"
                         >
@@ -122,7 +122,7 @@ class ProfileNetworkComponent extends View {
     return answerCards;
   }
 
-  
+
   render() {
     this.layout = (
       <LinearLayout

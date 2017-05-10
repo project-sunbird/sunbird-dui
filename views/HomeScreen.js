@@ -6,11 +6,7 @@ var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var ViewPager = require("@juspay/mystique-backend").androidViews.ViewPager;
 var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 
-
-
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
-
-var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var objectAssign = require('object-assign');
 
 var BottomNavBar = require("../components/Sunbird/BottomNavBar")
@@ -85,67 +81,51 @@ class HomeScreen extends View {
     var tabItems = this.data.map((item, index) => {
       switch (index) {
         case 0:
-          tmp = (
-            <HomeComponent
-          recommendedData={this.recommendedData}
-          imageUrls={this.imageUrls}
-          data={this.Homedata}
-        />
-
-          )
+          tmp = (<HomeComponent
+              recommendedData={this.recommendedData}
+              imageUrls={this.imageUrls}
+              data={this.Homedata}/>)
           break;
         case 1:
           tmp = (<ChooseCourseComponent
-            showScreen = {this.handleCourseInfoClick}
-            height="match_parent"
-            width="match_parent" />)
+                  showScreen = {this.handleCourseInfoClick}
+                  height="match_parent"
+                  width="match_parent" />)
           break;
         case 2:
           tmp = (<ClassRoomHomeComponent
-            showScreen = {this.props.showScreen}
-            height="match_parent"
-            width="match_parent" />)
+                  showScreen = {this.props.showScreen}
+                  height="match_parent"
+                  width="match_parent" />)
           break;
         case 3:
           tmp = (<LinearLayout
-        height="match_parent"
-        width="match_parent">
-          <TextView
-            text={item}
-            background={this.color}
-            color="#ffffff"
-            height="match_parent"
-            width="match_parent"
-            gravity="center" />
-
-
-        </LinearLayout>)
+                    height="match_parent"
+                    width="match_parent">
+                      <TextView
+                        text={item}
+                        background={this.color}
+                        color="#ffffff"
+                        height="match_parent"
+                        width="match_parent"
+                        gravity="center" />
+                </LinearLayout>)
           break;
 
         default:
           tmp = (<LinearLayout
-        height="match_parent"
-        width="match_parent">
-          <TextView
-            text={item}
-            background={this.color}
-            color="#ffffff"
-            height="match_parent"
-            width="match_parent"
-            gravity="center" />
-
-
-        </LinearLayout>)
+                  height="match_parent"
+                  width="match_parent">
+                    <TextView
+                      text={item}
+                      background={this.color}
+                      color="#ffffff"
+                      height="match_parent"
+                      width="match_parent"
+                      gravity="center" />
+                </LinearLayout>)
           break;
       }
-
-
-
-      // tmp = (<ProfileActivityComponent
-      //     showScreen = {this.props.showScreen}
-      //     height="match_parent"
-      //     width="match_parent" />)
-
       jso.push({ view: this.getView(tmp.render()), value: "", viewType: 0 });
       tabData.push({ value: item })
     });
@@ -156,26 +136,21 @@ class HomeScreen extends View {
     });
 
     JBridge.viewPagerAdapter(this.idSet.viewPagerContainer, JSON.stringify(jso), JSON.stringify(tabData), callback);
-    //JBridge.checkTabLayout(this.idSet.tabLayoutContainer)
-    //JBridge.checkViewPager(this.idSet.viewPagerContainer)
 
   }
 
   handleViewPagerAction = (index) => {
-    console.log("VALUE", index)
     this.bNavBar.handleNavigationChange(index);
-
   }
 
   handleBottomNavBarAction = (index) => {
-    console.log("BOT NAV BAR CLICK ", index);
     JBridge.switchToViewPagerIndex(index + "");
   }
 
   getBottomNavBar = () => {
     this.bNavBar = (<BottomNavBar
-            tabItems = {this.tabValues}
-            _onClick = {this.handleBottomNavBarAction} />);
+                      tabItems = {this.tabValues}
+                      _onClick = {this.handleBottomNavBarAction} />);
 
     return this.bNavBar;
   }
@@ -198,21 +173,18 @@ class HomeScreen extends View {
 
 
           <LinearLayout
-          background={window.__Colors.WHITE}
-          width="match_parent"
-          orientation="vertical"
-          id={this.idSet.tabLayoutContainer}
-          height="56">
-          <ViewWidget
-            height="2"
-            alpha="0.2"
+            background={window.__Colors.WHITE}
             width="match_parent"
-            background={window.__Colors.DARK_GRAY} />
+            orientation="vertical"
+            id={this.idSet.tabLayoutContainer}
+            height="56">
+              <ViewWidget
+                height="2"
+                alpha="0.2"
+                width="match_parent"
+                background={window.__Colors.DARK_GRAY} />
 
-          {this.getBottomNavBar()}
-
-
-
+              {this.getBottomNavBar()}
           </LinearLayout>
 
       </LinearLayout>
@@ -222,11 +194,4 @@ class HomeScreen extends View {
   }
 }
 
-/*
-<TextView
-              text="ABCDF"
-              color="#ffffff"
-              layout_gravity="center"
-              height="wrap_content"/>
-*/
 module.exports = Connector(HomeScreen);

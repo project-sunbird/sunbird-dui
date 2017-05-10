@@ -19,6 +19,8 @@ const CourseActivityScreen = require("../views/CoursesActivity/CourseActivityScr
 
 const ClassRoomContentScreen = require("../views/ClassRoomActivity/ClassRoomContentScreen");
 
+const ProfileActivityScreen = require("../views/ProfileActivity/ProfileActivityScreen");
+
 // ScreenActions
 const RootScreenActions = require("../actions/RootScreenActions");
 
@@ -44,6 +46,9 @@ var determineScreen = (screenName, state) => {
       break;
     case "CLASSROOM_CONTENT_SCREEN":
       screen = new(ClassRoomContentScreen(dispatcher, RootScreenActions))(null, null, state);
+      break;
+    case "PROFILE_ACTIVITY_SCREEN":
+      screen = new(ProfileActivityScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
   }
 

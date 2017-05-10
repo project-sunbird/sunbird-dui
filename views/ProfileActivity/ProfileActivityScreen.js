@@ -34,22 +34,25 @@ class ProfileActivityScreen extends View {
       "viewPagerContainer"
     ])
     this.data = {
-      imageUrl: "https://s-media-cache-ak0.pinimg.com/originals/a6/88/32/a68832c79725180370fa5e147b19b8c5.gif",
+      imageUrl: "https://scontent.fblr2-1.fna.fbcdn.net/v/t1.0-9/13769588_1245932445418368_674580350644222458_n.jpg?oh=fc71eee966da710a61253c0f9e5ac9e3&oe=59778955",
       connectionUrl: "https://image.freepik.com/free-icon/multiple-users-silhouette_318-49546.jpg",
       certifiedUrl: "https://camo.githubusercontent.com/eed0343c9cbfb1b5371e9d113694ad2ebba8a907/68747470733a2f2f662e636c6f75642e6769746875622e636f6d2f6173736574732f313633393035362f313036333733372f36396662613637342d313265322d313165332d393930642d3463313134353663373462612e706e67",
       headingName: "",
-      profileName: "Vinay Narayana",
+      profileName: "Harish Bookwalla",
       cityName: "Bhimavaram, Andhra Pradesh"
     };
 
-    this.NetworkData=[
-    {image: "ic_account", name: "Samit Kumar Ganguli", description: "National School for Children, Pune"},
-    {image: "ic_account", name: "Samit Kumar Ganguli", description: "National School for Children, Pune"},
-    {image: "ic_account", name: "Samit Kumar Ganguli", description: "National School for Children, Pune"},
-    {image: "ic_account", name: "Samit Kumar Ganguli", description: "National School for Children, Pune"},
-    {image: "ic_account", name: "Samit Kumar Ganguli", description: "National School for Children, Pune"},
-    {image: "ic_account", name: "Samit Kumar Ganguli", description: "National School for Children, Pune"},
-    {image: "ic_account", name: "Samit Kumar Ganguli", description: "National School for Children, Pune"},
+    this.NetworkData = [
+      { image: "ic_account", name: "Samit Kumar Ganguli", description: "National School for Children, Pune" },
+      { image: "ic_account", name: "Indhuja Pillay", description: "Pune Vidyalaya, Pune" },
+      { image: "ic_account", name: "Samit Kumar Ganguli", description: "National School for Children, Pune" },
+      { image: "ic_account", name: "Indhuja Pillay", description: "Pune Vidyalaya, Pune" },
+      { image: "ic_account", name: "Samit Kumar Ganguli", description: "National School for Children, Pune" },
+      { image: "ic_account", name: "Samit Kumar Ganguli", description: "National School for Children, Pune" },
+      { image: "ic_account", name: "Indhuja Pillay", description: "Pune Vidyalaya, Pune" },
+      { image: "ic_account", name: "Samit Kumar Ganguli", description: "National School for Children, Pune" },
+      { image: "ic_account", name: "Indhuja Pillay", description: "Pune Vidyalaya, Pune" },
+      { image: "ic_account", name: "Samit Kumar Ganguli", description: "National School for Children, Pune" },
 
     ]
 
@@ -74,10 +77,6 @@ class ProfileActivityScreen extends View {
 
   }
 
-  handleNetworkAction = () =>{
-    console.log("Network Action");
-  }
-
   afterRender = () => {
 
     var tabData = [];
@@ -89,9 +88,7 @@ class ProfileActivityScreen extends View {
           tmp = (<ProfileNetworkComponent
                     height="match_parent"
                     width="match_parent"
-                    data={this.NetworkData}
-
-                    />)
+                    data={this.NetworkData}/>)
           break;
         case 1:
           tmp = (<ProfileCertificationComponent
@@ -117,6 +114,51 @@ class ProfileActivityScreen extends View {
 
     JBridge.viewPagerAdapter(this.idSet.viewPagerContainer, JSON.stringify(jso), JSON.stringify(tabData), callback);
 
+  }
+
+  getConnections = () => {
+    return (<LinearLayout
+          margin = "0,10,0,0"
+          width="match_parent"
+          height="wrap_content"
+          >
+
+              <ImageView
+              imageUrl = {"ic_connections_blue"}
+              height = "20"
+              width = "20"/>
+
+              <TextView
+              text = "340 Connections"
+              width = "wrap_content"
+              height = "wrap_content"
+              margin = "10,0,0,0"
+              style = {window.__TextStyle.textStyle.HINT.SEMI}
+              />
+
+          </LinearLayout>)
+  }
+
+  getCertifications = () => {
+    return (<LinearLayout
+              margin = "0,10,0,0"
+              width="match_parent"
+              height="wrap_content">
+                  <ImageView
+                  imageUrl = {"ic_certificate_blue"}
+                  height = "20"
+                  width = "20"/>
+
+                  <TextView
+                  text = "Certified in Organic Chemistry, Human Be.."
+                  enableEllipse="true"
+                  width = "wrap_content"
+                  height = "wrap_content"
+                  margin = "10,0,0,0"
+                  style = {window.__TextStyle.textStyle.HINT.SEMI}
+                  />
+
+              </LinearLayout>)
   }
 
 
@@ -152,49 +194,13 @@ class ProfileActivityScreen extends View {
                 height = "wrap_content"
                 style={window.__TextStyle.textStyle.CARD.HEADING}/>
 
-         
+              {
+                this.getConnections()
+              }
 
-         
-
-          <LinearLayout
-          margin = "0,10,0,0"
-          width="match_parent"
-          height="wrap_content"
-          >
-
-              <ImageView
-              imageFromUrl = {this.data.connectionUrl}
-              height = "20"
-              width = "20"/>
-
-              <TextView
-              text = "340 Connections"
-              width = "wrap_content"
-              height = "wrap_content"
-              margin = "10,0,0,0"
-              style = {window.__TextStyle.textStyle.HINT.SEMI}
-              />
-
-          </LinearLayout>
-
-              <LinearLayout
-              margin = "0,10,0,0"
-              width="match_parent"
-              height="wrap_content">
-                  <ImageView
-                  imageFromUrl = {this.data.certifiedUrl}
-                  height = "20"
-                  width = "20"/>
-
-                  <TextView
-                  text = "340 Connections"
-                  width = "wrap_content"
-                  height = "wrap_content"
-                  margin = "10,0,0,0"
-                  style = {window.__TextStyle.textStyle.HINT.SEMI}
-                  />
-
-              </LinearLayout>
+              {
+                this.getCertifications()
+              }
 
             </LinearLayout>
           </LinearLayout>
@@ -206,21 +212,18 @@ class ProfileActivityScreen extends View {
   getTabHead = () => {
 
     this.tabBar = (<TabHead
-            margin="0,12,0,0"
-            tabItems = {this.tabValues}
-            _onClick = {this.handleTabHeadAction} />);
+                    margin="0,12,0,0"
+                    tabItems = {this.tabValues}
+                    _onClick = {this.handleTabHeadAction} />);
 
     return this.tabBar;
   }
 
   handleViewPagerAction = (index) => {
-    console.log("VALUE", index)
     this.tabBar.handleNavigationChange(index);
-
   }
 
   handleTabHeadAction = (index) => {
-    console.log("TAB HEADBAR CLICK ", index);
     JBridge.switchToViewPagerIndex(index + "");
   }
 
