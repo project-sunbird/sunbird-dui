@@ -17,7 +17,8 @@ class ModulesContainer extends View {
     ]);
   }
 
-  handleIndexMenu = (index) => {
+  handleModuleClick = (index) => {
+    console.log("in container",index)
     this.props.onClick(index);
   }
 
@@ -39,14 +40,14 @@ class ModulesContainer extends View {
 
     var cards = this.tmpArr.map((item, i) => {
       return (
-        <ModuleCard 
-          item={item} 
-          index={i} 
-          _onClick={this.handleIndexMenu} />)
+        <ModuleCard
+          item={item}
+          index={i}
+          onModuleClick={this.handleModuleClick} />)
     });
 
-    var renderItem = (<LinearLayout 
-                        height="match_parent" 
+    var renderItem = (<LinearLayout
+                        height="match_parent"
                         root="true"
                         padding="0,16,20,20"
                         orientation="horizontal"
@@ -72,8 +73,8 @@ class ModulesContainer extends View {
       orientation="vertical"
       gravity="center"
       >
-          
-          <TextView 
+
+          <TextView
           width="match_parent"
           height="wrap_content"
           margin="10,0,0,0"
@@ -93,8 +94,8 @@ class ModulesContainer extends View {
                 >
               </LinearLayout>
           </HorizontalScrollView>
-                        
-                    
+
+
        </LinearLayout>
 
 

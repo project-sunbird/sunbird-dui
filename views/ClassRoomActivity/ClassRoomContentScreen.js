@@ -73,17 +73,26 @@ class ClassRoomContentScreen extends View {
 
   }
 
-  onHandleBackPress = () => {
-
+  handleBackPress = () => {
+    console.log("BACK PRESS TO HOME")
+    this.state = R.merge(this.state, { event: 'goBack' })
+    window.__runDuiCallback({ action: "goBack" });
   }
 
-  onHandleMenuClick = () =>{
+  handleMenuClick = () =>{
     console.log("hello");
   }
 
-  onHandleShareClick = () => {
+  handleShareClick = () => {
     console.log("share clicked");
 
+  }
+
+  onPop = () =>{
+    Android.runInUI(
+      this.animateView(),
+      null
+    );
   }
 
   getHeadContent = () =>{
@@ -151,7 +160,7 @@ class ClassRoomContentScreen extends View {
 
             <ClassListItem
               data={data}
-              onShareClick={this.onHandleShareClick}
+              onShareClick={this.handleShareClick}
             />
 
               </LinearLayout>
@@ -169,6 +178,7 @@ class ClassRoomContentScreen extends View {
     this.layout = (
       <LinearLayout
         root="true"
+        background={window.__Colors.WHITE}
         orientation="vertical"
         width="match_parent"
         height="match_parent">
@@ -178,8 +188,9 @@ class ClassRoomContentScreen extends View {
             width="match_parent"
             showMenu="true"
             invert="true"
+            onBackPress={this.handleBackPress}
             menuData={this.menuData}
-            onMenuItemClick={this.onHandleMenuClick}
+            onMenuItemClick={this.handleMenuClick}
             />
 
             {this.getHeadContent()}

@@ -68,7 +68,7 @@ class ClassRoomHomeComponent extends View {
             width="wrap_content"
             text="Subjects"
             textStyle={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}/>
-        </LinearLayout>  
+        </LinearLayout>
 
         <ImageView
               height="48"
@@ -84,8 +84,10 @@ class ClassRoomHomeComponent extends View {
 
   }
 
-  handleModuleClick = () => {
-    this.props.showScreen("CLASS_SUBJECTS_SCREEN", {});
+  handleModuleClick = (index) => {
+    console.log("IN INDEX ",index)
+    this.state = R.merge(this.state, { event: 'showClassroomContet' })
+    window.__runDuiCallback({ action: "showClassroomContet" });
   }
 
 
@@ -119,7 +121,7 @@ class ClassRoomHomeComponent extends View {
         margin = "0,0,0,0"
         />
 
-        <ViewWidget 
+        <ViewWidget
         height = "1"
         width = "0"
         weight = "1"/>
@@ -186,15 +188,15 @@ class ClassRoomHomeComponent extends View {
                 this.getModuleContent()
               }
 
-                
+
               {
                 this.getVideosContent()
               }
 
-            </LinearLayout>  
+            </LinearLayout>
 
-        </ScrollView>  
-      
+        </ScrollView>
+
       </LinearLayout>
     );
 

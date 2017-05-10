@@ -276,6 +276,13 @@ class CourseActivityScreen extends View {
 
   }
 
+  onPop = () =>{
+    Android.runInUI(
+      this.animateView(),
+      null
+    );
+  }
+
   handleItemSelect = (index, status) => {
     if (status) {
       this.selectedAnswer.push(this.data.answers[index])

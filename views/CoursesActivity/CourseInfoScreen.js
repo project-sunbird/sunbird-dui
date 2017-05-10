@@ -106,8 +106,10 @@ class CourseInfoScreen extends View {
   }
 
   onPop = () =>{
-    console.log("IN ON POP")
-
+    Android.runInUI(
+      this.animateView(),
+      null
+    );
   }
 
   afterRender = () => {
@@ -164,7 +166,7 @@ class CourseInfoScreen extends View {
   }
 
   handleBackPress = () => {
-
+    
   }
 
 

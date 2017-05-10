@@ -10,11 +10,12 @@ class ModuleCard extends View {
   constructor(props, children) {
     super(props, children);
 
-    this.props.appendText = this.props.appendText || "";
-
-
   }
 
+  handleClick = () =>{
+      console.log("in card",this.props.index)
+      this.props.onModuleClick(this.props.index);
+  }
 
   render() {
 
@@ -34,24 +35,24 @@ class ModuleCard extends View {
         width="match_parent"
         orientation="vertical"
         gravity="center"
-        onClick={this.props._onCLick}>
-					
+        onClick={this.handleClick}>
+
               <ImageView
               	height="32"
               	width="32"
                 margin = "0,0,0,8"
               	imageUrl={this.props.item.moduleImage ? this.props.item.moduleImage : "ic_account"}
-              /> 
+              />
 
               <TextView
               	text= {this.props.item.moduleName ? this.props.item.moduleName : "Module Name"}
               	style={window.__TextStyle.textStyle.HINT.SEMI.LIGHT}
               	margin = "0,0,0,16"
               	alpha="0.66"
-              	/>	
+              	/>
         </LinearLayout>
-                    		
-	                	
+
+
        </LinearLayout>
 
 

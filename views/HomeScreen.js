@@ -68,6 +68,13 @@ class HomeScreen extends View {
     this.state = R.merge(this.state, { event: 'showCourseInfo' })
     window.__runDuiCallback({ action: "showCourseInfo" });
   }
+  
+  onPop = () =>{
+    Android.runInUI(
+      this.animateView(),
+      null
+    );
+  }
 
   afterRender = () => {
 

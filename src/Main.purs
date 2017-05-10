@@ -15,13 +15,12 @@ init = do
   case event.action of
     "showCourseInfo" -> do
       liftEff $ log "showCourseInfoFlow"
-      showCourseInfoFlow 
+      showCourseInfoFlow
     "showClassroomContet" -> do
       liftEff $ log "showClassroomContet"
       showClassroomContetFlow
     _ -> do
       liftEff $ log $ "Action yet to be implemented " <> event.action
-
 
 main = launchAff $ do
   runExceptT init
