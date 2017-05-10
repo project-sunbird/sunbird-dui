@@ -55,17 +55,17 @@ class ChooseCourseComponent extends View {
           padding="16,16,16,16"
           fillViewPort="true"
           background="#2D61FF">
-                
+
                   <TextView
                     text="Your learning Tracks"
                     height="wrap_content"
                     margin="0,80,0,8"
-                    style={window.__TextStyle.textStyle.HEADING.LIGHT}/> 
-            
+                    style={window.__TextStyle.textStyle.HEADING.LIGHT}/>
+
 
            </AppBarLayout>
 
-        <ScrollView 
+        <ScrollView
           height="match_parent"
           width="match_parent"
           fillViewPort="true">
@@ -75,17 +75,17 @@ class ChooseCourseComponent extends View {
             background="#2D61FF"
             padding="20,20,20,20"
             orientation="vertical">
-            
+
             <CourseInfoItemList
               onItemSelected={this.handleItemSelect}
               height="match_parent"
               width="match_parent"/>
-           
-            </LinearLayout>
-              
 
-         </ScrollView>   
-         
+            </LinearLayout>
+
+
+         </ScrollView>
+
       </LinearLayout>
     );
 

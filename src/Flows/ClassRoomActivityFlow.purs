@@ -3,7 +3,6 @@ module Flows.ClassRoomActivityFlow where
 
 import Prelude (bind, ($), (<>))
 import Utils (showUI)
-import Flows.CourseActivity (showCourseInfoFlow)
 import Control.Monad.Eff.Console
 import Control.Monad.Eff.Class(liftEff)
 
@@ -18,9 +17,6 @@ showClassroomContetFlow = do
 showHomeFlow = do
   event <- showUI "HOME" {screen :"HOME"}
   case event.action of
-    "showCourseInfo" -> do
-      liftEff $ log "showCourseInfoFlow"
-      showCourseInfoFlow
     "showClassroomContet" -> do
       liftEff $ log "showClassroomContet"
       showClassroomContetFlow

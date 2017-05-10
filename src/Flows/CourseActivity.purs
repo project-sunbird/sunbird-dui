@@ -9,6 +9,7 @@ import Flows.CourseActivity (showCourseInfoFlow)
 showCourseInfoFlow = do
   event <- showUI "COURSE_INFO_SCREEN" {screen:"COURSE_INFO_SCREEN"}
   case event.action of
+    "goBack" -> showHomeFlow
     "showCourseActivity" -> showCourseActivityFlow
     _ ->showCourseInfoFlow
 
@@ -18,3 +19,11 @@ showCourseActivityFlow  = do
   case event.action of
     "goBack" -> showCourseInfoFlow
     _      -> showCourseActivityFlow
+
+showHomeFlow = do
+  event <- showUI "HOME" {screen :"HOME"}
+  case event.action of
+    "showCourseInfo" -> do
+      showCourseInfoFlow
+    _ -> do
+      showHomeFlow
