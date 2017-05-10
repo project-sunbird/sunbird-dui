@@ -9,7 +9,7 @@ var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 window.R = require("ramda");
 
 
-import RecommendedContainer from '../Sunbird/RecommendedContainer';
+var RecommendedContainer = require('../Sunbird/RecommendedContainer');
 
 class HomeComponent extends View {
   constructor(props, children) {
@@ -19,7 +19,7 @@ class HomeComponent extends View {
 
   getInfo = () => {
 
-    var layout=(
+    var layout = (
       <LinearLayout
         orientation="vertical"
         width="match_parent"
@@ -44,8 +44,8 @@ class HomeComponent extends View {
           />
 
       </LinearLayout>
-      )
-  return layout;
+    )
+    return layout;
   }
 
 
@@ -54,7 +54,7 @@ class HomeComponent extends View {
 
     this.layout = (
 
-         <LinearLayout
+      <LinearLayout
         root="true"
         orientation="vertical"
         width="match_parent"

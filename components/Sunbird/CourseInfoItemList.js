@@ -132,7 +132,8 @@ class CourseInfoItemList extends View {
           competedCount: "124",
           totalCount: "150",
           courseBackground: "#229012FE",
-          remainingTime: "120"
+          remainingTime: "120",
+          courseImage: "ic_percent_black"
         }
       } else if (i % 3 == 1) {
         dumData = {
@@ -140,7 +141,8 @@ class CourseInfoItemList extends View {
           competedCount: "76",
           totalCount: "90",
           courseBackground: "#22FF9F00",
-          remainingTime: "24"
+          remainingTime: "24",
+          courseImage: "ic_magnet_black"
         }
       } else {
         dumData = {
@@ -148,7 +150,8 @@ class CourseInfoItemList extends View {
           competedCount: "76",
           totalCount: "90",
           courseBackground: "#227ED321",
-          remainingTime: "60"
+          remainingTime: "60",
+          courseImage: "ic_nucleus_black"
         }
       }
 

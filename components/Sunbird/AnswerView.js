@@ -16,11 +16,11 @@ class AnswerView extends View {
     this.setIds([
       "selectorContainer",
       "itemPosition",
-      "itemText"
+      "itemText",
+      "parentContainer"
     ]);
     //this.displayName = "answer_view" + (this.props.index != undefined ? ("_" + this.props.index) : "")
     this.displayName = "answer_view";
-
     this.containsImage = (this.props.item.imageUrl === undefined ? true : false)
     this.selectedStatus = false;
 
@@ -30,11 +30,22 @@ class AnswerView extends View {
   setStatus = (status) => {
     this.selectedStatus = status;
     var content;
+    var cmd;
     if (!status) {
       content = this.getIndexHolder();
+      cmd = this.set({
+        id: this.idSet.parentContainer,
+        stroke: ("2," + window.__Colors.PRIMARY_BLACK_66)
+      })
     } else {
+      cmd = this.set({
+        id: this.idSet.parentContainer,
+        stroke: ("2," + window.__Colors.SUCCESS_GREEN)
+      })
       content = this.getSelectedImage();
     }
+    Android.runInUI(cmd, 0);
+
     this.replaceChild(this.idSet.selectorContainer, content.render(), 0);
   }
 
@@ -47,7 +58,7 @@ class AnswerView extends View {
     return (<ImageView
             width="40"
             height="40"
-            imageUrl={"ic_action_completed"}
+            imageUrl={"ic_check_green"}
             margin="0,0,0,0"/>)
   }
 
@@ -64,6 +75,7 @@ class AnswerView extends View {
       <LinearLayout
       width="match_parent"
       cornerRadius="5"
+      id ={this.idSet.parentContainer}
       margin="0,0,0,12"
       stroke ={"2," + window.__Colors.PRIMARY_BLACK_66}
       height="56">

@@ -33,7 +33,7 @@ class CourseActivityScreen extends View {
     this.state = state;
     this.screenName = "COURSE_ACTIVITY_SCREEN"
     this.currentQuestion = "1";
-
+    this.shouldCacheScreen = false;
     this.menuData = {
       url: [
         { imageUrl: "ic_action_search", title: "hello" }
@@ -276,7 +276,7 @@ class CourseActivityScreen extends View {
 
   }
 
-  onPop = () =>{
+  onPop = () => {
     Android.runInUI(
       this.animateView(),
       null
@@ -363,27 +363,23 @@ class CourseActivityScreen extends View {
                         height="wrap_content">
 
                         <TextView
-                            height="match_parent"
+                            height="wrap_content"
                             width="wrap_content"
-
                             text={this.currentQuestion}
-                            style={window.__TextStyle.textStyle.HINT.REGULAR}
-                            width="24" />
+                            style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
                         <TextView
-                            height="match_parent"
+                            height="wrap_content"
                             width="wrap_content"
                             text="/"
-                            style={window.__TextStyle.textStyle.HINT.REGULAR}
-                            width="24" />
+                            style={window.__TextStyle.textStyle.HINT.REGULAR} />
 
                         <TextView
-                            height="match_parent"
+                            height="wrap_content"
                             width="wrap_content"
                             text={this.data.totalQuestion}
                             padding="0,0,12,0"
-                            style={window.__TextStyle.textStyle.HINT.REGULAR}
-                            width="24" />
+                            style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
                          <HorizontalProgressBar
                               progressBarColor={window.__Colors.SUCCESS_GREEN}

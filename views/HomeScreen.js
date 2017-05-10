@@ -33,8 +33,8 @@ class HomeScreen extends View {
     this.Homedata = {
       name: "Andy"
     }
-    this.recommendedData = ["Organic Chemistry for Standard VII", "Molecular Reactions for Beginners", "Intermediate Metallurgy", "ImageView"];
-    this.imageUrls = ["ic_account", "ic_action_close", "ic_action_completed", "ic_account"];
+    this.recommendedData = ["Organic Chemistry for Standard VII", "Molecular Reactions for Beginners", "Intermediate Metallurgy", "My Module"];
+    this.imageUrls = ["ic_flask_black", "ic_molecule_black", "ic_metallurgy_black", "ic_flask_black"];
 
     this.screenName = "HOME_SCREEN"
     this.data = ["HOME", "COURSES", "CLASSROOM", "FORUM", "PROFILE"];

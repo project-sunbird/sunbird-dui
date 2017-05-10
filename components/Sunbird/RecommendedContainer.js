@@ -28,7 +28,9 @@ class RecommendedContainer extends View {
       var dat = {
         moduleBackground: (i % 2 == 0 ? "#22007aff" : "#229012FE"),
         moduleName: _this.indexItems[i],
-        moduleImage: _this.imageUrls[i]
+        moduleImage: _this.imageUrls[i],
+        moduleUserCount: (i * 100 + (-1) * 4 * i + i),
+        moduleRating: parseFloat(5 / i)
       }
       console.log("ADDING")
       _this.tmpArr.push(dat)
