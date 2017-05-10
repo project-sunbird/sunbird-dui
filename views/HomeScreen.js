@@ -68,8 +68,8 @@ class HomeScreen extends View {
     this.state = R.merge(this.state, { event: 'showCourseInfo' })
     window.__runDuiCallback({ action: "showCourseInfo" });
   }
-  
-  onPop = () =>{
+
+  onPop = () => {
     Android.runInUI(
       this.animateView(),
       null
@@ -205,6 +205,7 @@ class HomeScreen extends View {
           height="56">
           <ViewWidget
             height="2"
+            alpha="0.2"
             width="match_parent"
             background={window.__Colors.DARK_GRAY} />
 
