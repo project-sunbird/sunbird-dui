@@ -307,7 +307,7 @@ class CourseActivityScreen extends View {
     var count = 0;
 
     var answerCards = this.data.answers.map((item, index) => {
-      var tmp = (<AnswerView 
+      var tmp = (<AnswerView
             item={item}
             index={index}
             onItemSelected={this.handleItemSelect}
@@ -358,7 +358,7 @@ class CourseActivityScreen extends View {
                         <TextView
                             height="match_parent"
                             width="wrap_content"
-                            
+
                             text={this.currentQuestion}
                             style={window.__TextStyle.textStyle.HINT.REGULAR}
                             width="24" />
@@ -378,16 +378,16 @@ class CourseActivityScreen extends View {
                             style={window.__TextStyle.textStyle.HINT.REGULAR}
                             width="24" />
 
-                         <HorizontalProgressBar 
+                         <HorizontalProgressBar
                               progressBarColor={window.__Colors.SUCCESS_GREEN}
                               currentProgress={this.currentQuestion}
                               totalProgress = {this.data.totalQuestion}
                               width="0"
                               weight="1"
-                              height="wrap_content"/>   
+                              height="wrap_content"/>
 
 
-                     </LinearLayout>   
+                     </LinearLayout>
 
                 </LinearLayout>)
 
@@ -396,7 +396,7 @@ class CourseActivityScreen extends View {
 
   getAnswers = () => {
     var answerCards = this.data.answers.map((item, index) => {
-      return <AnswerView 
+      return <AnswerView
             item={item}
             index={index}
             onItemSelected={this.handleItemSelect}
@@ -442,37 +442,37 @@ class CourseActivityScreen extends View {
         height="match_parent">
 
         <SimpleToolbar
-          onBackPress={this.handleBackPress}  
+          onBackPress={this.handleBackPress}
           title={this.data.type}
           menuData={this.menuData}
           width="match_parent"/>
-        
-            <ScrollView 
+
+            <ScrollView
               height="0"
               weight="1"
               width="match_parent"
-              
+
               fillViewPort="true">
               <LinearLayout
                 height="match_parent"
                 width="match_parent"
                 padding="16,24,16,16"
                 orientation="vertical">
-                
+
                 {this.getQuizHead()}
-                
+
                 {this.getQuestion()}
-                  
+
                 {this.getAnswers()}
 
-                  
+
                 </LinearLayout>
-                  
 
-             </ScrollView>   
 
-            
-        
+             </ScrollView>
+
+
+
       </LinearLayout>
     );
 

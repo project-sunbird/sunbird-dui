@@ -105,6 +105,11 @@ class CourseInfoScreen extends View {
 
   }
 
+  onPop = () =>{
+    console.log("IN ON POP")
+
+  }
+
   afterRender = () => {
 
   }
@@ -116,7 +121,7 @@ class CourseInfoScreen extends View {
 
   getEnrolledContent = () => {
     return (
-      <ScrollView 
+      <ScrollView
               height="0"
               weight="1"
               width="match_parent"
@@ -132,16 +137,16 @@ class CourseInfoScreen extends View {
                     height="wrap_content"
                     width="wrap_content"/>
 
-                 <CourseCurriculum 
+                 <CourseCurriculum
                   height="match_parent"
                   content={this.data}
                   onItemSelected={this.handleItemSelect}
                   enrolledStatus={true}
-                  width="match_parent"/> 
+                  width="match_parent"/>
 
-                  
 
-                  
+
+
                 </LinearLayout>
 
                 </ScrollView>)
@@ -159,7 +164,7 @@ class CourseInfoScreen extends View {
   }
 
   handleBackPress = () => {
-    this.props.showScreen("HOME", {})
+
   }
 
 
@@ -184,15 +189,15 @@ class CourseInfoScreen extends View {
           orientation="vertical"
           id={this.idSet.parentContainer}
           width="match_parent">
-            <ScrollView 
+            <ScrollView
               height="0"
               weight="1"
               width="match_parent"
-              
+
               fillViewPort="true">
               <LinearLayout
                 height="match_parent"
-                
+
                 width="match_parent"
                 padding="16,24,16,16"
                 orientation="vertical">
@@ -205,17 +210,17 @@ class CourseInfoScreen extends View {
                   contentText={this.data.courseDesc}
                   />
 
-                 <CourseCurriculum 
+                 <CourseCurriculum
                   height="match_parent"
                   margin="0,12,0,0"
                   content= {this.data}
-                  width="match_parent"/> 
+                  width="match_parent"/>
 
-                  
+
                 </LinearLayout>
-                  
 
-             </ScrollView>   
+
+             </ScrollView>
 
              <PageOption
                  width="match_parent"
@@ -223,7 +228,7 @@ class CourseInfoScreen extends View {
                  buttonItems={buttonList}
                  onButtonClick={this.handleEnrollClick}/>
             </LinearLayout>
-        
+
       </LinearLayout>
     );
 

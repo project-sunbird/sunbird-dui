@@ -16,11 +16,11 @@ var ClassListItem = require('../../components/Sunbird/ClassListItem');
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 var ImageView = require('@juspay/mystique-backend').androidViews.ImageView;
 
-class ClassAssignmentsScreen extends View {
+class ClassRoomContentScreen extends View {
   constructor(props, children, state) {
     super(props, children, state);
     this.state = state;
-    this.screenName = "CLASS_ASSIGNMENTS_SCREEN"
+    this.screenName = "CLASSROOM_CONTENT_SCREEN"
 
     this.menuData={
       url:[
@@ -28,7 +28,7 @@ class ClassAssignmentsScreen extends View {
       ]
     }
 
-    
+
 
     this.SubscribedData={
       type: "Subjects",
@@ -45,7 +45,7 @@ class ClassAssignmentsScreen extends View {
       {color: "#F0E9FD",imageUrl: "ic_action_search", subject: "Counting Electrons", logo1: "ic_action_completed", logo2: "ic_action_share"},
       {color: "#10D50000",imageUrl: "ic_action_search", subject: "Dot Structure", logo1: "ic_action_completed", logo2: "ic_action_share"},
       {color: "#10FF9F00",imageUrl: "ic_account", subject: "Hybridization", logo1: "ic_action_completed", logo2: "ic_action_share"},
-     
+
       ]
     }
     this.AllData={
@@ -70,11 +70,11 @@ class ClassAssignmentsScreen extends View {
       {color: "#F0E9FD",imageUrl: "ic_account", subject: "Hybridization", logo1: "ic_action_completed", logo2: "ic_action_share"},
       ]
     }
-    
+
   }
-  
+
   onHandleBackPress = () => {
-      
+
   }
 
   onHandleMenuClick = () =>{
@@ -83,7 +83,7 @@ class ClassAssignmentsScreen extends View {
 
   onHandleShareClick = () => {
     console.log("share clicked");
-    
+
   }
 
   getHeadContent = () =>{
@@ -97,7 +97,7 @@ class ClassAssignmentsScreen extends View {
                 <TextView
                   text={"Open (" + Object.keys(this.SubscribedData.values).length + ")"}
                   height="wrap_content"
-                  style={window.__TextStyle.textStyle.HINT.DARK}/>            
+                  style={window.__TextStyle.textStyle.HINT.DARK}/>
                 <Space
                   width ="0"
                   weight="1"/>
@@ -105,7 +105,7 @@ class ClassAssignmentsScreen extends View {
                 <TextView
                   text="View All"
                   height="wrap_content"
-                  style={window.__TextStyle.textStyle.HINT.BLUE}/>  
+                  style={window.__TextStyle.textStyle.HINT.BLUE}/>
 
             </LinearLayout>)
     return layout;
@@ -122,7 +122,7 @@ class ClassAssignmentsScreen extends View {
                 <TextView
                   text={"Downloaded (" + Object.keys(this.AllData.values).length + ")"}
                   height="wrap_content"
-                  style={window.__TextStyle.textStyle.HINT.DARK}/>            
+                  style={window.__TextStyle.textStyle.HINT.DARK}/>
                 <Space
                   width ="0"
                   weight="1"/>
@@ -130,7 +130,7 @@ class ClassAssignmentsScreen extends View {
                 <TextView
                   text="View All"
                   height="wrap_content"
-                  style={window.__TextStyle.textStyle.HINT.BLUE}/>  
+                  style={window.__TextStyle.textStyle.HINT.BLUE}/>
 
             </LinearLayout>)
     return layout;
@@ -138,7 +138,7 @@ class ClassAssignmentsScreen extends View {
 
   getListContent = (data) =>{
     var layout = (
-      <ScrollView 
+      <ScrollView
               height="0"
               weight="1"
               width="match_parent">
@@ -148,7 +148,7 @@ class ClassAssignmentsScreen extends View {
                 width="match_parent"
                 orientation="vertical">
 
-              
+
             <ClassListItem
               data={data}
               onShareClick={this.onHandleShareClick}
@@ -172,7 +172,7 @@ class ClassAssignmentsScreen extends View {
         orientation="vertical"
         width="match_parent"
         height="match_parent">
-          
+
           <SimpleToolbar
             title="Assignemnts"
             width="match_parent"
@@ -191,7 +191,7 @@ class ClassAssignmentsScreen extends View {
             {this.getListContent(this.AllData)}
 
 
-      
+
       </LinearLayout>
     );
 
@@ -199,4 +199,4 @@ class ClassAssignmentsScreen extends View {
   }
 }
 
-module.exports = Connector(ClassAssignmentsScreen);
+module.exports = Connector(ClassRoomContentScreen);

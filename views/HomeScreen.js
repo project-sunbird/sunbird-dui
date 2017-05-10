@@ -31,7 +31,7 @@ class HomeScreen extends View {
       "tabLayoutContainer",
     ]);
     this.Homedata = {
-      name: "Vinay"
+      name: "Andy"
     }
     this.recommendedData = ["Organic Chemistry for Standard VII", "Molecular Reactions for Beginners", "Intermediate Metallurgy", "ImageView"];
     this.imageUrls = ["ic_account", "ic_action_close", "ic_action_completed", "ic_account"];
@@ -188,7 +188,7 @@ class HomeScreen extends View {
           id={this.idSet.viewPagerContainer}
           width="match_parent" />
 
-          
+
 
           <LinearLayout
           background={window.__Colors.WHITE}
@@ -200,10 +200,10 @@ class HomeScreen extends View {
             height="2"
             width="match_parent"
             background={window.__Colors.DARK_GRAY} />
-          
+
           {this.getBottomNavBar()}
 
-            
+
 
           </LinearLayout>
 

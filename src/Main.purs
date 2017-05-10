@@ -1,13 +1,11 @@
 module Main where
 
-import Prelude
-import Control.Monad.Except.Trans (ExceptT, runExceptT)
-import Partial.Unsafe (unsafePartial)
-import Utils (State, showUI)
-import Flows.CourseActivity
-import Control.Monad.Aff (Aff , launchAff)
-import Control.Monad.Eff.Exception (Error)
-import Control.Monad    
+import Prelude (bind, ($), (<>))
+import Control.Monad.Except.Trans (runExceptT)
+import Utils (showUI)
+import Flows.CourseActivity (showCourseInfoFlow)
+import Flows.ClassRoomActivityFlow (showClassroomContetFlow)
+import Control.Monad.Aff (launchAff)
 import Control.Monad.Eff.Console
 import Control.Monad.Eff.Class(liftEff)
 
@@ -17,13 +15,12 @@ init = do
   case event.action of
     "showCourseInfo" -> do
       liftEff $ log "showCourseInfoFlow"
-      showCourseInfoFlow {}
+      showCourseInfoFlow 
+    "showClassroomContet" -> do
+      liftEff $ log "showClassroomContet"
+      showClassroomContetFlow
     _ -> do
       liftEff $ log $ "Action yet to be implemented " <> event.action
-  --pure $ "Complete"
-  -- case state.event of
-  --   "showCourseInfo" -> showCourseInfoFlow state
-  --   _ -> runExceptT init
 
 
 main = launchAff $ do

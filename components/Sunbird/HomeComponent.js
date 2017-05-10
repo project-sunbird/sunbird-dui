@@ -8,12 +8,6 @@ var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 
 window.R = require("ramda");
 
-  // this.data={
-  //     name: "Vinay"
-  //   }
-  //   this.recommendedData = ["Organic Chemistry for Standard VII", "Molecular Reactions for Beginners", "Intermediate Metallurgy", "ImageView"];
-  //   this.imageUrls = ["ic_account", "ic_action_close", "ic_action_completed", "ic_account"];
-    
 
 import RecommendedContainer from '../Sunbird/RecommendedContainer';
 
@@ -34,21 +28,21 @@ class HomeComponent extends View {
         <TextView
           text= {"Hi " + this.props.data.name + "!"}
           margin="16,86,16,12"
-          style={window.__TextStyle.textStyle.TITLE.DARK}                
-          />  
+          style={window.__TextStyle.textStyle.TITLE.DARK}
+          />
 
         <TextView
           text= "Just 3 more classes to mastering Organic Chemistry for Std XI"
           margin="16,0,20,8"
-          style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}                
-          />  
+          style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}
+          />
 
         <TextView
           text= "Take me there >>"
           margin="16,0,0,87"
-          style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}                
-          />  
-      
+          style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}
+          />
+
       </LinearLayout>
       )
   return layout;
@@ -65,20 +59,20 @@ class HomeComponent extends View {
         orientation="vertical"
         width="match_parent"
         height="match_parent">
-  
+
 
         {this.getInfo()}
 
         <RecommendedContainer
-        recommendedData = {this.props.recommendedData}    
+        recommendedData = {this.props.recommendedData}
         imageUrls = {this.props.imageUrls}
        />
-          
 
 
-      
+
+
       </LinearLayout>
-   
+
     )
     return this.layout.render();
   }

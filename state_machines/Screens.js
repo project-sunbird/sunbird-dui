@@ -46,35 +46,13 @@ module.exports = function(action, payload, state) {
 
 
 
-    case "CLASS_SUBJECTS_SCREEN":
+    case "CLASSROOM_CONTENT_SCREEN":
       localState.isInit = false;
-      localState.currScreen = "CLASS_SUBJECTS_SCREEN";
+      localState.currScreen = "CLASSROOM_CONTENT_SCREEN";
       break;
 
-    case "CLASS_ASSIGNMENTS_SCREEN":
-      localState.isInit = false;
-      localState.currScreen = "CLASS_ASSIGNMENTS_SCREEN";
-      break;
 
-    case "CLASS_QUIZ_SCREEN":
-      localState.isInit = false;
-      localState.currScreen = "CLASS_QUIZ_SCREEN";
-      break;
 
-    case "CLASS_LAB_TESTS_SCREEN":
-      localState.isInit = false;
-      localState.currScreen = "CLASS_LAB_TESTS_SCREEN";
-      break;
-
-    case "CLASS_HOME_SCREEN":
-      localState.isInit = false;
-      localState.currScreen = "CLASS_HOME_SCREEN";
-      break;
-
-    case "CLASS_TEST_SCREEN":
-      localState.isInit = false;
-      localState.currScreen = "CLASS_TEST_SCREEN";
-      break;
 
     case "GO_BACK":
       break;
