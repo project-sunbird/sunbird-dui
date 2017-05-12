@@ -13,14 +13,32 @@ import Control.Monad.Eff.Class(liftEff)
 init = do
   event <- showUI "INIT_UI" {screen: "INIT"}
   case event.action of
+    "showMainFlow" -> do
+      liftEff $ log "showMainFlow"
+      home
+    _ -> do
+      liftEff $ log $ "Action yet to be implemented " <> event.action
+
+home = do
+  event <- showUI "HOME" {screen: "HOME"}
+  case event.action of
+    "showHome" -> do
+      liftEff $ log "showHomeFlow"
+      showClassroomContetFlow
     "showCourseInfo" -> do
       liftEff $ log "showCourseInfoFlow"
       showCourseInfoFlow
     "showClassroomContet" -> do
       liftEff $ log "showClassroomContet"
       showClassroomContetFlow
+    "showForum" -> do
+      liftEff $ log "showForumFlow"
+      showClassroomContetFlow
+    "showHome" -> do
+      liftEff $ log "showProfileFlow"
+      showClassroomContetFlow  
     _ -> do
-      liftEff $ log $ "Action yet to be implemented " <> event.action
+      liftEff $ log $ "Action yet to be implemented " <> event.action      
 
 main = launchAff $ do
   runExceptT init

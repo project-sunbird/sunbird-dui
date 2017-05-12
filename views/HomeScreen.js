@@ -15,6 +15,7 @@ var ChooseCourseComponent = require("../components/Sunbird/ChooseCourseComponent
 var ClassRoomHomeComponent = require("../components/Sunbird/ClassRoomHomeComponent")
 var HomeComponent = require('../components/Sunbird/HomeComponent');
 var ProfileActivityComponent = require('../components/Sunbird/ProfileActivityComponent');
+var ContentLoadingComponent = require('../components/Sunbird/ContentLoadingComponent');
 
 window.R = require("ramda");
 
@@ -96,20 +97,13 @@ class HomeScreen extends View {
           tmp = (<ClassRoomHomeComponent
                   showScreen = {this.props.showScreen}
                   height="match_parent"
-                  width="match_parent" />)
+                  width="match_parent"/>)
           break;
         case 3:
-          tmp = (<LinearLayout
+          tmp = (<ContentLoadingComponent
                     height="match_parent"
                     width="match_parent">
-                      <TextView
-                        text={item}
-                        background={this.color}
-                        color="#ffffff"
-                        height="match_parent"
-                        width="match_parent"
-                        gravity="center" />
-                </LinearLayout>)
+                </ContentLoadingComponent>)
           break;
 
         default:
@@ -163,6 +157,8 @@ class HomeScreen extends View {
         root="true"
         orientation="vertical"
         width="match_parent"
+        background={window.__Colors.WHITE}
+        afterRender = {this.afterRender}
         height="match_parent">
         <ViewPager
           height="0"
