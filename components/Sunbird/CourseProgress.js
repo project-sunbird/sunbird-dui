@@ -58,7 +58,7 @@ class CourseProgress extends View {
   }
 
   handleResumeClick = () => {
-    this.updateProgressBar(parseInt(this.competedCount) + 10)
+    this.props.onResumeClick();
   }
 
 

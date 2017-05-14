@@ -24,19 +24,19 @@ home = do
   case event.action of
     "showHome" -> do
       liftEff $ log "showHomeFlow"
-      showClassroomContetFlow
+      showClassroomContetFlow home
     "showCourseInfo" -> do
       liftEff $ log "showCourseInfoFlow"
-      showCourseInfoFlow
+      showCourseInfoFlow home
     "showClassroomContet" -> do
       liftEff $ log "showClassroomContet"
-      showClassroomContetFlow
+      showClassroomContetFlow home
     "showForum" -> do
       liftEff $ log "showForumFlow"
-      showClassroomContetFlow
+      showClassroomContetFlow home
     "showHome" -> do
       liftEff $ log "showProfileFlow"
-      showClassroomContetFlow  
+      showClassroomContetFlow home 
     _ -> do
       liftEff $ log $ "Action yet to be implemented " <> event.action      
 

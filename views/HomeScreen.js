@@ -79,25 +79,42 @@ class HomeScreen extends View {
     var jso = [];
     var tmp;
     this.color = "#123123"
+    var contentLayout;
     var tabItems = this.data.map((item, index) => {
       switch (index) {
         case 0:
-          tmp = (<HomeComponent
+          contentLayout = (
+            <HomeComponent
               recommendedData={this.recommendedData}
               imageUrls={this.imageUrls}
               data={this.Homedata}/>)
+          tmp = (
+            <ContentLoadingComponent
+              height="match_parent"
+              width="match_parent"
+              contentLayout={contentLayout}/>)
           break;
         case 1:
-          tmp = (<ChooseCourseComponent
+          contentLayout = (<ChooseCourseComponent
                   showScreen = {this.handleCourseInfoClick}
                   height="match_parent"
                   width="match_parent" />)
+          tmp = (
+            <ContentLoadingComponent
+              height="match_parent"
+              width="match_parent"
+              contentLayout={contentLayout}/>)
           break;
         case 2:
-          tmp = (<ClassRoomHomeComponent
+          contentLayout = (<ClassRoomHomeComponent
                   showScreen = {this.props.showScreen}
                   height="match_parent"
                   width="match_parent"/>)
+          tmp = (
+            <ContentLoadingComponent
+              height="match_parent"
+              width="match_parent"
+              contentLayout={contentLayout}/>)
           break;
         case 3:
           tmp = (<ContentLoadingComponent
@@ -107,8 +124,9 @@ class HomeScreen extends View {
           break;
 
         default:
-          tmp = (<LinearLayout
+          contentLayout = (<LinearLayout
                   height="match_parent"
+                  root="true"
                   width="match_parent">
                     <TextView
                       text={item}
@@ -118,6 +136,11 @@ class HomeScreen extends View {
                       width="match_parent"
                       gravity="center" />
                 </LinearLayout>)
+          tmp = (
+            <ContentLoadingComponent
+              height="match_parent"
+              width="match_parent"
+              contentLayout={contentLayout}/>)
           break;
       }
       jso.push({ view: this.getView(tmp.render()), value: "", viewType: 0 });

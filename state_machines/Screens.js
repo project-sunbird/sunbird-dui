@@ -33,6 +33,12 @@ module.exports = function(action, payload, state) {
       localState.isInit = false;
       localState.currScreen = "COURSE_ACTIVITY_SCREEN";
       break;
+
+    case "COURSE_QUIZ_ACTIVITY_SCREEN":
+      localState.isInit = false;
+      localState.currScreen = "COURSE_QUIZ_ACTIVITY_SCREEN";
+      break;
+
     case "PROFILE_ACTIVITY_SCREEN":
       localState.isInit = false;
       localState.currScreen = "PROFILE_ACTIVITY_SCREEN";

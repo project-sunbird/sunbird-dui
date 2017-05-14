@@ -22,12 +22,14 @@ class ContentLoadingComponent extends View {
               height="match_parent"
               width="match_parent"
               root="true"
+              gravity="center"
               orientation="vertical">
 
                 <TextView
-                  text="LOADING DONE"
+                  text="Layout Not Passed"
+                  textSize="30"
                   width="match_parent"
-                  layout_gravity="center"/>
+                  />
 
             </LinearLayout>)
   }

@@ -105,7 +105,7 @@ class CourseInfoScreen extends View {
 
   }
 
-  onPop = () =>{
+  onPop = () => {
     Android.runInUI(
       this.animateView(),
       null
@@ -121,6 +121,10 @@ class CourseInfoScreen extends View {
     window.__runDuiCallback({ action: "showCourseActivity" });
   }
 
+  handleCourseResume = (data) => {
+    this.state = R.merge(this.state, { event: 'showQuizActivity' })
+    window.__runDuiCallback({ action: "showQuizActivity" });
+  }
   getEnrolledContent = () => {
     return (
       <ScrollView
@@ -137,7 +141,8 @@ class CourseInfoScreen extends View {
 
                 <CourseProgress
                     height="wrap_content"
-                    width="wrap_content"/>
+                    width="wrap_content"
+                    onResumeClick={this.handleCourseResume}/>
 
                  <CourseCurriculum
                   height="match_parent"
@@ -166,7 +171,8 @@ class CourseInfoScreen extends View {
   }
 
   handleBackPress = () => {
-    
+    this.state = R.merge(this.state, { event: 'showCourseActivity' })
+    window.__runDuiCallback({ action: "goBack" });
   }
 
 
