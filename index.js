@@ -2,10 +2,10 @@ import containers from './containers/container';
 
 import ext from './ext';
 import { main } from './output/Main/index.js';
-import { home } from './output/Main/index.js';
+import { changeFlow } from './output/Main/index.js';
 
 const purescriptMain = main;
-const purescriptHome = home;
+const purescriptChangeFlow = changeFlow;
 
 // import lock from './lock';
 // require('es6-promise').polyfill();
@@ -137,7 +137,9 @@ let purescriptInit = () => {
   window.__duiCb = null;
   window.__runDuiCallback = runDuiCallback;
   window.__setCallback = setCallback
-  window.__runViewPagerFlow = purescriptHome;
+  window.__changePureScriptFlow = purescriptChangeFlow;
+
+
   purescriptMain();
 };
 

@@ -75,9 +75,9 @@ class ClassRoomContentScreen extends View {
 
   handleBackPress = () => {
     console.log("BACK PRESS TO HOME")
-      //this.state = R.merge(this.state, { event: 'goBack' })
-      //window.__runDuiCallback({ action: "goBack" });
-    window.__runViewPagerFlow();
+    window.__changePureScriptFlow();
+    window.__runDuiCallback({ action: "showMainFlow" });
+
   }
 
   handleMenuClick = () => {

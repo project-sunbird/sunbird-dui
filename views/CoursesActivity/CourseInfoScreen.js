@@ -172,8 +172,8 @@ class CourseInfoScreen extends View {
   }
 
   handleBackPress = () => {
-    this.state = R.merge(this.state, { event: 'showCourseActivity' })
-    window.__runDuiCallback({ action: "goBack" });
+    window.__changePureScriptFlow();
+    window.__runDuiCallback({ action: "showMainFlow" });
   }
 
 

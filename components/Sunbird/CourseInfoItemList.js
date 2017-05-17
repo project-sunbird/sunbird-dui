@@ -51,7 +51,6 @@ class CourseInfoItem extends View {
               height="match_parent"
               width="0"
               weight="1"
-              onClick={this.handleItemClick}
               padding="16,16,32,16"
               orientation="vertical">
               <TextView
@@ -86,23 +85,27 @@ class CourseInfoItem extends View {
       cornerRadius="2"
       height="100"
       margin="0,8,0,8"
-      
       background={window.__Colors.WHITE}>
         <LinearLayout
-          width="100"
-          height="100"
-          background = {this.props.item.courseBackground? this.props.item.courseBackground : "#229012FE" }
-          orientation="vertical"
-          gravity="center">
-                <ImageView
-                  height="50"
-                  onClick={this.handleItemClick}
-                  width="50"
-                  imageUrl={this.props.item.courseImage ? this.props.item.courseImage : "ic_account"}/> 
+          height="match_parent"
+          width="match_parent"
+          onClick={this.handleItemClick}>
+
+          <LinearLayout
+            width="100"
+            height="100"
+            background = {this.props.item.courseBackground? this.props.item.courseBackground : "#229012FE" }
+            orientation="vertical"
+            gravity="center">
+                  <ImageView
+                    height="50"
+                    width="50"
+                    imageUrl={this.props.item.courseImage ? this.props.item.courseImage : "ic_account"}/> 
+           </LinearLayout>
+
+           {cardContent}
+
          </LinearLayout>
-
-         {cardContent}
-
        </LinearLayout>
     )
 
@@ -161,7 +164,7 @@ class CourseInfoItemList extends View {
       return (<CourseInfoItem
             width="match_parent"
             height="match_parent"
-            onItemClick={this.handleItemClick}
+            onItemClick={this.handleCourseItemClick}
             item={item}/>)
     })
 
@@ -181,7 +184,7 @@ class CourseInfoItemList extends View {
   }
 
 
-  handleItemClick = (data) => {
+  handleCourseItemClick = (data) => {
     this.props.onItemSelected(data);
   }
 

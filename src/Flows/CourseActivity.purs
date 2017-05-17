@@ -1,35 +1,44 @@
 module Flows.CourseActivity where
 
-import Prelude (bind)
+import Prelude (bind, ($), (<>))
 import Utils (showUI, getCallbackFromScreen)
+import Control.Monad.Eff.Console
+import Control.Monad.Eff.Class(liftEff)
 
 
-courseActivityFlow flow= do
+courseActivityFlow = do
   event <- getCallbackFromScreen "HOME" {screen:"HOME"}
   case event.action of
-    "showCourseInfo" -> showCourseInfoFlow flow
-    "goBack" -> flow
-    _ -> courseActivityFlow flow
+    "showCourseInfo" -> do
+      liftEff $ log "showCourseInfo"
+      showCourseInfoFlow 
+    _ -> courseActivityFlow 
 
 
---showCourseInfoFlow :: forall a b c. (State a) -> ExceptT Error (Aff b) (State c)
-showCourseInfoFlow flow= do
+showCourseInfoFlow = do
   event <- showUI "COURSE_INFO_SCREEN" {screen:"COURSE_INFO_SCREEN"}
   case event.action of
-    "goBack" -> flow
-    "showCourseActivity" -> showCourseActivityFlow flow
-    "showQuizActivity" -> showQuizFlow flow
-    _ ->showCourseInfoFlow flow
+    "showCourseActivity" -> do
+      liftEff $ log "showCourseActivity"
+      showCourseAssignmentFlow 
+    "showQuizActivity" -> do
+      liftEff $ log "showQuizActivity"
+      showQuizFlow
+    _ ->showCourseInfoFlow 
 
 
-showCourseActivityFlow flow= do
+showCourseAssignmentFlow = do
   event <- showUI "COURSE_ACTIVITY_SCREEN" {screen:"COURSE_ACTIVITY_SCREEN"}
   case event.action of
-    "goBack" -> showCourseInfoFlow flow
-    _      -> showCourseActivityFlow flow
+    "goBack" -> do
+      liftEff $ log "goBack"
+      showCourseInfoFlow
+    _  -> showCourseAssignmentFlow 
 
-showQuizFlow flow= do
+showQuizFlow = do
   event <- showUI "COURSE_QUIZ_ACTIVITY_SCREEN" {screen:"COURSE_QUIZ_ACTIVITY_SCREEN"}
   case event.action of
-    "goBack" -> showCourseInfoFlow flow
-    _      -> showQuizFlow flow
+    "goBack" -> do
+      liftEff $ log "goBack"
+      showCourseInfoFlow
+    _      -> showQuizFlow 

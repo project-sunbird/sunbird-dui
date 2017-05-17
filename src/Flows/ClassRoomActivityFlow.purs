@@ -9,20 +9,21 @@ import Control.Monad.Eff.Class(liftEff)
 
 --showCourseInfoFlow :: forall a b c. (State a) -> ExceptT Error (Aff b) (State c) 
 --a b. a -> b -> a
-classRoomActivityFlow flow= do
+classRoomActivityFlow = do
+  liftEff $ log "IN CLASSROOM FLOW"
   event <- getCallbackFromScreen "HOME" {screen:"HOME"}
   case event.action of
     "showClassroomContet" -> do
       liftEff $ log "showClassroomContet"
-      showClassroomContetFlow flow
-    "goBack" -> flow
-    _ -> classRoomActivityFlow flow
+      showClassroomContetFlow 
+    
+    _ -> classRoomActivityFlow 
 
 
 
-showClassroomContetFlow flow= do
+showClassroomContetFlow = do
   event <- showUI "CLASSROOM_CONTENT_SCREEN" {screen:"CLASSROOM_CONTENT_SCREEN"}
   case event.action of
-    "goBack" -> flow
-    _ -> showClassroomContetFlow flow
+    
+    _ -> showClassroomContetFlow 
 

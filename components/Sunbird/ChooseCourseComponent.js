@@ -35,7 +35,8 @@ class ChooseCourseComponent extends View {
   }
 
   handleItemSelect = (data) => {
-    window.__runDuiCallback({ action: "showClassroomContet" });
+    console.log("window.__runDuiCallback( --->showCourseInfo)");
+    window.__runDuiCallback({ action: "showCourseInfo" });
   }
 
 

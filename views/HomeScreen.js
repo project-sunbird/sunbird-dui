@@ -28,13 +28,15 @@ class HomeScreen extends View {
       "tabLayoutContainer",
     ]);
     this.currentViewPagerIndex = 0;
+    this.setupDuiCallback();
+    //dumydata
     this.Homedata = {
       name: "Andy"
     }
-
     this.recommendedData = ["Organic Chemistry for Standard VII", "Molecular Reactions for Beginners", "Intermediate Metallurgy", "My Module"];
     this.imageUrls = ["ic_flask_black", "ic_molecule_black", "ic_metallurgy_black", "ic_flask_black"];
 
+    //tab data
     this.screenName = "HOME_SCREEN"
     this.data = ["HOME", "COURSES", "CLASSROOM", "FORUM", "PROFILE"];
     this.tabValues = [{
@@ -161,8 +163,10 @@ class HomeScreen extends View {
   }
 
   setupDuiCallback = () => {
+    window.__changePureScriptFlow();
     var eventAction;
-    switch (this.currentViewPagerIndex) {
+
+    switch (parseInt(this.currentViewPagerIndex[0])) {
       case 0:
       case 1:
         eventAction = { action: "startCourseFlow" };
@@ -177,9 +181,10 @@ class HomeScreen extends View {
         eventAction = { action: "startClassRoomFlow" };
         break;
       default:
-        eventAction = { action: "startClassRoomFlow" };
+        eventAction = { action: "startCourseFlow" };
         break;
     }
+    console.log("--------->VIEWPAGER TRIGGERS ", eventAction, "ON INDEX", this.currentViewPagerIndex[0]);
     window.__runDuiCallback(eventAction);
   }
 
