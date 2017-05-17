@@ -2,11 +2,11 @@
 var callbackMapper = require('@juspay/mystique-backend').helpers.android.callbackMapper;
 
 exports["sendUpdatedState'"] = function(success) {
-  return function (error) {
+  return function(error) {
     return function(state) {
       return function() {
         var currentScreen = window.__CACHED_SCREENS[window.__CURR_SCREEN];
-        if(currentScreen.hasOwnProperty('handleStateChange')) {
+        if (currentScreen.hasOwnProperty('handleStateChange')) {
           currentScreen.handleStateChange(state);
           success()();
         }
@@ -36,16 +36,39 @@ var callbackMapper = {
     window.__PROXY_FN[fName].call(null, functionArgs);
   }
 }
- 
+
 exports["showUI'"] = function(callback) {
   return function(errCallback) {
     return function(state) {
-      return function (noAction) {
-        return function() {          
+      return function(noAction) {
+        return function() {
           window.__duiShowScreen(callback, state);
-          
-          if(noAction) {
-            setTimeout(function () {
+
+          if (noAction) {
+            setTimeout(function() {
+              callback(state)();
+            }, 1000);
+          } else {
+            window.handleBackPress = function() {
+              state.event = 'goBack';
+              callback(state)();
+            };
+          }
+        };
+      };
+    };
+  };
+};
+
+exports["callbackListner'"] = function(callback) {
+  return function(errCallback) {
+    return function(state) {
+      return function(noAction) {
+        return function() {
+          window.__setCallback(callback, state);
+
+          if (noAction) {
+            setTimeout(function() {
               callback(state)();
             }, 1000);
           } else {
@@ -61,10 +84,10 @@ exports["showUI'"] = function(callback) {
 };
 
 
-exports["setRegistrationToken'"] = function (success) {
-  return function (err) {
-    return function (token) {
-      return function () {
+exports["setRegistrationToken'"] = function(success) {
+  return function(err) {
+    return function(token) {
+      return function() {
         JBridge.setInSharedPrefs("registrationToken", token);
         success()();
       };
@@ -74,16 +97,16 @@ exports["setRegistrationToken'"] = function (success) {
 
 exports["getRegistrationToken'"] = function(success) {
   return function(err) {
-    return function () {
+    return function() {
       success(JBridge.getFromSharedPrefs("registrationToken"))();
     };
   };
 };
 
-exports["setEmployeeDetails'"] = function (success) {
+exports["setEmployeeDetails'"] = function(success) {
   return function(err) {
     return function(empDetails) {
-      return function () {
+      return function() {
         JBridge.setInSharedPrefs("empDetails", JSON.stringify(empDetails));
         success()();
       };
@@ -91,9 +114,9 @@ exports["setEmployeeDetails'"] = function (success) {
   };
 };
 
-exports["getEmployeeDetails'"] = function (success) {
+exports["getEmployeeDetails'"] = function(success) {
   return function(err) {
-    return function () {
+    return function() {
       var empDetails = JBridge.getFromSharedPrefs("empDetails");
       console.log("empDetails", empDetails);
       success(JSON.parse(empDetails))();
@@ -101,10 +124,10 @@ exports["getEmployeeDetails'"] = function (success) {
   };
 };
 
-exports["setLoginToken'"] = function (success) {
-  return function (err) {
-    return function (token) {
-      return function () {
+exports["setLoginToken'"] = function(success) {
+  return function(err) {
+    return function(token) {
+      return function() {
         JBridge.setInSharedPrefs("loginToken", token);
         success()();
       };
@@ -112,28 +135,28 @@ exports["setLoginToken'"] = function (success) {
   };
 };
 
-exports["getLoginToken'"] = function (success) {
-  return function (err) {
-    return function () {
+exports["getLoginToken'"] = function(success) {
+  return function(err) {
+    return function() {
       success(JBridge.getFromSharedPrefs("loginToken"))();
     };
   };
 };
 
 
-exports["getDeviceDetails'"] = function (success) {
-  return function (err) {
-    return function () {
+exports["getDeviceDetails'"] = function(success) {
+  return function(err) {
+    return function() {
       success(JSON.parse(JBridge.getDeviceDetails()))();
     };
   };
 };
 
-exports["updateState'"] = function (success) {
-  return function (err) {
-    return function (data) {
-      return function (state) {
-        return function () {
+exports["updateState'"] = function(success) {
+  return function(err) {
+    return function(data) {
+      return function(state) {
+        return function() {
           state = window.R.merge(state, data);
           success(state)();
         };
@@ -142,30 +165,30 @@ exports["updateState'"] = function (success) {
   };
 };
 
-exports["getLoginStatus'"] = function (success) {
-  return function (error) {
+exports["getLoginStatus'"] = function(success) {
+  return function(error) {
     return function(response) {
-      return function () {
+      return function() {
         console.log(response);
-        if(response.response.error) {
+        if (response.response.error) {
           success(false);
         } else {
-          success(true); 
+          success(true);
         }
       };
     };
   };
 };
 
-exports["getCurrentDay"] = function (days) {
+exports["getCurrentDay"] = function(days) {
   var d = new Date();
   var mm = d.getMonth() + 1;
   var dd = d.getDate();
   dd = dd + days;
   return [d.getFullYear(),
-          (mm>9 ? '' : '0') + mm,
-          (dd>9 ? '' : '0') + dd
-         ].join('');
+    (mm > 9 ? '' : '0') + mm,
+    (dd > 9 ? '' : '0') + dd
+  ].join('');
 }
 
 exports["callAPI'"] = function(success) {
@@ -175,12 +198,12 @@ exports["callAPI'"] = function(success) {
       return function(url) {
         return function(data) {
           return function(headers) {
-            headers = headers.map(function (header) {
+            headers = headers.map(function(header) {
               var hdr = {};
               hdr[header.value0] = header.value1;
               return hdr;
             });
-            
+
             var callback = callbackMapper.map(function(params) {
               if (arguments && arguments[0].length >= 3) {
                 success({
@@ -197,7 +220,7 @@ exports["callAPI'"] = function(success) {
                 })();
               }
             });
-             
+
             JBridge.callAPI(method, url, JSON.stringify(data), JSON.stringify(headers), true, callback);
           };
         };
@@ -205,7 +228,7 @@ exports["callAPI'"] = function(success) {
     };
   };
 };
- 
+
 exports["checkPermission'"] = function(success) {
   return function(err) {
     var callback = callbackMapper.map(function(params) {

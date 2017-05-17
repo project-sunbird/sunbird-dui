@@ -1,8 +1,15 @@
 module Flows.CourseActivity where
 
 import Prelude (bind)
-import Utils (showUI)
-import Flows.CourseActivity (showCourseInfoFlow)
+import Utils (showUI, getCallbackFromScreen)
+
+
+courseActivityFlow flow= do
+  event <- getCallbackFromScreen "HOME" {screen:"HOME"}
+  case event.action of
+    "showCourseInfo" -> showCourseInfoFlow flow
+    "goBack" -> flow
+    _ -> courseActivityFlow flow
 
 
 --showCourseInfoFlow :: forall a b c. (State a) -> ExceptT Error (Aff b) (State c)

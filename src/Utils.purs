@@ -38,6 +38,7 @@ type AffSuccess s e = (s -> Eff e Unit)
 type ApiResponse = {status :: String, statusCode :: Int, response :: A.Json}
 
 foreign import showUI' :: forall e a b. (AffSuccess ({|a}) e) -> (AffError e) -> ({|b}) -> Boolean -> Eff e Unit
+foreign import callbackListner' :: forall e a b. (AffSuccess ({|a}) e) -> (AffError e) -> ({|b}) -> Boolean -> Eff e Unit
                           
 
 type ExceptionableAff e a = ExceptT Error (Aff e) a
@@ -51,6 +52,10 @@ showUI screen state = ExceptT $ pure <$>
 showUISync screen state = ExceptT $ pure <$>
   let updatedState = state {screen = screen} in
   makeAff (\error success -> showUI' success error updatedState true)
+
+getCallbackFromScreen screen state = ExceptT $ pure <$>
+  let updatedState = state {screen = screen} in
+  makeAff (\error success -> callbackListner' success error updatedState false)
 
 
 getExceptT value = ExceptT $ pure $ Right value

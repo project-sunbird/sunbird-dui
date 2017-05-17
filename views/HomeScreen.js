@@ -27,9 +27,11 @@ class HomeScreen extends View {
       "viewPagerContainer",
       "tabLayoutContainer",
     ]);
+    this.currentViewPagerIndex = 0;
     this.Homedata = {
       name: "Andy"
     }
+
     this.recommendedData = ["Organic Chemistry for Standard VII", "Molecular Reactions for Beginners", "Intermediate Metallurgy", "My Module"];
     this.imageUrls = ["ic_flask_black", "ic_molecule_black", "ic_metallurgy_black", "ic_flask_black"];
 
@@ -71,6 +73,8 @@ class HomeScreen extends View {
       this.animateView(),
       null
     );
+
+    this.setupDuiCallback();
   }
 
   afterRender = () => {
@@ -156,7 +160,32 @@ class HomeScreen extends View {
 
   }
 
+  setupDuiCallback = () => {
+    var eventAction;
+    switch (this.currentViewPagerIndex) {
+      case 0:
+      case 1:
+        eventAction = { action: "startCourseFlow" };
+        break;
+      case 2:
+        eventAction = { action: "startClassRoomFlow" };
+        break;
+      case 3:
+        eventAction = { action: "startClassRoomFlow" };
+        break;
+      case 4:
+        eventAction = { action: "startClassRoomFlow" };
+        break;
+      default:
+        eventAction = { action: "startClassRoomFlow" };
+        break;
+    }
+    window.__runDuiCallback(eventAction);
+  }
+
   handleViewPagerAction = (index) => {
+    this.currentViewPagerIndex = index;
+    this.setupDuiCallback();
     this.bNavBar.handleNavigationChange(index);
   }
 

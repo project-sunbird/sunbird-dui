@@ -35,8 +35,7 @@ class ChooseCourseComponent extends View {
   }
 
   handleItemSelect = (data) => {
-    console.log("CLICKED :", data);
-    this.props.showScreen("COURSE_INFO_SCREEN", {});
+    window.__runDuiCallback({ action: "showClassroomContet" });
   }
 
 
