@@ -121,6 +121,7 @@ class CourseInfoScreen extends View {
     window.__runDuiCallback({ action: "showCourseActivity" });
   }
 
+
   handleCourseResume = (data) => {
     this.state = R.merge(this.state, { event: 'showQuizActivity' })
     window.__runDuiCallback({ action: "showQuizActivity" });

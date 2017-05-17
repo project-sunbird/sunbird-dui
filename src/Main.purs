@@ -3,8 +3,8 @@ module Main where
 import Prelude (bind, ($), (<>))
 import Control.Monad.Except.Trans (runExceptT)
 import Utils (showUI)
-import Flows.CourseActivity (showCourseInfoFlow)
-import Flows.ClassRoomActivityFlow (showClassroomContetFlow)
+import Flows.CourseActivity (courseActivityFlow)
+import Flows.ClassRoomActivityFlow (classRoomActivityFlow)
 import Control.Monad.Aff (launchAff)
 import Control.Monad.Eff.Console
 import Control.Monad.Eff.Class(liftEff)
@@ -19,24 +19,25 @@ init = do
     _ -> do
       liftEff $ log $ "Action yet to be implemented " <> event.action
 
+
 home = do
   event <- showUI "HOME" {screen: "HOME"}
   case event.action of
     "showHome" -> do
       liftEff $ log "showHomeFlow"
-      showClassroomContetFlow home
-    "showCourseInfo" -> do
-      liftEff $ log "showCourseInfoFlow"
-      showCourseInfoFlow home
-    "showClassroomContet" -> do
-      liftEff $ log "showClassroomContet"
-      showClassroomContetFlow home
+      classRoomActivityFlow home
+    "startCourseFlow" -> do
+      liftEff $ log "startCourseFlow"
+      courseActivityFlow home
+    "startClassRoomFlow" -> do
+      liftEff $ log "startClassRoomFlow"
+      classRoomActivityFlow home
     "showForum" -> do
       liftEff $ log "showForumFlow"
-      showClassroomContetFlow home
+      classRoomActivityFlow home
     "showHome" -> do
       liftEff $ log "showProfileFlow"
-      showClassroomContetFlow home 
+      classRoomActivityFlow home
     _ -> do
       liftEff $ log $ "Action yet to be implemented " <> event.action      
 
