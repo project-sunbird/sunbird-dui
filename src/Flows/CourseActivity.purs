@@ -1,44 +1,45 @@
 module Flows.CourseActivity where
 
 import Prelude (bind, ($), (<>))
-import Utils (showUI, getCallbackFromScreen)
+import Utils (showUI, getCallbackFromScreen, updateState)
 import Control.Monad.Eff.Console
 import Control.Monad.Eff.Class(liftEff)
 
 
-courseActivityFlow = do
-  event <- getCallbackFromScreen "HOME" {screen:"HOME"}
-  case event.action of
+courseActivityFlow state = do
+  state <- getCallbackFromScreen "HOME" state
+  state <- updateState {employee: "lol"} state
+  case state.action of
     "showCourseInfo" -> do
       liftEff $ log "showCourseInfo"
-      showCourseInfoFlow 
-    _ -> courseActivityFlow 
+      showCourseInfoFlow state
+    _ -> courseActivityFlow state
 
 
-showCourseInfoFlow = do
-  event <- showUI "COURSE_INFO_SCREEN" {screen:"COURSE_INFO_SCREEN"}
-  case event.action of
+showCourseInfoFlow state = do
+  state <- showUI "COURSE_INFO_SCREEN" state
+  case state.action of
     "showCourseActivity" -> do
       liftEff $ log "showCourseActivity"
-      showCourseAssignmentFlow 
+      showCourseAssignmentFlow state
     "showQuizActivity" -> do
       liftEff $ log "showQuizActivity"
-      showQuizFlow
-    _ ->showCourseInfoFlow 
+      showQuizFlow state
+    _ ->showCourseInfoFlow state
 
 
-showCourseAssignmentFlow = do
-  event <- showUI "COURSE_ACTIVITY_SCREEN" {screen:"COURSE_ACTIVITY_SCREEN"}
-  case event.action of
+showCourseAssignmentFlow state = do
+  state <- showUI "COURSE_ACTIVITY_SCREEN" state
+  case state.action of
     "goBack" -> do
       liftEff $ log "goBack"
-      showCourseInfoFlow
-    _  -> showCourseAssignmentFlow 
+      showCourseInfoFlow state
+    _  -> showCourseAssignmentFlow state
 
-showQuizFlow = do
-  event <- showUI "COURSE_QUIZ_ACTIVITY_SCREEN" {screen:"COURSE_QUIZ_ACTIVITY_SCREEN"}
-  case event.action of
+showQuizFlow state = do
+  state <- showUI "COURSE_QUIZ_ACTIVITY_SCREEN" state
+  case state.action of
     "goBack" -> do
       liftEff $ log "goBack"
-      showCourseInfoFlow
-    _      -> showQuizFlow 
+      showCourseInfoFlow state
+    _      -> showQuizFlow state

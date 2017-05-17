@@ -31,14 +31,15 @@ import Partial.Unsafe
 import Data.Bifoldable
 
     
-type State a = {| a}
+type State a = {screen :: String | a}
 
 type AffError e = (Error -> Eff e Unit)
 type AffSuccess s e = (s -> Eff e Unit)
 type ApiResponse = {status :: String, statusCode :: Int, response :: A.Json}
 
-foreign import showUI' :: forall e a b. (AffSuccess ({|a}) e) -> (AffError e) -> ({|b}) -> Boolean -> Eff e Unit
+foreign import showUI' :: forall e a b. (AffSuccess (State a) e) -> (AffError e) -> (State b) -> Boolean -> Eff e Unit
 foreign import callbackListner' :: forall e a b. (AffSuccess ({|a}) e) -> (AffError e) -> ({|b}) -> Boolean -> Eff e Unit
+foreign import updateState' :: forall a b s1 s2 e. (AffSuccess (State s2) e) -> (AffError e) -> a -> (State s1) -> Eff e Unit
                           
 
 type ExceptionableAff e a = ExceptT Error (Aff e) a
@@ -57,5 +58,6 @@ getCallbackFromScreen screen state = ExceptT $ pure <$>
   let updatedState = state {screen = screen} in
   makeAff (\error success -> callbackListner' success error updatedState false)
 
+updateState changes state = ExceptT $ pure <$> makeAff(\error success -> updateState' success error changes state)
 
 getExceptT value = ExceptT $ pure $ Right value

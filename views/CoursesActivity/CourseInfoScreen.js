@@ -28,7 +28,7 @@ class CourseInfoScreen extends View {
     ]);
     this.state = state;
     this.screenName = "COURSE_INFO_SCREEN"
-
+    console.log("GOT STATE", state)
     this.menuData = {
       url: [
         { imageUrl: "ic_action_search", title: "hello" }

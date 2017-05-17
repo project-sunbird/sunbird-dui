@@ -1,6 +1,6 @@
 module Main where
 
-import Prelude (bind, ($), (<>))
+import Prelude (bind, ($), (<>), pure)
 import Control.Monad.Except.Trans (runExceptT)
 import Utils (showUI, getCallbackFromScreen)
 import Flows.CourseActivity (courseActivityFlow)
@@ -21,36 +21,35 @@ init = do
 
 
 home = do
-  liftEff $ log "IN home FLOW"
   event <- showUI "HOME" {screen: "HOME"}
   case event.action of
     _ -> do
       liftEff $ log $ "Action yet to be implemented " <> event.action    
 
 cFlow = do
-  event <- getCallbackFromScreen "HOME" {screen: "HOME"}
-  liftEff $ log $ "vFLow EVENT " <> event.action
-  case event.action of
+  state <- getCallbackFromScreen "HOME" {screen: "HOME"}
+  liftEff $ log $ "vFLow EVENT " 
+  case state.action of
     "showMainFlow" -> do
       liftEff $ log "showMainFlow"
       home 
     "showHome" -> do
       liftEff $ log "showHomeFlow"
-      classRoomActivityFlow 
+      classRoomActivityFlow state
     "startCourseFlow" -> do
       liftEff $ log "startCourseFlow"
-      courseActivityFlow 
+      courseActivityFlow state
     "startClassRoomFlow" -> do
       liftEff $ log "startClassRoomFlow"
-      classRoomActivityFlow 
+      classRoomActivityFlow state
     "showForum" -> do
       liftEff $ log "showForumFlow"
-      classRoomActivityFlow 
+      classRoomActivityFlow state
     "showHome" -> do
       liftEff $ log "showProfileFlow"
-      classRoomActivityFlow 
+      classRoomActivityFlow state
     _ -> do
-      liftEff $ log $ "Action yet to be implemented " <> event.action      
+      liftEff $ log $ "Action yet to be implemented " <> state.action      
 
 main = launchAff $ do
   runExceptT init
