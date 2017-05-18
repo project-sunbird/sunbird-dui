@@ -1,14 +1,15 @@
 module Flows.CourseActivity where
 
 import Prelude (bind, ($), (<>))
-import Utils (showUI, getCallbackFromScreen, updateState)
+import Utils
 import Control.Monad.Eff.Console
 import Control.Monad.Eff.Class(liftEff)
 
 
 courseActivityFlow state = do
   state <- getCallbackFromScreen "HOME" state
-  state <- updateState {employee: "lol"} state
+  dummyData <- getDummyData "do_2122081667976560641100"
+  state <- updateState {dummyDataVAl: dummyData} state
   case state.action of
     "showCourseInfo" -> do
       liftEff $ log "showCourseInfo"

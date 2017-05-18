@@ -198,13 +198,16 @@ exports["callAPI'"] = function(success) {
       return function(url) {
         return function(data) {
           return function(headers) {
+            console.log("Headers are ", headers);
             headers = headers.map(function(header) {
               var hdr = {};
               hdr[header.value0] = header.value1;
               return hdr;
             });
-
+            console.log("Headers are ", headers);
+            console.log("Response", arguments)
             var callback = callbackMapper.map(function(params) {
+              console.log("Response", arguments)
               if (arguments && arguments[0].length >= 3) {
                 success({
                   status: arguments[0],
