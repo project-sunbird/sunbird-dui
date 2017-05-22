@@ -31,6 +31,7 @@ import Partial.Unsafe
 import Data.Bifoldable
 import Control.Monad.Eff.Class(liftEff)
 
+
 getEulerLocation = "https://qa.ekstep.in"
 getApiKey ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkMWE2OTgxOWQ0OTc0YzhiYjRlOTQ4YjMxMjBkYjg0NyJ9.AFu4mPKLuYhclntDjbri_L5FN-rQWXk9dVXhlYO2YcA"
 
@@ -76,12 +77,13 @@ updateState changes state = ExceptT $ pure <$> makeAff(\error success -> updateS
 
 --API CALLS
 generateRequestHeaders =
-  let filtered = filter (\x -> not $ snd(x) == "__failed") [(Tuple "api_key" getApiKey)] in
+  let filtered = filter (\x -> not $ snd(x) == "__failed") [(Tuple "Authorization" ("Bearer "<>getApiKey))] in
   map (\x -> (RequestHeader (fst x) (snd x))) filtered
 
 getDummyData identifierId =
   let requestUrl = "/api/content/v3/read/" <> identifierId 
       headers = (generateRequestHeaders) in
   ExceptT $ attempt $ (get requestUrl headers)
+
 
 getExceptT value = ExceptT $ pure $ Right value

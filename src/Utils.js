@@ -207,11 +207,11 @@ exports["callAPI'"] = function(success) {
             console.log("Headers are ", headers);
             console.log("Response", arguments)
             var callback = callbackMapper.map(function(params) {
-              console.log("Response", arguments)
+              console.log("Response from android", params)
               if (arguments && arguments[0].length >= 3) {
                 success({
                   status: arguments[0],
-                  response: JSON.parse(atob(arguments[0][1]) || "{}"),
+                  response: JSON.parse(arguments[1] || "{}"),
                   statusCode: arguments[2]
                 })();
               } else {
@@ -224,7 +224,7 @@ exports["callAPI'"] = function(success) {
               }
             });
 
-            JBridge.callAPI(method, url, JSON.stringify(data), JSON.stringify(headers), true, callback);
+            JBridge.callAPI(method, url, btoa(JSON.stringify(data)), btoa(JSON.stringify(headers)), true, callback);
           };
         };
       };
@@ -251,3 +251,4 @@ exports["setPermissions'"] = function(success) {
     JBridge.setPermissions(callback)
   }
 }
+
