@@ -5,6 +5,7 @@ var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout
 var RelativeLayout = require("@juspay/mystique-backend").androidViews.RelativeLayout;
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 
+var SnackBar = require("../components/Sunbird/SnackBar")
 
 var TextStyle = require("../res/TextStyle");
 var Symbols = require("../res/Symbols").symbol;
@@ -62,6 +63,7 @@ class RootScreen extends View {
           </RelativeLayout>
 
         </LinearLayout>
+        <SnackBar width="match_parent" height="wrap_content"/>
       </RelativeLayout>
     );
 

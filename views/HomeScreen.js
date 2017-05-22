@@ -160,6 +160,7 @@ class HomeScreen extends View {
 
     JBridge.viewPagerAdapter(this.idSet.viewPagerContainer, JSON.stringify(jso), JSON.stringify(tabData), callback);
 
+
   }
 
   setupDuiCallback = () => {
@@ -196,6 +197,13 @@ class HomeScreen extends View {
 
   handleBottomNavBarAction = (index) => {
     JBridge.switchToViewPagerIndex(index + "");
+
+    window.__SNACKBAR.setAction({
+      text: "PAGE " + index,
+      status: "success",
+      actionText: "RETRY"
+    }, () => { console.log("CLICKED ACTION") });
+    window.__SNACKBAR.show(true);
   }
 
   getBottomNavBar = () => {
