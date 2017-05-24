@@ -21,16 +21,16 @@ class TodoContainer extends View {
   afterRender = () => {
     this.indexItems = this.props.todoData;
     this.tmpArr = [];
-    this.imageUrls = this.props.todoimageUrls;
     var _this = this;
     for (var i = 0; i < this.indexItems.length; i++) {
 
       var dat = {
         moduleBackground: (i % 2 == 0 ? "#22007aff" : "#229012FE"),
-        moduleName: _this.indexItems[i],
-        moduleImage: _this.imageUrls[i],
-        moduleUserCount: (i * 100 + (-1) * 4 * i + i),
-        moduleRating: parseFloat(5 / i)
+        moduleName: _this.indexItems[i]["name"],
+        moduleImage: _this.indexItems[i]["imageUrl"],
+        moduleClass: _this.indexItems[i]["class"],
+        modulePendingClass: _this.indexItems[i]["pen_classes"],
+        
       }
       console.log("ADDING")
       _this.tmpArr.push(dat)

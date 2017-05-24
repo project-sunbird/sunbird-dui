@@ -39,10 +39,35 @@ class HomeScreen extends View {
     
     this.recommendedData = ["Organic Chemistry for Standard VII", "Molecular Reactions for Beginners", "Intermediate Metallurgy", "My Module"];
     this.recommendedimageUrls = ["ic_flask_black", "ic_molecule_black", "ic_metallurgy_black", "ic_flask_black"];
+    // Todo Data
+    this.todoData=[
+      {
+        name: "Mastering in Organic Chemistry",
+        imageUrl: "ic_flask_black",
+        class: "IX",
+        pen_classes: "3"
+      },
+      {
+        name: "Mastering in Physics",
+        imageUrl: "ic_molecule_black",
+        class: "IX",
+        pen_classes: "3"
+      },
+      {
+        name: "Mastering in Intermediate Metallurgy",
+        imageUrl: "ic_flask_black",
+        class: "IX",
+        pen_classes: "3"
+      },
+      {
+        name: "Mastering in Organic Chemistry",
+        imageUrl: "ic_flask_black",
+        class: "IX",
+        pen_classes: "3"
+      }
 
-    this.todoData = ["Mastering in Organic Chemistry", "Mastering in Physics", "Intermediate Metallurgy", "My Module"];
-    this.todoimageUrls = ["ic_flask_black", "ic_molecule_black", "ic_metallurgy_black", "ic_flask_black"];
 
+    ]
     //tab data
     this.screenName = "HOME_SCREEN"
     this.data = ["HOME", "COURSES", "RESOURCES", "FORUM", "PROFILE"];
@@ -101,10 +126,9 @@ class HomeScreen extends View {
             <HomeComponent
               recommendedData={this.recommendedData}
               recommendedimageUrls={this.recommendedimageUrls}
-              todoData={this.todoData}
               menuData={this.menuData}
-              todoimageUrls={this.todoimageUrls
-              }
+              todoData = {this.todoData}
+              
               />)
           tmp = (
             <ContentLoadingComponent

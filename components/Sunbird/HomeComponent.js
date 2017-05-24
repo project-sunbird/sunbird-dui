@@ -86,9 +86,8 @@ class HomeComponent extends View {
                         orientation="vertical">
                 
                       <TodoContainer
-                      todoData = {this.props.todoData}
-                      todoimageUrls = {this.props.todoimageUrls}
                       onClick = {this.handleTodoClick}
+                      todoData = {this.props.todoData}
                      />
 
                       <RecommendedContainer

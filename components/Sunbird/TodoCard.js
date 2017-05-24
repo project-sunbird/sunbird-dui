@@ -52,10 +52,10 @@ class TodoCard extends View {
                 >
                   <TextView
                       style={window.__TextStyle.textStyle.HINT.REGULAR}
-                      text="Std IX"/>
+                      text={"Std "+ this.props.item.moduleClass}/>
                   <TextView
                       style={window.__TextStyle.textStyle.HINT.REGULAR}
-                      text="3 Classes More"/>
+                      text={"   "+ this.props.item.modulePendingClass + " Classes More"}/>
               </LinearLayout>
            </LinearLayout>)
   }
@@ -78,7 +78,6 @@ class TodoCard extends View {
         cornerRadius="5"
         margin="16,0,16,0"
         root="true"
-        onClick = {this.handleClick}
         background={window.__Colors.PRIMARY_BLACK_11}
         >
           <LinearLayout
@@ -92,6 +91,7 @@ class TodoCard extends View {
                   width="318"
                   height="74"
                   cornerRadius="5"
+                  onClick = {this.handleClick}
                   >
                   {
                     this.getCardIcon()
