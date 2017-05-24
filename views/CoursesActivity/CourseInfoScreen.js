@@ -29,9 +29,9 @@ class CourseInfoScreen extends View {
     this.state = state;
     this.screenName = "COURSE_INFO_SCREEN"
     console.log("GOT STATE", JSON.stringify(state.dummyDataVAl.status))
-    JBridge.showSnackBar("Success","Retry","fvfvfvfbm")
+    
 
-    window.__RootScreen.snackBar("Hellllllo")
+    // window.__RootScreen.snackBar("Hellllllo")
     this.menuData = {
       url: [
         { imageUrl: "ic_action_search", title: "hello" }

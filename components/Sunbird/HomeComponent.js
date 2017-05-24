@@ -11,6 +11,9 @@ var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 window.R = require("ramda");
 
 
+var SimpleToolbar = require('../Sunbird/SimpleToolbar');
+
+var TodoContainer = require('../Sunbird/TodoContainer');
 var RecommendedContainer = require('../Sunbird/RecommendedContainer');
 
 class HomeComponent extends View {
@@ -19,37 +22,39 @@ class HomeComponent extends View {
 
   }
 
-  getInfo = () => {
+  // getInfo = () => {
 
-    var layout = (
-      <LinearLayout
-        orientation="vertical"
-        width="match_parent"
-        height="wrap_content">
+  //   var layout = (
+  //     <LinearLayout
+  //       orientation="vertical"
+  //       width="match_parent"
+  //       height="wrap_content">
 
-        <TextView
-          text= {"Hi " + this.props.data.name + "!"}
-          margin="16,86,16,12"
-          style={window.__TextStyle.textStyle.TITLE.DARK}
-          />
+  //       <TextView
+  //         text= {"Hi " + this.props.data.name + "!"}
+  //         margin="16,86,16,12"
+  //         style={window.__TextStyle.textStyle.TITLE.DARK}
+  //         />
 
-        <TextView
-          text= "Just 3 more classes to mastering Organic Chemistry for Std XI"
-          margin="16,0,20,8"
-          style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}
-          />
+  //       <TextView
+  //         text= "Just 3 more classes to mastering Organic Chemistry for Std XI"
+  //         margin="16,0,20,8"
+  //         style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}
+  //         />
 
-        <TextView
-          text= "Take me there >>"
-          margin="16,0,0,87"
-          style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}
-          />
+  //       <TextView
+  //         text= "Take me there >>"
+  //         margin="16,0,0,87"
+  //         style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}
+  //         />
 
-      </LinearLayout>
-    )
-    return layout;
+  //     </LinearLayout>
+  //   )
+  //   return layout;
+  // }
+  handleTodoClick = (index) =>{
+    console.log("Todo Clicked index is ",index);
   }
-
 
   render() {
 
@@ -62,25 +67,38 @@ class HomeComponent extends View {
         width="match_parent"
         height="match_parent">
 
+        <SimpleToolbar
+          title=""
+          invert="true"
+          hideBack="true"
+          menuData={this.props.menuData}
+          width="match_parent"/>
+        
+
         <ScrollView
-          height="match_parent"
-          width="match_parent"
-          root="true"
-          fillViewPort="true">
+                 height="0"
+                  weight="1"
+                  width="match_parent">
+            
+                <LinearLayout
+                        height="match_parent"
+                        width="match_parent"
+                        orientation="vertical">
+                
+                      <TodoContainer
+                      todoData = {this.props.todoData}
+                      todoimageUrls = {this.props.todoimageUrls}
+                      onClick = {this.handleTodoClick}
+                     />
 
-          <LinearLayout
-            orientation="vertical"
-            width="match_parent"
-            height="match_parent">
+                      <RecommendedContainer
+                      recommendedData = {this.props.recommendedData}
+                      recommendedimageUrls = {this.props.recommendedimageUrls}
+                     />
 
-                {this.getInfo()}
+               </LinearLayout>
 
-                <RecommendedContainer
-                recommendedData = {this.props.recommendedData}
-                imageUrls = {this.props.imageUrls}/>
-          </LinearLayout>
-
-       </ScrollView>
+           </ScrollView>
 
 
       </LinearLayout>

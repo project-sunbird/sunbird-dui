@@ -30,11 +30,18 @@ class HomeScreen extends View {
     this.currentViewPagerIndex = 0;
     this.setupDuiCallback();
     //dumydata
-    this.Homedata = {
-      name: "Andy"
+
+    this.menuData = {
+      url: [
+        { imageUrl: "ic_action_search" }
+      ]
     }
+    
     this.recommendedData = ["Organic Chemistry for Standard VII", "Molecular Reactions for Beginners", "Intermediate Metallurgy", "My Module"];
-    this.imageUrls = ["ic_flask_black", "ic_molecule_black", "ic_metallurgy_black", "ic_flask_black"];
+    this.recommendedimageUrls = ["ic_flask_black", "ic_molecule_black", "ic_metallurgy_black", "ic_flask_black"];
+
+    this.todoData = ["Mastering in Organic Chemistry", "Mastering in Physics", "Intermediate Metallurgy", "My Module"];
+    this.todoimageUrls = ["ic_flask_black", "ic_molecule_black", "ic_metallurgy_black", "ic_flask_black"];
 
     //tab data
     this.screenName = "HOME_SCREEN"
@@ -79,6 +86,7 @@ class HomeScreen extends View {
     this.setupDuiCallback();
   }
 
+
   afterRender = () => {
 
     var tabData = [];
@@ -92,8 +100,12 @@ class HomeScreen extends View {
           contentLayout = (
             <HomeComponent
               recommendedData={this.recommendedData}
-              imageUrls={this.imageUrls}
-              data={this.Homedata}/>)
+              recommendedimageUrls={this.recommendedimageUrls}
+              todoData={this.todoData}
+              menuData={this.menuData}
+              todoimageUrls={this.todoimageUrls
+              }
+              />)
           tmp = (
             <ContentLoadingComponent
               height="match_parent"

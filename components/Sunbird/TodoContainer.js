@@ -5,23 +5,23 @@ var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 var HorizontalScrollView = require("@juspay/mystique-backend").androidViews.HorizontalScrollView;
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
-import RecommendedCard from '../Sunbird/RecommendedCard';
+import TodoCard from '../Sunbird/TodoCard';
 
-class RecommendedContainer extends View {
+class TodoContainer extends View {
   constructor(props, children) {
     super(props, children);
 
     this.props.appendText = this.props.appendText || "";
     this.setIds([
-      'recommendedContainer'
+      'todoContainer'
     ]);
   }
 
 
   afterRender = () => {
-    this.indexItems = this.props.recommendedData;
+    this.indexItems = this.props.todoData;
     this.tmpArr = [];
-    this.imageUrls = this.props.recommendedimageUrls;
+    this.imageUrls = this.props.todoimageUrls;
     var _this = this;
     for (var i = 0; i < this.indexItems.length; i++) {
 
@@ -39,24 +39,30 @@ class RecommendedContainer extends View {
 
     var cards = this.tmpArr.map((item, i) => {
       return (
-        <RecommendedCard 
+        <TodoCard 
           item={item} 
           index={i} 
-          _onClick={this.handleIndexMenu} />)
+          onClick={this.handleModuleClick} />)
     });
 
     var renderItem = (<LinearLayout 
                         height="match_parent" 
                         root="true"
-                        padding="0,16,20,20"
+                        padding="0,16,0,20"
                         orientation="horizontal"
                         layout_gravity="center_horizontal"
                         width="match_parent">
                           {cards}
                     </LinearLayout>);
     console.log(renderItem)
-    this.replaceChild(this.idSet.recommendedContainer, renderItem.render(), 0);
+    this.replaceChild(this.idSet.todoContainer, renderItem.render(), 0);
   }
+
+  handleModuleClick = (index) => {
+    console.log("in TODO container",index)
+    this.props.onClick(index);
+  }
+
 
 
   render() {
@@ -65,42 +71,38 @@ class RecommendedContainer extends View {
     this.layout = (
 
       <LinearLayout
-      width="match_parent"
-      height="wrap_content"
+      width="360"
+      height="218"
       margin = "0,0,0,0"
       afterRender={this.afterRender}
       orientation="vertical"
-      gravity="center"
+      background={window.__Colors.CREAM}
       >
 
           <LinearLayout
-              width="match_parent"
-              height="match_parent"
+              width="wrap_content"
+              height="wrap_content"
               margin = "0,0,0,0"
               >
 
           <TextView 
           margin="16,16,16,16"
-          style={window.__TextStyle.textStyle.CARD.TITLE.DARK}
-          text="Recommended"/>
+          style={window.__TextStyle.textStyle.TITLE.DARK}
+          text="Todo"/>
           <Space 
             width="0"
             weight="1"
           />
-          <TextView 
-          margin="16,16,16,16"
-          style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}
-          text="View All"/>
 
 
         </LinearLayout>
            <HorizontalScrollView
-            width = "match_parent"
-            height = "match_parent"
+            width = "wrap_content"
+            height = "wrap_content"
             scrollBarX="false"
             fillViewport="true">
               <LinearLayout
-                id={this.idSet.recommendedContainer}
+                id={this.idSet.todoContainer}
                 orientation="vertical"
                 height="wrap_content"
                 width="match_parent"
@@ -108,6 +110,10 @@ class RecommendedContainer extends View {
               </LinearLayout>
           </HorizontalScrollView>
                         
+        <TextView 
+          margin="16,0,0,0"
+          style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}
+          text="View all to-dos >"/>
                     
        </LinearLayout>
 
@@ -118,4 +124,4 @@ class RecommendedContainer extends View {
   }
 }
 
-module.exports = RecommendedContainer;
+module.exports = TodoContainer;
