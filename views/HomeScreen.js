@@ -29,45 +29,7 @@ class HomeScreen extends View {
     ]);
     this.currentViewPagerIndex = 0;
     this.setupDuiCallback();
-    //dumydata
-
-    this.menuData = {
-      url: [
-        { imageUrl: "ic_action_search" }
-      ]
-    }
     
-    this.recommendedData = ["Organic Chemistry for Standard VII", "Molecular Reactions for Beginners", "Intermediate Metallurgy", "My Module"];
-    this.recommendedimageUrls = ["ic_flask_black", "ic_molecule_black", "ic_metallurgy_black", "ic_flask_black"];
-    // Todo Data
-    this.todoData=[
-      {
-        name: "Mastering in Organic Chemistry",
-        imageUrl: "ic_flask_black",
-        class: "IX",
-        pen_classes: "3"
-      },
-      {
-        name: "Mastering in Physics",
-        imageUrl: "ic_molecule_black",
-        class: "IX",
-        pen_classes: "3"
-      },
-      {
-        name: "Mastering in Intermediate Metallurgy",
-        imageUrl: "ic_flask_black",
-        class: "IX",
-        pen_classes: "3"
-      },
-      {
-        name: "Mastering in Organic Chemistry",
-        imageUrl: "ic_flask_black",
-        class: "IX",
-        pen_classes: "3"
-      }
-
-
-    ]
     //tab data
     this.screenName = "HOME_SCREEN"
     this.data = ["HOME", "COURSES", "RESOURCES", "FORUM", "PROFILE"];

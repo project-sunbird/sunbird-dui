@@ -20,6 +20,43 @@ class HomeComponent extends View {
   constructor(props, children) {
     super(props, children);
 
+
+    this.menuData = {
+      url: [
+        { imageUrl: "ic_action_search" }
+      ]
+    }
+    
+    this.recommendedData = ["Organic Chemistry for Standard VII", "Molecular Reactions for Beginners", "Intermediate Metallurgy", "My Module"];
+    this.recommendedimageUrls = ["ic_flask_black", "ic_molecule_black", "ic_metallurgy_black", "ic_flask_black"];
+    // Todo Data
+    this.todoData=[
+      {
+        name: "Mastering in Organic Chemistry",
+        imageUrl: "ic_flask_black",
+        class: "IX",
+        pen_classes: "3"
+      },
+      {
+        name: "Mastering in Physics",
+        imageUrl: "ic_molecule_black",
+        class: "IX",
+        pen_classes: "3"
+      },
+      {
+        name: "Mastering in Intermediate Metallurgy",
+        imageUrl: "ic_flask_black",
+        class: "IX",
+        pen_classes: "3"
+      },
+      {
+        name: "Mastering in Organic Chemistry",
+        imageUrl: "ic_flask_black",
+        class: "IX",
+        pen_classes: "3"
+      }
+    ]
+
   }
 
   // getInfo = () => {
@@ -56,9 +93,11 @@ class HomeComponent extends View {
     console.log("Todo Clicked index is ",index);
   }
 
+  handleViewAllTodoClick = () =>{
+    console.log("View All todos in home");
+  }
+
   render() {
-
-
     this.layout = (
 
       <LinearLayout
@@ -71,7 +110,7 @@ class HomeComponent extends View {
           title=""
           invert="true"
           hideBack="true"
-          menuData={this.props.menuData}
+          menuData={this.menuData}
           width="match_parent"/>
         
 
@@ -86,14 +125,16 @@ class HomeComponent extends View {
                         orientation="vertical">
                 
                       <TodoContainer
-                      onClick = {this.handleTodoClick}
-                      todoData = {this.props.todoData}
+                      onItemClick = {this.handleTodoClick}
+                      todoData = {this.todoData}
+                      onViewTodoClick={this.handleViewAllTodoClick}
                      />
 
                       <RecommendedContainer
-                      recommendedData = {this.props.recommendedData}
-                      recommendedimageUrls = {this.props.recommendedimageUrls}
+                      recommendedData = {this.recommendedData}
+                      recommendedimageUrls = {this.recommendedimageUrls}
                      />
+
 
                </LinearLayout>
 

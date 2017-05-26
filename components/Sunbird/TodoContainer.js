@@ -60,7 +60,12 @@ class TodoContainer extends View {
 
   handleModuleClick = (index) => {
     console.log("in TODO container",index)
-    this.props.onClick(index);
+    this.props.onItemClick(index);
+  }
+
+  handleViewAllTodos = () =>{
+    console.log("view all todos  in container");
+    this.props.onViewTodoClick;
   }
 
 
@@ -113,7 +118,9 @@ class TodoContainer extends View {
         <TextView 
           margin="16,0,0,0"
           style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}
-          text="View all to-dos >"/>
+          text="View all to-dos >"
+          onClick={this.handleViewAllTodos}
+          />
                     
        </LinearLayout>
 
