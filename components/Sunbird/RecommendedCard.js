@@ -15,6 +15,7 @@ class RecommendedCard extends View {
     this.setIds([
       "ratingBar",
     ]);
+    console.log(this.props.item.hideRating,"rating hidden");
   }
 
   ratingChange = (data) => {
@@ -39,6 +40,7 @@ class RecommendedCard extends View {
   getRatingSection = () => {
     return (<LinearLayout
             gravity="center"
+            visibility = {this.props.item.hideRating}
             padding="6,0,6,0">
             <RatingBar 
               id = {this.idSet.ratingBar} 

@@ -14,8 +14,18 @@ courseActivityFlow state = do
     "showCourseInfo" -> do
       liftEff $ log "showCourseInfo"
       showCourseInfoFlow state
+    "showExplore" -> do
+      liftEff $ log "showCourseInfo"
+      showExploreFlow state
     _ -> courseActivityFlow state
 
+showExploreFlow state = do
+  state <- showUI "EXPLORE_SCREEN" state
+  case state.action of
+    "goBack" -> do
+      liftEff $ log "showCourseActivityFlow"
+      courseActivityFlow state
+    _ ->showExploreFlow state
 
 showCourseInfoFlow state = do
   state <- showUI "COURSE_INFO_SCREEN" state

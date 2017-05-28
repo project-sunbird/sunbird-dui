@@ -26,9 +26,48 @@ class HomeComponent extends View {
         { imageUrl: "ic_action_search" }
       ]
     }
+    this.recommendedData = {
+      title: "Recommended",
+      data: [
+      {
+        name: "Organic Chemistry for Standard VII",
+        imageUrl: "ic_flask_black",
+        count: 55,
+        rating: 5
+      },
+      {
+        name: "Molecular Reactions for Beginners",
+        imageUrl: "ic_molecule_black",
+        count: 25,
+        rating: 5
+      },
+      {
+        name: "Intermediate Metallurgy",
+        imageUrl: "ic_metallurgy_black",
+        count: 65,
+        rating: 5
+      },
+      {
+        name: "Organic Chemistry for Standard VII",
+        imageUrl: "ic_flask_black",
+        count: 25,
+        rating: 5
+      },
+      {
+        name: "Molecular Reactions for Beginners",
+        imageUrl: "ic_molecule_black",
+        count: 15,
+        rating: 5
+      },
+      {
+        name: "Intermediate Metallurgy",
+        imageUrl: "ic_metallurgy_black",
+        count: 75,
+        rating: 5
+      } 
+    ]
+  }
     
-    this.recommendedData = ["Organic Chemistry for Standard VII", "Molecular Reactions for Beginners", "Intermediate Metallurgy", "My Module"];
-    this.recommendedimageUrls = ["ic_flask_black", "ic_molecule_black", "ic_metallurgy_black", "ic_flask_black"];
     // Todo Data
     this.todoData=[
       {
@@ -131,8 +170,8 @@ class HomeComponent extends View {
                      />
 
                       <RecommendedContainer
+                      hideRating = "visible"
                       recommendedData = {this.recommendedData}
-                      recommendedimageUrls = {this.recommendedimageUrls}
                      />
 
 

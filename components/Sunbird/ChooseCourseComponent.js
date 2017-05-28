@@ -10,7 +10,7 @@ var CollapsingToolbarLayout = require('@juspay/mystique-backend').androidViews.C
 var AppBarLayout = require('@juspay/mystique-backend').androidViews.AppBarLayout;
 
 var ViewWidget = require('@juspay/mystique-backend').androidViews.ViewWidget;
-
+var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var objectAssign = require('object-assign');
 
 window.R = require("ramda");
@@ -39,7 +39,10 @@ class ChooseCourseComponent extends View {
     window.__runDuiCallback({ action: "showCourseInfo" });
   }
 
-
+  handleExploreClick = () =>{
+    console.log("explore clicked");
+    window.__runDuiCallback({ action: "showExplore" });
+  }
 
   render() {
     this.layout = (
@@ -55,11 +58,29 @@ class ChooseCourseComponent extends View {
           padding="16,16,16,16"
           fillViewPort="true"
           background="#2D61FF">
-
+          <LinearLayout
+            width="match_parent"
+            height="wrap_content"
+          >
+          <ImageView
+                height="18"
+                width="18"
+                margin = "230,25,7,0"
+                imageUrl= "ic_explore"
+                onClick={this.handleExploreClick}
+              />
+                  <TextView
+                    text="Explore"
+                    height="wrap_content"
+                    margin="3,24,24,0"
+                    style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
+                    onClick={this.handleExploreClick}
+                    />
+          </LinearLayout>
                   <TextView
                     text="Your learning Tracks"
                     height="wrap_content"
-                    margin="0,80,0,8"
+                    margin="0,56,0,8"
                     style={window.__TextStyle.textStyle.HEADING.LIGHT}/>
 
 
