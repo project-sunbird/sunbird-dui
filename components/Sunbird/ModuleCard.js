@@ -29,6 +29,7 @@ class ModuleCard extends View {
 			background = {this.props.item.moduleBackground? this.props.item.moduleBackground : "#229012FE" }
 			orientation="vertical"
 			gravity="center"
+      cornerRadius="5"
 			>
       <LinearLayout
         height="match_parent"

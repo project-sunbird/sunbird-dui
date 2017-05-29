@@ -63,7 +63,7 @@ class RootScreen extends View {
           </RelativeLayout>
 
         </LinearLayout>
-        <SnackBar width="match_parent" height="wrap_content"/>
+        
       </RelativeLayout>
     );
 

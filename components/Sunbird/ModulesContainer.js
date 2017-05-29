@@ -79,7 +79,7 @@ class ModulesContainer extends View {
           height="wrap_content"
           margin="10,0,0,0"
           style={window.__TextStyle.textStyle.CARD.TITLE.DARK}
-          text="Modules"/>
+          text={this.props.title? this.props.title : "Module" }/>
 
            <HorizontalScrollView
             width = "match_parent"

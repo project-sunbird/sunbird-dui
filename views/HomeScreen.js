@@ -13,6 +13,7 @@ var BottomNavBar = require("../components/Sunbird/BottomNavBar")
 
 var ChooseCourseComponent = require("../components/Sunbird/ChooseCourseComponent")
 var ClassRoomHomeComponent = require("../components/Sunbird/ClassRoomHomeComponent")
+var ResourceComponent = require("../components/Sunbird/ResourceComponent")
 var HomeComponent = require('../components/Sunbird/HomeComponent');
 var ProfileActivityComponent = require('../components/Sunbird/ProfileActivityComponent');
 var ContentLoadingComponent = require('../components/Sunbird/ContentLoadingComponent');
@@ -110,7 +111,7 @@ class HomeScreen extends View {
               contentLayout={contentLayout}/>)
           break;
         case 2:
-          contentLayout = (<ClassRoomHomeComponent
+          contentLayout = (<ResourceComponent
                   showScreen = {this.props.showScreen}
                   height="match_parent"
                   width="match_parent"/>)

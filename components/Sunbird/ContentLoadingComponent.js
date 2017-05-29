@@ -56,8 +56,8 @@ class ContentLoadingComponent extends View {
        id={this.idSet.holder}
        width="match_parent">
           <ProgressBar
-            height="150"
-            width="150"/>
+            height="70"
+            width="70"/>
        </LinearLayout>
 
     )
