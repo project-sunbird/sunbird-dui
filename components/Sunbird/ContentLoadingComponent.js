@@ -44,8 +44,6 @@ class ContentLoadingComponent extends View {
 
 
   render() {
-
-
     this.layout = (
 
       <LinearLayout

@@ -1,6 +1,6 @@
 module Main where
 
-import Prelude (bind, ($), (<>), pure)
+import Prelude (bind, ($), (<>), pure, discard)
 import Control.Monad.Except.Trans (runExceptT)
 import Utils (showUI, getCallbackFromScreen)
 import Flows.CourseActivity (courseActivityFlow)

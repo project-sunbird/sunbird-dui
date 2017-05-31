@@ -24,6 +24,7 @@ class HomeScreen extends View {
   constructor(props, children, state) {
     super(props, children, state);
     this.state = state;
+    
     this.setIds([
       "viewPagerContainer",
       "tabLayoutContainer",

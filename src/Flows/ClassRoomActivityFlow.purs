@@ -1,7 +1,7 @@
 module Flows.ClassRoomActivityFlow where
 
 
-import Prelude (bind, ($), (<>))
+import Prelude (bind, ($), (<>), discard)
 import Utils (showUI, getCallbackFromScreen)
 import Control.Monad.Eff.Console
 import Control.Monad.Eff.Class(liftEff)

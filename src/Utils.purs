@@ -32,7 +32,8 @@ import Data.Bifoldable
 import Control.Monad.Eff.Class(liftEff)
 
 
-getEulerLocation = "https://qa.ekstep.in"
+-- getEulerLocation = "https://qa.ekstep.in"
+getEulerLocation = "http://localhost:9000"
 getApiKey ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkMWE2OTgxOWQ0OTc0YzhiYjRlOTQ4YjMxMjBkYjg0NyJ9.AFu4mPKLuYhclntDjbri_L5FN-rQWXk9dVXhlYO2YcA"
 
     
@@ -41,15 +42,38 @@ type State a = {screen :: String |a}
 type AffError e = (Error -> Eff e Unit)
 type AffSuccess s e = (s -> Eff e Unit)
 type ApiResponse = {status :: String, statusCode :: Int, response :: A.Json}
+type ExceptionableAff e a = ExceptT Error (Aff e) a
+type ExceptionableEff e a = ExceptT Error (Eff e) a
 
 foreign import showUI' :: forall e a b. (AffSuccess (State a) e) -> (AffError e) -> (State b) -> Boolean -> Eff e Unit
 foreign import callbackListner' :: forall e a b. (AffSuccess ({|a}) e) -> (AffError e) -> ({|b}) -> Boolean -> Eff e Unit
 foreign import updateState' :: forall a b s1 s2 e. (AffSuccess (State s2) e) -> (AffError e) -> a -> (State s1) -> Eff e Unit
 foreign import callAPI' :: forall e. (AffSuccess ApiResponse e) -> (AffError e) -> Method -> String -> A.Json -> Array RequestHeader -> Eff e Unit
-                          
+foreign import getConsumerId' :: forall e a s. (AffSuccess String e) -> (AffError e) -> Eff e Unit                          
+foreign import getDeviceId' :: forall e a s. (AffSuccess String e) -> (AffError e) -> Eff e Unit                          
+foreign import getUserId' :: forall e a s. (AffSuccess String e) -> (AffError e) -> Eff e Unit                          
 
-type ExceptionableAff e a = ExceptT Error (Aff e) a
-type ExceptionableEff e a = ExceptT Error (Eff e) a
+getConsumerId = ExceptT (pure <$> makeAff(\error success -> getConsumerId' success error))
+getDeviceId = ExceptT (pure <$> makeAff(\error success -> getDeviceId' success error))
+getUserId = ExceptT (pure <$> makeAff(\error success -> getUserId' success error))
+
+
+
+generateReqTokenHeaders :: {consumerId :: String, deviceId :: String, userId :: String} -> Array (RequestHeader)
+generateReqTokenHeaders tokens =
+  let filtered = filter (\x -> not $ snd(x) == "__failed") [(Tuple "X-Consumer-Id" tokens.consumerId),
+                                                            (Tuple "X-Device-Id" tokens.deviceId),
+                                                            (Tuple "X-Authenticated-UserId" tokens.userId)] in
+  map (\x -> (RequestHeader (fst x) (snd x))) filtered
+
+getReqTokens :: forall e. ExceptT Error (Aff e) {consumerId :: String, deviceId :: String, userId :: String}
+getReqTokens = do
+  consumerId <- getConsumerId
+  deviceId <- getDeviceId
+  userId <- getUserId
+  pure $ {consumerId, deviceId, userId}
+
+
 
 get path headers =
   makeAff(\error success -> callAPI' success error GET ((getEulerLocation) <> path) (A.jsonEmptyObject) headers')
@@ -81,9 +105,13 @@ generateRequestHeaders =
   map (\x -> (RequestHeader (fst x) (snd x))) filtered
 
 getDummyData identifierId =
-  let requestUrl = "/api/content/v3/read/" <> identifierId 
+  let requestUrl = "/v1/user/courses/" <> identifierId 
       headers = (generateRequestHeaders) in
   ExceptT $ attempt $ (get requestUrl headers)
 
+getCourses regTokens =
+  let requestUrl = "/v1/user/courses/1234"
+      headers = (generateReqTokenHeaders regTokens) in
+  ExceptT $ attempt $ (get requestUrl headers)
 
 getExceptT value = ExceptT $ pure $ Right value

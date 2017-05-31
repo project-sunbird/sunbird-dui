@@ -252,3 +252,30 @@ exports["setPermissions'"] = function(success) {
   }
 }
 
+
+exports["getConsumerId'"] = function(success) {
+  return function(err) {
+    return function () {
+      // success(JBridge.getFromSharedPrefs("registrationToken"))();
+      success("123")();
+    };
+  };
+};
+
+exports["getDeviceId'"] = function(success) {
+  return function(err) {
+    return function () {
+      // success(JBridge.getFromSharedPrefs("registrationToken"))();
+      success("1233245454656")();
+    };
+  };
+};
+exports["getUserId'"] = function(success) {
+  return function(err) {
+    return function () {
+      // success(JBridge.getFromSharedPrefs("registrationToken"))();
+      success("dfjkv345")();
+    };
+  };
+};
+
