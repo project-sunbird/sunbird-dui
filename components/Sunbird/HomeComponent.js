@@ -177,6 +177,9 @@ class HomeComponent extends View {
                    />
                    <FeedComponent
                    feedData = {this.props.feedData}
+                   voteClick = {this.props.voteClick}
+                   answerClick={this.props.answerClick}
+                   bookmarkClick={this.props.bookmarkClick}
                    />
 
 

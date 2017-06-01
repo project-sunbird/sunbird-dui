@@ -97,6 +97,9 @@ class HomeScreen extends View {
               menuData={this.menuData}
               todoData = {this.todoData}
               feedData = {this.feedData}
+              voteClick = {this.handleVoteClick}
+              answerClick = {this.handleAnswerClick}
+              bookmarkClick = {this.handleBookmarkClick}
               />
               )
           tmp = (
@@ -219,7 +222,17 @@ class HomeScreen extends View {
     return this.bNavBar;
   }
 
+  handleAnswerClick = () =>{
+    console.log("answer clicked")
+  }
 
+  handleVoteClick = () =>{
+    console.log("vote clicked")
+  }
+
+  handleBookmarkClick = () =>{
+    console.log("bookmark clicked")
+  }
 
   render() {
     this.layout = (

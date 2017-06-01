@@ -16,6 +16,7 @@ class FeedCard extends View {
     this.setIds([
       "ratingBar",
     ]);
+
     this.feedData = this.props.feedData;
   }
 
@@ -88,6 +89,7 @@ class FeedCard extends View {
             </LinearLayout>);
   }
 
+
   getFooter = () =>{
     return (<LinearLayout
               width="match_parent"
@@ -100,6 +102,7 @@ class FeedCard extends View {
             <ImageView
                 width="18"
                 height="18"
+                onClick={this.handleVoteClick}
                 imageUrl="ic_action_up"/>
             <TextView
                 width="wrap_content"
@@ -111,6 +114,7 @@ class FeedCard extends View {
                 width="18"
                 height="18"
                 margin="22,0,0,0"
+                onClick={this.handleAnswerClick}
                 imageUrl="ic_action_edit"/>
             <TextView
                 width="wrap_content"
@@ -118,6 +122,15 @@ class FeedCard extends View {
                 margin="2,0,0,0"
                 text="Answer"
                 style={window.__TextStyle.textStyle.HINT.SEMI}/>
+            <ViewWidget 
+                weight="1"
+                height="0"/>
+            <ImageView
+                width="20"
+                height="28"
+                padding="5,5,5,5"
+                onClick={this.handleBookmarkClick}
+                imageUrl="ic_action_bookmark"/>
 
             </LinearLayout>);
   }
@@ -183,6 +196,18 @@ class FeedCard extends View {
 
 
         </LinearLayout>);
+  }
+
+  handleVoteClick = () =>{
+    this.props.voteClick();
+  }
+
+  handleAnswerClick = () =>{
+    this.props.answerClick();
+  }
+
+  handleBookmarkClick = () =>{
+    this.props.bookmarkClick();
   }
 
 

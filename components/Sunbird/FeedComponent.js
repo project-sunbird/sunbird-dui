@@ -23,9 +23,12 @@ class FeedComponent extends View {
 
     var cards = this.props.feedData.map((item, i) => {
       return (
-      <FeedCard
-       feedData={this.props.feedData[i]}
-       />
+        <FeedCard
+         feedData={this.props.feedData[i]}
+         voteClick = {this.props.voteClick}
+         answerClick= {this.props.answerClick}
+         bookmarkClick= {this.props.bookmarkClick}
+         />
       )
     });
     var layout = (<LinearLayout 
