@@ -136,6 +136,11 @@ exports.textStyle = {
       textSize: Font.fontSize.FONT_12,
       fontStyle: Font.fontStyle.SEMIBOLD
     },
+    SEMI_BLUE:{
+      color: Colors.PRIMARY_DARK,
+      textSize: Font.fontSize.FONT_12,
+      fontStyle: Font.fontStyle.SEMIBOLD
+    },
     GREEN: {
       color: Colors.SUCCESS_GREEN,
       textSize: Font.fontSize.FONT_12,

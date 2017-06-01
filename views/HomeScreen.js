@@ -5,6 +5,7 @@ var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var ViewPager = require("@juspay/mystique-backend").androidViews.ViewPager;
 var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
+var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 var objectAssign = require('object-assign');
@@ -17,6 +18,8 @@ var ResourceComponent = require("../components/Sunbird/ResourceComponent")
 var HomeComponent = require('../components/Sunbird/HomeComponent');
 var ProfileActivityComponent = require('../components/Sunbird/ProfileActivityComponent');
 var ContentLoadingComponent = require('../components/Sunbird/ContentLoadingComponent');
+const FeedParams = require('../FeedParams');
+
 
 window.R = require("ramda");
 
@@ -31,6 +34,7 @@ class HomeScreen extends View {
     ]);
     this.currentViewPagerIndex = 0;
     this.setupDuiCallback();
+    this.feedData = FeedParams.feedParams;
     
     //tab data
     this.screenName = "HOME_SCREEN"
@@ -86,14 +90,15 @@ class HomeScreen extends View {
     var tabItems = this.data.map((item, index) => {
       switch (index) {
         case 0:
-          contentLayout = (
+          contentLayout = (   
             <HomeComponent
               recommendedData={this.recommendedData}
               recommendedimageUrls={this.recommendedimageUrls}
               menuData={this.menuData}
               todoData = {this.todoData}
-              
-              />)
+              feedData = {this.feedData}
+              />
+              )
           tmp = (
             <ContentLoadingComponent
               height="match_parent"

@@ -7,6 +7,8 @@ var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 var objectAssign = require('object-assign');
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
+var FeedComponent = require('./FeedComponent');
+
 
 window.R = require("ramda");
 
@@ -153,31 +155,35 @@ class HomeComponent extends View {
           width="match_parent"/>
         
 
-        <ScrollView
-                 height="0"
-                  weight="1"
-                  width="match_parent">
-            
+            <ScrollView
+              height="0"
+              weight="1"
+              width="match_parent">
+        
                 <LinearLayout
-                        height="match_parent"
-                        width="match_parent"
-                        orientation="vertical">
-                
-                      <TodoContainer
-                      onItemClick = {this.handleTodoClick}
-                      todoData = {this.todoData}
-                      onViewTodoClick={this.handleViewAllTodoClick}
-                     />
+                  height="match_parent"
+                  width="match_parent"
+                  orientation="vertical">
+          
+                    <TodoContainer
+                    onItemClick = {this.handleTodoClick}
+                    todoData = {this.todoData}
+                    onViewTodoClick={this.handleViewAllTodoClick}
+                   />
 
-                      <RecommendedContainer
-                      hideRating = "visible"
-                      recommendedData = {this.recommendedData}
-                     />
+                    <RecommendedContainer
+                    hideRating = "visible"
+                    recommendedData = {this.recommendedData}
+                   />
+                   <FeedComponent
+                   feedData = {this.props.feedData}
+                   />
+
 
 
                </LinearLayout>
 
-           </ScrollView>
+            </ScrollView>
 
 
       </LinearLayout>
