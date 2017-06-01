@@ -79,6 +79,7 @@ class HomeScreen extends View {
   handleStateChange = (state) => {
     //MODIFIED STAE WILL COME HERE ( after api call)
     console.log("CURR VP INDEX :", this.currentViewPagerIndex);
+    console.log("SERVER RESPONSE FROM STATE :", state.response);
     var contentLayout;
     var jso = {};
     switch (this.currentViewPagerIndex) {
