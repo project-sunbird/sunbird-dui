@@ -78,8 +78,59 @@ class HomeScreen extends View {
 
   handleStateChange = (state) => {
     //MODIFIED STAE WILL COME HERE ( after api call)
+    console.log("CURR VP INDEX :", this.currentViewPagerIndex);
+    var contentLayout;
+    var jso = {};
+    switch (this.currentViewPagerIndex) {
+      case 0:
+        contentLayout = (
+          <HomeComponent
+              recommendedData={this.recommendedData}
+              recommendedimageUrls={this.recommendedimageUrls}
+              menuData={this.menuData}
+              todoData = {this.todoData}
+              
+              />)
 
+        break;
+      case 1:
+        contentLayout = (<ChooseCourseComponent
+                  showScreen = {this.handleCourseInfoClick}
+                  height="match_parent"
+                  width="match_parent" />)
 
+        break;
+      case 2:
+        contentLayout = (<ResourceComponent
+                  showScreen = {this.props.showScreen}
+                  height="match_parent"
+                  width="match_parent"/>)
+
+        break;
+      case 3:
+
+        break;
+
+      default:
+        contentLayout = (<LinearLayout
+                  height="match_parent"
+                  root="true"
+                  width="match_parent">
+                    <TextView
+                      text={item}
+                      background={this.color}
+                      color="#ffffff"
+                      height="match_parent"
+                      width="match_parent"
+                      gravity="center" />
+                </LinearLayout>)
+
+        break;
+    }
+    jso.push({ view: this.getView(contentLayout.render()), value: "", viewType: 0 });
+
+    //replace the viewPager at the index with the layout, and data from response
+    JBridge.replaceViewPagerItem(this.currentViewPagerIndex, jso)
 
   }
 
@@ -99,7 +150,6 @@ class HomeScreen extends View {
               recommendedimageUrls={this.recommendedimageUrls}
               menuData={this.menuData}
               todoData = {this.todoData}
-              
               />)
           tmp = (
             <ContentLoadingComponent
