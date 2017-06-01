@@ -2,7 +2,7 @@ module Main where
 
 import Prelude (bind, ($), (<>), pure, discard)
 import Control.Monad.Except.Trans (runExceptT)
-import Utils (showUI, getCallbackFromScreen)
+import Utils
 import Flows.CourseActivity (courseActivityFlow)
 import Flows.ClassRoomActivityFlow (classRoomActivityFlow)
 import Control.Monad.Aff (launchAff)
@@ -37,6 +37,8 @@ cFlow = do
       liftEff $ log "showHomeFlow"
       classRoomActivityFlow state
     "startCourseFlow" -> do
+      response <- getDummyData
+      state <- updateState {response: response} state
       liftEff $ log "startCourseFlow"
       courseActivityFlow state
     "startClassRoomFlow" -> do

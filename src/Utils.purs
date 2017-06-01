@@ -33,7 +33,7 @@ import Control.Monad.Eff.Class(liftEff)
 
 
 -- getEulerLocation = "https://qa.ekstep.in"
-getEulerLocation = "http://localhost:9000"
+getEulerLocation = "http://13.71.127.158:9000"
 getApiKey ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkMWE2OTgxOWQ0OTc0YzhiYjRlOTQ4YjMxMjBkYjg0NyJ9.AFu4mPKLuYhclntDjbri_L5FN-rQWXk9dVXhlYO2YcA"
 
     
@@ -104,8 +104,8 @@ generateRequestHeaders =
   let filtered = filter (\x -> not $ snd(x) == "__failed") [(Tuple "Authorization" ("Bearer "<>getApiKey))] in
   map (\x -> (RequestHeader (fst x) (snd x))) filtered
 
-getDummyData identifierId =
-  let requestUrl = "/v1/user/courses/" <> identifierId 
+getDummyData =
+  let requestUrl = "/v1/user/courses/user1"
       headers = (generateRequestHeaders) in
   ExceptT $ attempt $ (get requestUrl headers)
 
