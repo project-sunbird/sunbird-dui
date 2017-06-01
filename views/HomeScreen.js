@@ -24,14 +24,14 @@ class HomeScreen extends View {
   constructor(props, children, state) {
     super(props, children, state);
     this.state = state;
-    
+
     this.setIds([
       "viewPagerContainer",
       "tabLayoutContainer",
     ]);
     this.currentViewPagerIndex = 0;
     this.setupDuiCallback();
-    
+
     //tab data
     this.screenName = "HOME_SCREEN"
     this.data = ["HOME", "COURSES", "RESOURCES", "FORUM", "PROFILE"];
@@ -75,6 +75,13 @@ class HomeScreen extends View {
     this.setupDuiCallback();
   }
 
+
+  handleStateChange = (state) => {
+    //MODIFIED STAE WILL COME HERE ( after api call)
+
+
+
+  }
 
   afterRender = () => {
 

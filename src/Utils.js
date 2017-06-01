@@ -1,19 +1,6 @@
 "use strict";
 var callbackMapper = require('@juspay/mystique-backend').helpers.android.callbackMapper;
 
-exports["sendUpdatedState'"] = function(success) {
-  return function(error) {
-    return function(state) {
-      return function() {
-        var currentScreen = window.__CACHED_SCREENS[window.__CURR_SCREEN];
-        if (currentScreen.hasOwnProperty('handleStateChange')) {
-          currentScreen.handleStateChange(state);
-          success()();
-        }
-      };
-    };
-  };
-};
 
 var callbackMapper = {
   map: function(fn) {
