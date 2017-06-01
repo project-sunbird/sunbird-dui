@@ -25,9 +25,13 @@ class ChooseCourseComponent extends View {
 
     this.setIds([
       "collapsingToolbar",
-
+    
     ]);
     this.screenName = "CHOOSE_COURSE"
+    this.state = state;
+    
+    console.log("GOT SSTATE", this.state);
+    
   }
 
   afterRender = () => {
