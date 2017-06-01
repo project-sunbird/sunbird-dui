@@ -10,7 +10,7 @@ courseActivityFlow state = do
   reqTokens <- getReqTokens
   response <- getCourses reqTokens
   newState <- updateState {response: response} state
-  state <- sendUpdatedState newState
+  sendUpdatedState newState
   state <- getCallbackFromScreen "HOME" state
   case state.action of
     "showCourseInfo" -> do

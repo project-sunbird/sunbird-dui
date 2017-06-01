@@ -77,7 +77,8 @@ class HomeScreen extends View {
 
 
   handleStateChange = (state) => {
-    //MODIFIED STAE WILL COME HERE ( after api call)
+    console.log("------------------ STATE CHANGE --->", state)
+      //MODIFIED STAE WILL COME HERE ( after api call)
     console.log("CURR VP INDEX :", this.currentViewPagerIndex);
     console.log("SERVER RESPONSE FROM STATE :", state.response);
     var contentLayout;
@@ -256,12 +257,13 @@ class HomeScreen extends View {
   handleBottomNavBarAction = (index) => {
     JBridge.switchToViewPagerIndex(index + "");
 
-    window.__SNACKBAR.setAction({
-      text: "PAGE " + index,
-      status: "success",
-      actionText: "RETRY"
-    }, () => { console.log("CLICKED ACTION") });
-    window.__SNACKBAR.show(true);
+    // window.__SNACKBAR.setAction({
+      //   text: "PAGE " + index,
+      //   status: "success",
+      //   actionText: "RETRY"
+      // }, () => { console.log("CLICKED ACTION") });
+      // window.__SNACKBAR.show(true);
+
   }
 
   getBottomNavBar = () => {

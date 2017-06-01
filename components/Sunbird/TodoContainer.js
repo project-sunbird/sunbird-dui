@@ -30,7 +30,7 @@ class TodoContainer extends View {
         moduleImage: _this.indexItems[i]["imageUrl"],
         moduleClass: _this.indexItems[i]["class"],
         modulePendingClass: _this.indexItems[i]["pen_classes"],
-        
+
       }
       console.log("ADDING")
       _this.tmpArr.push(dat)
@@ -59,11 +59,11 @@ class TodoContainer extends View {
   }
 
   handleModuleClick = (index) => {
-    console.log("in TODO container",index)
+    console.log("in TODO container", index)
     this.props.onItemClick(index);
   }
 
-  handleViewAllTodos = () =>{
+  handleViewAllTodos = () => {
     console.log("view all todos  in container");
     this.props.onViewTodoClick;
   }
@@ -76,7 +76,7 @@ class TodoContainer extends View {
     this.layout = (
 
       <LinearLayout
-      width="360"
+      width="match_parent"
       height="218"
       margin = "0,0,0,0"
       afterRender={this.afterRender}
@@ -84,23 +84,15 @@ class TodoContainer extends View {
       background={window.__Colors.CREAM}
       >
 
-          <LinearLayout
-              width="wrap_content"
-              height="wrap_content"
-              margin = "0,0,0,0"
-              >
+          
 
           <TextView 
           margin="16,16,16,16"
           style={window.__TextStyle.textStyle.TITLE.DARK}
           text="Todo"/>
-          <Space 
-            width="0"
-            weight="1"
-          />
+          
 
 
-        </LinearLayout>
            <HorizontalScrollView
             width = "wrap_content"
             height = "wrap_content"
