@@ -16,6 +16,7 @@ var ChooseCourseComponent = require("../components/Sunbird/ChooseCourseComponent
 var ClassRoomHomeComponent = require("../components/Sunbird/ClassRoomHomeComponent")
 var ResourceComponent = require("../components/Sunbird/ResourceComponent")
 var HomeComponent = require('../components/Sunbird/HomeComponent');
+var SavedResources = require('../components/Sunbird/SavedResources');
 var ProfileActivityComponent = require('../components/Sunbird/ProfileActivityComponent');
 var ContentLoadingComponent = require('../components/Sunbird/ContentLoadingComponent');
 const FeedParams = require('../FeedParams');
@@ -90,7 +91,7 @@ class HomeScreen extends View {
     var tabItems = this.data.map((item, index) => {
       switch (index) {
         case 0:
-          contentLayout = (   
+          contentLayout = ( 
             <HomeComponent
               recommendedData={this.recommendedData}
               recommendedimageUrls={this.recommendedimageUrls}
@@ -99,8 +100,7 @@ class HomeScreen extends View {
               feedData = {this.feedData}
               voteClick = {this.handleVoteClick}
               answerClick = {this.handleAnswerClick}
-              bookmarkClick = {this.handleBookmarkClick}
-              />
+              bookmarkClick = {this.handleBookmarkClick}/> 
               )
           tmp = (
             <ContentLoadingComponent
@@ -273,4 +273,9 @@ class HomeScreen extends View {
   }
 }
 
+
+
 module.exports = Connector(HomeScreen);
+
+
+

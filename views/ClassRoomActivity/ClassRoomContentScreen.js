@@ -33,41 +33,27 @@ class ClassRoomContentScreen extends View {
     this.SubscribedData = {
       type: "Subjects",
       values: [
-        { color: "#10D50000", imageUrl: "ic_action_search", subject: "Dot Structure", logo1: "ic_action_completed", logo2: "ic_action_share" },
-        { color: "#F0E9FD", imageUrl: "ic_account", subject: "Hybridization", logo1: "ic_action_completed", logo2: "ic_action_share" },
-        { color: "#10E3C31C", imageUrl: "ic_action_search", subject: "Bond Line Structure", logo1: "ic_action_completed", logo2: "ic_action_share" },
-        { color: "#10FF9F00", imageUrl: "ic_action_search", subject: "Counting Electrons", logo1: "ic_action_completed", logo2: "ic_action_share" },
-        { color: "#10D50000", imageUrl: "ic_action_search", subject: "Dot Structure", logo1: "ic_action_completed", logo2: "ic_action_share" },
-        { color: "#F0E9FD", imageUrl: "ic_account", subject: "Hybridization", logo1: "ic_action_completed", logo2: "ic_action_share" },
-        { color: "#10E3C31C", imageUrl: "ic_action_search", subject: "Dot Structure", logo1: "ic_action_completed", logo2: "ic_action_share" },
-        { color: "#10FF9F00", imageUrl: "ic_account", subject: "Hybridization", logo1: "ic_action_completed", logo2: "ic_action_share" },
-        { color: "#10FF9F00", imageUrl: "ic_action_search", subject: "Bond Line Structure", logo1: "ic_action_completed", logo2: "ic_action_share" },
-        { color: "#F0E9FD", imageUrl: "ic_action_search", subject: "Counting Electrons", logo1: "ic_action_completed", logo2: "ic_action_share" },
-        { color: "#10D50000", imageUrl: "ic_action_search", subject: "Dot Structure", logo1: "ic_action_completed", logo2: "ic_action_share" },
-        { color: "#10FF9F00", imageUrl: "ic_account", subject: "Hybridization", logo1: "ic_action_completed", logo2: "ic_action_share" },
-
+        { color: "#10D50000", imageUrl: "ic_action_search", subject: "Dot Structure", logo:["ic_action_completed","ic_action_share"]},
+        { color: "#F0E9FD", imageUrl: "ic_account", subject: "Hybridization", logo:["ic_action_completed","ic_action_share"] },
+        { color: "#10E3C31C", imageUrl: "ic_action_search", subject: "Bond Line Structure", logo:["ic_action_completed","ic_action_share"] },
+        { color: "#10FF9F00", imageUrl: "ic_action_search", subject: "Counting Electrons", logo:["ic_action_completed","ic_action_share"] },
+        { color: "#10D50000", imageUrl: "ic_action_search", subject: "Dot Structure", logo:["ic_action_completed","ic_action_share"] },
+        { color: "#F0E9FD", imageUrl: "ic_account", subject: "Hybridization", logo:["ic_action_completed","ic_action_share"] },
+        { color: "#10E3C31C", imageUrl: "ic_action_search", subject: "Dot Structure", logo:["ic_action_completed","ic_action_share"] },
+        { color: "#10FF9F00", imageUrl: "ic_account", subject: "Hybridization", logo:["ic_action_completed","ic_action_share"] },
       ]
     }
     this.AllData = {
       type: "Subjects",
       values: [
-        { color: "#10D50000", imageUrl: "ic_action_search", subject: "Dot Structure", logo1: "ic_action_completed", logo2: "ic_action_share" },
-        { color: "#F0E9FD", imageUrl: "ic_account", subject: "Hybridization", logo1: "ic_action_completed", logo2: "ic_action_share" },
-        { color: "#10E3C31C", imageUrl: "ic_action_search", subject: "Bond Line Structure", logo1: "ic_action_completed", logo2: "ic_action_share" },
-        { color: "#10E3C31C", imageUrl: "ic_action_search", subject: "Counting Electrons", logo1: "ic_action_completed", logo2: "ic_action_share" },
-        { color: "#10D50000", imageUrl: "ic_action_search", subject: "Dot Structure", logo1: "ic_action_completed", logo2: "ic_action_share" },
-        { color: "#F0E9FD", imageUrl: "ic_account", subject: "Hybridization", logo1: "ic_action_completed", logo2: "ic_action_share" },
-        { color: "#10E3C31C", imageUrl: "ic_action_search", subject: "Dot Structure", logo1: "ic_action_completed", logo2: "ic_action_share" },
-        { color: "#10E3C31C", imageUrl: "ic_account", subject: "Hybridization", logo1: "ic_action_completed", logo2: "ic_action_share" },
-        { color: "#10D50000", imageUrl: "ic_action_search", subject: "Bond Line Structure", logo1: "ic_action_completed", logo2: "ic_action_share" },
-        { color: "#F0E9FD", imageUrl: "ic_action_search", subject: "Counting Electrons", logo1: "ic_action_completed", logo2: "ic_action_share" },
-        { color: "#10E3C31C", imageUrl: "ic_action_search", subject: "Dot Structure", logo1: "ic_action_completed", logo2: "ic_action_share" },
-        { color: "#10E3C31C", imageUrl: "ic_account", subject: "Hybridization", logo1: "ic_action_completed", logo2: "ic_action_share" }, { imageUrl: "ic_action_search", subject: "Dot Structure", logo1: "ic_action_completed", logo2: "ic_action_share" },
-        { color: "#10D50000", imageUrl: "ic_account", subject: "Hybridization", logo1: "ic_action_completed", logo2: "ic_action_share" },
-        { color: "#F0E9FD", imageUrl: "ic_action_search", subject: "Bond Line Structure", logo1: "ic_action_completed", logo2: "ic_action_share" },
-        { color: "#10E3C31C", imageUrl: "ic_action_search", subject: "Counting Electrons", logo1: "ic_action_completed", logo2: "ic_action_share" },
-        { color: "#10E3C31C", imageUrl: "ic_action_search", subject: "Dot Structure", logo1: "ic_action_completed", logo2: "ic_action_share" },
-        { color: "#F0E9FD", imageUrl: "ic_account", subject: "Hybridization", logo1: "ic_action_completed", logo2: "ic_action_share" },
+        { color: "#10D50000", imageUrl: "ic_action_search", subject: "Dot Structure", logo:["ic_action_completed","ic_action_share"]},
+        { color: "#F0E9FD", imageUrl: "ic_account", subject: "Hybridization", logo:["ic_action_completed","ic_action_share"] },
+        { color: "#10E3C31C", imageUrl: "ic_action_search", subject: "Bond Line Structure", logo:["ic_action_completed","ic_action_share"] },
+        { color: "#10FF9F00", imageUrl: "ic_action_search", subject: "Counting Electrons", logo:["ic_action_completed","ic_action_share"] },
+        { color: "#10D50000", imageUrl: "ic_action_search", subject: "Dot Structure", logo:["ic_action_completed","ic_action_share"] },
+        { color: "#F0E9FD", imageUrl: "ic_account", subject: "Hybridization", logo:["ic_action_completed","ic_action_share"] },
+        { color: "#10E3C31C", imageUrl: "ic_action_search", subject: "Dot Structure", logo:["ic_action_completed","ic_action_share"] },
+        { color: "#10FF9F00", imageUrl: "ic_account", subject: "Hybridization", logo:["ic_action_completed","ic_action_share"] },
       ]
     }
 
@@ -94,6 +80,11 @@ class ClassRoomContentScreen extends View {
       this.animateView(),
       null
     );
+  }
+
+  handleItemClick = (itemNo,logoNo) =>{
+    console.log(itemNo+" itemNo")
+    console.log(logoNo+" logoNo")
   }
 
   getHeadContent = () => {
@@ -161,7 +152,7 @@ class ClassRoomContentScreen extends View {
 
             <ClassListItem
               data={data}
-              onShareClick={this.handleShareClick}
+              onItemClick = {this.handleItemClick}
             />
 
               </LinearLayout>

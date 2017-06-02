@@ -167,6 +167,11 @@ exports.textStyle = {
       color: Colors.PRIMARY_ACCENT,
       textSize: Font.fontSize.FONT_12,
       fontStyle: Font.fontStyle.BOLD
+    },
+    DEFAULT: {
+      color: Colors.PRIMARY_BLACK,
+      textSize: Font.fontSize.FONT_12,
+      fontStyle: Font.fontStyle.BOLD
     }
   },
   BOTTOMBAR: {

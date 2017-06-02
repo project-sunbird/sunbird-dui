@@ -4,6 +4,7 @@ var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
+var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 window.R = require("ramda");
 class ClassListItem extends View {
@@ -12,30 +13,33 @@ class ClassListItem extends View {
   }
   getData = () => {
     var answerLayout = this.props.data.values.map((item, index) => {
-      return <LinearLayout
+     return (<LinearLayout
             width="match_parent"
             height="wrap_content"
-            padding="16,16,16,16">
-            <LinearLayout
-              width="32"
-              heigh="32"
-              padding="0,0,0,0"
-              background={item.color}
-              gravity="center"
-              >
-            <ImageView
-              height="20"
-              width="14"
-              imageUrl= {item.imageUrl} />
+            orientation="vertical">
+                <LinearLayout
+                width="match_parent"
+                height="wrap_content"
+                padding="16,26,16,0">
+                <LinearLayout
+                  width="32"
+                  heigh="32"
+                  background={item.color}
+                  gravity="center"
+                  >
+                    <ImageView
+                      height="20"
+                      width="14"
+                      imageUrl= {item.imageUrl} />
 
-              </LinearLayout>
-            <LinearLayout
-                    height="wrap_content"
-                    width="0"
-                    weight="1"
-                    padding="16,0,0,0"
-                    orientation="vertical">
-                      
+                  </LinearLayout>
+                  <LinearLayout
+                        height="wrap_content"
+                        width="0"
+                        weight="1"
+                        padding="16,0,0,0"
+                        orientation="vertical">
+                          
                       <TextView
                         onClick={item.onMenuItemClick}
                         text={item.subject}
@@ -56,32 +60,53 @@ class ClassListItem extends View {
 
                   </LinearLayout>
 
-                  <LinearLayout
-                    width="wrap_content"
-                    height="match_parent"
-                    >
+                  {this.getMenuItems(item,index)}    
 
-                  <ImageView
-                    height="20"
-                    width="20"
-                    margin="0,0,16,0"
-                    imageUrl= {item.logo2} 
-                    onClick={this.props.onShareClick}
-                    />
-                    <Space
-                      height="1"
-                      width="0"
-                      weight="1"/>
-
-                  <ImageView
-                    height="20"
-                    width="20"
-                    imageUrl= {item.logo1} />
-                  </LinearLayout>
-        </LinearLayout>
+              </LinearLayout>
+              <LinearLayout
+                visibility={this.props.lineSeparator == "true" ?"visible":"gone"}
+                width="match_parent"
+                background={window.__Colors.PRIMARY_BLACK_22}
+                height="1"/> 
+                
+        </LinearLayout>)
     })
 
     return answerLayout;
+  }
+
+
+
+  handleItemClick(itemNo,logoNo){
+    this.props.itemClick(itemNo,logoNo);
+  }
+
+  getMenuItems(data,cardNo){
+    var layout = data.logo.map((item, index) => {
+               return <LinearLayout
+                    width="wrap_content"
+                    height="wrap_content">
+                    <ImageView
+                        height="20"
+                        width="20"
+                        margin="0,0,16,0"
+                        imageUrl= {item} 
+                        onClick={()=>{this.handleItemClick(cardNo,index)}}
+                        />
+                      <Space
+                        height="1"
+                        width="0"
+                        weight="1"/>
+                  </LinearLayout>
+            })
+
+    return (
+            <LinearLayout
+            width="wrap_content"
+            height="wrap_content">  
+            {layout}
+            </LinearLayout>   
+      )
   }
 
   render() {
@@ -94,10 +119,20 @@ class ClassListItem extends View {
 			height="wrap_content"
 			orientation="vertical"
 			>
+      <ScrollView
+          height="match_parent"
+          width="match_parent"
+          fillViewPort="true">
+          <LinearLayout
+            height="match_parent"
+            width="match_parent"
+            orientation="vertical">
 
                 {this.getData()}
-                    		
-	                	
+
+          </LinearLayout>
+      </ScrollView>
+                    		          	
        </LinearLayout>
 
 
@@ -107,3 +142,6 @@ class ClassListItem extends View {
   }
 }
 module.exports = ClassListItem;
+
+
+

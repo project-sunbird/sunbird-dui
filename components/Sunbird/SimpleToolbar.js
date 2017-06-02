@@ -125,11 +125,19 @@ getMenu() {
     this.layout = (
       <LinearLayout 
         height="56"
-        padding="8,0,8,0"
+        width="match_parent"
+        padding="0,0,0,2"
         gravity="center_vertical"
         root="true" 
-        background={this.props.invert?window.__Colors.WHITE:window.__Colors.LIGHT_VIOLET}
-        width="match_parent" >
+        background={window.__Colors.PRIMARY_BLACK_22}
+        >
+
+        <LinearLayout
+          width="match_parent"
+          height="match_parent"
+          gravity="center_vertical"
+          background={this.props.invert?window.__Colors.WHITE:window.__Colors.LIGHT_VIOLET}
+          >
          
           {back}
           {logo}
@@ -138,7 +146,7 @@ getMenu() {
           <Space width="0" weight="1"/>
           {icons}
           {menu}
-             
+         </LinearLayout>
        </LinearLayout>
     )
 
