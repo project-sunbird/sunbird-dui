@@ -119,7 +119,7 @@ class HomeScreen extends View {
                   root="true"
                   width="match_parent">
                     <TextView
-                      text={item}
+                      text=""
                       background={this.color}
                       color="#ffffff"
                       height="match_parent"
@@ -129,7 +129,7 @@ class HomeScreen extends View {
 
         break;
     }
-    jso.push({ view: this.getView(contentLayout.render()), value: "", viewType: 0 });
+    JBridge.push({ view: this.getView(contentLayout.render()), value: "", viewType: 0 });
 
     //replace the viewPager at the index with the layout, and data from response
     JBridge.replaceViewPagerItem(this.currentViewPagerIndex, jso)
@@ -194,7 +194,7 @@ class HomeScreen extends View {
                   root="true"
                   width="match_parent">
                     <TextView
-                      text={item}
+                      text=""
                       background={this.color}
                       color="#ffffff"
                       height="match_parent"

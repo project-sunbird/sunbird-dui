@@ -8,8 +8,9 @@ var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 
 class CourseInfoItem extends View {
-  constructor(props, children) {
+  constructor(props, children, state) {
     super(props, children);
+    console.log("data",state);
   }
 
   handleItemClick = () => {
