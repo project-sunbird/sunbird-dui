@@ -92,12 +92,13 @@ class HomeScreen extends View {
       case 0:
         contentLayout = (
           <HomeComponent
-              recommendedData={this.recommendedData}
-              recommendedimageUrls={this.recommendedimageUrls}
               menuData={this.menuData}
               todoData = {this.todoData}
-              
-              />)
+              feedData = {this.feedData}
+              voteClick = {this.handleVoteClick}
+              answerClick = {this.handleAnswerClick}
+              bookmarkClick = {this.handleBookmarkClick}/> 
+              )
 
         break;
       case 1:
@@ -134,7 +135,7 @@ class HomeScreen extends View {
 
         break;
     }
-    JBridge.push({ view: this.getView(contentLayout.render()), value: "", viewType: 0 });
+    //JBridge.push({ view: this.getView(contentLayout.render()), value: "", viewType: 0 });
 
     //replace the viewPager at the index with the layout, and data from response
     JBridge.replaceViewPagerItem(this.currentViewPagerIndex, jso)
@@ -153,8 +154,6 @@ class HomeScreen extends View {
         case 0:
           contentLayout = ( 
             <HomeComponent
-              recommendedData={this.recommendedData}
-              recommendedimageUrls={this.recommendedimageUrls}
               menuData={this.menuData}
               todoData = {this.todoData}
               feedData = {this.feedData}
@@ -162,7 +161,6 @@ class HomeScreen extends View {
               answerClick = {this.handleAnswerClick}
               bookmarkClick = {this.handleBookmarkClick}/> 
               )
-              />)
           tmp = (
             <ContentLoadingComponent
               height="match_parent"

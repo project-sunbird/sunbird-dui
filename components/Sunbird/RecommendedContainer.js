@@ -53,7 +53,7 @@ class RecommendedContainer extends View {
     var renderItem = (<LinearLayout 
                         height="match_parent" 
                         root="true"
-                        padding="0,16,20,20"
+                        padding="0,16,16,20"
                         orientation="horizontal"
                         layout_gravity="center_horizontal"
                         width="match_parent">

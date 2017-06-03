@@ -29,42 +29,42 @@ class HomeComponent extends View {
       ]
     }
     this.recommendedData = {
-      title: "Recommended",
-      data: [
+        title: "Recommended",
+        data: [
       {
         name: "Organic Chemistry for Standard VII",
-        imageUrl: "ic_flask_black",
+        imageUrl: "http://sr.photos3.fotosearch.com/bthumb/RBL/RBL007/b00663.jpg",
         count: 55,
         rating: 5
       },
       {
         name: "Molecular Reactions for Beginners",
-        imageUrl: "ic_molecule_black",
+        imageUrl: "http://photos.gograph.com/thumbs/CSP/CSP446/k17526632.jpg",
         count: 25,
         rating: 5
       },
       {
         name: "Intermediate Metallurgy",
-        imageUrl: "ic_metallurgy_black",
+        imageUrl: "http://sr.photos2.fotosearch.com/bthumb/AGE/AGE063/b20-1458802.jpg",
         count: 65,
         rating: 5
       },
       {
         name: "Organic Chemistry for Standard VII",
-        imageUrl: "ic_flask_black",
-        count: 25,
+        imageUrl: "http://sr.photos3.fotosearch.com/bthumb/RBL/RBL007/b00663.jpg",
+        count: 55,
         rating: 5
       },
       {
         name: "Molecular Reactions for Beginners",
-        imageUrl: "ic_molecule_black",
-        count: 15,
+        imageUrl: "http://photos.gograph.com/thumbs/CSP/CSP446/k17526632.jpg",
+        count: 25,
         rating: 5
       },
       {
         name: "Intermediate Metallurgy",
-        imageUrl: "ic_metallurgy_black",
-        count: 75,
+        imageUrl: "http://sr.photos2.fotosearch.com/bthumb/AGE/AGE063/b20-1458802.jpg",
+        count: 65,
         rating: 5
       } 
     ]

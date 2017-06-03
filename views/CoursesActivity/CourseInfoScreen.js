@@ -28,7 +28,7 @@ class CourseInfoScreen extends View {
     ]);
     this.state = state;
     this.screenName = "COURSE_INFO_SCREEN"
-    console.log("GOT STATE", JSON.stringify(state.dummyDataVAl.status))
+    console.log("GOT STATE", JSON.stringify(state))
     
 
     // window.__RootScreen.snackBar("Hellllllo")
@@ -167,8 +167,19 @@ class CourseInfoScreen extends View {
     if (data === "ENROLL NOW") {
       console.log(data)
 
-      this.replaceChild(this.idSet.parentContainer, this.getEnrolledContent().render(), 0);
+      var req = {
+            "request": {
+              "userId": "user1",  
+            "courseId":"course1",
+            "coursename":"course name ",
+                "description" : "course description",
+            "delta": {}
+            }
+        }
 
+      window.__runDuiCallback({ action: "enrollCourse" , reqparams: req});
+
+      //this.replaceChild(this.idSet.parentContainer, this.getEnrolledContent().render(), 0);
 
 
     }

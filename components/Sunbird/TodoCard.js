@@ -9,6 +9,9 @@ window.R = require("ramda");
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 
+import CourseInfoItemList from '../Sunbird/CourseInfoItemList';
+
+
 class TodoCard extends View {
   constructor(props, children) {
     super(props, children);
@@ -23,18 +26,46 @@ class TodoCard extends View {
 
   getCardIcon = () => {
     return (<LinearLayout
-            width="72"
-            height="74"
+            width="100"
+            height="100"
             background = {this.props.item.moduleBackground? this.props.item.moduleBackground : "#229012FE" }
             gravity="center">
                   <ImageView
-                    height="38"
-                    width="35"
+                    height="50"
+                    width="50"
                     imageUrl={this.props.item.moduleImage ? this.props.item.moduleImage : "ic_account"}
                   />
            </LinearLayout>)
   }
+
+  getProgressStatus = () => {
+    return (<LinearLayout
+            margin= "10,3,0,10"
+            width="match_parent">
+                <TextView
+                  style={window.__TextStyle.textStyle.HINT.SEMI}
+                  text={"Your Progress: "}/>
+                <TextView
+                  style={window.__TextStyle.textStyle.HINT.SEMI}
+                  text={this.props.item.completedCount}/>
+                <TextView
+                  style={window.__TextStyle.textStyle.HINT.SEMI}
+                  text={" / "}/>  
+                 <TextView
+                  style={window.__TextStyle.textStyle.HINT.SEMI}
+                  text={this.props.item.totalCount}/> 
+          </LinearLayout>)
+  }
+
+  getRemainingStatus = () => {
+    if (parseInt(this.props.item.remainingTime) > 60) {
+      return (parseInt(parseInt(this.props.item.remainingTime) / 60) + " hours of coursework remainig")
+    } else {
+      return (this.props.item.remainingTime + " more minutes and you’re done!")
+    }
+  }
    getContent = () => {
+    var timeRemainingStatus = this.getRemainingStatus();
     return (<LinearLayout
             width="match_parent"
             height="match_parent"
@@ -42,54 +73,47 @@ class TodoCard extends View {
             background = {window.__Colors.WHITE}
             >
                 <TextView
-                    margin= "9,18,0,5"
+                    margin= "9,18,0,0"
                     style={window.__TextStyle.textStyle.CARD.HEADING}
                     text={this.props.item.moduleName}/>
-              <LinearLayout
-                width="match_parent"
-                height="match_parent"
-                margin="9,0,0,0"
-                >
-                  <TextView
-                      style={window.__TextStyle.textStyle.HINT.REGULAR}
-                      text={"Std "+ this.props.item.moduleClass}/>
-                  <TextView
-                      style={window.__TextStyle.textStyle.HINT.REGULAR}
-                      text={"   "+ this.props.item.modulePendingClass + " Classes More"}/>
-              </LinearLayout>
+                 {this.getProgressStatus()}
+                 <TextView
+                  margin= "10,15,12,10"
+                  width="match_parent"
+                  style={window.__TextStyle.textStyle.HINT.BLUE}
+                  text={timeRemainingStatus}/>  
+
+
            </LinearLayout>)
   }
+
+
 
   handleClick = () =>{
       console.log("in card",this.props.index)
       this.props.onClick(this.props.index);
   }
 
-  
-
-
   render() {
-
-
     this.layout = (
       <LinearLayout
-        width="320"
-        height="75"
+        width="318"
+        height="100"
         cornerRadius="5"
         margin="16,0,16,0"
         root="true"
-        background={window.__Colors.PRIMARY_BLACK_11}
+        
         >
           <LinearLayout
               width="318"
-              height="74"
+              height="100"
               margin="1,0,1,1"
               cornerRadius="5"
               background={window.__Colors.WHITE}
               >
               <LinearLayout
                   width="318"
-                  height="74"
+                  height="100"
                   cornerRadius="5"
                   onClick = {this.handleClick}
                   >

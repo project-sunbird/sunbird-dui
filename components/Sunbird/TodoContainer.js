@@ -30,6 +30,9 @@ class TodoContainer extends View {
         moduleImage: _this.indexItems[i]["imageUrl"],
         moduleClass: _this.indexItems[i]["class"],
         modulePendingClass: _this.indexItems[i]["pen_classes"],
+        totalCount: "150",
+        completedCount: 100,
+        remainingTime: "120",
 
       }
       console.log("ADDING")
@@ -81,17 +84,32 @@ class TodoContainer extends View {
       margin = "0,0,0,0"
       afterRender={this.afterRender}
       orientation="vertical"
-      background={window.__Colors.CREAM}
+      background={window.__Colors.PRIMARY_BLACK_11}
       >
 
-          
+          <LinearLayout
+              width="match_parent"
+              height="wrap_content"
+              margin = "0,0,0,0"
+              >
 
           <TextView 
           margin="16,16,16,16"
           style={window.__TextStyle.textStyle.TITLE.DARK}
           text="Todo"/>
+          <Space 
+            width="0"
+            weight="1"
+          />
           
+          <TextView 
+          margin="16,0,16,0"
+          style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}
+          text="View all"
+          onClick={this.handleViewAllTodos}
+          />
 
+        </LinearLayout>
 
            <HorizontalScrollView
             width = "wrap_content"
@@ -107,12 +125,10 @@ class TodoContainer extends View {
               </LinearLayout>
           </HorizontalScrollView>
                         
-        <TextView 
-          margin="16,0,0,0"
-          style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}
-          text="View all to-dos >"
-          onClick={this.handleViewAllTodos}
-          />
+        
+
+
+
                     
        </LinearLayout>
 

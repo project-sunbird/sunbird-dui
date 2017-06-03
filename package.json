@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "compile": "webpack -p --progress --colors --watch",
-    "start": "pulp --watch build & webpack-dev-server --inline --watch --hot --content-base dist/ --host  172.16.21.29"
+    "start": "pulp --watch build & webpack-dev-server --inline --watch --hot --content-base dist/ --host  0.0.0.0"
   },
   "dependencies": {
     "babel-plugin-transform-function-source": "^1.0.0",
