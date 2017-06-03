@@ -28,7 +28,7 @@ class HomeScreen extends View {
   constructor(props, children, state) {
     super(props, children, state);
     this.state = state;
-    
+
     this.setIds([
       "viewPagerContainer",
       "tabLayoutContainer",
@@ -36,7 +36,7 @@ class HomeScreen extends View {
     this.currentViewPagerIndex = 0;
     this.setupDuiCallback();
     this.feedData = FeedParams.feedParams;
-    
+  
     //tab data
     this.screenName = "HOME_SCREEN"
     this.data = ["HOME", "COURSES", "RESOURCES", "FORUM", "PROFILE"];
@@ -81,6 +81,66 @@ class HomeScreen extends View {
   }
 
 
+  handleStateChange = (state) => {
+    console.log("------------------ STATE CHANGE --->", state)
+      //MODIFIED STAE WILL COME HERE ( after api call)
+    console.log("CURR VP INDEX :", this.currentViewPagerIndex);
+    console.log("SERVER RESPONSE FROM STATE :", state.response);
+    var contentLayout;
+    var jso = {};
+    switch (this.currentViewPagerIndex) {
+      case 0:
+        contentLayout = (
+          <HomeComponent
+              recommendedData={this.recommendedData}
+              recommendedimageUrls={this.recommendedimageUrls}
+              menuData={this.menuData}
+              todoData = {this.todoData}
+              
+              />)
+
+        break;
+      case 1:
+        contentLayout = (<ChooseCourseComponent
+                  showScreen = {this.handleCourseInfoClick}
+                  height="match_parent"
+                  width="match_parent" />)
+
+        break;
+      case 2:
+        contentLayout = (<ResourceComponent
+                  showScreen = {this.props.showScreen}
+                  height="match_parent"
+                  width="match_parent"/>)
+
+        break;
+      case 3:
+
+        break;
+
+      default:
+        contentLayout = (<LinearLayout
+                  height="match_parent"
+                  root="true"
+                  width="match_parent">
+                    <TextView
+                      text=""
+                      background={this.color}
+                      color="#ffffff"
+                      height="match_parent"
+                      width="match_parent"
+                      gravity="center" />
+                </LinearLayout>)
+
+        break;
+    }
+    JBridge.push({ view: this.getView(contentLayout.render()), value: "", viewType: 0 });
+
+    //replace the viewPager at the index with the layout, and data from response
+    JBridge.replaceViewPagerItem(this.currentViewPagerIndex, jso)
+
+  }
+
   afterRender = () => {
 
     var tabData = [];
@@ -102,6 +162,7 @@ class HomeScreen extends View {
               answerClick = {this.handleAnswerClick}
               bookmarkClick = {this.handleBookmarkClick}/> 
               )
+              />)
           tmp = (
             <ContentLoadingComponent
               height="match_parent"
@@ -143,7 +204,7 @@ class HomeScreen extends View {
                   root="true"
                   width="match_parent">
                     <TextView
-                      text={item}
+                      text=""
                       background={this.color}
                       color="#ffffff"
                       height="match_parent"
@@ -206,12 +267,13 @@ class HomeScreen extends View {
   handleBottomNavBarAction = (index) => {
     JBridge.switchToViewPagerIndex(index + "");
 
-    window.__SNACKBAR.setAction({
-      text: "PAGE " + index,
-      status: "success",
-      actionText: "RETRY"
-    }, () => { console.log("CLICKED ACTION") });
-    window.__SNACKBAR.show(true);
+    // window.__SNACKBAR.setAction({
+      //   text: "PAGE " + index,
+      //   status: "success",
+      //   actionText: "RETRY"
+      // }, () => { console.log("CLICKED ACTION") });
+      // window.__SNACKBAR.show(true);
+
   }
 
   getBottomNavBar = () => {

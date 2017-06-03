@@ -1,19 +1,6 @@
 "use strict";
 var callbackMapper = require('@juspay/mystique-backend').helpers.android.callbackMapper;
 
-exports["sendUpdatedState'"] = function(success) {
-  return function(error) {
-    return function(state) {
-      return function() {
-        var currentScreen = window.__CACHED_SCREENS[window.__CURR_SCREEN];
-        if (currentScreen.hasOwnProperty('handleStateChange')) {
-          currentScreen.handleStateChange(state);
-          success()();
-        }
-      };
-    };
-  };
-};
 
 var callbackMapper = {
   map: function(fn) {
@@ -82,72 +69,33 @@ exports["callbackListner'"] = function(callback) {
     };
   };
 };
+exports["sendUpdatedState'"] = function(success) {
+  return function(error) {
+    return function(state) {
+      return function(noAction) {
+        return function() {
+          console.log('sendupdatedstate', state);
 
+          if (!noAction) {
+            window.__duiCb = success;
+          }
 
-exports["setRegistrationToken'"] = function(success) {
-  return function(err) {
-    return function(token) {
-      return function() {
-        JBridge.setInSharedPrefs("registrationToken", token);
-        success()();
+          var currentScreen = window.__CACHED_SCREENS[window.__CURR_SCREEN];
+          currentScreen = currentScreen.hasOwnProperty('screen') ? currentScreen.screen : {};
+
+          if (currentScreen.hasOwnProperty('handleStateChange')) {
+            currentScreen.handleStateChange(state);
+          } else {
+            console.error('Current screen can not handle state changes');
+          }
+
+          if (noAction) {
+            setTimeout(function() {
+              success()();
+            }, 200);
+          }
+        };
       };
-    };
-  };
-};
-
-exports["getRegistrationToken'"] = function(success) {
-  return function(err) {
-    return function() {
-      success(JBridge.getFromSharedPrefs("registrationToken"))();
-    };
-  };
-};
-
-exports["setEmployeeDetails'"] = function(success) {
-  return function(err) {
-    return function(empDetails) {
-      return function() {
-        JBridge.setInSharedPrefs("empDetails", JSON.stringify(empDetails));
-        success()();
-      };
-    };
-  };
-};
-
-exports["getEmployeeDetails'"] = function(success) {
-  return function(err) {
-    return function() {
-      var empDetails = JBridge.getFromSharedPrefs("empDetails");
-      console.log("empDetails", empDetails);
-      success(JSON.parse(empDetails))();
-    };
-  };
-};
-
-exports["setLoginToken'"] = function(success) {
-  return function(err) {
-    return function(token) {
-      return function() {
-        JBridge.setInSharedPrefs("loginToken", token);
-        success()();
-      };
-    };
-  };
-};
-
-exports["getLoginToken'"] = function(success) {
-  return function(err) {
-    return function() {
-      success(JBridge.getFromSharedPrefs("loginToken"))();
-    };
-  };
-};
-
-
-exports["getDeviceDetails'"] = function(success) {
-  return function(err) {
-    return function() {
-      success(JSON.parse(JBridge.getDeviceDetails()))();
     };
   };
 };
@@ -255,7 +203,7 @@ exports["setPermissions'"] = function(success) {
 
 exports["getConsumerId'"] = function(success) {
   return function(err) {
-    return function () {
+    return function() {
       // success(JBridge.getFromSharedPrefs("registrationToken"))();
       success("123")();
     };
@@ -264,7 +212,7 @@ exports["getConsumerId'"] = function(success) {
 
 exports["getDeviceId'"] = function(success) {
   return function(err) {
-    return function () {
+    return function() {
       // success(JBridge.getFromSharedPrefs("registrationToken"))();
       success("1233245454656")();
     };
@@ -272,10 +220,9 @@ exports["getDeviceId'"] = function(success) {
 };
 exports["getUserId'"] = function(success) {
   return function(err) {
-    return function () {
+    return function() {
       // success(JBridge.getFromSharedPrefs("registrationToken"))();
       success("dfjkv345")();
     };
   };
 };
-
