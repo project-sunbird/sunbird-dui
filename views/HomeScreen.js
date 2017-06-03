@@ -135,7 +135,7 @@ class HomeScreen extends View {
 
         break;
     }
-    JBridge.push({ view: this.getView(contentLayout.render()), value: "", viewType: 0 });
+    //JBridge.push({ view: this.getView(contentLayout.render()), value: "", viewType: 0 });
 
     //replace the viewPager at the index with the layout, and data from response
     JBridge.replaceViewPagerItem(this.currentViewPagerIndex, jso)

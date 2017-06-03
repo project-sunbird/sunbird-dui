@@ -126,6 +126,11 @@ exports.textStyle = {
       textSize: Font.fontSize.FONT_12,
       fontStyle: Font.fontStyle.BOLD
     },
+    WBOLD: {
+      color: Colors.WHITE,
+      textSize: Font.fontSize.FONT_12,
+      fontStyle: Font.fontStyle.BOLD
+    },
     LIGHT: {
       color: Colors.WHITE,
       textSize: Font.fontSize.FONT_12,

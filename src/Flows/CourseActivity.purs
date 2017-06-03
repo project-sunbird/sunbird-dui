@@ -7,16 +7,17 @@ import Control.Monad.Eff.Class(liftEff)
 
 
 courseActivityFlow state = do
-  reqTokens <- getReqTokens
-  response <- getCourses reqTokens
-  newState <- updateState {response: response} state
-  _ <- sendUpdatedState newState 
+  state <- getCallbackFromScreen "HOME" state
+  -- reqTokens <- getReqTokens
+  -- response <- getCourses reqTokens
+  -- newState <- updateState {response: response} state
+  -- _ <- sendUpdatedState newState 
   case state.action of
     "showCourseInfo" -> do
       liftEff $ log "showCourseInfo"
       showCourseInfoFlow state
     "showExplore" -> do
-      liftEff $ log "showCourseInfo"
+      liftEff $ log "showExploreFlow"
       showExploreFlow state
     _ -> courseActivityFlow state
 
@@ -37,7 +38,13 @@ showCourseInfoFlow state = do
     "showQuizActivity" -> do
       liftEff $ log "showQuizActivity"
       showQuizFlow state
+    "enrollCourse" -> do
+      liftEff $ log "Enroll Course"
+      response <- enrollCourse state.reqparams
+      state <- updateState {response: response} state 
+      courseActivityFlow state
     _ ->showCourseInfoFlow state
+
 
 
 showCourseAssignmentFlow state = do

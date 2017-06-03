@@ -1,6 +1,7 @@
 var dom = require("@juspay/mystique-backend").doms.android;
 var Connector = require("@juspay/mystique-backend").connector;
 var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
+var RelativeLayout = require("@juspay/mystique-backend").androidViews.RelativeLayout;
 
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 var RatingBar = require('@juspay/mystique-backend').androidViews.RatingBar;
@@ -23,18 +24,49 @@ class RecommendedCard extends View {
   }
 
   getCardIcon = () => {
-    return (<LinearLayout
-            width="130"
-            height="100"
-            background = {this.props.item.moduleBackground? this.props.item.moduleBackground : "#229012FE" }
+    return (
+            <RelativeLayout
+              width="wrap_content"
+              height="wrap_content"
+            >
+            <LinearLayout
+            width="170"
+            height="110"
             gravity="center"
-            cornerRadius="5">
+            >
                   <ImageView
-                    height="48"
-                    width="48"
-                    imageUrl={this.props.item.moduleImage ? this.props.item.moduleImage : "ic_account"}
+                    height="match_parent"
+                    width="match_parent"
+                    scaleType="fixXY"
+                    imageFromUrl={this.props.item.moduleImage ? this.props.item.moduleImage : "ic_account"}
                   />
-           </LinearLayout>)
+            </LinearLayout>
+
+          <LinearLayout
+            width="170"
+            height="110"
+            gravity="center"
+            background={window.__Colors.BLACK}
+            alpha="0.50"
+            >
+
+            </LinearLayout>
+          <LinearLayout
+            width="150"
+            height="wrap_content"
+            gravity="center"
+            alignParentBottom="true,-1"
+            padding = "10,10,10,10"
+
+            >
+                <TextView
+                text= {this.props.item.moduleName ? this.props.item.moduleName : "Module Name"}
+                style={window.__TextStyle.textStyle.HINT.WBOLD}
+                
+
+                />
+           </LinearLayout>
+          </RelativeLayout>)
   }
 
   getRatingSection = () => {
@@ -47,10 +79,10 @@ class RecommendedCard extends View {
               width="0"
               weight="1"
               height="50"
-              setStars = "5" 
+              setStars = "6" 
               setRating = {this.props.item.moduleRating}
-              scaleX="0.2"
-              scaleY="0.2"
+              scaleX="0.3"
+              scaleY="0.3"
               onRatingChange = {this.ratingChange}
               fixedRating = {"true"}/>
             <TextView
@@ -70,31 +102,30 @@ class RecommendedCard extends View {
 
 
     this.layout = (
-      <LinearLayout
+    <LinearLayout
         width="wrap_content"
-        height="match_parent"
+        height="wrap_content"
         orientation = "vertical"
         padding="16,0,16,0">
+            <LinearLayout
+              width="170"
+              height="110"
+              >
 
-        {
-          this.getCardIcon()
-        }
+              {
+                this.getCardIcon()
+              }
 
-        <LinearLayout
-          width="130"
-          orientation="vertical"
-          height="wrap_content"
-          margin="0,12,0,0">
-          <TextView
-                text= {this.props.item.moduleName ? this.props.item.moduleName : "Module Name"}
-                style={window.__TextStyle.textStyle.HINT.BOLD}/>
-          
-          {
-            this.getRatingSection()
-          }     
-            
-            
           </LinearLayout>
+
+          <LinearLayout
+            height="wrap_content"
+            width="match_parent"
+          >
+          {this.getRatingSection()}
+
+          </LinearLayout>
+
     </LinearLayout>
 
 

@@ -8,7 +8,7 @@ var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callba
 var ScrollView = require('@juspay/mystique-backend').androidViews.ScrollView;
 var CollapsingToolbarLayout = require('@juspay/mystique-backend').androidViews.CollapsingToolbarLayout;
 var AppBarLayout = require('@juspay/mystique-backend').androidViews.AppBarLayout;
-
+var Space = require("@juspay/mystique-backend").androidViews.Space;
 var ViewWidget = require('@juspay/mystique-backend').androidViews.ViewWidget;
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var objectAssign = require('object-assign');
@@ -66,20 +66,30 @@ class ChooseCourseComponent extends View {
             width="match_parent"
             height="wrap_content"
           >
+          <LinearLayout
+            width="match_parent"
+            height="wrap_content"
+            margin="2,24,24,0"
+            >
+            <Space
+              width="0"
+              weight="1"/>
           <ImageView
                 height="18"
                 width="18"
-                margin = "230,25,7,0"
+                
                 imageUrl= "ic_explore"
                 onClick={this.handleExploreClick}
               />
+
                   <TextView
                     text="Explore"
                     height="wrap_content"
-                    margin="3,24,24,0"
+                    margin="4,0,0,0"
                     style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
                     onClick={this.handleExploreClick}
                     />
+          </LinearLayout>
           </LinearLayout>
                   <TextView
                     text="Your learning Tracks"

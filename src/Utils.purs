@@ -115,6 +115,12 @@ getDummyData =
       headers = (generateRequestHeaders) in
   ExceptT $ attempt $ (get requestUrl headers)
 
+enrollCourse req=
+  let requestUrl = "/v1/user/courses/enroll"
+      headers = (generateRequestHeaders) in
+  ExceptT $ attempt $ (post requestUrl headers req)
+
+
 getCourses regTokens =
   let requestUrl = "/v1/user/courses/1234"
       headers = (generateReqTokenHeaders regTokens) in
