@@ -67,17 +67,19 @@ class ModulesContainer extends View {
 
       <LinearLayout
       width="match_parent"
-      height="165"
-      margin = "0,16,0,16"
+      height="wrap_content"
+      margin = "0,0,0,16"
       afterRender={this.afterRender}
       orientation="vertical"
       gravity="center"
+      background="#F7F7F7"
+      background={this.props.background? this.props.background : "#FFFFFF" }
       >
 
           <TextView
           width="match_parent"
           height="wrap_content"
-          margin="10,0,0,0"
+          margin="10,16,0,0"
           style={window.__TextStyle.textStyle.CARD.TITLE.DARK}
           text={this.props.title? this.props.title : "Module" }/>
 

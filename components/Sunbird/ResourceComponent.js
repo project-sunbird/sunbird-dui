@@ -154,6 +154,7 @@ class ResourceComponent extends View {
            onClick={this.handleModuleClick}
            item={this.dummyData}
            title="Saved Resources"
+           background="#F7F7F7"
            />
        </LinearLayout>)
   }
