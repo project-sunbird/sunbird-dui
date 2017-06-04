@@ -93,16 +93,11 @@ class HomeScreen extends View {
       case 0:
         contentLayout = (
           <HomeComponent
+              recommendedData={this.recommendedData}
+              recommendedimageUrls={this.recommendedimageUrls}
               menuData={this.menuData}
               todoData = {this.todoData}
-<<<<<<< HEAD
               feedData = {this.feedData}/>
-=======
-              feedData = {this.feedData}
-              voteClick = {this.handleVoteClick}
-              answerClick = {this.handleAnswerClick}
-              bookmarkClick = {this.handleBookmarkClick}/> 
->>>>>>> da86054b26fe1ba6c92267d6dec527f2dbd48a56
               )
 
         break;
@@ -157,20 +152,24 @@ class HomeScreen extends View {
     var tabItems = this.data.map((item, index) => {
       switch (index) {
         case 0:
+          contentLayout = (
 <<<<<<< HEAD
-          contentLayout = (<FilterComponent/>)
-              
-=======
-          contentLayout = ( 
             <HomeComponent
-              menuData={this.menuData}
-              todoData = {this.todoData}
-              feedData = {this.feedData}
-              voteClick = {this.handleVoteClick}
-              answerClick = {this.handleAnswerClick}
-              bookmarkClick = {this.handleBookmarkClick}/> 
-              )
->>>>>>> da86054b26fe1ba6c92267d6dec527f2dbd48a56
+            recommendedData={this.recommendedData}
+            recommendedimageUrls={this.recommendedimageUrls}
+            menuData={this.menuData}
+            todoData = {this.todoData}
+            feedData = {this.feedData}/>
+            )
+=======
+                  <HomeComponent
+                            recommendedData={this.recommendedData}
+                            recommendedimageUrls={this.recommendedimageUrls}
+                            menuData={this.menuData}
+                            todoData = {this.todoData}
+                            feedData = {this.feedData}/>)
+>>>>>>> 6cf79d99bd83bc7b0e3b0b99532ae4e3f479802e
+              
           tmp = (
             <ContentLoadingComponent
               height="match_parent"
@@ -339,12 +338,9 @@ class HomeScreen extends View {
 
 module.exports = Connector(HomeScreen);
 
-// <HomeComponent
-//                             recommendedData={this.recommendedData}
-//                             recommendedimageUrls={this.recommendedimageUrls}
-//                             menuData={this.menuData}
-//                             todoData = {this.todoData}
-//                             feedData = {this.feedData}/>
+<<<<<<< HEAD
+=======
 
+>>>>>>> 6cf79d99bd83bc7b0e3b0b99532ae4e3f479802e
 
 
