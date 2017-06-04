@@ -77,8 +77,9 @@ class TodoCard extends View {
                     style={window.__TextStyle.textStyle.CARD.HEADING}
                     text={this.props.item.moduleName}/>
                  {this.getProgressStatus()}
+                 
                  <TextView
-                  margin= "10,15,12,10"
+                  margin= "10,0,12,10"
                   width="match_parent"
                   style={window.__TextStyle.textStyle.HINT.BLUE}
                   text={timeRemainingStatus}/>  

@@ -152,7 +152,13 @@ class HomeScreen extends View {
     var tabItems = this.data.map((item, index) => {
       switch (index) {
         case 0:
-          contentLayout = (<FilterComponent/>)
+          contentLayout = (
+                  <HomeComponent
+                            recommendedData={this.recommendedData}
+                            recommendedimageUrls={this.recommendedimageUrls}
+                            menuData={this.menuData}
+                            todoData = {this.todoData}
+                            feedData = {this.feedData}/>)
               
           tmp = (
             <ContentLoadingComponent
@@ -322,12 +328,6 @@ class HomeScreen extends View {
 
 module.exports = Connector(HomeScreen);
 
-// <HomeComponent
-//                             recommendedData={this.recommendedData}
-//                             recommendedimageUrls={this.recommendedimageUrls}
-//                             menuData={this.menuData}
-//                             todoData = {this.todoData}
-//                             feedData = {this.feedData}/>
 
 
 
