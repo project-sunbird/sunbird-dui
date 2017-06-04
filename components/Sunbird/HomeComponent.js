@@ -25,6 +25,7 @@ class HomeComponent extends View {
 
     this.menuData = {
       url: [
+        { imageUrl: "ic_action_notification_blue" },
         { imageUrl: "ic_action_search" }
       ]
     }
@@ -153,6 +154,11 @@ class HomeComponent extends View {
     console.log("View All todos in home");
   }
 
+
+  handleMenuClick = (index) =>{
+  }
+
+  
   render() {
     this.layout = (
 
@@ -162,12 +168,15 @@ class HomeComponent extends View {
         width="match_parent"
         height="match_parent">
 
-        <SimpleToolbar
-          title=""
-          invert="true"
-          hideBack="true"
-          menuData={this.menuData}
-          width="match_parent"/>
+          <SimpleToolbar
+            title=""
+            width="match_parent"
+            showMenu="true"
+            invert="true"
+            hideBack="true"
+            menuData={this.menuData}
+            onMenuItemClick={this.handleMenuClick}
+            />
         
 
             <ScrollView
