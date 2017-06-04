@@ -10,16 +10,23 @@ var ViewWidget = require('@juspay/mystique-backend').androidViews.ViewWidget;
 var ModulesContainer = require('../../components/Sunbird/ModulesContainer');
 var VideoCard = require('../../components/Sunbird/VideoCard');
 var SimpleToolbar = require('../../components/Sunbird/SimpleToolbar');
+var FilterComponent = require('../../components/Sunbird/FilterComponent');
 var objectAssign = require('object-assign');
 var RecommendedContainer = require('../Sunbird/RecommendedContainer');
 
 window.R = require("ramda");
-
+var _this;
 
 class ResourceComponent extends View {
   constructor(props, children, state) {
     super(props, children, state);
     this.state = state;
+
+    this.setIds([
+      "parentContainer",
+      "filterContainer"
+    ]);
+    _this = this;
 
     this.menuData = {
       url: [
@@ -141,6 +148,19 @@ class ResourceComponent extends View {
   }
 
   handleMenuClick = (index) =>{
+    if(index=="0")
+    {
+      let cmd = _this.set({
+          id: _this.idSet.parentContainer,
+          visibility: "gone"
+      });
+      cmd += _this.set({
+          id: _this.idSet.filterContainer,
+          visibility: "visible"
+      });
+
+      Android.runInUI(cmd, null);
+    }
   }
 
   getModuleContent = () => {
@@ -211,15 +231,37 @@ class ResourceComponent extends View {
         </LinearLayout>)
   }
 
+  handleFilterBackPress=()=>{
+
+    let cmd = _this.set({
+          id: _this.idSet.parentContainer,
+          visibility: "visible"
+      });
+      cmd += _this.set({
+          id: _this.idSet.filterContainer,
+          visibility: "gone"
+      });
+
+      Android.runInUI(cmd, null);
+
+  }
+
 
 
   render() {
     this.layout = (
+
       <LinearLayout
         root="true"
         orientation="vertical"
         width="match_parent"
         height="match_parent">
+        <LinearLayout
+        orientation="vertical"
+        width="match_parent"
+        height="match_parent"
+        id={this.idSet.parentContainer}>
+
         <SimpleToolbar
             title="Resources"
             width="match_parent"
@@ -254,6 +296,20 @@ class ResourceComponent extends View {
             </LinearLayout>
 
         </ScrollView>
+
+        </LinearLayout>
+
+        <LinearLayout
+        orientation="vertical"
+        width="match_parent"
+        visibility="gone"
+        height="match_parent"
+        id={this.idSet.filterContainer}>
+        <FilterComponent
+        onFilterBackPress = {this.handleFilterBackPress}
+        />
+
+        </LinearLayout>
 
       </LinearLayout>
     );

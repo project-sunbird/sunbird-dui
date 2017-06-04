@@ -115,6 +115,7 @@ class FilterComponent extends View {
 
         <SimpleToolbar
           title="Filter"
+          onBackPress={this.props.onFilterBackPress}
           invert="true"
           width="match_parent"/>
         

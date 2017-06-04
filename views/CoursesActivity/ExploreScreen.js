@@ -24,12 +24,14 @@ class ExploreScreen extends View {
     this.state = state;
     this.screenName = "EXPLORE_SCREEN"
 
+    
     this.menuData = {
       url: [
-        { title: "hello" }
+        { imageUrl: "ic_action_notification_blue" },
+        { imageUrl: "ic_action_search" }
       ]
     }
-
+    
     this.recommendedData = {
         title: "New",
         data: [
