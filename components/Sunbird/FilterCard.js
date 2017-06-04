@@ -6,25 +6,41 @@ var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var SimpleToolbar = require('../Sunbird/SimpleToolbar');
+var ChooseItem = require('../Sunbird/ChooseItem');
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
+const transitParams = require('../../transitions');
 
+var _this;
 class FilterCard extends View {
   constructor(props, children) {
     super(props, children);
+    this.setIds([
+      'filterCount'
+    ]);
+    _this=this;
+   
+  this.EaseOut = transitParams.animParams.EaseOut;
+
   }
 
 
   getFilterRows(data){
     var layout = data.map((item, index) => {
 
-                    return (<LinearLayout
+                    return (
+                          <LinearLayout
                             width="match_parent"
                             height="wrap_content"
                             margin="16,16,16,0"
+                            gravity="center_vertical"
+                            onClick={()=>{this.handleClick(index)}}>
+                          
+                           <LinearLayout
+                            width="match_parent"
+                            height="match_parent"
                             padding="10,10,0,10"
                             gravity="center_vertical"
-                            onClick={()=>{this.handleClick(index)}}
                             background={window.__Colors.WHITE_F4}>
 
                               <TextView
@@ -41,7 +57,7 @@ class FilterCard extends View {
                               <TextView
                               width="wrap_content"
                               height="wrap_content"
-                              text="1 added"
+                              id={this.idSet.filterCount}
                               style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>
 
                               <ImageView
@@ -49,7 +65,9 @@ class FilterCard extends View {
                               height="24"
                               imageUrl="ic_chevron_right"/>
 
-                            </LinearLayout>)
+                            </LinearLayout>
+                          </LinearLayout>
+                            )
     })
 
     return layout;
@@ -57,8 +75,57 @@ class FilterCard extends View {
   }
 
   handleClick(index){
-    this.props.handleClick(index);
+   this.showFilterDialog();
   }
+
+  handleSelection(index){
+    console.log("selected"+index);
+
+    let cmd = _this.set({
+    id: _this.idSet.filterCount,
+      text:"1 added"
+    });
+
+  Android.runInUI(cmd,null);
+
+  }
+
+  showFilterDialog = () =>{
+
+    this.listData ={
+              confirmText:"SUBMIT",
+              items: ["class I",
+                      "class II",
+                      "class III",
+                      "class IV",
+                      "class V",
+                      "class VI",
+                      "class VII",
+                      "class VIII",
+                      "class IX",
+                      "class X" ],
+              heading: "Please choose the Standard"
+            }
+
+    var layout = ( <LinearLayout
+                    width="match_parent"
+                    height="wrap_content"
+                    visibility="visible"
+                    alignParentBottom = "true,-1"
+                    weight="1"
+                    orientation="vertical"
+                    background={window.__Colors.WHITE}
+                    >
+
+                    <ChooseItem
+                    data={this.listData}
+                    onSelect={this.handleSelection}
+                    />
+
+                  </LinearLayout>);
+    window.__RootScreen.showFilterDialog(layout,this.EaseOut);
+  }
+
 
 
   render() {

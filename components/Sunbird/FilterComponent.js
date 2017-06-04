@@ -21,23 +21,7 @@ class FilterComponent extends View {
     "Subject",
     "Language",
     "Author name"
-    ]
-
-   this.listData ={
-              confirmText:"SUBMIT",
-              items: ["class I",
-                      "class II",
-                      "class III",
-                      "class IV",
-                      "class V",
-                      "class VI",
-                      "class VII",
-                      "class VIII",
-                      "class IX",
-                      "class X" ],
-              heading: "Please choose the Standard"
-   
-   } 
+    ]   
    _this=this;
 
   }
@@ -109,39 +93,10 @@ class FilterComponent extends View {
   }
 
   handleSelection = (index) =>{
-        console.log("selected index",index);
 
   }
 
-  handleFilterCardClick(index){
-    console.log("handleFilterCardClick" + index);
-    _this.showFilterDialog();
-  }
-
-  showFilterDialog = () =>{
-    var layout = ( <LinearLayout
-                    width="match_parent"
-                    height="wrap_content"
-                    visibility="visible"
-                    alignParentBottom = "true,-1"
-                    weight="1"
-                    orientation="vertical"
-                    background={window.__Colors.WHITE}
-                    >
-
-                    <ChooseItem
-                    data={this.listData}
-                    onSelect={this.handleSelection}
-                    />
-
-                  </LinearLayout>);
-    window.__RootScreen.showFilterDialog(layout);
-  }
-
-      // window.__RootScreen.snackBar("Hellllllo")
-
-
-
+  
 
   render() {
     this.layout = (
@@ -194,7 +149,6 @@ class FilterComponent extends View {
 
                       <FilterCard
                       filterData={this.filterData}
-                      handleClick={this.handleFilterCardClick}
                       />
 
                </LinearLayout>

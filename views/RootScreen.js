@@ -47,22 +47,24 @@ class RootScreen extends View {
     );
   }
 
-  showFilterDialog = (layout) =>{
-    this.showBlur();
-
-    let cmd = this.set({
-    id: this.idSet.filterDialog,
-      visibility:"visible",
-    });
-
-    Android.runInUI(cmd,null);
+  showFilterDialog = (layout,animation) =>{
 
     this.replaceChild(this.idSet.filterDialog, layout.render(), 0);
+    this.showBlur();
+
+    var cmd = {
+    id: this.idSet.filterDialog,
+    visibility: "visible",
+    };
+
+    var result = Object.assign({},cmd, animation);
+    result["id"] = this.idSet.filterDialog;
+    Android.runInUI(this.set(result), null);    
   }
 
   hideFilterDialog = () =>{
     this.hideBlur();
-    let cmd = this.set({
+    var cmd = this.set({
     id: this.idSet.filterDialog,
       visibility:"gone",
   });
@@ -86,14 +88,14 @@ class RootScreen extends View {
       id: this.idSet.blurContainer,
       visibility:"gone",
       clickable:"false"
-    });
+  });
 
     Android.runInUI(cmd,null);
  }
 
  blurClick = () =>{
+  this.hideBlur();
   this.hideFilterDialog();
-  console.log("handleBlurClick")
  }
 
   
@@ -116,20 +118,27 @@ class RootScreen extends View {
 
         </LinearLayout>
 
+        
         <LinearLayout
-          id = {this.idSet.blurContainer}
-          clickable = "true"
-          visibility = "visible"
-          onClick = {this.blurClick}
+         width="match_parent"
+         height="match_parent"
+         visibility="gone"
+         id = {this.idSet.blurContainer}
+         clickable="false"
+         onClick = {this.blurClick}>
+
+         <LinearLayout
           width = "match_parent"
           height = "match_parent"
           background = "#000000"
           alpha = "0.5"/>
 
+         </LinearLayout>
+
+
         <LinearLayout
         width="match_parent"
         height="wrap_content"
-        weight="1"
         alignParentBottom = "true,-1"
         orientation="vertical"
         id={this.idSet.filterDialog}/>

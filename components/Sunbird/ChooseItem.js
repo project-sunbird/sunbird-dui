@@ -15,7 +15,7 @@ var FeatureButton = require('../../components/Sunbird/FeatureButton');
 var Styles = require("../../res/Styles");
 
 let IconStyle = Styles.Params.IconStyle;
-
+var _this;
 class ChooseItem extends View {
     constructor(props, children) {
     super(props, children);
@@ -23,6 +23,8 @@ class ChooseItem extends View {
       "chooseItemContainer",
       "featureContainer"
     ]);
+    _this = this;
+    this.chosenItem;
   }
 
 
@@ -32,7 +34,10 @@ class ChooseItem extends View {
          return (<LinearLayout
                   width = "match_parent"
                   alignParentBottom = "true,-1"
-                  height = "64"
+                  width="match_parent"
+                  orientation="vertical"
+                  height="wrap_content"
+                  id={this.idSet.featureContainer}
                   weight = "1"
                   padding = "3,3,3,3"
                   gravity = "center">
@@ -49,7 +54,7 @@ class ChooseItem extends View {
                     textColor = {window.__Colors.WHITE}
                     textSize = "18"/>
                 </LinearLayout>)
-         
+    
 
   }
 
@@ -63,12 +68,7 @@ class ChooseItem extends View {
             padding = "0,0,10,10"
             orientation = "vertical"
             weight = "1">
-              <LinearLayout
-                id={this.idSet.chooseItemContainer}
-                orientation="vertical"
-                height="wrap_content"
-                width="match_parent">
-              </LinearLayout>
+               <DoubleRadioList items = {this.props.data.items} onSelect={this.handleSelection}/>
             </LinearLayout>)
   }
 
@@ -85,44 +85,23 @@ class ChooseItem extends View {
            height = "wrap_content"
            text = {this.props.data.heading}
            style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
-
-          <ViewWidget 
-            height = "1"
-            width = "0"
-            weight = "1"/>
-
-          <ImageView
-           width = "24"
-           height = "24"
-           imageUrl = "ic_action_close"/>
+    
           </LinearLayout>)
   }
 
-  handleSelection=(index)=>{
-    console.log("index of selection",index);
 
-    var layout = this.getFeatureButton("true");
-    this.replaceChild(this.idSet.featureContainer, layout.render(), 0);
-    this.props.onSelect(index);
+  onConfirm(){
+    _this.replaceChild(_this.idSet.featureContainer, _this.getFeatureButton("false").render(), 0);
+    window.__RootScreen.hideFilterDialog();
+    _this.props.onSelect(_this.chosenItem);
   }
 
- afterRender = () => {
-    var renderItem = (
-     <LinearLayout
-     width = "wrap_content"
-     height = "match_parent"
-     orientation = "horizontal">
-      <DoubleRadioList items = {this.props.data.items} onSelect={this.handleSelection}/>
-      </LinearLayout>
-      );
-    this.appendChild(this.idSet.chooseItemContainer, renderItem.render(), 0);
-    console.log("AFTER RENDER IS CALLED");
+  handleSelection=(index)=>{
+    this.replaceChild(this.idSet.featureContainer, this.getFeatureButton("true").render(), 0);
+    this.chosenItem=index;
+  }
 
-
-    var layout = this.getFeatureButton("false");
-
-    this.replaceChild(this.idSet.featureContainer, layout.render(), 0);
-
+  afterRender = () => {
   }
 
   render() {
@@ -135,7 +114,7 @@ class ChooseItem extends View {
           height = "wrap_content"
           orientation= "vertical"
           clickable = "true"
-          margin="16,18,16,16"
+          padding="16,18,16,16"
           alignParentBottom = "true,-1"
           background="#ffffff">
           
@@ -143,11 +122,7 @@ class ChooseItem extends View {
 
          {this.getRadioList()}
 
-         <LinearLayout
-            id={this.idSet.featureContainer}
-            width="match_parent"
-            orientation="vertical"
-            height="wrap_content"/>
+         {this.getFeatureButton("false")}
             
            
         </LinearLayout>
