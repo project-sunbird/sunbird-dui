@@ -187,6 +187,11 @@ class ExploreScreen extends View {
         </LinearLayout>)
   }
 
+  handleNewClick = (index) =>{
+    console.log("clicked on new recommended");
+    window.__runDuiCallback({ action: "showCourseInfo", type: "new" });
+  }
+
 
 
   render() {
@@ -217,6 +222,7 @@ class ExploreScreen extends View {
               orientation="vertical">
 
                 <RecommendedContainer
+                onClick={this.handleNewClick}
                 recommendedData = {this.recommendedData}
                    />
 

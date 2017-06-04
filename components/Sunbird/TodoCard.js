@@ -102,7 +102,7 @@ class TodoCard extends View {
         cornerRadius="5"
         margin="16,0,16,0"
         root="true"
-        
+        background={window.__Colors.PRIMARY_BLACK_11}
         >
           <LinearLayout
               width="318"

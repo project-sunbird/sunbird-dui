@@ -27,6 +27,9 @@ showExploreFlow state = do
     "goBack" -> do
       liftEff $ log "showCourseActivityFlow"
       courseActivityFlow state
+    "showCourseInfo" -> do
+      liftEff $ log "showCourseInfoFlow"
+      showCourseInfoFlow state
     _ ->showExploreFlow state
 
 showCourseInfoFlow state = do

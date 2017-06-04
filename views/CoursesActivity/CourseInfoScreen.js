@@ -28,9 +28,8 @@ class CourseInfoScreen extends View {
     ]);
     this.state = state;
     this.screenName = "COURSE_INFO_SCREEN"
-    console.log("GOT STATE", JSON.stringify(state))
-    
-
+    // console.log("GOT STATE", JSON.stringify(state))
+    console.log("hello from courseinfo");
     // window.__RootScreen.snackBar("Hellllllo")
     this.menuData = {
       url: [
@@ -116,6 +115,9 @@ class CourseInfoScreen extends View {
   }
 
   afterRender = () => {
+    if(this.state.type=="completed"){
+      this.replaceChild(this.idSet.parentContainer, this.getEnrolledContent().render(), 0);
+    }
 
   }
 
@@ -196,6 +198,7 @@ class CourseInfoScreen extends View {
     this.layout = (
       <LinearLayout
         root="true"
+        afterRender={this.afterRender()}
         background={window.__Colors.WHITE}
         orientation="vertical"
         width="match_parent"

@@ -19,6 +19,13 @@ class RecommendedCard extends View {
     console.log(this.props.item.hideRating,"rating hidden");
   }
 
+
+  handleClick = () =>{
+      console.log("in card",this.props.index)
+      this.props.onClick(this.props.index);
+  }
+
+
   ratingChange = (data) => {
     console.log("RATING CHANGE :", data)
   }
@@ -106,7 +113,9 @@ class RecommendedCard extends View {
         width="wrap_content"
         height="wrap_content"
         orientation = "vertical"
-        padding="16,0,16,0">
+        padding="16,0,16,0"
+        onClick={this.handleClick}
+        >
             <LinearLayout
               width="170"
               height="110"

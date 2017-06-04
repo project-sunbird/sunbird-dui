@@ -16,6 +16,10 @@ class RecommendedContainer extends View {
       'recommendedContainer'
     ]);
   }
+    handleIndexMenu = (index) => {
+    console.log("in container",index)
+    this.props.onClick(index);
+  }
 
 
   afterRender = () => {
@@ -47,7 +51,7 @@ class RecommendedContainer extends View {
         <RecommendedCard 
           item={item} 
           index={i} 
-          _onClick={this.handleIndexMenu} />)
+          onClick={this.handleIndexMenu} />)
     });
 
     var renderItem = (<LinearLayout 
