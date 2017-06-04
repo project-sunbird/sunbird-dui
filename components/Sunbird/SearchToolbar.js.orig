@@ -20,7 +20,10 @@ class SearchToolbar extends View {
     this.setIds(["titleTextHolder",
       "searchHolder",
       "searchIconHolder",
+<<<<<<< HEAD
+=======
       "searchCloseHolder",
+>>>>>>> dev
     ])
 
     this.searchText = debounce(this.searchText, 200);
@@ -33,7 +36,16 @@ class SearchToolbar extends View {
 
 
   searchText = (dataSearch) => {
-    this.props.onSearch(dataSearch)
+<<<<<<< HEAD
+    console.log("HI, you searched [component]", dataSearch);
+    if (dataSearch === "close")
+      this.clearSearch();
+
+    this.props.onSerach(dataSearch)
+
+=======
+    this.props.onSerach(dataSearch)
+>>>>>>> dev
   }
 
 
@@ -51,10 +63,13 @@ class SearchToolbar extends View {
       visibility: "gone"
     })
     cmd += this.set({
+<<<<<<< HEAD
+=======
       id: this.idSet.searchCloseHolder,
       visibility: "visible"
     })
     cmd += this.set({
+>>>>>>> dev
       id: this.idSet.searchHolder,
       text: "",
       focus: "true",
@@ -74,10 +89,13 @@ class SearchToolbar extends View {
       visibility: "gone"
     })
     cmd += this.set({
+<<<<<<< HEAD
+=======
       id: this.idSet.searchCloseHolder,
       visibility: "gone"
     })
     cmd += this.set({
+>>>>>>> dev
       id: this.idSet.searchIconHolder,
       visibility: "visible"
     })
@@ -91,6 +109,13 @@ class SearchToolbar extends View {
 
 
   getSearchIcon() {
+<<<<<<< HEAD
+    return (<ImageView  
+            id={this.idSet.searchIconHolder}
+            style = {IconStyle}
+            onClick = {this.handleSearchClick}
+            imageUrl = {"ic_action_search"}/>)
+=======
     return (<LinearLayout
             height="match_parent"
             gravity="center_vertical">
@@ -109,6 +134,7 @@ class SearchToolbar extends View {
                 imageUrl = {"ic_action_close"}/>  
 
             </LinearLayout>)
+>>>>>>> dev
 
   }
 

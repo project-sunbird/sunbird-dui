@@ -86,7 +86,7 @@ exports.textStyle = {
       },
       DARK: {
         REGULAR: {
-          color: Colors.PRIMARY_BLACK,
+          color: Colors.DARK_GRAY,
           textSize: Font.fontSize.FONT_14,
           fontStyle: Font.fontStyle.REGULAR
         },
@@ -190,6 +190,18 @@ exports.textStyle = {
       textSize: Font.fontSize.FONT_10,
       fontStyle: Font.fontStyle.SEMIBOLD
     }
+  },
+  FILTER:{
+      REGULAR_BLUE: {
+      color: Colors.PRIMARY_ACCENT,
+      textSize: Font.fontSize.FONT_12,
+      fontStyle: Font.fontStyle.REGULAR
+      },
+      REGULAR_BLACK: {
+      color: Colors.PRIMARY_BLACK,
+      textSize: Font.fontSize.FONT_12,
+      fontStyle: Font.fontStyle.REGULAR
+      },
   }
 
 };

@@ -93,11 +93,16 @@ class HomeScreen extends View {
       case 0:
         contentLayout = (
           <HomeComponent
-              recommendedData={this.recommendedData}
-              recommendedimageUrls={this.recommendedimageUrls}
               menuData={this.menuData}
               todoData = {this.todoData}
+<<<<<<< HEAD
               feedData = {this.feedData}/>
+=======
+              feedData = {this.feedData}
+              voteClick = {this.handleVoteClick}
+              answerClick = {this.handleAnswerClick}
+              bookmarkClick = {this.handleBookmarkClick}/> 
+>>>>>>> da86054b26fe1ba6c92267d6dec527f2dbd48a56
               )
 
         break;
@@ -152,8 +157,20 @@ class HomeScreen extends View {
     var tabItems = this.data.map((item, index) => {
       switch (index) {
         case 0:
+<<<<<<< HEAD
           contentLayout = (<FilterComponent/>)
               
+=======
+          contentLayout = ( 
+            <HomeComponent
+              menuData={this.menuData}
+              todoData = {this.todoData}
+              feedData = {this.feedData}
+              voteClick = {this.handleVoteClick}
+              answerClick = {this.handleAnswerClick}
+              bookmarkClick = {this.handleBookmarkClick}/> 
+              )
+>>>>>>> da86054b26fe1ba6c92267d6dec527f2dbd48a56
           tmp = (
             <ContentLoadingComponent
               height="match_parent"

@@ -23,6 +23,8 @@ class ResourceComponent extends View {
 
     this.menuData = {
       url: [
+        { imageUrl: "ic_action_filter" },
+        { imageUrl: "ic_action_notification_blue" },
         { imageUrl: "ic_action_search" }
       ]
     }
@@ -138,13 +140,10 @@ class ResourceComponent extends View {
     window.__runDuiCallback({ action: "showClassroomContet" });
   }
 
-
+  handleMenuClick = (index) =>{
+  }
 
   getModuleContent = () => {
-
-
-
-
     return (<LinearLayout
         width = "match_parent"
         height = "wrap_content"

@@ -32,5 +32,8 @@ exports.color = {
   RED: "#D50000",
   RED_10: "#10D50000",
   PRIMARY_DARK: "#007AFF",
-  PRIMARY_LIGHT: "#FFFFFF"
+  PRIMARY_LIGHT: "#FFFFFF",
+  WHITE_F7 : "#F7F7F7",
+  WHITE_F2 : "#F2F2F2",
+  WHITE_F4 : "#F4F4F4"
 };

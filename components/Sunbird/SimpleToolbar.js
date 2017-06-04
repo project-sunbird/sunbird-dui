@@ -26,11 +26,15 @@ class SimpleToolbar extends View {
 
 
 getMenu() {
-    // cant send null some issue with filename of null not defined
+
+
       if (this.props.showMenu == undefined || !this.props.showMenu)
         return <Space width="0"/>
+
+
       var lenthOfMenu = Object.keys(this.props.menuData.url).length;
       var answerCards = "";
+     
       if(lenthOfMenu<=3) {
         answerCards = this.props.menuData.url.map((item, index) => {
            return  <ImageView  
@@ -45,6 +49,8 @@ getMenu() {
         return this.setMenu(item.imageUrl,index);
       });
     }
+   
+
     return answerCards;
   }
 

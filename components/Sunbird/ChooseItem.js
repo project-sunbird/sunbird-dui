@@ -15,38 +15,46 @@ var FeatureButton = require('../../components/Sunbird/FeatureButton');
 var Styles = require("../../res/Styles");
 
 let IconStyle = Styles.Params.IconStyle;
-
+var _this;
 class ChooseItem extends View {
     constructor(props, children) {
     super(props, children);
     this.setIds([
-      "chooseItemContainer"
+      "chooseItemContainer",
+      "featureContainer"
     ]);
+    _this = this;
+    this.chosenItem;
   }
 
 
 
-  getFeatureButton (){
-
-         return ( <LinearLayout
-            width = "match_parent"
-            alignParentBottom = "true,-1"
-            height = "64"
-            weight = "1"
-            padding = "3,3,3,3"
-            gravity = "center">
-            <FeatureButton
-              weight = "0.5"
-              typeface = "bold"
-              width = "match_parent"
-              height = "64"
-              stroke = {"3," + window.__Colors.DARK_GREEN}
-              background = {window.__Colors.DARK_GREEN}
-              text = {this.props.confirmText || "Confirm"}
-              buttonClick = {this.onConfirm}
-              textColor = {window.__Colors.WHITE}
-              textSize = "18"/>
-          </LinearLayout>)
+  getFeatureButton (isClickable){
+     var color = isClickable=="true" ? window.__Colors.PRIMARY_ACCENT:window.__Colors.PRIMARY_BLACK_22;
+         return (<LinearLayout
+                  width = "match_parent"
+                  alignParentBottom = "true,-1"
+                  width="match_parent"
+                  orientation="vertical"
+                  height="wrap_content"
+                  id={this.idSet.featureContainer}
+                  weight = "1"
+                  padding = "3,3,3,3"
+                  gravity = "center">
+                  <FeatureButton
+                    weight = "0.5"
+                    typeface = "bold"
+                    clickable={isClickable}
+                    width = "match_parent"
+                    height = "64"
+                    stroke = {"3," + window.__Colors.WHITE}
+                    background = {color}
+                    text = {this.props.data.confirmText || "Confirm"}
+                    buttonClick = {this.onConfirm}
+                    textColor = {window.__Colors.WHITE}
+                    textSize = "18"/>
+                </LinearLayout>)
+    
 
   }
 
@@ -57,15 +65,10 @@ class ChooseItem extends View {
             width = "match_parent"
             height = "wrap_content"
             margin = "0,0,0,0"
-            padding = "10,0,10,10"
+            padding = "0,0,10,10"
             orientation = "vertical"
             weight = "1">
-              <LinearLayout
-                id={this.idSet.chooseItemContainer}
-                orientation="vertical"
-                height="wrap_content"
-                width="match_parent">
-              </LinearLayout>
+               <DoubleRadioList items = {this.props.data.items} onSelect={this.handleSelection}/>
             </LinearLayout>)
   }
 
@@ -75,54 +78,43 @@ class ChooseItem extends View {
             width = "match_parent"
             height = "wrap_content"
             margin = "0,16,0,16"
-            padding = "16,0,16,0"
+            padding = "0,0,16,0"
             weight = "1">
           <TextView
            width = "wrap_content"
            height = "wrap_content"
-           text = {this.props.heading}
+           text = {this.props.data.heading}
            style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
-
-          <ViewWidget 
-            height = "1"
-            width = "0"
-            weight = "1"/>
-
-          <ImageView
-           width = "24"
-           height = "24"
-           imageUrl = "ic_action_close"/>
+    
           </LinearLayout>)
   }
 
- afterRender = () => {
-    var renderItem = (
-     <LinearLayout
-     width = "wrap_content"
-     height = "match_parent"
-     orientation = "horizontal">
-      <DoubleRadioList items = {this.props.items}/>
-      </LinearLayout>
-      );
-    this.appendChild(this.idSet.chooseItemContainer, renderItem.render(), 0);
-    console.log("AFTER RENDER IS CALLED");
+
+  onConfirm(){
+    _this.replaceChild(_this.idSet.featureContainer, _this.getFeatureButton("false").render(), 0);
+    window.__RootScreen.hideFilterDialog();
+    _this.props.onSelect(_this.chosenItem);
+  }
+
+  handleSelection=(index)=>{
+    this.replaceChild(this.idSet.featureContainer, this.getFeatureButton("true").render(), 0);
+    this.chosenItem=index;
+  }
+
+  afterRender = () => {
   }
 
   render() {
   
     this.layout = (
-      
-      <RelativeLayout
-        width="match_parent"
-        height="match_parent"
-        afterRender = {this.afterRender} >
-
-        <LinearLayout
+       <LinearLayout
           cornerRadius = "2"
+          afterRender={this.afterRender}
           width = "match_parent"
           height = "wrap_content"
           orientation= "vertical"
           clickable = "true"
+          padding="16,18,16,16"
           alignParentBottom = "true,-1"
           background="#ffffff">
           
@@ -130,11 +122,10 @@ class ChooseItem extends View {
 
          {this.getRadioList()}
 
-         {this.getFeatureButton()}
+         {this.getFeatureButton("false")}
             
            
         </LinearLayout>
-      </RelativeLayout>
     )
 
     return this.layout.render();

@@ -79,7 +79,7 @@ class RadioListItem extends View {
           width="48"
           height="48"/>
 
-        <TextView style={TextStyle.textStyle.bigBody} text={this.props.item.title}/>
+        <TextView style={TextStyle.textStyle.bigBody} text={this.props.item}/>
 
       </LinearLayout>
     )
@@ -105,7 +105,7 @@ class DoubleRadioList extends View {
       }
     });
 
-    // this.props.onSelect(index);
+     this.props.onSelect(index);
   }
 
 
