@@ -85,11 +85,11 @@ class HomeScreen extends View {
   handleStateChange = (state) => {
     console.log("------------------ STATE CHANGE --->", state)
       //MODIFIED STAE WILL COME HERE ( after api call)
-    console.log("CURR VP INDEX :", this.currentViewPagerIndex);
+    console.log("----->\n\n\nCURR VP INDEX :", parseInt(this.currentViewPagerIndex));
     console.log("SERVER RESPONSE FROM STATE :", state.response);
     var contentLayout;
-    var jso = {};
-    switch (this.currentViewPagerIndex) {
+    var jso = [];
+    switch (parseInt(this.currentViewPagerIndex)) {
       case 0:
         contentLayout = (
           <HomeComponent
@@ -135,10 +135,11 @@ class HomeScreen extends View {
 
         break;
     }
+    jso.push({ view: this.getView(contentLayout.render()), value: "", viewType: 0 });
     //JBridge.push({ view: this.getView(contentLayout.render()), value: "", viewType: 0 });
-
-    //replace the viewPager at the index with the layout, and data from response
-    JBridge.replaceViewPagerItem(this.currentViewPagerIndex, jso)
+    console.log("----->\n\n\nREPLACE WITH  :", JSON.stringify(jso))
+      //replace the viewPager at the index with the layout, and data from response
+    JBridge.replaceViewPagerItem(this.currentViewPagerIndex, JSON.stringify(jso));
 
   }
 
@@ -234,7 +235,7 @@ class HomeScreen extends View {
     window.__changePureScriptFlow();
     var eventAction;
 
-    switch (parseInt(this.currentViewPagerIndex[0])) {
+    switch (parseInt(this.currentViewPagerIndex)) {
       case 0:
       case 1:
         eventAction = { action: "startCourseFlow" };
@@ -252,19 +253,20 @@ class HomeScreen extends View {
         eventAction = { action: "startCourseFlow" };
         break;
     }
-    console.log("--------->VIEWPAGER TRIGGERS ", eventAction, "ON INDEX", this.currentViewPagerIndex[0]);
+    console.log("--------->VIEWPAGER TRIGGERS ", eventAction, "ON INDEX", this.currentViewPagerIndex);
     window.__runDuiCallback(eventAction);
   }
 
   handleViewPagerAction = (index) => {
     this.currentViewPagerIndex = index;
+    console.log("MODIFIED currentViewPagerIndex:\n\n\n\n\t\t ", index)
     this.setupDuiCallback();
     this.bNavBar.handleNavigationChange(index);
   }
 
   handleBottomNavBarAction = (index) => {
+    this.currentViewPagerIndex = index;
     JBridge.switchToViewPagerIndex(index + "");
-
     // window.__SNACKBAR.setAction({
     //   text: "PAGE " + index,
     //   status: "success",
