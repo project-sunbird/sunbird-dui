@@ -37,7 +37,7 @@ class HomeScreen extends View {
     this.currentViewPagerIndex = 0;
     this.setupDuiCallback();
     this.feedData = FeedParams.feedParams;
-  
+
     //tab data
     this.screenName = "HOME_SCREEN"
     this.data = ["HOME", "COURSES", "RESOURCES", "FORUM", "PROFILE"];
@@ -98,12 +98,12 @@ class HomeScreen extends View {
               menuData={this.menuData}
               todoData = {this.todoData}
               feedData = {this.feedData}/>
-              )
+        )
 
         break;
       case 1:
         contentLayout = (<ChooseCourseComponent
-                  showScreen = {this.handleCourseInfoClick}
+                  response = {state.response}
                   height="match_parent"
                   width="match_parent" />)
 
@@ -159,8 +159,8 @@ class HomeScreen extends View {
             menuData={this.menuData}
             todoData = {this.todoData}
             feedData = {this.feedData}/>
-            )
-              
+          )
+
           tmp = (
             <ContentLoadingComponent
               height="match_parent"
@@ -266,11 +266,11 @@ class HomeScreen extends View {
     JBridge.switchToViewPagerIndex(index + "");
 
     // window.__SNACKBAR.setAction({
-      //   text: "PAGE " + index,
-      //   status: "success",
-      //   actionText: "RETRY"
-      // }, () => { console.log("CLICKED ACTION") });
-      // window.__SNACKBAR.show(true);
+    //   text: "PAGE " + index,
+    //   status: "success",
+    //   actionText: "RETRY"
+    // }, () => { console.log("CLICKED ACTION") });
+    // window.__SNACKBAR.show(true);
 
   }
 
@@ -282,7 +282,7 @@ class HomeScreen extends View {
     return this.bNavBar;
   }
 
-  
+
 
   render() {
     this.layout = (
@@ -328,7 +328,3 @@ class HomeScreen extends View {
 
 
 module.exports = Connector(HomeScreen);
-
-
-
-

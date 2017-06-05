@@ -9,9 +9,10 @@ import Control.Monad.Eff.Class(liftEff)
 courseActivityFlow state = do
   state <- getCallbackFromScreen "HOME" state
   -- reqTokens <- getReqTokens
+  responseData <- getUserCourses "user1"
   -- response <- getCourses reqTokens
-  -- newState <- updateState {response: response} state
-  -- _ <- sendUpdatedState newState 
+  newData <- updateState {response: responseData} state
+  _ <- sendUpdatedState newData 
   case state.action of
     "showCourseInfo" -> do
       liftEff $ log "showCourseInfo"

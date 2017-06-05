@@ -16,8 +16,7 @@ class RecommendedContainer extends View {
       'recommendedContainer'
     ]);
   }
-    handleIndexMenu = (index) => {
-    console.log("in container",index)
+  handleIndexMenu = (index) => {
     this.props.onClick(index);
   }
 
@@ -39,13 +38,10 @@ class RecommendedContainer extends View {
         // moduleRating: parseFloat(5 / i)
         moduleUserCount: _this.indexItems[i]["count"],
         moduleRating: _this.indexItems[i]["rating"],
-        hideRating:  this.props.hideRating
+        hideRating: this.props.hideRating
       }
-      console.log("ADDING")
       _this.tmpArr.push(dat)
     }
-    console.log("SENDING THIS ", this.tmpArr)
-
     var cards = this.tmpArr.map((item, i) => {
       return (
         <RecommendedCard 
@@ -63,7 +59,6 @@ class RecommendedContainer extends View {
                         width="match_parent">
                           {cards}
                     </LinearLayout>);
-    console.log(renderItem)
     this.replaceChild(this.idSet.recommendedContainer, renderItem.render(), 0);
   }
 

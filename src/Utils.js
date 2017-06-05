@@ -146,6 +146,7 @@ exports["callAPI'"] = function(success) {
       return function(url) {
         return function(data) {
           return function(headers) {
+            console.log("------------------------> REQUEST AT URL :", url)
             console.log("Headers are ", headers);
             headers = headers.map(function(header) {
               var hdr = {};

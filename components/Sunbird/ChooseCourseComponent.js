@@ -25,13 +25,20 @@ class ChooseCourseComponent extends View {
 
     this.setIds([
       "collapsingToolbar",
-    
+
     ]);
     this.screenName = "CHOOSE_COURSE"
     this.state = state;
-    
-    console.log("GOT SSTATE", this.state);
-    
+
+    console.log("GOT STATE", this.state);
+
+    if (this.props.response != undefined) {
+      console.log("UNDEFINED RESPONSE FROM STATE");
+    } else {
+      this.serverData = this.props.response;
+      console.log("RESPONSE FROM STATE :", this.serverData);
+    }
+
   }
 
   afterRender = () => {
@@ -40,10 +47,10 @@ class ChooseCourseComponent extends View {
 
   handleItemSelect = (data) => {
     console.log("window.__runDuiCallback( --->showCourseInfo)");
-    window.__runDuiCallback({ action: "showCourseInfo" , type: "completed"});
+    window.__runDuiCallback({ action: "showCourseInfo", type: "completed" });
   }
 
-  handleExploreClick = () =>{
+  handleExploreClick = () => {
     console.log("explore clicked");
     window.__runDuiCallback({ action: "showExplore" });
   }
@@ -112,6 +119,7 @@ class ChooseCourseComponent extends View {
             orientation="vertical">
 
             <CourseInfoItemList
+              data={this.serverData}
               onItemSelected={this.handleItemSelect}
               height="match_parent"
               width="match_parent"/>

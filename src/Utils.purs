@@ -126,4 +126,9 @@ getCourses regTokens =
       headers = (generateReqTokenHeaders regTokens) in
   ExceptT $ attempt $ (get requestUrl headers)
 
+getUserCourses userId =
+  let requestUrl = "/v1/user/courses/" <> userId
+      headers = (generateRequestHeaders) in
+  ExceptT $ attempt $ (get requestUrl headers)  
+
 getExceptT value = ExceptT $ pure $ Right value

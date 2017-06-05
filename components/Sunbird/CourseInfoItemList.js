@@ -3,6 +3,7 @@ var Connector = require("@juspay/mystique-backend").connector;
 var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
+var ProgressBar = require("@juspay/mystique-backend").androidViews.ProgressBar;
 
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
@@ -10,7 +11,7 @@ var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 class CourseInfoItem extends View {
   constructor(props, children, state) {
     super(props, children);
-    console.log("data",state);
+    console.log("data", state);
   }
 
   handleItemClick = () => {
@@ -128,6 +129,8 @@ class CourseInfoItemList extends View {
   afterRender = () => {
     var dataList = [];
 
+
+
     for (var i = 0; i < 15; i++) {
       var dumData
       if (i % 3 == 0) {
@@ -168,6 +171,13 @@ class CourseInfoItemList extends View {
             onItemClick={this.handleCourseItemClick}
             item={item}/>)
     })
+    if (this.props.data == undefined) {
+      cards = (<ProgressBar
+            height="70"
+            width="70"/>);
+    } else {
+      console.log("GOT DATA", this.props.data);
+    }
 
     var cardLayout = (
       <LinearLayout
