@@ -20,8 +20,8 @@ class SimpleToolbar extends View {
     this.displayName = "SimpleToolbar";
   }
 
-  handleMenuClick = (index) => {
-    this.props.onMenuItemClick(index);
+  handleMenuClick = (url) => {
+    this.props.onMenuItemClick(url);
   }
 
 
@@ -40,7 +40,7 @@ getMenu() {
            return  <ImageView  
             style = {IconStyle}
             popupMenu = {this.props.items}
-            onClick = {() => {this.handleMenuClick(index)}}
+            onClick = {() => {this.handleMenuClick(item.imageUrl)}}
             imageUrl = {item.imageUrl}/> 
         })
       }

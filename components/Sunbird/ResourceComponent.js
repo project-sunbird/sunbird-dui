@@ -9,7 +9,7 @@ var ScrollView = require('@juspay/mystique-backend').androidViews.ScrollView;
 var ViewWidget = require('@juspay/mystique-backend').androidViews.ViewWidget;
 var ModulesContainer = require('../../components/Sunbird/ModulesContainer');
 var VideoCard = require('../../components/Sunbird/VideoCard');
-var SimpleToolbar = require('../../components/Sunbird/SimpleToolbar');
+var SearchToolbar = require('../../components/Sunbird/SearchToolbar');
 var FilterComponent = require('../../components/Sunbird/FilterComponent');
 var objectAssign = require('object-assign');
 var RecommendedContainer = require('../Sunbird/RecommendedContainer');
@@ -31,8 +31,7 @@ class ResourceComponent extends View {
     this.menuData = {
       url: [
         { imageUrl: "ic_action_filter" },
-        { imageUrl: "ic_action_notification_blue" },
-        { imageUrl: "ic_action_search" }
+        { imageUrl: "ic_action_notification_blue" }
       ]
     }
     this.dummyData = [{
@@ -147,8 +146,8 @@ class ResourceComponent extends View {
     window.__runDuiCallback({ action: "showClassroomContet" });
   }
 
-  handleMenuClick = (index) =>{
-    if(index=="0")
+  handleMenuClick = (url) =>{
+    if(url=="ic_action_filter")
     {
       let cmd = _this.set({
           id: _this.idSet.parentContainer,
@@ -162,6 +161,11 @@ class ResourceComponent extends View {
       Android.runInUI(cmd, null);
     }
   }
+
+  handleSearch=(data)=>{
+    console.log("searched",data);
+  }
+
 
   getModuleContent = () => {
     return (<LinearLayout
@@ -262,15 +266,14 @@ class ResourceComponent extends View {
         height="match_parent"
         id={this.idSet.parentContainer}>
 
-        <SimpleToolbar
-            title="Resources"
-            width="match_parent"
-            showMenu="true"
-            invert="true"
-            hideBack="true"
-            menuData={this.menuData}
-            onMenuItemClick={this.handleMenuClick}
-            />
+        <SearchToolbar
+        title="Resources"
+        hint="Search here"
+        invert="true"
+        hideBack="true"
+        onMenuItemClick={this.handleMenuClick}
+        menuData={this.menuData}
+        onSearch={this.handleSearch}/>
 
         <ScrollView
           height="match_parent"

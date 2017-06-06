@@ -13,7 +13,7 @@ var FeedComponent = require('./FeedComponent');
 window.R = require("ramda");
 
 
-var SimpleToolbar = require('../Sunbird/SimpleToolbar');
+var SearchToolbar = require('../Sunbird/SearchToolbar');
 
 var TodoContainer = require('../Sunbird/TodoContainer');
 var RecommendedContainer = require('../Sunbird/RecommendedContainer');
@@ -26,7 +26,6 @@ class HomeComponent extends View {
     this.menuData = {
       url: [
         { imageUrl: "ic_action_notification_blue" },
-        { imageUrl: "ic_action_search" }
       ]
     }
     this.recommendedData = {
@@ -155,7 +154,12 @@ class HomeComponent extends View {
   }
 
 
-  handleMenuClick = (index) =>{
+  handleMenuClick = (url) =>{
+    console.log("url clicked",url);
+  }
+
+  handleSearch=(data)=>{
+    console.log("searched",data);
   }
 
   
@@ -168,15 +172,13 @@ class HomeComponent extends View {
         width="match_parent"
         height="match_parent">
 
-          <SimpleToolbar
-            title=""
-            width="match_parent"
-            showMenu="true"
+          <SearchToolbar
+            hint="Search here"
             invert="true"
             hideBack="true"
-            menuData={this.menuData}
             onMenuItemClick={this.handleMenuClick}
-            />
+            menuData={this.menuData}
+            onSearch={this.handleSearch}/>
         
 
             <ScrollView

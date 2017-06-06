@@ -21,7 +21,9 @@ class SearchToolbar extends View {
       "searchHolder",
       "searchIconHolder",
       "searchCloseHolder",
-      "menuContainer"
+      "menuContainer",
+      "backIcon",
+      "searchBackIcon"
     ])
 
     this.searchText = debounce(this.searchText, 200);
@@ -37,6 +39,7 @@ class SearchToolbar extends View {
   handleSearchClick = () => {
     var cmd = ""
     this.isSearchEnabled=true;
+    JBridge.showKeyboard();
 
     cmd += this.set({
       id: this.idSet.titleTextHolder,
@@ -49,6 +52,14 @@ class SearchToolbar extends View {
     cmd += this.set({
       id: this.idSet.menuContainer,
       visibility: "gone"
+    })
+    cmd += this.set({
+      id: this.idSet.backIcon,
+      visibility: "gone"
+    })
+    cmd += this.set({
+      id: this.idSet.searchBackIcon,
+      visibility: "visible"
     })
     cmd += this.set({
       id: this.idSet.searchCloseHolder,
@@ -68,6 +79,7 @@ class SearchToolbar extends View {
   clearSearch = () => {
     var cmd = "";
     this.isSearchEnabled=false;
+    JBridge.hideKeyboard();
     cmd += this.set({
       id: this.idSet.searchHolder,
       text: "",
@@ -76,6 +88,10 @@ class SearchToolbar extends View {
     })
     cmd += this.set({
       id: this.idSet.searchCloseHolder,
+      visibility: "gone"
+    })
+    cmd += this.set({
+      id: this.idSet.searchBackIcon,
       visibility: "gone"
     })
     cmd += this.set({
@@ -90,6 +106,13 @@ class SearchToolbar extends View {
       id: this.idSet.menuContainer,
       visibility: "visible"
     })
+
+    if(!this.props.hideBack){
+      cmd += this.set({
+      id: this.idSet.backIcon,
+      visibility: "visible"
+    })
+    }
 
     Android.runInUI(cmd, 0);
   }
@@ -121,17 +144,29 @@ class SearchToolbar extends View {
     return (
       <ImageView
       margin="0,0,10,0"
+      id={this.idSet.backIcon}
       style={IconStyle}
+      visibility={this.props.hideBack?"gone":"visible"}
       onClick={this.handleBackPress}
       imageUrl = {"ic_action_arrow_left"}/>)
   }
 
+  getSearchBack(){
+    return (<ImageView
+            margin="0,0,0,0"
+            style={IconStyle}
+            id={this.idSet.searchBackIcon}
+            visibility={this.isSearchEnabled?"visible":"gone"}
+            onClick={this.handleSearchBackPress}
+            imageUrl = {"ic_action_arrow_left"}/>)
+  }
+
   getTitle() {
     return (<LinearLayout
-        height="match_parent"
-        orientation="vertical"
-        layoutTransition="true"
-        weight="1">
+            height="match_parent"
+            orientation="vertical"
+            layoutTransition="true"
+            weight="1">
 
           <TextView 
             height="match_parent"
@@ -163,11 +198,11 @@ class SearchToolbar extends View {
     if (!this.props.menuData)
       return <Space width="0"/>
 
-    var menu = this.props.menuData.url.map((url, index) => {
+    var menu = this.props.menuData.url.map((item, index) => {
       return (<ImageView  
-        onClick={() => {this.handleMenuClick(url)}}
+        onClick={() => {this.handleMenuClick(item.imageUrl)}}
         style = {IconStyle}
-        imageUrl = {url}/>)
+        imageUrl = {item.imageUrl}/>)
     });
 
     return (<LinearLayout
@@ -179,18 +214,16 @@ class SearchToolbar extends View {
            )
   }
 
-  handleMenuClick = (index) => {
-    this.props.onMenuItemClick(index);
+  handleMenuClick = (url) => {
+    this.props.onMenuItemClick(url);
   }
 
   handleBackPress = () =>{
-    if(this.isSearchEnabled){
-      this.clearSearch();
-    }
-    else{
-      this.props.onBackPress();
-    }
+    this.props.onBackPress();
+  }
 
+  handleSearchBackPress=()=>{
+    this.clearSearch();
   }
 
   render() {
@@ -198,6 +231,7 @@ class SearchToolbar extends View {
     let back = this.getBack();
     let title = this.getTitle();
     let menu = this.getMenu();
+    let searchBack = this.getSearchBack();
 
     this.layout = (
       <LinearLayout 
@@ -209,6 +243,7 @@ class SearchToolbar extends View {
         width="match_parent" >
          
           {back}
+          {searchBack}
           
           {title}
            
