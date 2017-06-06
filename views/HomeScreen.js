@@ -30,6 +30,10 @@ class HomeScreen extends View {
     super(props, children, state);
     this.state = state;
 
+
+    //TODO : REVERT THIS LOGIC 
+    JBridge.setInSharedPrefs("chooseCourse", "__failed");
+
     this.setIds([
       "viewPagerContainer",
       "tabLayoutContainer",
@@ -83,13 +87,17 @@ class HomeScreen extends View {
 
 
   handleStateChange = (state) => {
+    this.currentViewPagerIndex[0] = isNaN(this.currentViewPagerIndex[0]) ? 0 : this.currentViewPagerIndex[0];
+
     console.log("\n\n\n\n\n\n\n\n\n------------------ handleStateChange --->", state)
       //MODIFIED STAE WILL COME HERE ( after api call)
     console.log("----->\n\n\nCURR VP INDEX :", parseInt(this.currentViewPagerIndex[0]));
     console.log("SERVER RESPONSE FROM STATE :", state.response);
+    console.log("RESULT RESPONSE FROM STATE :", state.response.status[1]);
+
+    var shouldBeModified = false;
     var contentLayout;
     var jso = [];
-    this.currentViewPagerIndex[0] = isNaN(this.currentViewPagerIndex[0]) ? 0 : this.currentViewPagerIndex[0];
     switch (parseInt(this.currentViewPagerIndex[0])) {
       case 0:
         contentLayout = (
@@ -103,7 +111,14 @@ class HomeScreen extends View {
 
         break;
       case 1:
-        console.log("[handleStateChange]\t\t MATCHED WITH 1", "choosecoursecompoonenent replace")
+        console.log("[handleStateChange]\t\t JBridge.getKey - chooseCourse :", JBridge.getFromSharedPrefs("chooseCourse"))
+        console.log("[handleStateChange]\t\t result ", JSON.stringify(state.response.status[1]))
+        console.log("[handleStateChange]\t\t shouldBeModified", shouldBeModified)
+
+        shouldBeModified = (JBridge.getFromSharedPrefs("chooseCourse") !== JSON.stringify(state.response.status[1]))
+        if (shouldBeModified) {
+          JBridge.setInSharedPrefs("chooseCourse", JSON.stringify(state.response.result))
+        }
         contentLayout = (<ChooseCourseComponent
                   response = {state.response}
                   height="match_parent"
@@ -140,8 +155,11 @@ class HomeScreen extends View {
     }
     jso.push({ view: this.getView(contentLayout.render()), value: "", viewType: 0 });
     console.log("[REPLACING ui at index ]\t\t", parseInt(this.currentViewPagerIndex[0]))
-    JBridge.replaceViewPagerItem(parseInt(this.currentViewPagerIndex[0]), JSON.stringify(jso));
-
+    if (shouldBeModified) {
+      JBridge.replaceViewPagerItem(parseInt(this.currentViewPagerIndex[0]), JSON.stringify(jso));
+    } else if (parseInt(this.currentViewPagerIndex[0]) == 1) {
+      console.log("GOT SAME DATA, not modifying")
+    }
   }
 
   afterRender = () => {

@@ -18,7 +18,7 @@ class ModulesContainer extends View {
   }
 
   handleModuleClick = (index) => {
-    console.log("in container",index)
+    console.log("in container", index)
     this.props.onClick(index);
   }
 
@@ -36,7 +36,6 @@ class ModulesContainer extends View {
       console.log("ADDING")
       _this.tmpArr.push(dat)
     }
-    console.log("SENDING THIS ", this.tmpArr)
 
     var cards = this.tmpArr.map((item, i) => {
       return (

@@ -31,14 +31,13 @@ class ChooseCourseComponent extends View {
     this.state = state;
 
     console.log("\n\n\nGOT IN COMPONENT ", this.screenName);
-    console.log("GOT PROPS", this.props);
 
     if (this.props.response == undefined) {
       this.serverData = "TESTING";
       console.log("UNDEFINED RESPONSE FROM STATE");
     } else {
       this.serverData = this.props.response;
-      console.log("RESPONSE FROM PROPS :", JSON.stringify(this.serverData));
+      console.log("GOT RESPONSE FROM PROPS");
     }
 
   }

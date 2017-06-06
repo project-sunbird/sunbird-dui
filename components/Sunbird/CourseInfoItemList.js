@@ -11,7 +11,6 @@ var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 class CourseInfoItem extends View {
   constructor(props, children, state) {
     super(props, children);
-    console.log("data", state);
   }
 
   handleItemClick = () => {
@@ -129,8 +128,6 @@ class CourseInfoItemList extends View {
   afterRender = () => {
     var dataList = [];
 
-
-
     for (var i = 0; i < 15; i++) {
       var dumData
       if (i % 3 == 0) {
@@ -171,12 +168,11 @@ class CourseInfoItemList extends View {
             item={item}/>)
     })
     if (this.props.data == undefined || this.props.data == "TESTING") {
-      console.log("[CourseInfoItemList]\t\t SOME ERROR, PROGRESS BAR ");
       cards = (<ProgressBar
             height="70"
             width="70"/>);
     } else {
-      console.log("[CourseInfoItemList]\t\t GOT DATA ", this.props.data);
+      console.log("[CourseInfoItemList]\t\t GOT VALUES ");
     }
 
     var cardLayout = (
