@@ -83,13 +83,14 @@ class HomeScreen extends View {
 
 
   handleStateChange = (state) => {
-    console.log("------------------ STATE CHANGE --->", state)
+    console.log("\n\n\n\n\n\n\n\n\n------------------ handleStateChange --->", state)
       //MODIFIED STAE WILL COME HERE ( after api call)
-    console.log("----->\n\n\nCURR VP INDEX :", parseInt(this.currentViewPagerIndex));
+    console.log("----->\n\n\nCURR VP INDEX :", parseInt(this.currentViewPagerIndex[0]));
     console.log("SERVER RESPONSE FROM STATE :", state.response);
     var contentLayout;
     var jso = [];
-    switch (parseInt(this.currentViewPagerIndex)) {
+    this.currentViewPagerIndex[0] = isNaN(this.currentViewPagerIndex[0]) ? 0 : this.currentViewPagerIndex[0];
+    switch (parseInt(this.currentViewPagerIndex[0])) {
       case 0:
         contentLayout = (
           <HomeComponent
@@ -102,6 +103,7 @@ class HomeScreen extends View {
 
         break;
       case 1:
+        console.log("[handleStateChange]\t\t MATCHED WITH 1", "choosecoursecompoonenent replace")
         contentLayout = (<ChooseCourseComponent
                   response = {state.response}
                   height="match_parent"
@@ -120,6 +122,7 @@ class HomeScreen extends View {
         break;
 
       default:
+        console.log("[handleStateChange]\t\t MATCHED WITH default")
         contentLayout = (<LinearLayout
                   height="match_parent"
                   root="true"
@@ -136,10 +139,8 @@ class HomeScreen extends View {
         break;
     }
     jso.push({ view: this.getView(contentLayout.render()), value: "", viewType: 0 });
-    //JBridge.push({ view: this.getView(contentLayout.render()), value: "", viewType: 0 });
-    console.log("----->\n\n\nREPLACE WITH  :", JSON.stringify(jso))
-      //replace the viewPager at the index with the layout, and data from response
-    JBridge.replaceViewPagerItem(this.currentViewPagerIndex, JSON.stringify(jso));
+    console.log("[REPLACING ui at index ]\t\t", parseInt(this.currentViewPagerIndex[0]))
+    JBridge.replaceViewPagerItem(parseInt(this.currentViewPagerIndex[0]), JSON.stringify(jso));
 
   }
 
@@ -235,8 +236,10 @@ class HomeScreen extends View {
     window.__changePureScriptFlow();
     var eventAction;
 
-    switch (parseInt(this.currentViewPagerIndex)) {
+    switch (parseInt(this.currentViewPagerIndex[0])) {
       case 0:
+        eventAction = { action: "startClassRoomFlow" };
+        break;
       case 1:
         eventAction = { action: "startCourseFlow" };
         break;
@@ -253,7 +256,7 @@ class HomeScreen extends View {
         eventAction = { action: "startCourseFlow" };
         break;
     }
-    console.log("--------->VIEWPAGER TRIGGERS ", eventAction, "ON INDEX", this.currentViewPagerIndex);
+    console.log("--------->VIEWPAGER TRIGGERS ", eventAction, "ON INDEX", parseInt(this.currentViewPagerIndex[0]));
     window.__runDuiCallback(eventAction);
   }
 

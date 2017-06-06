@@ -157,7 +157,6 @@ class CourseInfoItemList extends View {
           competedCount: "76",
           totalCount: "90",
           courseBackground: "#227ED321",
-          remainingTime: "60",
           courseImage: "ic_nucleus_black"
         }
       }
@@ -171,12 +170,13 @@ class CourseInfoItemList extends View {
             onItemClick={this.handleCourseItemClick}
             item={item}/>)
     })
-    if (this.props.data == undefined) {
+    if (this.props.data == undefined || this.props.data == "TESTING") {
+      console.log("[CourseInfoItemList]\t\t SOME ERROR, PROGRESS BAR ");
       cards = (<ProgressBar
             height="70"
             width="70"/>);
     } else {
-      console.log("GOT DATA", this.props.data);
+      console.log("[CourseInfoItemList]\t\t GOT DATA ", this.props.data);
     }
 
     var cardLayout = (

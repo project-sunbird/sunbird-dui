@@ -75,7 +75,7 @@ exports["sendUpdatedState'"] = function(success) {
       return function(noAction) {
         return function() {
           console.log('sendupdatedstate', state);
-
+          console.log("------------------>\t\tUPDATING state via handleStateChange")
           if (!noAction) {
             window.__duiCb = success;
           }
