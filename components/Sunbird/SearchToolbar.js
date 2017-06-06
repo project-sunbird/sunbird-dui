@@ -21,6 +21,7 @@ class SearchToolbar extends View {
       "searchHolder",
       "searchIconHolder",
       "searchCloseHolder",
+      "menuContainer"
     ])
 
     this.searchText = debounce(this.searchText, 200);
@@ -29,18 +30,13 @@ class SearchToolbar extends View {
     window.__SearchToolbar = this;
   }
 
-
-
-
   searchText = (dataSearch) => {
     this.props.onSearch(dataSearch)
   }
 
-
-
-
   handleSearchClick = () => {
     var cmd = ""
+    this.isSearchEnabled=true;
 
     cmd += this.set({
       id: this.idSet.titleTextHolder,
@@ -48,6 +44,10 @@ class SearchToolbar extends View {
     })
     cmd += this.set({
       id: this.idSet.searchIconHolder,
+      visibility: "gone"
+    })
+    cmd += this.set({
+      id: this.idSet.menuContainer,
       visibility: "gone"
     })
     cmd += this.set({
@@ -67,6 +67,7 @@ class SearchToolbar extends View {
 
   clearSearch = () => {
     var cmd = "";
+    this.isSearchEnabled=false;
     cmd += this.set({
       id: this.idSet.searchHolder,
       text: "",
@@ -83,6 +84,10 @@ class SearchToolbar extends View {
     })
     cmd += this.set({
       id: this.idSet.titleTextHolder,
+      visibility: "visible"
+    })
+    cmd += this.set({
+      id: this.idSet.menuContainer,
       visibility: "visible"
     })
 
@@ -117,7 +122,7 @@ class SearchToolbar extends View {
       <ImageView
       margin="0,0,10,0"
       style={IconStyle}
-      onClick={this.props.onBackPress}
+      onClick={this.handleBackPress}
       imageUrl = {"ic_action_arrow_left"}/>)
   }
 
@@ -154,11 +159,45 @@ class SearchToolbar extends View {
 
   }
 
+  getMenu = () => {
+    if (!this.props.menuData)
+      return <Space width="0"/>
+
+    var menu = this.props.menuData.url.map((url, index) => {
+      return (<ImageView  
+        onClick={() => {this.handleMenuClick(url)}}
+        style = {IconStyle}
+        imageUrl = {url}/>)
+    });
+
+    return (<LinearLayout
+             width="wrap_content"
+             height="wrap_content"
+             id={this.idSet.menuContainer}>
+             {menu}
+             </LinearLayout>
+           )
+  }
+
+  handleMenuClick = (index) => {
+    this.props.onMenuItemClick(index);
+  }
+
+  handleBackPress = () =>{
+    if(this.isSearchEnabled){
+      this.clearSearch();
+    }
+    else{
+      this.props.onBackPress();
+    }
+
+  }
 
   render() {
     let searchIcon = this.getSearchIcon();
     let back = this.getBack();
     let title = this.getTitle();
+    let menu = this.getMenu();
 
     this.layout = (
       <LinearLayout 
@@ -174,6 +213,7 @@ class SearchToolbar extends View {
           {title}
            
           <Space width="0" weight="1"/>
+          {menu}
           {searchIcon}
              
        </LinearLayout>

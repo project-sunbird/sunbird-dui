@@ -23,3 +23,30 @@
     console.log(logoNo + " logoNo")
   }
 
+2.SearchToolbar:
+
+      <SearchToolbar
+        title="Sunbird"
+        hint="Search here"
+        invert="true"
+        onMenuItemClick={this.handleMenuClick}
+        menuData={this.menuData}
+        onSearch={this.handleSearch}/>
+
+
+        this.menuData = {
+          url: [
+            { imageUrl: "ic_action_notification_blue" },
+            { imageUrl: "ic_action_filter" }
+          ]
+        }
+        //No need to send search icon. Search is default.
+
+        handleMenuClick = (url) =>{
+          console.log("icon selected",url);
+        }
+
+        handleSearch=(data)=>{
+          console.log("searched",data);
+        }
+

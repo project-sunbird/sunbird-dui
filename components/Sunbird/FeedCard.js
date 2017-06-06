@@ -9,15 +9,23 @@ window.R = require("ramda");
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
-
+var _this;
 class FeedCard extends View {
   constructor(props, children) {
     super(props, children);
     this.setIds([
       "ratingBar",
+      "circular",
     ]);
 
+        _this = this;
+
     this.feedData = this.props.feedData;
+  }
+
+  afterRender(){
+    console.log("cirualr id",_this.idSet.circular);
+    // JBridge.makeImageCircular(_this.idSet.circular);
   }
 
 
@@ -26,13 +34,16 @@ class FeedCard extends View {
               width="match_parent"
               height="wrap_content"
               orientation="horizontal"
+              afterRender={this.afterRender}
               gravity="center_vertical"
               padding="0,15,0,0"
               >
                 <ImageView
-                width="32"
-                height="32"
-                imageFromUrl={this.feedData.imageUrl}/>
+                id={this.idSet.circular}
+                width="50"
+                height="50"
+                circularImageUrl={this.feedData.imageUrl}
+                />
 
                 <LinearLayout
                   width="wrap_content"
@@ -216,7 +227,7 @@ class FeedCard extends View {
     this.layout = (
       <LinearLayout
         width="match_parent"
-        height="239"
+        height="250"
         margin="0,0,0,10"
         root="true"
         orientation="vertical"
