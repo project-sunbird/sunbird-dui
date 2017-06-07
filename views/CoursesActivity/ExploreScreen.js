@@ -23,7 +23,8 @@ class ExploreScreen extends View {
     super(props, children, state);
     this.state = state;
     this.screenName = "EXPLORE_SCREEN"
-
+    console.log("------------------------------------------->");
+    console.log("response form server", state.response);
     
     this.menuData = {
       url: [

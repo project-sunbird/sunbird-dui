@@ -126,4 +126,11 @@ getCourses regTokens =
       headers = (generateReqTokenHeaders regTokens) in
   ExceptT $ attempt $ (get requestUrl headers)
 
+postExploreData req regTokens=
+  let requestUrl = "/v1/page/assemble/learn.explore/org.sunbird.mobile"
+      headers = (generateReqTokenHeaders regTokens) in
+  ExceptT $ attempt $ (post requestUrl headers req)
+
+
+
 getExceptT value = ExceptT $ pure $ Right value

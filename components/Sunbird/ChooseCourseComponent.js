@@ -45,7 +45,14 @@ class ChooseCourseComponent extends View {
 
   handleExploreClick = () =>{
     console.log("explore clicked");
-    window.__runDuiCallback({ action: "showExplore" });
+    var req={
+    "request": {
+      "context": {
+        "userId": "user1"
+      }
+    }
+  }
+    window.__runDuiCallback({ action: "showExplore" , req: req});
   }
 
   render() {

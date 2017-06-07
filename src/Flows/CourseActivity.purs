@@ -22,6 +22,9 @@ courseActivityFlow state = do
     _ -> courseActivityFlow state
 
 showExploreFlow state = do
+  reqTokens <- getReqTokens
+  response <- postExploreData state.req reqTokens
+  updateState {response: response} state
   state <- showUI "EXPLORE_SCREEN" state
   case state.action of
     "goBack" -> do
