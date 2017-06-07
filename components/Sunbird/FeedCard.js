@@ -4,28 +4,36 @@ var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout
 
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 var RatingBar = require('@juspay/mystique-backend').androidViews.RatingBar;
-
+var $ = require('jquery');
 window.R = require("ramda");
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
+var Button = require('../Sunbird/Button');
+var EditText = require("@juspay/mystique-backend").androidViews.EditText;
 var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 var _this;
+
+var Styles = require("../../res/Styles");
+let IconStyle = Styles.Params.IconStyle;
+
+
 class FeedCard extends View {
   constructor(props, children) {
     super(props, children);
     this.setIds([
       "ratingBar",
-      "circular",
+      "voteContainer",
+      "answerUnclicked",
+      "answerClicked",
+      "answersContainer"
     ]);
 
-        _this = this;
-
+    _this = this;
+    this.answer= "";
     this.feedData = this.props.feedData;
   }
 
   afterRender(){
-    console.log("cirualr id",_this.idSet.circular);
-    // JBridge.makeImageCircular(_this.idSet.circular);
   }
 
 
@@ -39,7 +47,6 @@ class FeedCard extends View {
               padding="0,15,0,0"
               >
                 <ImageView
-                id={this.idSet.circular}
                 width="50"
                 height="50"
                 circularImageUrl={this.feedData.imageUrl}
@@ -101,15 +108,13 @@ class FeedCard extends View {
   }
 
 
-  getFooter = () =>{
+  answerUnclicked = () =>{
     return (<LinearLayout
-              width="match_parent"
-              height="wrap_content"
-              orientation="horizontal"
-              gravity="center_vertical"
-              margin="0,20,0,0"
-              >
-
+            width="wrap_content"
+            height="wrap_content"
+            visibility="visible"
+            id={this.idSet.answerUnclicked}
+            margin="0,0,0,0">
             <ImageView
                 width="18"
                 height="18"
@@ -143,6 +148,122 @@ class FeedCard extends View {
                 onClick={this.handleBookmarkClick}
                 imageUrl="ic_action_bookmark"/>
 
+
+            </LinearLayout>)
+    }
+
+
+
+
+    answerClicked = () =>{
+    return (<LinearLayout
+            width="wrap_content"
+            height="wrap_content"
+            visibility="gone"
+            id={this.idSet.answerClicked}
+            margin="0,0,0,0">
+
+            <EditText 
+            margin="0,0,0,0"
+            height="wrap_content"
+            width="match_parent"
+            hint="answer here"
+            maxWidth="400"
+            onChange={data=>_this.answer=data}
+            layoutTransition="true"
+            style={window.__TextStyle.textStyle.TOOLBAR.HEADING}/>    
+
+            <ViewWidget 
+            weight="1"
+            height="0"/>
+
+            <Button
+            type="SmallButton_Secondary_WB"
+            width="wrap_content"
+            height="wrap_content"
+            margin="0,10,0,0"
+            onClick={this.handleAnswerSubmit}
+            text="submit"/>
+
+            
+
+            <ImageView  
+            style={IconStyle}
+            onClick={this.handleAnswerClose}
+            visibility={"visible"}
+            imageUrl = {"ic_action_close"}/>  
+
+
+            </LinearLayout>)
+    }
+
+
+    getAnswers(data){
+      return (
+          <LinearLayout
+            width="match_parent"
+            height="wrap_content"
+            orientation="vertical">
+
+            <TextView
+              width="match_parent"
+              height="wrap_content"
+              text= {data}
+              orientation="vertical"/>
+
+          </LinearLayout>)
+              
+    }
+
+  
+
+    handleAnswerOpen(){
+          var cmd = "";
+          cmd += this.set({
+          id: this.idSet.answerUnclicked,
+          visibility: "gone"
+          })
+          cmd += this.set({
+            id: this.idSet.answerClicked,
+            visibility: "visible"
+          })
+
+        Android.runInUI(cmd, 0);
+    }
+
+    handleAnswerClose(){
+          var cmd = "";
+            cmd += _this.set({
+            id: _this.idSet.answerUnclicked,
+            visibility: "visible"
+            })
+            cmd += _this.set({
+              id: _this.idSet.answerClicked,
+              visibility: "gone"
+            })
+
+          Android.runInUI(cmd, 0);
+    }
+
+    handleAnswerSubmit(){
+      _this.replaceChild(_this.idSet.answersContainer,_this.getAnswers(_this.answer).render(),null);
+    }
+
+      
+
+  getFooter = () =>{
+    return (<LinearLayout
+              width="match_parent"
+              height="wrap_content"
+              orientation="horizontal"
+              gravity="center_vertical"
+              margin="0,20,0,0"
+              >
+              
+              {this.answerUnclicked()}
+              {this.answerClicked()}
+
+            
             </LinearLayout>);
   }
 
@@ -202,6 +323,16 @@ class FeedCard extends View {
                 margin="0,18,0,0"
                 text={this.feedData.answer}
                 style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>
+             <LinearLayout
+             width="match_parent"
+             height="1"
+             background={window.__Colors.PRIMARY_BLACK_66}/>
+
+             <LinearLayout
+             id={this.idSet.answersContainer}
+             width="match_parent"
+             height="wrap_content"
+             orientation="vertical"/>
 
              {this.getFooter()}
 
@@ -214,12 +345,16 @@ class FeedCard extends View {
   }
 
   handleAnswerClick = () =>{
-    this.props.answerClick();
+    // this.props.answerClick();
+
+    this.handleAnswerOpen();
   }
 
   handleBookmarkClick = () =>{
     this.props.bookmarkClick();
   }
+
+  
 
 
   render() {
@@ -227,7 +362,7 @@ class FeedCard extends View {
     this.layout = (
       <LinearLayout
         width="match_parent"
-        height="250"
+        height="wrap_content"
         margin="0,0,0,10"
         root="true"
         orientation="vertical"

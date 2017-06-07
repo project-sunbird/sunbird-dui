@@ -77,3 +77,6 @@
         console.log("menu item selected",url);
       }
 
+
+$.ajax({url:'forpass.php',type:'post',data: dataa, success: function(data){}
+
