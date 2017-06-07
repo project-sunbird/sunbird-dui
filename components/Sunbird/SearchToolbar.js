@@ -5,6 +5,7 @@ var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var EditText = require("@juspay/mystique-backend").androidViews.EditText;
 var Space = require("@juspay/mystique-backend").androidViews.Space;
+var ClassListItem = require('./ClassListItem');
 
 var debounce = require("debounce");
 
@@ -12,6 +13,7 @@ var Styles = require("../../res/Styles");
 // TODO : NEED TO FIX THIS
 //let IconStyle =  window.__Styles.Params.IconStyle;
 let IconStyle = Styles.Params.IconStyle;
+var _this;
 
 class SearchToolbar extends View {
   constructor(props, children) {
@@ -23,11 +25,24 @@ class SearchToolbar extends View {
       "searchCloseHolder",
       "menuContainer",
       "backIcon",
-      "searchBackIcon"
+      "searchBackIcon",
+      "searchListContainer"
     ])
+
+    _this = this;
 
     this.searchText = debounce(this.searchText, 200);
     this.isSearchEnabled = this.props.startWithSearch ? this.props.startWithSearch : false;
+    this.textData = {
+          type: "Subjects",
+          values: [
+            { color: "#10D50000", imageUrl: "ic_action_search", subject: "Dot Structure",comment:"Assignment", logo:["ic_action_completed","ic_action_share"]},
+            { color: "#F0E9FD", imageUrl: "ic_account", subject: "Hybridization",comment:"How to use bond-line structures to perf…", logo:["ic_action_completed","ic_action_share"] },
+            { color: "#10E3C31C", imageUrl: "ic_action_search", subject: "Bond Line Structure",comment:"Quiz", logo:["ic_action_completed","ic_action_share"] },
+            { color: "#10FF9F00", imageUrl: "ic_action_search", subject: "Counting Electrons",comment:"(250 members)", logo:["ic_action_completed","ic_action_share"] },
+            { color: "#10D50000", imageUrl: "ic_action_search", subject: "Dot Structure",comment:"Jawahar Vidya Mandir, Pune", logo:["ic_action_completed","ic_action_share"] },
+          ]
+        }
 
     window.__SearchToolbar = this;
   }
@@ -63,6 +78,10 @@ class SearchToolbar extends View {
     })
     cmd += this.set({
       id: this.idSet.searchCloseHolder,
+      visibility: "visible"
+    })
+    cmd += this.set({
+      id: this.idSet.searchListContainer,
       visibility: "visible"
     })
     cmd += this.set({
@@ -106,6 +125,10 @@ class SearchToolbar extends View {
       id: this.idSet.menuContainer,
       visibility: "visible"
     })
+    cmd += this.set({
+      id: this.idSet.searchListContainer,
+      visibility: "gone"
+    })
 
     if(!this.props.hideBack){
       cmd += this.set({
@@ -115,6 +138,12 @@ class SearchToolbar extends View {
     }
 
     Android.runInUI(cmd, 0);
+  }
+
+
+   handleItemClick = (itemNo,logoNo) =>{
+    console.log(itemNo + " itemNo")
+    console.log(logoNo + " logoNo")
   }
 
 
@@ -173,6 +202,7 @@ class SearchToolbar extends View {
             width="match_parent"
             gravity="center_vertical"
             layoutTransition="true"
+            margin="10,0,0,0"
             visibility={this.isSearchEnabled?"gone":"visible"}
             id={this.idSet.titleTextHolder}
             style={window.__TextStyle.textStyle.TOOLBAR.HEADING} 
@@ -185,7 +215,8 @@ class SearchToolbar extends View {
             hint={this.props.hint}
             layoutTransition="true"
             gravity="center_vertical"
-            onChange = {this.searchText}
+            background="#ffffff"
+            onChange = {data=>_this.getSearchList(data)}
             id={this.idSet.searchHolder}
             style={window.__TextStyle.textStyle.TOOLBAR.HEADING}/>  
 
@@ -193,6 +224,9 @@ class SearchToolbar extends View {
           </LinearLayout>)
 
   }
+
+
+  
 
   getMenu = () => {
     if (!this.props.menuData)
@@ -226,6 +260,40 @@ class SearchToolbar extends View {
     this.clearSearch();
   }
 
+
+  getSearchList(searchText){
+    
+    var listData = [];
+    var data = this.textData.values;
+
+      if(searchText.length != 0){
+          for(var i = 0;i<data.length;i++){
+            if(data[i].subject.toLowerCase().includes(searchText)||data[i].comment.toLowerCase().includes(searchText)){
+              listData.push(data[i]);
+            }
+          }
+
+          var totalJson = {};
+          totalJson["type"] = this.textData.type;
+          totalJson["values"] = listData;
+
+          var layout = (<LinearLayout
+                         width="match_parent"
+                         height="wrap_content"
+                         orientation="vertical">
+                           <ClassListItem
+                            data={totalJson}
+                            itemClick={this.handleItemClick}
+                            lineSeparator="true"/> 
+                        </LinearLayout>);
+          _this.replaceChild(_this.idSet.searchListContainer,layout.render(),0);
+
+      }
+    
+  }
+
+  
+
   render() {
     let searchIcon = this.getSearchIcon();
     let back = this.getBack();
@@ -234,13 +302,27 @@ class SearchToolbar extends View {
     let searchBack = this.getSearchBack();
 
     this.layout = (
+
+      <LinearLayout
+       width="match_parent"
+       height="wrap_content"
+       orientation="vertical"
+       root="true">
+
       <LinearLayout 
         height="56"
-        padding="8,0,8,0"
+        padding="0,0,0,2"
+        gravity="center_vertical"
+        background={window.__Colors.PRIMARY_BLACK_22}
+        width="match_parent" >
+      <LinearLayout 
+        height="56"
+        padding="0,0,0,0"
         gravity="center_vertical"
         root="true" 
         background={this.props.invert?window.__Colors.WHITE:window.__Colors.LIGHT_VIOLET}
         width="match_parent" >
+
          
           {back}
           {searchBack}
@@ -251,6 +333,15 @@ class SearchToolbar extends View {
           {menu}
           {searchIcon}
              
+       </LinearLayout>
+       </LinearLayout>
+
+       <LinearLayout
+           width="match_parent"
+           height="wrap_content"
+           id = {this.idSet.searchListContainer}
+           orientation="vertical"/>
+
        </LinearLayout>
     )
 
