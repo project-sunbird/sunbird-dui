@@ -23,7 +23,9 @@ class ExploreScreen extends View {
     super(props, children, state);
     this.state = state;
     this.screenName = "EXPLORE_SCREEN"
-
+    console.log("-------------------------------------------> Explore ");
+    this.responseData = state.response.status;
+    console.log("responsedata",this.responseData[1]);
     
     this.menuData = {
       url: [

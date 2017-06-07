@@ -30,6 +30,10 @@ class HomeScreen extends View {
     super(props, children, state);
     this.state = state;
 
+
+    //TODO : REVERT THIS LOGIC 
+    JBridge.setInSharedPrefs("chooseCourse", "__failed");
+
     this.setIds([
       "viewPagerContainer",
       "tabLayoutContainer",
@@ -37,7 +41,7 @@ class HomeScreen extends View {
     this.currentViewPagerIndex = 0;
     this.setupDuiCallback();
     this.feedData = FeedParams.feedParams;
-  
+
     //tab data
     this.screenName = "HOME_SCREEN"
     this.data = ["HOME", "COURSES", "RESOURCES", "FORUM", "PROFILE"];
@@ -83,13 +87,18 @@ class HomeScreen extends View {
 
 
   handleStateChange = (state) => {
-    console.log("------------------ STATE CHANGE --->", state)
+    this.currentViewPagerIndex[0] = isNaN(this.currentViewPagerIndex[0]) ? 0 : this.currentViewPagerIndex[0];
+
+    console.log("\n\n\n\n\n\n\n\n\n------------------ handleStateChange --->", state)
       //MODIFIED STAE WILL COME HERE ( after api call)
-    console.log("CURR VP INDEX :", this.currentViewPagerIndex);
+    console.log("----->\n\n\nCURR VP INDEX :", parseInt(this.currentViewPagerIndex[0]));
     console.log("SERVER RESPONSE FROM STATE :", state.response);
+    console.log("RESULT RESPONSE FROM STATE :", state.response.status[1]);
+
+    var shouldBeModified = false;
     var contentLayout;
-    var jso = {};
-    switch (this.currentViewPagerIndex) {
+    var jso = [];
+    switch (parseInt(this.currentViewPagerIndex[0])) {
       case 0:
         contentLayout = (
           <HomeComponent
@@ -98,12 +107,20 @@ class HomeScreen extends View {
               menuData={this.menuData}
               todoData = {this.todoData}
               feedData = {this.feedData}/>
-              )
+        )
 
         break;
       case 1:
+        console.log("[handleStateChange]\t\t JBridge.getKey - chooseCourse :", JBridge.getFromSharedPrefs("chooseCourse"))
+        console.log("[handleStateChange]\t\t result ", JSON.stringify(state.response.status[1]))
+        console.log("[handleStateChange]\t\t shouldBeModified", shouldBeModified)
+
+        shouldBeModified = (JBridge.getFromSharedPrefs("chooseCourse") !== JSON.stringify(state.response.status[1]))
+        if (shouldBeModified) {
+          JBridge.setInSharedPrefs("chooseCourse", JSON.stringify(state.response.result))
+        }
         contentLayout = (<ChooseCourseComponent
-                  showScreen = {this.handleCourseInfoClick}
+                  response = {state.response}
                   height="match_parent"
                   width="match_parent" />)
 
@@ -120,6 +137,7 @@ class HomeScreen extends View {
         break;
 
       default:
+        console.log("[handleStateChange]\t\t MATCHED WITH default")
         contentLayout = (<LinearLayout
                   height="match_parent"
                   root="true"
@@ -135,11 +153,13 @@ class HomeScreen extends View {
 
         break;
     }
-    //JBridge.push({ view: this.getView(contentLayout.render()), value: "", viewType: 0 });
-
-    //replace the viewPager at the index with the layout, and data from response
-    JBridge.replaceViewPagerItem(this.currentViewPagerIndex, jso)
-
+    jso.push({ view: this.getView(contentLayout.render()), value: "", viewType: 0 });
+    console.log("[REPLACING ui at index ]\t\t", parseInt(this.currentViewPagerIndex[0]))
+    if (shouldBeModified) {
+      JBridge.replaceViewPagerItem(parseInt(this.currentViewPagerIndex[0]), JSON.stringify(jso));
+    } else if (parseInt(this.currentViewPagerIndex[0]) == 1) {
+      console.log("GOT SAME DATA, not modifying")
+    }
   }
 
   afterRender = () => {
@@ -159,8 +179,8 @@ class HomeScreen extends View {
             menuData={this.menuData}
             todoData = {this.todoData}
             feedData = {this.feedData}/>
-            )
-              
+          )
+
           tmp = (
             <ContentLoadingComponent
               height="match_parent"
@@ -236,6 +256,8 @@ class HomeScreen extends View {
 
     switch (parseInt(this.currentViewPagerIndex[0])) {
       case 0:
+        eventAction = { action: "startClassRoomFlow" };
+        break;
       case 1:
         eventAction = { action: "startCourseFlow" };
         break;
@@ -252,25 +274,26 @@ class HomeScreen extends View {
         eventAction = { action: "startCourseFlow" };
         break;
     }
-    console.log("--------->VIEWPAGER TRIGGERS ", eventAction, "ON INDEX", this.currentViewPagerIndex[0]);
+    console.log("--------->VIEWPAGER TRIGGERS ", eventAction, "ON INDEX", parseInt(this.currentViewPagerIndex[0]));
     window.__runDuiCallback(eventAction);
   }
 
   handleViewPagerAction = (index) => {
     this.currentViewPagerIndex = index;
+    console.log("MODIFIED currentViewPagerIndex:\n\n\n\n\t\t ", index)
     this.setupDuiCallback();
     this.bNavBar.handleNavigationChange(index);
   }
 
   handleBottomNavBarAction = (index) => {
+    this.currentViewPagerIndex = index;
     JBridge.switchToViewPagerIndex(index + "");
-
     // window.__SNACKBAR.setAction({
-      //   text: "PAGE " + index,
-      //   status: "success",
-      //   actionText: "RETRY"
-      // }, () => { console.log("CLICKED ACTION") });
-      // window.__SNACKBAR.show(true);
+    //   text: "PAGE " + index,
+    //   status: "success",
+    //   actionText: "RETRY"
+    // }, () => { console.log("CLICKED ACTION") });
+    // window.__SNACKBAR.show(true);
 
   }
 
@@ -282,7 +305,7 @@ class HomeScreen extends View {
     return this.bNavBar;
   }
 
-  
+
 
   render() {
     this.layout = (
@@ -328,7 +351,3 @@ class HomeScreen extends View {
 
 
 module.exports = Connector(HomeScreen);
-
-
-
-

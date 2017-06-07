@@ -120,10 +120,15 @@ enrollCourse req=
       headers = (generateRequestHeaders) in
   ExceptT $ attempt $ (post requestUrl headers req)
 
-
-getCourses regTokens =
-  let requestUrl = "/v1/user/courses/1234"
+postExploreData req regTokens=
+  let requestUrl = "/v1/page/assemble/learn.explore/org.sunbird.mobile"
       headers = (generateReqTokenHeaders regTokens) in
-  ExceptT $ attempt $ (get requestUrl headers)
+  ExceptT $ attempt $ (post requestUrl headers req)
+
+getUserCourses userId =
+  let requestUrl = "/v1/user/courses/" <> userId
+      headers = (generateRequestHeaders) in
+  ExceptT $ attempt $ (get requestUrl headers)  
+
 
 getExceptT value = ExceptT $ pure $ Right value
