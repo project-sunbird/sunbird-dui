@@ -38,7 +38,6 @@ class TodoContainer extends View {
       console.log("ADDING")
       _this.tmpArr.push(dat)
     }
-    console.log("SENDING THIS ", this.tmpArr)
 
     var cards = this.tmpArr.map((item, i) => {
       return (

@@ -4,14 +4,21 @@ import Prelude (bind, ($), (<>), discard)
 import Utils
 import Control.Monad.Eff.Console
 import Control.Monad.Eff.Class(liftEff)
+import Control.Monad.Eff.Console
+import Control.Monad.Eff.Class(liftEff)
 
 
 courseActivityFlow state = do
-  state <- getCallbackFromScreen "HOME" state
   -- reqTokens <- getReqTokens
+  responseData <- getUserCourses "user1"
   -- response <- getCourses reqTokens
-  -- newState <- updateState {response: response} state
-  -- _ <- sendUpdatedState newState 
+  liftEff $ log $ "[PURE]\t\tRESPONSE "
+  newData <- updateState {response: responseData} state
+  liftEff $ log $ "[PURE]\t\nnewData "
+  sendUpdatedState newData 
+  liftEff $ log $ "[PURE]\t\tLISTEN after sendUpdatedState " <> "EVENT"
+  
+  state <- getCallbackFromScreen "HOME" state
   case state.action of
     "showCourseInfo" -> do
       liftEff $ log "showCourseInfo"
