@@ -15,7 +15,7 @@ courseActivityFlow state = do
   liftEff $ log $ "[PURE]\t\tRESPONSE "
   newData <- updateState {response: responseData} state
   liftEff $ log $ "[PURE]\t\nnewData "
-  sendUpdatedState newData 
+  _ <- sendUpdatedState newData 
   liftEff $ log $ "[PURE]\t\tLISTEN after sendUpdatedState " <> "EVENT"
   
   state <- getCallbackFromScreen "HOME" state
@@ -30,8 +30,8 @@ courseActivityFlow state = do
 
 showExploreFlow state = do
   reqTokens <- getReqTokens
-  response <- postExploreData state.req reqTokens
-  updateState {response: response} state
+  responseData <- postExploreData state.req reqTokens
+  state <- updateState {response: responseData} state
   state <- showUI "EXPLORE_SCREEN" state
   case state.action of
     "goBack" -> do

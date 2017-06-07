@@ -36,8 +36,8 @@ class ChooseCourseComponent extends View {
       this.serverData = "TESTING";
       console.log("UNDEFINED RESPONSE FROM STATE");
     } else {
-      this.serverData = this.props.response;
-      console.log("GOT RESPONSE FROM PROPS");
+      this.serverData = this.props.response.status[1];
+      console.log("GOT RESPONSE FROM PROPS",this.serverData);
     }
 
   }
