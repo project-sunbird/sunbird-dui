@@ -33,6 +33,7 @@ class HomeScreen extends View {
 
     //TODO : REVERT THIS LOGIC 
     JBridge.setInSharedPrefs("chooseCourse", "__failed");
+    JBridge.setInSharedPrefs("userResource", "__failed");
 
     this.setIds([
       "viewPagerContainer",
@@ -89,11 +90,7 @@ class HomeScreen extends View {
   handleStateChange = (state) => {
     this.currentViewPagerIndex[0] = isNaN(this.currentViewPagerIndex[0]) ? 0 : this.currentViewPagerIndex[0];
 
-    console.log("\n\n\n\n\n\n\n\n\n------------------ handleStateChange --->", state)
-      //MODIFIED STAE WILL COME HERE ( after api call)
-    console.log("----->\n\n\nCURR VP INDEX :", parseInt(this.currentViewPagerIndex[0]));
-    console.log("SERVER RESPONSE FROM STATE :", state.response);
-    console.log("RESULT RESPONSE FROM STATE :", state.response.status[1]);
+    //console.log("RESULT RESPONSE FROM STATE :", state.response.status[1]);
 
     var shouldBeModified = false;
     var contentLayout;
@@ -113,21 +110,28 @@ class HomeScreen extends View {
       case 1:
         console.log("[handleStateChange]\t\t JBridge.getKey - chooseCourse :", JBridge.getFromSharedPrefs("chooseCourse"))
         console.log("[handleStateChange]\t\t result ", JSON.stringify(state.response.status[1]))
+        shouldBeModified = (JBridge.getFromSharedPrefs("chooseCourse") != JSON.stringify(state.response.status[1]))
         console.log("[handleStateChange]\t\t shouldBeModified", shouldBeModified)
-
-        shouldBeModified = (JBridge.getFromSharedPrefs("chooseCourse") !== JSON.stringify(state.response.status[1]))
         if (shouldBeModified) {
-          JBridge.setInSharedPrefs("chooseCourse", JSON.stringify(state.response.result))
+          JBridge.setInSharedPrefs("chooseCourse", JSON.stringify(state.response.status[1]))
         }
         contentLayout = (<ChooseCourseComponent
-                  response = {state.response}
+                  response = {state.response.status[1]}
                   height="match_parent"
                   width="match_parent" />)
 
         break;
       case 2:
+        //console.log("[handleStateChange]\t\t JBridge.getKey - userResource :", JBridge.getFromSharedPrefs("userResource"))
+        //console.log("[handleStateChange]\t\t result ", JSON.stringify(state.response.status[1]))
+        shouldBeModified = (JBridge.getFromSharedPrefs("userResource") != JSON.stringify(state.response.status[1]))
+        console.log("[handleStateChange]\t\t shouldBeModified", shouldBeModified)
+
+        if (shouldBeModified) {
+          JBridge.setInSharedPrefs("userResource", JSON.stringify(state.response.status[1]))
+        }
         contentLayout = (<ResourceComponent
-                  showScreen = {this.props.showScreen}
+                  response = {state.response.status[1]}
                   height="match_parent"
                   width="match_parent"/>)
 
@@ -154,10 +158,10 @@ class HomeScreen extends View {
         break;
     }
     jso.push({ view: this.getView(contentLayout.render()), value: "", viewType: 0 });
-    console.log("[REPLACING ui at index ]\t\t", parseInt(this.currentViewPagerIndex[0]))
     if (shouldBeModified) {
+      console.log("[REPLACING ui at index ]\t\t", parseInt(this.currentViewPagerIndex[0]))
       JBridge.replaceViewPagerItem(parseInt(this.currentViewPagerIndex[0]), JSON.stringify(jso));
-    } else if (parseInt(this.currentViewPagerIndex[0]) == 1) {
+    } else {
       console.log("GOT SAME DATA, not modifying")
     }
   }
@@ -207,7 +211,7 @@ class HomeScreen extends View {
             <ContentLoadingComponent
               height="match_parent"
               width="match_parent"
-              contentLayout={contentLayout}/>)
+              />)
           break;
         case 3:
           tmp = (<ContentLoadingComponent
@@ -256,7 +260,7 @@ class HomeScreen extends View {
 
     switch (parseInt(this.currentViewPagerIndex[0])) {
       case 0:
-        eventAction = { action: "startClassRoomFlow" };
+        eventAction = { action: "dummyFlow" };
         break;
       case 1:
         eventAction = { action: "startCourseFlow" };
@@ -265,13 +269,13 @@ class HomeScreen extends View {
         eventAction = { action: "startClassRoomFlow" };
         break;
       case 3:
-        eventAction = { action: "startClassRoomFlow" };
+        eventAction = { action: "dummyFlow" };
         break;
       case 4:
-        eventAction = { action: "startClassRoomFlow" };
+        eventAction = { action: "dummyFlow" };
         break;
       default:
-        eventAction = { action: "startCourseFlow" };
+        eventAction = { action: "dummyFlow" };
         break;
     }
     console.log("--------->VIEWPAGER TRIGGERS ", eventAction, "ON INDEX", parseInt(this.currentViewPagerIndex[0]));

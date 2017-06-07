@@ -4,7 +4,6 @@ var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout
 
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 var RatingBar = require('@juspay/mystique-backend').androidViews.RatingBar;
-var $ = require('jquery');
 window.R = require("ramda");
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
@@ -29,16 +28,15 @@ class FeedCard extends View {
     ]);
 
     _this = this;
-    this.answer= "";
+    this.answer = "";
     this.feedData = this.props.feedData;
   }
 
-  afterRender(){
-  }
+  afterRender() {}
 
 
-  getProfileLabel = () =>{
-      return (<LinearLayout
+  getProfileLabel = () => {
+    return (<LinearLayout
               width="match_parent"
               height="wrap_content"
               orientation="horizontal"
@@ -108,7 +106,7 @@ class FeedCard extends View {
   }
 
 
-  answerUnclicked = () =>{
+  answerUnclicked = () => {
     return (<LinearLayout
             width="wrap_content"
             height="wrap_content"
@@ -150,12 +148,12 @@ class FeedCard extends View {
 
 
             </LinearLayout>)
-    }
+  }
 
 
 
 
-    answerClicked = () =>{
+  answerClicked = () => {
     return (<LinearLayout
             width="wrap_content"
             height="wrap_content"
@@ -195,12 +193,12 @@ class FeedCard extends View {
 
 
             </LinearLayout>)
-    }
+  }
 
 
-    getAnswers(data){
-      return (
-          <LinearLayout
+  getAnswers(data) {
+    return (
+      <LinearLayout
             width="match_parent"
             height="wrap_content"
             orientation="vertical">
@@ -212,46 +210,46 @@ class FeedCard extends View {
               orientation="vertical"/>
 
           </LinearLayout>)
-              
-    }
 
-  
+  }
 
-    handleAnswerOpen(){
-          var cmd = "";
-          cmd += this.set({
-          id: this.idSet.answerUnclicked,
-          visibility: "gone"
-          })
-          cmd += this.set({
-            id: this.idSet.answerClicked,
-            visibility: "visible"
-          })
 
-        Android.runInUI(cmd, 0);
-    }
 
-    handleAnswerClose(){
-          var cmd = "";
-            cmd += _this.set({
-            id: _this.idSet.answerUnclicked,
-            visibility: "visible"
-            })
-            cmd += _this.set({
-              id: _this.idSet.answerClicked,
-              visibility: "gone"
-            })
+  handleAnswerOpen() {
+    var cmd = "";
+    cmd += this.set({
+      id: this.idSet.answerUnclicked,
+      visibility: "gone"
+    })
+    cmd += this.set({
+      id: this.idSet.answerClicked,
+      visibility: "visible"
+    })
 
-          Android.runInUI(cmd, 0);
-    }
+    Android.runInUI(cmd, 0);
+  }
 
-    handleAnswerSubmit(){
-      _this.replaceChild(_this.idSet.answersContainer,_this.getAnswers(_this.answer).render(),null);
-    }
+  handleAnswerClose() {
+    var cmd = "";
+    cmd += _this.set({
+      id: _this.idSet.answerUnclicked,
+      visibility: "visible"
+    })
+    cmd += _this.set({
+      id: _this.idSet.answerClicked,
+      visibility: "gone"
+    })
 
-      
+    Android.runInUI(cmd, 0);
+  }
 
-  getFooter = () =>{
+  handleAnswerSubmit() {
+    _this.replaceChild(_this.idSet.answersContainer, _this.getAnswers(_this.answer).render(), null);
+  }
+
+
+
+  getFooter = () => {
     return (<LinearLayout
               width="match_parent"
               height="wrap_content"
@@ -267,7 +265,7 @@ class FeedCard extends View {
             </LinearLayout>);
   }
 
-  getBody = () =>{
+  getBody = () => {
     return (<LinearLayout
           width="match_parent"
           height="wrap_content"
@@ -340,21 +338,21 @@ class FeedCard extends View {
         </LinearLayout>);
   }
 
-  handleVoteClick = () =>{
+  handleVoteClick = () => {
     this.props.voteClick();
   }
 
-  handleAnswerClick = () =>{
+  handleAnswerClick = () => {
     // this.props.answerClick();
 
     this.handleAnswerOpen();
   }
 
-  handleBookmarkClick = () =>{
+  handleBookmarkClick = () => {
     this.props.bookmarkClick();
   }
 
-  
+
 
 
   render() {

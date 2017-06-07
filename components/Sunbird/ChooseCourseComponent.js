@@ -36,8 +36,8 @@ class ChooseCourseComponent extends View {
       this.serverData = "TESTING";
       console.log("UNDEFINED RESPONSE FROM STATE");
     } else {
-      this.serverData = this.props.response.status[1];
-      console.log("GOT RESPONSE FROM PROPS",this.serverData);
+      this.serverData = this.props.response;
+      console.log("GOT RESPONSE FROM PROPS", this.serverData);
     }
 
   }
@@ -53,14 +53,14 @@ class ChooseCourseComponent extends View {
 
   handleExploreClick = () => {
     console.log("explore clicked");
-    var req={
-    "request": {
-      "context": {
-        "userId": "user1"
+    var req = {
+      "request": {
+        "context": {
+          "userId": "user1"
+        }
       }
     }
-  }
-    window.__runDuiCallback({ action: "showExplore" , req: req});
+    window.__runDuiCallback({ action: "showExplore", req: req });
   }
 
   render() {
