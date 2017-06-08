@@ -12,6 +12,7 @@ var Symbols = require("../res/Symbols").symbol;
 var Colors = require("../res/Colors").color;
 var Styles = require("../res/Styles");
 var Font = require("../res/Font");
+var objectAssign = require('object-assign');
 
 class RootScreen extends View {
   constructor(props, children) {
@@ -30,6 +31,7 @@ class RootScreen extends View {
     window.__Colors = Colors;
     window.__Styles = Styles;
     window.__Font = Font;
+    window.__ObjectAssign = objectAssign;
 
     this.setStatusBarColor(window.__Colors.BLACK);
   }
@@ -47,58 +49,58 @@ class RootScreen extends View {
     );
   }
 
-  showFilterDialog = (layout,animation) =>{
+  showFilterDialog = (layout, animation) => {
 
     this.replaceChild(this.idSet.filterDialog, layout.render(), 0);
     this.showBlur();
 
     var cmd = {
-    id: this.idSet.filterDialog,
-    visibility: "visible",
+      id: this.idSet.filterDialog,
+      visibility: "visible",
     };
 
-    var result = Object.assign({},cmd, animation);
+    var result = Object.assign({}, cmd, animation);
     result["id"] = this.idSet.filterDialog;
-    Android.runInUI(this.set(result), null);    
+    Android.runInUI(this.set(result), null);
   }
 
-  hideFilterDialog = () =>{
+  hideFilterDialog = () => {
     this.hideBlur();
     var cmd = this.set({
-    id: this.idSet.filterDialog,
-      visibility:"gone",
-  });
+      id: this.idSet.filterDialog,
+      visibility: "gone",
+    });
 
-  Android.runInUI(cmd,null);
+    Android.runInUI(cmd, null);
   }
 
-  
-  showBlur = () =>{
-  var cmd = this.set({
-      id: this.idSet.blurContainer,
-      visibility:"visible",
-      clickable:"true"
-  });
 
-  Android.runInUI(cmd,null);
-  }
-
-  hideBlur = () =>{
+  showBlur = () => {
     var cmd = this.set({
       id: this.idSet.blurContainer,
-      visibility:"gone",
-      clickable:"false"
-  });
+      visibility: "visible",
+      clickable: "true"
+    });
 
-    Android.runInUI(cmd,null);
- }
+    Android.runInUI(cmd, null);
+  }
 
- blurClick = () =>{
-  this.hideBlur();
-  this.hideFilterDialog();
- }
+  hideBlur = () => {
+    var cmd = this.set({
+      id: this.idSet.blurContainer,
+      visibility: "gone",
+      clickable: "false"
+    });
 
-  
+    Android.runInUI(cmd, null);
+  }
+
+  blurClick = () => {
+    this.hideBlur();
+    this.hideFilterDialog();
+  }
+
+
   render() {
     this.layout = (
       <RelativeLayout

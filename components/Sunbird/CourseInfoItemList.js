@@ -135,6 +135,7 @@ class CourseInfoItemList extends View {
       dumData = {
         courseName: item.name,
         competedCount: item.progress,
+        courseDesc: item.description,
         courseId: item.courseId,
         totalCount: "150",
         courseBackground: "#229012FE",
@@ -189,8 +190,6 @@ class CourseInfoItemList extends View {
       cards = (<ProgressBar
             height="70"
             width="70"/>);
-    } else {
-      console.log("[CourseInfoItemList]\t\t GOT VALUES ");
     }
 
     var cardLayout = (

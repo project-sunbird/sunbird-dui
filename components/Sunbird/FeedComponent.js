@@ -42,7 +42,7 @@ class FeedComponent extends View {
 
   }
 
- 
+
 
 
 
@@ -52,9 +52,8 @@ class FeedComponent extends View {
     this.layout = (
 
       <LinearLayout
-      width="360"
+      width="match_parent"
       height="wrap_content"
-      margin = "0,0,0,0"
       afterRender={this.afterRender}
       orientation="vertical"
       background={window.__Colors.PRIMARY_BLACK_11}
@@ -62,7 +61,7 @@ class FeedComponent extends View {
 
 
         <TextView
-        width="wrap_content"
+        width="match_parent"
         height="wrap_content"
         margin="16,7,0,7"
         text="Feed"

@@ -19,8 +19,8 @@ class CourseProgress extends View {
       "completedTextView"
     ]);
     this.displayName = "course_progress"
-    this.competedCount = this.props.item != undefined ? this.props.item.competedCount : "25";
-    this.totalCount = this.props.item != undefined ? this.props.item.totalCount : "150";
+    this.competedCount = this.props.content != undefined ? this.props.content.competedCount : "25";
+    this.totalCount = this.props.content != undefined ? this.props.content.totalCount : "150";
 
   }
 

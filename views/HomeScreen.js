@@ -108,10 +108,7 @@ class HomeScreen extends View {
 
         break;
       case 1:
-        console.log("[handleStateChange]\t\t JBridge.getKey - chooseCourse :", JBridge.getFromSharedPrefs("chooseCourse"))
-        console.log("[handleStateChange]\t\t result ", JSON.stringify(state.response.status[1]))
         shouldBeModified = (JBridge.getFromSharedPrefs("chooseCourse") != JSON.stringify(state.response.status[1]))
-        console.log("[handleStateChange]\t\t shouldBeModified", shouldBeModified)
         if (shouldBeModified) {
           JBridge.setInSharedPrefs("chooseCourse", JSON.stringify(state.response.status[1]))
         }
@@ -122,11 +119,7 @@ class HomeScreen extends View {
 
         break;
       case 2:
-        //console.log("[handleStateChange]\t\t JBridge.getKey - userResource :", JBridge.getFromSharedPrefs("userResource"))
-        //console.log("[handleStateChange]\t\t result ", JSON.stringify(state.response.status[1]))
         shouldBeModified = (JBridge.getFromSharedPrefs("userResource") != JSON.stringify(state.response.status[1]))
-        console.log("[handleStateChange]\t\t shouldBeModified", shouldBeModified)
-
         if (shouldBeModified) {
           JBridge.setInSharedPrefs("userResource", JSON.stringify(state.response.status[1]))
         }
@@ -279,7 +272,10 @@ class HomeScreen extends View {
         break;
     }
     console.log("--------->VIEWPAGER TRIGGERS ", eventAction, "ON INDEX", parseInt(this.currentViewPagerIndex[0]));
-    window.__runDuiCallback(eventAction);
+
+    this.state = window.__ObjectAssign({}, this.state, eventAction);
+
+    window.__runDuiCallback(this.state);
   }
 
   handleViewPagerAction = (index) => {
@@ -292,13 +288,6 @@ class HomeScreen extends View {
   handleBottomNavBarAction = (index) => {
     this.currentViewPagerIndex = index;
     JBridge.switchToViewPagerIndex(index + "");
-    // window.__SNACKBAR.setAction({
-    //   text: "PAGE " + index,
-    //   status: "success",
-    //   actionText: "RETRY"
-    // }, () => { console.log("CLICKED ACTION") });
-    // window.__SNACKBAR.show(true);
-
   }
 
   getBottomNavBar = () => {
@@ -349,9 +338,5 @@ class HomeScreen extends View {
     return this.layout.render();
   }
 }
-
-
-
-
 
 module.exports = Connector(HomeScreen);

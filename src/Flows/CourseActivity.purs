@@ -12,12 +12,8 @@ courseActivityFlow state = do
   -- reqTokens <- getReqTokens
   responseData <- getUserCourses "user1"
   -- response <- getCourses reqTokens
-  liftEff $ log $ "[PURE]\t\tRESPONSE "
-  newData <- updateState {response: responseData} state
-  liftEff $ log $ "[PURE]\t\nnewData "
-  _ <- sendUpdatedState newData 
-  liftEff $ log $ "[PURE]\t\tLISTEN after sendUpdatedState " <> "EVENT"
-  
+  state <- updateState {response: responseData} state
+  _ <- sendUpdatedState state 
   state <- getCallbackFromScreen "HOME" state
   case state.action of
     "showCourseInfo" -> do
