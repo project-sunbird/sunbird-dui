@@ -128,38 +128,56 @@ class CourseInfoItemList extends View {
   afterRender = () => {
     var dataList = [];
 
-    for (var i = 0; i < 15; i++) {
+    this.props.data.map((item) => {
+      console.log("------>", item)
+
       var dumData
-      if (i % 3 == 0) {
-        dumData = {
-          courseName: "Advanced Level Arithmetic",
-          competedCount: "124",
-          totalCount: "150",
-          courseBackground: "#229012FE",
-          remainingTime: "120",
-          courseImage: "ic_percent_black"
-        }
-      } else if (i % 3 == 1) {
-        dumData = {
-          courseName: "Introduction to Magnetism",
-          competedCount: "76",
-          totalCount: "90",
-          courseBackground: "#22FF9F00",
-          remainingTime: "24",
-          courseImage: "ic_magnet_black"
-        }
-      } else {
-        dumData = {
-          courseName: "Deep-diving in Nuclear Physics",
-          competedCount: "76",
-          totalCount: "90",
-          courseBackground: "#227ED321",
-          courseImage: "ic_nucleus_black"
-        }
+      dumData = {
+        courseName: item.name,
+        competedCount: item.progress,
+        courseId: item.courseId,
+        totalCount: "150",
+        courseBackground: "#229012FE",
+        remainingTime: "120",
+        courseImage: "ic_percent_black"
       }
 
       dataList.push(dumData);
-    }
+    })
+
+
+    // for (var i = 0; i < 15; i++) {
+    //   var dumData
+    //   if (i % 3 == 0) {
+    //     dumData = {
+    //       courseName: "Advanced Level Arithmetic",
+    //       competedCount: "124",
+    //       totalCount: "150",
+    //       courseBackground: "#229012FE",
+    //       remainingTime: "120",
+    //       courseImage: "ic_percent_black"
+    //     }
+    //   } else if (i % 3 == 1) {
+    //     dumData = {
+    //       courseName: "Introduction to Magnetism",
+    //       competedCount: "76",
+    //       totalCount: "90",
+    //       courseBackground: "#22FF9F00",
+    //       remainingTime: "24",
+    //       courseImage: "ic_magnet_black"
+    //     }
+    //   } else {
+    //     dumData = {
+    //       courseName: "Deep-diving in Nuclear Physics",
+    //       competedCount: "76",
+    //       totalCount: "90",
+    //       courseBackground: "#227ED321",
+    //       courseImage: "ic_nucleus_black"
+    //     }
+    //   }
+
+    //   dataList.push(dumData);
+    // }
     var cards = dataList.map((item) => {
       return (<CourseInfoItem
             width="match_parent"
