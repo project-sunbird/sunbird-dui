@@ -279,7 +279,8 @@ class SearchToolbar extends View {
 
           var layout = (<LinearLayout
                          width="match_parent"
-                         height="wrap_content"
+                         height="match_parent"
+                         background="#ffffff"
                          orientation="vertical">
                            <ClassListItem
                             data={totalJson}
@@ -338,7 +339,7 @@ class SearchToolbar extends View {
 
        <LinearLayout
            width="match_parent"
-           height="wrap_content"
+           height="match_parent"
            id = {this.idSet.searchListContainer}
            orientation="vertical"/>
 

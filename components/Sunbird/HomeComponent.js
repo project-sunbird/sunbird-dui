@@ -173,7 +173,7 @@ class HomeComponent extends View {
         height="match_parent">
 
           <SearchToolbar
-            hint="Enter your search 😂😂😂😂😂"
+            hint="Enter your search"
             invert="true"
             hideBack="true"
             onMenuItemClick={this.handleMenuClick}
