@@ -94,6 +94,9 @@ class ResourceComponent extends View {
 
     if (this.props.response != undefined) {
       var tmp = this.props.response;
+      tmp = tmp.replace(/\\/g, '');
+      tmp = tmp.replace(/"{/g, '{');
+      tmp = tmp.replace(/}"/g, '}');
       //tmp = tmp.substring(1, tmp.length - 1);
       console.log("THIS IS WHAT WE HAVE ", tmp)
       var response = JSON.parse(tmp)
