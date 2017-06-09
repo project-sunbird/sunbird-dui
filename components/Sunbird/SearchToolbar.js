@@ -31,6 +31,7 @@ class SearchToolbar extends View {
 
     _this = this;
 
+
     this.searchText = debounce(this.searchText, 200);
     this.isSearchEnabled = this.props.startWithSearch ? this.props.startWithSearch : false;
     this.textData = {
@@ -231,7 +232,7 @@ class SearchToolbar extends View {
             layoutTransition="true"
             gravity="center_vertical"
             background="#ffffff"
-            onChange = {data=>_this.getSearchList(data)}
+            onChange = {result=>_this.getSearchList(result)}
             id={this.idSet.searchHolder}
             style={window.__TextStyle.textStyle.TOOLBAR.HEADING}/>
 
@@ -239,8 +240,6 @@ class SearchToolbar extends View {
           </LinearLayout>)
 
   }
-
-
 
 
   getMenu = () => {
@@ -277,24 +276,30 @@ class SearchToolbar extends View {
 
 
   getSearchList(searchText){
+    var data = [];
+    var listData=[];
+    var temp = [];
+    var totalJson={};
+    var color= '<p style= \"color:red;\">';
 
-    var listData = [];
-    var data = this.textData.values;
-
-    var comment;
+    data = this.textData.values;
 
       if(searchText.length != 0){
           for(var i = 0;i<data.length;i++){
+
             if(data[i].subject.toLowerCase().includes(searchText.toLowerCase())||data[i].comment.toLowerCase().includes(searchText.toLowerCase())){
-              data[i].comment = this.replaceAll(data[i].comment,searchText,"<u>"+searchText+"</u>");
-              listData.push(data[i]);
+            temp["subject"]= this.replaceAll(data[i].subject,searchText,"<u>"+searchText+"</u>");
+            temp["comment"]= this.replaceAll(data[i].comment,searchText,"<u>"+searchText+"</u>");
+            temp["color"]= data[i].color;
+            temp["imageUrl"]=data[i].imageUrl;
+            temp["logo"]=data[i].logo;
+            listData.push(temp);
+            temp = [];
             }
           }
 
-          var totalJson = {};
           totalJson["type"] = this.textData.type;
           totalJson["values"] = listData;
-
           var layout = (<LinearLayout
                          width="match_parent"
                          height="match_parent"
@@ -306,9 +311,7 @@ class SearchToolbar extends View {
                             lineSeparator="true"/>
                         </LinearLayout>);
           _this.replaceChild(_this.idSet.searchListContainer,layout.render(),0);
-
       }
-
   }
 
 
