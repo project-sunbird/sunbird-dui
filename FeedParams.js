@@ -3,7 +3,7 @@ exports.feedParams = [
 {
 	answerTitle : "Answer written in Chemistry",
 	question : "This is a 2-liner question in place. Can you tell which kind is it?",
-	answer : "I will write after this. This is the 2nd paragraph, which can lead to a long answer like it is… More",
+	answer : "I will write after this. This is the 2nd paragraph, which can lead to a long answer like it is… $#More#$",
 	imageUrl : "http://www.mens-hairstylists.com/wp-content/uploads/2015/10/Faux-Hawk-hairstyles-for-boys.jpg",
 	profileName : "Phani Bhushan Banerjee",
 	subject : "Level III Chemistry",
@@ -14,7 +14,7 @@ exports.feedParams = [
 {
 	answerTitle : "Answer written in Chemistry",
 	question : "This is a 2-liner question in place. Can you tell which kind is it?",
-	answer : "I will write after this. This is the 2nd paragraph, which can lead to a long answer like it is… More",
+	answer : "I will write after this. This is the 2nd paragraph, which can lead to a long answer like it is… $#More#$",
 	imageUrl : "http://4.bp.blogspot.com/-g2ZwcQRzq7o/Ub6W4rQlX_I/AAAAAAAABPk/mumFghNrYBU/s1600/beautiful-baby-girl-kid-picture.jpg",
 	profileName : "Phani Bhushan Banerjee",
 	subject : "Level III Chemistry",
@@ -25,7 +25,7 @@ exports.feedParams = [
 {
 	answerTitle : "Answer written in Chemistry",
 	question : "This is a 2-liner question in place. Can you tell which kind is it?",
-	answer : "I will write after this. This is the 2nd paragraph, which can lead to a long answer like it is… More",
+	answer : "I will write after this. This is the 2nd paragraph, which can lead to a long answer like it is… $#More#$",
 	imageUrl : "http://4.bp.blogspot.com/-g2ZwcQRzq7o/Ub6W4rQlX_I/AAAAAAAABPk/mumFghNrYBU/s1600/beautiful-baby-girl-kid-picture.jpg",
 	profileName : "Phani Bhushan Banerjee",
 	subject : "Level III Chemistry",

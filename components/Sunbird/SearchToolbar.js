@@ -338,7 +338,9 @@ class SearchToolbar extends View {
 
        <LinearLayout
            width="match_parent"
-           height="wrap_content"
+           height="1500"
+           background="#ffffff"
+           visibility="gone"
            id = {this.idSet.searchListContainer}
            orientation="vertical"/>
 
