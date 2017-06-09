@@ -25,9 +25,9 @@ class FeedComponent extends View {
       return (
         <FeedCard
          feedData={this.props.feedData[i]}
-         voteClick = {this.props.voteClick}
-         answerClick= {this.props.answerClick}
-         bookmarkClick= {this.props.bookmarkClick}
+         voteClick = {this.voteClick}
+         answerClick= {this.answerClick}
+         bookmarkClick= {this.bookmarkClick}
          />
       )
     });
@@ -42,8 +42,18 @@ class FeedComponent extends View {
 
   }
 
- 
 
+  handleAnswerClick = () =>{
+    console.log("answer clicked")
+  }
+
+  handleVoteClick = () =>{
+    console.log("vote clicked")
+  }
+
+  handleBookmarkClick = () =>{
+    console.log("bookmark clicked")
+  }
 
 
   render() {

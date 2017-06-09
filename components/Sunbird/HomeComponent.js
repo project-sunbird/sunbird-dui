@@ -132,17 +132,7 @@ class HomeComponent extends View {
   // }
 
 
-  handleAnswerClick = () =>{
-    console.log("answer clicked")
-  }
-
-  handleVoteClick = () =>{
-    console.log("vote clicked")
-  }
-
-  handleBookmarkClick = () =>{
-    console.log("bookmark clicked")
-  }
+ 
 
 
   handleTodoClick = (index) =>{

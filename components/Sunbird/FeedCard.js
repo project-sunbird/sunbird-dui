@@ -93,17 +93,17 @@ class FeedCard extends View {
 
                 </LinearLayout>
 
-             <ViewWidget 
+             <ViewWidget
                 weight="1"
                 height="0"/>
-                            
+
              <ImageView
                 width="24"
                 height="24"
                 gravity="center_vertical"
                 imageUrl="ic_person_add_blue"/>
 
-    
+
             </LinearLayout>);
   }
 
@@ -138,7 +138,7 @@ class FeedCard extends View {
                 margin="2,0,0,0"
                 text="Answer"
                 style={window.__TextStyle.textStyle.HINT.SEMI}/>
-            <ViewWidget 
+            <ViewWidget
                 weight="1"
                 height="0"/>
             <ImageView
@@ -163,7 +163,7 @@ class FeedCard extends View {
             id={this.idSet.answerClicked}
             margin="0,0,0,0">
 
-            <EditText 
+            <EditText
             margin="0,0,0,0"
             height="wrap_content"
             width="match_parent"
@@ -171,9 +171,9 @@ class FeedCard extends View {
             maxWidth="400"
             onChange={data=>_this.answer=data}
             layoutTransition="true"
-            style={window.__TextStyle.textStyle.TOOLBAR.HEADING}/>    
+            style={window.__TextStyle.textStyle.TOOLBAR.HEADING}/>
 
-            <ViewWidget 
+            <ViewWidget
             weight="1"
             height="0"/>
 
@@ -185,14 +185,11 @@ class FeedCard extends View {
             onClick={this.handleAnswerSubmit}
             text="submit"/>
 
-            
-
-            <ImageView  
+            <ImageView
             style={IconStyle}
             onClick={this.handleAnswerClose}
             visibility={"visible"}
-            imageUrl = {"ic_action_close"}/>  
-
+            imageUrl = {"ic_action_close"}/>
 
             </LinearLayout>)
     }
@@ -212,10 +209,10 @@ class FeedCard extends View {
               orientation="vertical"/>
 
           </LinearLayout>)
-              
+
     }
 
-  
+
 
     handleAnswerOpen(){
           var cmd = "";
@@ -249,7 +246,7 @@ class FeedCard extends View {
       _this.replaceChild(_this.idSet.answersContainer,_this.getAnswers(_this.answer).render(),null);
     }
 
-      
+
 
   getFooter = () =>{
     return (<LinearLayout
@@ -259,11 +256,11 @@ class FeedCard extends View {
               gravity="center_vertical"
               margin="0,20,0,0"
               >
-              
+
               {this.answerUnclicked()}
               {this.answerClicked()}
 
-            
+
             </LinearLayout>);
   }
 
@@ -304,7 +301,7 @@ class FeedCard extends View {
               text="Topic you might like"
               style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
-          </LinearLayout> 
+          </LinearLayout>
 
           <TextView
           width="match_parent"
@@ -346,7 +343,6 @@ class FeedCard extends View {
 
   handleAnswerClick = () =>{
     // this.props.answerClick();
-
     this.handleAnswerOpen();
   }
 
@@ -354,7 +350,7 @@ class FeedCard extends View {
     this.props.bookmarkClick();
   }
 
-  
+
 
 
   render() {

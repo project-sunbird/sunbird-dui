@@ -95,16 +95,11 @@ class SearchToolbar extends View {
   }
 
 
-  clearSearch = () => {
+  handleCloseClick = () => {
     var cmd = "";
     this.isSearchEnabled=false;
     JBridge.hideKeyboard();
-    cmd += this.set({
-      id: this.idSet.searchHolder,
-      text: "",
-      focusOut: "true",
-      visibility: "gone"
-    })
+
     cmd += this.set({
       id: this.idSet.searchCloseHolder,
       visibility: "gone"
@@ -147,23 +142,37 @@ class SearchToolbar extends View {
   }
 
 
+  clearSearch(){
+    var cmd = "";
+    console.log("clearSearch")
+
+    cmd += _this.set({
+      id: _this.idSet.searchHolder,
+      text: "",
+      visibility: "visible"
+    })
+    Android.runInUI(cmd, 0);
+
+  }
+
+
   getSearchIcon() {
     return (<LinearLayout
             height="match_parent"
             gravity="center_vertical">
-              <ImageView  
+              <ImageView
                 id={this.idSet.searchIconHolder}
                 style = {IconStyle}
                 onClick = {this.handleSearchClick}
                 visibility={this.isSearchEnabled?"gone":"visible"}
                 imageUrl = {"ic_action_search"}/>
 
-              <ImageView  
+              <ImageView
                 id={this.idSet.searchCloseHolder}
                 style = {IconStyle}
                 onClick = {this.clearSearch}
                 visibility={this.isSearchEnabled?"visible":"gone"}
-                imageUrl = {"ic_action_close"}/>  
+                imageUrl = {"ic_action_close"}/>
 
             </LinearLayout>)
 
@@ -197,7 +206,7 @@ class SearchToolbar extends View {
             layoutTransition="true"
             weight="1">
 
-          <TextView 
+          <TextView
             height="match_parent"
             width="match_parent"
             gravity="center_vertical"
@@ -205,10 +214,10 @@ class SearchToolbar extends View {
             margin="10,0,0,0"
             visibility={this.isSearchEnabled?"gone":"visible"}
             id={this.idSet.titleTextHolder}
-            style={window.__TextStyle.textStyle.TOOLBAR.HEADING} 
+            style={window.__TextStyle.textStyle.TOOLBAR.HEADING}
             text={this.props.title}/>
 
-           <EditText 
+           <EditText
             height="match_parent"
             width="match_parent"
             maxLines="1"
@@ -218,7 +227,7 @@ class SearchToolbar extends View {
             background="#ffffff"
             onChange = {data=>_this.getSearchList(data)}
             id={this.idSet.searchHolder}
-            style={window.__TextStyle.textStyle.TOOLBAR.HEADING}/>  
+            style={window.__TextStyle.textStyle.TOOLBAR.HEADING}/>
 
 
           </LinearLayout>)
@@ -226,14 +235,14 @@ class SearchToolbar extends View {
   }
 
 
-  
+
 
   getMenu = () => {
     if (!this.props.menuData)
       return <Space width="0"/>
 
     var menu = this.props.menuData.url.map((item, index) => {
-      return (<ImageView  
+      return (<ImageView
         onClick={() => {this.handleMenuClick(item.imageUrl)}}
         style = {IconStyle}
         imageUrl = {item.imageUrl}/>)
@@ -257,18 +266,18 @@ class SearchToolbar extends View {
   }
 
   handleSearchBackPress=()=>{
-    this.clearSearch();
+    this.handleCloseClick();
   }
 
 
   getSearchList(searchText){
-    
+
     var listData = [];
     var data = this.textData.values;
 
       if(searchText.length != 0){
           for(var i = 0;i<data.length;i++){
-            if(data[i].subject.toLowerCase().includes(searchText)||data[i].comment.toLowerCase().includes(searchText)){
+            if(data[i].subject.toLowerCase().includes(searchText.toLowerCase())||data[i].comment.toLowerCase().includes(searchText.toLowerCase())){
               listData.push(data[i]);
             }
           }
@@ -285,15 +294,15 @@ class SearchToolbar extends View {
                            <ClassListItem
                             data={totalJson}
                             itemClick={this.handleItemClick}
-                            lineSeparator="true"/> 
+                            lineSeparator="true"/>
                         </LinearLayout>);
           _this.replaceChild(_this.idSet.searchListContainer,layout.render(),0);
 
       }
-    
+
   }
 
-  
+
 
   render() {
     let searchIcon = this.getSearchIcon();
@@ -310,36 +319,38 @@ class SearchToolbar extends View {
        orientation="vertical"
        root="true">
 
-      <LinearLayout 
+      <LinearLayout
         height="56"
         padding="0,0,0,2"
         gravity="center_vertical"
         background={window.__Colors.PRIMARY_BLACK_22}
         width="match_parent" >
-      <LinearLayout 
+      <LinearLayout
         height="56"
         padding="0,0,0,0"
         gravity="center_vertical"
-        root="true" 
+        root="true"
         background={this.props.invert?window.__Colors.WHITE:window.__Colors.LIGHT_VIOLET}
         width="match_parent" >
 
-         
+
           {back}
           {searchBack}
-          
+
           {title}
-           
+
           <Space width="0" weight="1"/>
           {menu}
           {searchIcon}
-             
+
        </LinearLayout>
        </LinearLayout>
 
        <LinearLayout
            width="match_parent"
-           height="match_parent"
+           height="1500"
+           visibility="gone"
+           background="#ffffff"
            id = {this.idSet.searchListContainer}
            orientation="vertical"/>
 
