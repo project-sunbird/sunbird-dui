@@ -202,6 +202,13 @@ exports.textStyle = {
       textSize: Font.fontSize.FONT_12,
       fontStyle: Font.fontStyle.REGULAR
       },
+  },
+  CLICKABLE:{
+      BLUE_SEMI: {
+      color: Colors.PRIMARY_ACCENT,
+      textSize: Font.fontSize.FONT_14,
+      fontStyle: Font.fontStyle.SEMIBOLD
+      }
   }
 
 };

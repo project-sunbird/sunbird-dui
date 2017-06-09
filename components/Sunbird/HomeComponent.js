@@ -66,10 +66,10 @@ class HomeComponent extends View {
         imageUrl: "http://sr.photos2.fotosearch.com/bthumb/AGE/AGE063/b20-1458802.jpg",
         count: 65,
         rating: 5
-      } 
+      }
     ]
   }
-    
+
     // Todo Data
     this.todoData=[
       {
@@ -132,7 +132,7 @@ class HomeComponent extends View {
   // }
 
 
- 
+
 
 
   handleTodoClick = (index) =>{
@@ -152,7 +152,32 @@ class HomeComponent extends View {
     console.log("searched",data);
   }
 
-  
+  handleAnswerClick = () =>{
+    console.log("answer clicked")
+  }
+
+  handleVoteClick = () =>{
+    console.log("vote clicked")
+  }
+
+  handleBookmarkClick = () =>{
+    console.log("bookmark clicked")
+  }
+
+  handleAnswerClick = () =>{
+    console.log("answer clicked")
+  }
+
+  handleVoteClick = () =>{
+    console.log("vote clicked")
+  }
+
+  handleBookmarkClick = () =>{
+    console.log("bookmark clicked")
+  }
+
+
+
   render() {
     this.layout = (
 
@@ -169,18 +194,18 @@ class HomeComponent extends View {
             onMenuItemClick={this.handleMenuClick}
             menuData={this.menuData}
             onSearch={this.handleSearch}/>
-        
+
 
             <ScrollView
               height="0"
               weight="1"
               width="match_parent">
-        
+
                 <LinearLayout
                   height="match_parent"
                   width="match_parent"
                   orientation="vertical">
-          
+
                     <TodoContainer
                     onItemClick = {this.handleTodoClick}
                     todoData = {this.todoData}
@@ -193,9 +218,9 @@ class HomeComponent extends View {
                    />
                    <FeedComponent
                    feedData = {this.props.feedData}
-                   voteClick = {this.voteClick}
-                   answerClick={this.answerClick}
-                   bookmarkClick={this.bookmarkClick}
+                   voteClick = {this.handleVoteClick}
+                   answerClick={this.handleAnswerClick}
+                   bookmarkClick={this.handleBookmarkClick}
                    />
 
 

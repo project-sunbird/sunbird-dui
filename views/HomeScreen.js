@@ -16,6 +16,7 @@ var ChooseCourseComponent = require("../components/Sunbird/ChooseCourseComponent
 var ClassRoomHomeComponent = require("../components/Sunbird/ClassRoomHomeComponent")
 var ResourceComponent = require("../components/Sunbird/ResourceComponent")
 var HomeComponent = require('../components/Sunbird/HomeComponent');
+var CommunityUserMode = require('../components/Sunbird/CommunityUserMode');
 var SavedResources = require('../components/Sunbird/SavedResources');
 var ProfileActivityComponent = require('../components/Sunbird/ProfileActivityComponent');
 var ContentLoadingComponent = require('../components/Sunbird/ContentLoadingComponent');
@@ -31,7 +32,7 @@ class HomeScreen extends View {
     this.state = state;
 
 
-    //TODO : REVERT THIS LOGIC 
+    //TODO : REVERT THIS LOGIC
     JBridge.setInSharedPrefs("chooseCourse", "__failed");
 
     this.setIds([
@@ -173,12 +174,7 @@ class HomeScreen extends View {
       switch (index) {
         case 0:
           contentLayout = (
-            <HomeComponent
-            recommendedData={this.recommendedData}
-            recommendedimageUrls={this.recommendedimageUrls}
-            menuData={this.menuData}
-            todoData = {this.todoData}
-            feedData = {this.feedData}/>
+            <CommunityUserMode/>
           )
 
           tmp = (
@@ -351,3 +347,10 @@ class HomeScreen extends View {
 
 
 module.exports = Connector(HomeScreen);
+
+// <HomeComponent
+//     recommendedData={this.recommendedData}
+//     recommendedimageUrls={this.recommendedimageUrls}
+//     menuData={this.menuData}
+//     todoData = {this.todoData}
+//     feedData = {this.feedData}/>

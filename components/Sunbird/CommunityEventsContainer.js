@@ -6,28 +6,26 @@ var HorizontalScrollView = require("@juspay/mystique-backend").androidViews.Hori
 var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
-var FeedCard = require('../Sunbird/FeedCard');
+var AnnouncementCard = require('../Sunbird/AnnouncementCard');
+const CommunityParams = require('../../CommunityParams');
 var _this;
-class FeedComponent extends View {
+class CommunityEventsContainer extends View {
   constructor(props, children) {
     super(props, children);
 
     this.props.appendText = this.props.appendText || "";
     this.setIds([
-      'feedContainer'
+      'eventContainer'
     ]);
   }
 
 
   afterRender = () => {
 
-    var cards = this.props.feedData.map((item, i) => {
+    var cards = CommunityParams.eventParams.map((item, i) => {
       return (
-        <FeedCard
-         feedData={this.props.feedData[i]}
-         voteClick = {this.props.handleVoteClick}
-         answerClick= {this.props.handleAnswerClick}
-         bookmarkClick= {this.props.handleBookmarkClick}
+        <AnnouncementCard
+         params={item}
          />
       )
     });
@@ -38,7 +36,7 @@ class FeedComponent extends View {
                           {cards}
                     </LinearLayout>);
 
-    this.replaceChild(this.idSet.feedContainer, layout.render(), 0);
+    this.replaceChild(this.idSet.eventContainer, layout.render(), 0);
 
   }
 
@@ -49,7 +47,7 @@ class FeedComponent extends View {
     this.layout = (
 
       <LinearLayout
-      width="360"
+      width="match_parent"
       height="wrap_content"
       margin = "0,0,0,0"
       afterRender={this.afterRender}
@@ -60,7 +58,7 @@ class FeedComponent extends View {
         orientation="vertical"
         width="match_parent"
         height="wrap_content"
-        id={this.idSet.feedContainer}/>
+        id={this.idSet.eventContainer}/>
 
        </LinearLayout>
 
@@ -71,4 +69,4 @@ class FeedComponent extends View {
   }
 }
 
-module.exports = FeedComponent;
+module.exports = CommunityEventsContainer;
