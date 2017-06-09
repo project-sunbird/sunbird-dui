@@ -13,7 +13,7 @@ courseActivityFlow state = do
   responseData <- getUserCourses "user1"
   -- response <- getCourses reqTokens
   state <- updateState {response: responseData} state
-  _ <- sendUpdatedState state 
+  _ <- sendUpdatedState state
   state <- getCallbackFromScreen "HOME" state
   case state.action of
     "showCourseInfo" -> do
@@ -33,9 +33,6 @@ showExploreFlow state = do
     "goBack" -> do
       liftEff $ log "showCourseActivityFlow"
       courseActivityFlow state
-    "showCourseInfo" -> do
-      liftEff $ log "showCourseInfoFlow"
-      showCourseInfoFlow state
     _ ->showExploreFlow state
 
 showCourseInfoFlow state = do
@@ -50,7 +47,7 @@ showCourseInfoFlow state = do
     "enrollCourse" -> do
       liftEff $ log "Enroll Course"
       response <- enrollCourse state.reqparams
-      state <- updateState {response: response} state 
+      state <- updateState {response: response} state
       courseActivityFlow state
     _ ->showCourseInfoFlow state
 

@@ -47,7 +47,8 @@ class RecommendedContainer extends View {
         // moduleRating: parseFloat(5 / i)
         moduleUserCount: "50",
         moduleRating: "100",
-        hideRating: this.props.hideRating
+        hideRating: this.props.hideRating,
+        contentId: _this.indexItems[i]["contentId"]
       }
       _this.tmpArr.push(dat)
     }

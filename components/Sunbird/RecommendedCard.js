@@ -21,8 +21,8 @@ class RecommendedCard extends View {
 
 
   handleClick = () =>{
-      console.log("in card",this.props.index)
-      this.props.onClick(this.props.index);
+      console.log("in card",this.props.item.contentId)
+      this.props.onClick(this.props.item.contentId);
   }
 
 
