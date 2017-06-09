@@ -124,6 +124,12 @@ class SearchToolbar extends View {
       id: this.idSet.searchListContainer,
       visibility: "gone"
     })
+    cmd += _this.set({
+      id: _this.idSet.searchHolder,
+      text: "",
+      focusOut:"true",
+      visibility: "gone"
+    })
 
     if(!this.props.hideBack){
       cmd += this.set({
@@ -275,9 +281,12 @@ class SearchToolbar extends View {
     var listData = [];
     var data = this.textData.values;
 
+    var comment;
+
       if(searchText.length != 0){
           for(var i = 0;i<data.length;i++){
             if(data[i].subject.toLowerCase().includes(searchText.toLowerCase())||data[i].comment.toLowerCase().includes(searchText.toLowerCase())){
+              data[i].comment = this.replaceAll(data[i].comment,searchText,"<u>"+searchText+"</u>");
               listData.push(data[i]);
             }
           }
@@ -301,6 +310,11 @@ class SearchToolbar extends View {
       }
 
   }
+
+
+  replaceAll (target,search, replacement) {
+    return target.split(search).join(replacement);
+};
 
 
 

@@ -39,20 +39,20 @@ class ClassListItem extends View {
                         weight="1"
                         padding="16,0,0,0"
                         orientation="vertical">
-                          
+
                       <TextView
                         onClick={item.onMenuItemClick}
-                        text={item.subject}
+                        textFromHtml={item.subject}
                         height="wrap_content"
                         style={window.__TextStyle.textStyle.CARD.HEADING}/>
                       <Space
                         width="0"
                         weight="1" />
                       <TextView
-                        text={item.comment}
+                        textFromHtml={item.comment}
                         height="wrap_content"
                         visibility = {item.comment ? true : false}
-                        style={window.__TextStyle.textStyle.HINT.REGULAR}/>  
+                        style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
                       <Space
                         width="0"
@@ -60,15 +60,15 @@ class ClassListItem extends View {
 
                   </LinearLayout>
 
-                  {this.getMenuItems(item,index)}    
+                  {this.getMenuItems(item,index)}
 
               </LinearLayout>
               <LinearLayout
                 visibility={this.props.lineSeparator == "true" ?"visible":"gone"}
                 width="match_parent"
                 background={window.__Colors.PRIMARY_BLACK_22}
-                height="1"/> 
-                
+                height="1"/>
+
         </LinearLayout>)
     })
 
@@ -90,7 +90,7 @@ class ClassListItem extends View {
                         height="20"
                         width="20"
                         margin="0,0,16,0"
-                        imageUrl= {item} 
+                        imageUrl= {item}
                         onClick={()=>{this.handleItemClick(cardNo,index)}}
                         />
                       <Space
@@ -103,9 +103,9 @@ class ClassListItem extends View {
     return (
             <LinearLayout
             width="wrap_content"
-            height="wrap_content">  
+            height="wrap_content">
             {layout}
-            </LinearLayout>   
+            </LinearLayout>
       )
   }
 
@@ -132,7 +132,7 @@ class ClassListItem extends View {
 
           </LinearLayout>
       </ScrollView>
-                    		          	
+
        </LinearLayout>
 
 
@@ -142,6 +142,3 @@ class ClassListItem extends View {
   }
 }
 module.exports = ClassListItem;
-
-
-
