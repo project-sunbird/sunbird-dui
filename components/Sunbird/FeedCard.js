@@ -4,7 +4,6 @@ var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout
 
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 var RatingBar = require('@juspay/mystique-backend').androidViews.RatingBar;
-var $ = require('jquery');
 window.R = require("ramda");
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
@@ -49,7 +48,7 @@ class FeedCard extends View {
                 <ImageView
                 width="50"
                 height="50"
-                circularImageUrl={this.feedData.imageUrl}
+                circularImageUrl={"100," + this.feedData.imageUrl}
                 />
 
                 <LinearLayout

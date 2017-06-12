@@ -1,6 +1,7 @@
 var dom = require("@juspay/mystique-backend").doms.android;
 var Connector = require("@juspay/mystique-backend").connector;
 var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
+var RelativeLayout = require("@juspay/mystique-backend").androidViews.RelativeLayout;
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 var HorizontalScrollView = require("@juspay/mystique-backend").androidViews.HorizontalScrollView;
 var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
@@ -8,37 +9,24 @@ var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
-var FeedComponent = require('./FeedComponent');
-var CommunityEventsContainer = require('./CommunityEventsContainer');
+var CommunityDescription = require('./CommunityDescription');
+var CommunityDefault = require('./CommunityDefault');
 
 var SearchToolbar = require('../Sunbird/SearchToolbar');
 var _this;
-class CommunityUserMode extends View {
+class CommunityComponent extends View {
   constructor(props, children) {
     super(props, children);
 
     this.props.appendText = this.props.appendText || "";
     this.setIds([
-      'feedContainer'
+      'defaultContainer',
+      'descContainer',
+      'arrow'
     ]);
 
-    this.feedData=[
-      {
-      	answerTitle : "Answer written in Chemistry",
-      	question : "This is a 2-liner question in place. Can you tell which kind is it?",
-      	answer : "Lorem Ipsum is simply dummy text of the printing and typesetting industry."+
-         "Lorem Ipsum has been the industry's "+
-        "standard dummy text ever since the 1500s, when an unknown printer took a galley"+
-        "I will write after this. This is the 2nd paragraph, which can lead to a long answer like it is… $#More#$",
-      	imageUrl : "http://www.mens-hairstylists.com/wp-content/uploads/2015/10/Faux-Hawk-hairstyles-for-boys.jpg",
-      	profileName : "Phani Bhushan Banerjee",
-      	subject : "Level III Chemistry",
-      	time : "23h ago",
-      	votes : "163 votes"
 
-      }]
-
-
+      this.typeCount = 2;
 
     this.menuData = {
       url: [
@@ -51,28 +39,46 @@ class CommunityUserMode extends View {
   afterRender = () => {
   }
 
-  handleMenuClick = (url) =>{
-    console.log("url clicked",url);
-  }
-
-  handleSearch=(data)=>{
-    console.log("searched",data);
-  }
 
   getLogo(){
-    return (<LinearLayout
-              width="wrap_content"
-              height="wrap_content"
-              orientation="horizontal"
-              padding="14,18,14,18"
-              background={window.__Colors.PRIMARY_BLACK_44}>
+        return (<RelativeLayout
+                width="70"
+                gravity="center"
+                height="wrap_content">
 
-                  <ImageView
-                  width="42"
-                  height="32"
-                  imageUrl="ic_action_group"/>
+                <LinearLayout
+                  width="70"
+                  height="70"
+                  gravity="center"
+                  background={window.__Colors.PRIMARY_BLACK_22}>
 
-              </LinearLayout>)
+                      <ImageView
+                      gravity="center"
+                      width="42"
+                      height="32"
+                      imageUrl="ic_action_group"/>
+
+                  </LinearLayout>
+
+                <LinearLayout
+                  width="70"
+                  height="wrap_content"
+                  margin="0,62,0,0"
+                  gravity="center">
+
+                    <TextView
+                    width="wrap_content"
+                    height="wrap_content"
+                    padding="5,2,5,2"
+                    cornerRadius="3"
+                    gravity="center"
+                    background={window.__Colors.PRIMARY_BLACK_66}
+                    text="OPEN"
+                    style={window.__TextStyle.textStyle.SYMBOL.STATUSBAR.LABEL}/>
+
+                  </LinearLayout>
+
+                </RelativeLayout>)
   }
 
   getGroupInfo(){
@@ -108,10 +114,16 @@ class CommunityUserMode extends View {
               gravity="center_horizontal"
               >
                   <ImageView
-                  width="15"
-                  height="15"
+                  width="30"
+                  height="30"
                   margin="0,0,0,33"
-                  imageUrl="ic_action_down"/>
+                  padding="5,5,5,5"
+                  id={this.idSet.arrow}
+                  onClick={()=>{
+                    (this.typeCount %2 ==0 )?  this.handleDownClick("descr"):  this.handleDownClick("norm")
+                    this.typeCount++;
+                  }}
+                  imageUrl="ic_action_arrow_down"/>
 
                   <TextView
                   width="wrap_content"
@@ -122,48 +134,6 @@ class CommunityUserMode extends View {
             )
   }
 
-  getPinnedLabel(){
-    return (<LinearLayout
-             width="match_parent"
-             height="33"
-             gravity="center_vertical"
-             orientation="horizontal">
-                 <LinearLayout
-                 width="match_parent"
-                 height="1"
-                 weight="1"
-                 background={window.__Colors.PRIMARY_BLACK_22}/>
-
-
-                 <LinearLayout
-                 width="match_parent"
-                 height="wrap_content"
-                 gravity="center_vertical"
-                 weight="1">
-
-                     <ImageView
-                     width="13"
-                     height="13"
-                     imageUrl="ic_action_pin"/>
-
-                     <TextView
-                     width="wrap_content"
-                     height="wrap_content"
-                     margin="5,0,0,0"
-                     text= "Pinned by Admin"
-                     style={window.__TextStyle.textStyle.HINT.REGULAR}/>
-
-                 </LinearLayout>
-
-                 <LinearLayout
-                 width="match_parent"
-                 height="1"
-                 weight="1"
-                 background={window.__Colors.PRIMARY_BLACK_22}/>
-
-             </LinearLayout>
-           )
-  }
 
   getHeader(){
       return (<LinearLayout
@@ -199,22 +169,52 @@ class CommunityUserMode extends View {
           </LinearLayout>)
   }
 
-  handleAnswerClick = () =>{
-    console.log("answer clicked")
+  handleDownClick = (type) =>{
+      var cmd = "";
+      if(type == "descr"){
+       cmd = this.set({
+                id: this.idSet.defaultContainer,
+                focusOut:"true",
+                visibility: "gone"
+                });
+            cmd += this.set({
+              id: this.idSet.descContainer,
+              visibility: "visible"
+            })
+            cmd += this.set({
+              id: this.idSet.arrow,
+              imageUrl: "ic_action_arrow_up"
+            })
+      }
+      else{
+        cmd = this.set({
+                  id: this.idSet.defaultContainer,
+                  focusOut:"true",
+                  visibility: "visible"
+                  });
+            cmd += this.set({
+              id: this.idSet.descContainer,
+              visibility: "gone"
+            })
+            cmd += this.set({
+              id: this.idSet.arrow,
+              imageUrl: "ic_action_arrow_down"
+            })
+      }
+
+      Android.runInUI(cmd,null);
   }
 
-  handleVoteClick = () =>{
-    console.log("vote clicked")
+  handleMenuClick = (url) =>{
+    console.log("url clicked",url);
   }
 
-  handleBookmarkClick = () =>{
-    console.log("bookmark clicked")
+  handleSearch=(data)=>{
+    console.log("searched",data);
   }
 
 
   render() {
-
-
     this.layout = (
       <LinearLayout
         root="true"
@@ -244,15 +244,27 @@ class CommunityUserMode extends View {
 
                   {this.getHeader()}
 
-                  {this.getPinnedLabel()}
+                  <LinearLayout
+                  width="match_parent"
+                  height="wrap_content"
+                  orientation="vertical"
+                  visibility="visible"
+                  id={this.idSet.defaultContainer}>
 
-                  <FeedComponent
-                  feedData = {this.feedData}
-                  voteClick = {this.handleVoteClick}
-                  answerClick={this.handleAnswerClick}
-                  bookmarkClick={this.handleBookmarkClick}
-                  />
-                  <CommunityEventsContainer/>
+                  <CommunityDefault/>
+
+                  </LinearLayout>
+
+                  <LinearLayout
+                  width="match_parent"
+                  height="wrap_content"
+                  visibility="gone"
+                  id={this.idSet.descContainer}
+                  orientation="vertical">
+
+                  <CommunityDescription/>
+
+                  </LinearLayout>
 
                 </LinearLayout>
            </ScrollView>
@@ -266,4 +278,4 @@ class CommunityUserMode extends View {
 
 
 
-module.exports = CommunityUserMode;
+module.exports = CommunityComponent;

@@ -11,7 +11,7 @@ exports.eventParams =
           },
           {
             "labelText" : "Course draft",
-            "labelIcon" : "ic_action_graduate",
+            "labelIcon" : "ic_action_gradcap",
             "date" : "Wed Jun 7, 2017",
             "bodyIcon":"ic_action_course_draft",
             "bodyHeading":"Wanted authors to finish course.",

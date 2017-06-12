@@ -16,7 +16,7 @@ var ChooseCourseComponent = require("../components/Sunbird/ChooseCourseComponent
 var ClassRoomHomeComponent = require("../components/Sunbird/ClassRoomHomeComponent")
 var ResourceComponent = require("../components/Sunbird/ResourceComponent")
 var HomeComponent = require('../components/Sunbird/HomeComponent');
-var CommunityUserMode = require('../components/Sunbird/CommunityUserMode');
+var CommunityComponent = require('../components/Sunbird/CommunityComponent');
 var SavedResources = require('../components/Sunbird/SavedResources');
 var ProfileActivityComponent = require('../components/Sunbird/ProfileActivityComponent');
 var ContentLoadingComponent = require('../components/Sunbird/ContentLoadingComponent');
@@ -174,7 +174,7 @@ class HomeScreen extends View {
       switch (index) {
         case 0:
           contentLayout = (
-            <CommunityUserMode/>
+            <CommunityComponent/>
           )
 
           tmp = (

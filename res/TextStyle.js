@@ -20,6 +20,11 @@ exports.textStyle = {
         color: Colors.WHITE,
         textSize: Font.fontSize.FONT_14,
         fontStyle: Font.fontStyle.MEDIUM
+      },
+      LABEL: {
+        color: Colors.WHITE,
+        textSize: Font.fontSize.FONT_8,
+        fontStyle: Font.fontStyle.SEMIBOLD
       }
     },
     KEYBOARD: {

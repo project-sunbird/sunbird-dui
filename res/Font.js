@@ -7,6 +7,7 @@ exports.fontSize = {
   FONT_13: "13",
   FONT_12: "12",
   FONT_10: "10",
+  FONT_8: "8"
 }
 
 exports.opacity = {
