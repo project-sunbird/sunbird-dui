@@ -43,9 +43,6 @@ class FeedComponent extends View {
   }
 
 
-
-
-
   render() {
 
 
@@ -58,14 +55,6 @@ class FeedComponent extends View {
       afterRender={this.afterRender}
       orientation="vertical"
       >
-
-
-        <TextView
-        width="match_parent"
-        height="wrap_content"
-        margin="16,7,0,7"
-        text="Feed"
-        style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
         <LinearLayout
         orientation="vertical"

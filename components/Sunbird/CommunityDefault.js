@@ -18,7 +18,8 @@ class CommunityDefault extends View {
   constructor(props, children) {
     super(props, children);
     this.setIds([
-      'filterCount'
+      'filterCount',
+      'bodyContainer'
     ]);
     _this=this;
 
@@ -98,6 +99,67 @@ class CommunityDefault extends View {
     console.log("bookmark clicked")
   }
 
+  getRestrictedBody(){
+    return (<LinearLayout
+              width="wrap_content"
+              height="match_parent"
+              gravity="center_horizontal"
+              padding="0,100,0,0"
+              orientation="vertical">
+                <ImageView
+                width="36"
+                height="48"
+                gravity="center_horizontal"
+                imageUrl="ic_action_lock"/>
+
+                <TextView
+                width="wrap_content"
+                height="wrap_content"
+                gravity="center_horizontal"
+                text="This is a restricted community."
+                style={window.__TextStyle.textStyle.CARD.BODY.FADED}/>
+
+                <TextView
+                width="wrap_content"
+                height="wrap_content"
+                margin="30,20,30,0"
+                gravity="center_horizontal"
+                textFromHtml ="Send a <b>request to join</b> and the admin will allow you access the content in this community."
+                style={window.__TextStyle.textStyle.CARD.BODY.FADED}/>
+          </LinearLayout>)
+  }
+
+  getDefaultBody(){
+    return (<LinearLayout
+              width="wrap_content"
+              height="match_parent"
+              orientation="vertical">
+
+                  {_this.getPinnedLabel()}
+
+                  <FeedComponent
+                  feedData = {_this.feedData}
+                  voteClick = {_this.handleVoteClick}
+                  answerClick={_this.handleAnswerClick}
+                  bookmarkClick={_this.handleBookmarkClick}
+                  />
+                  <CommunityEventsContainer/>
+
+          </LinearLayout>)
+  }
+
+  afterRender(){
+    var layout;
+      if(_this.props.isRestricted == "true"){
+        layout = _this.getRestrictedBody();
+      }
+      else{
+      layout = _this.getDefaultBody();
+      }
+      _this.replaceChild(_this.idSet.bodyContainer,layout.render(),0);
+
+  }
+
 
 
   render() {
@@ -105,18 +167,15 @@ class CommunityDefault extends View {
                 <LinearLayout
                 width="match_parent"
                 height="wrap_content"
+                gravity="center"
+                afterRender={this.afterRender}
                 orientation="vertical">
 
-                {this.getPinnedLabel()}
-
-                <FeedComponent
-                feedData = {this.feedData}
-                voteClick = {this.handleVoteClick}
-                answerClick={this.handleAnswerClick}
-                bookmarkClick={this.handleBookmarkClick}
-                />
-                <CommunityEventsContainer/>
-
+                <LinearLayout
+                width="match_parent"
+                height="wrap_content"
+                gravity="center_horizontal"
+                id={_this.idSet.bodyContainer}/>
 
               </LinearLayout>
 

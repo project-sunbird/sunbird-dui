@@ -31,6 +31,8 @@ class CommunityComponent extends View {
     this.menuData = {
       url: [
         { imageUrl: "ic_action_notification_blue" },
+        { imageUrl: "ic_action_search" },
+        { imageUrl: "ic_action_overflow"}
       ]
     }
   }
@@ -114,8 +116,8 @@ class CommunityComponent extends View {
               gravity="center_horizontal"
               >
                   <ImageView
-                  width="30"
-                  height="30"
+                  width="25"
+                  height="25"
                   margin="0,0,0,33"
                   padding="5,5,5,5"
                   id={this.idSet.arrow}
@@ -129,7 +131,7 @@ class CommunityComponent extends View {
                   width="wrap_content"
                   height="wrap_content"
                   text="JOIN"
-                  style={window.__TextStyle.textStyle.CLICKABLE.SEMI_BLUE}/>
+                  style={window.__TextStyle.textStyle.CLICKABLE.BLUE_SEMI}/>
               </LinearLayout>
             )
   }
@@ -226,7 +228,6 @@ class CommunityComponent extends View {
           <SearchToolbar
             hint="Enter your search"
             invert="true"
-            hideBack="true"
             onMenuItemClick={this.handleMenuClick}
             menuData={this.menuData}
             onSearch={this.handleSearch}/>
@@ -248,6 +249,7 @@ class CommunityComponent extends View {
                   width="match_parent"
                   height="wrap_content"
                   orientation="vertical"
+                  gravity="center"
                   visibility="visible"
                   id={this.idSet.defaultContainer}>
 

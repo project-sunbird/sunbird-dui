@@ -17,7 +17,7 @@ class AnnouncementCard extends View {
     ]);
 
     _this = this;
-    
+
   }
 
   afterRender(){
@@ -112,7 +112,7 @@ class AnnouncementCard extends View {
               height="wrap_content"
               text={this.props.params.footerTitle}
               gravity="center_vertical"
-              style={window.__TextStyle.textStyle.CLICKABLE.SEMI_BLUE}/>
+              style={window.__TextStyle.textStyle.CLICKABLE.BLUE_SEMI}/>
 
             </LinearLayout>
             )

@@ -105,6 +105,11 @@ exports.textStyle = {
           textSize: Font.fontSize.FONT_14,
           fontStyle: Font.fontStyle.REGULAR
         }
+      },
+      FADED: {
+        color: Colors.DARK_GRAY,
+        textSize: Font.fontSize.FONT_14,
+        fontStyle: Font.fontStyle.REGULAR
       }
     },
     ACTION: {

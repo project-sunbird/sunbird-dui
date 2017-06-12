@@ -6,12 +6,8 @@ var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var EditText = require("@juspay/mystique-backend").androidViews.EditText;
 var Space = require("@juspay/mystique-backend").androidViews.Space;
 var ClassListItem = require('./ClassListItem');
-
 var debounce = require("debounce");
-
 var Styles = require("../../res/Styles");
-// TODO : NEED TO FIX THIS
-//let IconStyle =  window.__Styles.Params.IconStyle;
 let IconStyle = Styles.Params.IconStyle;
 var _this;
 
@@ -30,7 +26,6 @@ class SearchToolbar extends View {
     ])
 
     _this = this;
-
 
     this.searchText = debounce(this.searchText, 200);
     this.isSearchEnabled = this.props.startWithSearch ? this.props.startWithSearch : false;
@@ -59,10 +54,6 @@ class SearchToolbar extends View {
 
     cmd += this.set({
       id: this.idSet.titleTextHolder,
-      visibility: "gone"
-    })
-    cmd += this.set({
-      id: this.idSet.searchIconHolder,
       visibility: "gone"
     })
     cmd += this.set({
@@ -110,10 +101,6 @@ class SearchToolbar extends View {
       visibility: "gone"
     })
     cmd += this.set({
-      id: this.idSet.searchIconHolder,
-      visibility: "visible"
-    })
-    cmd += this.set({
       id: this.idSet.titleTextHolder,
       visibility: "visible"
     })
@@ -151,8 +138,6 @@ class SearchToolbar extends View {
 
   clearSearch(){
     var cmd = "";
-    console.log("clearSearch")
-
     cmd += _this.set({
       id: _this.idSet.searchHolder,
       text: "",
@@ -167,12 +152,6 @@ class SearchToolbar extends View {
     return (<LinearLayout
             height="match_parent"
             gravity="center_vertical">
-              <ImageView
-                id={this.idSet.searchIconHolder}
-                style = {IconStyle}
-                onClick = {this.handleSearchClick}
-                visibility={this.isSearchEnabled?"gone":"visible"}
-                imageUrl = {"ic_action_search"}/>
 
               <ImageView
                 id={this.idSet.searchCloseHolder}
@@ -264,6 +243,9 @@ class SearchToolbar extends View {
 
   handleMenuClick = (url) => {
     this.props.onMenuItemClick(url);
+    if(url="ic_action_search"){
+      this.handleSearchClick();
+    }
   }
 
   handleBackPress = () =>{
@@ -281,12 +263,12 @@ class SearchToolbar extends View {
     var temp = [];
     var totalJson={};
     var color= '<p style= \"color:red;\">';
+    console.log("color",color);
 
     data = this.textData.values;
 
       if(searchText.length != 0){
           for(var i = 0;i<data.length;i++){
-
             if(data[i].subject.toLowerCase().includes(searchText.toLowerCase())||data[i].comment.toLowerCase().includes(searchText.toLowerCase())){
             temp["subject"]= this.replaceAll(data[i].subject,searchText,"<u>"+searchText+"</u>");
             temp["comment"]= this.replaceAll(data[i].comment,searchText,"<u>"+searchText+"</u>");
@@ -297,7 +279,6 @@ class SearchToolbar extends View {
             temp = [];
             }
           }
-
           totalJson["type"] = this.textData.type;
           totalJson["values"] = listData;
           var layout = (<LinearLayout
@@ -317,8 +298,7 @@ class SearchToolbar extends View {
 
   replaceAll (target,search, replacement) {
     return target.split(search).join(replacement);
-};
-
+  };
 
 
   render() {
@@ -350,10 +330,8 @@ class SearchToolbar extends View {
         background={this.props.invert?window.__Colors.WHITE:window.__Colors.LIGHT_VIOLET}
         width="match_parent" >
 
-
           {back}
           {searchBack}
-
           {title}
 
           <Space width="0" weight="1"/>

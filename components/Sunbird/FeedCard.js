@@ -208,8 +208,6 @@ class FeedCard extends View {
               orientation="vertical"/>
 
           </LinearLayout>)
-(??)              
-(??)    }
 
     }
 
