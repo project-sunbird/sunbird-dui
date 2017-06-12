@@ -42,9 +42,12 @@ class FeedComponent extends View {
 
   }
 
+<<<<<<< HEAD
+=======
 
 
 
+>>>>>>> resourceApi
 
   render() {
 
@@ -52,13 +55,14 @@ class FeedComponent extends View {
     this.layout = (
 
       <LinearLayout
-      width="360"
+      width="match_parent"
       height="wrap_content"
-      margin = "0,0,0,0"
       afterRender={this.afterRender}
       orientation="vertical"
       >
 
+<<<<<<< HEAD
+=======
 
         <TextView
         width="match_parent"
@@ -67,6 +71,7 @@ class FeedComponent extends View {
         text="Feed"
         style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
+>>>>>>> resourceApi
         <LinearLayout
         orientation="vertical"
         width="match_parent"

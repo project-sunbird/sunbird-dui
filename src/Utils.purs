@@ -128,7 +128,13 @@ postExploreData req regTokens=
 getUserCourses userId =
   let requestUrl = "/v1/user/courses/" <> userId
       headers = (generateRequestHeaders) in
-  ExceptT $ attempt $ (get requestUrl headers)  
+  ExceptT $ attempt $ (get requestUrl headers) 
+
+getResourcePage userId =
+  let requestUrl = "/v1/page/assemble/resources.explore/org.sunbird.mobile" 
+      headers = (generateRequestHeaders)
+      payload = A.fromObject (StrMap.fromFoldable [(Tuple "request" (A.fromObject (StrMap.fromFoldable [(Tuple "context" (A.fromObject (StrMap.fromFoldable [(Tuple "userId" (A.fromString userId))])))]) ))]) in
+  ExceptT $ attempt $ ((post requestUrl headers payload))   
 
 
 getExceptT value = ExceptT $ pure $ Right value

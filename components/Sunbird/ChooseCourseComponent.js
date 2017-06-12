@@ -32,12 +32,18 @@ class ChooseCourseComponent extends View {
 
     console.log("\n\n\nGOT IN COMPONENT ", this.screenName);
 
-    if (this.props.response == undefined) {
-      this.serverData = "TESTING";
-      console.log("UNDEFINED RESPONSE FROM STATE");
+    if (this.props.response != undefined) {
+      var tmp = this.props.response;
+      tmp = tmp.replace(/\\/g, '');
+      tmp = tmp.replace(/"{/g, '{');
+      tmp = tmp.replace(/}"/g, '}');
+      //tmp = tmp.substring(1, tmp.length - 1);
+      var response = JSON.parse(tmp)
+      this.serverData = response.result.courses;
+      console.log("[CHOOSE_COURSE]\t\tGOT courses :", this.serverData)
     } else {
-      this.serverData = this.props.response.status[1];
-      console.log("GOT RESPONSE FROM PROPS",this.serverData);
+      this.serverData = [];
+      console.log("EMPTY BODY")
     }
 
   }
@@ -48,30 +54,26 @@ class ChooseCourseComponent extends View {
 
   handleItemSelect = (data) => {
     console.log("window.__runDuiCallback( --->showCourseInfo)");
-    window.__runDuiCallback({ action: "showCourseInfo", type: "completed" });
+    var eventAction = { action: "showCourseInfo", type: "completed", values: data };
+    this.state = window.__ObjectAssign({}, this.state, eventAction);
+    window.__runDuiCallback(this.state);
   }
 
   handleExploreClick = () => {
     console.log("explore clicked");
-    var req={
-    "request": {
-      "context": {
-        "userId": "user1"
+    var req = {
+      "request": {
+        "context": {
+          "userId": "user1"
+        }
       }
     }
-  }
-    window.__runDuiCallback({ action: "showExplore" , req: req});
+    window.__runDuiCallback({ action: "showExplore", req: req });
   }
 
-  render() {
-    this.layout = (
-      <LinearLayout
-        root="true"
-        orientation="vertical"
-        width="match_parent"
-        height="match_parent">
 
-        <AppBarLayout
+  getToolbar = () => {
+    return (<AppBarLayout
           height="170"
           width="match_parent"
           padding="16,16,16,16"
@@ -85,25 +87,22 @@ class ChooseCourseComponent extends View {
             width="match_parent"
             height="wrap_content"
             margin="2,24,24,0"
+            onClick={this.handleExploreClick}
             >
-            <Space
-              width="0"
-              weight="1"/>
-          <ImageView
+              <Space
+                width="0"
+                weight="1"/>
+              <ImageView
                 height="18"
                 width="18"
-                
                 imageUrl= "ic_explore"
-                onClick={this.handleExploreClick}
-              />
-
-                  <TextView
-                    text="Explore"
-                    height="wrap_content"
-                    margin="4,0,0,0"
-                    style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
-                    onClick={this.handleExploreClick}
-                    />
+                />
+              <TextView
+                text="Explore"
+                height="wrap_content"
+                margin="4,0,0,0"
+                style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
+                />
           </LinearLayout>
           </LinearLayout>
                   <TextView
@@ -113,7 +112,18 @@ class ChooseCourseComponent extends View {
                     style={window.__TextStyle.textStyle.HEADING.LIGHT}/>
 
 
-           </AppBarLayout>
+           </AppBarLayout>)
+  }
+
+  render() {
+    this.layout = (
+      <LinearLayout
+        root="true"
+        orientation="vertical"
+        width="match_parent"
+        height="match_parent">
+
+        {this.getToolbar()}
 
         <ScrollView
           height="match_parent"

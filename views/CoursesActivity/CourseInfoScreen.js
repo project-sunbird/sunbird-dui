@@ -37,8 +37,10 @@ class CourseInfoScreen extends View {
     }
 
     this.data = {
-      courseName: "Arithematic-Advanced",
-      courseDesc: "This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced",
+      courseName: this.state.values.courseName,
+      courseDesc: this.state.values.courseDesc || "This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced",
+      competedCount: this.state.values.competedCount,
+      totalCount: "150",
       courseBrief: [{
         count: "50",
         type: "Assignments"
@@ -147,6 +149,7 @@ class CourseInfoScreen extends View {
                 <CourseProgress
                     height="wrap_content"
                     width="wrap_content"
+                    content={this.data}
                     onResumeClick={this.handleCourseResume}/>
 
                  <CourseCurriculum

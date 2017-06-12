@@ -25,33 +25,43 @@ class RecommendedContainer extends View {
     // this.indexItems = this.props.recommendedData;
     // this.tmpArr = [];
     // this.imageUrls = this.props.recommendedimageUrls;
-    this.indexItems = this.props.recommendedData.data;
+    // this.indexItems = this.props.recommendedData.data;
+    this.indexItems = this.props.Data.course;
     this.tmpArr = [];
     var _this = this;
     for (var i = 0; i < this.indexItems.length; i++) {
 
       var dat = {
+        // moduleBackground: (i % 2 == 0 ? "#22007aff" : "#229012FE"),
+        // moduleName: _this.indexItems[i]["name"],
+        // moduleImage: _this.indexItems[i]["imageUrl"],
+        // // moduleUserCount: (i * 100 + (-1) * 4 * i + i),
+        // // moduleRating: parseFloat(5 / i)
+        // moduleUserCount: _this.indexItems[i]["count"],
+        // moduleRating: _this.indexItems[i]["rating"],
+        // hideRating: this.props.hideRating
         moduleBackground: (i % 2 == 0 ? "#22007aff" : "#229012FE"),
         moduleName: _this.indexItems[i]["name"],
-        moduleImage: _this.indexItems[i]["imageUrl"],
+        moduleImage: _this.indexItems[i]["appIcon"],
         // moduleUserCount: (i * 100 + (-1) * 4 * i + i),
         // moduleRating: parseFloat(5 / i)
-        moduleUserCount: _this.indexItems[i]["count"],
-        moduleRating: _this.indexItems[i]["rating"],
-        hideRating: this.props.hideRating
+        moduleUserCount: "50",
+        moduleRating: "100",
+        hideRating: this.props.hideRating,
+        contentId: _this.indexItems[i]["contentId"]
       }
       _this.tmpArr.push(dat)
     }
     var cards = this.tmpArr.map((item, i) => {
       return (
-        <RecommendedCard 
-          item={item} 
-          index={i} 
+        <RecommendedCard
+          item={item}
+          index={i}
           onClick={this.handleIndexMenu} />)
     });
 
-    var renderItem = (<LinearLayout 
-                        height="match_parent" 
+    var renderItem = (<LinearLayout
+                        height="match_parent"
                         root="true"
                         padding="0,16,16,20"
                         orientation="horizontal"
@@ -83,15 +93,15 @@ class RecommendedContainer extends View {
               margin = "0,0,0,0"
               >
 
-          <TextView 
+          <TextView
           margin="16,16,16,16"
           style={window.__TextStyle.textStyle.CARD.TITLE.DARK}
-          text={this.props.recommendedData.title}/>
-          <Space 
+          text={this.props.Data.display.title.en}/>
+          <Space
             width="0"
             weight="1"
           />
-          <TextView 
+          <TextView
           margin="16,16,16,16"
           style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}
           text="View All"/>
@@ -111,8 +121,8 @@ class RecommendedContainer extends View {
                 >
               </LinearLayout>
           </HorizontalScrollView>
-                        
-                    
+
+
        </LinearLayout>
 
 

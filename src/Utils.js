@@ -147,16 +147,13 @@ exports["callAPI'"] = function(success) {
         return function(data) {
           return function(headers) {
             console.log("------------------------> REQUEST AT URL :", url)
-            console.log("Headers are ", headers);
             headers = headers.map(function(header) {
               var hdr = {};
               hdr[header.value0] = header.value1;
               return hdr;
             });
-            console.log("Headers are ", headers);
-            console.log("Response", arguments)
+            console.log("RESPONSE FROM android :", JSON.parse(arguments[1] || "{}"))
             var callback = callbackMapper.map(function(params) {
-              console.log("Response from android", params)
               if (arguments && arguments[0].length >= 3) {
                 success({
                   status: arguments[0],

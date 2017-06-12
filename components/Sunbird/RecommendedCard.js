@@ -21,8 +21,8 @@ class RecommendedCard extends View {
 
 
   handleClick = () =>{
-      console.log("in card",this.props.index)
-      this.props.onClick(this.props.index);
+      console.log("in card",this.props.item.contentId)
+      this.props.onClick(this.props.item.contentId);
   }
 
 
@@ -69,7 +69,7 @@ class RecommendedCard extends View {
                 <TextView
                 text= {this.props.item.moduleName ? this.props.item.moduleName : "Module Name"}
                 style={window.__TextStyle.textStyle.HINT.WBOLD}
-                
+
 
                 />
            </LinearLayout>
@@ -81,12 +81,12 @@ class RecommendedCard extends View {
             gravity="center"
             visibility = {this.props.item.hideRating}
             padding="6,0,6,0">
-            <RatingBar 
-              id = {this.idSet.ratingBar} 
+            <RatingBar
+              id = {this.idSet.ratingBar}
               width="0"
               weight="1"
               height="50"
-              setStars = "6" 
+              setStars = "6"
               setRating = {this.props.item.moduleRating}
               scaleX="0.3"
               scaleY="0.3"
@@ -94,13 +94,13 @@ class RecommendedCard extends View {
               fixedRating = {"true"}/>
             <TextView
                   text= {"("}
-                  style={window.__TextStyle.textStyle.HINT.REGULAR}/> 
+                  style={window.__TextStyle.textStyle.HINT.REGULAR}/>
             <TextView
                   text= {this.props.item.moduleUserCount ? this.props.item.moduleUserCount : "NIL"}
                   style={window.__TextStyle.textStyle.HINT.REGULAR}/>
             <TextView
                   text= {")"}
-                  style={window.__TextStyle.textStyle.HINT.REGULAR}/>             
+                  style={window.__TextStyle.textStyle.HINT.REGULAR}/>
           </LinearLayout>)
   }
 

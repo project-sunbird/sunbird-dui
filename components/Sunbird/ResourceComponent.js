@@ -58,46 +58,53 @@ class ResourceComponent extends View {
     }]
 
     this.recommendedData = {
-        title: "Text Books",
-        data: [
-      {
+      title: "Text Books",
+      data: [{
         name: "Organic Chemistry for Standard VII",
         imageUrl: "http://sr.photos3.fotosearch.com/bthumb/RBL/RBL007/b00663.jpg",
         count: 55,
         rating: 5
-      },
-      {
+      }, {
         name: "Molecular Reactions for Beginners",
         imageUrl: "http://photos.gograph.com/thumbs/CSP/CSP446/k17526632.jpg",
         count: 25,
         rating: 5
-      },
-      {
+      }, {
         name: "Intermediate Metallurgy",
         imageUrl: "http://sr.photos2.fotosearch.com/bthumb/AGE/AGE063/b20-1458802.jpg",
         count: 65,
         rating: 5
-      },
-      {
+      }, {
         name: "Organic Chemistry for Standard VII",
         imageUrl: "http://sr.photos3.fotosearch.com/bthumb/RBL/RBL007/b00663.jpg",
         count: 55,
         rating: 5
-      },
-      {
+      }, {
         name: "Molecular Reactions for Beginners",
         imageUrl: "http://photos.gograph.com/thumbs/CSP/CSP446/k17526632.jpg",
         count: 25,
         rating: 5
-      },
-      {
+      }, {
         name: "Intermediate Metallurgy",
         imageUrl: "http://sr.photos2.fotosearch.com/bthumb/AGE/AGE063/b20-1458802.jpg",
         count: 65,
         rating: 5
-      } 
-    ]
-  }
+      }]
+    }
+
+    if (this.props.response != undefined) {
+      var tmp = this.props.response;
+      tmp = tmp.replace(/\\/g, '');
+      tmp = tmp.replace(/"{/g, '{');
+      tmp = tmp.replace(/}"/g, '}');
+      //tmp = tmp.substring(1, tmp.length - 1);
+      console.log("THIS IS WHAT WE HAVE ", tmp)
+      var response = JSON.parse(tmp)
+      this.sectionData = response.result.sections;
+      console.log("GOT SECTION DATA :", this.sectionData)
+    } else {
+      console.log("EMPTY BODY")
+    }
 
 
   }
@@ -141,29 +148,28 @@ class ResourceComponent extends View {
   }
 
   handleModuleClick = (index) => {
-    console.log("IN INDEX ",index)
+    console.log("IN INDEX ", index)
     this.state = R.merge(this.state, { event: 'showClassroomContet' })
     window.__runDuiCallback({ action: "showClassroomContet" });
   }
 
-  handleMenuClick = (url) =>{
-    if(url=="ic_action_filter")
-    {
+  handleMenuClick = (url) => {
+    if (url == "ic_action_filter") {
       let cmd = _this.set({
-          id: _this.idSet.parentContainer,
-          visibility: "gone"
+        id: _this.idSet.parentContainer,
+        visibility: "gone"
       });
       cmd += _this.set({
-          id: _this.idSet.filterContainer,
-          visibility: "visible"
+        id: _this.idSet.filterContainer,
+        visibility: "visible"
       });
 
       Android.runInUI(cmd, null);
     }
   }
 
-  handleSearch=(data)=>{
-    console.log("searched",data);
+  handleSearch = (data) => {
+    console.log("searched", data);
   }
 
 
@@ -235,18 +241,18 @@ class ResourceComponent extends View {
         </LinearLayout>)
   }
 
-  handleFilterBackPress=()=>{
+  handleFilterBackPress = () => {
 
     let cmd = _this.set({
-          id: _this.idSet.parentContainer,
-          visibility: "visible"
-      });
-      cmd += _this.set({
-          id: _this.idSet.filterContainer,
-          visibility: "gone"
-      });
+      id: _this.idSet.parentContainer,
+      visibility: "visible"
+    });
+    cmd += _this.set({
+      id: _this.idSet.filterContainer,
+      visibility: "gone"
+    });
 
-      Android.runInUI(cmd, null);
+    Android.runInUI(cmd, null);
 
   }
 

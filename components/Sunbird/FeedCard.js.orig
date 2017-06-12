@@ -28,16 +28,15 @@ class FeedCard extends View {
     ]);
 
     _this = this;
-    this.answer= "";
+    this.answer = "";
     this.feedData = this.props.feedData;
   }
 
-  afterRender(){
-  }
+  afterRender() {}
 
 
-  getProfileLabel = () =>{
-      return (<LinearLayout
+  getProfileLabel = () => {
+    return (<LinearLayout
               width="match_parent"
               height="wrap_content"
               orientation="horizontal"
@@ -107,7 +106,7 @@ class FeedCard extends View {
   }
 
 
-  answerUnclicked = () =>{
+  answerUnclicked = () => {
     return (<LinearLayout
             width="wrap_content"
             height="wrap_content"
@@ -149,12 +148,12 @@ class FeedCard extends View {
 
 
             </LinearLayout>)
-    }
+  }
 
 
 
 
-    answerClicked = () =>{
+  answerClicked = () => {
     return (<LinearLayout
             width="wrap_content"
             height="wrap_content"
@@ -191,12 +190,12 @@ class FeedCard extends View {
             imageUrl = {"ic_action_close"}/>
 
             </LinearLayout>)
-    }
+  }
 
 
-    getAnswers(data){
-      return (
-          <LinearLayout
+  getAnswers(data) {
+    return (
+      <LinearLayout
             width="match_parent"
             height="wrap_content"
             orientation="vertical">
@@ -208,9 +207,8 @@ class FeedCard extends View {
               orientation="vertical"/>
 
           </LinearLayout>)
-(??)              
-(??)    }
 
+<<<<<<< HEAD
     }
 
 
@@ -250,6 +248,47 @@ class FeedCard extends View {
 
 
   getFooter = () =>{
+=======
+  }
+
+
+
+  handleAnswerOpen() {
+    var cmd = "";
+    cmd += this.set({
+      id: this.idSet.answerUnclicked,
+      visibility: "gone"
+    })
+    cmd += this.set({
+      id: this.idSet.answerClicked,
+      visibility: "visible"
+    })
+
+    Android.runInUI(cmd, 0);
+  }
+
+  handleAnswerClose() {
+    var cmd = "";
+    cmd += _this.set({
+      id: _this.idSet.answerUnclicked,
+      visibility: "visible"
+    })
+    cmd += _this.set({
+      id: _this.idSet.answerClicked,
+      visibility: "gone"
+    })
+
+    Android.runInUI(cmd, 0);
+  }
+
+  handleAnswerSubmit() {
+    _this.replaceChild(_this.idSet.answersContainer, _this.getAnswers(_this.answer).render(), null);
+  }
+
+
+
+  getFooter = () => {
+>>>>>>> resourceApi
     return (<LinearLayout
               width="match_parent"
               height="wrap_content"
@@ -265,7 +304,7 @@ class FeedCard extends View {
             </LinearLayout>);
   }
 
-  getBody = () =>{
+  getBody = () => {
     return (<LinearLayout
           width="match_parent"
           height="wrap_content"
@@ -321,11 +360,7 @@ class FeedCard extends View {
                 margin="0,18,0,0"
                 spanText={this.feedData.answer}
                 style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>
-             <LinearLayout
-             width="match_parent"
-             height="1"
-             background={window.__Colors.PRIMARY_BLACK_66}/>
-
+            
              <LinearLayout
              id={this.idSet.answersContainer}
              width="match_parent"
@@ -338,16 +373,16 @@ class FeedCard extends View {
         </LinearLayout>);
   }
 
-  handleVoteClick = () =>{
+  handleVoteClick = () => {
     this.props.voteClick();
   }
 
-  handleAnswerClick = () =>{
+  handleAnswerClick = () => {
     // this.props.answerClick();
     this.handleAnswerOpen();
   }
 
-  handleBookmarkClick = () =>{
+  handleBookmarkClick = () => {
     this.props.bookmarkClick();
   }
 

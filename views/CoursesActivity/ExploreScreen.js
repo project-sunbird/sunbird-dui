@@ -24,98 +24,77 @@ class ExploreScreen extends View {
     this.state = state;
     this.screenName = "EXPLORE_SCREEN"
     console.log("-------------------------------------------> Explore ");
-    this.responseData = state.response.status;
-    console.log("responsedata",this.responseData[1]);
-    
+    // this.responseData = state.response;
+    // this.responseData = this.responseData.replace(/\\/g, '');
+    // this.responseData = this.responseData.replace(/"{/g, '{');
+    // this.responseData = this.responseData.replace(/}"/g, '}');
+
+    // console.log("responsedata",JSON.parse(this.responseData));
+
+    if (state.response.status[1] != undefined) {
+      var tmp = state.response.status[1];
+      tmp = tmp.replace(/\\/g, '');
+      tmp = tmp.replace(/"{/g, '{');
+      tmp = tmp.replace(/}"/g, '}');
+      //tmp = tmp.substring(1, tmp.length - 1);
+      var response = JSON.parse(tmp)
+      this.popularServerData = response.result.page.sections[0];
+      this.recommendedServerData = response.result.page.sections[1];
+
+      console.log(this.popularServerData,this.recommendedServerData);
+    } else {
+      this.serverData = [];
+      console.log("EMPTY BODY")
+    }
+
     this.menuData = {
       url: [
         { imageUrl: "ic_action_notification_blue" },
         { imageUrl: "ic_action_search" }
       ]
     }
-    
-    this.recommendedData = {
-        title: "New",
-        data: [
-      {
-        name: "Organic Chemistry for Standard VII",
-        imageUrl: "http://sr.photos3.fotosearch.com/bthumb/RBL/RBL007/b00663.jpg",
-        count: 55,
-        rating: 5
-      },
-      {
-        name: "Molecular Reactions for Beginners",
-        imageUrl: "http://photos.gograph.com/thumbs/CSP/CSP446/k17526632.jpg",
-        count: 25,
-        rating: 5
-      },
-      {
-        name: "Intermediate Metallurgy",
-        imageUrl: "http://sr.photos2.fotosearch.com/bthumb/AGE/AGE063/b20-1458802.jpg",
-        count: 65,
-        rating: 5
-      },
-      {
-        name: "Organic Chemistry for Standard VII",
-        imageUrl: "http://sr.photos3.fotosearch.com/bthumb/RBL/RBL007/b00663.jpg",
-        count: 55,
-        rating: 5
-      },
-      {
-        name: "Molecular Reactions for Beginners",
-        imageUrl: "http://photos.gograph.com/thumbs/CSP/CSP446/k17526632.jpg",
-        count: 25,
-        rating: 5
-      },
-      {
-        name: "Intermediate Metallurgy",
-        imageUrl: "http://sr.photos2.fotosearch.com/bthumb/AGE/AGE063/b20-1458802.jpg",
-        count: 65,
-        rating: 5
-      } 
-    ]
-  }
-  this.recommendedData1 = {
-        title: "Popular",
-        data: [
-      {
-        name: "Organic Chemistry for Standard VII",
-        imageUrl: "http://sr.photos3.fotosearch.com/bthumb/RBL/RBL007/b00663.jpg",
-        count: 55,
-        rating: 5
-      },
-      {
-        name: "Molecular Reactions for Beginners",
-        imageUrl: "http://photos.gograph.com/thumbs/CSP/CSP446/k17526632.jpg",
-        count: 25,
-        rating: 5
-      },
-      {
-        name: "Intermediate Metallurgy",
-        imageUrl: "http://sr.photos2.fotosearch.com/bthumb/AGE/AGE063/b20-1458802.jpg",
-        count: 65,
-        rating: 5
-      },
-      {
-        name: "Organic Chemistry for Standard VII",
-        imageUrl: "http://sr.photos3.fotosearch.com/bthumb/RBL/RBL007/b00663.jpg",
-        count: 55,
-        rating: 5
-      },
-      {
-        name: "Molecular Reactions for Beginners",
-        imageUrl: "http://photos.gograph.com/thumbs/CSP/CSP446/k17526632.jpg",
-        count: 25,
-        rating: 5
-      },
-      {
-        name: "Intermediate Metallurgy",
-        imageUrl: "http://sr.photos2.fotosearch.com/bthumb/AGE/AGE063/b20-1458802.jpg",
-        count: 65,
-        rating: 5
-      } 
-    ]
-  }
+  //
+  //   this.recommendedData = {
+  //       title: "New",
+  //       data: [
+  //     {
+  //       name: "Organic Chemistry for Standard VII",
+  //       imageUrl: "http://sr.photos3.fotosearch.com/bthumb/RBL/RBL007/b00663.jpg",
+  //       count: 55,
+  //       rating: 5
+  //     },
+  //     {
+  //       name: "Molecular Reactions for Beginners",
+  //       imageUrl: "http://photos.gograph.com/thumbs/CSP/CSP446/k17526632.jpg",
+  //       count: 25,
+  //       rating: 5
+  //     },
+  //     {
+  //       name: "Intermediate Metallurgy",
+  //       imageUrl: "http://sr.photos2.fotosearch.com/bthumb/AGE/AGE063/b20-1458802.jpg",
+  //       count: 65,
+  //       rating: 5
+  //     },
+  //     {
+  //       name: "Organic Chemistry for Standard VII",
+  //       imageUrl: "http://sr.photos3.fotosearch.com/bthumb/RBL/RBL007/b00663.jpg",
+  //       count: 55,
+  //       rating: 5
+  //     },
+  //     {
+  //       name: "Molecular Reactions for Beginners",
+  //       imageUrl: "http://photos.gograph.com/thumbs/CSP/CSP446/k17526632.jpg",
+  //       count: 25,
+  //       rating: 5
+  //     },
+  //     {
+  //       name: "Intermediate Metallurgy",
+  //       imageUrl: "http://sr.photos2.fotosearch.com/bthumb/AGE/AGE063/b20-1458802.jpg",
+  //       count: 65,
+  //       rating: 5
+  //     }
+  //   ]
+  // }
 
 
   this.dummyData = [{
@@ -131,7 +110,7 @@ class ExploreScreen extends View {
     window.__runDuiCallback({ action: "showMainFlow" });
   }
 
-  
+
 
   onPop = () => {
     Android.runInUI(
@@ -140,7 +119,7 @@ class ExploreScreen extends View {
     );
   }
 
-  
+
   afterRender = () => {
 
   }
@@ -227,7 +206,7 @@ class ExploreScreen extends View {
 
                 <RecommendedContainer
                 onClick={this.handleNewClick}
-                recommendedData = {this.recommendedData}
+                Data={this.popularServerData}
                    />
 
                 {
@@ -235,7 +214,7 @@ class ExploreScreen extends View {
                 }
 
                 <RecommendedContainer
-                recommendedData = {this.recommendedData1}
+                Data={this.recommendedServerData}
                    />
               </LinearLayout>
           </ScrollView>
