@@ -26,6 +26,7 @@ class HomeComponent extends View {
     this.menuData = {
       url: [
         { imageUrl: "ic_action_notification_blue" },
+        { imageUrl: "ic_action_search" },
       ]
     }
 

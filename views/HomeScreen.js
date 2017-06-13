@@ -171,7 +171,12 @@ class HomeScreen extends View {
       switch (index) {
         case 0:
           contentLayout = (
-            <CommunityComponent/>
+            <HomeComponent
+                recommendedData={this.recommendedData}
+                recommendedimageUrls={this.recommendedimageUrls}
+                menuData={this.menuData}
+                todoData = {this.todoData}
+                feedData = {this.feedData}/>
           )
 
           tmp = (
@@ -203,10 +208,15 @@ class HomeScreen extends View {
               />)
           break;
         case 3:
-          tmp = (<ContentLoadingComponent
-                    height="match_parent"
-                    width="match_parent">
-                </ContentLoadingComponent>)
+        contentLayout = (
+          <CommunityComponent/>
+        )
+
+        tmp = (
+          <ContentLoadingComponent
+            height="match_parent"
+            width="match_parent"
+            contentLayout={contentLayout}/>)
           break;
 
         default:
@@ -336,10 +346,3 @@ class HomeScreen extends View {
 }
 
 module.exports = Connector(HomeScreen);
-
-// <HomeComponent
-//     recommendedData={this.recommendedData}
-//     recommendedimageUrls={this.recommendedimageUrls}
-//     menuData={this.menuData}
-//     todoData = {this.todoData}
-//     feedData = {this.feedData}/>

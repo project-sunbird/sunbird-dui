@@ -30,7 +30,7 @@ class CommunityComponent extends View {
 
     this.menuData = {
       url: [
-        { imageUrl: "ic_action_notification_blue" },
+        { imageUrl: "ic_action_plus" },
         { imageUrl: "ic_action_search" },
         { imageUrl: "ic_action_overflow"}
       ]
@@ -228,6 +228,7 @@ class CommunityComponent extends View {
           <SearchToolbar
             hint="Enter your search"
             invert="true"
+            title="Maharashtrian Te..."
             onMenuItemClick={this.handleMenuClick}
             menuData={this.menuData}
             onSearch={this.handleSearch}/>
@@ -264,7 +265,7 @@ class CommunityComponent extends View {
                   id={this.idSet.descContainer}
                   orientation="vertical">
 
-                  <CommunityDescription/>
+                  <CommunityDescription type="join"/>
 
                   </LinearLayout>
 

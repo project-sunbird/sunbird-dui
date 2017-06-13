@@ -32,11 +32,11 @@ class SearchToolbar extends View {
     this.textData = {
           type: "Subjects",
           values: [
-            { color: "#10D50000", imageUrl: "ic_action_search", subject: "Dot Structure",comment:"Assignment", logo:["ic_action_completed","ic_action_share"]},
-            { color: "#F0E9FD", imageUrl: "ic_account", subject: "Hybridization",comment:"How to use bond-line structures to perf…", logo:["ic_action_completed","ic_action_share"] },
-            { color: "#10E3C31C", imageUrl: "ic_action_search", subject: "Bond Line Structure",comment:"Quiz", logo:["ic_action_completed","ic_action_share"] },
-            { color: "#10FF9F00", imageUrl: "ic_action_search", subject: "Counting Electrons",comment:"(250 members)", logo:["ic_action_completed","ic_action_share"] },
-            { color: "#10D50000", imageUrl: "ic_action_search", subject: "Dot Structure",comment:"Jawahar Vidya Mandir, Pune", logo:["ic_action_completed","ic_action_share"] },
+            { color: "#10D50000", imageUrl: "ic_action_search", subject: "Dot Structure",comment:"Assignment",logo:[]},
+            { color: "#F0E9FD", imageUrl: "ic_account", subject: "Hybridization",comment:"How to use bond-line structures to perf…", logo:[] },
+            { color: "#10E3C31C", imageUrl: "ic_action_search", subject: "Bond Line Structure",comment:"Quiz", logo:[] },
+            { color: "#10FF9F00", imageUrl: "ic_action_search", subject: "Counting Electrons",comment:"(250 members)", logo:[] },
+            { color: "#10D50000", imageUrl: "ic_action_search", subject: "Dot Structure",comment:"Jawahar Vidya Mandir, Pune", logo:[] },
           ]
         }
 
@@ -194,10 +194,11 @@ class SearchToolbar extends View {
 
           <TextView
             height="match_parent"
-            width="match_parent"
+            width="wrap_content"
             gravity="center_vertical"
+            maxLines="1"
+            ellipsize="end"
             layoutTransition="true"
-            margin="10,0,0,0"
             visibility={this.isSearchEnabled?"gone":"visible"}
             id={this.idSet.titleTextHolder}
             style={window.__TextStyle.textStyle.TOOLBAR.HEADING}
@@ -262,16 +263,14 @@ class SearchToolbar extends View {
     var listData=[];
     var temp = [];
     var totalJson={};
-    var color= '<p style= \"color:red;\">';
-    console.log("color",color);
 
     data = this.textData.values;
 
       if(searchText.length != 0){
           for(var i = 0;i<data.length;i++){
             if(data[i].subject.toLowerCase().includes(searchText.toLowerCase())||data[i].comment.toLowerCase().includes(searchText.toLowerCase())){
-            temp["subject"]= this.replaceAll(data[i].subject,searchText,"<u>"+searchText+"</u>");
-            temp["comment"]= this.replaceAll(data[i].comment,searchText,"<u>"+searchText+"</u>");
+            temp["subject"]= this.replaceAll(data[i].subject,searchText,"<font color='#007AFF'>"+searchText+"</font>");
+            temp["comment"]= this.replaceAll(data[i].comment,searchText,"<font color='#007AFF'>"+searchText+"</font>");
             temp["color"]= data[i].color;
             temp["imageUrl"]=data[i].imageUrl;
             temp["logo"]=data[i].logo;

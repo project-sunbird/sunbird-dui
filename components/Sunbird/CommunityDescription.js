@@ -19,10 +19,28 @@ class CommunityDescription extends View {
     ]);
     _this=this;
 
-    this.data=[
+    this.adminData=[
       {
         "title":"Member List",
         "status":"4 pending approval",
+      },
+      {
+        "title":"Calendar",
+        "status":"14 events",
+      },
+      {
+        "title":"Resources / Files",
+        "status":"12 files",
+      },
+      {
+        "title":"Course drafts",
+        "status":"2 drafts"
+      }
+    ]
+    this.joinData=[
+      {
+        "title":"Member List",
+        "status":"4 members",
       },
       {
         "title":"Calendar",
@@ -42,7 +60,8 @@ class CommunityDescription extends View {
 
 
   getOptions(){
-    var layout = this.data.map((item, index) => {
+    var data = this.props.type == "join" ?this.joinData:this.adminData;
+    var layout = data.map((item, index) => {
                       return(
                         <LinearLayout
                         width="match_parent"

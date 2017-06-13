@@ -20,10 +20,9 @@ class ClassListItem extends View {
                 <LinearLayout
                 width="match_parent"
                 height="wrap_content"
-                padding="16,26,16,0">
+                margin="16,11,16,11">
                 <LinearLayout
-                  width="32"
-                  heigh="32"
+                  padding="10,7,10,7"
                   background={item.color}
                   gravity="center"
                   >
@@ -62,7 +61,9 @@ class ClassListItem extends View {
 
                   {this.getMenuItems(item,index)}
 
+
               </LinearLayout>
+
               <LinearLayout
                 visibility={this.props.lineSeparator == "true" ?"visible":"gone"}
                 width="match_parent"
