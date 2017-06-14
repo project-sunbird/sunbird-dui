@@ -16,6 +16,8 @@ var ChooseCourseComponent = require("../components/Sunbird/ChooseCourseComponent
 var ClassRoomHomeComponent = require("../components/Sunbird/ClassRoomHomeComponent")
 var ResourceComponent = require("../components/Sunbird/ResourceComponent")
 var HomeComponent = require('../components/Sunbird/HomeComponent');
+var CommunityViewallList = require('../components/Sunbird/CommunityViewallList');
+var CommunityInfoComponent = require('../components/Sunbird/CommunityInfoComponent');
 var CommunityComponent = require('../components/Sunbird/CommunityComponent');
 var SavedResources = require('../components/Sunbird/SavedResources');
 var ProfileActivityComponent = require('../components/Sunbird/ProfileActivityComponent');
@@ -346,3 +348,10 @@ class HomeScreen extends View {
 }
 
 module.exports = Connector(HomeScreen);
+//
+// <HomeComponent
+//     recommendedData={this.recommendedData}
+//     recommendedimageUrls={this.recommendedimageUrls}
+//     menuData={this.menuData}
+//     todoData = {this.todoData}
+//     feedData = {this.feedData}/>

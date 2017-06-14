@@ -197,6 +197,7 @@ class SearchToolbar extends View {
             width="wrap_content"
             gravity="center_vertical"
             maxLines="1"
+            margin="16,0,0,0"
             ellipsize="end"
             layoutTransition="true"
             visibility={this.isSearchEnabled?"gone":"visible"}
@@ -244,7 +245,7 @@ class SearchToolbar extends View {
 
   handleMenuClick = (url) => {
     this.props.onMenuItemClick(url);
-    if(url="ic_action_search"){
+    if(url=="ic_action_search"){
       this.handleSearchClick();
     }
   }

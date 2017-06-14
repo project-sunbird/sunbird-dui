@@ -129,7 +129,7 @@ class FeedCard extends View {
                 width="18"
                 height="18"
                 margin="22,0,0,0"
-                onClick={this.handleAnswerClick}
+                onClick={()=>{this.handleAnswerClick()}}
                 imageUrl="ic_action_edit"/>
             <TextView
                 width="wrap_content"
@@ -186,7 +186,7 @@ class FeedCard extends View {
 
             <ImageView
             style={IconStyle}
-            onClick={this.handleAnswerClose}
+            onClick={()=>{this.handleAnswerClose()}}
             visibility={"visible"}
             imageUrl = {"ic_action_close"}/>
 
@@ -319,7 +319,7 @@ class FeedCard extends View {
                 margin="0,18,0,0"
                 spanText={this.feedData.answer}
                 style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>
-                
+
              <LinearLayout
              id={this.idSet.answersContainer}
              width="match_parent"

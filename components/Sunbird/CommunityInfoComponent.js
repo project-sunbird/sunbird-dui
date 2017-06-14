@@ -93,7 +93,7 @@ class CommunityInfoComponent extends View {
                 <TextView
                 width="wrap_content"
                 height="wrap_content"
-                text="Maharashtra Teachers Association"
+                text={this.props.name}
                 margin="0,0,0,8"
                 style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
@@ -211,6 +211,10 @@ class CommunityInfoComponent extends View {
     console.log("url clicked",url);
   }
 
+  handleBackPress=()=>{
+    this.props.onBackPress();    
+  }
+
   handleSearch=(data)=>{
     console.log("searched",data);
   }
@@ -228,7 +232,8 @@ class CommunityInfoComponent extends View {
           <SearchToolbar
             hint="Enter your search"
             invert="true"
-            title="Maharashtrian Te..."
+            title={this.props.name}
+            onBackPress={this.handleBackPress}
             onMenuItemClick={this.handleMenuClick}
             menuData={this.menuData}
             onSearch={this.handleSearch}/>
