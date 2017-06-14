@@ -284,6 +284,22 @@ class HomeComponent extends View {
                     recommendedData = {this.recommendedData}
                     Data ={this.recommendedServerData}
                    />
+
+                   <LinearLayout
+                   width="match_parent"
+                   height="wrap_content"
+                   background={window.__Colors.WHITE_F2}>
+
+                   <TextView
+                   width="wrap_content"
+                   height="wrap_content"
+                   text="Feed"
+                   padding="16,7,0,7"
+                   style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
+
+
+                   </LinearLayout>
+
                    <FeedComponent
                    feedData = {this.props.feedData}
                    voteClick = {this.handleVoteClick}

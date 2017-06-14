@@ -23,12 +23,22 @@ class FeedComponent extends View {
 
     var cards = this.props.feedData.map((item, i) => {
       return (
+        <LinearLayout
+        width="match_parent"
+        height="wrap_content"
+        orientation="vertical">
         <FeedCard
          feedData={this.props.feedData[i]}
          voteClick = {this.props.handleVoteClick}
          answerClick= {this.props.handleAnswerClick}
          bookmarkClick= {this.props.handleBookmarkClick}
          />
+
+         <LinearLayout
+         width="match_parent"
+         height="6"
+         background={window.__Colors.WHITE_F2}/>
+         </LinearLayout>
       )
     });
     var layout = (<LinearLayout
