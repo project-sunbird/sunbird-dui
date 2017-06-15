@@ -194,10 +194,10 @@ class SearchToolbar extends View {
 
           <TextView
             height="match_parent"
-            width="wrap_content"
+            width="120"
             gravity="center_vertical"
             maxLines="1"
-            margin="16,0,0,0"
+            margin="10,0,0,0"
             ellipsize="end"
             layoutTransition="true"
             visibility={this.isSearchEnabled?"gone":"visible"}

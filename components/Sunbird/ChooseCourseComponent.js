@@ -24,7 +24,7 @@ class ChooseCourseComponent extends View {
     this.state = state;
 
     this.setIds([
-      "collapsingToolbar",
+      "gradient",
 
     ]);
     this.screenName = "CHOOSE_COURSE"
@@ -49,6 +49,7 @@ class ChooseCourseComponent extends View {
   }
 
   afterRender = () => {
+    JBridge.setGradient(this.idSet.gradient,"#2E61FF","#1908A9");
 
   }
 
@@ -78,6 +79,7 @@ class ChooseCourseComponent extends View {
           width="match_parent"
           padding="16,16,16,16"
           fillViewPort="true"
+          id={this.idSet.gradient}
           background="#2D61FF">
           <LinearLayout
             width="match_parent"
@@ -121,6 +123,7 @@ class ChooseCourseComponent extends View {
         root="true"
         orientation="vertical"
         width="match_parent"
+        afterRender={this.afterRender}
         height="match_parent">
 
         {this.getToolbar()}

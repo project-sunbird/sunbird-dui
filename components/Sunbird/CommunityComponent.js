@@ -24,8 +24,14 @@ class CommunityComponent extends View {
     this.props.appendText = this.props.appendText || "";
     this.setIds([
       "parentContainer",
+      "infoContainer",
+      "viewallContainer"
     ]);
     _this=this;
+
+    this.myCommunitySelected="";
+    this.popularCommunitySelected="";
+    this.recommendedCommunitySelected="";
 
     this.menuData = {
       url: [
@@ -37,14 +43,15 @@ class CommunityComponent extends View {
   }
 
 
-  getParentBody(){
+  parentBody(){
     return (
       <LinearLayout
         orientation="vertical"
         width="match_parent"
+        id={this.idSet.parentContainer}
         height="match_parent">
 
-      <SearchToolbar
+          <SearchToolbar
             hint="Enter your search"
             invert="true"
             hideBack="true"
@@ -87,33 +94,116 @@ class CommunityComponent extends View {
       )
   }
 
+  infoBody(){
+    return (<LinearLayout
+            orientation="vertical"
+            width="match_parent"
+            visibility="gone"
+            id={this.idSet.infoContainer}
+            height="match_parent">
 
+            <CommunityInfoComponent
+             name="Maharashtra"
+             onBackPress={this.handleBackPress}/>
+
+            </LinearLayout>
+          )
+
+  }
+
+  viewAllBody(){
+    return (<LinearLayout
+            orientation="vertical"
+            width="match_parent"
+            visibility="gone"
+            id={this.idSet.viewallContainer}
+            height="match_parent">
+
+            <CommunityViewallList/>
+
+            </LinearLayout>
+          )
+  }
+
+  showInfo(){
+    var cmd = "";
+    cmd += this.set({
+    id: this.idSet.parentContainer,
+    visibility: "gone"
+    })
+    cmd += this.set({
+      id: this.idSet.infoContainer,
+      visibility: "visible"
+    })
+    cmd += this.set({
+      id: this.idSet.viewallContainer,
+      visibility: "gone"
+    })
+
+    Android.runInUI(cmd, 0);
+  }
+
+  showViewAll(){
+    var cmd = "";
+    cmd += this.set({
+    id: this.idSet.parentContainer,
+    visibility: "gone"
+    })
+    cmd += this.set({
+      id: this.idSet.infoContainer,
+      visibility: "gone"
+    })
+    cmd += this.set({
+      id: this.idSet.viewallContainer,
+      visibility: "visible"
+    })
+
+    Android.runInUI(cmd, 0);
+  }
+
+  showParent(){
+    var cmd = "";
+    cmd += this.set({
+    id: this.idSet.parentContainer,
+    visibility: "visible"
+    })
+    cmd += this.set({
+      id: this.idSet.infoContainer,
+      visibility: "gone"
+    })
+    cmd += this.set({
+      id: this.idSet.viewallContainer,
+      visibility: "gone"
+    })
+    Android.runInUI(cmd, 0);
+  }
 
   handleMenuClick = (url) =>{
-    console.log("url clicked",url);
   }
 
-  handleSearch=(data)=>{
-    console.log("searched",data);
+  handleSearch = (data) =>{
   }
-  handleBackPress=()=>{
-    console.log("came to backpress");
+  handleBackPress = () =>{
+    this.showParent();
   }
 
   handleMyCommunityClick=(communityName) =>{
-    var layout= (<CommunityInfoComponent name={communityName} onBackPress={this.handleBackPress}/>)
-    this.replaceChild(this.idSet.parentContainer,layout.render(),null);
+    this.myCommunitySelected=communityName;
+    this.showInfo();
   }
+
   handlePopularCommunityClick=(communityName) =>{
-    var layout= (<CommunityInfoComponent name={communityName} onBackPress={this.handleBackPress}/>)
-    this.replaceChild(this.idSet.parentContainer,layout.render(),null);
+    this.popularCommunitySelected=communityName;
+    this.showInfo();
   }
+
   handleRecommendedCommunityClick=(communityName) =>{
-    var layout= (<CommunityInfoComponent name={communityName} onBackPress={this.handleBackPress}/>)
-    this.replaceChild(this.idSet.parentContainer,layout.render(),null);
+    this.recommendedCommunitySelected=communityName;
+    this.showInfo();
   }
+
   handleMyViewAllClick=()=>{
-    this.replaceChild(this.idSet.parentContainer,(<CommunityViewallList/>).render(),null);
+    this.showViewAll();
   }
 
   getLineSeperator(){
@@ -131,15 +221,17 @@ class CommunityComponent extends View {
 
   render() {
     this.layout = (
+
       <LinearLayout
         root="true"
         orientation="vertical"
         width="match_parent"
         afterRender={this.afterRender}
-        id={this.idSet.parentContainer}
         height="match_parent">
 
-        {this.getParentBody()}
+        {this.parentBody()}
+        {this.infoBody()}
+        {this.viewAllBody()}
 
         </LinearLayout>
     )

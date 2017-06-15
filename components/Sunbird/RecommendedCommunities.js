@@ -22,19 +22,19 @@ class RecommendedCommunities extends View {
         "imageUrl":"https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
         "moduleText":"All India Teachers Association",
         "members":"(250 members)",
-        "lastSeen":"4 unread posts"
+        "posts":"Last active on: 03 May"
       },
       {
         "imageUrl":"https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
         "moduleText":"All India Teachers Association",
         "members":"(250 members)",
-        "lastSeen":"4 unread posts"
+        "posts":"Last active on: 03 May"
       },
       {
         "imageUrl":"https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
         "moduleText":"All India Teachers Association",
         "members":"(250 members)",
-        "lastSeen":"4 unread posts"
+        "posts":"Last active on: 03 May"
       }
     ]
   }
@@ -63,12 +63,13 @@ class RecommendedCommunities extends View {
                         width="200"
                         scaleType="fixXY"
                         gravity="center"
-                        imageFromUrl={item.imageUrl}/>
+                        circularImageUrl={"10,"+item.imageUrl}/>
 
                       <LinearLayout
                         width="200"
                         height="110"
                         gravity="center"
+                        cornerRadius="4"
                         background={window.__Colors.BLACK}
                         alpha="0.50"/>
 

@@ -65,12 +65,13 @@ class MyCommunities extends View {
                         width="200"
                         scaleType="fixXY"
                         gravity="center"
-                        imageFromUrl={item.imageUrl}/>
+                        circularImageUrl={"10,"+item.imageUrl}/>
 
                       <LinearLayout
                         width="200"
                         height="110"
                         gravity="center"
+                        cornerRadius="4"
                         background={window.__Colors.BLACK}
                         alpha="0.50"/>
 
