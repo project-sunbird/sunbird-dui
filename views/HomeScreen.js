@@ -19,6 +19,7 @@ var HomeComponent = require('../components/Sunbird/HomeComponent');
 var CommunityViewallList = require('../components/Sunbird/CommunityViewallList');
 var CommunityInfoComponent = require('../components/Sunbird/CommunityInfoComponent');
 var CommunityComponent = require('../components/Sunbird/CommunityComponent');
+var ProfileComponent = require('../components/Sunbird/ProfileComponent');
 var SavedResources = require('../components/Sunbird/SavedResources');
 var ProfileActivityComponent = require('../components/Sunbird/ProfileActivityComponent');
 var ContentLoadingComponent = require('../components/Sunbird/ContentLoadingComponent');
@@ -212,6 +213,17 @@ class HomeScreen extends View {
         case 3:
         contentLayout = (
           <CommunityComponent/>
+        )
+
+        tmp = (
+          <ContentLoadingComponent
+            height="match_parent"
+            width="match_parent"
+            contentLayout={contentLayout}/>)
+          break;
+        case 4:
+        contentLayout = (
+          <ProfileComponent/>
         )
 
         tmp = (

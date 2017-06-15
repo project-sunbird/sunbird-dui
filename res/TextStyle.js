@@ -100,6 +100,11 @@ exports.textStyle = {
           textSize: Font.fontSize.FONT_14,
           fontStyle: Font.fontStyle.BOLD
         },
+        REGULAR_BLACK:{
+          color: Colors.PRIMARY_BLACK,
+          textSize: Font.fontSize.FONT_14,
+          fontStyle: Font.fontStyle.REGULAR
+        },
         BLUE_R: {
           color: Colors.PRIMARY_ACCENT,
           textSize: Font.fontSize.FONT_14,
