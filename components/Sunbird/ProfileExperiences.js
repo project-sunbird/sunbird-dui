@@ -14,26 +14,23 @@ class ProfileExperiences extends View {
     this.setIds([
 
     ]);
-    _this=this;
+    _this = this;
 
-    this.data=[
-      {
-        "position":"All subjects class teacher",
-        "place":"Balamandir, Vadgaon",
-        "duration":"JUN ’10 - JUL ‘16 (6 YRS)"
-      },
-      {
-        "position":"Chemistry teacher - Std VII & VIII",
-        "place":"Balamandir, Vadgaon",
-        "duration":"JUN ’10 - JUL ‘16 (6 YRS)"
-      }
-    ]
+    this.data = [{
+      "position": "All subjects class teacher",
+      "place": "Balamandir, Vadgaon",
+      "duration": "JUN ’10 - JUL ‘16 (6 YRS)"
+    }, {
+      "position": "Chemistry teacher - Std VII & VIII",
+      "place": "Balamandir, Vadgaon",
+      "duration": "JUN ’10 - JUL ‘16 (6 YRS)"
+    }]
 
   }
 
 
-  getHeader(){
-    return (  <LinearLayout
+  getHeader() {
+    return (<LinearLayout
               width="wrap_content"
               height="wrap_content">
 
@@ -56,8 +53,8 @@ class ProfileExperiences extends View {
               </LinearLayout>)
   }
 
-  getBody(input){
-      return (<LinearLayout
+  getBody(input) {
+    return (<LinearLayout
                 width="wrap_content"
                 height="wrap_content"
                 orientation="vertical"
@@ -85,10 +82,10 @@ class ProfileExperiences extends View {
                 </LinearLayout>)
   }
 
-  experienceBody(){
+  experienceBody() {
 
-    var cards = this.data.map((item,i) => {
-      return ( <LinearLayout
+    var cards = this.data.map((item, i) => {
+      return (<LinearLayout
                 width="wrap_content"
                 height="wrap_content"
                 gravity="center_vertical"
@@ -110,14 +107,24 @@ class ProfileExperiences extends View {
 
   }
 
+  getLineSeperator() {
+    return (<LinearLayout
+            width="match_parent"
+            height="1"
+            margin="0,0,0,24"
+            background={window.__Colors.PRIMARY_BLACK_22}/>)
+  }
+
 
   render() {
-    this.layout= (
-              <LinearLayout
+    this.layout = (
+      <LinearLayout
                 width="wrap_content"
                 height="wrap_content"
                 margin="0,16,0,0"
                 orientation="vertical">
+
+                {this.getLineSeperator()}
 
                 {this.getHeader()}
 

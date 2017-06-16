@@ -15,6 +15,7 @@ var ProfileExperiences = require('../Sunbird/ProfileExperiences');
 var ProfileSkillTags = require('../Sunbird/ProfileSkillTags');
 var ProfileAccomplishments = require('../Sunbird/ProfileAccomplishments');
 var ProfileCreations = require('../Sunbird/ProfileCreations');
+var ProfileBadges = require('../Sunbird/ProfileBadges');
 
 var _this;
 class ProfileComponent extends View {
@@ -25,34 +26,30 @@ class ProfileComponent extends View {
     this.setIds([
 
     ]);
-    _this=this;
+    _this = this;
 
     this.menuData = {
       url: [
         { imageUrl: "ic_action_plus" },
         { imageUrl: "ic_action_notification_blue" },
-        { imageUrl: "ic_action_search"}
+        { imageUrl: "ic_action_search" }
       ]
     }
   }
 
-  handleMenuClick = (url) =>{
-  }
+  handleMenuClick = (url) => {}
 
-  handleSearch = (data) =>{
-  }
+  handleSearch = (data) => {}
 
-  getLineSeperator(){
+  getLineSeperator() {
     return (<LinearLayout
             width="match_parent"
             height="1"
             margin="0,24,0,0"
-            background={window.__Colors.PRIMARY_BLACK_22}/>
-            )
+            background={window.__Colors.PRIMARY_BLACK_22}/>)
   }
 
-  afterRender(){
-  }
+  afterRender() {}
 
 
   render() {
@@ -88,21 +85,17 @@ class ProfileComponent extends View {
 
                 <ProfileHeader/>
 
-                {this.getLineSeperator()}
-
                 <ProfileExperiences/>
-
-                {this.getLineSeperator()}
 
                 <ProfileSkillTags/>
 
-                {this.getLineSeperator()}
 
                 <ProfileAccomplishments/>
 
-                {this.getLineSeperator()}
 
                 <ProfileCreations/>
+
+                <ProfileBadges/>
 
               </LinearLayout>
 

@@ -138,6 +138,8 @@ class ProfileCreations extends View {
                 margin="0,16,0,0"
                 orientation="vertical">
 
+                {this.getLineSeperator()}
+
                 {this.getHeader()}
 
                 <HorizontalScrollView
