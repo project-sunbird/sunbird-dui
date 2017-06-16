@@ -142,7 +142,7 @@ class ProfileBadges extends View {
               <TextView
               width="wrap_content"
               height="wrap_content"
-              text="Accomplishments"
+              text="Badges"
               style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
               <ViewWidget

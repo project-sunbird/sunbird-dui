@@ -17,6 +17,7 @@ class ProfileCreations extends View {
     this.setIds([
 
     ]);
+<<<<<<< HEAD
     _this=this;
     this.data=[
       {
@@ -30,14 +31,23 @@ class ProfileCreations extends View {
         "imageUrl":"https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg"
       }
     ]
+=======
+    _this = this;
+
+>>>>>>> beee9e418a46519e2e74d90d8e846b65f5c02427
 
   }
 
 
+<<<<<<< HEAD
   getHeader = () => {
     return (  <LinearLayout
-              margin="0,0,0,16"
-              width="match_parent"
+              margin="0,0,16,0"
+=======
+  getHeader() {
+    return (<LinearLayout
+>>>>>>> beee9e418a46519e2e74d90d8e846b65f5c02427
+              width="wrap_content"
               height="wrap_content">
 
               <TextView
@@ -129,6 +139,13 @@ class ProfileCreations extends View {
     )
   }
 
+<<<<<<< HEAD
+
+=======
+  ratingChange = () => {
+
+  }
+
   getLineSeperator() {
     return (<LinearLayout
             width="match_parent"
@@ -136,12 +153,13 @@ class ProfileCreations extends View {
             margin="0,0,0,24"
             background={window.__Colors.PRIMARY_BLACK_22}/>)
   }
+>>>>>>> beee9e418a46519e2e74d90d8e846b65f5c02427
 
 
   render() {
-    this.layout= (
-              <LinearLayout
-                margin="0,24,0,0"
+    this.layout = (
+      <LinearLayout
+                margin="0,16,0,0"
                 orientation="vertical">
 
                 {this.getLineSeperator()}

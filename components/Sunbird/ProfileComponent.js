@@ -16,6 +16,7 @@ var ProfileSkillTags = require('../Sunbird/ProfileSkillTags');
 var ProfileAccomplishments = require('../Sunbird/ProfileAccomplishments');
 var ProfileCreations = require('../Sunbird/ProfileCreations');
 var ProfileBadges = require('../Sunbird/ProfileBadges');
+var ProfileAdditionalInfo = require('../Sunbird/ProfileAdditionalInfo');
 
 var _this;
 class ProfileComponent extends View {
@@ -96,6 +97,8 @@ class ProfileComponent extends View {
                 <ProfileCreations/>
 
                 <ProfileBadges/>
+
+                <ProfileAdditionalInfo/>
 
               </LinearLayout>
 
