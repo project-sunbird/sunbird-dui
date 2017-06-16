@@ -11,8 +11,11 @@ class ProfileBadges extends View {
     super(props, children);
 
     this.setIds([
-
+      "badgeContainer",
+      "viewAll"
     ]);
+
+    this.showMore = false;
 
     this.data = [{
       badgeName: "First finisher in 4 courses",
@@ -36,9 +39,9 @@ class ProfileBadges extends View {
 
   }
 
-  getRows(input) {
+  getRows = (input) => {
     var rows = this.data.map((item, i) => {
-      if (i > 1)
+      if (i > 1 && !this.showMore)
         return (<LinearLayout
               width="0"
               height="0"/>);
@@ -66,7 +69,15 @@ class ProfileBadges extends View {
               </LinearLayout>)
     });
 
-    return rows;
+    var dummyRow = (<LinearLayout
+        height="wrap_content"
+        width="match_parent"
+        orientation="vertical">
+
+        {rows}
+
+        </LinearLayout>)
+    return dummyRow;
   }
 
   getBody() {
@@ -74,11 +85,35 @@ class ProfileBadges extends View {
             width="wrap_content"
             height="wrap_content"
             margin="0,24,0,0"
+            root="true"
+            layoutTransition="true"
+            id={this.idSet.badgeContainer}
             orientation="vertical">
 
             {this.getRows()}
 
             </LinearLayout>)
+  }
+
+  handleViewAllClick = () => {
+    this.showMore = !this.showMore;
+    this.replaceChild(this.idSet.badgeContainer, this.getRows().render(), 0);
+
+    var cmd = "";
+    if (this.showMore) {
+      cmd = this.set({
+        id: this.idSet.viewAll,
+        text: "Show Less"
+      })
+    } else {
+      cmd = this.set({
+        id: this.idSet.viewAll,
+        text: "Show More"
+      })
+    }
+
+    Android.runInUI(cmd, 0);
+
   }
 
 
@@ -93,6 +128,8 @@ class ProfileBadges extends View {
               width="wrap_content"
               height="wrap_content"
               text="View All"
+              id={this.idSet.viewAll}
+              onClick={this.handleViewAllClick}
               style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>)
 
   }
@@ -132,12 +169,13 @@ class ProfileBadges extends View {
                 width="wrap_content"
                 height="wrap_content"
                 margin="0,16,0,0"
+                layoutTransition="true"
                 orientation="vertical">
 
                 {this.getLineSeperator()}
 
                 {this.getHeader()}
-                
+
                 {this.getBody()}
 
               </LinearLayout>
