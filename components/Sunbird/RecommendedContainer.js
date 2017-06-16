@@ -26,7 +26,7 @@ class RecommendedContainer extends View {
     // this.tmpArr = [];
     // this.imageUrls = this.props.recommendedimageUrls;
     // this.indexItems = this.props.recommendedData.data;
-    this.indexItems = this.props.Data.course;
+    this.indexItems = this.props.Data.content;
     this.tmpArr = [];
     var _this = this;
     for (var i = 0; i < this.indexItems.length; i++) {
@@ -48,7 +48,8 @@ class RecommendedContainer extends View {
         moduleUserCount: "50",
         moduleRating: "100",
         hideRating: this.props.hideRating,
-        contentId: _this.indexItems[i]["contentId"]
+        contentId: _this.indexItems[i]["contentId"],
+        content: _this.indexItems[i]
       }
       _this.tmpArr.push(dat)
     }

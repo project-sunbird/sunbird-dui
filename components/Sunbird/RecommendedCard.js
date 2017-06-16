@@ -16,13 +16,13 @@ class RecommendedCard extends View {
     this.setIds([
       "ratingBar",
     ]);
-    console.log(this.props.item.hideRating,"rating hidden");
+    console.log(this.props.item.hideRating, "rating hidden");
   }
 
 
-  handleClick = () =>{
-      console.log("in card",this.props.item.contentId)
-      this.props.onClick(this.props.item.contentId);
+  handleClick = () => {
+    console.log("in card", this.props.item.content)
+    this.props.onClick(this.props.item.content);
   }
 
 
@@ -32,7 +32,7 @@ class RecommendedCard extends View {
 
   getCardIcon = () => {
     return (
-            <RelativeLayout
+      <RelativeLayout
               width="wrap_content"
               height="wrap_content"
             >
@@ -109,7 +109,7 @@ class RecommendedCard extends View {
 
 
     this.layout = (
-    <LinearLayout
+      <LinearLayout
         width="wrap_content"
         height="wrap_content"
         orientation = "vertical"
