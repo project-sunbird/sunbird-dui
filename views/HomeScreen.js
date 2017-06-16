@@ -48,7 +48,7 @@ class HomeScreen extends View {
 
     //tab data
     this.screenName = "HOME_SCREEN"
-    this.data = ["HOME", "COURSES", "RESOURCES", "FORUM", "PROFILE"];
+    this.data = ["HOME", "COURSES", "RESOURCES", "COMMUNITY", "PROFILE"];
     this.tabValues = [{
         name: "HOME",
         select: "1",
@@ -62,7 +62,7 @@ class HomeScreen extends View {
         select: "0",
         icon: "ic_notebook"
       }, {
-        name: "FORUM",
+        name: "COMMUNITY",
         select: "0",
         icon: "ic_chat"
       }, {
