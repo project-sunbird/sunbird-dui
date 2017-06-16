@@ -75,6 +75,15 @@ class ProfileCreations extends View {
                 background={window.__Colors.BLACK}
                 alpha="0.50"/>
 
+                <TextView
+                  gravity="center"
+                  width="200"
+                  alignParentRight="true"
+                  height="wrap_content"
+                  padding = "10,10,10,10"
+                  text= "hello world"
+                  style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}/>
+
               <TextView
                 gravity="center"
                 width="150"
