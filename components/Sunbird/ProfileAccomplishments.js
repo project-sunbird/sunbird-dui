@@ -14,24 +14,21 @@ class ProfileAccomplishments extends View {
     this.setIds([
 
     ]);
-    _this=this;
+    _this = this;
 
-    this.data=[
-      {
-        name:"Teacher of the year",
-        date:"June 2016"
-      },
-      {
-        name:"Best even organizer- Team Blue",
-        date:"March 2008"
-      }
-    ]
+    this.data = [{
+      name: "Teacher of the year",
+      date: "June 2016"
+    }, {
+      name: "Best even organizer- Team Blue",
+      date: "March 2008"
+    }]
 
   }
 
-  getRows(input){
+  getRows(input) {
     var rows = this.data.map((item, i) => {
-    return(<LinearLayout
+      return (<LinearLayout
               width="wrap_content"
               height="wrap_content"
               margin="0,0,0,16">
@@ -53,12 +50,12 @@ class ProfileAccomplishments extends View {
               style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
               </LinearLayout>)
-            });
+    });
 
     return rows;
   }
 
-  getBody(){
+  getBody() {
     return (<LinearLayout
             width="wrap_content"
             height="wrap_content"
@@ -67,12 +64,11 @@ class ProfileAccomplishments extends View {
 
             {this.getRows()}
 
-            </LinearLayout>
-    )
+            </LinearLayout>)
   }
 
-  getHeader(){
-    return (  <LinearLayout
+  getHeader() {
+    return (<LinearLayout
               width="wrap_content"
               height="wrap_content">
 
@@ -95,13 +91,23 @@ class ProfileAccomplishments extends View {
               </LinearLayout>)
   }
 
+  getLineSeperator() {
+    return (<LinearLayout
+            width="match_parent"
+            height="1"
+            margin="0,0,0,24"
+            background={window.__Colors.PRIMARY_BLACK_22}/>)
+  }
+
   render() {
-    this.layout= (
-              <LinearLayout
+    this.layout = (
+      <LinearLayout
                 width="wrap_content"
                 height="wrap_content"
                 margin="0,16,0,0"
                 orientation="vertical">
+
+                {this.getLineSeperator()}
 
                 {this.getHeader()}
                 {this.getBody()}

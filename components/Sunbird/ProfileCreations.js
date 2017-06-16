@@ -17,14 +17,14 @@ class ProfileCreations extends View {
     this.setIds([
 
     ]);
-    _this=this;
+    _this = this;
 
 
   }
 
 
-  getHeader(){
-    return (  <LinearLayout
+  getHeader() {
+    return (<LinearLayout
               width="wrap_content"
               height="wrap_content">
 
@@ -111,16 +111,26 @@ class ProfileCreations extends View {
 
   }
 
-ratingChange(){
+  ratingChange = () => {
 
-}
+  }
+
+  getLineSeperator() {
+    return (<LinearLayout
+            width="match_parent"
+            height="1"
+            margin="0,0,0,24"
+            background={window.__Colors.PRIMARY_BLACK_22}/>)
+  }
 
 
   render() {
-    this.layout= (
-              <LinearLayout
+    this.layout = (
+      <LinearLayout
                 margin="0,16,0,0"
                 orientation="vertical">
+
+                {this.getLineSeperator()}
 
                 {this.getHeader()}
 

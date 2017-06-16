@@ -14,32 +14,27 @@ class ProfileSkillTags extends View {
     this.setIds([
 
     ]);
-    _this=this;
+    _this = this;
 
-    this.data=[
-      {
-        "name":"Leadership",
-        "tagCount":"+24"
-      },
-      {
-        "name":"Mentor",
-        "tagCount":"+4"
-      },
-      {
-        "name":"Advanced Chemistry",
-        "tagCount":"+12"
-      },
-      {
-        "name":"Mastery in Organic  Chemistry",
-        "tagCount":"+14"
-      }
-    ]
+    this.data = [{
+      "name": "Leadership",
+      "tagCount": "+24"
+    }, {
+      "name": "Mentor",
+      "tagCount": "+4"
+    }, {
+      "name": "Advanced Chemistry",
+      "tagCount": "+12"
+    }, {
+      "name": "Mastery in Organic  Chemistry",
+      "tagCount": "+14"
+    }]
 
   }
 
 
-  getHeader(){
-    return (  <LinearLayout
+  getHeader() {
+    return (<LinearLayout
               width="wrap_content"
               height="wrap_content">
 
@@ -62,7 +57,16 @@ class ProfileSkillTags extends View {
               </LinearLayout>)
   }
 
-  getRows(input){
+  getLineSeperator() {
+    return (<LinearLayout
+            width="match_parent"
+            height="1"
+            margin="0,0,0,24"
+            background={window.__Colors.PRIMARY_BLACK_22}/>)
+  }
+
+
+  getRows(input) {
     return (<LinearLayout
               width="wrap_content"
               height="wrap_content"
@@ -105,10 +109,10 @@ class ProfileSkillTags extends View {
   }
 
 
-  skillTagBody(){
+  skillTagBody() {
 
     var rows = this.data.map((item, i) => {
-      return ( <LinearLayout
+      return (<LinearLayout
                 width="wrap_content"
                 height="wrap_content"
                 orientation="vertical"
@@ -125,12 +129,14 @@ class ProfileSkillTags extends View {
 
 
   render() {
-    this.layout= (
-              <LinearLayout
+    this.layout = (
+      <LinearLayout
                 width="wrap_content"
                 height="wrap_content"
                 margin="0,16,0,0"
                 orientation="vertical">
+
+                {this.getLineSeperator()}
 
                 {this.getHeader()}
 
