@@ -224,6 +224,13 @@ exports.textStyle = {
       textSize: Font.fontSize.FONT_14,
       fontStyle: Font.fontStyle.SEMIBOLD
       }
+  },
+  SECTION:{
+    TITLE:{
+      color: Colors.PRIMARY_ACCENT,
+      textSize: Font.fontSize.FONT_14,
+      fontStyle: Font.fontStyle.SEMIBOLD
+    }
   }
 
 };

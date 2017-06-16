@@ -18,13 +18,25 @@ class ProfileCreations extends View {
 
     ]);
     _this=this;
-
+    this.data=[
+      {
+        "type":"course",
+        "moduleText":"Organic Chemistry for Standard VII",
+        "imageUrl":"https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg"
+      },
+      {
+        "type":"course",
+        "moduleText":"Atomic Physics for Standard VII",
+        "imageUrl":"https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg"
+      }
+    ]
 
   }
 
 
-  getHeader(){
+  getHeader = () => {
     return (  <LinearLayout
+              margin="0,0,16,0"
               width="wrap_content"
               height="wrap_content">
 
@@ -49,71 +61,75 @@ class ProfileCreations extends View {
 
 
 
-  getCardIcon = () => {
+  getCards = () => {
+    var cards = this.data.map((item, i) => {
+    return (<LinearLayout
+              width="wrap_content"
+              height="wrap_content"
+              margin="0,0,12,6"
+              orientation="vertical">
+
+                <RelativeLayout
+                 width="200"
+                 height="110">
+
+                <ImageView
+                  height="match_parent"
+                  width="match_parent"
+                  scaleType="fixXY"
+                  gravity="center"
+                  circularImageUrl={"10,"+item.imageUrl}/>
+
+                <LinearLayout
+                  width="match_parent"
+                  height="match_parent"
+                  gravity="center"
+                  cornerRadius="4"
+                  background={window.__Colors.BLACK}
+                  alpha="0.50"/>
+
+                <TextView
+                  width="wrap_content"
+                  height="wrap_content"
+                  padding = "10,10,10,10"
+                  text= {item.type}
+                  padding="5,3,5,3"
+                  cornerRadius="4"
+                  background={window.__Colors.PRIMARY_BLACK}
+                  style={window.__TextStyle.textStyle.SYMBOL.STATUSBAR.LABEL}/>
+
+                <TextView
+                  width="match_parent"
+                  height="wrap_content"
+                  padding = "10,10,10,10"
+                  alignParentBottom="true,-1"
+                  text= {item.moduleText}
+                  style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}/>
+
+              </RelativeLayout>
+
+              </LinearLayout>);
+
+            });
+
+      return cards;
+  }
+
+
+  getBody = () =>{
     return (<LinearLayout
             width="wrap_content"
             height="wrap_content"
-            margin="16,0,0,22"
-            orientation="vertical">
+            margin="0,16,0,0"
+            >
 
-              <RelativeLayout
-               width="wrap_content"
-               height="wrap_content">
+            {this.getCards()}
 
-              <ImageView
-                height="110"
-                width="200"
-                scaleType="fixXY"
-                gravity="center"
-                circularImageUrl={"4,"+"https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg"}/>
-
-              <LinearLayout
-                width="200"
-                height="110"
-                gravity="center"
-                cornerRadius="4"
-                background={window.__Colors.BLACK}
-                alpha="0.50"/>
-
-                <TextView
-                  gravity="center"
-                  width="200"
-                  alignParentRight="true"
-                  height="wrap_content"
-                  padding = "10,10,10,10"
-                  text= "hello world"
-                  style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}/>
-
-              <TextView
-                gravity="center"
-                width="150"
-                height="wrap_content"
-                padding = "10,10,10,10"
-                alignParentBottom="true,-1"
-                text= "hello world"
-                style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}/>
-
-            </RelativeLayout>
-            <LinearLayout
-            width="wrap_content"
-            height="wrap_content">
-            <RatingBar
-              width="0"
-              weight="1"
-              setStars = "6"
-              setRating = "5"
-              scaleX="0.3"
-              scaleY="0.3"
-              onRatingChange = {this.ratingChange}
-              fixedRating = {"false"}/>
-              </LinearLayout>
-            </LinearLayout>);
-
+            </LinearLayout>
+    )
   }
 
-ratingChange(){
 
-}
 
 
   render() {
@@ -130,7 +146,7 @@ ratingChange(){
                  scrollBarX="false"
                  fillViewport="true">
 
-                {this.getCardIcon()}
+                {this.getBody()}
 
                 </HorizontalScrollView>
 
