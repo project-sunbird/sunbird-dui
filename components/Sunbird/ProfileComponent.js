@@ -13,6 +13,8 @@ var SearchToolbar = require('../Sunbird/SearchToolbar');
 var ProfileHeader = require('../Sunbird/ProfileHeader');
 var ProfileExperiences = require('../Sunbird/ProfileExperiences');
 var ProfileSkillTags = require('../Sunbird/ProfileSkillTags');
+var ProfileAccomplishments = require('../Sunbird/ProfileAccomplishments');
+var ProfileCreations = require('../Sunbird/ProfileCreations');
 
 var _this;
 class ProfileComponent extends View {
@@ -93,7 +95,15 @@ class ProfileComponent extends View {
                 {this.getLineSeperator()}
 
                 <ProfileSkillTags/>
-                
+
+                {this.getLineSeperator()}
+
+                <ProfileAccomplishments/>
+
+                {this.getLineSeperator()}
+
+                <ProfileCreations/>
+
               </LinearLayout>
 
          </ScrollView>

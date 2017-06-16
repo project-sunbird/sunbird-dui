@@ -25,8 +25,7 @@ var ProfileActivityComponent = require('../components/Sunbird/ProfileActivityCom
 var ContentLoadingComponent = require('../components/Sunbird/ContentLoadingComponent');
 var FilterComponent = require('../components/Sunbird/FilterComponent');
 const FeedParams = require('../FeedParams');
-
-
+var debounce = require("debounce");
 window.R = require("ramda");
 
 class HomeScreen extends View {
@@ -34,7 +33,7 @@ class HomeScreen extends View {
     super(props, children, state);
     this.state = state;
 
-
+    this.handleBottomNavBarAction = debounce(this.handleBottomNavBarAction, 200);
     //TODO : REVERT THIS LOGIC
     JBridge.setInSharedPrefs("chooseCourse", "__failed");
     JBridge.setInSharedPrefs("userResource", "__failed");

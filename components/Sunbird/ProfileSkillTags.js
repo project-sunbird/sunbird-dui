@@ -112,7 +112,7 @@ class ProfileSkillTags extends View {
                 width="wrap_content"
                 height="wrap_content"
                 orientation="vertical"
-                margin="0,16,0,0"
+                margin="0,24,0,0"
                 >
                 {this.getRows(item)}
 
