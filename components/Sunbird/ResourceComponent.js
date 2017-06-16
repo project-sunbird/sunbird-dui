@@ -57,51 +57,29 @@ class ResourceComponent extends View {
       imageUrls: "ic_action_completed"
     }]
 
-    this.recommendedData = {
-      title: "Text Books",
-      data: [{
-        name: "Organic Chemistry for Standard VII",
-        imageUrl: "http://sr.photos3.fotosearch.com/bthumb/RBL/RBL007/b00663.jpg",
-        count: 55,
-        rating: 5
-      }, {
-        name: "Molecular Reactions for Beginners",
-        imageUrl: "http://photos.gograph.com/thumbs/CSP/CSP446/k17526632.jpg",
-        count: 25,
-        rating: 5
-      }, {
-        name: "Intermediate Metallurgy",
-        imageUrl: "http://sr.photos2.fotosearch.com/bthumb/AGE/AGE063/b20-1458802.jpg",
-        count: 65,
-        rating: 5
-      }, {
-        name: "Organic Chemistry for Standard VII",
-        imageUrl: "http://sr.photos3.fotosearch.com/bthumb/RBL/RBL007/b00663.jpg",
-        count: 55,
-        rating: 5
-      }, {
-        name: "Molecular Reactions for Beginners",
-        imageUrl: "http://photos.gograph.com/thumbs/CSP/CSP446/k17526632.jpg",
-        count: 25,
-        rating: 5
-      }, {
-        name: "Intermediate Metallurgy",
-        imageUrl: "http://sr.photos2.fotosearch.com/bthumb/AGE/AGE063/b20-1458802.jpg",
-        count: 65,
-        rating: 5
-      }]
-    }
 
     if (this.props.response != undefined) {
       var tmp = this.props.response;
       tmp = tmp.replace(/\\/g, '');
       tmp = tmp.replace(/"{/g, '{');
       tmp = tmp.replace(/}"/g, '}');
-      //tmp = tmp.substring(1, tmp.length - 1);
-      console.log("THIS IS WHAT WE HAVE ", tmp)
+
       var response = JSON.parse(tmp)
-      this.sectionData = response.result.sections;
-      console.log("GOT SECTION DATA :", this.sectionData)
+      this.sectionData = response.result.page.sections;
+
+      this.sectionData.map((item, i) => {
+        if (item.display.title.en == "Recommended") {
+          this.recommendedData = item;
+
+        } else if (item.display.title.en == "Popular") {
+          this.popularData = item;
+
+        }
+
+      })
+      console.log("[response data] ------>  GOT Recommended DATA :", this.recommendedData)
+      console.log("[response data] ------>  GOT Popular DATA :", this.popularData)
+
     } else {
       console.log("EMPTY BODY")
     }
@@ -295,8 +273,8 @@ class ResourceComponent extends View {
                 this.getModuleContent()
               }
               <RecommendedContainer
-                recommendedData = {this.recommendedData}
-               />
+                Data ={this.recommendedData}
+              />
 
               {
                 this.getVideosContent()
