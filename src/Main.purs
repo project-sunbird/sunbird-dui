@@ -5,6 +5,7 @@ import Control.Monad.Except.Trans (runExceptT)
 import Utils
 import Flows.CourseActivity (courseActivityFlow)
 import Flows.ClassRoomActivityFlow (classRoomActivityFlow)
+import Flows.CommunityActivityFlow (communityActivityFlow)
 import Control.Monad.Aff (launchAff)
 import Control.Monad.Eff.Console
 import Control.Monad.Eff.Class(liftEff)
@@ -44,9 +45,9 @@ cFlow = do
     "startClassRoomFlow" -> do
       liftEff $ log "startClassRoomFlow"
       classRoomActivityFlow state
-    "showForum" -> do
-      liftEff $ log "showForumFlow"
-      classRoomActivityFlow state
+    "showCommunity" -> do
+      liftEff $ log "communityActivityFlow"
+      communityActivityFlow state
     "showHome" -> do
       liftEff $ log "showProfileFlow"
       classRoomActivityFlow state

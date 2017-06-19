@@ -11,16 +11,20 @@ const reducer = require("@juspay/mystique-backend").stateManagers.reducer({
 // Screens
 const RootScreen = require("../views/RootScreen");
 const SplashScreen = require("../views/SplashScreen");
-const HomeScreen = require("../views/HomeScreen");
 
+//Home
+const HomeScreen = require("../views/HomeScreen");
+//Course or Learn
 const CourseInfoScreen = require("../views/CoursesActivity/CourseInfoScreen");
 const CourseActivityScreen = require("../views/CoursesActivity/CourseActivityScreen");
 const CourseQuizActivityScreen = require("../views/CoursesActivity/CourseQuizActivityScreen");
 const ExploreScreen = require("../views/CoursesActivity/ExploreScreen");
-
-
+//Resource
 const ClassRoomContentScreen = require("../views/ClassRoomActivity/ClassRoomContentScreen");
-
+//Comunity
+const CommunityInfoScreen = require("../views/CommunityActivity/CommunityInfoScreen");
+const CommunityViewAllListScreen = require("../views/CommunityActivity/CommunityViewAllListScreen");
+//Profile
 const ProfileActivityScreen = require("../views/ProfileActivity/ProfileActivityScreen");
 
 // ScreenActions
@@ -54,6 +58,12 @@ var determineScreen = (screenName, state) => {
       break;
     case "CLASSROOM_CONTENT_SCREEN":
       screen = new(ClassRoomContentScreen(dispatcher, RootScreenActions))(null, null, state);
+      break;
+    case "COMMUNITY_INFO_SCREEN":
+      screen = new(CommunityInfoScreen(dispatcher, RootScreenActions))(null, null, state);
+      break;
+    case "COMMUNITY_VIEW_ALL_SCREEN":
+      screen = new(CommunityViewAllListScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
     case "PROFILE_ACTIVITY_SCREEN":
       screen = new(ProfileActivityScreen(dispatcher, RootScreenActions))(null, null, state);

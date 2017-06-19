@@ -14,9 +14,7 @@ var SearchToolbar = require('../Sunbird/SearchToolbar');
 var MyCommunities = require('../Sunbird/MyCommunities');
 var PopularCommunities = require('../Sunbird/PopularCommunities');
 var RecommendedCommunities = require('../Sunbird/RecommendedCommunities');
-var CommunityViewallList = require('../Sunbird/CommunityViewallList');
-var CommunityInfoComponent = require('../Sunbird/CommunityInfoComponent');
-var _this;
+
 class CommunityComponent extends View {
   constructor(props, children) {
     super(props, children);
@@ -27,23 +25,22 @@ class CommunityComponent extends View {
       "infoContainer",
       "viewallContainer"
     ]);
-    _this=this;
 
-    this.myCommunitySelected="";
-    this.popularCommunitySelected="";
-    this.recommendedCommunitySelected="";
+    this.myCommunitySelected = "";
+    this.popularCommunitySelected = "";
+    this.recommendedCommunitySelected = "";
 
     this.menuData = {
       url: [
         { imageUrl: "ic_action_plus" },
         { imageUrl: "ic_action_filter" },
-        { imageUrl: "ic_action_search"}
+        { imageUrl: "ic_action_search" }
       ]
     }
   }
 
 
-  parentBody(){
+  parentBody() {
     return (
       <LinearLayout
         orientation="vertical"
@@ -91,83 +88,17 @@ class CommunityComponent extends View {
 
            </ScrollView>
            </LinearLayout>
-      )
+    )
   }
 
-  infoBody(){
-    return (<LinearLayout
-            orientation="vertical"
-            width="match_parent"
-            visibility="gone"
-            id={this.idSet.infoContainer}
-            height="match_parent">
 
-            <CommunityInfoComponent
-             name="Maharashtra"
-             onBackPress={this.handleBackPress}/>
-
-            </LinearLayout>
-          )
-
-  }
-
-  viewAllBody(){
-    return (<LinearLayout
-            orientation="vertical"
-            width="match_parent"
-            visibility="gone"
-            id={this.idSet.viewallContainer}
-            height="match_parent">
-
-            <CommunityViewallList/>
-
-            </LinearLayout>
-          )
-  }
-
-  showInfo(){
+  showParent = () => {
     var cmd = "";
     cmd += this.set({
-    id: this.idSet.parentContainer,
-    visibility: "gone"
-    })
-    cmd += this.set({
-      id: this.idSet.infoContainer,
+      id: this.idSet.parentContainer,
       visibility: "visible"
     })
     cmd += this.set({
-      id: this.idSet.viewallContainer,
-      visibility: "gone"
-    })
-
-    Android.runInUI(cmd, 0);
-  }
-
-  showViewAll(){
-    var cmd = "";
-    cmd += this.set({
-    id: this.idSet.parentContainer,
-    visibility: "gone"
-    })
-    cmd += this.set({
-      id: this.idSet.infoContainer,
-      visibility: "gone"
-    })
-    cmd += this.set({
-      id: this.idSet.viewallContainer,
-      visibility: "visible"
-    })
-
-    Android.runInUI(cmd, 0);
-  }
-
-  showParent(){
-    var cmd = "";
-    cmd += this.set({
-    id: this.idSet.parentContainer,
-    visibility: "visible"
-    })
-    cmd += this.set({
       id: this.idSet.infoContainer,
       visibility: "gone"
     })
@@ -178,45 +109,42 @@ class CommunityComponent extends View {
     Android.runInUI(cmd, 0);
   }
 
-  handleMenuClick = (url) =>{
-  }
+  handleMenuClick = (url) => {}
 
-  handleSearch = (data) =>{
-  }
-  handleBackPress = () =>{
+  handleSearch = (data) => {}
+  handleBackPress = () => {
     this.showParent();
   }
 
-  handleMyCommunityClick=(communityName) =>{
-    this.myCommunitySelected=communityName;
-    this.showInfo();
+  handleMyCommunityClick = (communityName) => {
+    this.state = R.merge(this.state, { action: 'showCommunityInfo', community: communityName })
+    window.__runDuiCallback(this.state);
   }
 
-  handlePopularCommunityClick=(communityName) =>{
-    this.popularCommunitySelected=communityName;
-    this.showInfo();
+  handlePopularCommunityClick = (communityName) => {
+    this.state = R.merge(this.state, { action: 'showCommunityInfo', community: communityName })
+    window.__runDuiCallback(this.state);
   }
 
-  handleRecommendedCommunityClick=(communityName) =>{
-    this.recommendedCommunitySelected=communityName;
-    this.showInfo();
+  handleRecommendedCommunityClick = (communityName) => {
+    this.state = R.merge(this.state, { action: 'showCommunityInfo', community: communityName })
+    window.__runDuiCallback(this.state);
   }
 
-  handleMyViewAllClick=()=>{
-    this.showViewAll();
+  handleMyViewAllClick = () => {
+    this.state = R.merge(this.state, { action: 'showAll' })
+    window.__runDuiCallback(this.state);
   }
 
-  getLineSeperator(){
+  getLineSeperator() {
     return (<LinearLayout
              height="1"
              width="match_parent"
              margin="16,0,16,0"
-             background={window.__Colors.PRIMARY_BLACK_22}/>
-            )
+             background={window.__Colors.PRIMARY_BLACK_22}/>)
   }
 
-  afterRender(){
-  }
+  afterRender() {}
 
 
   render() {
@@ -230,8 +158,7 @@ class CommunityComponent extends View {
         height="match_parent">
 
         {this.parentBody()}
-        {this.infoBody()}
-        {this.viewAllBody()}
+        
 
         </LinearLayout>
     )

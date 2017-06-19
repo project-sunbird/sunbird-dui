@@ -54,7 +54,14 @@ module.exports = function(action, payload, state) {
       localState.currScreen = "PROFILE_ACTIVITY_SCREEN";
       break;
 
-
+    case "COMMUNITY_VIEW_ALL_SCREEN":
+      localState.isInit = false;
+      localState.currScreen = "COMMUNITY_VIEW_ALL_SCREEN";
+      break;
+    case "COMMUNITY_INFO_SCREEN":
+      localState.isInit = false;
+      localState.currScreen = "COMMUNITY_INFO_SCREEN";
+      break;
 
     case "CLASSROOM_CONTENT_SCREEN":
       localState.isInit = false;
