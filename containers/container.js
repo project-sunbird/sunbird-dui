@@ -33,13 +33,15 @@ var determineScreen = (screenName, state) => {
   // Space has been added for dir strucuture
   // add accordingly
   switch (state.currScreen) {
-    case "SPLASH":
+    case "InitScreen":
       screen = new(SplashScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
     case "HOME":
       screen = new(HomeScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
-
+    case "HomeScreen":
+      screen = new(HomeScreen(dispatcher, RootScreenActions))(null, null, state);
+      break;
     case "COURSE_INFO_SCREEN":
       screen = new(CourseInfoScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
@@ -239,6 +241,7 @@ module.exports = {
     dispatcher("SCREEN", "INIT_UI", initialState);
   },
   changeScreen: (screen, state) => {
+    console.log("container",state)
     dispatcher("SCREEN", screen, state);
   }
 }

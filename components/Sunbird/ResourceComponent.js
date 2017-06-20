@@ -129,6 +129,7 @@ class ResourceComponent extends View {
     console.log("IN INDEX ", index)
     this.state = R.merge(this.state, { event: 'showClassroomContet' })
     window.__runDuiCallback({ action: "showClassroomContet" });
+
   }
 
   handleMenuClick = (url) => {

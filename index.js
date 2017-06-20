@@ -3,9 +3,11 @@ import containers from './containers/container';
 import ext from './ext';
 import { main } from './output/Main/index.js';
 import { changeFlow } from './output/Main/index.js';
+import { typeFlow } from './output/Main/index.js';
 
 const purescriptMain = main;
 const purescriptChangeFlow = changeFlow;
+const purescriptTypeFlow = typeFlow;
 
 // import lock from './lock';
 // require('es6-promise').polyfill();
@@ -138,8 +140,8 @@ let purescriptInit = () => {
   window.__runDuiCallback = runDuiCallback;
   window.__setCallback = setCallback
   window.__changePureScriptFlow = purescriptChangeFlow;
-
-
+  window.__typeFlow = purescriptTypeFlow;
+  
   purescriptMain();
 };
 

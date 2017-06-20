@@ -9,20 +9,14 @@ module.exports = function(action, payload, state) {
   localState = payload;
 
   switch (action) {
-    case "INIT_UI":
+    case "InitScreen":
       localState.isInit = true;
-      localState.currScreen = "SPLASH";
-      // localState.currScreen = "EXPLORE_SCREEN";
+      localState.currScreen = "HomeScreen";
       break;
 
-    case "SPLASH":
-      localState.isInit = false;
-      localState.currScreen = "SPLASH";
-      break;
-
-    case "HOME":
-      localState.isInit = false;
-      localState.currScreen = "HOME";
+    case "HomeScreen":
+      localState.isInit = false
+      localState.currScreen = "HomeScreen";
       break;
 
     case "COURSE_INFO_SCREEN":

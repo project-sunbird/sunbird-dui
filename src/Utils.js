@@ -24,13 +24,38 @@ var callbackMapper = {
   }
 }
 
+exports["ui'"] = function(err) {
+  return function(callback) {
+    return function(state) {
+        return function(dummyEvents) {
+           return function() {
+            var screenName = state.constructor.name;
+            console.log("dummyEvents",dummyEvents)
+            window.__duiShowScreen(callback, {screen:screenName});
+            var noAction = false;  
+            if (noAction) {
+            setTimeout(function() {
+              callback(state)();
+            }, 1000);
+          } else {
+            window.handleBackPress = function() {
+              state.event = 'goBack';
+              callback(state)();
+            };
+          }          
+          };
+       };
+    };
+  };
+};
+
 exports["showUI'"] = function(callback) {
   return function(errCallback) {
     return function(state) {
       return function(noAction) {
         return function() {
+          console.log("showUI exports",state)
           window.__duiShowScreen(callback, state);
-
           if (noAction) {
             setTimeout(function() {
               callback(state)();

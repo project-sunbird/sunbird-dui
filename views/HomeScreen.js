@@ -272,29 +272,29 @@ class HomeScreen extends View {
 
     switch (parseInt(this.currentViewPagerIndex[0])) {
       case 0:
-        eventAction = { action: "dummyFlow" };
+        eventAction = { tag: "dummyFlow" };
         break;
       case 1:
-        eventAction = { action: "startCourseFlow" };
+        eventAction = { tag: "startCourseFlow" };
         break;
       case 2:
-        eventAction = { action: "startClassRoomFlow" };
+        eventAction = { tag: "startClassRoomFlow" };
         break;
       case 3:
-        eventAction = { action: "dummyFlow" };
+        eventAction = { tag: "dummyFlow" };
         break;
       case 4:
-        eventAction = { action: "dummyFlow" };
+        eventAction = { tag: "dummyFlow" };
         break;
       default:
-        eventAction = { action: "dummyFlow" };
+        eventAction = { tag: "dummyFlow" };
         break;
     }
     console.log("--------->VIEWPAGER TRIGGERS ", eventAction, "ON INDEX", parseInt(this.currentViewPagerIndex[0]));
 
-    this.state = window.__ObjectAssign({}, this.state, eventAction);
+    // this.state = window.__ObjectAssign({}, this.state, eventAction);
 
-    window.__runDuiCallback(this.state);
+    window.__runDuiCallback(eventAction);
   }
 
   handleViewPagerAction = (index) => {

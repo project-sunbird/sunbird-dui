@@ -10,7 +10,6 @@ import Data.NonEmpty (NonEmpty(..), singleton, head, tail, (:|))
 import Data.Foldable
 import Data.Array
 import Control.Monad.Eff
-import Control.Monad.Eff.Console
 import Control.Monad.Aff (launchAff, Aff, makeAff, attempt)
 import Control.Monad.Eff.Exception (Error, error, try)
 import Control.Monad.Eff.Class (liftEff)
@@ -30,6 +29,46 @@ import Control.Monad.Except.Trans
 import Partial.Unsafe
 import Data.Bifoldable
 import Control.Monad.Eff.Class(liftEff)
+import Control.Monad.Aff
+import Prelude
+import Control.Monad.Eff (Eff,kind Effect)
+import Control.Monad.Aff.Class (liftAff)
+import Control.Monad.Aff.Console
+import Control.Monad.Except (runExcept, throwError)
+import Control.Monad.Except.Trans (ExceptT(..))
+import Data.Either (Either(..))
+import Data.Foreign (Foreign, ForeignError(..), F)
+import Data.Foreign.Class (class Decode, class Encode)
+import Data.Foreign.Generic (decodeJSON, defaultOptions, encodeJSON, genericDecode, genericEncode)
+import Data.Foreign.Generic.Class (class GenericDecode, class GenericEncode)
+import Data.Foreign.Generic.Types (SumEncoding)
+import Data.Generic.Rep (class Generic)
+import Data.Generic.Rep.Show (genericShow)
+import Data.Identity (Identity(..))
+import Data.List.NonEmpty (NonEmptyList(..))
+import Utils
+
+foreign import data UI :: Effect
+foreign import ui' :: forall a c e. (Error -> Eff e Unit) -> (a -> Eff e Unit) -> c -> String -> Eff e Unit
+
+class UIScreen a b where
+  ui::forall e. Encode b => a -> Aff (ui::UI|e) b
+  generateMockEvents :: Encode b => a -> Array b
+
+
+
+
+isValidAction :: forall a e. Decode a => String -> Aff e a
+isValidAction x = case (runExcept (decodeJSON x)) of
+  Right y -> pure $ y
+  Left err -> throwError (error (show err))
+
+defaultDecode :: forall a b. Generic a b => GenericDecode b => Foreign -> F a
+defaultDecode x = genericDecode (defaultOptions {unwrapSingleConstructors=true}) x
+
+defaultEncode ::  forall a b. Generic a b => GenericEncode b => a -> Foreign
+defaultEncode x = genericEncode (defaultOptions {unwrapSingleConstructors=true}) x
+
 
 
 -- getEulerLocation = "https://qa.ekstep.in"
@@ -53,6 +92,8 @@ foreign import callAPI' :: forall e. (AffSuccess ApiResponse e) -> (AffError e) 
 foreign import getConsumerId' :: forall e a s. (AffSuccess String e) -> (AffError e) -> Eff e Unit                          
 foreign import getDeviceId' :: forall e a s. (AffSuccess String e) -> (AffError e) -> Eff e Unit                          
 foreign import getUserId' :: forall e a s. (AffSuccess String e) -> (AffError e) -> Eff e Unit                          
+
+
 
 getConsumerId = ExceptT (pure <$> makeAff(\error success -> getConsumerId' success error))
 getDeviceId = ExceptT (pure <$> makeAff(\error success -> getDeviceId' success error))
@@ -80,6 +121,7 @@ getReqTokens = do
 
 
 
+
 get path headers =
   makeAff(\error success -> callAPI' success error GET ((getEulerLocation) <> path) (A.jsonEmptyObject) headers')
   where headers' = cons (RequestHeader "Content-Type" "application/json") headers
@@ -92,6 +134,11 @@ post path headers body =
 showUI screen state = ExceptT $ pure <$>
   let updatedState = state {screen = screen} in
   makeAff (\error success -> showUI' success error updatedState false)
+
+genericUI :: forall a b e. Encode b => Decode b => a -> Array b -> Aff (ui::UI|e) b
+genericUI a b = do
+  res <- makeAff (\err sc -> (ui' err sc a (encodeJSON b)))
+  isValidAction res
 
 showUISync screen state = ExceptT $ pure <$>
   let updatedState = state {screen = screen} in

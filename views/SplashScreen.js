@@ -15,6 +15,7 @@ class SplashScreen extends View {
   constructor(props, children, state) {
     super(props, children, state);
     this.state = state;
+    console.log("Im in SplashScreen")
   }
 
   onPop = () => {
@@ -25,8 +26,9 @@ class SplashScreen extends View {
   }
 
   afterRender = () => {
+    console.log("Im in initial screen")
     setTimeout(() => {
-      window.__runDuiCallback({ action: "showMainFlow" });
+      window.__runDuiCallback({ tag: "StartInit" });
     }, 1000);
   }
 
