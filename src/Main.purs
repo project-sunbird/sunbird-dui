@@ -15,30 +15,7 @@ import Data.Generic.Rep (class Generic)
 import Data.Foreign.Generic (encodeJSON)
 import Control.Monad.Eff.Exception (EXCEPTION)
 import Prelude
-
---init :: forall a b. ExceptT Error (Aff a) (State b)
-
-data HomeScreen = HomeScreen 
-data HomeScreenAction = ShowHome | StartCourseFlow | StartClassRoomFlow | ShowForum
-
-data InitScreen = InitScreen 
-data InitScreenAction = ShowInit | StartInit
-
-instance homeScreen :: UIScreen HomeScreen HomeScreenAction where
-  generateMockEvents _ = [ShowHome ,StartCourseFlow]
-  ui x = genericUI x (generateMockEvents x :: Array HomeScreenAction)
-
-derive instance genericHomeScreenAction  :: Generic HomeScreenAction _
-instance decodeHomeScreenAction :: Decode HomeScreenAction where decode = defaultDecode
-instance encodeHomeScreenAction :: Encode HomeScreenAction where encode = defaultEncode
-
-instance initScreen :: UIScreen InitScreen InitScreenAction where
-  generateMockEvents _ = [ShowInit ,StartInit]
-  ui x = genericUI x (generateMockEvents x :: Array InitScreenAction)
-
-derive instance genericInitScreenAction  :: Generic InitScreenAction _
-instance decodeInitScreenAction :: Decode InitScreenAction where decode = defaultDecode
-instance encodeInitScreenAction :: Encode InitScreenAction where encode = defaultEncode
+import PureTypes
 
 
 main :: Eff (exception::EXCEPTION, ui::UI, console::CONSOLE) Unit
@@ -63,11 +40,9 @@ begin = do
     _ -> pure $ "aborted"
 
 
-
   -- _ <- liftEff' $ log (encodeJSON (ShowHome))
 
   -- _ <- ((ui $ InitScreen) :: Aff _ InitScreenAction)
-
 
 
 genericShowUI :: forall a b e. Encode b => Decode b => a -> Array b -> Aff (ui::UI | e) b
@@ -75,14 +50,6 @@ genericShowUI a b = do
   res <- makeAff (\err sc -> sc (encodeJSON (ShowHome)))
   isValidAction res
 
-
-tFlow = do
-  state <- getCallbackFromScreen "HOME" {screen: "HOME"}
-  case state.action of
-    "showMainFlow" -> do
-      liftEff $ log "showMainFlow"
-    _ -> do
-      liftEff $ log $ "Action yet to be implemented " <> state.action    
 
 
 init = do
@@ -107,7 +74,7 @@ cFlow = do
   liftEff $ log $ "vFLow EVENT " 
   case state.action of
     "showHome" -> do
-      liftEff $ log "showHomeFlow"
+      liftEff $ log $ "Action yet to be implemented " <> state.action 
       classRoomActivityFlow state
     "startCourseFlow" -> do
       response <- getDummyData
@@ -125,15 +92,6 @@ cFlow = do
       classRoomActivityFlow state
     _ -> do
       liftEff $ log $ "Action yet to be implemented " <> state.action  
-
-typeFlow = launchAff $ do
-  runExceptT tFlow    
-
-
-
--- main = launchAff $ do
---   runExceptT init
-
 
 
 changeFlow = launchAff $ do
