@@ -21,16 +21,6 @@ import PureTypes
 main :: Eff (exception::EXCEPTION, ui::UI, console::CONSOLE) Unit
 main = void $ launchAff $ begin
 
-firstScreenFlow :: Aff(ui::UI,console::CONSOLE) String
-firstScreenFlow = do
-  action <- ui $ HomeScreen
-  case action of
-    ShowHome -> pure $ "ShowHome"
-    StartCourseFlow -> pure $ "StartCourseFlow" 
-    StartClassRoomFlow -> pure $ "StartClassRoomFlow" 
-    ShowForum -> pure $ "ShowForum" 
-    _ -> pure $ "aborted"
-
 
 begin :: Aff(ui::UI,console::CONSOLE) String
 begin = do
@@ -38,6 +28,24 @@ begin = do
   case action of
     StartInit -> firstScreenFlow
     _ -> pure $ "aborted"
+
+
+firstScreenFlow :: Aff(ui::UI,console::CONSOLE) String
+firstScreenFlow = do
+  action <- ui $ HomeScreen
+  case action of
+    ShowHome -> resourceScreenFlow
+    StartCourseFlow -> pure $ "StartCourseFlow" 
+    StartClassRoomFlow -> pure $ "StartClassRoomFlow" 
+    ShowForum -> pure $ "ShowForum" 
+    _ -> pure $ "aborted"
+
+
+resourceScreenFlow :: Aff(ui::UI,console::CONSOLE) String
+resourceScreenFlow = do    
+    pure $ "aborted"
+  
+
 
 
   -- _ <- liftEff' $ log (encodeJSON (ShowHome))
@@ -82,7 +90,7 @@ cFlow = do
       liftEff $ log "startCourseFlow"
       courseActivityFlow state
     "startClassRoomFlow" -> do
-      liftEff $ log "startClassRoomFlow"
+      liftEff $ log "startClassRoomFlow its in cflow"
       classRoomActivityFlow state
     "showForum" -> do
       liftEff $ log "showForumFlow"

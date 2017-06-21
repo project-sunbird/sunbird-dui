@@ -35,5 +35,7 @@ exports.color = {
   PRIMARY_LIGHT: "#FFFFFF",
   WHITE_F7 : "#F7F7F7",
   WHITE_F2 : "#F2F2F2",
-  WHITE_F4 : "#F4F4F4"
+  WHITE_F4 : "#F4F4F4",
+  WHITE_FO : "#F0F0F0",
+  SAFFRON : "#FF9F00",
 };

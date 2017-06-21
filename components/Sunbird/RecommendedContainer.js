@@ -22,29 +22,15 @@ class RecommendedContainer extends View {
 
 
   afterRender = () => {
-    // this.indexItems = this.props.recommendedData;
-    // this.tmpArr = [];
-    // this.imageUrls = this.props.recommendedimageUrls;
-    // this.indexItems = this.props.recommendedData.data;
     this.indexItems = this.props.Data.content;
     this.tmpArr = [];
     var _this = this;
     for (var i = 0; i < this.indexItems.length; i++) {
 
       var dat = {
-        // moduleBackground: (i % 2 == 0 ? "#22007aff" : "#229012FE"),
-        // moduleName: _this.indexItems[i]["name"],
-        // moduleImage: _this.indexItems[i]["imageUrl"],
-        // // moduleUserCount: (i * 100 + (-1) * 4 * i + i),
-        // // moduleRating: parseFloat(5 / i)
-        // moduleUserCount: _this.indexItems[i]["count"],
-        // moduleRating: _this.indexItems[i]["rating"],
-        // hideRating: this.props.hideRating
         moduleBackground: (i % 2 == 0 ? "#22007aff" : "#229012FE"),
         moduleName: _this.indexItems[i]["name"],
         moduleImage: _this.indexItems[i]["appIcon"],
-        // moduleUserCount: (i * 100 + (-1) * 4 * i + i),
-        // moduleRating: parseFloat(5 / i)
         moduleUserCount: "50",
         moduleRating: "100",
         hideRating: this.props.hideRating,

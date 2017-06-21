@@ -17,6 +17,8 @@ var SearchToolbar = require('../Sunbird/SearchToolbar');
 
 var TodoContainer = require('../Sunbird/TodoContainer');
 var RecommendedContainer = require('../Sunbird/RecommendedContainer');
+var HomeRecommendedContainer = require('../Sunbird/HomeRecommendedContainer');
+var HomeTodoContainer = require('../Sunbird/HomeTodoContainer');
 
 class HomeComponent extends View {
   constructor(props, children) {
@@ -98,42 +100,7 @@ class HomeComponent extends View {
       }]
     }
 
-    //
-    // this.recommendedData = {
-    //   title: "Recommended",
-    //   data: [{
-    //     name: "Organic Chemistry for Standard VII",
-    //     imageUrl: "http://sr.photos3.fotosearch.com/bthumb/RBL/RBL007/b00663.jpg",
-    //     count: 55,
-    //     rating: 5
-    //   }, {
-    //     name: "Molecular Reactions for Beginners",
-    //     imageUrl: "http://photos.gograph.com/thumbs/CSP/CSP446/k17526632.jpg",
-    //     count: 25,
-    //     rating: 5
-    //   }, {
-    //     name: "Intermediate Metallurgy",
-    //     imageUrl: "http://sr.photos2.fotosearch.com/bthumb/AGE/AGE063/b20-1458802.jpg",
-    //     count: 65,
-    //     rating: 5
-    //   }, {
-    //     name: "Organic Chemistry for Standard VII",
-    //     imageUrl: "http://sr.photos3.fotosearch.com/bthumb/RBL/RBL007/b00663.jpg",
-    //     count: 55,
-    //     rating: 5
-    //   }, {
-    //     name: "Molecular Reactions for Beginners",
-    //     imageUrl: "http://photos.gograph.com/thumbs/CSP/CSP446/k17526632.jpg",
-    //     count: 25,
-    //     rating: 5
-    //   }, {
-    //     name: "Intermediate Metallurgy",
-    //     imageUrl: "http://sr.photos2.fotosearch.com/bthumb/AGE/AGE063/b20-1458802.jpg",
-    //     count: 65,
-    //     rating: 5
-    //   }]
-    // }
-
+    
     // Todo Data
     this.todoData = [{
       name: "Mastering in Organic Chemistry",
@@ -158,39 +125,6 @@ class HomeComponent extends View {
     }]
 
   }
-
-  // getInfo = () => {
-
-  //   var layout = (
-  //     <LinearLayout
-  //       orientation="vertical"
-  //       width="match_parent"
-  //       height="wrap_content">
-
-  //       <TextView
-  //         text= {"Hi " + this.props.data.name + "!"}
-  //         margin="16,86,16,12"
-  //         style={window.__TextStyle.textStyle.TITLE.DARK}
-  //         />
-
-  //       <TextView
-  //         text= "Just 3 more classes to mastering Organic Chemistry for Std XI"
-  //         margin="16,0,20,8"
-  //         style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}
-  //         />
-
-  //       <TextView
-  //         text= "Take me there >>"
-  //         margin="16,0,0,87"
-  //         style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}
-  //         />
-
-  //     </LinearLayout>
-  //   )
-  //   return layout;
-  // }
-
-
 
 
 
@@ -273,18 +207,10 @@ class HomeComponent extends View {
                   width="match_parent"
                   orientation="vertical">
 
-                    <TodoContainer
-                    onItemClick = {this.handleTodoClick}
-                    todoData = {this.todoData}
-                    onViewTodoClick={this.handleViewAllTodoClick}
-                   />
+                    
+                   <HomeTodoContainer/>
+                   <HomeRecommendedContainer/>
 
-                    <RecommendedContainer
-                    hideRating = "visible"
-                    recommendedData = {this.recommendedData}
-                    Data ={this.recommendedServerData}
-                    onClick={this.handleRecommendedClick}
-                   />
 
                    <LinearLayout
                    width="match_parent"
@@ -323,3 +249,15 @@ class HomeComponent extends View {
 }
 
 module.exports = HomeComponent;
+
+// <TodoContainer
+//                     onItemClick = {this.handleTodoClick}
+//                     todoData = {this.todoData}
+//                     onViewTodoClick={this.handleViewAllTodoClick}
+//                    />
+                   //  <RecommendedContainer
+                   //  hideRating = "visible"
+                   //  recommendedData = {this.recommendedData}
+                   //  Data ={this.recommendedServerData}
+                   //  onClick={this.handleRecommendedClick}
+                   // />

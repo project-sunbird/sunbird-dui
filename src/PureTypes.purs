@@ -16,13 +16,15 @@ import Data.Foreign.Generic (encodeJSON)
 import Control.Monad.Eff.Exception (EXCEPTION)
 import Prelude
 
-	
 
 data HomeScreen = HomeScreen 
 data HomeScreenAction = ShowHome | StartCourseFlow | StartClassRoomFlow | ShowForum
 
 data InitScreen = InitScreen 
 data InitScreenAction = ShowInit | StartInit
+
+data ResourceScreen = ResourceScreen 
+data ResourceScreenAction = DummyResourceAction
 
 instance homeScreen :: UIScreen HomeScreen HomeScreenAction where
   generateMockEvents _ = [ShowHome ,StartCourseFlow]
@@ -39,3 +41,11 @@ instance initScreen :: UIScreen InitScreen InitScreenAction where
 derive instance genericInitScreenAction  :: Generic InitScreenAction _
 instance decodeInitScreenAction :: Decode InitScreenAction where decode = defaultDecode
 instance encodeInitScreenAction :: Encode InitScreenAction where encode = defaultEncode
+
+instance resourceScreen :: UIScreen ResourceScreen ResourceScreenAction where
+  generateMockEvents _ = [DummyResourceAction]
+  ui x = genericUI x (generateMockEvents x :: Array ResourceScreenAction)
+
+derive instance genericResourceScreenAction  :: Generic ResourceScreenAction _
+instance decodeResourceScreenAction :: Decode ResourceScreenAction where decode = defaultDecode
+instance encodeResourceScreenAction :: Encode ResourceScreenAction where encode = defaultEncode

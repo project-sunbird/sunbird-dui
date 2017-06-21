@@ -278,7 +278,7 @@ class HomeScreen extends View {
         eventAction = { tag: "startCourseFlow" };
         break;
       case 2:
-        eventAction = { tag: "startClassRoomFlow" };
+        eventAction = { action: "startClassRoomFlow" };
         break;
       case 3:
         eventAction = { tag: "dummyFlow" };

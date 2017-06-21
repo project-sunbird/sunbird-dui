@@ -81,6 +81,11 @@ exports.textStyle = {
         color: Colors.PRIMARY_BLACK,
         textSize: Font.fontSize.FONT_16,
         fontStyle: Font.fontStyle.BOLD
+      },
+      SEMI_DARK: {
+        color: Colors.PRIMARY_BLACK,
+        textSize: Font.fontSize.FONT_12,
+        fontStyle: Font.fontStyle.SEMIBOLD
       }
     },
     BODY: {
@@ -139,6 +144,11 @@ exports.textStyle = {
     BOLD: {
       color: Colors.DARK_GRAY,
       textSize: Font.fontSize.FONT_12,
+      fontStyle: Font.fontStyle.BOLD
+    },
+    DULL: {
+      color: Colors.DARK_GRAY,
+      textSize: Font.fontSize.FONT_14,
       fontStyle: Font.fontStyle.BOLD
     },
     WBOLD: {
@@ -216,7 +226,7 @@ exports.textStyle = {
       color: Colors.PRIMARY_BLACK,
       textSize: Font.fontSize.FONT_12,
       fontStyle: Font.fontStyle.REGULAR
-      },
+      }
   },
   CLICKABLE:{
       BLUE_SEMI: {

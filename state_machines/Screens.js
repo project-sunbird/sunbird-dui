@@ -19,6 +19,11 @@ module.exports = function(action, payload, state) {
       localState.currScreen = "HomeScreen";
       break;
 
+    case "ResourceScreen":
+      localState.isInit = false
+      localState.currScreen = "ResourceScreen";
+      break;
+
     case "COURSE_INFO_SCREEN":
       localState.isInit = false;
       localState.currScreen = "COURSE_INFO_SCREEN";

@@ -65,6 +65,12 @@ class Button extends View {
         this.text = this.props.text;
         break;
 
+      case "SmallButton_Secondary_BT":
+        this.layoutStyle = Styles.Params.SmallButton.WB_Secondary_Layout;
+        this.textStyle = window.__TextStyle.textStyle.TABBAR.SELECTED;
+        this.text = this.props.text;
+        break;
+
       case "SmallButton_Secondary_DB":
         this.layoutStyle = Styles.Params.SmallButton.DB_Secondary_Layout;
         this.textStyle = window.__TextStyle.textStyle.CARD.ACTION.LIGHT;

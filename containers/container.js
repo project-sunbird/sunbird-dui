@@ -36,9 +36,6 @@ var determineScreen = (screenName, state) => {
     case "InitScreen":
       screen = new(SplashScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
-    case "HOME":
-      screen = new(HomeScreen(dispatcher, RootScreenActions))(null, null, state);
-      break;
     case "HomeScreen":
       screen = new(HomeScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
