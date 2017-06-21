@@ -20,15 +20,14 @@ class CardTodo extends View {
     _this=this;
 
     this.setIds([
+      "leftProgress",
+      "rightProgress"
     ]);
 
     
   }
 
 
-  afterRender = () => {
-
-  }
 
   getRemainingProgress = (progress) =>{
     var remainingProgress = 100 - parseInt(progress);
@@ -57,26 +56,6 @@ class CardTodo extends View {
                 gravity="center"
                 circularImageUrl={"10,"+this.props.data.imageUrl}/>
 
-              
-
-              <LinearLayout
-                width="200"
-                height="4">
-
-                <LinearLayout
-                  width="0"
-                  weight={this.props.data.progress}
-                  height="match_parent"
-                  background={window.__Colors.SAFFRON}/>
-
-                <LinearLayout
-                  width="0"
-                  weight={this.getRemainingProgress(this.props.data.progress)}
-                  height="match_parent"
-                  background={window.__Colors.PRIMARY_BLACK}/>
-
-              </LinearLayout>
-
               <LinearLayout
                 width="200"
                 height="110"
@@ -84,6 +63,29 @@ class CardTodo extends View {
                 cornerRadius="4"
                 background={window.__Colors.BLACK}
                 alpha="0.50"/>
+
+
+              <LinearLayout
+                width="200"
+                cornerRadius="4"
+                height="4">
+
+                <LinearLayout
+                  width="0"
+                  weight={this.props.data.progress}
+                  id={this.idSet.leftProgress}
+                  height="match_parent"
+                  background={window.__Colors.SAFFRON}/>
+
+                <LinearLayout
+                  width="0"
+                  id={this.idSet.rightProgress}
+                  alpha="0.3"
+                  weight={this.getRemainingProgress(this.props.data.progress)}
+                  height="match_parent"
+                  background={window.__Colors.PRIMARY_BLACK}/>
+
+              </LinearLayout>
 
               <TextView
                 width="200"
@@ -110,6 +112,12 @@ class CardTodo extends View {
 
             </LinearLayout>)
 
+  }
+
+
+  afterRender = () => {
+    JBridge.makeLeftRounded(this.idSet.leftProgress);
+    JBridge.makeRightRounded(this.idSet.rightProgress);
   }
 
   getFooter= ()=>{
@@ -169,6 +177,7 @@ class CardTodo extends View {
         <LinearLayout
           height="wrap_content"
           width="match_parent"
+          afterRender={this.afterRender}
           orientation="vertical">
 
           

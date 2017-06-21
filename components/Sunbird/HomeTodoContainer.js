@@ -26,7 +26,7 @@ class HomeTodoContainer extends View {
       [{
         "imageUrl":"https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
         "moduleText":"Organic Chemistry for Std VII",
-        "progress":"30",
+        "progress":"60",
         "timeLeft":"20 hrs remaining",
       },
       {
