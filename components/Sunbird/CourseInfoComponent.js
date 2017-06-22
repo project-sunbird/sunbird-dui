@@ -17,7 +17,7 @@ var RecommendedCourses = require('../Sunbird/RecommendedCourses');
 var CommunityViewallList = require('../Sunbird/CommunityViewallList');
 var CommunityInfoComponent = require('../Sunbird/CommunityInfoComponent');
 var _this;
-class CourseComponent extends View {
+class CourseInfoComponent extends View {
   constructor(props, children) {
     super(props, children);
 
@@ -133,4 +133,4 @@ class CourseComponent extends View {
 
 
 
-module.exports = CourseComponent;
+module.exports = CourseInfoComponent ;

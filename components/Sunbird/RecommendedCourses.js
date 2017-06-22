@@ -23,21 +23,21 @@ class RecommendedCourses extends View {
 
     this.data = 
       [{
-        "imageUrl":"https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
+        "imageUrl":"http://m.rgbimg.com/cache1nyMIz/users/w/we/weirdvis/600/mg13M24.jpg",
         "moduleText":"Organic Chemistry for Std VII",
         "stars":"(4 stars)",
         "votes":"(2,350 votes)",
         "type":"course"
       },
       {
-        "imageUrl":"https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
+        "imageUrl":"http://m.rgbimg.com/cache1nyMIz/users/w/we/weirdvis/600/mg13M24.jpg",
         "moduleText":"Organic Chemistry for Std VII",
         "stars":"(4 stars)",
         "votes":"(2,350 votes)",
         "type":"course"
       },
       {
-        "imageUrl":"https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
+        "imageUrl":"http://m.rgbimg.com/cache1nyMIz/users/w/we/weirdvis/600/mg13M24.jpg",
         "moduleText":"Organic Chemistry for Std VII",
         "stars":"(4 stars)",
         "votes":"(2,350 votes)",

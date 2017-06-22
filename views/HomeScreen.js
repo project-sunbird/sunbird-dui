@@ -11,7 +11,6 @@ var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callba
 var objectAssign = require('object-assign');
 
 var BottomNavBar = require("../components/Sunbird/BottomNavBar")
-
 var ChooseCourseComponent = require("../components/Sunbird/ChooseCourseComponent")
 var ClassRoomHomeComponent = require("../components/Sunbird/ClassRoomHomeComponent")
 var ResourceComponent = require("../components/Sunbird/ResourceComponent")
