@@ -42,7 +42,7 @@ class HomeScreen extends View {
       "viewPagerContainer",
       "tabLayoutContainer",
     ]);
-    this.currentViewPagerIndex = 0;
+    this.currentPageIndex = 0;
     this.setupDuiCallback();
     this.feedData = FeedParams.feedParams;
 
@@ -85,29 +85,17 @@ class HomeScreen extends View {
       this.animateView(),
       null
     );
-
     this.setupDuiCallback();
   }
 
 
   handleStateChange = (state) => {
-    this.currentViewPagerIndex[0] = isNaN(this.currentViewPagerIndex[0]) ? 0 : this.currentViewPagerIndex[0];
-
-    //console.log("RESULT RESPONSE FROM STATE :", state.response.status[1]);
-
+    this.currentViewPagerIndex = isNaN(this.currentViewPagerIndex) ? 0 : this.currentViewPagerIndex;
     var shouldBeModified = false;
     var contentLayout;
     var jso = [];
-    switch (parseInt(this.currentViewPagerIndex[0])) {
+    switch (this.currentPageIndex) {
       case 0:
-        contentLayout = (
-          <HomeComponent
-              recommendedData={this.recommendedData}
-              recommendedimageUrls={this.recommendedimageUrls}
-              menuData={this.menuData}
-              todoData = {this.todoData}
-              feedData = {this.feedData}/>
-        )
 
         break;
       case 1:
@@ -115,22 +103,12 @@ class HomeScreen extends View {
         if (shouldBeModified) {
           JBridge.setInSharedPrefs("chooseCourse", JSON.stringify(state.response.status[1]))
         }
-        contentLayout = (<ChooseCourseComponent
-                  response = {state.response.status[1]}
-                  height="match_parent"
-                  width="match_parent" />)
-
         break;
       case 2:
         shouldBeModified = (JBridge.getFromSharedPrefs("userResource") != JSON.stringify(state.response.status[1]))
         if (shouldBeModified) {
           JBridge.setInSharedPrefs("userResource", JSON.stringify(state.response.status[1]))
         }
-        contentLayout = (<ResourceComponent
-                  response = {state.response.status[1]}
-                  height="match_parent"
-                  width="match_parent"/>)
-
         break;
       case 3:
 
@@ -138,6 +116,82 @@ class HomeScreen extends View {
 
       default:
         console.log("[handleStateChange]\t\t MATCHED WITH default")
+
+        break;
+    }
+    if (shouldBeModified) {
+      console.log("[REPLACING ui at index ]\t\t", this.currentViewPagerIndex)
+      this.switchContent(this.currentPageIndex, state.response.status[1]);
+      //JBridge.replaceViewPagerItem(parseInt(this.currentViewPagerIndex[0]), JSON.stringify(jso));
+    } else {
+      console.log("GOT SAME DATA, not modifying")
+    }
+  }
+
+
+  switchContent = (index, data) => {
+    var tmp;
+    var contentLayout;
+    this.color = "#123123"
+
+    console.log("SWITCHING CONTENT OF", index)
+    switch (index) {
+      case 0:
+        contentLayout = (
+          <HomeComponent
+                response = {data} 
+                recommendedData={this.recommendedData}
+                recommendedimageUrls={this.recommendedimageUrls}
+                menuData={this.menuData}
+                todoData = {this.todoData}
+                feedData = {this.feedData}
+                height="match_parent"
+                root="true"
+                width="match_parent"/>
+        )
+
+
+        break;
+      case 1:
+        contentLayout = (
+          <CourseComponent
+              height="match_parent"
+              root="true"
+              width="match_parent"
+              response = {data} />
+        )
+
+        break;
+      case 2:
+        contentLayout = (<ResourceComponent
+                  showScreen = {this.props.showScreen}
+                  response = {data} 
+                  root="true"
+                  height="match_parent"
+                  width="match_parent"/>)
+
+        break;
+      case 3:
+        contentLayout = (
+          <CommunityComponent
+            height="match_parent"
+            root="true"
+            width="match_parent"
+            response = {data} />
+        )
+
+        break;
+      case 4:
+        contentLayout = (
+          <ProfileComponent
+            height="match_parent"
+            root="true"
+            width="match_parent"
+            response = {data} />
+        )
+        break;
+
+      default:
         contentLayout = (<LinearLayout
                   height="match_parent"
                   root="true"
@@ -153,114 +207,22 @@ class HomeScreen extends View {
 
         break;
     }
-    jso.push({ view: this.getView(contentLayout.render()), value: "", viewType: 0 });
-    if (shouldBeModified) {
-      console.log("[REPLACING ui at index ]\t\t", parseInt(this.currentViewPagerIndex[0]))
-      JBridge.replaceViewPagerItem(parseInt(this.currentViewPagerIndex[0]), JSON.stringify(jso));
-    } else {
-      console.log("GOT SAME DATA, not modifying")
-    }
+    tmp = (
+      <ContentLoadingComponent
+              height="match_parent"
+              width="match_parent"
+              root="true"
+              contentLayout={contentLayout}/>)
+
+
+    this.replaceChild(this.idSet.viewPagerContainer, tmp.render(), 0);
+
+
   }
 
   afterRender = () => {
-
-    var tabData = [];
-    var jso = [];
-    var tmp;
-    this.color = "#123123"
-    var contentLayout;
-    var tabItems = this.data.map((item, index) => {
-      switch (index) {
-        case 0:
-          contentLayout = (
-            <HomeComponent
-                recommendedData={this.recommendedData}
-                recommendedimageUrls={this.recommendedimageUrls}
-                menuData={this.menuData}
-                todoData = {this.todoData}
-                feedData = {this.feedData}/>
-          )
-
-          tmp = (
-            <ContentLoadingComponent
-              height="match_parent"
-              width="match_parent"
-              contentLayout={contentLayout}/>)
-          break;
-        case 1:
-          contentLayout = (
-            <CourseComponent/>
-            )
-          tmp = (
-            <ContentLoadingComponent
-              height="match_parent"
-              width="match_parent"
-              contentLayout={contentLayout}/>)
-          break;
-        case 2:
-          contentLayout = (<ResourceComponent
-                  showScreen = {this.props.showScreen}
-                  height="match_parent"
-                  width="match_parent"/>)
-          tmp = (
-            <ContentLoadingComponent
-              height="match_parent"
-              width="match_parent"
-              />)
-          break;
-        case 3:
-          contentLayout = (
-            <CommunityComponent/>
-          )
-
-          tmp = (
-            <ContentLoadingComponent
-            height="match_parent"
-            width="match_parent"
-            contentLayout={contentLayout}/>)
-          break;
-        case 4:
-          contentLayout = (
-            <ProfileComponent/>
-          )
-
-          tmp = (
-            <ContentLoadingComponent
-            height="match_parent"
-            width="match_parent"
-            contentLayout={contentLayout}/>)
-          break;
-
-        default:
-          contentLayout = (<LinearLayout
-                  height="match_parent"
-                  root="true"
-                  width="match_parent">
-                    <TextView
-                      text=""
-                      background={this.color}
-                      color="#ffffff"
-                      height="match_parent"
-                      width="match_parent"
-                      gravity="center" />
-                </LinearLayout>)
-          tmp = (
-            <ContentLoadingComponent
-              height="match_parent"
-              width="match_parent"
-              contentLayout={contentLayout}/>)
-          break;
-      }
-      jso.push({ view: this.getView(tmp.render()), value: "", viewType: 0 });
-      tabData.push({ value: item })
-    });
-
-    var callback = callbackMapper.map((params) => {
-      this.handleViewPagerAction([params[0]])
-
-    });
-
-    JBridge.viewPagerAdapter(this.idSet.viewPagerContainer, JSON.stringify(jso), JSON.stringify(tabData), callback);
+    this.currentPageIndex = 0;
+    this.handleBottomNavBarAction(0);
 
 
   }
@@ -269,7 +231,7 @@ class HomeScreen extends View {
     window.__changePureScriptFlow();
     var eventAction;
 
-    switch (parseInt(this.currentViewPagerIndex[0])) {
+    switch (this.currentPageIndex) {
       case 0:
         eventAction = { tag: "dummyFlow" };
         break;
@@ -289,24 +251,21 @@ class HomeScreen extends View {
         eventAction = { tag: "dummyFlow" };
         break;
     }
-    console.log("--------->VIEWPAGER TRIGGERS ", eventAction, "ON INDEX", parseInt(this.currentViewPagerIndex[0]));
+    console.log("--------->VIEWPAGER TRIGGERS ", eventAction, "ON INDEX", this.currentPageIndex);
 
     // this.state = window.__ObjectAssign({}, this.state, eventAction);
 
     window.__runDuiCallback(eventAction);
   }
 
-  handleViewPagerAction = (index) => {
-    this.currentViewPagerIndex = index;
+  handleBottomNavBarAction = (index) => {
+    this.currentPageIndex = index;
     console.log("MODIFIED currentViewPagerIndex:\n\n\n\n\t\t ", index)
     this.setupDuiCallback();
     this.bNavBar.handleNavigationChange(index);
+    this.switchContent(index)
   }
 
-  handleBottomNavBarAction = (index) => {
-    this.currentViewPagerIndex = index;
-    JBridge.switchToViewPagerIndex(index + "");
-  }
 
   getBottomNavBar = () => {
     this.bNavBar = (<BottomNavBar
@@ -327,9 +286,10 @@ class HomeScreen extends View {
         background={window.__Colors.WHITE}
         afterRender = {this.afterRender}
         height="match_parent">
-        <ViewPager
+        <LinearLayout
           height="0"
           weight="1"
+          root="true"
           id={this.idSet.viewPagerContainer}
           width="match_parent" />
 
