@@ -24,7 +24,8 @@ var SavedResources = require('../components/Sunbird/SavedResources');
 var ProfileActivityComponent = require('../components/Sunbird/ProfileActivityComponent');
 var ContentLoadingComponent = require('../components/Sunbird/ContentLoadingComponent');
 var FilterComponent = require('../components/Sunbird/FilterComponent');
-const FeedParams = require('../FeedParams');
+var CourseComponent = require('../components/Sunbird/CourseComponent');
+var FeedParams = require('../FeedParams');
 var debounce = require("debounce");
 window.R = require("ramda");
 
@@ -188,10 +189,9 @@ class HomeScreen extends View {
               contentLayout={contentLayout}/>)
           break;
         case 1:
-          contentLayout = (<ChooseCourseComponent
-                  showScreen = {this.handleCourseInfoClick}
-                  height="match_parent"
-                  width="match_parent" />)
+          contentLayout = (
+            <CourseComponent/>
+            )
           tmp = (
             <ContentLoadingComponent
               height="match_parent"
@@ -359,6 +359,11 @@ class HomeScreen extends View {
 }
 
 module.exports = Connector(HomeScreen);
+
+// <ChooseCourseComponent
+//                   showScreen = {this.handleCourseInfoClick}
+//                   height="match_parent"
+//                   width="match_parent" />
 //
 // <HomeComponent
 //     recommendedData={this.recommendedData}

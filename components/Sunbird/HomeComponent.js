@@ -27,7 +27,7 @@ class HomeComponent extends View {
 
     this.menuData = {
       url: [
-        { imageUrl: "ic_action_notification_blue" },
+        { imageUrl: "ic_notification_red" },
         { imageUrl: "ic_action_search" },
       ]
     }
@@ -175,6 +175,15 @@ class HomeComponent extends View {
       //JBridge.downloadFile(content.downloadUrl)
   }
 
+  getSpaceSeparator = () =>{
+    return (<LinearLayout
+             height="6"
+             orientation="vertical"
+             width="match_parent"
+             background={window.__Colors.WHITE_F2}/>)
+  }
+
+
 
 
 
@@ -192,6 +201,7 @@ class HomeComponent extends View {
             hint="Enter your search"
             invert="true"
             hideBack="true"
+            showAppIcon="true"
             onMenuItemClick={this.handleMenuClick}
             menuData={this.menuData}
             onSearch={this.handleSearch}/>
@@ -209,6 +219,9 @@ class HomeComponent extends View {
 
                     
                    <HomeTodoContainer/>
+
+                   {this.getSpaceSeparator()}
+
                    <HomeRecommendedContainer/>
 
 
@@ -247,6 +260,7 @@ class HomeComponent extends View {
     return this.layout.render();
   }
 }
+
 
 module.exports = HomeComponent;
 

@@ -14,7 +14,7 @@ var StarComponent = require('../Sunbird/StarComponent');
 var _this;
 
 
-class CardTodo extends View {
+class CourseProgressCard extends View {
   constructor(props, children) {
     super(props, children);
     _this=this;
@@ -63,7 +63,6 @@ class CardTodo extends View {
                 cornerRadius="4"
                 background={window.__Colors.BLACK}
                 alpha="0.50"/>
-
 
               <LinearLayout
                 width="200"
@@ -190,4 +189,4 @@ class CardTodo extends View {
   }
 }
 
-module.exports = CardTodo;
+module.exports = CourseProgressCard;

@@ -57,6 +57,7 @@ class ChooseCourseComponent extends View {
     console.log("window.__runDuiCallback( --->showCourseInfo)");
     var eventAction = { action: "showCourseInfo", type: "completed", values: data };
     this.state = window.__ObjectAssign({}, this.state, eventAction);
+    eventAction = {tag : homescreen}
     window.__runDuiCallback(this.state);
   }
 

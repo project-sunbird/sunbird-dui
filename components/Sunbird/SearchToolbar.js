@@ -194,7 +194,7 @@ class SearchToolbar extends View {
 
           <TextView
             height="match_parent"
-            width="120"
+            width="wrap_content"
             gravity="center_vertical"
             maxLines="1"
             margin="10,0,0,0"
@@ -221,6 +221,7 @@ class SearchToolbar extends View {
           </LinearLayout>)
 
   }
+
 
 
   getMenu = () => {

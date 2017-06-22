@@ -10,7 +10,7 @@ var Button = require('../Sunbird/Button');
 var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 var _this;
-var CardRecommended = require('../Sunbird/CardRecommended');
+var CourseCard = require('../Sunbird/CourseCard');
 var DownloadedCard = require('../Sunbird/DownloadedCard');
 
 
@@ -56,7 +56,7 @@ class HomeRecommendedContainer extends View {
   getRows = () =>{
     var rows = this.data.map((item,i) => {
         if(item.type == "course"){
-         return (<CardRecommended 
+         return (<CourseCard 
                  data={item}
                  onCourseClick = {this.handleCourseClick}
                  onCourseOpenClick = {this.handleCourseOpenClick}/>)

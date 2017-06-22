@@ -10,11 +10,10 @@ var Button = require('../Sunbird/Button');
 var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 var _this;
-var CourseProgressCard = require('../Sunbird/CourseProgressCard');
-var DownloadedCard = require('../Sunbird/DownloadedCard');
+var CourseCard = require('../Sunbird/CourseCard');
 
 
-class HomeTodoContainer extends View {
+class RecommendedCourses extends View {
   constructor(props, children) {
     super(props, children);
     _this=this;
@@ -26,14 +25,23 @@ class HomeTodoContainer extends View {
       [{
         "imageUrl":"https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
         "moduleText":"Organic Chemistry for Std VII",
-        "progress":"10",
-        "timeLeft":"20 hrs remaining",
+        "stars":"(4 stars)",
+        "votes":"(2,350 votes)",
+        "type":"course"
       },
       {
         "imageUrl":"https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
         "moduleText":"Organic Chemistry for Std VII",
-        "progress":"30",
-        "timeLeft":"20 hrs remaining",
+        "stars":"(4 stars)",
+        "votes":"(2,350 votes)",
+        "type":"course"
+      },
+      {
+        "imageUrl":"https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
+        "moduleText":"Organic Chemistry for Std VII",
+        "stars":"(4 stars)",
+        "votes":"(2,350 votes)",
+        "type":"course"
       }
       ];
     
@@ -45,12 +53,12 @@ class HomeTodoContainer extends View {
   }
 
   getRows = () =>{
-    var rows = this.data.map((item,i) => {   
-         return (<CourseProgressCard 
+    var rows = this.data.map((item,i) => {
+         return (<CourseCard 
                  data={item}
                  onCourseClick = {this.handleCourseClick}
                  onCourseOpenClick = {this.handleCourseOpenClick}/>)
-        
+                 
     });
 
     var layout = (<LinearLayout
@@ -76,19 +84,9 @@ class HomeTodoContainer extends View {
             <TextView
             width="wrap_content"
             height="wrap_content"
-            text="To-Do"
+            text="Recommended"
             style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
-            <ViewWidget
-            weight="1"
-            height="0"/>
-
-            <TextView
-            width="wrap_content"
-            height="wrap_content"
-            text="View all"
-            onClick={()=>{this.handleViewAllClick()}}
-            style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
 
             </LinearLayout>)
   }
@@ -110,10 +108,7 @@ class HomeTodoContainer extends View {
         console.log("resource open selected",resourceName);
     }
 
-    handleViewAllClick(){
-        this.props.onViewAllClick();
-    }
-
+   
   render() {
       this.layout = (
         <LinearLayout
@@ -148,4 +143,4 @@ class HomeTodoContainer extends View {
   }
 }
 
-module.exports = HomeTodoContainer;
+module.exports = RecommendedCourses;
