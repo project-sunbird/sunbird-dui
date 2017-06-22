@@ -209,23 +209,23 @@ class HomeScreen extends View {
               />)
           break;
         case 3:
-        contentLayout = (
-          <CommunityComponent/>
-        )
+          contentLayout = (
+            <CommunityComponent/>
+          )
 
-        tmp = (
-          <ContentLoadingComponent
+          tmp = (
+            <ContentLoadingComponent
             height="match_parent"
             width="match_parent"
             contentLayout={contentLayout}/>)
           break;
         case 4:
-        contentLayout = (
-          <ProfileComponent/>
-        )
+          contentLayout = (
+            <ProfileComponent/>
+          )
 
-        tmp = (
-          <ContentLoadingComponent
+          tmp = (
+            <ContentLoadingComponent
             height="match_parent"
             width="match_parent"
             contentLayout={contentLayout}/>)
@@ -280,7 +280,7 @@ class HomeScreen extends View {
         eventAction = { action: "startClassRoomFlow" };
         break;
       case 3:
-        eventAction = { tag: "dummyFlow" };
+        eventAction = { action: "showCommunity" };
         break;
       case 4:
         eventAction = { tag: "dummyFlow" };

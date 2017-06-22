@@ -11,24 +11,32 @@ var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callba
 var objectAssign = require('object-assign');
 
 var BottomNavBar = require("../components/Sunbird/BottomNavBar")
-
 var ChooseCourseComponent = require("../components/Sunbird/ChooseCourseComponent")
 var ClassRoomHomeComponent = require("../components/Sunbird/ClassRoomHomeComponent")
 var ResourceComponent = require("../components/Sunbird/ResourceComponent")
 var HomeComponent = require('../components/Sunbird/HomeComponent');
+var CommunityViewallList = require('../components/Sunbird/CommunityViewallList');
+var CommunityInfoComponent = require('../components/Sunbird/CommunityInfoComponent');
+var CommunityComponent = require('../components/Sunbird/CommunityComponent');
+var ProfileComponent = require('../components/Sunbird/ProfileComponent');
 var SavedResources = require('../components/Sunbird/SavedResources');
 var ProfileActivityComponent = require('../components/Sunbird/ProfileActivityComponent');
 var ContentLoadingComponent = require('../components/Sunbird/ContentLoadingComponent');
 var FilterComponent = require('../components/Sunbird/FilterComponent');
-const FeedParams = require('../FeedParams');
-
-
+var CourseComponent = require('../components/Sunbird/CourseComponent');
+var FeedParams = require('../FeedParams');
+var debounce = require("debounce");
 window.R = require("ramda");
 
 class HomeScreen extends View {
   constructor(props, children, state) {
     super(props, children, state);
     this.state = state;
+
+    this.handleBottomNavBarAction = debounce(this.handleBottomNavBarAction, 200);
+    //TODO : REVERT THIS LOGIC
+    JBridge.setInSharedPrefs("chooseCourse", "__failed");
+    JBridge.setInSharedPrefs("userResource", "__failed");
 
     this.setIds([
       "viewPagerContainer",
@@ -37,10 +45,10 @@ class HomeScreen extends View {
     this.currentViewPagerIndex = 0;
     this.setupDuiCallback();
     this.feedData = FeedParams.feedParams;
-  
+
     //tab data
     this.screenName = "HOME_SCREEN"
-    this.data = ["HOME", "COURSES", "RESOURCES", "FORUM", "PROFILE"];
+    this.data = ["HOME", "COURSES", "RESOURCES", "COMMUNITY", "PROFILE"];
     this.tabValues = [{
         name: "HOME",
         select: "1",
@@ -54,7 +62,7 @@ class HomeScreen extends View {
         select: "0",
         icon: "ic_notebook"
       }, {
-        name: "FORUM",
+        name: "COMMUNITY",
         select: "0",
         icon: "ic_chat"
       }, {
@@ -83,13 +91,14 @@ class HomeScreen extends View {
 
 
   handleStateChange = (state) => {
-    console.log("------------------ STATE CHANGE --->", state)
-      //MODIFIED STAE WILL COME HERE ( after api call)
-    console.log("CURR VP INDEX :", this.currentViewPagerIndex);
-    console.log("SERVER RESPONSE FROM STATE :", state.response);
+    this.currentViewPagerIndex[0] = isNaN(this.currentViewPagerIndex[0]) ? 0 : this.currentViewPagerIndex[0];
+
+    //console.log("RESULT RESPONSE FROM STATE :", state.response.status[1]);
+
+    var shouldBeModified = false;
     var contentLayout;
-    var jso = {};
-    switch (this.currentViewPagerIndex) {
+    var jso = [];
+    switch (parseInt(this.currentViewPagerIndex[0])) {
       case 0:
         contentLayout = (
           <HomeComponent
@@ -98,19 +107,27 @@ class HomeScreen extends View {
               menuData={this.menuData}
               todoData = {this.todoData}
               feedData = {this.feedData}/>
-              )
+        )
 
         break;
       case 1:
+        shouldBeModified = (JBridge.getFromSharedPrefs("chooseCourse") != JSON.stringify(state.response.status[1]))
+        if (shouldBeModified) {
+          JBridge.setInSharedPrefs("chooseCourse", JSON.stringify(state.response.status[1]))
+        }
         contentLayout = (<ChooseCourseComponent
-                  showScreen = {this.handleCourseInfoClick}
+                  response = {state.response.status[1]}
                   height="match_parent"
                   width="match_parent" />)
 
         break;
       case 2:
+        shouldBeModified = (JBridge.getFromSharedPrefs("userResource") != JSON.stringify(state.response.status[1]))
+        if (shouldBeModified) {
+          JBridge.setInSharedPrefs("userResource", JSON.stringify(state.response.status[1]))
+        }
         contentLayout = (<ResourceComponent
-                  showScreen = {this.props.showScreen}
+                  response = {state.response.status[1]}
                   height="match_parent"
                   width="match_parent"/>)
 
@@ -120,6 +137,7 @@ class HomeScreen extends View {
         break;
 
       default:
+        console.log("[handleStateChange]\t\t MATCHED WITH default")
         contentLayout = (<LinearLayout
                   height="match_parent"
                   root="true"
@@ -135,11 +153,13 @@ class HomeScreen extends View {
 
         break;
     }
-    //JBridge.push({ view: this.getView(contentLayout.render()), value: "", viewType: 0 });
-
-    //replace the viewPager at the index with the layout, and data from response
-    JBridge.replaceViewPagerItem(this.currentViewPagerIndex, jso)
-
+    jso.push({ view: this.getView(contentLayout.render()), value: "", viewType: 0 });
+    if (shouldBeModified) {
+      console.log("[REPLACING ui at index ]\t\t", parseInt(this.currentViewPagerIndex[0]))
+      JBridge.replaceViewPagerItem(parseInt(this.currentViewPagerIndex[0]), JSON.stringify(jso));
+    } else {
+      console.log("GOT SAME DATA, not modifying")
+    }
   }
 
   afterRender = () => {
@@ -153,23 +173,14 @@ class HomeScreen extends View {
       switch (index) {
         case 0:
           contentLayout = (
-<<<<<<< HEAD
             <HomeComponent
-            recommendedData={this.recommendedData}
-            recommendedimageUrls={this.recommendedimageUrls}
-            menuData={this.menuData}
-            todoData = {this.todoData}
-            feedData = {this.feedData}/>
-            )
-=======
-                  <HomeComponent
-                            recommendedData={this.recommendedData}
-                            recommendedimageUrls={this.recommendedimageUrls}
-                            menuData={this.menuData}
-                            todoData = {this.todoData}
-                            feedData = {this.feedData}/>)
->>>>>>> 6cf79d99bd83bc7b0e3b0b99532ae4e3f479802e
-              
+                recommendedData={this.recommendedData}
+                recommendedimageUrls={this.recommendedimageUrls}
+                menuData={this.menuData}
+                todoData = {this.todoData}
+                feedData = {this.feedData}/>
+          )
+
           tmp = (
             <ContentLoadingComponent
               height="match_parent"
@@ -177,10 +188,9 @@ class HomeScreen extends View {
               contentLayout={contentLayout}/>)
           break;
         case 1:
-          contentLayout = (<ChooseCourseComponent
-                  showScreen = {this.handleCourseInfoClick}
-                  height="match_parent"
-                  width="match_parent" />)
+          contentLayout = (
+            <CourseComponent/>
+            )
           tmp = (
             <ContentLoadingComponent
               height="match_parent"
@@ -196,13 +206,29 @@ class HomeScreen extends View {
             <ContentLoadingComponent
               height="match_parent"
               width="match_parent"
-              contentLayout={contentLayout}/>)
+              />)
           break;
         case 3:
-          tmp = (<ContentLoadingComponent
-                    height="match_parent"
-                    width="match_parent">
-                </ContentLoadingComponent>)
+          contentLayout = (
+            <CommunityComponent/>
+          )
+
+          tmp = (
+            <ContentLoadingComponent
+            height="match_parent"
+            width="match_parent"
+            contentLayout={contentLayout}/>)
+          break;
+        case 4:
+          contentLayout = (
+            <ProfileComponent/>
+          )
+
+          tmp = (
+            <ContentLoadingComponent
+            height="match_parent"
+            width="match_parent"
+            contentLayout={contentLayout}/>)
           break;
 
         default:
@@ -245,42 +271,45 @@ class HomeScreen extends View {
 
     switch (parseInt(this.currentViewPagerIndex[0])) {
       case 0:
+        eventAction = { tag: "dummyFlow" };
+        break;
       case 1:
-        eventAction = { action: "startCourseFlow" };
+        eventAction = { tag: "startCourseFlow" };
         break;
       case 2:
         eventAction = { action: "startClassRoomFlow" };
         break;
       case 3:
-        eventAction = { action: "startClassRoomFlow" };
+<<<<<<< HEAD
+        eventAction = { tag: "dummyFlow" };
+=======
+        eventAction = { action: "showCommunity" };
+>>>>>>> communityWithApi
         break;
       case 4:
-        eventAction = { action: "startClassRoomFlow" };
+        eventAction = { tag: "dummyFlow" };
         break;
       default:
-        eventAction = { action: "startCourseFlow" };
+        eventAction = { tag: "dummyFlow" };
         break;
     }
-    console.log("--------->VIEWPAGER TRIGGERS ", eventAction, "ON INDEX", this.currentViewPagerIndex[0]);
+    console.log("--------->VIEWPAGER TRIGGERS ", eventAction, "ON INDEX", parseInt(this.currentViewPagerIndex[0]));
+
+    // this.state = window.__ObjectAssign({}, this.state, eventAction);
+
     window.__runDuiCallback(eventAction);
   }
 
   handleViewPagerAction = (index) => {
     this.currentViewPagerIndex = index;
+    console.log("MODIFIED currentViewPagerIndex:\n\n\n\n\t\t ", index)
     this.setupDuiCallback();
     this.bNavBar.handleNavigationChange(index);
   }
 
   handleBottomNavBarAction = (index) => {
+    this.currentViewPagerIndex = index;
     JBridge.switchToViewPagerIndex(index + "");
-
-    // window.__SNACKBAR.setAction({
-      //   text: "PAGE " + index,
-      //   status: "success",
-      //   actionText: "RETRY"
-      // }, () => { console.log("CLICKED ACTION") });
-      // window.__SNACKBAR.show(true);
-
   }
 
   getBottomNavBar = () => {
@@ -291,7 +320,7 @@ class HomeScreen extends View {
     return this.bNavBar;
   }
 
-  
+
 
   render() {
     this.layout = (
@@ -332,15 +361,16 @@ class HomeScreen extends View {
   }
 }
 
-
-
-
-
 module.exports = Connector(HomeScreen);
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 6cf79d99bd83bc7b0e3b0b99532ae4e3f479802e
-
-
+// <ChooseCourseComponent
+//                   showScreen = {this.handleCourseInfoClick}
+//                   height="match_parent"
+//                   width="match_parent" />
+//
+// <HomeComponent
+//     recommendedData={this.recommendedData}
+//     recommendedimageUrls={this.recommendedimageUrls}
+//     menuData={this.menuData}
+//     todoData = {this.todoData}
+//     feedData = {this.feedData}/>
