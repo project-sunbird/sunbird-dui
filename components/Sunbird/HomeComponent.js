@@ -237,8 +237,20 @@ class HomeComponent extends View {
 
   handleRecommendedClick = (content) => {
     console.log("Recommended clicked :", content.downloadUrl)
-    JBridge.downloadFile("https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/ecar_files/do_11218758465395097616/verbs_1487744032502_do_11218758465395097616_1.0.ecar")
+    // JBridge.downloadFile("https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/ecar_files/do_11218758465395097616/verbs_1487744032502_do_11218758465395097616_1.0.ecar")
       //JBridge.downloadFile(content.downloadUrl)
+    
+
+    var callback = callbackMapper.map((params) => {
+      this.getLocalData([params[0]])
+      console.log("darta from android",params);
+    });
+
+    JBridge.getAllLocalContent(callback);
+
+  }
+  getLocalData = (data) => {
+    console.log("data from android ",JSON.parse(data));
   }
 
 
