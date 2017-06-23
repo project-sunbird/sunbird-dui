@@ -11,7 +11,7 @@ module.exports = function(action, payload, state) {
   switch (action) {
     case "InitScreen":
       localState.isInit = true;
-      localState.currScreen = "HomeScreen";
+      localState.currScreen = "EnrolledCourseScreen";
       break;
 
     case "HomeScreen":
@@ -32,6 +32,10 @@ module.exports = function(action, payload, state) {
     case "COURSE_ACTIVITY_SCREEN":
       localState.isInit = false;
       localState.currScreen = "COURSE_ACTIVITY_SCREEN";
+      break;
+    case "EnrolledCourseScreen":
+      localState.isInit = false;
+      localState.currScreen = "EnrolledCourseScreen";
       break;
     case "EXPLORE_SCREEN":
       localState.isInit = false;

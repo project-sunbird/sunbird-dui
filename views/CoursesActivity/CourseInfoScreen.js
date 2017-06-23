@@ -37,9 +37,9 @@ class CourseInfoScreen extends View {
     }
 
     this.data = {
-      courseName: this.state.values.courseName,
+      courseName: this.state.values.courseName || "RANDOM VAL",
       courseDesc: this.state.values.courseDesc || "This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced",
-      competedCount: this.state.values.competedCount,
+      competedCount: this.state.values.competedCount || "10",
       totalCount: "150",
       courseBrief: [{
         count: "50",

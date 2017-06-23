@@ -105,7 +105,7 @@ exports.textStyle = {
           textSize: Font.fontSize.FONT_14,
           fontStyle: Font.fontStyle.BOLD
         },
-        REGULAR_BLACK:{
+        REGULAR_BLACK: {
           color: Colors.PRIMARY_BLACK,
           textSize: Font.fontSize.FONT_14,
           fontStyle: Font.fontStyle.REGULAR
@@ -166,7 +166,7 @@ exports.textStyle = {
       textSize: Font.fontSize.FONT_12,
       fontStyle: Font.fontStyle.SEMIBOLD
     },
-    SEMI_BLUE:{
+    SEMI_BLUE: {
       color: Colors.PRIMARY_DARK,
       textSize: Font.fontSize.FONT_12,
       fontStyle: Font.fontStyle.SEMIBOLD
@@ -198,6 +198,11 @@ exports.textStyle = {
       textSize: Font.fontSize.FONT_12,
       fontStyle: Font.fontStyle.BOLD
     },
+    WHITE: {
+      color: Colors.WHITE,
+      textSize: Font.fontSize.FONT_12,
+      fontStyle: Font.fontStyle.BOLD
+    },
     DEFAULT: {
       color: Colors.PRIMARY_BLACK,
       textSize: Font.fontSize.FONT_12,
@@ -216,27 +221,27 @@ exports.textStyle = {
       fontStyle: Font.fontStyle.SEMIBOLD
     }
   },
-  FILTER:{
-      REGULAR_BLUE: {
+  FILTER: {
+    REGULAR_BLUE: {
       color: Colors.PRIMARY_ACCENT,
       textSize: Font.fontSize.FONT_12,
       fontStyle: Font.fontStyle.REGULAR
-      },
-      REGULAR_BLACK: {
+    },
+    REGULAR_BLACK: {
       color: Colors.PRIMARY_BLACK,
       textSize: Font.fontSize.FONT_12,
       fontStyle: Font.fontStyle.REGULAR
-      }
+    }
   },
-  CLICKABLE:{
-      BLUE_SEMI: {
+  CLICKABLE: {
+    BLUE_SEMI: {
       color: Colors.PRIMARY_ACCENT,
       textSize: Font.fontSize.FONT_14,
       fontStyle: Font.fontStyle.SEMIBOLD
-      }
+    }
   },
-  SECTION:{
-    TITLE:{
+  SECTION: {
+    TITLE: {
       color: Colors.PRIMARY_ACCENT,
       textSize: Font.fontSize.FONT_14,
       fontStyle: Font.fontStyle.SEMIBOLD

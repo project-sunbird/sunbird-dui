@@ -17,6 +17,7 @@ const HomeScreen = require("../views/HomeScreen");
 //Course or Learn
 const CourseInfoScreen = require("../views/CoursesActivity/CourseInfoScreen");
 const CourseActivityScreen = require("../views/CoursesActivity/CourseActivityScreen");
+const EnrolledCourseScreen = require("../views/CoursesActivity/EnrolledCourseScreen");
 const CourseQuizActivityScreen = require("../views/CoursesActivity/CourseQuizActivityScreen");
 const ExploreScreen = require("../views/CoursesActivity/ExploreScreen");
 //Resource
@@ -48,6 +49,9 @@ var determineScreen = (screenName, state) => {
       break;
     case "COURSE_ACTIVITY_SCREEN":
       screen = new(CourseActivityScreen(dispatcher, RootScreenActions))(null, null, state);
+      break;
+    case "EnrolledCourseScreen":
+      screen = new(EnrolledCourseScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
     case "COURSE_QUIZ_ACTIVITY_SCREEN":
       screen = new(CourseQuizActivityScreen(dispatcher, RootScreenActions))(null, null, state);
@@ -248,7 +252,7 @@ module.exports = {
     dispatcher("SCREEN", "INIT_UI", initialState);
   },
   changeScreen: (screen, state) => {
-    console.log("container",state)
+    console.log("container", state)
     dispatcher("SCREEN", screen, state);
   }
 }

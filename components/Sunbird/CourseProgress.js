@@ -9,7 +9,6 @@ var RelativeLayout = require("@juspay/mystique-backend").androidViews.RelativeLa
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 
-var HorizontalProgressBar = require("../Sunbird/HorizontalProgressBar");
 
 
 class CourseProgress extends View {
@@ -19,8 +18,12 @@ class CourseProgress extends View {
       "completedTextView"
     ]);
     this.displayName = "course_progress"
-    this.competedCount = this.props.content != undefined ? this.props.content.competedCount : "25";
-    this.totalCount = this.props.content != undefined ? this.props.content.totalCount : "150";
+
+    var curValue = this.props.content.competedCount;
+    var totalValue = this.props.content.totalCount;
+
+    this.percentVal = parseFloat(curValue / totalValue);
+    this.percentVal *= 100;
 
   }
 
@@ -29,31 +32,25 @@ class CourseProgress extends View {
             width="match_parent"
             margin="0,0,0,12">
                 <TextView
-                  style={window.__TextStyle.textStyle.HINT.SEMI}
+                  style={window.__TextStyle.textStyle.HINT.REGULAR}
                   text={"Your Progress: "}/>
                 <TextView
-                  style={window.__TextStyle.textStyle.HINT.SEMI}
+                  style={window.__TextStyle.textStyle.HINT.REGULAR}
                   id ={this.idSet.completedTextView}
-                  text={this.competedCount}/>
+                  text={this.percentVal.toFixed(2)}/>
                 <TextView
-                  style={window.__TextStyle.textStyle.HINT.SEMI}
-                  text={" / "}/>  
-                 <TextView
-                  style={window.__TextStyle.textStyle.HINT.SEMI}
-                  text={this.totalCount}/> 
+                  style={window.__TextStyle.textStyle.HINT.REGULAR}
+                  text={" %"}/> 
           </LinearLayout>)
   }
 
-  updateProgressBar = (pStatus) => {
+  updateProgress = (pStatus) => {
     this.competedCount = pStatus
     var cmd = this.set({
       id: this.idSet.completedTextView,
       text: pStatus
     })
     Android.runInUI(cmd, 0);
-    var ProgressBar = this.find('horizontal_progress_card')[0];
-    ProgressBar.updateProgressBar(pStatus);
-
 
   }
 
@@ -61,6 +58,27 @@ class CourseProgress extends View {
     this.props.onResumeClick();
   }
 
+
+  getResumeButton = () => {
+    return (<LinearLayout
+          width="wrap_content"
+          height="wrap_content"
+          background={window.__Colors.PRIMARY_ACCENT}
+          cornerRadius="2"
+          gravity="center"
+        >
+          <TextView
+          
+          width="wrap_content"
+          height="wrap_content"
+          text="RESUME"
+          gravity="center"
+          onClick={this.handleResumeClick}
+          style={window.__TextStyle.textStyle.TABBAR.WHITE}
+          />
+
+        </LinearLayout>)
+  }
 
 
 
@@ -85,21 +103,16 @@ class CourseProgress extends View {
 
             {this.getProgressStatus()}
 
-            <HorizontalProgressBar 
-              currentProgress={this.competedCount}
-              totalProgress = {this.totalCount}
-              width="match_parent"
-              height="wrap_content"/>
+           
          
         </LinearLayout>
-         <TextView
-          width="wrap_content"
+        <LinearLayout
           height="match_parent"
-          gravity="center"
-          text="RESUME"
-          onClick={this.handleResumeClick}
           margin="24,0,0,0"
-          style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
+          window="wrap_content"
+          gravity="center"> 
+           {this.getResumeButton()}
+         </LinearLayout>
       </LinearLayout>
     )
 
