@@ -11,9 +11,7 @@ var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 
 var SearchToolbar = require('../Sunbird/SearchToolbar');
-var NewCourses = require('../Sunbird/NewCourses');
-var PopularCourses = require('../Sunbird/PopularCourses');
-var RecommendedCourses = require('../Sunbird/RecommendedCourses');
+var CourseContainer = require('../Sunbird/CourseContainer');
 var CommunityViewallList = require('../Sunbird/CommunityViewallList');
 var CommunityInfoComponent = require('../Sunbird/CommunityInfoComponent');
 var _this;
@@ -71,15 +69,19 @@ class CourseComponent extends View {
                   background={window.__Colors.WHITE}
                   orientation="vertical">
 
-                  <NewCourses/>
+                  
+                  <CourseContainer
+                    title="New"/>
 
                   {this.getSpaceSeparator()}
 
-                  <PopularCourses/>
+                  <CourseContainer
+                    title="Popular"/>
 
                   {this.getSpaceSeparator()}
 
-                  <RecommendedCourses/>
+                  <CourseContainer
+                    title="Recommended"/>
 
                 </LinearLayout>
 
