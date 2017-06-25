@@ -31,6 +31,7 @@ exports["ui'"] = function(err) {
            return function() {
             var screenName = state.constructor.name;
             console.log("dummyEvents",dummyEvents)
+            console.log("screenName",screenName)
             window.__duiShowScreen(callback, {screen:screenName});
             var noAction = false;  
             if (noAction) {
@@ -73,30 +74,31 @@ exports["showUI'"] = function(callback) {
 };
 
 
-exports["ui'"] = function(err) {
-  return function(callback) {
-    return function(state) {
-        return function(dummyEvents) {
-           return function() {
-            var screenName = state.constructor.name;
-            console.log("dummyEvents",dummyEvents)
-            window.__duiShowScreen(callback, {screen:screenName});
-            var noAction = false;  
-            if (noAction) {
-            setTimeout(function() {
-              callback(state)();
-            }, 1000);
-          } else {
-            window.handleBackPress = function() {
-              state.event = 'goBack';
-              callback(state)();
-            };
-          }          
-          };
-       };
-    };
-  };
-};
+// exports["ui'"] = function(err) {
+//   return function(callback) {
+//     return function(state) {
+//         return function(dummyEvents) {
+//            return function() {
+//             var screenName = state.constructor.name;
+//             console.log("dummyEvents",dummyEvents)
+//             window.__duiShowScreen(callback, {screen:screenName});
+//             var noAction = false;  
+//             if (noAction) {
+//             setTimeout(function() {
+//               callback(state)();
+//             }, 1000);
+//           } else {
+//             window.handleBackPress = function() {
+//               state.event = 'goBack';
+//               callback(state)();
+//             };
+//           }          
+//           };
+//        };
+//     };
+//   };
+// };
+
 
 exports["callbackListner'"] = function(callback) {
   return function(errCallback) {
@@ -120,6 +122,8 @@ exports["callbackListner'"] = function(callback) {
     };
   };
 };
+
+
 exports["sendUpdatedState'"] = function(success) {
   return function(error) {
     return function(state) {

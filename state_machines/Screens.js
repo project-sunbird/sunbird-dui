@@ -62,14 +62,6 @@ module.exports = function(action, payload, state) {
       localState.currScreen = "COMMUNITY_INFO_SCREEN";
       break;
 
-    case "CLASSROOM_CONTENT_SCREEN":
-      localState.isInit = false;
-      localState.currScreen = "CLASSROOM_CONTENT_SCREEN";
-      break;
-
-
-
-
     case "GO_BACK":
       break;
 

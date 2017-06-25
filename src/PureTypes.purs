@@ -5,8 +5,6 @@ import Prelude (bind, ($), (<>), pure, discard)
 import Control.Monad.Except.Trans (runExceptT)
 import Utils
 import Control.Monad.Eff (Eff)
-import Flows.CourseActivity (courseActivityFlow)
-import Flows.ClassRoomActivityFlow (classRoomActivityFlow)
 import Control.Monad.Aff (launchAff)
 import Control.Monad.Eff.Console
 import Control.Monad.Eff.Class(liftEff)
@@ -18,16 +16,17 @@ import Prelude
 
 
 data HomeScreen = HomeScreen 
-data HomeScreenAction = ShowHome | StartCourseFlow | StartClassRoomFlow | ShowForum
+data HomeScreenAction = ShowHome {name::String} | StartCourseFlow | StartResourceFlow | StartCommunityFlow | StartProfileFlow
 
 data InitScreen = InitScreen 
-data InitScreenAction = ShowInit | StartInit
+data InitScreenAction = ShowInit  | StartInit
 
 data ResourceScreen = ResourceScreen 
 data ResourceScreenAction = DummyResourceAction
 
+
 instance homeScreen :: UIScreen HomeScreen HomeScreenAction where
-  generateMockEvents _ = [ShowHome ,StartCourseFlow]
+  generateMockEvents _ = [ShowHome {name:"Kiran"} ,StartCourseFlow]
   ui x = genericUI x (generateMockEvents x :: Array HomeScreenAction)
 
 derive instance genericHomeScreenAction  :: Generic HomeScreenAction _

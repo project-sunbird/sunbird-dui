@@ -15,8 +15,8 @@ window.R = require("ramda");
 
 var SearchToolbar = require('../Sunbird/SearchToolbar');
 
-var TodoContainer = require('../Sunbird/TodoContainer');
-var RecommendedContainer = require('../Sunbird/RecommendedContainer');
+
+
 var HomeRecommendedContainer = require('../Sunbird/HomeRecommendedContainer');
 var HomeTodoContainer = require('../Sunbird/HomeTodoContainer');
 

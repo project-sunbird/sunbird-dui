@@ -96,6 +96,7 @@ if (typeof window !== "undefined") {
 }
 
 const duiShowScreen = (callback, state) => {
+  console.log("state in indexjs",state.screen);
   window.__duiCb = callback;
   if (state.screen != window.__CURR_SCREEN) {
     var stackLen = window.__SCREEN_STACK.length;
@@ -110,13 +111,14 @@ const duiShowScreen = (callback, state) => {
       containers.changeScreen(state.screen, state);
     }
   } else {
-    window.__CACHED_SCREENS[__CURR_SCREEN].screen.onPop(state);
+    //window.__CACHED_SCREENS[__CURR_SCREEN].screen.onPop(state);
   }
 };
 
 const setCallback = (callback, state) => {
   window.__duiCb = callback;
 };
+
 
 
 window.otpRules = {
@@ -130,8 +132,10 @@ window.otpRules = {
 };
 
 const runDuiCallback = (state) => {
+  console.log("state in runDuiCallback",state);
   let callback = window.__duiCb;
-  callback ? callback(state)() : state;
+  console.log("callback is ",callback,state,JSON.stringify(state))
+  callback ? callback(JSON.stringify(state))() : JSON.stringify(state);
 };
 
 let purescriptInit = () => {
