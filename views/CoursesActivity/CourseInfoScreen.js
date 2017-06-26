@@ -36,10 +36,12 @@ class CourseInfoScreen extends View {
       ]
     }
 
+
+
     this.data = {
-      courseName: this.state.values.courseName || "RANDOM VAL",
-      courseDesc: this.state.values.courseDesc || "This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced",
-      competedCount: this.state.values.competedCount || "10",
+      courseName: this.state.values ? this.state.values.courseName : "RANDOM VAL",
+      courseDesc: this.state.values ? this.state.values.courseDesc : "This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced",
+      competedCount: this.state.values ? this.state.values.competedCount : "10",
       totalCount: "150",
       courseBrief: [{
         count: "50",
@@ -53,6 +55,7 @@ class CourseInfoScreen extends View {
       }],
       chapterList: [{
         chapterName: "Progression",
+        chapterDuration: "30",
         chapterFinished: "3",
         chapterContent: [{
           name: "Arithemetic Progression",
@@ -70,6 +73,7 @@ class CourseInfoScreen extends View {
       }, {
         chapterName: "Scientific Notatios",
         chapterFinished: "2",
+        chapterDuration: "50",
         chapterContent: [{
           name: "Arithemetic Progression",
           type: "PLAY",
@@ -90,6 +94,7 @@ class CourseInfoScreen extends View {
       }, {
         chapterName: "Progression",
         chapterFinished: "0",
+        chapterDuration: "10",
         chapterContent: [{
           name: "Arithemetic Progression",
           type: "Chapter",
@@ -157,6 +162,7 @@ class CourseInfoScreen extends View {
                   content={this.data}
                   onItemSelected={this.handleItemSelect}
                   enrolledStatus={true}
+                  brief={true}
                   width="match_parent"/>
 
 
@@ -193,7 +199,7 @@ class CourseInfoScreen extends View {
 
 
   render() {
-    var buttonList = ["ENROLL NOW"];
+    var buttonList = ["DOWNLOAD THIS COURSE"];
     this.layout = (
       <LinearLayout
         root="true"
@@ -238,6 +244,7 @@ class CourseInfoScreen extends View {
                  <CourseCurriculum
                   height="match_parent"
                   margin="0,12,0,0"
+                  brief={true}
                   content= {this.data}
                   width="match_parent"/>
 
