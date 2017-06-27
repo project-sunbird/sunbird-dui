@@ -30,16 +30,17 @@ class CourseInfoScreen extends View {
     this.screenName = "COURSE_INFO_SCREEN"
       // console.log("GOT STATE", JSON.stringify(state))
       // window.__RootScreen.snackBar("Hellllllo")
-    this.menuData = {
+     this.menuData = {
       url: [
-        { imageUrl: "ic_action_search", title: "hello" }
+        { imageUrl: "ic_action_bookmark" },
+        { imageUrl: "ic_action_overflow"}
       ]
     }
 
 
 
     this.data = {
-      courseName: this.state.values ? this.state.values.courseName : "RANDOM VAL",
+      courseName: this.state.values ? this.state.values.courseName : "",
       courseDesc: this.state.values ? this.state.values.courseDesc : "This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced",
       competedCount: this.state.values ? this.state.values.competedCount : "10",
       totalCount: "150",
@@ -197,6 +198,23 @@ class CourseInfoScreen extends View {
     window.__runDuiCallback({ action: "showMainFlow" });
   }
 
+  getCurriculumnBrief = () => {
+
+    var items = this.data.courseBrief.map((item, i) => {
+      return (<TextView
+                style={window.__TextStyle.textStyle.HINT.REGULAR} 
+                text ={(i==0?"":" | ") +item.count + " "+item.type}/>)
+    })
+
+    return (
+      <LinearLayout
+        margin="0,0,0,0"
+        height="wrap_content"
+        width="match_parent">
+        {items}
+      </LinearLayout>);
+  }
+
 
   render() {
     var buttonList = ["DOWNLOAD THIS COURSE"];
@@ -214,6 +232,7 @@ class CourseInfoScreen extends View {
           menuData={this.menuData}
           onBackPress={this.handleBackPress}
           width="match_parent"
+          invert="true"
           showMenu="true"/>
         <LinearLayout
           height="match_parent"
@@ -224,26 +243,39 @@ class CourseInfoScreen extends View {
               height="0"
               weight="1"
               width="match_parent"
-
               fillViewPort="true">
+
               <LinearLayout
                 height="match_parent"
-
                 width="match_parent"
                 padding="16,24,16,16"
                 orientation="vertical">
+
+                <TextView
+                  width="wrap_content"
+                  height="wrap_content"
+                  margin="0,0,0,7"
+                  text="Organic Chemistry Reactions"
+                  style={window.__TextStyle.textStyle.HEADING.DARK}
+                  />
 
                 <CropParagraph
                   height="wrap_content"
                   margin="0,0,0,12"
                   width="match_parent"
-                  headText={"About the course"}
                   contentText={this.data.courseDesc}
                   />
 
+                <TextView
+                  margin="0,0,0,4"
+                  text="Curriculum" 
+                  style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
+
+                  {this.getCurriculumnBrief()}  
+
                  <CourseCurriculum
                   height="match_parent"
-                  margin="0,12,0,0"
+                  margin="0,0,0,12"
                   brief={true}
                   content= {this.data}
                   width="match_parent"/>
