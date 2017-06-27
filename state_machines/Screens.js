@@ -11,10 +11,14 @@ module.exports = function(action, payload, state) {
   switch (action) {
     case "InitScreen":
       localState.isInit = true;
-      localState.currScreen = "UserScreen";
+      localState.currScreen = "SplashScreen";
       // localState.currScreen = "COURSE_DETAIL_SCREEN";
       break;
 
+    case "SplashScreen":
+      localState.isInit = false
+      localState.currScreen = "SplashScreen";
+      break;
     case "UserScreen":
       localState.isInit = false
       localState.currScreen = "UserScreen";
@@ -29,9 +33,19 @@ module.exports = function(action, payload, state) {
       localState.currScreen = "ResourceScreen";
       break;
 
-    case "COURSE_INFO_SCREEN":
+    case "CommunityInfoScreen":
       localState.isInit = false;
-      localState.currScreen = "COURSE_INFO_SCREEN";
+      localState.currScreen = "CommunityInfoScreen";
+      break;
+
+    case "CommunityViewAllScreen":
+      localState.isInit = false;
+      localState.currScreen = "CommunityViewAllScreen";
+      break;
+
+    case "CourseDetailScreen":
+      localState.isInit = false;
+      localState.currScreen = "CourseDetailScreen";
       break;
 
     case "COURSE_ACTIVITY_SCREEN":
@@ -62,22 +76,10 @@ module.exports = function(action, payload, state) {
       localState.currScreen = "PROFILE_ACTIVITY_SCREEN";
       break;
 
-    case "COMMUNITY_VIEW_ALL_SCREEN":
+    case "CourseInfoScreen":
       localState.isInit = false;
-      localState.currScreen = "COMMUNITY_VIEW_ALL_SCREEN";
+      localState.currScreen = "CourseInfoScreen";
       break;
-    case "COMMUNITY_INFO_SCREEN":
-      localState.isInit = false;
-      localState.currScreen = "COMMUNITY_INFO_SCREEN";
-      break;
-
-    case "CLASSROOM_CONTENT_SCREEN":
-      localState.isInit = false;
-      localState.currScreen = "CLASSROOM_CONTENT_SCREEN";
-      break;
-
-
-
 
     case "GO_BACK":
       break;

@@ -11,15 +11,14 @@ var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callba
 var objectAssign = require('object-assign');
 
 var BottomNavBar = require("../components/Sunbird/BottomNavBar")
-var ChooseCourseComponent = require("../components/Sunbird/ChooseCourseComponent")
-var ClassRoomHomeComponent = require("../components/Sunbird/ClassRoomHomeComponent")
+
 var ResourceComponent = require("../components/Sunbird/ResourceComponent")
 var HomeComponent = require('../components/Sunbird/HomeComponent');
 var CommunityViewallList = require('../components/Sunbird/CommunityViewallList');
 var CommunityInfoComponent = require('../components/Sunbird/CommunityInfoComponent');
 var CommunityComponent = require('../components/Sunbird/CommunityComponent');
 var ProfileComponent = require('../components/Sunbird/ProfileComponent');
-var SavedResources = require('../components/Sunbird/SavedResources');
+
 var ProfileActivityComponent = require('../components/Sunbird/ProfileActivityComponent');
 var ContentLoadingComponent = require('../components/Sunbird/ContentLoadingComponent');
 var FilterComponent = require('../components/Sunbird/FilterComponent');
@@ -46,7 +45,6 @@ class HomeScreen extends View {
     this.setupDuiCallback();
     this.feedData = FeedParams.feedParams;
 
-    //tab data
     this.screenName = "HOME_SCREEN"
     this.data = ["HOME", "COURSES", "RESOURCES", "COMMUNITY", "PROFILE"];
     this.tabValues = [{
@@ -120,9 +118,10 @@ class HomeScreen extends View {
         break;
     }
     if (shouldBeModified) {
+
       console.log("[REPLACING ui at index ]\t\t", this.currentViewPagerIndex)
       this.switchContent(this.currentPageIndex, state.response.status[1]);
-      //JBridge.replaceViewPagerItem(parseInt(this.currentViewPagerIndex[0]), JSON.stringify(jso));
+
     } else {
       console.log("GOT SAME DATA, not modifying")
     }
@@ -165,7 +164,6 @@ class HomeScreen extends View {
       case 2:
         contentLayout = (<ResourceComponent
                   showScreen = {this.props.showScreen}
-                  response = {data} 
                   root="true"
                   height="match_parent"
                   width="match_parent"/>)
@@ -233,34 +231,37 @@ class HomeScreen extends View {
 
     switch (this.currentPageIndex) {
       case 0:
-        eventAction = { tag: "dummyFlow" };
+        eventAction = { "tag": "ShowHome" ,contents:{"name":"Kiran"}};
         break;
       case 1:
-        eventAction = { tag: "startCourseFlow" };
+        eventAction = { "tag": "StartCourseFlow",contents:[] };
         break;
       case 2:
-        eventAction = { action: "startClassRoomFlow" };
+        eventAction = { "tag" : "StartResourceFlow", contents:[] };
         break;
       case 3:
-        eventAction = { action: "showCommunity" };
+        eventAction = { "tag": "StartCommunityFlow",contents:[] };
         break;
       case 4:
-        eventAction = { tag: "dummyFlow" };
+        eventAction = { "tag": "StartProfileFlow",contents:[] };
         break;
       default:
-        eventAction = { tag: "dummyFlow" };
+        eventAction = { "tag": "DummyFlow",contents:[] };
         break;
     }
-    console.log("--------->VIEWPAGER TRIGGERS ", eventAction, "ON INDEX", this.currentPageIndex);
+    console.log("--------->VIEWPAGER TRIGGERS ", JSON.stringify(eventAction), "ON INDEX", this.currentPageIndex);
 
     // this.state = window.__ObjectAssign({}, this.state, eventAction);
 
-    window.__runDuiCallback(eventAction);
+
+     window.__runDuiCallback(eventAction);
   }
+
+        // eventAction = { "tag": "ShowHome" ,contents:{"name":"Kiran"}};
+
 
   handleBottomNavBarAction = (index) => {
     this.currentPageIndex = index;
-    console.log("MODIFIED currentViewPagerIndex:\n\n\n\n\t\t ", index)
     this.setupDuiCallback();
     this.bNavBar.handleNavigationChange(index);
     this.switchContent(index)
@@ -319,10 +320,6 @@ class HomeScreen extends View {
 
 module.exports = Connector(HomeScreen);
 
-// <ChooseCourseComponent
-//                   showScreen = {this.handleCourseInfoClick}
-//                   height="match_parent"
-//                   width="match_parent" />
 //
 // <HomeComponent
 //     recommendedData={this.recommendedData}

@@ -8,6 +8,7 @@ var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 
 var ChapterList = require('../Sunbird/ChapterList');
 var AnswerView = require('../Sunbird/AnswerView');
+var ChapterOverView = require('../Sunbird/ChapterOverView');
 
 class CourseCurriculum extends View {
   constructor(props, children) {

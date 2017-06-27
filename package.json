@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "compile": "webpack -p --progress --colors --watch",
-    "start": "pulp --watch build & webpack-dev-server --inline --watch --hot --content-base dist/ --host  0.0.0.0"
+    "start": "pulp --then \"webpack-dev-server --inline --watch --hot --content-base dist/ --host  0.0.0.0\" --watch build"
   },
   "dependencies": {
     "babel-plugin-transform-function-source": "^1.0.0",
@@ -12,6 +12,7 @@
     "babel-plugin-transform-react-jsx-source": "^6.22.0",
     "moment": "^2.18.1",
     "nodemon": "^1.11.0",
+    "object-assign": "^4.1.1",
     "pulp": "^11.0.0",
     "purescript": "^0.11.4",
     "ramda": "^0.23.0",

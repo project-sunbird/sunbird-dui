@@ -20,11 +20,9 @@ const CourseInfoScreen = require("../views/CoursesActivity/CourseInfoScreen");
 const CourseActivityScreen = require("../views/CoursesActivity/CourseActivityScreen");
 const EnrolledCourseScreen = require("../views/CoursesActivity/EnrolledCourseScreen");
 const CourseQuizActivityScreen = require("../views/CoursesActivity/CourseQuizActivityScreen");
-const ExploreScreen = require("../views/CoursesActivity/ExploreScreen");
-const CourseDetailScreen = require("../views/CoursesActivity/CourseDetailScreen");
 
 //Resource
-const ClassRoomContentScreen = require("../views/ClassRoomActivity/ClassRoomContentScreen");
+
 //Comunity
 const CommunityInfoScreen = require("../views/CommunityActivity/CommunityInfoScreen");
 const CommunityViewAllListScreen = require("../views/CommunityActivity/CommunityViewAllListScreen");
@@ -41,7 +39,7 @@ var determineScreen = (screenName, state) => {
   // Space has been added for dir strucuture
   // add accordingly
   switch (state.currScreen) {
-    case "InitScreen":
+    case "SplashScreen":
       screen = new(SplashScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
     case "HomeScreen":
@@ -50,14 +48,13 @@ var determineScreen = (screenName, state) => {
     case "UserScreen":
       screen = new(UserScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
-    case "COURSE_INFO_SCREEN":
+
+    case "CourseInfoScreen":
       screen = new(CourseInfoScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
+
     case "COURSE_ACTIVITY_SCREEN":
       screen = new(CourseActivityScreen(dispatcher, RootScreenActions))(null, null, state);
-      break;
-    case "COURSE_DETAIL_SCREEN":
-      screen = new(CourseDetailScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
     case "EnrolledCourseScreen":
       screen = new(EnrolledCourseScreen(dispatcher, RootScreenActions))(null, null, state);
@@ -71,10 +68,10 @@ var determineScreen = (screenName, state) => {
     case "CLASSROOM_CONTENT_SCREEN":
       screen = new(ClassRoomContentScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
-    case "COMMUNITY_INFO_SCREEN":
+    case "CommunityInfoScreen":
       screen = new(CommunityInfoScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
-    case "COMMUNITY_VIEW_ALL_SCREEN":
+    case "CommunityViewAllScreen":
       screen = new(CommunityViewAllListScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
     case "PROFILE_ACTIVITY_SCREEN":

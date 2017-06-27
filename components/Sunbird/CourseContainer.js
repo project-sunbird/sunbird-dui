@@ -93,7 +93,10 @@ class CourseContainer extends View {
 
 
     handleCourseClick = (courseName)=>{
-        console.log("course selected",courseName);
+
+      this.state = { tag: 'StartCourseInfoFlow',contents: {"course":courseName}}
+      window.__runDuiCallback(this.state);
+      console.log("course selected",courseName);
     }
 
     handleCourseOpenClick = (courseName)=>{

@@ -55,7 +55,7 @@ class UserScreen extends View {
         console.log("START LOGIN", state)
 
         // var eventAction = { tag: "LoginAction", contents: dummtData };
-// window.__runDuiCallback(eventAction);
+        // window.__runDuiCallback(eventAction);
 
         break;
 
@@ -79,7 +79,7 @@ class UserScreen extends View {
     var dummtData = { "userName": this.userName, "userPass": this.userPass };
     console.log("START API CALL LOGIN", dummtData)
 
-    var eventAction = { tag: 'LoginAction', contents: { "userId": "something" } };
+    var eventAction = { tag: 'LoginApiAction', contents: dummtData };
     console.log("Triger---\tLoginApiAction\t>", eventAction)
     window.__runDuiCallback(eventAction);
   }
