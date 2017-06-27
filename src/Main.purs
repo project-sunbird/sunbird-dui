@@ -33,25 +33,30 @@ begin = do
     _ -> pure $ "aborted"
 
 
-
 userScreenFlow = do
   action <- ui UserScreen
   case action of
     LoginApiAction{userName:x,userPass:y} -> do
-      liftEff $ log "FOR UN :" <> x <> " PASS :" <> y
+      -- liftEff $ log "FOR UN :" <> x <> " PASS :" <> y
       responseData <- userLogin x y
-      _ <- sendUpdatedState {response : responseData, responseFor : "LoginApiAction"} 
+      --userScreenFlow {state:"tab3"}
+      _ <- sendUpdatedState {response : responseData, responseFor : "LoginApiAction", screen:"asas"} 
       pure $ "Aborted 3"
     LoginAction{userId:x} -> do
-      liftEff $ log "FOR U ID :" <> x 
-      firstScreenFlow
+      liftEff $ log $ "FOR U ID :" <> x 
+      homeScreenFlow
     _ -> pure $ "Aborted"
 
+homeScreenFlow = do
+  liftEff $ log $ "Its in firstScreenFlow"
+  state <- ui $ HomeScreen
+  case state of
+    StartCourseFlow -> pure $ "hmm"
 
-cFlow :: Aff(ui::UI,console::CONSOLE)  String
+    _ -> pure $ "aborted"
+
 cFlow = do
   liftEff $ log $ "Its in cFlow"
-  liftEff $ log (encodeJSON (ShowHome {name:"kirAN"}))
   state <- ui $ HomeScreen
   case state of
     ShowHome {name:x} -> do

@@ -72,7 +72,7 @@ defaultEncode x = genericEncode (defaultOptions {unwrapSingleConstructors=true})
 
 
 -- getEulerLocation = "https://qa.ekstep.in"
-getEulerLocation = "http://13.71.127.158:9000"
+getEulerLocation = "http://52.172.36.121:9000"
 getApiKey ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkMWE2OTgxOWQ0OTc0YzhiYjRlOTQ4YjMxMjBkYjg0NyJ9.AFu4mPKLuYhclntDjbri_L5FN-rQWXk9dVXhlYO2YcA"
 
     
@@ -103,7 +103,7 @@ getDeviceId = ExceptT (pure <$> makeAff(\error success -> getDeviceId' success e
 getUserId = ExceptT (pure <$> makeAff(\error success -> getUserId' success error))
 
 
-sendUpdatedState state = ExceptT (pure <$> makeAff(\error success -> sendUpdatedState' success error state false))
+sendUpdatedState state = makeAff(\error success -> sendUpdatedState' success error state false)
 sendUpdatedStateSync state = ExceptT (pure <$> makeAff(\error success -> sendUpdatedState' success error state true))
 
 
@@ -187,7 +187,7 @@ getResourcePage userId =
   ExceptT $ attempt $ ((post requestUrl headers payload))
 
 userLogin userName userPass =
-  let requestUrl = "v1/user/login" 
+  let requestUrl = "/v1/user/login" 
       headers = (generateRequestHeaders)
       payload = A.fromObject (StrMap.fromFoldable [ (Tuple "userId" (A.fromString "unique API ID"))
                                                    , (Tuple "ts" (A.fromString "2013/10/15 16:16:3"))
@@ -196,7 +196,7 @@ userLogin userName userPass =
                                                                                                           , (Tuple "source" (A.fromString "web"))
                                                                                                           ])))
                                                    ]) in
-  ExceptT $ attempt $ ((post requestUrl headers payload))     
+  ((post requestUrl headers payload))     
 
 
  
