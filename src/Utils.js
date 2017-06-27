@@ -27,13 +27,13 @@ var callbackMapper = {
 exports["ui'"] = function(err) {
   return function(callback) {
     return function(state) {
-        return function(dummyEvents) {
-           return function() {
-            var screenName = state.constructor.name;
-            console.log("dummyEvents",dummyEvents)
-            window.__duiShowScreen(callback, {screen:screenName});
-            var noAction = false;  
-            if (noAction) {
+      return function(dummyEvents) {
+        return function() {
+          var screenName = state.constructor.name;
+          console.log("dummyEvents", dummyEvents)
+          window.__duiShowScreen(callback, { screen: screenName });
+          var noAction = false;
+          if (noAction) {
             setTimeout(function() {
               callback(state)();
             }, 1000);
@@ -42,9 +42,9 @@ exports["ui'"] = function(err) {
               state.event = 'goBack';
               callback(state)();
             };
-          }          
-          };
-       };
+          }
+        };
+      };
     };
   };
 };
@@ -54,7 +54,7 @@ exports["showUI'"] = function(callback) {
     return function(state) {
       return function(noAction) {
         return function() {
-          console.log("showUI exports",state)
+          console.log("showUI exports", state)
           window.__duiShowScreen(callback, state);
           if (noAction) {
             setTimeout(function() {
@@ -76,13 +76,13 @@ exports["showUI'"] = function(callback) {
 exports["ui'"] = function(err) {
   return function(callback) {
     return function(state) {
-        return function(dummyEvents) {
-           return function() {
-            var screenName = state.constructor.name;
-            console.log("dummyEvents",dummyEvents)
-            window.__duiShowScreen(callback, {screen:screenName});
-            var noAction = false;  
-            if (noAction) {
+      return function(dummyEvents) {
+        return function() {
+          var screenName = state.constructor.name;
+          console.log("dummyEvents", dummyEvents)
+          window.__duiShowScreen(callback, { screen: screenName });
+          var noAction = false;
+          if (noAction) {
             setTimeout(function() {
               callback(state)();
             }, 1000);
@@ -91,9 +91,9 @@ exports["ui'"] = function(err) {
               state.event = 'goBack';
               callback(state)();
             };
-          }          
-          };
-       };
+          }
+        };
+      };
     };
   };
 };
@@ -149,6 +149,24 @@ exports["sendUpdatedState'"] = function(success) {
       };
     };
   };
+};
+
+exports["sendToScreen'"] = function(data) {
+
+  console.log('sendToScreen', data);
+  console.log("------------------>\t\tSending data to screen via getDataFromPureScript")
+
+  var currentScreen = window.__CACHED_SCREENS[window.__CURR_SCREEN];
+  currentScreen = currentScreen.hasOwnProperty('screen') ? currentScreen.screen : {};
+
+  if (currentScreen.hasOwnProperty('getDataFromPureScript')) {
+    currentScreen.getDataFromPureScript(data);
+  } else {
+    console.error('Current screen can not receive changes, implemnt getDataFromPureScript');
+  }
+
+  // return "SENT";
+
 };
 
 exports["updateState'"] = function(success) {

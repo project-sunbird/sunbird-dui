@@ -93,6 +93,9 @@ foreign import getConsumerId' :: forall e a s. (AffSuccess String e) -> (AffErro
 foreign import getDeviceId' :: forall e a s. (AffSuccess String e) -> (AffError e) -> Eff e Unit                          
 foreign import getUserId' :: forall e a s. (AffSuccess String e) -> (AffError e) -> Eff e Unit                          
 
+foreign import sendToScreen' :: forall a. a -> Unit                           
+sendToScreen dataToSend= sendToScreen' dataToSend
+
 
 
 getConsumerId = ExceptT (pure <$> makeAff(\error success -> getConsumerId' success error))
@@ -181,7 +184,21 @@ getResourcePage userId =
   let requestUrl = "/v1/page/assemble/resources.explore/org.sunbird.mobile" 
       headers = (generateRequestHeaders)
       payload = A.fromObject (StrMap.fromFoldable [(Tuple "request" (A.fromObject (StrMap.fromFoldable [(Tuple "context" (A.fromObject (StrMap.fromFoldable [(Tuple "userId" (A.fromString userId))])))]) ))]) in
-  ExceptT $ attempt $ ((post requestUrl headers payload))   
+  ExceptT $ attempt $ ((post requestUrl headers payload))
 
+userLogin userName userPass =
+  let requestUrl = "v1/user/login" 
+      headers = (generateRequestHeaders)
+      payload = A.fromObject (StrMap.fromFoldable [ (Tuple "userId" (A.fromString "unique API ID"))
+                                                   , (Tuple "ts" (A.fromString "2013/10/15 16:16:3"))
+                                                   , (Tuple "request" (A.fromObject (StrMap.fromFoldable  [ (Tuple "userName" (A.fromString userName))
+                                                                                                          , (Tuple "password" (A.fromString userPass))
+                                                                                                          , (Tuple "source" (A.fromString "web"))
+                                                                                                          ])))
+                                                   ]) in
+  ExceptT $ attempt $ ((post requestUrl headers payload))     
+
+
+ 
 
 getExceptT value = ExceptT $ pure $ Right value

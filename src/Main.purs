@@ -27,8 +27,34 @@ begin :: Aff(ui::UI,console::CONSOLE) String
 begin = do
   action <- ui $ InitScreen
   case action of
-    StartInit -> firstScreenFlow
+    StartInit -> userScreenFlow
     _ -> pure $ "aborted"
+
+
+userScreenFlow = do
+  action <- ui $ UserScreen
+  case action of
+    LoginAction {userId:x} -> do
+      liftEff $ log $ "login action" <> x
+      pure $ "handled"
+    _ -> pure $ "default"
+
+
+-- userScreenFlow = do
+--   action <- ui UserScreen
+--   case action of
+--     LoginApiAction{userName:x,userPass:y} -> do
+
+--       liftEff $ log "FOR UN :" <> x <> " PASS :" <> y
+--       pure $ "Aborted 1"
+--       responseData <- userLogin x y
+--       pure $ "Aborted 2"
+--       _ <- sendUpdatedState {response : responseData, responseFor : "LoginApiAction"} 
+--       pure $ "Aborted 3"
+--     LoginAction{userId:x} -> do
+--       liftEff $ log "FOR U ID :" <> x 
+--       firstScreenFlow
+--     _ -> pure $ "Aborted"
 
 
 firstScreenFlow :: Aff(ui::UI,console::CONSOLE) String
