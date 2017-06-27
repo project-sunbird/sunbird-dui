@@ -15,14 +15,21 @@ import Control.Monad.Eff.Exception (EXCEPTION)
 import Prelude
 
 
-data HomeScreen = HomeScreen 
-data HomeScreenAction = ShowHome {name::String} | StartCourseFlow | StartResourceFlow | StartCommunityFlow | StartProfileFlow
+data HomeScreen = HomeScreen
+data HomeScreenAction = ShowHome {name::String} | StartCourseFlow | StartResourceFlow | StartCommunityFlow | StartProfileFlow | StartCommunityInfoFlow {community::String} | StartCommunityViewAllFlow
 
 data InitScreen = InitScreen 
 data InitScreenAction = ShowInit  | StartInit
 
 data ResourceScreen = ResourceScreen 
 data ResourceScreenAction = DummyResourceAction
+
+data CommunityInfoScreen = CommunityInfoScreen {name::String}
+data CommunityInfoScreenAction = DummyInfoAction | ExAction
+
+
+data CommunityViewAllScreen = CommunityViewAllScreen
+data CommunityViewAllAction = DummyCommunityViewAllAction
 
 
 instance homeScreen :: UIScreen HomeScreen HomeScreenAction where
@@ -41,6 +48,25 @@ derive instance genericInitScreenAction  :: Generic InitScreenAction _
 instance decodeInitScreenAction :: Decode InitScreenAction where decode = defaultDecode
 instance encodeInitScreenAction :: Encode InitScreenAction where encode = defaultEncode
 
+instance communityInfoScreen :: UIScreen CommunityInfoScreen CommunityInfoScreenAction where
+  generateMockEvents _ = [DummyInfoAction]
+  ui x = genericUI x (generateMockEvents x :: Array CommunityInfoScreenAction)
+
+derive instance genericCommunityInfoScreenAction  :: Generic CommunityInfoScreenAction _
+instance decodeCommunityInfoScreenAction :: Decode CommunityInfoScreenAction where decode = defaultDecode
+instance encodeCommunityInfoScreenAction :: Encode CommunityInfoScreenAction where encode = defaultEncode
+
+
+
+instance communityViewAllScreen :: UIScreen CommunityViewAllScreen CommunityViewAllAction where
+  generateMockEvents _ = [DummyCommunityViewAllAction]
+  ui x = genericUI x (generateMockEvents x :: Array CommunityViewAllAction)
+
+derive instance genericCommunityViewAllAction  :: Generic CommunityViewAllAction _
+instance decodeCommunityViewAllAction :: Decode CommunityViewAllAction where decode = defaultDecode
+instance encodeCommunityViewAllAction :: Encode CommunityViewAllAction where encode = defaultEncode
+
+
 instance resourceScreen :: UIScreen ResourceScreen ResourceScreenAction where
   generateMockEvents _ = [DummyResourceAction]
   ui x = genericUI x (generateMockEvents x :: Array ResourceScreenAction)
@@ -48,3 +74,4 @@ instance resourceScreen :: UIScreen ResourceScreen ResourceScreenAction where
 derive instance genericResourceScreenAction  :: Generic ResourceScreenAction _
 instance decodeResourceScreenAction :: Decode ResourceScreenAction where decode = defaultDecode
 instance encodeResourceScreenAction :: Encode ResourceScreenAction where encode = defaultEncode
+

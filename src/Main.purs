@@ -9,6 +9,7 @@ import Control.Monad.Aff (launchAff)
 import Control.Monad.Eff.Console
 import Control.Monad.Eff.Class(liftEff)
 import Data.Foreign.Class (class Decode, class Encode, encode)
+import Data.Maybe
 import Flows.CommunityFlow
 import Flows.CourseFlow
 import Flows.ProfileFlow
@@ -31,7 +32,7 @@ begin = do
     StartInit -> pure $ "start init"
     _ -> pure $ "aborted"
 
-cFlow :: Aff(ui::UI,console::CONSOLE) String
+cFlow :: Aff(ui::UI,console::CONSOLE)  String
 cFlow = do
   liftEff $ log $ "Its in cFlow"
   liftEff $ log (encodeJSON (ShowHome {name:"kirAN"}))

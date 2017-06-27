@@ -15,10 +15,15 @@ var CommunityDefault = require('../../components/Sunbird/CommunityDefault');
 var SearchToolbar = require('../../components/Sunbird/SearchToolbar');
 
 class CommunityInfoScreen extends View {
-  constructor(props, children) {
-    super(props, children);
+  constructor(props, children,state) {
+    super(props, children, state);
+    this.state = state;
+    
+    this.communityName = this.state.data.value0.name;
+    
 
-    this.props.appendText = this.props.appendText || "";
+
+    // this.props.appendText = this.props.appendText || "";
     this.setIds([
       'defaultContainer',
       'descContainer',
@@ -108,7 +113,7 @@ class CommunityInfoScreen extends View {
                 <TextView
                 width="wrap_content"
                 height="wrap_content"
-                text={this.props.name}
+                text={this.communityName}
                 margin="0,0,0,8"
                 style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
@@ -242,7 +247,7 @@ class CommunityInfoScreen extends View {
           <SearchToolbar
             hint="Enter your search"
             invert="true"
-            title={this.props.name}
+            title={this.communityName}
             onBackPress={this.handleBackPress}
             onMenuItemClick={this.handleMenuClick}
             menuData={this.menuData}
