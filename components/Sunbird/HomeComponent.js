@@ -234,7 +234,9 @@ class HomeComponent extends View {
 
                    {this.getSpaceSeparator()}
 
-                   <HomeRecommendedContainer/>
+                   <HomeRecommendedContainer
+                   title= "Recommended"
+                   />
 
 
                    <LinearLayout

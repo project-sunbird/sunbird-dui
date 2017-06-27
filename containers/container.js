@@ -19,6 +19,8 @@ const CourseInfoScreen = require("../views/CoursesActivity/CourseInfoScreen");
 const CourseActivityScreen = require("../views/CoursesActivity/CourseActivityScreen");
 const CourseQuizActivityScreen = require("../views/CoursesActivity/CourseQuizActivityScreen");
 const ExploreScreen = require("../views/CoursesActivity/ExploreScreen");
+const CourseDetailScreen = require("../views/CoursesActivity/CourseDetailScreen");
+
 //Resource
 const ClassRoomContentScreen = require("../views/ClassRoomActivity/ClassRoomContentScreen");
 //Comunity
@@ -48,6 +50,9 @@ var determineScreen = (screenName, state) => {
       break;
     case "COURSE_ACTIVITY_SCREEN":
       screen = new(CourseActivityScreen(dispatcher, RootScreenActions))(null, null, state);
+      break;
+    case "COURSE_DETAIL_SCREEN":
+      screen = new(CourseDetailScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
     case "COURSE_QUIZ_ACTIVITY_SCREEN":
       screen = new(CourseQuizActivityScreen(dispatcher, RootScreenActions))(null, null, state);

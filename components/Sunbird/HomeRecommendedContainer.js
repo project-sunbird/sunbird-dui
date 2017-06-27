@@ -92,7 +92,7 @@ class HomeRecommendedContainer extends View {
             <TextView
             width="wrap_content"
             height="wrap_content"
-            text="Recommended"
+            text={this.props.title}
             style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
             <ViewWidget
