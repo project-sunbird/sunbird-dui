@@ -24,7 +24,6 @@ startCommunityFlow state = do
   state <- ui $ HomeScreen
   case state of
     StartCommunityInfoFlow {community:communityName}-> do
-      liftEff $ log $ "StartCommunityInfoFlow" <> communityName
       _ <- startCommunityInfoFlow communityName
       pure $ "action handled"
     StartCommunityViewAllFlow -> startCommunityViewAllFlow state
@@ -42,6 +41,10 @@ startCommunityViewAllFlow state = do
   case state of
   	DummyCommunityViewAllAction -> pure $ "handled"
   	_ -> pure $ "handled"
+
+
+
+  
 
 
 

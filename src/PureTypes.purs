@@ -16,7 +16,7 @@ import Prelude
 
 
 data HomeScreen = HomeScreen
-data HomeScreenAction = ShowHome {name::String} | StartCourseFlow | StartResourceFlow | StartCommunityFlow | StartProfileFlow | StartCommunityInfoFlow {community::String} | StartCommunityViewAllFlow
+data HomeScreenAction = ShowHome {name::String} | StartCourseFlow | StartResourceFlow | StartCommunityFlow | StartProfileFlow | StartCommunityInfoFlow {community::String} | StartCommunityViewAllFlow | StartCourseInfoFlow {course::String}
 
 data InitScreen = InitScreen 
 data InitScreenAction = ShowInit  | StartInit
@@ -27,6 +27,8 @@ data ResourceScreenAction = DummyResourceAction
 data CommunityInfoScreen = CommunityInfoScreen {name::String}
 data CommunityInfoScreenAction = DummyInfoAction | ExAction
 
+data CourseInfoScreen = CourseInfoScreen
+data CourseInfoScreenAction = DummyCourseInfoAction
 
 data CommunityViewAllScreen = CommunityViewAllScreen
 data CommunityViewAllAction = DummyCommunityViewAllAction
@@ -57,6 +59,13 @@ instance decodeCommunityInfoScreenAction :: Decode CommunityInfoScreenAction whe
 instance encodeCommunityInfoScreenAction :: Encode CommunityInfoScreenAction where encode = defaultEncode
 
 
+instance courseInfoScreen :: UIScreen CourseInfoScreen CourseInfoScreenAction where
+  generateMockEvents _ = [DummyCourseInfoAction]
+  ui x = genericUI x (generateMockEvents x :: Array CourseInfoScreenAction)
+
+derive instance genericCourseInfoScreenAction  :: Generic CourseInfoScreenAction _
+instance decodeCourseInfoScreenAction :: Decode CourseInfoScreenAction where decode = defaultDecode
+instance encodeCourseInfoScreenAction :: Encode CourseInfoScreenAction where encode = defaultEncode
 
 instance communityViewAllScreen :: UIScreen CommunityViewAllScreen CommunityViewAllAction where
   generateMockEvents _ = [DummyCommunityViewAllAction]

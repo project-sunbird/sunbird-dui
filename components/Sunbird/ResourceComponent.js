@@ -14,7 +14,6 @@ var SearchToolbar = require('../Sunbird/SearchToolbar');
 var CourseContainer = require('../Sunbird/CourseContainer');
 var CommunityViewallList = require('../Sunbird/CommunityViewallList');
 var CommunityInfoComponent = require('../Sunbird/CommunityInfoComponent');
-var RecommendedContainer = require('../Sunbird/RecommendedContainer');
 var HomeRecommendedContainer = require('../Sunbird/HomeRecommendedContainer');
 var _this;
 class ResourceComponent extends View {
