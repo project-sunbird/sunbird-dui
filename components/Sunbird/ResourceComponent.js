@@ -11,10 +11,12 @@ var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 
 var SearchToolbar = require('../Sunbird/SearchToolbar');
-var MyCommunities = require('../Sunbird/MyCommunities');
-var PopularCommunities = require('../Sunbird/PopularCommunities');
-var RecommendedCommunities = require('../Sunbird/RecommendedCommunities');
-
+var CourseContainer = require('../Sunbird/CourseContainer');
+var CommunityViewallList = require('../Sunbird/CommunityViewallList');
+var CommunityInfoComponent = require('../Sunbird/CommunityInfoComponent');
+var RecommendedContainer = require('../Sunbird/RecommendedContainer');
+var HomeRecommendedContainer = require('../Sunbird/HomeRecommendedContainer');
+var _this;
 class ResourceComponent extends View {
   constructor(props, children) {
     super(props, children);
@@ -25,22 +27,22 @@ class ResourceComponent extends View {
       "infoContainer",
       "viewallContainer"
     ]);
+    _this=this;
 
-    this.myCommunitySelected = "";
-    this.popularCommunitySelected = "";
-    this.recommendedCommunitySelected = "";
+    this.myCommunitySelected="";
+    this.popularCommunitySelected="";
+    this.recommendedCommunitySelected="";
 
     this.menuData = {
       url: [
-        { imageUrl: "ic_action_plus" },
-        { imageUrl: "ic_action_filter" },
-        { imageUrl: "ic_action_search" }
+        { imageUrl: "ic_notification_red" },
+        { imageUrl: "ic_action_search"}
       ]
     }
   }
 
 
-  parentBody() {
+  getBody = () =>{
     return (
       <LinearLayout
         orientation="vertical"
@@ -52,7 +54,7 @@ class ResourceComponent extends View {
             hint="Enter your search"
             invert="true"
             hideBack="true"
-            title="Communities"
+            title="Explore courses"
             onMenuItemClick={this.handleMenuClick}
             menuData={this.menuData}
             onSearch={this.handleSearch}/>
@@ -66,85 +68,51 @@ class ResourceComponent extends View {
                 <LinearLayout
                   height="match_parent"
                   width="match_parent"
-                  background={window.__Colors.WHITE_F2}
+                  background={window.__Colors.WHITE}
                   orientation="vertical">
 
-                  <MyCommunities
-                  onMyCommunityClick={this.handleMyCommunityClick}
-                  onViewAllClick={this.handleMyViewAllClick}
-                  />
+                 <HomeRecommendedContainer
+                 title="Saved Resources"
+                 />
 
-                  <PopularCommunities
-                  onPopularCommunityClick={this.handlePopularCommunityClick}
-                  />
+                  {this.getSpaceSeparator()}
 
-                  {this.getLineSeperator()}
+                  <CourseContainer
+                    title="Featured"/>
 
-                  <RecommendedCommunities
-                  onRecommendedCommunityClick={this.handleRecommendedCommunityClick}
-                  />
+                  {this.getSpaceSeparator()}
+
+                  <CourseContainer
+                    title="Textbooks"/>
 
                 </LinearLayout>
 
            </ScrollView>
            </LinearLayout>
-    )
+      )
   }
 
-
-  showParent = () => {
-    var cmd = "";
-    cmd += this.set({
-      id: this.idSet.parentContainer,
-      visibility: "visible"
-    })
-    cmd += this.set({
-      id: this.idSet.infoContainer,
-      visibility: "gone"
-    })
-    cmd += this.set({
-      id: this.idSet.viewallContainer,
-      visibility: "gone"
-    })
-    Android.runInUI(cmd, 0);
+  handleMenuClick = (url) => {
+    console.log("url clicked", url);
   }
 
-  handleMenuClick = (url) => {}
-
-  handleSearch = (data) => {}
-  handleBackPress = () => {
-    this.showParent();
+  handleSearch = (data) => {
+    console.log("searched", data);
   }
 
-  handleMyCommunityClick = (communityName) => {
-    this.state = R.merge(this.state, { action: 'showCommunityInfo', community: communityName })
-    window.__runDuiCallback(this.state);
-  }
+  
 
-  handlePopularCommunityClick = (communityName) => {
-    this.state = R.merge(this.state, { action: 'showCommunityInfo', community: communityName })
-    window.__runDuiCallback(this.state);
-  }
-
-  handleRecommendedCommunityClick = (communityName) => {
-    this.state = R.merge(this.state, { action: 'showCommunityInfo', community: communityName })
-    window.__runDuiCallback(this.state);
-  }
-
-  handleMyViewAllClick = () => {
-    this.state = R.merge(this.state, { action: 'showAll' })
-    window.__runDuiCallback(this.state);
-  }
-
-  getLineSeperator() {
+  
+  getSpaceSeparator = () =>{
     return (<LinearLayout
-             height="1"
+             height="6"
+             orientation="vertical"
              width="match_parent"
-             margin="16,0,16,0"
-             background={window.__Colors.PRIMARY_BLACK_22}/>)
+             background={window.__Colors.WHITE_F2}/>)
   }
 
-  afterRender() {}
+  afterRender(){
+  }
 
 
   render() {
@@ -157,7 +125,7 @@ class ResourceComponent extends View {
         afterRender={this.afterRender}
         height="match_parent">
 
-        {this.parentBody()}
+        {this.getBody()}
         
 
         </LinearLayout>

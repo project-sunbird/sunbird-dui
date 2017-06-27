@@ -14,11 +14,11 @@ window.R = require("ramda");
 
 var SimpleToolbar = require('../../components/Sunbird/SimpleToolbar');
 var CropParagraph = require('../../components/Sunbird/CropParagraph');
-var CourseCurriculum = require('../../components/Sunbird/CourseCurriculum');
+
 var PageOption = require('../../components/Sunbird/PageOption');
 var CourseProgress = require('../../components/Sunbird/CourseProgress');
 
-class CourseInfoScreen extends View {
+class CourseDetailScreen extends View {
   constructor(props, children, state) {
     super(props, children, state);
 
@@ -27,21 +27,19 @@ class CourseInfoScreen extends View {
       "pageOption",
     ]);
     this.state = state;
-    this.screenName = "COURSE_INFO_SCREEN"
+    this.screenName = "COURSE_DETAIL_SCREEN"
       // console.log("GOT STATE", JSON.stringify(state))
       // window.__RootScreen.snackBar("Hellllllo")
     this.menuData = {
       url: [
-        { imageUrl: "ic_action_search", title: "hello" }
+        { imageUrl: "ic_action_bookmark", title: "hello" }
       ]
     }
 
-
-
     this.data = {
-      courseName: this.state.values ? this.state.values.courseName : "RANDOM VAL",
-      courseDesc: this.state.values ? this.state.values.courseDesc : "This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced",
-      competedCount: this.state.values ? this.state.values.competedCount : "10",
+      courseName: "Organic Chemistry",
+      courseDesc:  "This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced",
+      competedCount: "asd",
       totalCount: "150",
       courseBrief: [{
         count: "50",
@@ -55,7 +53,6 @@ class CourseInfoScreen extends View {
       }],
       chapterList: [{
         chapterName: "Progression",
-        chapterDuration: "30",
         chapterFinished: "3",
         chapterContent: [{
           name: "Arithemetic Progression",
@@ -65,15 +62,10 @@ class CourseInfoScreen extends View {
           name: "Geometric Progeressions",
           type: "PLAY",
           status: "DONE"
-        }, {
-          name: "Quiz 1: 10 questions",
-          type: "QUIZ",
-          status: "DONE"
         }]
       }, {
         chapterName: "Scientific Notatios",
         chapterFinished: "2",
-        chapterDuration: "50",
         chapterContent: [{
           name: "Arithemetic Progression",
           type: "PLAY",
@@ -86,15 +78,10 @@ class CourseInfoScreen extends View {
           name: "Significant figures",
           type: "ASSIGNMENT",
           status: "PROGRESS"
-        }, {
-          name: "Quiz 2: 5 questions",
-          type: "QUIZ",
-          status: "PENDING"
         }]
       }, {
         chapterName: "Progression",
         chapterFinished: "0",
-        chapterDuration: "10",
         chapterContent: [{
           name: "Arithemetic Progression",
           type: "Chapter",
@@ -102,10 +89,6 @@ class CourseInfoScreen extends View {
         }, {
           name: "Geometric Progeressions",
           type: "Chapter",
-          status: "PENDING"
-        }, {
-          name: "Quiz 1: 10 questions",
-          type: "Quiz",
           status: "PENDING"
         }]
       }]
@@ -132,46 +115,6 @@ class CourseInfoScreen extends View {
     window.__runDuiCallback({ action: "showCourseActivity" });
   }
 
-
-  handleCourseResume = (data) => {
-    this.state = R.merge(this.state, { event: 'showQuizActivity' })
-    window.__runDuiCallback({ action: "showQuizActivity" });
-  }
-  getEnrolledContent = () => {
-    return (
-      <ScrollView
-              height="0"
-              weight="1"
-              width="match_parent"
-              fillViewPort="true">
-              <LinearLayout
-                height="match_parent"
-                width="match_parent"
-                root="true"
-                padding="16,24,16,16"
-                orientation="vertical">
-
-                <CourseProgress
-                    height="wrap_content"
-                    width="wrap_content"
-                    content={this.data}
-                    onResumeClick={this.handleCourseResume}/>
-
-                 <CourseCurriculum
-                  height="match_parent"
-                  content={this.data}
-                  onItemSelected={this.handleItemSelect}
-                  enrolledStatus={true}
-                  brief={true}
-                  width="match_parent"/>
-
-
-
-
-                </LinearLayout>
-
-                </ScrollView>)
-  }
 
   handleEnrollClick = (data) => {
     if (data === "ENROLL NOW") {
@@ -214,6 +157,7 @@ class CourseInfoScreen extends View {
           menuData={this.menuData}
           onBackPress={this.handleBackPress}
           width="match_parent"
+          invert = "true"
           showMenu="true"/>
         <LinearLayout
           height="match_parent"
@@ -241,12 +185,8 @@ class CourseInfoScreen extends View {
                   contentText={this.data.courseDesc}
                   />
 
-                 <CourseCurriculum
-                  height="match_parent"
-                  margin="0,12,0,0"
-                  brief={true}
-                  content= {this.data}
-                  width="match_parent"/>
+
+                 
 
 
                 </LinearLayout>
@@ -268,4 +208,4 @@ class CourseInfoScreen extends View {
   }
 }
 
-module.exports = Connector(CourseInfoScreen);
+module.exports = Connector(CourseDetailScreen);

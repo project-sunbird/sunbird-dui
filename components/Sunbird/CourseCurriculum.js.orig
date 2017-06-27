@@ -8,6 +8,7 @@ var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 
 var ChapterList = require('../Sunbird/ChapterList');
 var AnswerView = require('../Sunbird/AnswerView');
+var ChapterOverView = require('../Sunbird/ChapterOverView');
 
 class CourseCurriculum extends View {
   constructor(props, children) {
@@ -57,12 +58,22 @@ class CourseCurriculum extends View {
       </LinearLayout>);
   }
 
+<<<<<<< HEAD
+  getChapters = () => {
+    var items = this.props.content.chapterList.map((item) => {
+    return (
+      <AnswerView
+            item={item}
+            height="56"
+            width="match_parent"/>)
+=======
   getCourseBreakUp = () => {
 
     var items = this.props.content.chapterList.map((item, index) => {
       return (<ChapterOverView
           item={item}
           index={index}/>)
+>>>>>>> 143ad390620c8676a683bd055a0a97a4e3e32e11
     })
 
     return (
@@ -72,6 +83,9 @@ class CourseCurriculum extends View {
         width="match_parent">
         {items}
       </LinearLayout>);
+<<<<<<< HEAD
+    
+=======
   }
 
 
@@ -81,6 +95,7 @@ class CourseCurriculum extends View {
     } else {
       return this.getChapterList()
     }
+>>>>>>> 143ad390620c8676a683bd055a0a97a4e3e32e11
   }
 
   render() {
@@ -99,7 +114,11 @@ class CourseCurriculum extends View {
 
         {this.getCurriculumnBrief()}  
 
+<<<<<<< HEAD
+        {this.getChapters()}
+=======
         {this.getContent()}
+>>>>>>> 143ad390620c8676a683bd055a0a97a4e3e32e11
 
        </LinearLayout>
 

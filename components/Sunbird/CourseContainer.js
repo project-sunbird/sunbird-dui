@@ -11,10 +11,9 @@ var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 var _this;
 var CourseCard = require('../Sunbird/CourseCard');
-var DownloadedCard = require('../Sunbird/DownloadedCard');
 
 
-class HomeRecommendedContainer extends View {
+class CourseContainer extends View {
   constructor(props, children) {
     super(props, children);
     _this=this;
@@ -24,25 +23,25 @@ class HomeRecommendedContainer extends View {
 
     this.data = 
       [{
-        "imageUrl":"https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
+        "imageUrl":"http://m.rgbimg.com/cache1nyMIz/users/w/we/weirdvis/600/mg13M24.jpg",
         "moduleText":"Organic Chemistry for Std VII",
         "stars":"(4 stars)",
         "votes":"(2,350 votes)",
         "type":"course"
       },
       {
-        "imageUrl":"https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
-        "moduleText":"Physics",
-        "stars":"PDF file [207 KB]",
-        "votes":"Saved on 10 May ‘17",
-        "type":"file"
+        "imageUrl":"http://m.rgbimg.com/cache1nyMIz/users/w/we/weirdvis/600/mg13M24.jpg",
+        "moduleText":"Organic Chemistry for Std VII",
+        "stars":"(4 stars)",
+        "votes":"(2,350 votes)",
+        "type":"course"
       },
       {
-        "imageUrl":"https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
-        "moduleText":"Physics",
-        "stars":"PDF file [207 KB]",
-        "votes":"Saved on 10 May ‘17",
-        "type":"file"
+        "imageUrl":"http://m.rgbimg.com/cache1nyMIz/users/w/we/weirdvis/600/mg13M24.jpg",
+        "moduleText":"Organic Chemistry for Std VII",
+        "stars":"(4 stars)",
+        "votes":"(2,350 votes)",
+        "type":"course"
       }
       ];
     
@@ -55,18 +54,11 @@ class HomeRecommendedContainer extends View {
 
   getRows = () =>{
     var rows = this.data.map((item,i) => {
-        if(item.type == "course"){
          return (<CourseCard 
                  data={item}
                  onCourseClick = {this.handleCourseClick}
                  onCourseOpenClick = {this.handleCourseOpenClick}/>)
-        }
-        else if(item.type == "file"){
-         return (<DownloadedCard 
-                 data={item}
-                 onResourceClick = {this.handleResourceClick}
-                 onResourceOpenClick = {this.handleResourceOpenClick}/>)
-        }
+                 
     });
 
     var layout = (<LinearLayout
@@ -95,16 +87,6 @@ class HomeRecommendedContainer extends View {
             text={this.props.title}
             style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
-            <ViewWidget
-            weight="1"
-            height="0"/>
-
-            <TextView
-            width="wrap_content"
-            height="wrap_content"
-            text="View all"
-            onClick={()=>{this.handleViewAllClick()}}
-            style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
 
             </LinearLayout>)
   }
@@ -126,10 +108,7 @@ class HomeRecommendedContainer extends View {
         console.log("resource open selected",resourceName);
     }
 
-    handleViewAllClick(){
-        this.props.onViewAllClick();
-    }
-
+   
   render() {
       this.layout = (
         <LinearLayout
@@ -164,4 +143,4 @@ class HomeRecommendedContainer extends View {
   }
 }
 
-module.exports = HomeRecommendedContainer;
+module.exports = CourseContainer;
