@@ -117,7 +117,8 @@ class CommunityComponent extends View {
   }
 
   handleMyCommunityClick = (communityName) => {
-    this.state = R.merge(this.state, { action: 'showCommunityInfo', community: communityName })
+
+    this.state = { tag: 'StartCommunityInfoFlow',contents: {"community":communityName}}
     window.__runDuiCallback(this.state);
   }
 
@@ -132,7 +133,7 @@ class CommunityComponent extends View {
   }
 
   handleMyViewAllClick = () => {
-    this.state = R.merge(this.state, { action: 'showAll' })
+    this.state = {tag : "StartCommunityViewAllFlow", contents:[]}
     window.__runDuiCallback(this.state);
   }
 

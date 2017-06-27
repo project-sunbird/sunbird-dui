@@ -52,10 +52,10 @@ var determineScreen = (screenName, state) => {
     case "COURSE_QUIZ_ACTIVITY_SCREEN":
       screen = new(CourseQuizActivityScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
-    case "COMMUNITY_INFO_SCREEN":
+    case "CommunityInfoScreen":
       screen = new(CommunityInfoScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
-    case "COMMUNITY_VIEW_ALL_SCREEN":
+    case "CommunityViewAllScreen":
       screen = new(CommunityViewAllListScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
     case "PROFILE_ACTIVITY_SCREEN":

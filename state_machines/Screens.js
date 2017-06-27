@@ -24,9 +24,14 @@ module.exports = function(action, payload, state) {
       localState.currScreen = "ResourceScreen";
       break;
 
-    case "COURSE_INFO_SCREEN":
+    case "CommunityInfoScreen":
       localState.isInit = false;
-      localState.currScreen = "COURSE_INFO_SCREEN";
+      localState.currScreen = "CommunityInfoScreen";
+      break;
+
+    case "CommunityViewAllScreen":
+      localState.isInit = false;
+      localState.currScreen = "CommunityViewAllScreen";
       break;
 
     case "COURSE_ACTIVITY_SCREEN":
@@ -53,10 +58,6 @@ module.exports = function(action, payload, state) {
       localState.currScreen = "PROFILE_ACTIVITY_SCREEN";
       break;
 
-    case "COMMUNITY_VIEW_ALL_SCREEN":
-      localState.isInit = false;
-      localState.currScreen = "COMMUNITY_VIEW_ALL_SCREEN";
-      break;
     case "COMMUNITY_INFO_SCREEN":
       localState.isInit = false;
       localState.currScreen = "COMMUNITY_INFO_SCREEN";

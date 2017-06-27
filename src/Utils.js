@@ -30,9 +30,11 @@ exports["ui'"] = function(err) {
         return function(dummyEvents) {
            return function() {
             var screenName = state.constructor.name;
+
             console.log("dummyEvents",dummyEvents)
             console.log("screenName",screenName)
-            window.__duiShowScreen(callback, {screen:screenName});
+            console.log("state in ui",state)
+            window.__duiShowScreen(callback, {screen:screenName,data:state});
             var noAction = false;  
             if (noAction) {
             setTimeout(function() {
@@ -98,6 +100,9 @@ exports["showUI'"] = function(callback) {
 //     };
 //   };
 // };
+
+
+
 
 
 exports["callbackListner'"] = function(callback) {
