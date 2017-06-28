@@ -46,16 +46,38 @@ class UserScreen extends View {
 
 
   handleStateChange = (state) => {
-    console.log("NEW DATA--->", state)
+
+
+    var status = state.response.status[0];
+    var response = JSON.parse(state.response.status[1]);
+    var responseCode = state.response.status[2];
+    var responseUrl = state.response.status[3];
+
+    if (parseInt(responseCode) != 200) {
+      console.log("INVALID FORMAT")
+      return;
+    }
+
+    var result = response.result;
+
+    console.log("GOT RESULT FORM RESPONSE ->>", result)
+
     switch (state.responseFor) {
       case "LoginApiAction":
-        var dummtData = {
-          "userId": this.userName,
-        }
-        console.log("START LOGIN", state)
 
-        // var eventAction = { tag: "LoginAction", contents: dummtData };
-        // window.__runDuiCallback(eventAction);
+        if (response.params.err == "INVALID_CREDENTIAL") {
+          console.log("EROR MESSAGE :", response.params.errmsg)
+            //JBridge.showToast("E MSG ->", response.params.errmsg)
+          return;
+        }
+        JBridge.setInSharedPrefs("user_id", JSON.stringify(result.response.userId));
+        JBridge.setInSharedPrefs("user_name", JSON.stringify(result.response.firstName));
+        console.log("WELCOME -->>", result.response.firstName);
+        //JBridge.showToast("WELCOME ->", result.response.firstName)
+
+        //"{"id":null,"ver":"v1","ts":"2017-06-28 02:09:30:032+0000","params":{"resmsgid":null,"msgid":null,"err":"INVALID_CREDENTIAL","status":"SERVER_ERROR","errmsg":"Invalid credential."},"responseCode":"CLIENT_ERROR","result":{}}"
+        var eventAction = { tag: "LoginAction", contents: {} };
+        window.__runDuiCallback(eventAction);
 
         break;
 
@@ -76,6 +98,9 @@ class UserScreen extends View {
   }
 
   handleLoginClick = () => {
+
+    this.userName = "test@test.com";
+    //this.userPass = "test"
     var dummtData = { "userName": this.userName, "userPass": this.userPass };
     console.log("START API CALL LOGIN", dummtData)
 

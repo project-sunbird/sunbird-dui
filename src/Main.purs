@@ -42,30 +42,20 @@ userScreenFlow = do
       --userScreenFlow {state:"tab3"}
       _ <- sendUpdatedState {response : responseData, responseFor : "LoginApiAction", screen:"asas"} 
       pure $ "Aborted 3"
-    LoginAction{userId:x} -> do
-      liftEff $ log $ "FOR U ID :" <> x 
-      homeScreenFlow
+    LoginAction -> cFlow
     _ -> pure $ "Aborted"
-
-homeScreenFlow = do
-  liftEff $ log $ "Its in firstScreenFlow"
-  state <- ui $ HomeScreen
-  case state of
-    StartCourseFlow -> pure $ "hmm"
-
-    _ -> pure $ "aborted"
 
 cFlow = do
   liftEff $ log $ "Its in cFlow"
-  state <- ui $ HomeScreen
-  case state of
+  action <- ui $ HomeScreen
+  case action of
     ShowHome {name:x} -> do
       liftEff $ log $ "Action handled Show HomeScreen"
       pure $ "action handled"
-    StartCourseFlow -> startCourseFlow state
-    StartResourceFlow -> startResourceFlow state
-    StartCommunityFlow -> startCommunityFlow state
-    StartProfileFlow -> startProfileFlow state
+    StartCourseFlow -> startCourseFlow action
+    StartResourceFlow -> startResourceFlow action
+    StartCommunityFlow -> startCommunityFlow action
+    StartProfileFlow -> startProfileFlow action
     _ -> pure $ "aborted"
 
 changeFlow = void $ launchAff $ cFlow

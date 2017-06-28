@@ -15,11 +15,11 @@ import Control.Monad.Eff.Exception (EXCEPTION)
 import Prelude
 
 data UserScreen = UserScreen 
-data UserScreenAction = LoginAction {userId::String} | LoginApiAction {userName::String, userPass::String}  
+data UserScreenAction = LoginAction | LoginApiAction {userName::String, userPass::String}  
 
 
 data HomeScreen = HomeScreen
-data HomeScreenAction = ShowHome {name::String} | StartCourseFlow | StartResourceFlow | StartCommunityFlow | StartProfileFlow | StartCommunityInfoFlow {community::String} | StartCommunityViewAllFlow | StartCourseInfoFlow {course::String}
+data HomeScreenAction = ShowHome {name::String} | StartCourseFlow | StartResourceFlow | StartCommunityFlow | StartProfileFlow | StartCommunityInfoFlow {community::String} | StartCommunityViewAllFlow | StartCourseInfoFlow {course::String} | GetCoursePage | GetResourcePage
 
 data InitScreen = InitScreen 
 data InitScreenAction = ShowInit  | StartInit
@@ -54,7 +54,7 @@ instance decodeInitScreenAction :: Decode InitScreenAction where decode = defaul
 instance encodeInitScreenAction :: Encode InitScreenAction where encode = defaultEncode
 
 instance userScreen :: UIScreen UserScreen UserScreenAction where
-  generateMockEvents _ = [LoginAction {userId:"String"}, LoginApiAction {userName:"String",userPass:"String"} 
+  generateMockEvents _ = [LoginAction , LoginApiAction {userName:"String",userPass:"String"} 
 ]
   ui x = genericUI x (generateMockEvents x :: Array UserScreenAction)
 

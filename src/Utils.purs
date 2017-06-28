@@ -93,8 +93,9 @@ foreign import getConsumerId' :: forall e a s. (AffSuccess String e) -> (AffErro
 foreign import getDeviceId' :: forall e a s. (AffSuccess String e) -> (AffError e) -> Eff e Unit                          
 foreign import getUserId' :: forall e a s. (AffSuccess String e) -> (AffError e) -> Eff e Unit                          
 
-foreign import sendToScreen' :: forall a. a -> Unit                           
-sendToScreen dataToSend= sendToScreen' dataToSend
+foreign import saveToMemory :: forall a b. a -> b -> Unit                           
+foreign import readFromMemory :: forall a b. a -> b                           
+
 
 
 
@@ -151,40 +152,46 @@ getCallbackFromScreen screen state = ExceptT $ pure <$>
   let updatedState = state {screen = screen} in
   makeAff (\error success -> callbackListner' success error updatedState false)
 
-updateState changes state = ExceptT $ pure <$> makeAff(\error success -> updateState' success error changes state)
+updateState changes state = makeAff(\error success -> updateState' success error changes state)
 
 
 --API CALLS
 generateRequestHeaders =
-  let filtered = filter (\x -> not $ snd(x) == "__failed") [(Tuple "Authorization" ("Bearer "<>getApiKey))] in
+  let filtered = filter (\x -> not $ snd(x) == "__failed")  [(Tuple "X-Consumer-ID" "X-Consumer-ID") --7c03ca2e78326957afbb098044a3f60783388d5cc731a37821a20d95ad497ca8
+                                                            ,(Tuple "X-Device-ID" "X-Device-ID")
+                                                            ,(Tuple "X-msgid" "8e27cbf5-e299-43b0-bca7-8347f7e5abcf")
+                                                            ,(Tuple "ts" "2017-05-28 10:52:56:578+0530")  
+                                                            ,(Tuple "Accept" "application/json")
+                                                            ,(Tuple "X-Authenticated-Userid" (readFromMemory "user_id"))
+
+                                                            ] in
   map (\x -> (RequestHeader (fst x) (snd x))) filtered
 
 
 getDummyData =
   let requestUrl = "/v1/user/courses/user1"
       headers = (generateRequestHeaders) in
-  ExceptT $ attempt $ (get requestUrl headers)
+  (get requestUrl headers)
 
 enrollCourse req=
   let requestUrl = "/v1/user/courses/enroll"
       headers = (generateRequestHeaders) in
-  ExceptT $ attempt $ (post requestUrl headers req)
+ (post requestUrl headers req)
 
 postExploreData req regTokens=
   let requestUrl = "/v1/page/assemble/learn.explore/org.sunbird.mobile"
       headers = (generateReqTokenHeaders regTokens) in
-  ExceptT $ attempt $ (post requestUrl headers req)
+ (post requestUrl headers req)
 
-getUserCourses userId =
-  let requestUrl = "/v1/user/courses/" <> userId
+getCoursesPageApi =
+  let requestUrl = "/v1/page/assemble/Course"
       headers = (generateRequestHeaders) in
-  ExceptT $ attempt $ (get requestUrl headers) 
+  (get requestUrl headers) 
 
-getResourcePage userId =
-  let requestUrl = "/v1/page/assemble/resources.explore/org.sunbird.mobile" 
-      headers = (generateRequestHeaders)
-      payload = A.fromObject (StrMap.fromFoldable [(Tuple "request" (A.fromObject (StrMap.fromFoldable [(Tuple "context" (A.fromObject (StrMap.fromFoldable [(Tuple "userId" (A.fromString userId))])))]) ))]) in
-  ExceptT $ attempt $ ((post requestUrl headers payload))
+getResourcePage =
+  let requestUrl = "/v1/page/assemble/Resources" 
+      headers = (generateRequestHeaders) in
+  (get requestUrl headers)
 
 userLogin userName userPass =
   let requestUrl = "/v1/user/login" 
@@ -196,7 +203,9 @@ userLogin userName userPass =
                                                                                                           , (Tuple "source" (A.fromString "web"))
                                                                                                           ])))
                                                    ]) in
-  ((post requestUrl headers payload))     
+  (post requestUrl headers payload)
+
+
 
 
  

@@ -15,6 +15,7 @@ class SplashScreen extends View {
   constructor(props, children, state) {
     super(props, children, state);
     this.state = state;
+    this.screenName = "SplashScreen"
     console.log("Im in SplashScreen")
   }
 
