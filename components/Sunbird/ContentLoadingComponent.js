@@ -50,6 +50,7 @@ class ContentLoadingComponent extends View {
        height="match_parent"
        orientation="vertical"
        gravity="center"
+       root="true"
        afterRender={this.showContent}
        id={this.idSet.holder}
        width="match_parent">

@@ -27,27 +27,37 @@ var callbackMapper = {
 exports["ui'"] = function(err) {
   return function(callback) {
     return function(state) {
-        return function(dummyEvents) {
-           return function() {
-            var screenName = state.constructor.name;
 
-            console.log("dummyEvents",dummyEvents)
-            console.log("screenName",screenName)
-            console.log("state in ui",state)
-            window.__duiShowScreen(callback, {screen:screenName,data:state});
-            var noAction = false;  
-            if (noAction) {
-            setTimeout(function() {
-              callback(state)();
-            }, 1000);
+      return function(dummyEvents) {
+        return function() {
+          var screenName = state.constructor.name;
+          console.log("dummyEvents", dummyEvens)
+          console.log("screenName", screenName)
+          console.log("state in ui", state)
+
+          var currentScreen = window.__CACHED_SCREENS[window.__CURR_SCREEN];
+
+          if (currentScreen.screenName != screenName) {
+            window.__duiShowScreen(callback, { screen: screenName, data: state });
+            console.log("ReNDERING new SCREEN ", screenName)
           } else {
-            window.handleBackPress = function() {
-              state.event = 'goBack';
-              callback(state)();
-            };
-          }          
+            console.log("not ReNDERING SAME SCREEN ")
+              //add check for handleStateChnage property
+              //currentScreen.handleStateChange(state);
+          }
+        }
+        var noAction = false;
+        if (noAction) {
+          setTimeout(function() {
+            callback(state)();
+          }, 1000);
+        } else {
+          window.handleBackPress = function() {
+            state.event = 'goBack';
+            callback(state)();
           };
-       };
+        }
+      };
     };
   };
 };
@@ -57,7 +67,7 @@ exports["showUI'"] = function(callback) {
     return function(state) {
       return function(noAction) {
         return function() {
-          console.log("showUI exports",state)
+          console.log("showUI exports", state)
           window.__duiShowScreen(callback, state);
           if (noAction) {
             setTimeout(function() {
@@ -74,36 +84,6 @@ exports["showUI'"] = function(callback) {
     };
   };
 };
-
-
-// exports["ui'"] = function(err) {
-//   return function(callback) {
-//     return function(state) {
-//         return function(dummyEvents) {
-//            return function() {
-//             var screenName = state.constructor.name;
-//             console.log("dummyEvents",dummyEvents)
-//             window.__duiShowScreen(callback, {screen:screenName});
-//             var noAction = false;  
-//             if (noAction) {
-//             setTimeout(function() {
-//               callback(state)();
-//             }, 1000);
-//           } else {
-//             window.handleBackPress = function() {
-//               state.event = 'goBack';
-//               callback(state)();
-//             };
-//           }          
-//           };
-//        };
-//     };
-//   };
-// };
-
-
-
-
 
 exports["callbackListner'"] = function(callback) {
   return function(errCallback) {
@@ -160,6 +140,36 @@ exports["sendUpdatedState'"] = function(success) {
   };
 };
 
+exports["saveToMemory"] = function(key, data) {
+  console.log("--> saving in Shared Pref with key [] => ", key)
+  console.log("--> saving in Shared Pref with val [] => ", data)
+  JBridge.setInSharedPrefs(key, data);
+
+};
+
+exports["readFromMemory"] = function(key) {
+  console.log("--> reading from Shared Pref with key [] => ", key, "\nGOT VAL : ", JBridge.getFromSharedPrefs(key))
+  return JBridge.getFromSharedPrefs(key);
+};
+
+exports["sendToScreen'"] = function(data) {
+
+  console.log('sendToScreen', data);
+  console.log("------------------>\t\tSending data to screen via getDataFromPureScript")
+
+  var currentScreen = window.__CACHED_SCREENS[window.__CURR_SCREEN];
+  currentScreen = currentScreen.hasOwnProperty('screen') ? currentScreen.screen : {};
+
+  if (currentScreen.hasOwnProperty('getDataFromPureScript')) {
+    currentScreen.getDataFromPureScript(data);
+  } else {
+    console.error('Current screen can not receive changes, implemnt getDataFromPureScript');
+  }
+
+  // return "SENT";
+
+};
+
 exports["updateState'"] = function(success) {
   return function(err) {
     return function(data) {
@@ -207,6 +217,7 @@ exports["callAPI'"] = function(success) {
         return function(data) {
           return function(headers) {
             console.log("------------------------> REQUEST AT URL :", url)
+            console.log("------------------------> REQUEST headers :", headers)
             headers = headers.map(function(header) {
               var hdr = {};
               hdr[header.value0] = header.value1;
