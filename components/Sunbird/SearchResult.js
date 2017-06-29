@@ -91,7 +91,7 @@ class SearchResult extends View {
 
   handleItemClick = (item) =>{
     console.log("clicked item",item);
-    // this.props.itemClick(item);
+    window.__runDuiCallback({tag:"StartResourceDetailFlow",contents:[]});
   }
 
   
