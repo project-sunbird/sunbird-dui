@@ -1,47 +1,55 @@
 var dom = require("@juspay/mystique-backend").doms.android;
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
+var RelativeLayout = require("@juspay/mystique-backend").androidViews.RelativeLayout;
+var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 
 var Button = require('../Sunbird/Button');
 
-class PageOption extends View {
+class ProgressButton extends View {
   constructor(props, children) {
     super(props, children);
-    this.displayName = "PageOption";
-    //buttonItems : list of buttons
-    // onButtonClick : function that
-    // hideDivider : pass true to hide, otherwise no need to define 
+    this.displayName = "ProgressButton";
   }
 
   handleClick = (data) => {
-    this.props.onButtonClick(data);
+    // this.props.onButtonClick(data);
   }
 
+
+
   getButtons = () => {
-    var buttons
-    if (this.props.buttonItems.length > 1) {
-      buttons = this.props.buttonItems.map((item, i) => {
-        var type = "BigButton_Primary_WB";
-        if (parseInt(i) % 2 == 0) {
-          type = "BigButton_Primary_DB";
-        }
-        return (<Button 
-                      type={type}
-                      text={item}
-                      margin="10,0,10,0"
-                      weight="1"
-                      onClick={this.handleClick}/>)
+      return (
+        <RelativeLayout
+        width="match_parent"
+        height="48">
 
-      });
-    } else {
-      return (<Button type="BigButton_Primary_WB"
-            weight="1"
-            margin="10,0,10,0"
-            text={this.props.buttonItems[0]}
-            onClick={this.handleClick}/>)
-    }
+        <LinearLayout
+        width="match_parent"
+        height="48">
 
-    return buttons;
+            <LinearLayout
+            width="0"
+            height="match_parent"
+            weight="20"
+            background={window.__Colors.THICK_BLUE}/>
+
+            <LinearLayout
+            width="0"
+            height="match_parent"
+            weight="80"
+            background={window.__Colors.PRIMARY_DARK}/>
+
+        </LinearLayout>
+
+        <TextView
+        width="wrap_content"
+        height="wrap_content"
+        centerInParent="true,-1"
+        style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
+        text="Downloading ..."/>
+
+        </RelativeLayout> )
   }
 
 
@@ -78,4 +86,4 @@ class PageOption extends View {
   }
 }
 
-module.exports = PageOption;
+module.exports = ProgressButton;

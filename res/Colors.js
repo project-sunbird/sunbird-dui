@@ -38,4 +38,5 @@ exports.color = {
   WHITE_F4 : "#F4F4F4",
   WHITE_FO : "#F0F0F0",
   SAFFRON : "#FF9F00",
+  THICK_BLUE : "#006DE5"
 };

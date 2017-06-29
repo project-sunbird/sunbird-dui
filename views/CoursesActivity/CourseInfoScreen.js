@@ -17,6 +17,7 @@ var CropParagraph = require('../../components/Sunbird/CropParagraph');
 var CourseCurriculum = require('../../components/Sunbird/CourseCurriculum');
 var PageOption = require('../../components/Sunbird/PageOption');
 var CourseProgress = require('../../components/Sunbird/CourseProgress');
+var ProgressButton = require('../../components/Sunbird/ProgressButton');
 
 class CourseInfoScreen extends View {
   constructor(props, children, state) {
@@ -72,7 +73,7 @@ class CourseInfoScreen extends View {
           status: "DONE"
         }]
       }, {
-        chapterName: "Scientific Notatios",
+        chapterName: "Scientific Notations",
         chapterFinished: "2",
         chapterDuration: "50",
         chapterContent: [{
@@ -92,7 +93,29 @@ class CourseInfoScreen extends View {
           type: "QUIZ",
           status: "PENDING"
         }]
-      }, {
+      },{
+        chapterName: "Scientific Notations",
+        chapterFinished: "2",
+        chapterDuration: "50",
+        chapterContent: [{
+          name: "Arithemetic Progression",
+          type: "PLAY",
+          status: "DONE"
+        }, {
+          name: "Geometric Progeressions",
+          type: "PLAY",
+          status: "DONE"
+        }, {
+          name: "Significant figures",
+          type: "ASSIGNMENT",
+          status: "PROGRESS"
+        }, {
+          name: "Quiz 2: 5 questions",
+          type: "QUIZ",
+          status: "PENDING"
+        }]
+      },
+       {
         chapterName: "Progression",
         chapterFinished: "0",
         chapterDuration: "10",
@@ -217,7 +240,7 @@ class CourseInfoScreen extends View {
 
 
   render() {
-    var buttonList = ["DOWNLOAD THIS COURSE"];
+    var buttonList = ["ENROLL FOR THIS COURSE"];
     this.layout = (
       <LinearLayout
         root="true"
@@ -286,11 +309,10 @@ class CourseInfoScreen extends View {
 
              </ScrollView>
 
-             <PageOption
+             <ProgressButton
                  width="match_parent"
-                 id={this.idSet.pageOption}
-                 buttonItems={buttonList}
-                 onButtonClick={this.handleEnrollClick}/>
+                 buttonItems={buttonList}/>
+
             </LinearLayout>
 
       </LinearLayout>
