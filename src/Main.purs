@@ -42,7 +42,9 @@ userScreenFlow = do
       --userScreenFlow {state:"tab3"}
       _ <- sendUpdatedState {response : responseData, responseFor : "LoginApiAction", screen:"asas"} 
       pure $ "Aborted 3"
-    LoginAction -> cFlow
+    LoginAction -> do
+      liftEff $ log $ "LoginAction"
+      pure $ "handled"
     _ -> pure $ "Aborted"
 
 cFlow = do

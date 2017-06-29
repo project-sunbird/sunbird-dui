@@ -157,7 +157,8 @@ updateState changes state = makeAff(\error success -> updateState' success error
 
 --API CALLS
 generateRequestHeaders =
-  let filtered = filter (\x -> not $ snd(x) == "__failed")  [(Tuple "X-Consumer-ID" "X-Consumer-ID") --7c03ca2e78326957afbb098044a3f60783388d5cc731a37821a20d95ad497ca8
+  let filtered = filter (\x -> not $ snd(x) == "__failed")  [(Tuple "Authorization" ("Bearer " <> getApiKey))
+                                                            ,(Tuple "X-Consumer-ID" "X-Consumer-ID") --7c03ca2e78326957afbb098044a3f60783388d5cc731a37821a20d95ad497ca8
                                                             ,(Tuple "X-Device-ID" "X-Device-ID")
                                                             ,(Tuple "X-msgid" "8e27cbf5-e299-43b0-bca7-8347f7e5abcf")
                                                             ,(Tuple "ts" "2017-05-28 10:52:56:578+0530")  
