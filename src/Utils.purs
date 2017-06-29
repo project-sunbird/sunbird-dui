@@ -86,13 +86,13 @@ type ExceptionableEff e a = ExceptT Error (Eff e) a
 
 foreign import showUI' :: forall e a b. (AffSuccess (State a) e) -> (AffError e) -> (State b) -> Boolean -> Eff e Unit
 foreign import callbackListner' :: forall e a b. (AffSuccess ({|a}) e) -> (AffError e) -> ({|b}) -> Boolean -> Eff e Unit
-foreign import sendUpdatedState' :: forall e s1 s2. (AffSuccess (State s1) e) -> (AffError e) -> (State s2) -> Boolean -> Eff e Unit
 foreign import updateState' :: forall a b s1 s2 e. (AffSuccess (State s2) e) -> (AffError e) -> a -> (State s1) -> Eff e Unit
 foreign import callAPI' :: forall e. (AffSuccess ApiResponse e) -> (AffError e) -> Method -> String -> A.Json -> Array RequestHeader -> Eff e Unit
 foreign import getConsumerId' :: forall e a s. (AffSuccess String e) -> (AffError e) -> Eff e Unit                          
 foreign import getDeviceId' :: forall e a s. (AffSuccess String e) -> (AffError e) -> Eff e Unit                          
 foreign import getUserId' :: forall e a s. (AffSuccess String e) -> (AffError e) -> Eff e Unit                          
 
+foreign import sendUpdatedState' :: forall a b.(State a)-> b
 foreign import saveToMemory :: forall a b. a -> b -> Unit                           
 foreign import readFromMemory :: forall a b. a -> b                           
 
@@ -104,8 +104,7 @@ getDeviceId = ExceptT (pure <$> makeAff(\error success -> getDeviceId' success e
 getUserId = ExceptT (pure <$> makeAff(\error success -> getUserId' success error))
 
 
-sendUpdatedState state = makeAff(\error success -> sendUpdatedState' success error state false)
-sendUpdatedStateSync state = ExceptT (pure <$> makeAff(\error success -> sendUpdatedState' success error state true))
+sendUpdatedState state = sendUpdatedState' state
 
 
 

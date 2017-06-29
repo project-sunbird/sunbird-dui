@@ -109,35 +109,21 @@ exports["callbackListner'"] = function(callback) {
 };
 
 
-exports["sendUpdatedState'"] = function(success) {
-  return function(error) {
-    return function(state) {
-      return function(noAction) {
-        return function() {
-          console.log('sendupdatedstate', state);
-          console.log("------------------>\t\tUPDATING state via handleStateChange")
-          if (!noAction) {
-            window.__duiCb = success;
-          }
+exports["sendUpdatedState'"] = function(state) {
 
-          var currentScreen = window.__CACHED_SCREENS[window.__CURR_SCREEN];
-          currentScreen = currentScreen.hasOwnProperty('screen') ? currentScreen.screen : {};
+  console.log('sendupdatedstate', state);
+  console.log("------------------>\t\tUPDATING state via handleStateChange")
 
-          if (currentScreen.hasOwnProperty('handleStateChange')) {
-            currentScreen.handleStateChange(state);
-          } else {
-            console.error('Current screen can not handle state changes');
-          }
+  var currentScreen = window.__CACHED_SCREENS[window.__CURR_SCREEN];
+  currentScreen = currentScreen.hasOwnProperty('screen') ? currentScreen.screen : {};
 
-          if (noAction) {
-            setTimeout(function() {
-              success()();
-            }, 200);
-          }
-        };
-      };
-    };
-  };
+
+  if (currentScreen.hasOwnProperty('handleStateChange')) {
+    currentScreen.handleStateChange(state);
+  } else {
+    console.error('Current screen can not handle state changes');
+  }
+  return "Done";
 };
 
 exports["saveToMemory"] = function(key, data) {
