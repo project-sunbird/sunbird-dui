@@ -61,13 +61,15 @@ class UserScreen extends View {
             //JBridge.showToast("E MSG ->", response.params.errmsg)
           return;
         }
-        //JBridge.setInSharedPrefs("user_id", JSON.stringify(result.response.userId));
-        //JBridge.setInSharedPrefs("user_name", JSON.stringify(result.response.firstName));
+        JBridge.setInSharedPrefs("user_id", JSON.stringify(result.response.userId));
+        JBridge.setInSharedPrefs("user_name", JSON.stringify(result.response.firstName));
+        JBridge.setInSharedPrefs("user_token", JSON.stringify(result.response.token));
+
         console.log("WELCOME -->>", result.response.firstName);
         //JBridge.showToast("WELCOME ->", result.response.firstName)
 
         //"{"id":null,"ver":"v1","ts":"2017-06-28 02:09:30:032+0000","params":{"resmsgid":null,"msgid":null,"err":"INVALID_CREDENTIAL","status":"SERVER_ERROR","errmsg":"Invalid credential."},"responseCode":"CLIENT_ERROR","result":{}}"
-        var eventAction = { tag: "LoginAction", contents: [] };
+        var eventAction = { tag: "LoginAction", contents: {} };
         window.__runDuiCallback(eventAction);
 
         break;
