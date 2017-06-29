@@ -18,9 +18,6 @@ class UserScreen extends View {
     super(props, children, state);
     this.state = state;
 
-    JBridge.setInSharedPrefs("chooseCourse", "__failed");
-    JBridge.setInSharedPrefs("userResource", "__failed");
-
     this.setIds([
       "userForumContainer",
       "tabLayoutContainer",
@@ -28,12 +25,6 @@ class UserScreen extends View {
 
     this.screenName = "UserScreen"
 
-  }
-
-
-  handleCourseInfoClick = (data) => {
-    this.state = R.merge(this.state, { event: 'showCourseInfo' })
-    window.__runDuiCallback({ action: "showCourseInfo" });
   }
 
   onPop = () => {
@@ -70,13 +61,13 @@ class UserScreen extends View {
             //JBridge.showToast("E MSG ->", response.params.errmsg)
           return;
         }
-        JBridge.setInSharedPrefs("user_id", JSON.stringify(result.response.userId));
-        JBridge.setInSharedPrefs("user_name", JSON.stringify(result.response.firstName));
+        //JBridge.setInSharedPrefs("user_id", JSON.stringify(result.response.userId));
+        //JBridge.setInSharedPrefs("user_name", JSON.stringify(result.response.firstName));
         console.log("WELCOME -->>", result.response.firstName);
         //JBridge.showToast("WELCOME ->", result.response.firstName)
 
         //"{"id":null,"ver":"v1","ts":"2017-06-28 02:09:30:032+0000","params":{"resmsgid":null,"msgid":null,"err":"INVALID_CREDENTIAL","status":"SERVER_ERROR","errmsg":"Invalid credential."},"responseCode":"CLIENT_ERROR","result":{}}"
-        var eventAction = { tag: "LoginAction", contents: {} };
+        var eventAction = { tag: "LoginAction", contents: [] };
         window.__runDuiCallback(eventAction);
 
         break;
@@ -100,11 +91,11 @@ class UserScreen extends View {
   handleLoginClick = () => {
 
     this.userName = "test@test.com";
-    //this.userPass = "test"
+    this.userPass = "test"
     var dummtData = { "userName": this.userName, "userPass": this.userPass };
     console.log("START API CALL LOGIN", dummtData)
 
-    var eventAction = { tag: 'LoginApiAction', contents: dummtData };
+    var eventAction = { tag: "LoginApiAction", contents: { "userName": "test@test.com", "userPass": "test" } };
     console.log("Triger---\tLoginApiAction\t>", eventAction)
     window.__runDuiCallback(eventAction);
   }
