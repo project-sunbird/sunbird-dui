@@ -116,9 +116,9 @@ exports["sendUpdatedState'"] = function(success) {
         return function() {
           console.log('sendupdatedstate', state);
           console.log("------------------>\t\tUPDATING state via handleStateChange")
-          if (!noAction) {
-            window.__duiCb = success;
-          }
+          // if (!noAction) {
+          //   window.__duiCb = success;
+          // }
 
           var currentScreen = window.__CACHED_SCREENS[window.__CURR_SCREEN];
           currentScreen = currentScreen.hasOwnProperty('screen') ? currentScreen.screen : {};

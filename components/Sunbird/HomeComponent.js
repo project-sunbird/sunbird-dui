@@ -139,6 +139,9 @@ class HomeComponent extends View {
 
   handleMenuClick = (url) => {
     console.log("url clicked", url);
+    if(url=="ic_notification_red"){
+        window.__runDuiCallback({tag:"StartNotificationFlow",contents:[]});
+    }
   }
 
   handleSearch = (data) => {

@@ -19,7 +19,10 @@ data UserScreenAction = LoginAction | LoginApiAction {userName::String, userPass
 
 
 data HomeScreen = HomeScreen
-data HomeScreenAction = ShowHome {name::String} | StartCourseFlow | StartResourceFlow | StartCommunityFlow | StartProfileFlow | StartCommunityInfoFlow {community::String} | StartCommunityViewAllFlow | StartCourseInfoFlow {course::String} | GetCoursePage | GetResourcePage
+data HomeScreenAction = ShowHome {name::String} | StartCourseFlow |
+ StartResourceFlow | StartCommunityFlow | StartProfileFlow | 
+ StartCommunityInfoFlow {community::String} | StartCommunityViewAllFlow | 
+ StartCourseInfoFlow {course::String} | GetCoursePage | GetResourcePage | StartNotificationFlow
 
 data InitScreen = InitScreen 
 data InitScreenAction = ShowInit  | StartInit
@@ -35,6 +38,9 @@ data CourseInfoScreenAction = DummyCourseInfoAction
 
 data CommunityViewAllScreen = CommunityViewAllScreen
 data CommunityViewAllAction = DummyCommunityViewAllAction
+
+data NotificationScreen = NotificationScreen
+data NotificationAction = DummyNotificationAction
 
 
 instance homeScreen :: UIScreen HomeScreen HomeScreenAction where
@@ -95,4 +101,13 @@ instance resourceScreen :: UIScreen ResourceScreen ResourceScreenAction where
 derive instance genericResourceScreenAction  :: Generic ResourceScreenAction _
 instance decodeResourceScreenAction :: Decode ResourceScreenAction where decode = defaultDecode
 instance encodeResourceScreenAction :: Encode ResourceScreenAction where encode = defaultEncode
+
+instance notificationScreen :: UIScreen NotificationScreen NotificationAction where
+  generateMockEvents _ = [DummyNotificationAction]
+  ui x = genericUI x (generateMockEvents x :: Array NotificationAction)
+
+derive instance genericNotificationAction  :: Generic NotificationAction _
+instance decodeNotificationAction :: Decode NotificationAction where decode = defaultDecode
+instance encodeNotificationAction :: Encode NotificationAction where encode = defaultEncode
+
 

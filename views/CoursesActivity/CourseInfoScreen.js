@@ -28,7 +28,7 @@ class CourseInfoScreen extends View {
       "pageOption",
     ]);
     this.state = state;
-    this.screenName = "COURSE_INFO_SCREEN"
+    this.screenName = "CourseInfoScreen"
       // console.log("GOT STATE", JSON.stringify(state))
       // window.__RootScreen.snackBar("Hellllllo")
      this.menuData = {

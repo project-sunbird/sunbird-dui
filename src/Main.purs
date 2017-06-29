@@ -14,6 +14,7 @@ import Flows.CommunityFlow
 import Flows.CourseFlow
 import Flows.ProfileFlow
 import Flows.ResourceFlow
+import Flows.NotificationFlow
 import Data.Generic.Rep (class Generic)
 import Data.Foreign.Generic (encodeJSON)
 import Control.Monad.Eff.Exception (EXCEPTION)
@@ -42,9 +43,7 @@ userScreenFlow = do
       --userScreenFlow {state:"tab3"}
       _ <- sendUpdatedState {response : responseData, responseFor : "LoginApiAction", screen:"asas"} 
       pure $ "Aborted 3"
-    LoginAction -> do
-      liftEff $ log $ "LoginAction"
-      pure $ "handled"
+    LoginAction -> cFlow
     _ -> pure $ "Aborted"
 
 cFlow = do
@@ -58,6 +57,7 @@ cFlow = do
     StartResourceFlow -> startResourceFlow action
     StartCommunityFlow -> startCommunityFlow action
     StartProfileFlow -> startProfileFlow action
+    StartNotificationFlow -> startNotificationFlow action
     _ -> pure $ "aborted"
 
 changeFlow = void $ launchAff $ cFlow

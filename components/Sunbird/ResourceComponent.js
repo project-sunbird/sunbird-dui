@@ -53,7 +53,7 @@ class ResourceComponent extends View {
             hint="Enter your search"
             invert="true"
             hideBack="true"
-            title="Explore courses"
+            title="Resources"
             onMenuItemClick={this.handleMenuClick}
             menuData={this.menuData}
             onSearch={this.handleSearch}/>
