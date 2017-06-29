@@ -6,8 +6,10 @@ var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var EditText = require("@juspay/mystique-backend").androidViews.EditText;
 var Space = require("@juspay/mystique-backend").androidViews.Space;
 var ClassListItem = require('./ClassListItem');
+var SearchResult = require('./SearchResult');
 var debounce = require("debounce");
 var Styles = require("../../res/Styles");
+var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 let IconStyle = Styles.Params.IconStyle;
 var _this;
 
@@ -24,7 +26,7 @@ class SearchToolbar extends View {
       "searchBackIcon",
       "searchListContainer"
     ])
-
+  this.getSearchList = debounce(this.getSearchList, 200);
     _this = this;
 
     this.searchText = debounce(this.searchText, 200);
@@ -265,35 +267,75 @@ class SearchToolbar extends View {
     var listData=[];
     var temp = [];
     var totalJson={};
+    var callback = callbackMapper.map(function(data) {
+        // console.log("params",JSON.parse(data));
+        
+        console.log("length",searchText);
+        console.log(data);
+      if(searchText == "" || data == "[]"){
+        console.log("hihihhi");
 
-    data = this.textData.values;
-
-      if(searchText.length != 0){
-          for(var i = 0;i<data.length;i++){
-            if(data[i].subject.toLowerCase().includes(searchText.toLowerCase())||data[i].comment.toLowerCase().includes(searchText.toLowerCase())){
-            temp["subject"]= this.replaceAll(data[i].subject,searchText,"<font color='#007AFF'>"+searchText+"</font>");
-            temp["comment"]= this.replaceAll(data[i].comment,searchText,"<font color='#007AFF'>"+searchText+"</font>");
-            temp["color"]= data[i].color;
-            temp["imageUrl"]=data[i].imageUrl;
-            temp["logo"]=data[i].logo;
-            listData.push(temp);
-            temp = [];
-            }
-          }
-          totalJson["type"] = this.textData.type;
-          totalJson["values"] = listData;
           var layout = (<LinearLayout
-                         width="match_parent"
-                         height="match_parent"
-                         background="#ffffff"
-                         orientation="vertical">
-                           <ClassListItem
-                            data={totalJson}
-                            itemClick={this.handleItemClick}
-                            lineSeparator="true"/>
-                        </LinearLayout>);
-          _this.replaceChild(_this.idSet.searchListContainer,layout.render(),0);
+                    width="match_parent"
+                    height="wrap_content"
+                    orientation = "vertical"
+                    >
+
+                    <TextView
+                      height="match_parent"
+                      width="match_parent"
+                      gravity="center"
+                      maxLines="1"
+                      margin="16,16,16,16"
+                      style={window.__TextStyle.textStyle.TOOLBAR.HEADING}
+                      text="No Search Results Found"/>
+
+                  </LinearLayout>);
       }
+      else
+      {
+          data = JSON.parse(data);
+          var layout = (<SearchResult 
+                 data={data}
+                />)  
+      }
+      
+      
+
+
+    _this.replaceChild(_this.idSet.searchListContainer,layout.render(),0);
+
+      // if(searchText.length != 0){
+      //     for(var i = 0;i<data.length;i++){
+      //       if(data[i].subject.toLowerCase().includes(searchText.toLowerCase())||data[i].comment.toLowerCase().includes(searchText.toLowerCase())){
+      //       temp["subject"]= this.replaceAll(data[i].subject,searchText,"<font color='#007AFF'>"+searchText+"</font>");
+      //       temp["comment"]= this.replaceAll(data[i].comment,searchText,"<font color='#007AFF'>"+searchText+"</font>");
+      //       temp["color"]= data[i].color;
+      //       temp["imageUrl"]=data[i].imageUrl;
+      //       temp["logo"]=data[i].logo;
+      //       listData.push(temp);
+      //       temp = [];
+      //       }
+      //     }
+      //     totalJson["type"] = this.textData.type;
+      //     totalJson["values"] = listData;
+      //     var layout = (<LinearLayout
+      //                    width="match_parent"
+      //                    height="match_parent"
+      //                    background="#ffffff"
+      //                    orientation="vertical">
+      //                      <ClassListItem
+      //                       data={totalJson}
+      //                       itemClick={this.handleItemClick}
+      //                       lineSeparator="true"/>
+      //                   </LinearLayout>);
+      //     _this.replaceChild(_this.idSet.searchListContainer,layout.render(),0);
+      // }
+    });
+
+    JBridge.searchContent(callback,searchText);
+
+    
   }
 
 
