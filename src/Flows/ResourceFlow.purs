@@ -10,11 +10,25 @@ import Control.Monad.Eff.Console
 import Control.Monad.Eff.Class(liftEff)
 import Data.Foreign.Class (class Decode, class Encode, encode)
 import Data.Generic.Rep (class Generic)
+import Flows.NotificationFlow
 import Data.Foreign.Generic (encodeJSON)
 import Control.Monad.Eff.Exception (EXCEPTION)
 import Prelude
-
-
-startResourceFlow state = pure $ "startResourceFlow handled"
+import PureTypes
     	
 
+startResourceFlow state = do
+	state <- ui $ HomeScreen
+	case state of
+		StartNotificationFlow -> startNotificationFlow state
+		StartResourceDetailFlow -> startResourceDetailFlow state
+		_ -> pure $ "default"
+
+
+
+
+startResourceDetailFlow state = do
+	state <- ui $ ResourceDetailScreen
+	case state of
+		DummyResourceDetailAction -> pure $ "handled"
+		_ -> pure $ "default"

@@ -61,9 +61,9 @@ class UserScreen extends View {
             //JBridge.showToast("E MSG ->", response.params.errmsg)
           return;
         }
-        JBridge.setInSharedPrefs("user_id", JSON.stringify(result.response.userId));
-        JBridge.setInSharedPrefs("user_name", JSON.stringify(result.response.firstName));
-        JBridge.setInSharedPrefs("user_token", JSON.stringify(result.response.token));
+        // JBridge.setInSharedPrefs("user_id", JSON.stringify(result.response.userId));
+        // JBridge.setInSharedPrefs("user_name", JSON.stringify(result.response.firstName));
+        // JBridge.setInSharedPrefs("user_token", JSON.stringify(result.response.token));
 
         console.log("WELCOME -->>", result.response.firstName);
         //JBridge.showToast("WELCOME ->", result.response.firstName)

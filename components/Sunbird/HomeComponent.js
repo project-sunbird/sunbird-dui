@@ -144,6 +144,7 @@ class HomeComponent extends View {
     }
   }
 
+  
   handleSearch = (data) => {
     console.log("searched", data);
   }
@@ -170,6 +171,15 @@ class HomeComponent extends View {
 
   handleBookmarkClick = () => {
     console.log("bookmark clicked")
+  }
+
+  handleResourceOpen = (data) =>{
+    console.log("handleResourceOpen")
+    window.__runDuiCallback({ tag: "StartResourceDetailFlow",contents:[] });
+  }
+
+  handleCourseOpen = (data) =>{
+        window.__runDuiCallback({tag:"StartCourseInfoFlow",contents:{"course":"something"}});
   }
 
   handleRecommendedClick = (content) => {
@@ -233,12 +243,15 @@ class HomeComponent extends View {
                   orientation="vertical">
 
                     
-                   <HomeTodoContainer/>
+                   <HomeTodoContainer
+                   onCourseOpenClick = {this.handleCourseOpen}
+                   />
 
                    {this.getSpaceSeparator()}
 
                    <HomeRecommendedContainer
                    title= "Recommended"
+                   onResourceOpenClick = {this.handleResourceOpen}
                    />
 
 

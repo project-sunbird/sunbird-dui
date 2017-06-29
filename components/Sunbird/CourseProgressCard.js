@@ -69,6 +69,7 @@ class CourseProgressCard extends View {
                 cornerRadius="4"
                 height="4">
 
+
                 <LinearLayout
                   width="0"
                   weight={this.props.data.progress}

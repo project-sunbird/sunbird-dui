@@ -22,7 +22,7 @@ data HomeScreen = HomeScreen
 data HomeScreenAction = ShowHome {name::String} | StartCourseFlow |
  StartResourceFlow | StartCommunityFlow | StartProfileFlow | 
  StartCommunityInfoFlow {community::String} | StartCommunityViewAllFlow | 
- StartCourseInfoFlow {course::String} | GetCoursePage | GetResourcePage | StartNotificationFlow
+ StartCourseInfoFlow {course::String} | GetCoursePage | GetResourcePage | StartNotificationFlow | StartResourceDetailFlow
 
 data InitScreen = InitScreen 
 data InitScreenAction = ShowInit  | StartInit
@@ -41,6 +41,10 @@ data CommunityViewAllAction = DummyCommunityViewAllAction
 
 data NotificationScreen = NotificationScreen
 data NotificationAction = DummyNotificationAction
+
+
+data ResourceDetailScreen = ResourceDetailScreen
+data ResourceDetailAction = DummyResourceDetailAction
 
 
 instance homeScreen :: UIScreen HomeScreen HomeScreenAction where
@@ -110,4 +114,11 @@ derive instance genericNotificationAction  :: Generic NotificationAction _
 instance decodeNotificationAction :: Decode NotificationAction where decode = defaultDecode
 instance encodeNotificationAction :: Encode NotificationAction where encode = defaultEncode
 
+instance resourceDetailScreen :: UIScreen ResourceDetailScreen ResourceDetailAction where
+  generateMockEvents _ = [DummyResourceDetailAction]
+  ui x = genericUI x (generateMockEvents x :: Array ResourceDetailAction)
+
+derive instance genericResourceDetailAction  :: Generic ResourceDetailAction _
+instance decodeResourceDetailAction :: Decode ResourceDetailAction where decode = defaultDecode
+instance encodeResourceDetailAction :: Encode ResourceDetailAction where encode = defaultEncode
 

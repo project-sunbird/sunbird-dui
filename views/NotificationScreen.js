@@ -117,19 +117,48 @@ class NotificationScreen extends View {
                 </LinearLayout>)
   }
 
-  getBody = () =>{
-   
-    var rows = this.data.map((item, i) => {
 
-      return (this.getRow(item));
 
-    });
+  getEmptyNotification = () =>{
 
-    return rows;
-    
+    return (<LinearLayout
+              width="match_parent"
+              height="match_parent"
+              orientation="vertical"
+              gravity="center">
+
+                <ImageView
+                width="55"
+                height="66"
+                imageUrl = "ic_empty_notification"/>
+
+                <TextView
+                width="wrap_content"
+                height="wrap_content"
+                text="No new notifications"
+                margin="0,20,0,0"
+                style={window.__TextStyle.textStyle.CARD.TITLE.FADE_DARK}/>
+
+
+            </LinearLayout> )
+
   }
 
-  
+  getBody = () =>{
+
+   var rows ;
+
+      if(this.data != ""){
+        rows = this.data.map((item, i) => {
+          return (this.getRow(item));
+        });
+
+      }else{
+        rows = this.getEmptyNotification();
+      }
+
+    return rows;
+  }
 
 
   handleBackPress = () => {
@@ -140,38 +169,35 @@ class NotificationScreen extends View {
   render() {
     this.layout = (
       <LinearLayout
-        root="true"
-        afterRender={this.afterRender()}
+        root = "true"
         background={window.__Colors.WHITE}
         orientation="vertical"
         width="match_parent"
         height="match_parent">
-
         <SimpleToolbar
           title="Notifications"
-          menuData={this.menuData}
-          onBackPress={this.handleBackPress}
+          afterRender={this.afterRender}
           width="match_parent"
-          invert="true"
-          showMenu="true"/>
-       
-            <ScrollView
-              height="0"
-              weight="1"
-              width="match_parent"
-              fillViewPort="true">
+          onBackPress={this.handleBackPress}
+          invert="true"/>
 
-              <LinearLayout
+              <ScrollView
                 height="match_parent"
                 width="match_parent"
-                orientation="vertical">
+                fillViewport="true"
+                >
 
-                {this.getBody()}
+                <LinearLayout
+                  height="match_parent"
+                  width="match_parent"
+                  orientation="vertical">
+
+                  {this.getBody()}
 
                 </LinearLayout>
 
-             </ScrollView>
-
+                </ScrollView>
+       
       </LinearLayout>
     );
 

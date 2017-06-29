@@ -120,10 +120,8 @@ class HomeRecommendedContainer extends View {
 
     handleResourceClick = (resourceName)=>{
         console.log("resource selected",resourceName);
-    }
+        this.props.onResourceOpenClick(resourceName);
 
-    handleResourceOpenClick = (resourceName)=>{
-        console.log("resource open selected",resourceName);
     }
 
     handleViewAllClick(){

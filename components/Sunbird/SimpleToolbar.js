@@ -25,7 +25,7 @@ class SimpleToolbar extends View {
   }
 
 
-getMenu() {
+getMenu = () =>{
 
 
       if (this.props.showMenu == undefined || !this.props.showMenu)
@@ -71,7 +71,7 @@ getMenu() {
     }
   }
 
-  getBack() {
+  getBack = () => {
     if (this.props.hideBack != undefined && this.props.hideBack)
       return <Space width="0"/>
 
@@ -83,7 +83,7 @@ getMenu() {
       imageUrl = {"ic_action_arrow_left"}/>)
   }
 
-  getTitle() {
+  getTitle = () => {
     let margin;
 
     if (!this.props.showBack && !this.props.logo)

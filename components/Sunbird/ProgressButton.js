@@ -31,14 +31,14 @@ class ProgressButton extends View {
             <LinearLayout
             width="0"
             height="match_parent"
-            weight="20"
-            background={window.__Colors.THICK_BLUE}/>
+            weight="50"
+            multiCorners={"8,0,0,8,"+window.__Colors.THICK_BLUE}/>
 
             <LinearLayout
             width="0"
             height="match_parent"
-            weight="80"
-            background={window.__Colors.PRIMARY_DARK}/>
+            weight="50"
+            multiCorners={"0,8,8,0,"+window.__Colors.PRIMARY_DARK}/>
 
         </LinearLayout>
 
@@ -47,7 +47,7 @@ class ProgressButton extends View {
         height="wrap_content"
         centerInParent="true,-1"
         style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
-        text="Downloading ..."/>
+        text="DOWNLOAD THIS RESOURCE"/>
 
         </RelativeLayout> )
   }
@@ -72,7 +72,7 @@ class ProgressButton extends View {
         <LinearLayout
           height="match_parent"
           width="match_parent"
-          margin="10,20,10,20">
+          margin="16,16,16,16">
        
             {this.getButtons()}
        

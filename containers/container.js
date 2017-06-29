@@ -29,6 +29,7 @@ const CommunityViewAllListScreen = require("../views/CommunityActivity/Community
 //Profile
 const ProfileActivityScreen = require("../views/ProfileActivity/ProfileActivityScreen");
 const NotificationScreen = require("../views/NotificationScreen");
+const ResourceDetailScreen = require("../views/ResourceActivity/ResourceDetailScreen");
 
 // ScreenActions
 const RootScreenActions = require("../actions/RootScreenActions");
@@ -78,6 +79,11 @@ var determineScreen = (screenName, state) => {
     case "NotificationScreen":
       screen = new(NotificationScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
+
+    case "ResourceDetailScreen":
+      screen = new(ResourceDetailScreen(dispatcher, RootScreenActions))(null, null, state);
+      break;
+
     case "PROFILE_ACTIVITY_SCREEN":
       screen = new(ProfileActivityScreen(dispatcher, RootScreenActions))(null, null, state);
       break;

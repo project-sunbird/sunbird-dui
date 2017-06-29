@@ -96,6 +96,7 @@ class HomeTodoContainer extends View {
 
     handleCourseClick = (courseName)=>{
         console.log("course selected",courseName);
+        this.props.onCourseOpenClick(courseName);
     }
 
     handleCourseOpenClick = (courseName)=>{
@@ -104,10 +105,6 @@ class HomeTodoContainer extends View {
 
     handleResourceClick = (resourceName)=>{
         console.log("resource selected",resourceName);
-    }
-
-    handleResourceOpenClick = (resourceName)=>{
-        console.log("resource open selected",resourceName);
     }
 
     handleViewAllClick(){

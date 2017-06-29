@@ -124,7 +124,7 @@ class DownloadedCard extends View {
     }
 
     handleOpenClick = (resourceName) =>{
-      this.props.onResourceOpenClick(resourceName);
+        this.props.onResourceClick(resourceName);
     }
 
    

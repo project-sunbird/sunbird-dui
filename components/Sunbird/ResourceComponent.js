@@ -71,6 +71,7 @@ class ResourceComponent extends View {
                   orientation="vertical">
 
                  <HomeRecommendedContainer
+                 onResourceOpenClick = {this.handleResourceOpen}
                  title="Saved Resources"
                  />
 
@@ -93,10 +94,17 @@ class ResourceComponent extends View {
 
   handleMenuClick = (url) => {
     console.log("url clicked", url);
+     if(url=="ic_notification_red"){
+        window.__runDuiCallback({tag:"StartNotificationFlow",contents:[]});
+    }
   }
 
   handleSearch = (data) => {
     console.log("searched", data);
+  }
+
+  handleResourceOpen = (data) =>{
+    window.__runDuiCallback({ tag: "StartResourceDetailFlow",contents:[] });
   }
 
   

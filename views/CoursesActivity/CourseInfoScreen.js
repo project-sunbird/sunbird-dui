@@ -309,9 +309,10 @@ class CourseInfoScreen extends View {
 
              </ScrollView>
 
-             <ProgressButton
-                 width="match_parent"
-                 buttonItems={buttonList}/>
+             <PageOption
+             width="match_parent"
+             buttonItems={buttonList}
+             onButtonClick={this.handleEnrollClick}/>
 
             </LinearLayout>
 

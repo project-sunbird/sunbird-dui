@@ -36,7 +36,7 @@ exports["ui'"] = function(err) {
           console.log("state in ui", state)
 
           var currentScreen = window.__CACHED_SCREENS[window.__CURR_SCREEN];
-
+          
           if (currentScreen == undefined || currentScreen.screenName == undefined || (currentScreen.screenName != screenName)) {
             window.__duiShowScreen(callback, { screen: screenName, data: state });
             console.log("ReNDERING new SCREEN ", screenName)

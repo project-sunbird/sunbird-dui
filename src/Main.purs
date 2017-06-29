@@ -30,7 +30,7 @@ begin :: Aff(ui::UI,console::CONSOLE) String
 begin = do
   action <- ui $ InitScreen
   case action of
-    StartInit -> userScreenFlow
+    StartInit -> cFlow
     _ -> pure $ "aborted"
 
 
@@ -60,6 +60,8 @@ cFlow = do
     StartCommunityFlow -> startCommunityFlow action
     StartProfileFlow -> startProfileFlow action
     StartNotificationFlow -> startNotificationFlow action
+    StartResourceDetailFlow -> startResourceDetailFlow action
+    StartCourseInfoFlow {course:x} -> startCourseInfoFlow action
     _ -> pure $ "aborted"
 
 changeFlow = void $ launchAff $ cFlow
