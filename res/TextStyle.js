@@ -138,6 +138,11 @@ exports.textStyle = {
       color: Colors.PRIMARY_BLACK,
       textSize: Font.fontSize.FONT_14,
       fontStyle: Font.fontStyle.SEMIBOLD
+    },
+    HEADING_LIGHT: {
+      color: Colors.DARK_GRAY,
+      textSize: Font.fontSize.FONT_13,
+      fontStyle: Font.fontStyle.REGULAR
     }
   },
   HINT: {

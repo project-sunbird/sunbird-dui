@@ -48,6 +48,11 @@ module.exports = function(action, payload, state) {
       localState.currScreen = "CourseDetailScreen";
       break;
 
+    case "NotificationScreen":
+      localState.isInit = false;
+      localState.currScreen = "NotificationScreen";
+      break;
+
     case "COURSE_ACTIVITY_SCREEN":
       localState.isInit = false;
       localState.currScreen = "COURSE_ACTIVITY_SCREEN";

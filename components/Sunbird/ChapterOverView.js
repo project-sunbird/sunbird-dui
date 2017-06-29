@@ -1,8 +1,10 @@
 var dom = require("@juspay/mystique-backend").doms.android;
 var Connector = require("@juspay/mystique-backend").connector;
-var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
+var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
+var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
+var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 
 class ChapterOverView extends View {
   constructor(props, children) {
@@ -28,12 +30,15 @@ class ChapterOverView extends View {
       <LinearLayout
        height="match_parent"
        cornerRadius="2"
-       stroke={"2,#CCCCCC"}
-       margin="0,6,0,6"
-       padding="6,12,6,12"
+       padding="6,0,6,15"
+       orientation="vertical"
        gravity="center_vertical"
        onClick={this.props.onClick}
        width="match_parent">
+
+       <LinearLayout
+       width="match_parent"
+       height="wrap_content">
 
         <TextView
           text={chapterName}
@@ -43,6 +48,24 @@ class ChapterOverView extends View {
           text={chapterDuration}
           margin="6,0,0,0"
           style={window.__TextStyle.textStyle.CARD.HEADDING}/>
+
+        <ViewWidget
+          width="0"
+          weight="1"/>
+
+        <ImageView
+          width="20"
+          height="12"
+          imageUrl="ic_action_right"/>
+
+
+      </LinearLayout>
+
+        <LinearLayout
+        width="match_parent"
+        height="2"
+        margin="0,17,0,0"
+        background={window.__Colors.WHITE_F4}/>
 
        </LinearLayout>
 

@@ -74,15 +74,16 @@ class CourseProgressCard extends View {
                   weight={this.props.data.progress}
                   id={this.idSet.leftProgress}
                   height="match_parent"
-                  background={window.__Colors.SAFFRON}/>
+                  multiCorners={"6,0,0,0,"+window.__Colors.SAFFRON} />
+                 
 
                 <LinearLayout
                   width="0"
                   id={this.idSet.rightProgress}
                   alpha="0.3"
+                  multiCorners={"0,0,0,6,"+window.__Colors.PRIMARY_BLACK}
                   weight={this.getRemainingProgress(this.props.data.progress)}
-                  height="match_parent"
-                  background={window.__Colors.PRIMARY_BLACK}/>
+                  height="match_parent"/>
 
               </LinearLayout>
 
@@ -115,8 +116,7 @@ class CourseProgressCard extends View {
 
 
   afterRender = () => {
-    JBridge.makeLeftRounded(this.idSet.leftProgress);
-    JBridge.makeRightRounded(this.idSet.rightProgress);
+   
   }
 
   getFooter= ()=>{

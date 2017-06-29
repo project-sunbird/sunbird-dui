@@ -109,7 +109,20 @@ exports["callbackListner'"] = function(callback) {
 };
 
 
+<<<<<<< HEAD
+exports["sendUpdatedState'"] = function(success) {
+  return function(error) {
+    return function(state) {
+      return function(noAction) {
+        return function() {
+          console.log('sendupdatedstate', state);
+          console.log("------------------>\t\tUPDATING state via handleStateChange")
+          // if (!noAction) {
+          //   window.__duiCb = success;
+          // }
+=======
 exports["sendUpdatedState'"] = function(state) {
+>>>>>>> 57301d7f3c98e8c524be6e8b59fde0d9fc1f0348
 
   console.log('sendupdatedstate', state);
   console.log("------------------>\t\tUPDATING state via handleStateChange")

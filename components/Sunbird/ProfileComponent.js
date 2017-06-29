@@ -38,7 +38,13 @@ class ProfileComponent extends View {
     }
   }
 
-  handleMenuClick = (url) => {}
+  handleMenuClick = (url) => {
+
+    if(url=="ic_action_notification_blue"){
+        window.__runDuiCallback({tag:"StartNotificationFlow",contents:[]});
+    }
+
+  }
 
   handleSearch = (data) => {}
 

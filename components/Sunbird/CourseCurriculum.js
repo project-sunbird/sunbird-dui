@@ -20,33 +20,13 @@ class CourseCurriculum extends View {
   }
 
 
-  getCurriculumnBrief = () => {
-
-    var items = this.props.content.courseBrief.map((item, i) => {
-      return (<TextView
-                style={window.__TextStyle.textStyle.HINT.REGULAR} 
-                text ={(i==0?"":" | ") +item.count + " "+item.type}/>)
-    })
-
-    return (
-      <LinearLayout
-        margin="0,0,0,24"
-        height="wrap_content"
-        width="match_parent">
-        {items}
-      </LinearLayout>);
-  }
-
-
+  
   getChapterList = () => {
-
-
-
     var items = this.props.content.chapterList.map((item) => {
       return (<ChapterList 
-          item={item} 
-          _onClick={this.props.onItemSelected}
-          enrolledStatus={this.enrolledStatus}/>)
+              item={item} 
+              _onClick={this.props.onItemSelected}
+              enrolledStatus={this.enrolledStatus}/>)
     })
 
     return (
@@ -62,9 +42,10 @@ class CourseCurriculum extends View {
 
     var items = this.props.content.chapterList.map((item, index) => {
       return (<ChapterOverView
-          item={item}
-          index={index}/>)
+              item={item}
+              index={index}/>)
     })
+
 
     return (
       <LinearLayout
@@ -94,11 +75,9 @@ class CourseCurriculum extends View {
        orientation="vertical"
        width="match_parent">
         <TextView
-          margin="0,24,0,0"
-          text="Curriculum" 
+          margin="0,24,0,24"
+          text="Structure" 
           style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
-
-        {this.getCurriculumnBrief()}  
 
         {this.getContent()}
 
