@@ -134,8 +134,9 @@ exports["saveToMemory"] = function(key, data) {
 };
 
 exports["readFromMemory"] = function(key) {
-  console.log("--> reading from Shared Pref with key [] => ", key, "\nGOT VAL : ", JBridge.getFromSharedPrefs(key))
-  return JBridge.getFromSharedPrefs(key);
+  var data = JBridge.getFromSharedPrefs(key)
+  console.log("--> reading from Shared Pref with key [] => ", key, "\nGOT VAL AFTER: ", data)
+  return data;
 };
 
 exports["sendToScreen'"] = function(data) {

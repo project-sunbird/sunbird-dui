@@ -14,11 +14,14 @@ class ProfileHeader extends View {
     this.setIds([
 
     ]);
-    _this=this;
+
+    this.userName = JBridge.getFromSharedPrefs("user_name")
+    this.userName = (this.userName == "__failed") ? "Harish Bookwalla" : this.userName;
+
 
   }
 
-  profileBody(){
+  profileBody = () => {
     return (<LinearLayout
               width="wrap_content"
               height="wrap_content"
@@ -33,7 +36,7 @@ class ProfileHeader extends View {
               <TextView
               width="wrap_content"
               height="wrap_content"
-              text="Harish Bookwalla"
+              text={this.userName}
               padding="0,10,0,2"
               style={window.__TextStyle.textStyle.HEADING.DARK}/>
 
@@ -51,8 +54,7 @@ class ProfileHeader extends View {
               style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
 
 
-              </LinearLayout>
-          )
+              </LinearLayout>)
   }
 
 

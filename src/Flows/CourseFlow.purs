@@ -17,13 +17,11 @@ import Prelude
 import PureTypes
 
 startCourseFlow state = do
+	responseData <- getCoursesPageApi
+	_ <- sendUpdatedState {response : responseData, responseFor : "GetCoursePage", screen:"dummy"} 
 	state <- ui $ HomeScreen
 	case state of
 		StartCourseInfoFlow {course:courseName} -> startCourseInfoFlow courseName
-		GetCoursePage -> do
-			responseData <- getCoursesPageApi
-			_ <- sendUpdatedState {response : responseData, responseFor : "GetCoursePage", screen:"dummy"} 
-			pure $ "Done Api"
 		_ -> pure $ "default"
 
     

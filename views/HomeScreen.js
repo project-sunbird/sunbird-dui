@@ -34,8 +34,6 @@ class HomeScreen extends View {
 
     this.handleBottomNavBarAction = debounce(this.handleBottomNavBarAction, 200);
     //TODO : REVERT THIS LOGIC
-    JBridge.setInSharedPrefs("chooseCourse", "__failed");
-    JBridge.setInSharedPrefs("userResource", "__failed");
 
     this.setIds([
       "viewPagerContainer",
@@ -88,6 +86,7 @@ class HomeScreen extends View {
 
 
   handleStateChange = (state) => {
+    console.log("GOT RESPONSE\n\n\n\n", state.response.status[1])
     this.currentViewPagerIndex = isNaN(this.currentViewPagerIndex) ? 0 : this.currentViewPagerIndex;
     var shouldBeModified = false;
     var contentLayout;
@@ -231,22 +230,22 @@ class HomeScreen extends View {
 
     switch (this.currentPageIndex) {
       case 0:
-        eventAction = { "tag": "ShowHome" ,contents:{"name":"Kiran"}};
+        eventAction = { "tag": "ShowHome", contents: { "name": "Kiran" } };
         break;
       case 1:
-        eventAction = { "tag": "StartCourseFlow",contents:[] };
+        eventAction = { "tag": "StartCourseFlow", contents: [] };
         break;
       case 2:
-        eventAction = { "tag" : "StartResourceFlow", contents:[] };
+        eventAction = { "tag": "StartResourceFlow", contents: [] };
         break;
       case 3:
-        eventAction = { "tag": "StartCommunityFlow",contents:[] };
+        eventAction = { "tag": "StartCommunityFlow", contents: [] };
         break;
       case 4:
-        eventAction = { "tag": "StartProfileFlow",contents:[] };
+        eventAction = { "tag": "StartProfileFlow", contents: [] };
         break;
       default:
-        eventAction = { "tag": "DummyFlow",contents:[] };
+        eventAction = { "tag": "DummyFlow", contents: [] };
         break;
     }
     console.log("--------->VIEWPAGER TRIGGERS ", JSON.stringify(eventAction), "ON INDEX", this.currentPageIndex);
@@ -254,10 +253,10 @@ class HomeScreen extends View {
     // this.state = window.__ObjectAssign({}, this.state, eventAction);
 
 
-     window.__runDuiCallback(eventAction);
+    window.__runDuiCallback(eventAction);
   }
 
-        // eventAction = { "tag": "ShowHome" ,contents:{"name":"Kiran"}};
+  // eventAction = { "tag": "ShowHome" ,contents:{"name":"Kiran"}};
 
 
   handleBottomNavBarAction = (index) => {
