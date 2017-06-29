@@ -2,6 +2,7 @@ const dom = require("@juspay/mystique-backend").doms.android;
 const View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
+var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var EditText = require("@juspay/mystique-backend").androidViews.EditText;
 var Space = require("@juspay/mystique-backend").androidViews.Space;
@@ -276,28 +277,30 @@ class SearchToolbar extends View {
         console.log("hihihhi");
 
           var layout = (<LinearLayout
-                    width="match_parent"
-                    height="wrap_content"
-                    orientation = "vertical"
-                    >
+                         width="match_parent"
+                         height="1500"
+                         root="true"
+                         background="#ffffff"
+                         gravity="center_horizontal"
+                         orientation="vertical">
 
-                    <TextView
-                      height="match_parent"
-                      width="match_parent"
-                      gravity="center"
-                      maxLines="1"
-                      margin="16,16,16,16"
-                      style={window.__TextStyle.textStyle.TOOLBAR.HEADING}
-                      text="No Search Results Found"/>
+                          <TextView
+                            height="wrap_content"
+                            width="wrap_content"
+                            gravity="center_horizontal"
+                            maxLines="1"
+                            margin="16,16,16,16"
+                            style={window.__TextStyle.textStyle.TOOLBAR.HEADING}
+                            text="No Search Results Found"/>
 
-                  </LinearLayout>);
+                        </LinearLayout>);
       }
       else
       {
           data = JSON.parse(data);
           var layout = (<SearchResult 
-                 data={data}
-                />)  
+                         data={data} />)
+                         
       }
       
       
@@ -384,13 +387,22 @@ class SearchToolbar extends View {
        </LinearLayout>
        </LinearLayout>
 
+       <ScrollView
+        height="0"
+        weight="1"
+        width="match_parent">
+
+
        <LinearLayout
            width="match_parent"
            height="1500"
+           root="true"
            visibility="gone"
            background="#ffffff"
            id = {this.idSet.searchListContainer}
            orientation="vertical"/>
+
+       </ScrollView>
 
        </LinearLayout>
     )

@@ -65,7 +65,7 @@ class UserScreen extends View {
         // JBridge.setInSharedPrefs("user_name", JSON.stringify(result.response.firstName));
         // JBridge.setInSharedPrefs("user_token", JSON.stringify(result.response.token));
 
-        console.log("WELCOME -->>", result.response.firstName);
+        //console.log("WELCOME -->>", result.response.firstName);
         //JBridge.showToast("WELCOME ->", result.response.firstName)
 
         //"{"id":null,"ver":"v1","ts":"2017-06-28 02:09:30:032+0000","params":{"resmsgid":null,"msgid":null,"err":"INVALID_CREDENTIAL","status":"SERVER_ERROR","errmsg":"Invalid credential."},"responseCode":"CLIENT_ERROR","result":{}}"
