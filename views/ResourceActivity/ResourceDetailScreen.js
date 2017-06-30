@@ -29,7 +29,13 @@ class ResourceDetailScreen extends View {
       ]
       }
 
+    this.shouldCacheScreen = false;
 
+
+      this.details = JSON.parse(state.data.value0.resourceDetails);
+      console.log("ResourceDetail description",this.details.description)
+      console.log("Resource Title",this.details.name)
+      console.log("Got Title",state)
     
   }
 
@@ -100,7 +106,7 @@ class ResourceDetailScreen extends View {
                     width="wrap_content"
                     height="wrap_content"
                     style={window.__TextStyle.textStyle.CARD.TITLE.DARK}
-                    text="Practice exam paper- 01"/>
+                    text={this.details.name}/>
 
                     <ViewWidget
                     width="0"
@@ -138,7 +144,7 @@ class ResourceDetailScreen extends View {
                   height="wrap_content"
                   margin="0,0,0,12"
                   width="match_parent"
-                  contentText="This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced"
+                  contentText={this.details.description}
                   />
                   
                   </LinearLayout>
