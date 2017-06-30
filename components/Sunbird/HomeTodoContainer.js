@@ -48,8 +48,7 @@ class HomeTodoContainer extends View {
     var rows = this.data.map((item,i) => {   
          return (<CourseProgressCard 
                  data={item}
-                 onCourseClick = {this.handleCourseClick}
-                 onCourseOpenClick = {this.handleCourseOpenClick}/>)
+                 onCourseClick = {this.handleCourseClick}/>)
         
     });
 
@@ -99,9 +98,6 @@ class HomeTodoContainer extends View {
         this.props.onCourseOpenClick(courseName);
     }
 
-    handleCourseOpenClick = (courseName)=>{
-        console.log("course open selected",courseName);
-    }
 
     handleResourceClick = (resourceName)=>{
         console.log("resource selected",resourceName);

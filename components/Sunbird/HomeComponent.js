@@ -174,8 +174,8 @@ class HomeComponent extends View {
   }
 
   handleResourceOpen = (data) =>{
-    console.log("handleResourceOpen")
-    window.__runDuiCallback({ tag: "StartResourceDetailFlow",contents:[] });
+    console.log("resourceDetails");
+    window.__runDuiCallback({ tag: "StartResourceDetailFlow",contents:{"resourceDetails":"nothing"} });
   }
 
   handleCourseOpen = (data) =>{
@@ -244,17 +244,16 @@ class HomeComponent extends View {
 
                     
                    <HomeTodoContainer
-                   onCourseOpenClick = {this.handleCourseOpen}
-                   />
+                   onCourseOpenClick = {this.handleCourseOpen}/>
+                   
 
                    {this.getSpaceSeparator()}
 
                    <HomeRecommendedContainer
                    title= "Recommended"
-                   onResourceOpenClick = {this.handleResourceOpen}
-                   />
-
-
+                   onCourseOpenClick = {this.handleCourseOpen}
+                   onResourceOpenClick = {this.handleResourceOpen}/>
+                   
                    <LinearLayout
                    width="match_parent"
                    height="wrap_content"

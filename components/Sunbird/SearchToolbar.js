@@ -274,7 +274,6 @@ class SearchToolbar extends View {
         console.log("length",searchText);
         console.log(data);
       if(searchText == "" || data == "[]"){
-        console.log("hihihhi");
 
           var layout = (<LinearLayout
                          width="match_parent"
@@ -298,8 +297,16 @@ class SearchToolbar extends View {
       else
       {
           data = JSON.parse(data);
-          var layout = (<SearchResult 
-                         data={data} />)
+          var layout = (<LinearLayout
+                         width="match_parent"
+                         height="1500"
+                         root="true"
+                         background="#ffffff"
+                         gravity="center_horizontal"
+                         orientation="vertical">
+                         <SearchResult 
+                         data={data} />
+                         </LinearLayout>);
                          
       }
       

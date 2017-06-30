@@ -58,14 +58,12 @@ class HomeRecommendedContainer extends View {
         if(item.type == "course"){
          return (<CourseCard 
                  data={item}
-                 onCourseClick = {this.handleCourseClick}
-                 onCourseOpenClick = {this.handleCourseOpenClick}/>)
+                 onCourseClick = {this.handleCourseClick}/>)
         }
         else if(item.type == "file"){
          return (<DownloadedCard 
                  data={item}
-                 onResourceClick = {this.handleResourceClick}
-                 onResourceOpenClick = {this.handleResourceOpenClick}/>)
+                 onResourceClick = {this.handleResourceClick}/>)
         }
     });
 
@@ -111,17 +109,11 @@ class HomeRecommendedContainer extends View {
 
 
     handleCourseClick = (courseName)=>{
-        console.log("course selected",courseName);
-    }
-
-    handleCourseOpenClick = (courseName)=>{
-        console.log("course open selected",courseName);
+      this.props.onCourseOpenClick(courseName);
     }
 
     handleResourceClick = (resourceName)=>{
-        console.log("resource selected",resourceName);
         this.props.onResourceOpenClick(resourceName);
-
     }
 
     handleViewAllClick(){

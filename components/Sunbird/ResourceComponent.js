@@ -104,7 +104,7 @@ class ResourceComponent extends View {
   }
 
   handleResourceOpen = (data) =>{
-    window.__runDuiCallback({ tag: "StartResourceDetailFlow",contents:[] });
+    window.__runDuiCallback({ tag: "StartResourceDetailFlow",contents:{resourceDetails:"nothing"} });
   }
 
   
