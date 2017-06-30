@@ -22,7 +22,7 @@ data HomeScreen = HomeScreen
 data HomeScreenAction = ShowHome {name::String} | StartCourseFlow |
  StartResourceFlow | StartCommunityFlow | StartProfileFlow | 
  StartCommunityInfoFlow {community::String} | StartCommunityViewAllFlow | 
- StartCourseInfoFlow {course::String} | GetCoursePage | GetResourcePage | StartNotificationFlow | StartResourceDetailFlow
+ StartCourseInfoFlow {course::String} | GetCoursePage | GetResourcePage | StartNotificationFlow | StartResourceDetailFlow {resourceDetails::String}
 
 data InitScreen = InitScreen 
 data InitScreenAction = ShowInit  | StartInit
@@ -43,7 +43,7 @@ data NotificationScreen = NotificationScreen
 data NotificationAction = DummyNotificationAction
 
 
-data ResourceDetailScreen = ResourceDetailScreen
+data ResourceDetailScreen = ResourceDetailScreen {resourceDetails::String}
 data ResourceDetailAction = DummyResourceDetailAction
 
 

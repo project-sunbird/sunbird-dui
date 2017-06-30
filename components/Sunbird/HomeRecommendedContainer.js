@@ -59,14 +59,12 @@ class HomeRecommendedContainer extends View {
         if(item.type == "course"){
          return (<CourseCard 
                  data={item}
-                 onCourseClick = {this.handleCourseClick}
-                 onCourseOpenClick = {this.handleCourseOpenClick}/>)
+                 onCourseClick = {this.handleCourseClick}/>)
         }
         else if(item.type == "file"){
          return (<DownloadedCard 
                  data={item}
-                 onResourceClick = {this.handleResourceClick}
-                 onResourceOpenClick = {this.handleResourceOpenClick}/>)
+                 onResourceClick = {this.handleResourceClick}/>)
         }
     });
 
@@ -112,22 +110,11 @@ class HomeRecommendedContainer extends View {
 
 
     handleCourseClick = (courseName)=>{
-        console.log("course selected---------->",courseName);
-        JBridge.importCourse("do_20046395");
-        // var callback = callbackMapper.map(function(data) {
-        //  console.log("lc",JSON.parse(data));
-        // });
-        // JBridge.getAllLocalContent(callback);
-    }
-
-    handleCourseOpenClick = (courseName)=>{
-        console.log("course open selected",courseName);
+      this.props.onCourseOpenClick(courseName);
     }
 
     handleResourceClick = (resourceName)=>{
-        console.log("resource selected",resourceName);
         this.props.onResourceOpenClick(resourceName);
-
     }
 
     handleViewAllClick(){

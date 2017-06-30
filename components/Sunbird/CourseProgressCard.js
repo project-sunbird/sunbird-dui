@@ -153,7 +153,7 @@ class CourseProgressCard extends View {
             type="SmallButton_Secondary_BT"
             width="wrap_content"
             height="wrap_content"
-             onClick={()=>{this.handleOpenClick(this.props.data.moduleText)}}
+            onClick={()=>{this.handleCardClick(this.props.data.moduleText)}}
             text="RESUME"/>
 
 
@@ -166,12 +166,7 @@ class CourseProgressCard extends View {
         this.props.onCourseClick(courseName);
     }
 
-    handleOpenClick = (courseName) =>{
-      this.props.onCourseOpenClick(courseName);
-    }
-
    
-
   render() {
       this.layout = (
         <LinearLayout

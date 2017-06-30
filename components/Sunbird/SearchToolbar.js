@@ -274,7 +274,6 @@ class SearchToolbar extends View {
         console.log("length",searchText);
         console.log(data);
       if(searchText == "" || data == "[]"){
-        console.log("hihihhi");
 
           var layout = (<LinearLayout
                          width="match_parent"

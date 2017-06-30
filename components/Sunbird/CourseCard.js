@@ -128,6 +128,7 @@ class CardRecommended extends View {
 
   
     handleCardClick = (courseName) =>{
+      console.log("course in course card")
         this.props.onCourseClick(courseName);
     }
 
