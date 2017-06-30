@@ -29,8 +29,14 @@ class ResourceDetailScreen extends View {
       ]
       }
 
+    this.shouldCacheScreen=false;
 
     
+  }
+
+  handleStartDownload = () => {
+    JBridge.importCourse("do_21215643302032179227");
+    //"do_21215643302032179227"
   }
 
   onPop = () => {
@@ -180,7 +186,8 @@ class ResourceDetailScreen extends View {
 
                <ProgressButton
                  width="match_parent"
-                 buttonItems={buttonList}/>
+                 buttonItems={buttonList}
+                 onButtonClick={this.handleStartDownload}/>
        
       </LinearLayout>
     );

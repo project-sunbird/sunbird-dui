@@ -298,8 +298,15 @@ class SearchToolbar extends View {
       else
       {
           data = JSON.parse(data);
-          var layout = (<SearchResult 
-                         data={data} />)
+          var layout = (<LinearLayout
+                         width="match_parent"
+                         height="1500"
+                         root="true"
+                         background="#ffffff"
+                         orientation="vertical">
+                          <SearchResult 
+                            data={data} />
+                        </LinearLayout>)
                          
       }
       
@@ -335,8 +342,9 @@ class SearchToolbar extends View {
       //     _this.replaceChild(_this.idSet.searchListContainer,layout.render(),0);
       // }
     });
-
-    JBridge.searchContent(callback,searchText);
+    if(searchText.length >2){
+      JBridge.searchContent(callback,searchText);
+    }
 
     
   }

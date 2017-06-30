@@ -11,6 +11,7 @@ var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 var _this;
 var CourseCard = require('../Sunbird/CourseCard');
+var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 var DownloadedCard = require('../Sunbird/DownloadedCard');
 
 
@@ -111,7 +112,12 @@ class HomeRecommendedContainer extends View {
 
 
     handleCourseClick = (courseName)=>{
-        console.log("course selected",courseName);
+        console.log("course selected---------->",courseName);
+        JBridge.importCourse("do_20046395");
+        // var callback = callbackMapper.map(function(data) {
+        //  console.log("lc",JSON.parse(data));
+        // });
+        // JBridge.getAllLocalContent(callback);
     }
 
     handleCourseOpenClick = (courseName)=>{

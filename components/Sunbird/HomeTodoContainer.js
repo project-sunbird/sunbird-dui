@@ -95,8 +95,9 @@ class HomeTodoContainer extends View {
 
 
     handleCourseClick = (courseName)=>{
-        console.log("course selected",courseName);
-        this.props.onCourseOpenClick(courseName);
+        console.log("course selected---------------------->",courseName);
+        
+        // this.props.onCourseOpenClick(courseName);
     }
 
     handleCourseOpenClick = (courseName)=>{
