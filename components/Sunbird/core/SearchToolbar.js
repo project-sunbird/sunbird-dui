@@ -302,11 +302,10 @@ class SearchToolbar extends View {
                          height="1500"
                          root="true"
                          background="#ffffff"
-                         gravity="center_horizontal"
                          orientation="vertical">
-                         <SearchResult 
-                         data={data} />
-                         </LinearLayout>);
+                          <SearchResult 
+                            data={data} />
+                        </LinearLayout>)
                          
       }
       
@@ -342,8 +341,9 @@ class SearchToolbar extends View {
       //     _this.replaceChild(_this.idSet.searchListContainer,layout.render(),0);
       // }
     });
-
-    JBridge.searchContent(callback,searchText);
+    if(searchText.length >2){
+      JBridge.searchContent(callback,searchText);
+    }
 
     
   }

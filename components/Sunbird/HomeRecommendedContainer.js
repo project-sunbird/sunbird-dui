@@ -11,6 +11,7 @@ var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 var _this;
 var CourseCard = require('../Sunbird/CourseCard');
+var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 var DownloadedCard = require('../Sunbird/DownloadedCard');
 
 

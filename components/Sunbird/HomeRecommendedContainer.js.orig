@@ -10,11 +10,12 @@ var Button = require('../Sunbird/Button');
 var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 var _this;
-var CourseProgressCard = require('../Sunbird/CourseProgressCard');
+var CourseCard = require('../Sunbird/CourseCard');
+var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 var DownloadedCard = require('../Sunbird/DownloadedCard');
 
 
-class HomeTodoContainer extends View {
+class HomeRecommendedContainer extends View {
   constructor(props, children) {
     super(props, children);
     _this=this;
@@ -26,14 +27,23 @@ class HomeTodoContainer extends View {
       [{
         "imageUrl":"https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
         "moduleText":"Organic Chemistry for Std VII",
-        "progress":"10",
-        "timeLeft":"20 hrs remaining",
+        "stars":"(4 stars)",
+        "votes":"(2,350 votes)",
+        "type":"course"
       },
       {
         "imageUrl":"https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
-        "moduleText":"Organic Chemistry for Std VII",
-        "progress":"30",
-        "timeLeft":"20 hrs remaining",
+        "moduleText":"Physics",
+        "stars":"PDF file [207 KB]",
+        "votes":"Saved on 10 May ‘17",
+        "type":"file"
+      },
+      {
+        "imageUrl":"https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
+        "moduleText":"Physics",
+        "stars":"PDF file [207 KB]",
+        "votes":"Saved on 10 May ‘17",
+        "type":"file"
       }
       ];
     
@@ -45,11 +55,17 @@ class HomeTodoContainer extends View {
   }
 
   getRows = () =>{
-    var rows = this.data.map((item,i) => {   
-         return (<CourseProgressCard 
+    var rows = this.data.map((item,i) => {
+        if(item.type == "course"){
+         return (<CourseCard 
                  data={item}
                  onCourseClick = {this.handleCourseClick}/>)
-        
+        }
+        else if(item.type == "file"){
+         return (<DownloadedCard 
+                 data={item}
+                 onResourceClick = {this.handleResourceClick}/>)
+        }
     });
 
     var layout = (<LinearLayout
@@ -75,7 +91,7 @@ class HomeTodoContainer extends View {
             <TextView
             width="wrap_content"
             height="wrap_content"
-            text="To-Do"
+            text={this.props.title}
             style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
             <ViewWidget
@@ -94,14 +110,24 @@ class HomeTodoContainer extends View {
 
 
     handleCourseClick = (courseName)=>{
-        console.log("course selected---------------------->",courseName);
-        
-        // this.props.onCourseOpenClick(courseName);
+<<<<<<< HEAD
+        console.log("course selected---------->",courseName);
+        JBridge.importCourse("do_20046395");
+        // var callback = callbackMapper.map(function(data) {
+        //  console.log("lc",JSON.parse(data));
+        // });
+        // JBridge.getAllLocalContent(callback);
     }
 
+    handleCourseOpenClick = (courseName)=>{
+        console.log("course open selected",courseName);
+=======
+      this.props.onCourseOpenClick(courseName);
+>>>>>>> 622c2d27a9ce0fe21cfde3609ff0efd3af33df21
+    }
 
     handleResourceClick = (resourceName)=>{
-        console.log("resource selected",resourceName);
+        this.props.onResourceOpenClick(resourceName);
     }
 
     handleViewAllClick(){
@@ -142,4 +168,4 @@ class HomeTodoContainer extends View {
   }
 }
 
-module.exports = HomeTodoContainer;
+module.exports = HomeRecommendedContainer;

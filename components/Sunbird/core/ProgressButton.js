@@ -10,46 +10,100 @@ class ProgressButton extends View {
   constructor(props, children) {
     super(props, children);
     this.displayName = "ProgressButton";
+    this.setIds([
+      "downloadingText",
+      "downloadBarContainer"
+      ])
+    window.__updateDownload = this.updateProgress;
+    this.isDownloaded=false;
   }
 
-  handleClick = (data) => {
-    // this.props.onButtonClick(data);
+  handleClick = () => {
+    this.props.onButtonClick();
   }
 
+  
+
+  updateProgress = (pValue) =>{
+    var cmd;
+    console.log("--->\t\t\t\n\n\n",pValue);
+
+    var data=JSON.parse(pValue);
+    
+    var textToShow=""
+    
+    if(parseInt(data.downloadProgress)==100)
+    {
+      this.isDowloaded=true;
+      textToShow="DOWNLOAD COMPLETE"
+      
+
+    }else{
+      this.isDowloaded=false;
+      textToShow="DOWNLOADED " + data.downloadProgress + "%"
+      
+    }
+    this.replaceChild(this.idSet.downloadBarContainer,this.getButtons(data.downloadProgress,textToShow).render(),0);
 
 
-  getButtons = () => {
-      return (
-        <RelativeLayout
+
+
+  }
+
+ getDownloadBackground = (value)=>{
+
+   value =(value<0)?0:value;
+
+   var pLeft= parseFloat(value)/parseFloat(100);
+   var pRight=(1-pLeft);
+
+   return(<LinearLayout
         width="match_parent"
-        height="48">
-
-        <LinearLayout
-        width="match_parent"
+        onClick={this.handleClick}
+        root="true"
         height="48">
 
             <LinearLayout
             width="0"
             height="match_parent"
-            weight="50"
+            weight={pLeft}
             multiCorners={"8,0,0,8,"+window.__Colors.THICK_BLUE}/>
 
             <LinearLayout
             width="0"
             height="match_parent"
-            weight="50"
+            weight={pRight}
             multiCorners={"0,8,8,0,"+window.__Colors.PRIMARY_DARK}/>
 
-        </LinearLayout>
+        </LinearLayout>)
+
+ }
+
+
+
+  getButtons = (value,text) => {
+    var _this=this;
+  var layout = (
+        <RelativeLayout
+        width="match_parent"
+        height="48"
+        root="true">
+
+        
+      { this.getDownloadBackground(value)}
+        
 
         <TextView
         width="wrap_content"
         height="wrap_content"
         centerInParent="true,-1"
+        id={this.idSet.downloadingText}
         style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
-        text="DOWNLOAD THIS RESOURCE"/>
+        text={text}/>
 
         </RelativeLayout> )
+
+        return layout;
   }
 
 
@@ -72,9 +126,11 @@ class ProgressButton extends View {
         <LinearLayout
           height="match_parent"
           width="match_parent"
-          margin="16,16,16,16">
+          margin="16,16,16,16"
+          root="true"
+          id={this.idSet.downloadBarContainer}>
        
-            {this.getButtons()}
+            {this.getButtons(0,"DOWNLOAD COURSE")}
        
          </LinearLayout>     
 
