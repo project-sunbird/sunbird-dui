@@ -10,7 +10,7 @@ var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 
-var SearchToolbar = require('../Sunbird/SearchToolbar');
+var SearchToolbar = require('../Sunbird/core/SearchToolbar');
 var MyCommunities = require('../Sunbird/MyCommunities');
 var PopularCommunities = require('../Sunbird/PopularCommunities');
 var RecommendedCommunities = require('../Sunbird/RecommendedCommunities');

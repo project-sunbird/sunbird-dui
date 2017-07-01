@@ -10,9 +10,9 @@ var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callba
 var ScrollView = require('@juspay/mystique-backend').androidViews.ScrollView;
 var objectAssign = require('object-assign');
 window.R = require("ramda");
-var SimpleToolbar = require('../../components/Sunbird/SimpleToolbar');
+var SimpleToolbar = require('../../components/Sunbird/core/SimpleToolbar');
 var CropParagraph = require('../../components/Sunbird/CropParagraph');
-var ProgressButton = require('../../components/Sunbird/ProgressButton');
+var ProgressButton = require('../../components/Sunbird/core/ProgressButton');
 
 
 class ResourceDetailScreen extends View {

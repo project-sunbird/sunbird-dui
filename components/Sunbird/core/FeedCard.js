@@ -7,12 +7,12 @@ var RatingBar = require('@juspay/mystique-backend').androidViews.RatingBar;
 window.R = require("ramda");
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
-var Button = require('../Sunbird/Button');
+var Button = require('../../Sunbird/Button');
 var EditText = require("@juspay/mystique-backend").androidViews.EditText;
 var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 var _this;
 
-var Styles = require("../../res/Styles");
+var Styles = require("../../../res/Styles");
 let IconStyle = Styles.Params.IconStyle;
 
 

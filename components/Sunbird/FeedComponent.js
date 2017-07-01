@@ -6,7 +6,7 @@ var HorizontalScrollView = require("@juspay/mystique-backend").androidViews.Hori
 var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
-var FeedCard = require('../Sunbird/FeedCard');
+var FeedCard = require('../Sunbird/core/FeedCard');
 var _this;
 class FeedComponent extends View {
   constructor(props, children) {

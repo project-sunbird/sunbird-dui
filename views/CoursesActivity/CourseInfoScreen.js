@@ -12,12 +12,12 @@ var objectAssign = require('object-assign');
 
 window.R = require("ramda");
 
-var SimpleToolbar = require('../../components/Sunbird/SimpleToolbar');
+var SimpleToolbar = require('../../components/Sunbird/core/SimpleToolbar');
 var CropParagraph = require('../../components/Sunbird/CropParagraph');
 var CourseCurriculum = require('../../components/Sunbird/CourseCurriculum');
-var PageOption = require('../../components/Sunbird/PageOption');
+var PageOption = require('../../components/Sunbird/core/PageOption');
 var CourseProgress = require('../../components/Sunbird/CourseProgress');
-var ProgressButton = require('../../components/Sunbird/ProgressButton');
+var ProgressButton = require('../../components/Sunbird/core/ProgressButton');
 
 class CourseInfoScreen extends View {
   constructor(props, children, state) {

@@ -4,7 +4,7 @@ var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout
 var RelativeLayout = require("@juspay/mystique-backend").androidViews.RelativeLayout;
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 
-var Button = require('../Sunbird/Button');
+var Button = require('../../Sunbird/Button');
 
 class ProgressButton extends View {
   constructor(props, children) {

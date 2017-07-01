@@ -13,7 +13,7 @@ var FeedComponent = require('./FeedComponent');
 window.R = require("ramda");
 
 
-var SearchToolbar = require('../Sunbird/SearchToolbar');
+var SearchToolbar = require('../Sunbird/core/SearchToolbar');
 
 
 

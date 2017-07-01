@@ -17,9 +17,6 @@ const HomeScreen = require("../views/HomeScreen");
 const UserScreen = require("../views/UserScreen");
 //Course or Learn
 const CourseInfoScreen = require("../views/CoursesActivity/CourseInfoScreen");
-const CourseActivityScreen = require("../views/CoursesActivity/CourseActivityScreen");
-const EnrolledCourseScreen = require("../views/CoursesActivity/EnrolledCourseScreen");
-const CourseQuizActivityScreen = require("../views/CoursesActivity/CourseQuizActivityScreen");
 
 //Resource
 
@@ -27,7 +24,6 @@ const CourseQuizActivityScreen = require("../views/CoursesActivity/CourseQuizAct
 const CommunityInfoScreen = require("../views/CommunityActivity/CommunityInfoScreen");
 const CommunityViewAllListScreen = require("../views/CommunityActivity/CommunityViewAllListScreen");
 //Profile
-const ProfileActivityScreen = require("../views/ProfileActivity/ProfileActivityScreen");
 const NotificationScreen = require("../views/NotificationScreen");
 const ResourceDetailScreen = require("../views/ResourceActivity/ResourceDetailScreen");
 
@@ -54,22 +50,7 @@ var determineScreen = (screenName, state) => {
     case "CourseInfoScreen":
       screen = new(CourseInfoScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
-
-    case "COURSE_ACTIVITY_SCREEN":
-      screen = new(CourseActivityScreen(dispatcher, RootScreenActions))(null, null, state);
-      break;
-    case "EnrolledCourseScreen":
-      screen = new(EnrolledCourseScreen(dispatcher, RootScreenActions))(null, null, state);
-      break;
-    case "COURSE_QUIZ_ACTIVITY_SCREEN":
-      screen = new(CourseQuizActivityScreen(dispatcher, RootScreenActions))(null, null, state);
-      break;
-    case "EXPLORE_SCREEN":
-      screen = new(ExploreScreen(dispatcher, RootScreenActions))(null, null, state);
-      break;
-    case "CLASSROOM_CONTENT_SCREEN":
-      screen = new(ClassRoomContentScreen(dispatcher, RootScreenActions))(null, null, state);
-      break;
+        
     case "CommunityInfoScreen":
       screen = new(CommunityInfoScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
@@ -82,10 +63,6 @@ var determineScreen = (screenName, state) => {
 
     case "ResourceDetailScreen":
       screen = new(ResourceDetailScreen(dispatcher, RootScreenActions))(null, null, state);
-      break;
-
-    case "PROFILE_ACTIVITY_SCREEN":
-      screen = new(ProfileActivityScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
   }
 
