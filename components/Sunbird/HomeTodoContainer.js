@@ -11,6 +11,7 @@ var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 var _this;
 var CourseProgressCard = require('../Sunbird/CourseProgressCard');
+var CardComponent = require('../Sunbird/core/CardComponent');
 var DownloadedCard = require('../Sunbird/DownloadedCard');
 
 
@@ -24,16 +25,22 @@ class HomeTodoContainer extends View {
 
     this.data = 
       [{
-        "imageUrl":"https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
-        "moduleText":"Organic Chemistry for Std VII",
-        "progress":"10",
-        "timeLeft":"20 hrs remaining",
+        imageUrl : "https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
+        type : "COURSE",
+        title : "Organic Chemistry",
+        footerTitle : "20% remaining",
+        footerSubTitle : "(2350) votes",
+        actionText : "RESUME",
+        isProgress : "true",
       },
       {
-        "imageUrl":"https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
-        "moduleText":"Organic Chemistry for Std VII",
-        "progress":"30",
-        "timeLeft":"20 hrs remaining",
+        imageUrl : "https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
+        type : "COURSE",
+        title : "Organic Chemistry",
+        footerTitle : "20% remaining",
+        footerSubTitle : "(2350) votes",
+        actionText : "RESUME",
+        isProgress : "true",
       }
       ];
     
@@ -44,11 +51,12 @@ class HomeTodoContainer extends View {
 
   }
 
-  getRows = () =>{
+
+ getRows = () =>{
     var rows = this.data.map((item,i) => {   
-         return (<CourseProgressCard 
+         return (<CardComponent 
                  data={item}
-                 onCourseClick = {this.handleCourseClick}/>)
+                 onCardClick = {this.handleCardClick}/>)
         
     });
 
@@ -63,8 +71,10 @@ class HomeTodoContainer extends View {
                     
   }
 
-
-
+  handleCardClick = () =>{
+    console.log("card clicked");
+  }
+  
   getHeader(){
     return (<LinearLayout
             width="match_parent"
@@ -93,15 +103,8 @@ class HomeTodoContainer extends View {
   }
 
 
-    handleCourseClick = (courseName)=>{
-        console.log("course selected---------------------->",courseName);
-        
-        // this.props.onCourseOpenClick(courseName);
-    }
-
-
-    handleResourceClick = (resourceName)=>{
-        console.log("resource selected",resourceName);
+    handleCardClick = (name)=>{
+      console.log("card name",name);
     }
 
     handleViewAllClick(){

@@ -14,6 +14,9 @@ var CourseCard = require('../Sunbird/CourseCard');
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 var DownloadedCard = require('../Sunbird/DownloadedCard');
 
+var CardComponent = require('../Sunbird/core/CardComponent');
+
+
 
 class HomeRecommendedContainer extends View {
   constructor(props, children) {
