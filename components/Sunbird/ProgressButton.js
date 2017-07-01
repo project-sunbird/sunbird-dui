@@ -3,8 +3,12 @@ var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
 var RelativeLayout = require("@juspay/mystique-backend").androidViews.RelativeLayout;
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
+var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
+
 
 var Button = require('../Sunbird/Button');
+
+var _this;
 
 class ProgressButton extends View {
   constructor(props, children) {
@@ -16,10 +20,31 @@ class ProgressButton extends View {
       ])
     window.__updateDownload = this.updateProgress;
     this.isDownloaded=false;
+    this.checkContentLocalStatus(this.props.identifier);
+    _this = this;
+
   }
 
   handleClick = () => {
     this.props.onButtonClick();
+  }
+
+
+  checkContentLocalStatus = (identifier) =>{
+      var callback = callbackMapper.map(function(status) {
+
+
+        if(status == "true"){
+           _this.isDownloaded = true;
+
+           _this.replaceChild(_this.idSet.downloadBarContainer,_this.getButtons("100","PLAY").render(),0);
+
+        }
+
+      
+
+      });
+      JBridge.getLocalContentStatus(identifier,callback);
   }
 
   
@@ -34,21 +59,43 @@ class ProgressButton extends View {
     
     if(parseInt(data.downloadProgress)==100)
     {
-      this.isDowloaded=true;
-      textToShow="DOWNLOAD COMPLETE"
+
+      _this.isDownloaded=true;
+      textToShow="PLAY"
       
 
     }else{
-      this.isDowloaded=false;
+      _this.isDownloaded=false;
       textToShow="DOWNLOADED " + data.downloadProgress + "%"
       
     }
-    this.replaceChild(this.idSet.downloadBarContainer,this.getButtons(data.downloadProgress,textToShow).render(),0);
+    _this.replaceChild(_this.idSet.downloadBarContainer,_this.getButtons(data.downloadProgress,textToShow).render(),0);
 
 
 
 
   }
+
+
+  handleButtonClick = () =>{
+    console.log("dp",this.isDownloaded);
+    if(this.isDownloaded){
+        console.log("play");
+        JBridge.playContent(this.props.identifier);
+
+    }
+    else{
+        console.log("download");
+            JBridge.importCourse(this.props.identifier);
+
+    }
+
+  }
+
+
+
+
+
 
  getDownloadBackground = (value)=>{
 
@@ -59,7 +106,7 @@ class ProgressButton extends View {
 
    return(<LinearLayout
         width="match_parent"
-        onClick={this.handleClick}
+        onClick={this.handleButtonClick}
         root="true"
         height="48">
 

@@ -36,14 +36,12 @@ class ResourceDetailScreen extends View {
       console.log("ResourceDetail description",this.details.description)
       console.log("Resource Title",this.details.name)
       console.log("Got Title",state)
-    
+
   }
 
-  handleStartDownload = () => {
-    JBridge.importCourse("do_21215643302032179227");
-    //"do_21215643302032179227"
-  }
+  
 
+  
   onPop = () => {
     Android.runInUI(
       this.animateView(),
@@ -64,6 +62,7 @@ class ResourceDetailScreen extends View {
             background={window.__Colors.PRIMARY_BLACK_22}/>)
   }
 
+  
 
   
 
@@ -192,7 +191,7 @@ class ResourceDetailScreen extends View {
                <ProgressButton
                  width="match_parent"
                  buttonItems={buttonList}
-                 onButtonClick={this.handleStartDownload}/>
+                 identifier = {this.details.identifier}/>
        
       </LinearLayout>
     );
