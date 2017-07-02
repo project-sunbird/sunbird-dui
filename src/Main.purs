@@ -20,7 +20,7 @@ import Data.Foreign.Generic (encodeJSON)
 import Control.Monad.Eff.Exception (EXCEPTION)
 import Prelude
 import PureTypes
-
+import PureTypesApi
 
 main :: Eff (exception::EXCEPTION, ui::UI, console::CONSOLE) Unit
 main = void $ launchAff $ begin
@@ -42,6 +42,12 @@ userScreenFlow = do
       responseData <- userLogin x y
       --userScreenFlow {state:"tab3"}
       _ <- sendUpdatedState {response : responseData, responseFor : "LoginApiAction", screen:"asas"} 
+      pure $ "Aborted 3"
+    SignUpApiAction{userName:x1,firstName:x2,password:x3,language:x4} -> do
+      --liftEff $ log "FOR UN :" <> x <> " PASS :" <> y
+      responseData <- userSignup x1 x2 x3 x4
+      --userScreenFlow {state:"tab3"}
+      _ <- sendUpdatedState {response : responseData, responseFor : "SignUpApiAction", screen:"asas"} 
       pure $ "Aborted 3"
     LoginAction -> do
       liftEff $ log $ "LoginAction"
