@@ -30,7 +30,7 @@ begin :: Aff(ui::UI,console::CONSOLE) String
 begin = do
   action <- ui $ InitScreen
   case action of
-    StartInit -> userScreenFlow
+    StartInit -> cFlow
     _ -> pure $ "aborted"
 
 
