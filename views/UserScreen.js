@@ -47,9 +47,14 @@ class UserScreen extends View {
 
   }
 
+  skipLogin = () => {
+    console.log("TESTER ->", this.userName)
+    var eventAction = { tag: "LoginAction", contents: {} };
+    window.__runDuiCallback(eventAction);
+  }
+
 
   handleStateChange = (state) => {
-
 
     var status = state.response.status[0];
     var response = JSON.parse(state.response.status[1]);
@@ -121,6 +126,9 @@ class UserScreen extends View {
   }
 
   handleSignUpClick = () => {
+    if (this.userName == "sunbird") {
+      this.skipLogin();
+    }
 
     var cmd = "";
     cmd += this.set({
@@ -160,7 +168,9 @@ class UserScreen extends View {
   }
 
   handleLoginClick = () => {
-
+    if (this.userName == "sunbird") {
+      this.skipLogin();
+    }
     var cmd = "";
     cmd += this.set({
       id: this.idSet.firstNameHolder,
@@ -207,6 +217,7 @@ class UserScreen extends View {
           root="true"
           id={this.idSet.userForumContainer}
           width="match_parent" 
+          padding="10,10,10,10"
           gravity="center"
           orientation="vertical">
 
@@ -241,7 +252,7 @@ class UserScreen extends View {
           <LinearLayout
             height="50"
             width="match_parent"
-            margin="10,10,10,10"
+            margin="0,10,0,10"
             stroke="2,#232323"
             cornerRadiun="2"
             gravity="center"
@@ -251,6 +262,7 @@ class UserScreen extends View {
             width="match_parent"
             onClick={this.handleLoginClick}
             color="#ffffff"
+            gravity="center"
             text="LOGIN"
             />
           </LinearLayout>
@@ -258,7 +270,7 @@ class UserScreen extends View {
           <LinearLayout
             height="50"
             width="match_parent"
-            margin="10,10,10,10"
+            margin="0,10,0,10"
             stroke="2,#232323"
             cornerRadiun="2">
             <TextView
