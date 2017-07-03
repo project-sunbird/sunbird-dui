@@ -91,9 +91,12 @@ class ResourceComponent extends View {
                   orientation="vertical">
 
                  <ResourceContainer
-                   data = {this.data}
-                   title="Saved Resources"/>
-                
+                 onResourceOpenClick = {this.handleResourceOpen}
+                 data = {this.data}
+                 title="Saved Resources"
+                 onViewAllClick = {this.handleViewAllClick}
+                 />
+
                   {this.getSpaceSeparator()}
 
                   <ResourceContainer
@@ -113,6 +116,13 @@ class ResourceComponent extends View {
       )
   }
 
+  handleViewAllClick = () =>{
+    console.log("dasdasdasdasd",this.data);
+     window.__runDuiCallback({tag:"StartResourceViewAllFlow",contents:{resourceDetails:JSON.stringify(this.data)}});
+
+
+  }
+
   handleMenuClick = (url) => {
     console.log("url clicked", url);
      if(url=="ic_notification_red"){
@@ -124,6 +134,13 @@ class ResourceComponent extends View {
     console.log("searched", data);
   }
 
+  handleResourceOpen = (data) =>{
+    window.__runDuiCallback({tag:"StartResourceDetailFlow",contents:{resourceDetails:"nothing"}});
+  }
+
+  
+
+  
   getSpaceSeparator = () =>{
     return (<LinearLayout
              height="6"

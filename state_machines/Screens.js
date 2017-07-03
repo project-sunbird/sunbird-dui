@@ -57,6 +57,10 @@ module.exports = function(action, payload, state) {
       localState.isInit = false;
       localState.currScreen = "ResourceDetailScreen";
       break;
+    case "ResourceViewAllScreen":
+      localState.isInit = false;
+      localState.currScreen = "ResourceViewAllScreen";
+      break;
       
     case "CourseInfoScreen":
       localState.isInit = false;

@@ -21,7 +21,8 @@ startResourceFlow state = do
 	state <- ui $ HomeScreen
 	case state of
 		StartNotificationFlow -> startNotificationFlow state
-		StartResourceDetailFlow {resourceDetails:details}-> startResourceDetailFlow details
+		StartResourceDetailFlow {resourceDetails:details} -> startResourceDetailFlow details
+		StartResourceViewAllFlow {resourceDetails:details} -> startResourceViewAllFlow details
 		_ -> pure $ "default"
 
 
@@ -31,4 +32,12 @@ startResourceDetailFlow state = do
 	state <- ui $ ResourceDetailScreen {resourceDetails : state}
 	case state of
 		DummyResourceDetailAction -> pure $ "handled"
+		_ -> pure $ "default"
+
+
+startResourceViewAllFlow state = do
+	state <- ui $ ResourceViewAllScreen {resourceDetails : state}
+	case state of
+		StartResourceInfoFlow {resourceDetails:details} -> startResourceDetailFlow details
+		DummyResourceViewAllAction -> pure $ "handled"
 		_ -> pure $ "default"

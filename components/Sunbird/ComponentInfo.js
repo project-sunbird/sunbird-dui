@@ -34,6 +34,12 @@
         menuData={this.menuData}
         onSearch={this.handleSearch}/>
 
+        other parameters :
+
+          showAppIcon = "true"//shows app icon in toolbar. 
+                              //title should not be set while using this property.
+
+
 
         this.menuData = {
           url: [
