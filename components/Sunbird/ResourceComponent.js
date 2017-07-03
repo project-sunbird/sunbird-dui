@@ -12,8 +12,6 @@ var Space = require('@juspay/mystique-backend').androidViews.Space;
 
 var SearchToolbar = require('../Sunbird/core/SearchToolbar');
 var CourseContainer = require('../Sunbird/CourseContainer');
-var CommunityViewallList = require('../Sunbird/CommunityViewallList');
-var CommunityInfoComponent = require('../Sunbird/CommunityInfoComponent');
 var HomeRecommendedContainer = require('../Sunbird/HomeRecommendedContainer');
 var ResourceContainer = require('../Sunbird/ResourceContainer');
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
@@ -50,33 +48,13 @@ class ResourceComponent extends View {
   }
 
 
-   
-
+  
   getLocalContent = () =>{
             var callback = callbackMapper.map(function(params) {
               console.log("params in resource",JSON.parse(params));
-
               _this.data= params;
 
-             
-
-            //   var rows = params.map((item,i) => {
-            //     var temp = {};
-            //     temp['imageUrl'] = item.contentData.appIcon;
-            //     temp['moduleText'] = item.contentData.name;
-            //     temp['stars'] = "";
-            //     temp['votes'] = "";
-            //     _this.data.push(temp);
-              
-            // });
-
-    // console.log("Data to send resource",_this.data);
-
-
-
-  });
-
-
+          });
 
     JBridge.getAllLocalContent(callback);
 
@@ -114,20 +92,20 @@ class ResourceComponent extends View {
                   orientation="vertical">
 
                  <ResourceContainer
-                 onResourceOpenClick = {this.handleResourceOpen}
-                 data = {this.data}
-                 title="Saved Resources"
-                 />
+                   data = {this.data}
+                   title="Saved Resources"/>
+                
+                  {this.getSpaceSeparator()}
+
+                  <ResourceContainer
+                   data = {this.data}
+                   title="Featured"/>
 
                   {this.getSpaceSeparator()}
 
-                  <CourseContainer
-                    title="Featured"/>
-
-                  {this.getSpaceSeparator()}
-
-                  <CourseContainer
-                    title="Textbooks"/>
+                  <ResourceContainer
+                   data = {this.data}
+                   title="Textbooks"/>
 
                 </LinearLayout>
 
@@ -147,13 +125,6 @@ class ResourceComponent extends View {
     console.log("searched", data);
   }
 
-  handleResourceOpen = (data) =>{
-    window.__runDuiCallback({tag:"StartResourceDetailFlow",contents:{resourceDetails:"nothing"}});
-  }
-
-  
-
-  
   getSpaceSeparator = () =>{
     return (<LinearLayout
              height="6"

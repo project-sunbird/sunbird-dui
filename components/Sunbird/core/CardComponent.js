@@ -80,7 +80,7 @@ class CardComponent extends View {
                   width="0"
                   id={this.idSet.rightProgress}
                   alpha="0.3"
-                  multiCorners={"0,0,0,6,"+window.__Colors.PRIMARY_BLACK}
+                  multiCorners={"0,6,0,0,"+window.__Colors.PRIMARY_BLACK}
                   weight={this.getRemainingProgress(this.props.data.footerTitle.split('%')[0])}
                   height="match_parent"/>
 

@@ -12,6 +12,7 @@ var Space = require('@juspay/mystique-backend').androidViews.Space;
 
 var SearchToolbar = require('../Sunbird/core/SearchToolbar');
 var CourseContainer = require('../Sunbird/CourseContainer');
+var CourseContainer = require('../Sunbird/CourseContainer');
 var CommunityViewallList = require('../Sunbird/CommunityViewallList');
 var CommunityInfoComponent = require('../Sunbird/CommunityInfoComponent');
 var _this;

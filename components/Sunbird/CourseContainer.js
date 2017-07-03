@@ -11,6 +11,7 @@ var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 var _this;
 var CourseCard = require('../Sunbird/CourseCard');
+var CardComponent = require('../Sunbird/core/CardComponent');
 
 
 class CourseContainer extends View {
@@ -23,25 +24,20 @@ class CourseContainer extends View {
 
     this.data = 
       [{
-        "imageUrl":"http://m.rgbimg.com/cache1nyMIz/users/w/we/weirdvis/600/mg13M24.jpg",
-        "moduleText":"Organic Chemistry for Std VII",
-        "stars":"(4 stars)",
-        "votes":"(2,350 votes)",
-        "type":"course"
+        imageUrl : "https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
+        type : "COURSE",
+        title : "Organic Chemistry",
+        footerTitle : "(4 stars)",
+        footerSubTitle : "(2350) votes",
+        actionText : "RESUME",
       },
       {
-        "imageUrl":"http://m.rgbimg.com/cache1nyMIz/users/w/we/weirdvis/600/mg13M24.jpg",
-        "moduleText":"Organic Chemistry for Std VII",
-        "stars":"(4 stars)",
-        "votes":"(2,350 votes)",
-        "type":"course"
-      },
-      {
-        "imageUrl":"http://m.rgbimg.com/cache1nyMIz/users/w/we/weirdvis/600/mg13M24.jpg",
-        "moduleText":"Organic Chemistry for Std VII",
-        "stars":"(4 stars)",
-        "votes":"(2,350 votes)",
-        "type":"course"
+        imageUrl : "https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
+        type : "COURSE",
+        title : "Organic Chemistry",
+        footerTitle : "(4 stars)",
+        footerSubTitle : "(2350) votes",
+        actionText : "RESUME",
       }
       ];
     
@@ -54,10 +50,10 @@ class CourseContainer extends View {
 
   getRows = () =>{
     var rows = this.data.map((item,i) => {
-         return (<CourseCard 
+         return (<CardComponent 
                  data={item}
-                 onCourseClick = {this.handleCourseClick}
-                 onCourseOpenClick = {this.handleCourseOpenClick}/>)
+                 content={item}
+                 onCardClick={this.handleCardClick}/>)
                  
     });
 
@@ -93,23 +89,19 @@ class CourseContainer extends View {
 
 
     handleCourseClick = (courseName)=>{
+      // not used
 
       this.state = { tag: 'StartCourseInfoFlow',contents: {"course":courseName}}
       window.__runDuiCallback(this.state);
       console.log("course selected",courseName);
     }
 
-    handleCourseOpenClick = (courseName)=>{
-        console.log("course open selected",courseName);
+    handleCardClick = (content,type) =>{
+      console.log("content is",content);
+      console.log("type is",type);
     }
 
-    handleResourceClick = (resourceName)=>{
-        console.log("resource selected",resourceName);
-    }
-
-    handleResourceOpenClick = (resourceName)=>{
-        console.log("resource open selected",resourceName);
-    }
+    
 
    
   render() {
