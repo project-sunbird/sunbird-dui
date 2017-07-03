@@ -94,7 +94,7 @@ class HomeTodoContainer extends View {
             <TextView
             width="wrap_content"
             height="wrap_content"
-            text="View all"
+            text="VIEW ALL"
             onClick={()=>{this.handleViewAllClick()}}
             style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
 

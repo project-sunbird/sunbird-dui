@@ -26,6 +26,7 @@ class SearchToolbar extends View {
       "backIcon",
       "searchBackIcon",
       "searchListContainer",
+      "appIcon"
 
     ])
   this.getSearchList = debounce(this.getSearchList, 200);
@@ -58,6 +59,11 @@ class SearchToolbar extends View {
 
     cmd += this.set({
       id: this.idSet.titleTextHolder,
+      visibility: "gone"
+    })
+
+    cmd += this.set({
+      id: this.idSet.appIcon,
       visibility: "gone"
     })
     cmd += this.set({
@@ -115,6 +121,11 @@ class SearchToolbar extends View {
     cmd += this.set({
       id: this.idSet.searchListContainer,
       visibility: "gone"
+    })
+
+    cmd += this.set({
+      id: this.idSet.appIcon,
+      visibility: this.props.showAppIcon ? "visible" : "gone"
     })
     cmd += _this.set({
       id: _this.idSet.searchHolder,
@@ -192,41 +203,52 @@ class SearchToolbar extends View {
   getTitle() {
     return (<LinearLayout
             height="match_parent"
-            orientation="vertical"
             layoutTransition="true"
+            gravity="center_vertical"
             weight="1">
 
-          <TextView
-            height="match_parent"
-            width="wrap_content"
-            gravity="center_vertical"
-            maxLines="1"
-            margin="10,0,0,0"
-            ellipsize="end"
-            layoutTransition="true"
-            visibility={this.isSearchEnabled?"gone":"visible"}
-            id={this.idSet.titleTextHolder}
-            style={window.__TextStyle.textStyle.TOOLBAR.HEADING}
-            text={this.props.title}/>
+              <TextView
+                height="match_parent"
+                width="wrap_content"
+                gravity="center_vertical"
+                maxLines="1"
+                margin="10,0,0,0"
+                ellipsize="end"
+                layoutTransition="true"
+                visibility={this.isSearchEnabled?"gone":"visible"}
+                id={this.idSet.titleTextHolder}
+                style={window.__TextStyle.textStyle.TOOLBAR.HEADING}
+                text={this.props.title}/>
 
-           <EditText
-            height="match_parent"
-            width="match_parent"
-            maxLines="1"
-            hint={this.props.hint}
-            layoutTransition="true"
-            gravity="center_vertical"
-            background="#ffffff"
-            onChange = {result=>_this.getSearchList(result)}
-            id={this.idSet.searchHolder}
-            style={window.__TextStyle.textStyle.TOOLBAR.HEADING}/>
+
+               <ImageView
+                  height="wrap_content"
+                  width="50"
+                  margin="16,0,0,0"
+                  gravity="center_vertical"
+                  imageUrl="ic_launcher"
+                  layoutTransition="true"
+                  visibility={!this.isSearchEnabled && this.props.showAppIcon?"visible":"gone"}
+                  id={this.idSet.appIcon}/>
+
+               <EditText
+                  height="match_parent"
+                  width="match_parent"
+                  maxLines="1"
+                  hint={this.props.hint}
+                  layoutTransition="true"
+                  gravity="center_vertical"
+                  background="#ffffff"
+                  visibility={this.isSearchEnabled?"visible":"gone"}
+                  onChange = {result=>_this.getSearchList(result)}
+                  id={this.idSet.searchHolder}
+                  style={window.__TextStyle.textStyle.TOOLBAR.HEADING}/>
 
 
           </LinearLayout>)
 
   }
-
-
+ 
 
   getMenu = () => {
     if (!this.props.menuData)
@@ -380,6 +402,7 @@ class SearchToolbar extends View {
        height="wrap_content"
        orientation="vertical"
        afterRender={this.afterRender}
+       gravity="center_vertical"
        root="true">
 
       <LinearLayout
@@ -417,6 +440,7 @@ class SearchToolbar extends View {
            width="match_parent"
            height="1500"
            root="true"
+           gravity="center_vertical"
            visibility="gone"
            background="#ffffff"
            id = {this.idSet.searchListContainer}
