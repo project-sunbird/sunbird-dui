@@ -10,6 +10,8 @@ var Button = require('../Sunbird/Button');
 var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 var _this;
+var RatingBar = require("@juspay/mystique-backend").androidViews.RatingBar;
+
 
 class MyCommunities extends View {
   constructor(props, children) {
@@ -17,6 +19,7 @@ class MyCommunities extends View {
     _this=this;
 
     this.setIds([
+      'ratingBar'
     ]);
 
     this.data = [
@@ -42,9 +45,7 @@ class MyCommunities extends View {
   }
 
 
-  afterRender = () => {
-
-  }
+  
 
   getRows(){
     var rows = this.data.map((item, i) => {
@@ -117,11 +118,11 @@ class MyCommunities extends View {
             height="wrap_content"
             orientation="vertical">
 
-            <TextView
-            width="wrap_content"
-            height="wrap_content"
-            text={item.members}
-            style={window.__TextStyle.textStyle.HINT.REGULAR}/>
+            <RatingBar
+              id = {this.idSet.ratingBar}
+              width="wrap_content"
+              height="wrap_content"/>
+
             <TextView
             width="wrap_content"
             height="wrap_content"
@@ -183,11 +184,17 @@ class MyCommunities extends View {
         this.props.onViewAllClick();
     }
 
+
+  afterRender = () => {
+      JBridge.setRating(this.idSet.ratingBar,"3.3");
+  }
+
   render() {
       this.layout = (
         <LinearLayout
           height="match_parent"
           width="match_parent"
+          afterRender={this.afterRender}
           orientation="vertical">
 
           {this.getHeader()}

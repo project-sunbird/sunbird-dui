@@ -78,5 +78,15 @@
       }
 
 
-$.ajax({url:'forpass.php',type:'post',data: dataa, success: function(data){}
+4.RatingBar:
+
+            <RatingBar
+              id = {this.idSet.ratingBar}
+              width="wrap_content"
+              height="wrap_content"/>
+    
+
+    
+      JBridge.setRating(this.idSet.ratingBar,"3.3");
+
 

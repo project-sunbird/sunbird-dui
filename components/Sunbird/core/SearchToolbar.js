@@ -25,7 +25,8 @@ class SearchToolbar extends View {
       "menuContainer",
       "backIcon",
       "searchBackIcon",
-      "searchListContainer"
+      "searchListContainer",
+
     ])
   this.getSearchList = debounce(this.getSearchList, 200);
     _this = this;
@@ -216,6 +217,7 @@ class SearchToolbar extends View {
             layoutTransition="true"
             gravity="center_vertical"
             background="#ffffff"
+            inputType="number"
             onChange = {result=>_this.getSearchList(result)}
             id={this.idSet.searchHolder}
             style={window.__TextStyle.textStyle.TOOLBAR.HEADING}/>
@@ -354,6 +356,17 @@ class SearchToolbar extends View {
   };
 
 
+  afterRender = () =>{
+
+     var callback = callbackMapper.map(function(data) {
+              console.log("data ENTERED IN SEARCH ______",data[0]);
+
+          });
+
+    JBridge.handleImeAction(this.idSet.searchHolder,callback);
+  }
+
+
   render() {
     let searchIcon = this.getSearchIcon();
     let back = this.getBack();
@@ -367,6 +380,7 @@ class SearchToolbar extends View {
        width="match_parent"
        height="wrap_content"
        orientation="vertical"
+       afterRender={this.afterRender}
        root="true">
 
       <LinearLayout
