@@ -31,8 +31,9 @@ class HomeRecommendedContainer extends View {
         imageUrl : "https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
         type : "COURSE",
         title : "Organic Chemistry for Std VII",
-        footerTitle : "(4 stars)",
+        footerTitle : "",
         footerSubTitle : "(2350) votes",
+        stars:"4",
         actionText : "OPEN",
       },
       {
@@ -95,7 +96,7 @@ class HomeRecommendedContainer extends View {
             <TextView
             width="wrap_content"
             height="wrap_content"
-            text="View all"
+            text="VIEW ALL"
             onClick={()=>{this.handleViewAllClick()}}
             style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
 

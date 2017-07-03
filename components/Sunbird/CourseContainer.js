@@ -11,6 +11,7 @@ var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 var _this;
 var CourseCard = require('../Sunbird/CourseCard');
+var CardComponent = require('../Sunbird/core/CardComponent');
 
 
 class CourseContainer extends View {
@@ -19,32 +20,7 @@ class CourseContainer extends View {
     _this=this;
 
     this.setIds([
-    ]);
-
-    this.data = 
-      [{
-        "imageUrl":"http://m.rgbimg.com/cache1nyMIz/users/w/we/weirdvis/600/mg13M24.jpg",
-        "moduleText":"Organic Chemistry for Std VII",
-        "stars":"(4 stars)",
-        "votes":"(2,350 votes)",
-        "type":"course"
-      },
-      {
-        "imageUrl":"http://m.rgbimg.com/cache1nyMIz/users/w/we/weirdvis/600/mg13M24.jpg",
-        "moduleText":"Organic Chemistry for Std VII",
-        "stars":"(4 stars)",
-        "votes":"(2,350 votes)",
-        "type":"course"
-      },
-      {
-        "imageUrl":"http://m.rgbimg.com/cache1nyMIz/users/w/we/weirdvis/600/mg13M24.jpg",
-        "moduleText":"Organic Chemistry for Std VII",
-        "stars":"(4 stars)",
-        "votes":"(2,350 votes)",
-        "type":"course"
-      }
-      ];
-    
+    ]);   
   }
 
 
@@ -53,11 +29,11 @@ class CourseContainer extends View {
   }
 
   getRows = () =>{
-    var rows = this.data.map((item,i) => {
-         return (<CourseCard 
+    var rows = this.props.data.map((item,i) => {
+         return (<CardComponent 
                  data={item}
-                 onCourseClick = {this.handleCourseClick}
-                 onCourseOpenClick = {this.handleCourseOpenClick}/>)
+                 content={item}
+                 onCardClick={this.handleCardClick}/>)
                  
     });
 
@@ -87,29 +63,36 @@ class CourseContainer extends View {
             text={this.props.title}
             style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
+            <ViewWidget
+            width="0"
+            height="0"
+            weight="1"/>
+
+            <TextView
+            width="wrap_content"
+            height="wrap_content"
+            visibility={this.props.isViewAllExist?"visible":"gone"}
+            text="VIEW ALL"
+            style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
 
             </LinearLayout>)
   }
 
 
     handleCourseClick = (courseName)=>{
+      // not used
 
       this.state = { tag: 'StartCourseInfoFlow',contents: {"course":courseName}}
       window.__runDuiCallback(this.state);
       console.log("course selected",courseName);
     }
 
-    handleCourseOpenClick = (courseName)=>{
-        console.log("course open selected",courseName);
+    handleCardClick = (content,type) =>{
+      console.log("content is",content);
+      console.log("type is",type);
     }
 
-    handleResourceClick = (resourceName)=>{
-        console.log("resource selected",resourceName);
-    }
-
-    handleResourceOpenClick = (resourceName)=>{
-        console.log("resource open selected",resourceName);
-    }
+    
 
    
   render() {
@@ -117,6 +100,7 @@ class CourseContainer extends View {
         <LinearLayout
           height="match_parent"
           width="match_parent"
+          background={this.props.transparent?window.__Colors.WHITE_F2:window.__Colors.WHITE}
           orientation="vertical">
 
           {this.getHeader()}

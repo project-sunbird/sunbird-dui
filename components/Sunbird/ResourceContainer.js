@@ -10,9 +10,8 @@ var Button = require('../Sunbird/Button');
 var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 var _this;
-var CourseCard = require('../Sunbird/CourseCard');
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
-var DownloadedCard = require('../Sunbird/DownloadedCard');
+var CardComponent = require('../Sunbird/core/CardComponent');
 
 
 class ResourceContainer extends View {
@@ -27,7 +26,6 @@ class ResourceContainer extends View {
 
 
   afterRender = () => {
-
   }
 
   getRows = () =>{
@@ -39,17 +37,15 @@ class ResourceContainer extends View {
 
                 var temp = {};
                 temp['imageUrl'] = item.contentData.appIcon;
-                temp['moduleText'] = item.contentData.name;
-                temp['stars'] = "";
-                temp['votes'] = "";
-                temp["size"] = item.contentData.size;
-                temp["contentType"] = item.contentData.contentType;
-               
-     
-         return (<DownloadedCard 
+                temp['title'] = item.contentData.name;
+                temp['footerTitle'] = "";
+                temp['footerSubTitle'] = "";
+                temp['actionText'] = "OPEN";
+
+         return (<CardComponent 
                  data={temp}
                  content={item.contentData}
-                 onResourceClick = {this.handleResourceClick}/>)
+                 onCardClick = {this.handleCardClick}/>)
     });
 
     var layout = (<LinearLayout
@@ -97,9 +93,8 @@ class ResourceContainer extends View {
       this.props.onCourseOpenClick(courseName);
     }
 
-    handleResourceClick = (content)=>{
+    handleCardClick = (content,type)=>{
       window.__runDuiCallback({tag:"StartResourceDetailFlow",contents:{resourceDetails:JSON.stringify(content)}});
-        
     }
 
     handleViewAllClick(){

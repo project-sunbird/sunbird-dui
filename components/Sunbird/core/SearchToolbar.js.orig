@@ -207,6 +207,21 @@ class SearchToolbar extends View {
             gravity="center_vertical"
             weight="1">
 
+<<<<<<< HEAD
+           <EditText
+            height="match_parent"
+            width="match_parent"
+            maxLines="1"
+            hint={this.props.hint}
+            layoutTransition="true"
+            gravity="center_vertical"
+            background="#ffffff"
+            onChange = {result=>_this.getSearchList(result)}
+            id={this.idSet.searchHolder}
+            style={window.__TextStyle.textStyle.TOOLBAR.HEADING}
+            imeOptions="actionSearch" 
+            />
+=======
               <TextView
                 height="match_parent"
                 width="wrap_content"
@@ -243,6 +258,7 @@ class SearchToolbar extends View {
                   onChange = {result=>_this.getSearchList(result)}
                   id={this.idSet.searchHolder}
                   style={window.__TextStyle.textStyle.TOOLBAR.HEADING}/>
+>>>>>>> 70b2e622ef3c4922a70d8054d709491b4ae4bc7a
 
 
           </LinearLayout>)

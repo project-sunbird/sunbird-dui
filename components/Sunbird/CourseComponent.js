@@ -12,6 +12,7 @@ var Space = require('@juspay/mystique-backend').androidViews.Space;
 
 var SearchToolbar = require('../Sunbird/core/SearchToolbar');
 var CourseContainer = require('../Sunbird/CourseContainer');
+var CourseContainer = require('../Sunbird/CourseContainer');
 var CommunityViewallList = require('../Sunbird/CommunityViewallList');
 var CommunityInfoComponent = require('../Sunbird/CommunityInfoComponent');
 var _this;
@@ -37,6 +38,46 @@ class CourseComponent extends View {
         { imageUrl: "ic_action_search"}
       ]
     }
+
+     this.progressData = [{
+                            imageUrl : "https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
+                            type : "COURSE",
+                            title : "Organic Chemistry",
+                            footerTitle : "30% done",
+                            footerSubTitle : "(2350) votes",
+                            actionText : "RESUME",
+                            isProgress : "true",
+                          },
+                          {
+                            imageUrl : "https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
+                            type : "COURSE",
+                            title : "Organic Chemistry",
+                            footerTitle : "30% done",
+                            footerSubTitle : "(2350) votes",
+                            actionText : "RESUME",
+                            isProgress : "true",
+                          }
+                          ];
+      
+
+       this.data = [{
+                      imageUrl : "https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
+                      type : "COURSE",
+                      title : "Organic Chemistry for Std VII",
+                      footerSubTitle : "(2350) votes",
+                      stars:"4",
+                      actionText : "OPEN",
+                    },
+                    {
+                      imageUrl : "https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
+                      type : "COURSE",
+                      title : "Physics",
+                      stars : "4",
+                      footerSubTitle : "Saved on 10 May ‘17",
+                      actionText : "OPEN"
+                    }
+                  ];
+                  
   }
 
 
@@ -71,17 +112,24 @@ class CourseComponent extends View {
 
                   
                   <CourseContainer
-                    title="New"/>
+                    transparent="true"
+                    isViewAllExist="true"
+                    title="Courses In Progress"
+                    data = {this.progressData} />
+                   
 
                   {this.getSpaceSeparator()}
 
                   <CourseContainer
-                    title="Popular"/>
+                    title="Popular"
+                    data = {this.data}/>
+                    
 
                   {this.getSpaceSeparator()}
 
                   <CourseContainer
-                    title="Recommended"/>
+                    title="Recommended"
+                    data = {this.data}/>
 
                 </LinearLayout>
 
