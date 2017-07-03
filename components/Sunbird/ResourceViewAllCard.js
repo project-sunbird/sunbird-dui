@@ -20,8 +20,11 @@ class ResourceViewAllCard extends View {
     _this=this;
 
     this.setIds([
+      'leftProgress',
+      'rightProgress'
     ]);
     console.log("download card contetn",this.props.content);
+    console.log("subtitle i gotISSSSS",this.props.data.footerSubTitle);
 
     
   }
@@ -33,89 +36,136 @@ class ResourceViewAllCard extends View {
 
   }
 
-formatBytes = (bytes)=> {
-    if(bytes < 1024) return bytes + " Bytes";
-    else if(bytes < 1048576) return(bytes / 1024).toFixed(2) + " KB";
-    else if(bytes < 1073741824) return(bytes / 1048576).toFixed(2) + " MB";
-    else return(bytes / 1073741824).toFixed(3) + " GB";
-};
+   getRemainingProgress = (progress) =>{
+    var remainingProgress = 100 - parseInt(progress);
+    return remainingProgress;
+  }
+
+
+  getFooter = () =>{
+    return (    <LinearLayout
+                  width="wrap_content"
+                  height="wrap_content"
+                  padding = "12,27,16,12">
+
+
+                  <LinearLayout
+                  width="match_parent"
+                  height="wrap_content"
+                  orientation="vertical">
+
+                  <TextView
+                    width="wrap_content"
+                    height="wrap_content"
+                    style={window.__TextStyle.textStyle.FILTER.REGULAR_BLACK}
+                    text={this.props.data.footerTitle}/>
+
+                  <TextView
+                    width="wrap_content"
+                    height="wrap_content"
+                    style={window.__TextStyle.textStyle.HINT.REGULAR}
+                    text={this.props.data.footerSubTitle}/>
+
+                  </LinearLayout>
+
+                  <ViewWidget
+                      height="0"
+                      weight="1"/>
+
+                    <Button
+                    type="SmallButton_Secondary_BT"
+                    width="wrap_content"
+                    height="wrap_content"
+                    onClick={()=>this.handleCardClick()}
+                    text={this.props.data.actionText? this.props.data.actionText : "OPEN"}/>
+
+                </LinearLayout>);
+  }
+
+
 
 
   getBody = () =>{
     console.log("data in card content",this.props.data);
     return(
             <LinearLayout
-            width = "match_parent"
-            height = "match_parent"
-            margin = "16,16,16,0"
-            padding = "1,1,1,1"
-            multiCorners={"10,10,10,10,"+window.__Colors.SHADOW_BLACK}
-            >
+              width = "match_parent"
+              height = "match_parent"
+              margin = "16,16,16,0"
+              padding = "1,1,1,1"
+              multiCorners={"10,10,10,10,"+window.__Colors.SHADOW_BLACK}>
+           
             
-            <LinearLayout
-            width="match_parent"
-            height="match_parent"
-            multiCorners={"10,10,10,10,"+window.__Colors.WHITE}
-            >
-            <LinearLayout
-              onClick={()=>this.handleCardClick()}
-              >
-
               <LinearLayout
-              width = "100"
-              height = "100"
-              alpha="0.50"
-              multiCorners={"10,0,0,10,"+window.__Colors.BLACK}
-              >
-                    
-                    <ImageView
-                      width="100"
-                      height="100"
-                      gravity="center"
-                      circularImageUrl={"10,"+ this.props.data.imageUrl}/>
-              </LinearLayout>
+                width="match_parent"
+                height="match_parent"
+                multiCorners={"10,10,10,10,"+window.__Colors.WHITE}>
+              
               <LinearLayout
-              orientation = "vertical"
-              >
-                      <LinearLayout
-                      width = "wrap_content"
-                      height = "wrap_content"
-                      orientation = "vertical"
-                      >
-                        <TextView
-                          width="wrap_content"
-                          height="wrap_content"
-                          text={this.props.data.name}
-                          margin = "12,12,12,0"
-                          style={window.__TextStyle.textStyle.CARD.HEADING}/>
-                      </LinearLayout>
+                onClick={()=>this.handleCardClick()}>
+                
 
-                      <LinearLayout
-                        margin = "12,35,16,0"
-                      >
-                        <TextView
-                          width="wrap_content"
-                          height="wrap_content"
-                          style={window.__TextStyle.textStyle.HINT.REGULAR}
-                          text={ this.props.data.label2 + " [" + this.formatBytes(this.props.data.label1) + "]"}/>
-                        <ViewWidget
-                            height="0"
-                            weight="1"/>
-
-                          <Button
-                          type="SmallButton_Secondary_BT"
-                          width="wrap_content"
-                          height="wrap_content"
-                          onClick={()=>this.handleCardClick()}
-                          text={this.props.data.actionText? this.props.data.actionText : "OPEN"}/>
+                <RelativeLayout
+                  width = "100"
+                  height = "100">
 
 
-                      </LinearLayout>
+                <LinearLayout
+                width="match_parent"
+                height="match_parent"
+                scaleType="fixXY"
+                alpha="0.5"
+                multiCorners={"10,0,0,10,"+window.__Colors.BLACK}/>
+      
+                <ImageView
+                  width="match_parent"
+                  height="match_parent"
+                  gravity="center"
+                  circularImageUrl={"25,"+ "https://images.fineartamerica.com/images-medium-large-5/sunflower-abstract-by-nature-square-lee-craig.jpg"}/>
+               
+                </RelativeLayout>
+
+
+                <LinearLayout
+                  orientation = "vertical">
+
+                  <LinearLayout
+                  visibility={this.props.data.isProgress?"visible":"gone"}
+                  width="match_parent"
+                  height="wrap_content">
+
+                  <LinearLayout
+                  width="0"
+                  weight={this.props.data.isProgress?this.props.data.footerTitle.split('%')[0]:"0"}
+                  height="3"
+                  id={this.idSet.leftProgress}
+                  multiCorners={"0,0,0,0,"+window.__Colors.SAFFRON}/>
+
+                  <LinearLayout
+                  width="0"
+                  weight={this.props.data.isProgress?this.getRemainingProgress(this.props.data.footerTitle.split('%')[0]):"0"}
+                  height="3"
+                  alpha="0.5"
+                  id={this.idSet.rightProgress}
+                  multiCorners={"0,6,0,0,"+window.__Colors.PRIMARY_BLACK}/>
+
+                  </LinearLayout>
+                
+                  
+                  <TextView
+                    width="wrap_content"
+                    height="wrap_content"
+                    text={this.props.data.name}
+                    margin = "12,9,12,0"
+                    style={window.__TextStyle.textStyle.CARD.HEADING}/>
+
+                {this.getFooter()}
+
             </LinearLayout>
 
-            </LinearLayout>
-            </LinearLayout>
-            </LinearLayout>)
+          </LinearLayout>
+        </LinearLayout>
+      </LinearLayout> )
 
   }
 

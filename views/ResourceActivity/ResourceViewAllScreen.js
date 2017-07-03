@@ -39,7 +39,12 @@ class ResourceViewAllScreen extends View {
   }
 
   
-
+formatBytes = (bytes)=> {
+    if(bytes < 1024) return bytes + " Bytes";
+    else if(bytes < 1048576) return(bytes / 1024).toFixed(2) + " KB";
+    else if(bytes < 1073741824) return(bytes / 1048576).toFixed(2) + " MB";
+    else return(bytes / 1073741824).toFixed(3) + " GB";
+};
 
 getRows = () =>{
 
@@ -51,10 +56,10 @@ getRows = () =>{
                 var temp = {};
                 temp['imageUrl'] = item.contentData.appIcon;
                 temp['name'] = item.contentData.name;
-                temp['stars'] = "";
-                temp['votes'] = "";
-                temp["label1"] = item.contentData.size;
-                temp["label2"] = item.contentData.contentType;
+                temp['progress'];
+                temp['footerTitle'] = "20% done";
+                temp['actionText'] = "RESUME";
+                temp["footerSubTitle"] = item.contentData.contentType + " [" + this.formatBytes(item.contentData.size) + "]";
 
                
      
@@ -83,7 +88,7 @@ getRows = () =>{
     else return(bytes / 1073741824).toFixed(3) + " GB";
 };
 
-handleResourceClick = (content)=>{
+    handleResourceClick = (content)=>{
       console.log("content -------------->",content);
       window.__runDuiCallback({tag:"StartResourceInfoFlow",contents:{resourceDetails:JSON.stringify(content)}});
         
@@ -117,7 +122,8 @@ handleResourceClick = (content)=>{
   
 
   handleBackPress = () => {
-    
+    window.__changePureScriptFlow();
+    window.__runDuiCallback({ action: "showMainFlow" });
   }
 
   render() {
@@ -136,8 +142,8 @@ handleResourceClick = (content)=>{
           onBackPress={this.handleBackPress}
           showMenu="true"
           invert="true"
-          title= "Saved Resources"
-          />
+          title= "Saved Resources"/>
+          
 
               <ScrollView
                 height="0"
