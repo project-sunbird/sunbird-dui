@@ -21,7 +21,8 @@ class CardComponent extends View {
 
     this.setIds([
       "leftProgress",
-      "rightProgress"
+      "rightProgress",
+      "ratingBar"
     ]);
     
   }
@@ -70,7 +71,7 @@ class CardComponent extends View {
 
                 <LinearLayout
                   width="0"
-                  weight={this.props.data.footerTitle.split('%')[0]}
+                  weight={this.props.data.isProgress?this.props.data.footerTitle.split('%')[0]:"0"}
                   id={this.idSet.leftProgress}
                   height="match_parent"
                   multiCorners={"6,0,0,0,"+window.__Colors.SAFFRON} />
@@ -81,7 +82,7 @@ class CardComponent extends View {
                   id={this.idSet.rightProgress}
                   alpha="0.3"
                   multiCorners={"0,6,0,0,"+window.__Colors.PRIMARY_BLACK}
-                  weight={this.getRemainingProgress(this.props.data.footerTitle.split('%')[0])}
+                  weight={this.props.data.isProgress?this.getRemainingProgress(this.props.data.footerTitle.split('%')[0]):"0"}
                   height="match_parent"/>
 
               </LinearLayout>
@@ -116,7 +117,7 @@ class CardComponent extends View {
 
 
   afterRender = () => {
-   
+      JBridge.setRating(this.idSet.ratingBar,this.props.data.stars);
   }
 
   getFooter= ()=>{
@@ -134,7 +135,20 @@ class CardComponent extends View {
             width="wrap_content"
             height="wrap_content"
             text={this.props.data.footerTitle}
+            visibility={this.props.data.stars?"gone":"visible"}
             style={window.__TextStyle.textStyle.CARD.SEMI_DARK}/>
+
+            <LinearLayout
+            visibility={this.props.data.stars?"visible":"gone"}
+            width="wrap_content"
+            height="wrap_content">
+
+                <RatingBar
+                width="wrap_content"
+                height="wrap_content"
+                id={this.idSet.ratingBar}/>
+
+            </LinearLayout>
 
             <TextView
             width="wrap_content"

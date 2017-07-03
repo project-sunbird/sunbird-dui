@@ -20,27 +20,7 @@ class CourseContainer extends View {
     _this=this;
 
     this.setIds([
-    ]);
-
-    this.data = 
-      [{
-        imageUrl : "https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
-        type : "COURSE",
-        title : "Organic Chemistry",
-        footerTitle : "(4 stars)",
-        footerSubTitle : "(2350) votes",
-        actionText : "RESUME",
-      },
-      {
-        imageUrl : "https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
-        type : "COURSE",
-        title : "Organic Chemistry",
-        footerTitle : "(4 stars)",
-        footerSubTitle : "(2350) votes",
-        actionText : "RESUME",
-      }
-      ];
-    
+    ]);   
   }
 
 
@@ -49,7 +29,7 @@ class CourseContainer extends View {
   }
 
   getRows = () =>{
-    var rows = this.data.map((item,i) => {
+    var rows = this.props.data.map((item,i) => {
          return (<CardComponent 
                  data={item}
                  content={item}
@@ -83,6 +63,17 @@ class CourseContainer extends View {
             text={this.props.title}
             style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
+            <ViewWidget
+            width="0"
+            height="0"
+            weight="1"/>
+
+            <TextView
+            width="wrap_content"
+            height="wrap_content"
+            visibility={this.props.isViewAllExist?"visible":"gone"}
+            text="VIEW ALL"
+            style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
 
             </LinearLayout>)
   }
@@ -109,6 +100,7 @@ class CourseContainer extends View {
         <LinearLayout
           height="match_parent"
           width="match_parent"
+          background={this.props.transparent?window.__Colors.WHITE_F2:window.__Colors.WHITE}
           orientation="vertical">
 
           {this.getHeader()}

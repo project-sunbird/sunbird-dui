@@ -19,7 +19,6 @@ class MyCommunities extends View {
     _this=this;
 
     this.setIds([
-      'ratingBar'
     ]);
 
     this.data = [
@@ -118,10 +117,11 @@ class MyCommunities extends View {
             height="wrap_content"
             orientation="vertical">
 
-            <RatingBar
-              id = {this.idSet.ratingBar}
-              width="wrap_content"
-              height="wrap_content"/>
+            <TextView
+            width="wrap_content"
+            height="wrap_content"
+            text={item.members}
+            style={window.__TextStyle.textStyle.HINT.REGULAR}/>            
 
             <TextView
             width="wrap_content"
@@ -185,9 +185,7 @@ class MyCommunities extends View {
     }
 
 
-  afterRender = () => {
-      JBridge.setRating(this.idSet.ratingBar,"3.3");
-  }
+  
 
   render() {
       this.layout = (

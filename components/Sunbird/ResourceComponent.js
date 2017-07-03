@@ -40,6 +40,7 @@ class ResourceComponent extends View {
 
     this.menuData = {
       url: [
+        { imageUrl: "ic_action_filter" },
         { imageUrl: "ic_notification_red" },
         { imageUrl: "ic_action_search"}
       ]
@@ -57,8 +58,6 @@ class ResourceComponent extends View {
           });
 
     JBridge.getAllLocalContent(callback);
-
-
   }
 
 

@@ -38,11 +38,11 @@
         this.menuData = {
           url: [
             { imageUrl: "ic_action_notification_blue" },
-            { imageUrl: "ic_action_filter" }
+            { imageUrl: "ic_action_filter" },
+            { imageUrl: "ic_action_search" }
           ]
         }
 
-        /No need to send search icon. Search is default./
 
         handleMenuClick = (url) =>{
           console.log("menu item selected",url);
@@ -88,5 +88,81 @@
 
     
       JBridge.setRating(this.idSet.ratingBar,"3.3");
+
+5.CardComponent
+
+        <CardComponent 
+         data={item}
+         content={item}
+         onCardClick = {this.handleCardClick}/>)
+
+
+        handleCardClick = (content,type) =>{
+           console.log("content is",content);
+           console.log("type is ",type);
+        }
+
+/****************** Data for Card with progress bar and no star rating ************/
+  this.data = [{
+                imageUrl : "https://www.light.jpg",
+                type : "COURSE",
+                title : "Organic Chemistry",
+                footerTitle : "20% done",
+                footerSubTitle : "(2350) votes",
+                actionText : "RESUME",//this will be button text
+                isProgress : "true",//use when top progress is needed
+              }]
+
+/****************** Data for Card without progress bar but with star rating ************/
+
+  this.data = [{
+                imageUrl : "https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
+                type : "COURSE",
+                title : "Organic Chemistry for Std VII",
+                footerSubTitle : "(2350) votes",
+                stars:"4",
+                actionText : "OPEN",
+              }]
+
+/****************** Data for Card with progress and star rating ************/
+
+
+  this.data = [{
+                imageUrl : "https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
+                type : "COURSE",
+                title : "Organic Chemistry for Std VII",
+                footerTitle : "20% done",
+                footerSubTitle : "(2350) votes",
+                stars:"4",
+                isProgress : "true",
+                actionText : "OPEN",
+              }]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
