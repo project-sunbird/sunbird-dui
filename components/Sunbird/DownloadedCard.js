@@ -21,9 +21,12 @@ class DownloadedCard extends View {
 
     this.setIds([
     ]);
+    console.log("download card contetn",this.props.content);
 
     
   }
+
+
 
 
   afterRender = () => {
@@ -110,7 +113,7 @@ class DownloadedCard extends View {
             type="SmallButton_Secondary_BT"
             width="wrap_content"
             height="wrap_content"
-             onClick={()=>{this.handleOpenClick(this.props.data.moduleText)}}
+             onClick={()=>{this.handleCardClick()}}
             text="OPEN"/>
 
 
@@ -119,13 +122,11 @@ class DownloadedCard extends View {
     }
 
   
-    handleCardClick = (resourceName) =>{
-        this.props.onResourceClick(resourceName);
+    handleCardClick = () =>{
+        this.props.onResourceClick(this.props.content);
     }
 
-    handleOpenClick = (resourceName) =>{
-        this.props.onResourceClick(resourceName);
-    }
+   
 
    
 

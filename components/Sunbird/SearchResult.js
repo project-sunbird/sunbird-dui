@@ -96,6 +96,7 @@ class SearchResult extends View {
     window.__runDuiCallback({tag:"StartResourceDetailFlow",contents:{resourceDetails:itemDetails}});
 
 
+
   }
 
   
