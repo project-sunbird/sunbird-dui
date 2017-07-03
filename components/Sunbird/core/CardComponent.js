@@ -162,7 +162,7 @@ class CardComponent extends View {
 
   
     handleCardClick = () =>{
-      this.props.onCardClick(this.props.data.title);
+      this.props.onCardClick(this.props.content,this.props.data.type);
     }
 
    

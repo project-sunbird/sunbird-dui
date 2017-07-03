@@ -56,6 +56,7 @@ class HomeTodoContainer extends View {
     var rows = this.data.map((item,i) => {   
          return (<CardComponent 
                  data={item}
+                 content={item}
                  onCardClick = {this.handleCardClick}/>)
         
     });
@@ -71,9 +72,7 @@ class HomeTodoContainer extends View {
                     
   }
 
-  handleCardClick = () =>{
-    console.log("card clicked");
-  }
+  
   
   getHeader(){
     return (<LinearLayout
@@ -103,9 +102,10 @@ class HomeTodoContainer extends View {
   }
 
 
-    handleCardClick = (name)=>{
-      console.log("card name",name);
-    }
+    handleCardClick = (content,type) =>{
+     console.log("content is",content);
+     console.log("type is ",type);
+  }
 
     handleViewAllClick(){
         this.props.onViewAllClick();

@@ -26,27 +26,22 @@ class HomeRecommendedContainer extends View {
     this.setIds([
     ]);
 
-    this.data = 
+      this.data = 
       [{
-        "imageUrl":"https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
-        "moduleText":"Organic Chemistry for Std VII",
-        "stars":"(4 stars)",
-        "votes":"(2,350 votes)",
-        "type":"course"
+        imageUrl : "https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
+        type : "COURSE",
+        title : "Organic Chemistry for Std VII",
+        footerTitle : "(4 stars)",
+        footerSubTitle : "(2350) votes",
+        actionText : "OPEN",
       },
       {
-        "imageUrl":"https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
-        "moduleText":"Physics",
-        "stars":"PDF file [207 KB]",
-        "votes":"Saved on 10 May ‘17",
-        "type":"file"
-      },
-      {
-        "imageUrl":"https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
-        "moduleText":"Physics",
-        "stars":"PDF file [207 KB]",
-        "votes":"Saved on 10 May ‘17",
-        "type":"file"
+        imageUrl : "https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
+        type : "RESOURCE",
+        title : "Physics",
+        footerTitle : "PDF file [207 KB]",
+        footerSubTitle : "Saved on 10 May ‘17",
+        actionText : "OPEN"
       }
       ];
     
@@ -59,16 +54,12 @@ class HomeRecommendedContainer extends View {
 
   getRows = () =>{
     var rows = this.data.map((item,i) => {
-        if(item.type == "course"){
-         return (<CourseCard 
+       
+         return (<CardComponent 
                  data={item}
-                 onCourseClick = {this.handleCourseClick}/>)
-        }
-        else if(item.type == "file"){
-         return (<DownloadedCard 
-                 data={item}
-                 onResourceClick = {this.handleResourceClick}/>)
-        }
+                 content={item}
+                 onCardClick = {this.handleCardClick}/>)
+        
     });
 
     var layout = (<LinearLayout
@@ -112,12 +103,9 @@ class HomeRecommendedContainer extends View {
   }
 
 
-    handleCourseClick = (courseName)=>{
-      this.props.onCourseOpenClick(courseName);
-    }
-
-    handleResourceClick = (resourceName)=>{
-        this.props.onResourceOpenClick(resourceName);
+    handleCardClick  = (content,type) =>{
+      console.log("content is",content);
+      console.log("type is ",type);
     }
 
     handleViewAllClick(){
