@@ -15,6 +15,9 @@ var CourseContainer = require('../Sunbird/CourseContainer');
 var CommunityViewallList = require('../Sunbird/CommunityViewallList');
 var CommunityInfoComponent = require('../Sunbird/CommunityInfoComponent');
 var HomeRecommendedContainer = require('../Sunbird/HomeRecommendedContainer');
+var ResourceContainer = require('../Sunbird/ResourceContainer');
+var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
+
 var _this;
 class ResourceComponent extends View {
   constructor(props, children) {
@@ -32,12 +35,52 @@ class ResourceComponent extends View {
     this.popularCommunitySelected="";
     this.recommendedCommunitySelected="";
 
+    this.data = [];
+
+
+    this.getLocalContent();
+
     this.menuData = {
       url: [
         { imageUrl: "ic_notification_red" },
         { imageUrl: "ic_action_search"}
       ]
     }
+
+  }
+
+
+   
+
+  getLocalContent = () =>{
+            var callback = callbackMapper.map(function(params) {
+              console.log("params in resource",JSON.parse(params));
+
+              _this.data= params;
+
+             
+
+            //   var rows = params.map((item,i) => {
+            //     var temp = {};
+            //     temp['imageUrl'] = item.contentData.appIcon;
+            //     temp['moduleText'] = item.contentData.name;
+            //     temp['stars'] = "";
+            //     temp['votes'] = "";
+            //     _this.data.push(temp);
+              
+            // });
+
+    // console.log("Data to send resource",_this.data);
+
+
+
+  });
+
+
+
+    JBridge.getAllLocalContent(callback);
+
+
   }
 
 
@@ -70,8 +113,9 @@ class ResourceComponent extends View {
                   background={window.__Colors.WHITE}
                   orientation="vertical">
 
-                 <HomeRecommendedContainer
+                 <ResourceContainer
                  onResourceOpenClick = {this.handleResourceOpen}
+                 data = {this.data}
                  title="Saved Resources"
                  />
 
@@ -104,7 +148,7 @@ class ResourceComponent extends View {
   }
 
   handleResourceOpen = (data) =>{
-    window.__runDuiCallback({ tag: "StartResourceDetailFlow",contents:{resourceDetails:"nothing"} });
+    window.__runDuiCallback({tag:"StartResourceDetailFlow",contents:{resourceDetails:"nothing"}});
   }
 
   
