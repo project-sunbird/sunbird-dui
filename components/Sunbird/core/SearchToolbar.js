@@ -217,7 +217,6 @@ class SearchToolbar extends View {
             layoutTransition="true"
             gravity="center_vertical"
             background="#ffffff"
-            inputType="number"
             onChange = {result=>_this.getSearchList(result)}
             id={this.idSet.searchHolder}
             style={window.__TextStyle.textStyle.TOOLBAR.HEADING}/>
@@ -359,7 +358,7 @@ class SearchToolbar extends View {
   afterRender = () =>{
 
      var callback = callbackMapper.map(function(data) {
-              console.log("data ENTERED IN SEARCH ______",data[0]);
+              console.log("data ENTERED IN SEARCH",data[0]);
 
           });
 
