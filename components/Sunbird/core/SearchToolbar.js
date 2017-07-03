@@ -218,7 +218,9 @@ class SearchToolbar extends View {
             background="#ffffff"
             onChange = {result=>_this.getSearchList(result)}
             id={this.idSet.searchHolder}
-            style={window.__TextStyle.textStyle.TOOLBAR.HEADING}/>
+            style={window.__TextStyle.textStyle.TOOLBAR.HEADING}
+            imeOptions="actionSearch" 
+            />
 
 
           </LinearLayout>)

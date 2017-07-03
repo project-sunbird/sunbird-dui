@@ -42,6 +42,8 @@ class ResourceContainer extends View {
                 temp['moduleText'] = item.contentData.name;
                 temp['stars'] = "";
                 temp['votes'] = "";
+                temp["size"] = item.contentData.size;
+                temp["contentType"] = item.contentData.contentType;
                
      
          return (<DownloadedCard 

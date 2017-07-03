@@ -39,6 +39,14 @@ class ResourceDetailScreen extends View {
 
   }
 
+    formatBytes = (bytes)=> {
+    if(bytes < 1024) return bytes + " Bytes";
+    else if(bytes < 1048576) return(bytes / 1024).toFixed(2) + " KB";
+    else if(bytes < 1073741824) return(bytes / 1048576).toFixed(2) + " MB";
+    else return(bytes / 1073741824).toFixed(3) + " GB";
+};
+
+
   
 
   
@@ -136,7 +144,7 @@ class ResourceDetailScreen extends View {
                   height="wrap_content"
                   margin="0,6,0,0"
                   style={window.__TextStyle.textStyle.HINT.REGULAR}
-                  text="PDF file [207 KB]"/>
+                  text={ this.details.contentType + " [" + this.formatBytes(this.details.size) + "]"}/>
 
 
                   <LinearLayout
