@@ -2,6 +2,7 @@ var dom = require("@juspay/mystique-backend").doms.android;
 var Connector = require("@juspay/mystique-backend").connector;
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
+var RelativeLayout = require("@juspay/mystique-backend").androidViews.RelativeLayout;
 var EditText = require("@juspay/mystique-backend").androidViews.EditText;
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
@@ -29,11 +30,18 @@ class UserScreen extends View {
       "firstNameHolder",
       "languageHolder",
       "alreadyHaveAccHolder",
-      "needAccHolder"
+      "userNameHolder",
+      "passwordHolder",
+      "needAccHolder",
+      "forgotPasswordHolder",
+      "signInHolder",
+      "signUpHolder"
     ]);
 
     this.screenName = "UserScreen"
     this.isLoginMode = true;
+    this.language = "English";
+    this.userName = this.userPass = this.firstName = ""
 
 
 
@@ -48,6 +56,7 @@ class UserScreen extends View {
   }
 
   skipLogin = () => {
+    JBridge.showSnackBar("MASTER USER SUNBIRD");
     console.log("TESTER ->", this.userName)
     var eventAction = { tag: "LoginAction", contents: {} };
     window.__runDuiCallback(eventAction);
@@ -125,23 +134,95 @@ class UserScreen extends View {
     this.userName = data;
   }
 
-  handleSignUpClick = () => {
-    if (this.userName == "sunbird") {
-      this.skipLogin();
-    }
+  updateLanguage = (data) => {
+    this.language = data;
+  }
 
-    var cmd = "";
-    cmd += this.set({
+  handleAlreadyHaveAccClick = () => {
+    console.log("handleAlreadyHaveAccClick");
+    this.isLoginMode = true;
+    var cmd = this.set({
       id: this.idSet.firstNameHolder,
-      visibility: "visible",
-      text: ""
-    })
+      visibility: "gone"
+    });
     cmd += this.set({
       id: this.idSet.languageHolder,
-      visibility: "visible",
-      text: "English"
+      visibility: "gone"
     })
+    cmd += this.set({
+      id: this.idSet.forgotPasswordHolder,
+      visibility: "visible"
+    });
+    cmd += this.set({
+      id: this.idSet.signUpHolder,
+      visibility: "gone"
+    });
+    cmd += this.set({
+      id: this.idSet.signInHolder,
+      visibility: "visible"
+    });
+    cmd += this.set({
+      id: this.idSet.needAccHolder,
+      visibility: "visible"
+    });
+    cmd += this.set({
+      id: this.idSet.alreadyHaveAccHolder,
+      visibility: "gone"
+    });
     Android.runInUI(cmd, 0);
+
+  }
+
+  handleCreateAccountClick = () => {
+    console.log("handleCreateAccountClick");
+    this.isLoginMode = false;
+    var cmd = this.set({
+      id: this.idSet.firstNameHolder,
+      visibility: "visible"
+    });
+    cmd += this.set({
+      id: this.idSet.languageHolder,
+      visibility: "visible"
+    });
+    cmd += this.set({
+      id: this.idSet.forgotPasswordHolder,
+      visibility: "gone"
+    });
+    cmd += this.set({
+      id: this.idSet.signUpHolder,
+      visibility: "visible"
+    });
+    cmd += this.set({
+      id: this.idSet.signInHolder,
+      visibility: "gone"
+    });
+    cmd += this.set({
+      id: this.idSet.needAccHolder,
+      visibility: "gone"
+    });
+    cmd += this.set({
+      id: this.idSet.alreadyHaveAccHolder,
+      visibility: "visible"
+    });
+    Android.runInUI(cmd, 0);
+  }
+
+  handleSignUpClick = () => {
+    if (this.userName == "sunbird" || this.userName == "Sunbird") {
+      this.skipLogin();
+    } else if (this.firstName.length <= 0) {
+      JBridge.showSnackBar("Firsr Name can't be empty");
+      return;
+    } else if (this.userName.length <= 0) {
+      JBridge.showSnackBar("User Name can't be empty");
+      return;
+    } else if (this.userPass.length <= 0) {
+      JBridge.showSnackBar("Password can't be empty");
+      return;
+    } else if (this.language.length <= 0) {
+      JBridge.showSnackBar("Language can't be empty");
+      return;
+    }
 
     // this.userName = "amit@juspay.in"
     // this.firstName = "Amit Rohan"
@@ -167,58 +248,19 @@ class UserScreen extends View {
 
   }
 
-  updateFirstName = (data) => {
-    this.firstName = data;
-  }
-
-  updateLanguage = (data) => {
-    this.language = data;
-  }
-
-  handleAlreadyHaveAccClick = () => {
-    this.isLoginMode = true;
-    var cmd = this.set({
-      id: this.idSet.firstNameHolder,
-      visibility: "gone"
-    });
-    cmd += this.set({
-      id: this.idSet.languageHolder,
-      visibility: "gone"
-    })
-    cmd += this.set({
-      id: this.idSet.needAccHolder,
-      visibility: "visible"
-    });
-    cmd += this.set({
-      id: this.idSet.alreadyHaveAccHolder,
-      visibility: "gone"
-    });
-    Android.runInUI(cmd, 0);
-
-  }
-
-  handleCreateAccountClick = () => {
-    this.isLoginMode = false;
-    var cmd = this.set({
-      id: this.idSet.firstNameHolder,
-      visibility: "visible"
-    });
-    cmd += this.set({
-      id: this.idSet.languageHolder,
-      visibility: "visible"
-    });
-    cmd += this.set({
-      id: this.idSet.needAccHolder,
-      visibility: "gone"
-    });
-    cmd += this.set({
-      id: this.idSet.alreadyHaveAccHolder,
-      visibility: "visible"
-    });
-    Android.runInUI(cmd, 0);
-  }
-
   handleLoginClick = () => {
+
+    if (this.userName == "sunbird" || this.userName == "Sunbird") {
+      this.skipLogin();
+    }
+    if (this.userName.length <= 0) {
+      JBridge.showSnackBar("User Name can't be empty");
+      return;
+    } else if (this.userPass.length <= 0) {
+      JBridge.showSnackBar("Password can't be empty");
+      return;
+    }
+
 
     var dummyBody = { "userName": this.userName, "userPass": this.userPass };
     console.log("START API CALL LOGIN", dummyBody)
@@ -231,8 +273,7 @@ class UserScreen extends View {
 
   getTopLayout = () => {
     return (<LinearLayout
-      height="0"
-      weight="1"
+      height="wrap_content"
       width="match_parent"
       padding="12,12,12,12"
       gravity="center"
@@ -267,28 +308,34 @@ class UserScreen extends View {
             height="wrap_content"
             width="match_parent"
             gravity="center_vertical"
+            padding="6,0,0,0"
             >
-
-            <TextView
+            <LinearLayout
               height="wrap_content"
               width="0"
-              weight="1"
-              text="FORGOT PASSWORD?"
-              textSize="18"
-              color={window.__Colors.THICK_BLUE}/>
-
+              weight="1">
+                <TextView
+                  height="wrap_content"
+                  width="0"
+                  weight="1"
+                  text="FORGOT PASSWORD?"
+                  id={this.idSet.forgotPasswordHolder}
+                  textSize="18"
+                  color={window.__Colors.THICK_BLUE}/>
+            </LinearLayout>  
               <LinearLayout
                 height="wrap_content"
                 width="wrap_content"
                 background={window.__Colors.THICK_BLUE}
                 stroke={"5,"+window.__Colors.THICK_BLUE}
-                cornerRadiun="5">
+                cornerRadius="5">
                   <LinearLayout
                   height="match_parent"
                   width="match_parent"
-                  padding="10,5,10,5"
+                  padding="15,8,15,8"
                   gravity="center"
-                  
+                  id={this.idSet.signInHolder}
+                  visibility={this.isLoginMode?"visible":"gone"}
                   onClick={this.handleLoginClick}>
 
                     <TextView
@@ -298,6 +345,23 @@ class UserScreen extends View {
                       fontStyle= {window.__Font.fontStyle.EXTRABOLD}
                       />
                   </LinearLayout>
+                  <LinearLayout
+                      height="match_parent"
+                      width="match_parent"
+                      padding="15,8,15,8"
+                      gravity="center"
+                      id={this.idSet.signUpHolder}
+                      visibility={this.isLoginMode?"gone":"visible"}
+                      onClick={this.handleSignUpClick}>
+
+                    <TextView
+                      textSize="14"
+                      color={window.__Colors.WHITE}
+                      text="SIGN UP"
+                      fontStyle= {window.__Font.fontStyle.EXTRABOLD}
+                      />
+                  </LinearLayout>
+
                </LinearLayout>
 
 
@@ -311,12 +375,33 @@ class UserScreen extends View {
       <ScrollView
         height="match_parent"
         width="match_parent"
-        fillViewPort="true">
+        fillViewPort="true"
+        gravity="center"
+        >
         <LinearLayout
           height="match_parent"
           width="match_parent"
           orientation="vertical"
+          layoutTransition="true"
           root="true">
+
+            <LinearLayout
+              height="wrap_content"
+              width="match_parent"
+
+              id={this.idSet.firstNameHolder}
+              visibility={this.isLoginMode?"gone":"visible"}>
+
+                <TextInputView
+                  height="wrap_content"
+                  width="match_parent"
+                  hintText="Enter you'r first name"
+                  labelText="FIRST NAME"
+                  padding="12,0,12,0"
+                  color={window.__Colors.DARK_GRAY}
+                  _onChange={this.updateFirstName}/>  
+            
+            </LinearLayout>  
 
             <TextInputView
                 height="wrap_content"
@@ -335,28 +420,23 @@ class UserScreen extends View {
                 padding="12,0,12,0"
                 color={window.__Colors.DARK_GRAY}
                 _onChange={this.updateUserName}/>  
-            <TextInputView
+            
+            
+            <LinearLayout
               height="wrap_content"
               width="match_parent"
-              hintText="Enter you'r first name"
-              labelText="FIRST NAME"
-              padding="12,0,12,0"
-              id={this.idSet.firstName}
-              visibility={this.isLoginMode?"gone":"visible"}
-              color={window.__Colors.DARK_GRAY}
-              _onChange={this.updateUserName}/>  
-
-            <TextInputView
-              height="wrap_content"
-              width="match_parent"
-              hintText="Enter preffered language"
-              labelText="LANGUAGE"
-              padding="12,0,12,0"
               id={this.idSet.languageHolder}
-              visibility={this.isLoginMode?"gone":"visible"}
-              color={window.__Colors.DARK_GRAY}
-              _onChange={this.updateUserName}/>  
+              visibility={this.isLoginMode?"gone":"visible"}>
 
+              <TextInputView
+                hintText="Enter preffered language"
+                labelText="LANGUAGE"
+                padding="12,0,12,0"
+                text="English"
+                color={window.__Colors.DARK_GRAY}
+                _onChange={this.updateLanguage}/>  
+           
+            </LinearLayout>
 
             {this.getOptions()}
 
@@ -366,18 +446,13 @@ class UserScreen extends View {
   }
 
 
-  getSignUp = () => {
+  getSignUpSection = () => {
     return (<LinearLayout
-        height="match_parent"
+        height="wrap_content"
         width="wrap_content"
         orientation="vertical"
         gravity="center_horizontal"
         root="true">
-          <ViewWidget
-            height="0"
-            width="0"
-            weight="1"/>
-
            <TextView
             height="wrap_content"
             width="wrap_content"
@@ -439,15 +514,14 @@ class UserScreen extends View {
         </LinearLayout>
 
         <LinearLayout
-          height="0"
+          height="wrap_content"
           width="match_parent"
-          weight="1"
           gravity="center_horizontal"
           padding="12,12,12,12"
           orientation="vertical">
 
 
-          {this.getSignUp()}
+          {this.getSignUpSection()}
          </LinearLayout> 
 
 

@@ -45,6 +45,7 @@ class TextInputView extends View {
             <EditText
               width="match_parent"
               height="wrap_content"
+              singleLine="true"
               color={this.props.color}
               hint={this.props.hintText}
               text={this.props.text?this.props.text:""}
