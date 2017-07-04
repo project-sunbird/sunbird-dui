@@ -32,6 +32,7 @@ class ProfileHeader extends View {
               width="80"
               height="80"
               circularImageUrl={"0,"+"https://s-media-cache-ak0.pinimg.com/originals/b7/fd/99/b7fd9903db658b1a2d9824d17cdefd6b.jpg"}/>
+              />
 
               <TextView
               width="wrap_content"
