@@ -14,7 +14,7 @@ import Data.Foreign.Generic (encodeJSON)
 import Control.Monad.Eff.Exception (EXCEPTION)
 import Prelude
 
-data UserScreen = UserScreen 
+data UserScreen = UserScreen
 data UserScreenAction = LoginAction | LoginApiAction {userName::String, userPass::String}  
 
 
@@ -22,7 +22,9 @@ data HomeScreen = HomeScreen
 data HomeScreenAction = ShowHome {name::String} | StartCourseFlow |
  StartResourceFlow | StartCommunityFlow | StartProfileFlow | 
  StartCommunityInfoFlow {community::String} | StartCommunityViewAllFlow | 
- StartCourseInfoFlow {course::String} | GetCoursePage | GetResourcePage | StartNotificationFlow | StartResourceDetailFlow {resourceDetails::String} | StartResourceViewAllFlow {resourceDetails::String}
+ StartCourseInfoFlow {course::String} | GetCoursePage | GetResourcePage | 
+ StartNotificationFlow | StartResourceDetailFlow {resourceDetails::String} | 
+ StartResourceViewAllFlow {resourceDetails::String} | StartSearchFlow
 
 data InitScreen = InitScreen 
 data InitScreenAction = ShowInit  | StartInit
@@ -49,6 +51,10 @@ data ResourceDetailAction = DummyResourceDetailAction
 
 data ResourceViewAllScreen = ResourceViewAllScreen {resourceDetails::String}
 data ResourceViewAllAction = DummyResourceViewAllAction | StartResourceInfoFlow {resourceDetails::String}
+
+
+data SearchScreen = SearchScreen
+data SearchScreenAction = DummySearchScreenAction
 
 instance homeScreen :: UIScreen HomeScreen HomeScreenAction where
   generateMockEvents _ = [ShowHome {name:"Kiran"} ,StartCourseFlow]
@@ -133,4 +139,12 @@ instance resourceViewAllScreen :: UIScreen ResourceViewAllScreen ResourceViewAll
 derive instance genericResourceViewAllAction  :: Generic ResourceViewAllAction _
 instance decodeResourceViewAllAction :: Decode ResourceViewAllAction where decode = defaultDecode
 instance encodeResourceViewAllAction :: Encode ResourceViewAllAction where encode = defaultEncode
+
+instance searchScreen :: UIScreen SearchScreen SearchScreenAction where
+  generateMockEvents _ = [DummySearchScreenAction]
+  ui x = genericUI x (generateMockEvents x :: Array SearchScreenAction)
+
+derive instance genericSearchScreenAction  :: Generic SearchScreenAction _
+instance decodeSearchScreenAction :: Decode SearchScreenAction where decode = defaultDecode
+instance encodeSearchScreenAction :: Encode SearchScreenAction where encode = defaultEncode
 

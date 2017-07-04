@@ -14,6 +14,7 @@ window.R = require("ramda");
 
 
 var SearchToolbar = require('../Sunbird/core/SearchToolbar');
+var SimpleToolbar = require('../Sunbird/core/SimpleToolbar');
 
 
 
@@ -142,6 +143,9 @@ class HomeComponent extends View {
     if(url=="ic_notification_red"){
         window.__runDuiCallback({tag:"StartNotificationFlow",contents:[]});
     }
+    if(url=="ic_action_search"){
+      window.__runDuiCallback({tag:"StartSearchFlow",contents:[]});
+    }
   }
 
   
@@ -222,15 +226,17 @@ class HomeComponent extends View {
         width="match_parent"
         height="match_parent">
 
-          <SearchToolbar
-            hint="Enter your search"
-            invert="true"
-            hideBack="true"
-            showAppIcon = "true"
-            onMenuItemClick={this.handleMenuClick}
-            menuData={this.menuData}
-            onSearch={this.handleSearch}/>
 
+         <SimpleToolbar
+            title=""
+            width="match_parent"
+            showMenu="true"
+            invert="true" 
+            hideBack="true" 
+            menuData={this.menuData}
+            onMenuItemClick={this.handleMenuClick}/>
+
+          
 
             <ScrollView
               height="0"
@@ -292,6 +298,17 @@ class HomeComponent extends View {
 
 
 module.exports = HomeComponent;
+
+
+// <SearchToolbar
+//             hint="Enter your search"
+//             invert="true"
+//             hideBack="true"
+//             showAppIcon = "true"
+//             onMenuItemClick={this.handleMenuClick}
+//             menuData={this.menuData}
+//             onSearch={this.handleSearch}/>
+
 
 // <TodoContainer
 //                     onItemClick = {this.handleTodoClick}
