@@ -1,4 +1,4 @@
-module PureTypes where
+module Types.UITypes where
 
 import Control.Monad.Aff
 import Prelude (bind, ($), (<>), pure, discard)

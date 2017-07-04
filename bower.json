@@ -46,6 +46,7 @@
     "purescript-globals": "^2.0.0",
     "purescript-strings": "^2.0.0",
     "purescript-lists": "^3.0.0",
-    "purescript-jui":"https://bitbucket.org/juspay/purescript-jui.git"
+    "purescript-jui": "https://bitbucket.org/juspay/purescript-jui.git",
+    "purescript-console": "^3.0.0"
   }
 }

@@ -53,6 +53,12 @@ getEncodedRequest = encodeJSON <<< toRequest
 defaultPost :: {method::HttpVerb,url::String,content::String,headers::Array Header}
 defaultPost = {method:POST,url:"",content:"",headers:[Header "ContentType" "application/json"]}
 
+defaultGet :: {method::HttpVerb,url::String,content::String,headers::Array Header}
+defaultGet = {method:GET,url:"",content:"",headers:[Header "ContentType" "application/json"]}
+
+defaultDelete :: {method::HttpVerb,url::String,content::String,headers::Array Header}
+defaultDelete = {method:DELETE,url:"",content:"",headers:[Header "ContentType" "application/json"]}
+
 isValidAction :: forall a e. Decode a => String -> Aff e a
 isValidAction x = case (runExcept (decodeJSON x)) of
   Right y -> pure $ y

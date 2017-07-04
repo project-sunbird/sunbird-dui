@@ -1,4 +1,4 @@
-module PureTypesApi where
+module Types.ApiTypes where
 
 import Prelude
 import Api (class ApiRequest, Response(..), isValidAction, class Requestable, class Responsdable, Request(..), defaultPost, fromResponse, genericFromResponse, request)
