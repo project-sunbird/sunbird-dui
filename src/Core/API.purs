@@ -1,4 +1,4 @@
-module Api where
+module Core.API where
 
 import Prelude
 import Control.Monad.Aff (Aff, makeAff)
@@ -21,7 +21,7 @@ import Data.Maybe (Maybe(..))
 import Type.Proxy (Proxy(..))
 
 data Header = Header String String
-data HttpVerb = GET | POST
+data HttpVerb = GET | POST | DELETE
 type StatusCode = Int
 
 newtype Request = Request {

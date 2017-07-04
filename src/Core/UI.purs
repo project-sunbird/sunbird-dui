@@ -1,4 +1,4 @@
-module UI where
+module Core.UI where
 
 import Prelude
 import Control.Monad.Aff (Aff)

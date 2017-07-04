@@ -121,21 +121,26 @@ class UserScreen extends View {
 
   updateFirstName = (data) => {
     this.firstName = data;
+    console.log("--->", data);
   }
 
   updateLanguage = (data) => {
     this.language = data;
+    console.log("--->", data);
   }
 
   updateUserPassword = (data) => {
     this.userPass = data;
+    console.log("--->", data);
   }
   updateUserName = (data) => {
     this.userName = data;
+    console.log("USER NAME :", this.userName);
   }
 
   updateLanguage = (data) => {
     this.language = data;
+    console.log("--->", data);
   }
 
   handleAlreadyHaveAccClick = () => {
@@ -208,8 +213,9 @@ class UserScreen extends View {
   }
 
   handleSignUpClick = () => {
-    if (this.userName == "sunbird" || this.userName == "Sunbird") {
+    if (this.userName === "sunbird" || this.userName === "Sunbird") {
       this.skipLogin();
+      return;
     } else if (this.firstName.length <= 0) {
       JBridge.showSnackBar("Firsr Name can't be empty");
       return;
@@ -250,8 +256,9 @@ class UserScreen extends View {
 
   handleLoginClick = () => {
 
-    if (this.userName == "sunbird" || this.userName == "Sunbird") {
+    if (this.userName === "sunbird" || this.userName === "Sunbird") {
       this.skipLogin();
+      return;
     }
     if (this.userName.length <= 0) {
       JBridge.showSnackBar("User Name can't be empty");
@@ -410,7 +417,7 @@ class UserScreen extends View {
                 labelText="E-MAIL ID"
                 padding="12,0,12,0"
                 color={window.__Colors.DARK_GRAY}
-                _onChange={this.updateUserPassword}/>
+                _onChange={this.updateUserName}/>
 
             <TextInputView
                 height="wrap_content"
@@ -419,7 +426,7 @@ class UserScreen extends View {
                 labelText="PASSWORD"
                 padding="12,0,12,0"
                 color={window.__Colors.DARK_GRAY}
-                _onChange={this.updateUserName}/>  
+                _onChange={this.updateUserPassword}/>  
             
             
             <LinearLayout
