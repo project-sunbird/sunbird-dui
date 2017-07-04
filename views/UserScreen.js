@@ -26,9 +26,14 @@ class UserScreen extends View {
     this.setIds([
       "userForumContainer",
       "tabLayoutContainer",
+      "firstNameHolder",
+      "languageHolder",
+      "alreadyHaveAccHolder",
+      "needAccHolder"
     ]);
 
     this.screenName = "UserScreen"
+    this.isLoginMode = true;
 
   }
 
@@ -80,6 +85,15 @@ class UserScreen extends View {
         break;
 
 
+
+      case "SignupApiAction":
+        JBridge.showSnackbar("Sign Up Completed")
+
+        this.handleLoginClick();
+
+        break;
+
+
     }
 
 
@@ -95,10 +109,59 @@ class UserScreen extends View {
     this.userName = data;
   }
 
+  updateFirstName = (data) => {
+    this.firstName = data;
+  }
+
+  updateLanguage = (data) => {
+    this.language = data;
+  }
+
+  handleAlreadyHaveAccClick = () => {
+    this.isLoginMode = true;
+    var cmd = this.set({
+      id: this.idSet.firstNameHolder,
+      visibility: "gone"
+    });
+    cmd += this.set({
+      id: this.idSet.languageHolder,
+      visibility: "gone"
+    })
+    cmd += this.set({
+      id: this.idSet.needAccHolder,
+      visibility: "visible"
+    });
+    cmd += this.set({
+      id: this.idSet.alreadyHaveAccHolder,
+      visibility: "gone"
+    });
+    Android.runInUI(cmd, 0);
+
+  }
+
+  handleCreateAccountClick = () => {
+    this.isLoginMode = false;
+    var cmd = this.set({
+      id: this.idSet.firstNameHolder,
+      visibility: "visible"
+    });
+    cmd += this.set({
+      id: this.idSet.languageHolder,
+      visibility: "visible"
+    });
+    cmd += this.set({
+      id: this.idSet.needAccHolder,
+      visibility: "gone"
+    });
+    cmd += this.set({
+      id: this.idSet.alreadyHaveAccHolder,
+      visibility: "visible"
+    });
+    Android.runInUI(cmd, 0);
+  }
+
   handleLoginClick = () => {
 
-    this.userName = "test@test.com";
-    this.userPass = "test"
     var dummyBody = { "userName": this.userName, "userPass": this.userPass };
     console.log("START API CALL LOGIN", dummyBody)
 
@@ -187,37 +250,62 @@ class UserScreen extends View {
 
   getForum = () => {
     return (
-
-      <LinearLayout
+      <ScrollView
         height="match_parent"
         width="match_parent"
-        orientation="vertical"
-        root="true">
+        fillViewPort="true">
+        <LinearLayout
+          height="match_parent"
+          width="match_parent"
+          orientation="vertical"
+          root="true">
 
-      <TextInputView
-            height="wrap_content"
-            width="match_parent"
-            hintText="sample@test.com"
-            labelText="E-MAIL ID"
-            padding="12,0,12,0"
-            color={window.__Colors.DARK_GRAY}
-            _onChange={this.updateUserPassword}
-            />
+            <TextInputView
+                height="wrap_content"
+                width="match_parent"
+                hintText="sample@test.com"
+                labelText="E-MAIL ID"
+                padding="12,0,12,0"
+                color={window.__Colors.DARK_GRAY}
+                _onChange={this.updateUserPassword}
+                />
 
-          <TextInputView
-            height="wrap_content"
-            width="match_parent"
-            hintText="Enter a 8-digit password"
-            labelText="PASSWORD"
-             padding="12,0,12,0"
-            color={window.__Colors.DARK_GRAY}
-            _onChange={this.updateUserName}
-            />  
+            <TextInputView
+                height="wrap_content"
+                width="match_parent"
+                hintText="Enter a 8-digit password"
+                labelText="PASSWORD"
+                padding="12,0,12,0"
+                color={window.__Colors.DARK_GRAY}
+                _onChange={this.updateUserName}/>  
+            <TextInputView
+              height="wrap_content"
+              width="match_parent"
+              hintText="Enter you'r first name"
+              labelText="FIRST NAME"
+              padding="12,0,12,0"
+              id={this.idSet.firstName}
+              visibility={this.isLoginMode?"gone":"visible"}
+              color={window.__Colors.DARK_GRAY}
+              _onChange={this.updateUserName}/>  
+
+            <TextInputView
+              height="wrap_content"
+              width="match_parent"
+              hintText="Enter preffered language"
+              labelText="LANGUAGE"
+              padding="12,0,12,0"
+              id={this.idSet.languageHolder}
+              visibility={this.isLoginMode?"gone":"visible"}
+              color={window.__Colors.DARK_GRAY}
+              _onChange={this.updateUserName}/>  
 
 
-          {this.getOptions()}
+            {this.getOptions()}
 
-           </LinearLayout>)
+         </LinearLayout>
+
+       </ScrollView>)
   }
 
 
@@ -233,12 +321,25 @@ class UserScreen extends View {
             width="0"
             weight="1"/>
 
+           <TextView
+            height="wrap_content"
+            width="wrap_content"
+            padding="0,10,0,10"
+            gravity="center"
+            id={this.idSet.alreadyHaveAccHolder}
+            onClick={this.handleAlreadyHaveAccClick}
+            visibility={this.isLoginMode?"gone":"visible"}
+            text="Already have an Account? Sign in now"
+            color={window.__Colors.THICK_BLUE}/>
 
           <TextView
             height="wrap_content"
             width="wrap_content"
             padding="0,10,0,10"
             gravity="center"
+            id={this.idSet.needAccHolder}
+            onClick={this.handleCreateAccountClick}
+            visibility={this.isLoginMode?"visible":"gone"}
             text="No Account yet? Sign up now"
             color={window.__Colors.THICK_BLUE}/>
           <ViewWidget

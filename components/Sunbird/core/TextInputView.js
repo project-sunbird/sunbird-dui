@@ -47,6 +47,7 @@ class TextInputView extends View {
               height="wrap_content"
               color={this.props.color}
               hint={this.props.hintText}
+              text={this.props.text?this.props.text:""}
               onChange={this.props.onChange}/>
           
       </LinearLayout>
