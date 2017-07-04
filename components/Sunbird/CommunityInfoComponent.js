@@ -12,7 +12,7 @@ var Space = require('@juspay/mystique-backend').androidViews.Space;
 var CommunityDescription = require('./CommunityDescription');
 var CommunityDefault = require('./CommunityDefault');
 
-var SearchToolbar = require('../Sunbird/SearchToolbar');
+var SearchToolbar = require('../Sunbird/core/SearchToolbar');
 var _this;
 class CommunityInfoComponent extends View {
   constructor(props, children) {

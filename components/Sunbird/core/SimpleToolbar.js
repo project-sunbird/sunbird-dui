@@ -9,7 +9,7 @@ var EditText = require("@juspay/mystique-backend").androidViews.EditText;
 var HorizontalScrollView = require("@juspay/mystique-backend").androidViews.HorizontalScrollView;
 var Space = require("@juspay/mystique-backend").androidViews.Space;
 
-var Styles = require("../../res/Styles");
+var Styles = require("../../../res/Styles");
 // TODO : NEED TO FIX THIS
 //let IconStyle =  window.__Styles.Params.IconStyle;
 let IconStyle = Styles.Params.IconStyle;

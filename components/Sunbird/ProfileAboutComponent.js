@@ -9,7 +9,7 @@ var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callba
 var objectAssign = require('object-assign');
 
 window.R = require("ramda");
-var PageOption = require('../../components/Sunbird/PageOption');
+var PageOption = require('../../components/Sunbird/core/PageOption');
 class ProfileAboutComponent extends View {
   constructor(props, children, state) {
     super(props, children, state);

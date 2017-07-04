@@ -10,6 +10,8 @@ var Button = require('../Sunbird/Button');
 var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 var _this;
+var RatingBar = require("@juspay/mystique-backend").androidViews.RatingBar;
+
 
 class MyCommunities extends View {
   constructor(props, children) {
@@ -42,9 +44,7 @@ class MyCommunities extends View {
   }
 
 
-  afterRender = () => {
-
-  }
+  
 
   getRows(){
     var rows = this.data.map((item, i) => {
@@ -121,7 +121,8 @@ class MyCommunities extends View {
             width="wrap_content"
             height="wrap_content"
             text={item.members}
-            style={window.__TextStyle.textStyle.HINT.REGULAR}/>
+            style={window.__TextStyle.textStyle.HINT.REGULAR}/>            
+
             <TextView
             width="wrap_content"
             height="wrap_content"
@@ -183,11 +184,15 @@ class MyCommunities extends View {
         this.props.onViewAllClick();
     }
 
+
+  
+
   render() {
       this.layout = (
         <LinearLayout
           height="match_parent"
           width="match_parent"
+          afterRender={this.afterRender}
           orientation="vertical">
 
           {this.getHeader()}

@@ -10,7 +10,7 @@ var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callba
 var ScrollView = require('@juspay/mystique-backend').androidViews.ScrollView;
 var objectAssign = require('object-assign');
 window.R = require("ramda");
-var SimpleToolbar = require('../components/Sunbird/SimpleToolbar');
+var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
 
 
 class NotificationScreen extends View {

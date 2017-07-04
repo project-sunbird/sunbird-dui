@@ -10,20 +10,13 @@ var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 
-var SearchToolbar = require('../Sunbird/SearchToolbar');
-<<<<<<< HEAD
-var MyCommunities = require('../Sunbird/MyCommunities');
-var PopularCommunities = require('../Sunbird/PopularCommunities');
-var RecommendedCommunities = require('../Sunbird/RecommendedCommunities');
-
-=======
+var SearchToolbar = require('../Sunbird/core/SearchToolbar');
 var CourseContainer = require('../Sunbird/CourseContainer');
-var CommunityViewallList = require('../Sunbird/CommunityViewallList');
-var CommunityInfoComponent = require('../Sunbird/CommunityInfoComponent');
-var RecommendedContainer = require('../Sunbird/RecommendedContainer');
 var HomeRecommendedContainer = require('../Sunbird/HomeRecommendedContainer');
+var ResourceContainer = require('../Sunbird/ResourceContainer');
+var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
+
 var _this;
->>>>>>> 21bb935125f7e93c32bf40dcf958ac835c301c0d
 class ResourceComponent extends View {
   constructor(props, children) {
     super(props, children);
@@ -34,33 +27,37 @@ class ResourceComponent extends View {
       "infoContainer",
       "viewallContainer"
     ]);
-<<<<<<< HEAD
-
-    this.myCommunitySelected = "";
-    this.popularCommunitySelected = "";
-    this.recommendedCommunitySelected = "";
-
-    this.menuData = {
-      url: [
-        { imageUrl: "ic_action_plus" },
-        { imageUrl: "ic_action_filter" },
-        { imageUrl: "ic_action_search" }
-      ]
-    }
-  }
-=======
     _this=this;
 
     this.myCommunitySelected="";
     this.popularCommunitySelected="";
     this.recommendedCommunitySelected="";
 
+    this.data = [];
+
+
+    this.getLocalContent();
+
     this.menuData = {
       url: [
+        { imageUrl: "ic_action_filter" },
         { imageUrl: "ic_notification_red" },
         { imageUrl: "ic_action_search"}
       ]
     }
+
+  }
+
+
+  
+  getLocalContent = () =>{
+            var callback = callbackMapper.map(function(params) {
+              console.log("params in resource",JSON.parse(params));
+              _this.data= params;
+
+          });
+
+    JBridge.getAllLocalContent(callback);
   }
 
 
@@ -76,32 +73,7 @@ class ResourceComponent extends View {
             hint="Enter your search"
             invert="true"
             hideBack="true"
-            title="Explore courses"
-            onMenuItemClick={this.handleMenuClick}
-            menuData={this.menuData}
-            onSearch={this.handleSearch}/>
-
->>>>>>> 21bb935125f7e93c32bf40dcf958ac835c301c0d
-
-            <ScrollView
-              height="0"
-              weight="1"
-              width="match_parent">
-
-<<<<<<< HEAD
-  parentBody() {
-    return (
-      <LinearLayout
-        orientation="vertical"
-        width="match_parent"
-        id={this.idSet.parentContainer}
-        height="match_parent">
-
-          <SearchToolbar
-            hint="Enter your search"
-            invert="true"
-            hideBack="true"
-            title="Communities"
+            title="Resources"
             onMenuItemClick={this.handleMenuClick}
             menuData={this.menuData}
             onSearch={this.handleSearch}/>
@@ -112,36 +84,36 @@ class ResourceComponent extends View {
               weight="1"
               width="match_parent">
 
-                <LinearLayout
-                  height="match_parent"
-                  width="match_parent"
-                  background={window.__Colors.WHITE_F2}
-                  orientation="vertical">
-
-                  <MyCommunities
-                  onMyCommunityClick={this.handleMyCommunityClick}
-                  onViewAllClick={this.handleMyViewAllClick}
-                  />
-=======
                 <LinearLayout
                   height="match_parent"
                   width="match_parent"
                   background={window.__Colors.WHITE}
                   orientation="vertical">
 
-                 <HomeRecommendedContainer
+                 <ResourceContainer
+<<<<<<< HEAD
+                 onResourceOpenClick = {this.handleResourceOpen}
+                 data = {this.data}
                  title="Saved Resources"
+                 onViewAllClick = {this.handleViewAllClick}
                  />
 
+=======
+                   data = {this.data}
+                   title="Saved Resources"/>
+                
+>>>>>>> 70b2e622ef3c4922a70d8054d709491b4ae4bc7a
                   {this.getSpaceSeparator()}
 
-                  <CourseContainer
-                    title="Featured"/>
+                  <ResourceContainer
+                   data = {this.data}
+                   title="Featured"/>
 
                   {this.getSpaceSeparator()}
 
-                  <CourseContainer
-                    title="Textbooks"/>
+                  <ResourceContainer
+                   data = {this.data}
+                   title="Textbooks"/>
 
                 </LinearLayout>
 
@@ -150,88 +122,24 @@ class ResourceComponent extends View {
       )
   }
 
+  handleViewAllClick = () =>{
+    console.log("dasdasdasdasd",this.data);
+     window.__runDuiCallback({tag:"StartResourceViewAllFlow",contents:{resourceDetails:JSON.stringify(this.data)}});
+
+
+  }
+
   handleMenuClick = (url) => {
     console.log("url clicked", url);
-  }
->>>>>>> 21bb935125f7e93c32bf40dcf958ac835c301c0d
-
-                  <PopularCommunities
-                  onPopularCommunityClick={this.handlePopularCommunityClick}
-                  />
-
-<<<<<<< HEAD
-                  {this.getLineSeperator()}
-
-                  <RecommendedCommunities
-                  onRecommendedCommunityClick={this.handleRecommendedCommunityClick}
-                  />
-
-                </LinearLayout>
-
-           </ScrollView>
-           </LinearLayout>
-    )
+     if(url=="ic_notification_red"){
+        window.__runDuiCallback({tag:"StartNotificationFlow",contents:[]});
+    }
   }
 
-
-  showParent = () => {
-    var cmd = "";
-    cmd += this.set({
-      id: this.idSet.parentContainer,
-      visibility: "visible"
-    })
-    cmd += this.set({
-      id: this.idSet.infoContainer,
-      visibility: "gone"
-    })
-    cmd += this.set({
-      id: this.idSet.viewallContainer,
-      visibility: "gone"
-    })
-    Android.runInUI(cmd, 0);
+  handleSearch = (data) => {
+    console.log("searched", data);
   }
 
-  handleMenuClick = (url) => {}
-
-  handleSearch = (data) => {}
-  handleBackPress = () => {
-    this.showParent();
-  }
-
-  handleMyCommunityClick = (communityName) => {
-    this.state = R.merge(this.state, { action: 'showCommunityInfo', community: communityName })
-    window.__runDuiCallback(this.state);
-  }
-
-  handlePopularCommunityClick = (communityName) => {
-    this.state = R.merge(this.state, { action: 'showCommunityInfo', community: communityName })
-    window.__runDuiCallback(this.state);
-  }
-
-  handleRecommendedCommunityClick = (communityName) => {
-    this.state = R.merge(this.state, { action: 'showCommunityInfo', community: communityName })
-    window.__runDuiCallback(this.state);
-  }
-
-  handleMyViewAllClick = () => {
-    this.state = R.merge(this.state, { action: 'showAll' })
-    window.__runDuiCallback(this.state);
-  }
-
-  getLineSeperator() {
-    return (<LinearLayout
-             height="1"
-             width="match_parent"
-             margin="16,0,16,0"
-             background={window.__Colors.PRIMARY_BLACK_22}/>)
-  }
-
-  afterRender() {}
-
-=======
-  
-
-  
   getSpaceSeparator = () =>{
     return (<LinearLayout
              height="6"
@@ -243,7 +151,6 @@ class ResourceComponent extends View {
   afterRender(){
   }
 
->>>>>>> 21bb935125f7e93c32bf40dcf958ac835c301c0d
 
   render() {
     this.layout = (
@@ -255,11 +162,7 @@ class ResourceComponent extends View {
         afterRender={this.afterRender}
         height="match_parent">
 
-<<<<<<< HEAD
-        {this.parentBody()}
-=======
         {this.getBody()}
->>>>>>> 21bb935125f7e93c32bf40dcf958ac835c301c0d
         
 
         </LinearLayout>

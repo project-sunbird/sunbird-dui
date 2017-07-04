@@ -57,35 +57,11 @@ module.exports = function(action, payload, state) {
       localState.isInit = false;
       localState.currScreen = "ResourceDetailScreen";
       break;
-
-    case "COURSE_ACTIVITY_SCREEN":
+    case "ResourceViewAllScreen":
       localState.isInit = false;
-      localState.currScreen = "COURSE_ACTIVITY_SCREEN";
+      localState.currScreen = "ResourceViewAllScreen";
       break;
-    case "EnrolledCourseScreen":
-      localState.isInit = false;
-      localState.currScreen = "EnrolledCourseScreen";
-      break;
-    case "EXPLORE_SCREEN":
-      localState.isInit = false;
-      localState.currScreen = "EXPLORE_SCREEN";
-      break;
-    case "COURSE_QUIZ_ACTIVITY_SCREEN":
-      localState.isInit = false;
-      localState.currScreen = "COURSE_QUIZ_ACTIVITY_SCREEN";
-      break;
-
-    case "PROFILE_ACTIVITY_SCREEN":
-      localState.isInit = false;
-      localState.currScreen = "PROFILE_ACTIVITY_SCREEN";
-      break;
-
-
-    case "PROFILE_ACTIVITY_SCREEN":
-      localState.isInit = false;
-      localState.currScreen = "PROFILE_ACTIVITY_SCREEN";
-      break;
-
+      
     case "CourseInfoScreen":
       localState.isInit = false;
       localState.currScreen = "CourseInfoScreen";

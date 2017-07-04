@@ -92,6 +92,8 @@ class RecommendedCard extends View {
               scaleY="0.3"
               onRatingChange = {this.ratingChange}
               fixedRating = {"true"}/>
+
+
             <TextView
                   text= {"("}
                   style={window.__TextStyle.textStyle.HINT.REGULAR}/>

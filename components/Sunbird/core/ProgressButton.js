@@ -6,7 +6,7 @@ var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 
 
-var Button = require('../Sunbird/Button');
+var Button = require('../../Sunbird/Button');
 
 var _this;
 

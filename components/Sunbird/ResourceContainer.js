@@ -10,55 +10,42 @@ var Button = require('../Sunbird/Button');
 var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 var _this;
-var CourseProgressCard = require('../Sunbird/CourseProgressCard');
+var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 var CardComponent = require('../Sunbird/core/CardComponent');
-var DownloadedCard = require('../Sunbird/DownloadedCard');
 
 
-class HomeTodoContainer extends View {
+class ResourceContainer extends View {
   constructor(props, children) {
     super(props, children);
     _this=this;
 
     this.setIds([
     ]);
-
-    this.data = 
-      [{
-        imageUrl : "https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
-        type : "COURSE",
-        title : "Organic Chemistry",
-        footerTitle : "20% done",
-        footerSubTitle : "(2350) votes",
-        actionText : "RESUME",
-        isProgress : "true",
-      },
-      {
-        imageUrl : "https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
-        type : "COURSE",
-        title : "Organic Chemistry",
-        footerTitle : "20% done",
-        footerSubTitle : "(2350) votes",
-        actionText : "RESUME",
-        isProgress : "true",
-      }
-      ];
     
   }
 
 
   afterRender = () => {
-
   }
 
+  getRows = () =>{
+    this.data = JSON.parse(this.props.data);
+    var rows = this.data.map((item,i) => {
 
- getRows = () =>{
-    var rows = this.data.map((item,i) => {   
+                
+                console.log("item data in getrows",item);
+
+                var temp = {};
+                temp['imageUrl'] = item.contentData.appIcon;
+                temp['title'] = item.contentData.name;
+                temp['footerTitle'] = "";
+                temp['footerSubTitle'] = "";
+                temp['actionText'] = "OPEN";
+
          return (<CardComponent 
-                 data={item}
-                 content={item}
+                 data={temp}
+                 content={item.contentData}
                  onCardClick = {this.handleCardClick}/>)
-        
     });
 
     var layout = (<LinearLayout
@@ -72,8 +59,8 @@ class HomeTodoContainer extends View {
                     
   }
 
-  
-  
+
+
   getHeader(){
     return (<LinearLayout
             width="match_parent"
@@ -84,7 +71,7 @@ class HomeTodoContainer extends View {
             <TextView
             width="wrap_content"
             height="wrap_content"
-            text="To-Do"
+            text={this.props.title}
             style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
             <ViewWidget
@@ -94,7 +81,7 @@ class HomeTodoContainer extends View {
             <TextView
             width="wrap_content"
             height="wrap_content"
-            text="VIEW ALL"
+            text="View all"
             onClick={()=>{this.handleViewAllClick()}}
             style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
 
@@ -102,10 +89,13 @@ class HomeTodoContainer extends View {
   }
 
 
-    handleCardClick = (content,type) =>{
-     console.log("content is",content);
-     console.log("type is ",type);
-  }
+    handleCourseClick = (courseName)=>{
+      this.props.onCourseOpenClick(courseName);
+    }
+
+    handleCardClick = (content,type)=>{
+      window.__runDuiCallback({tag:"StartResourceDetailFlow",contents:{resourceDetails:JSON.stringify(content)}});
+    }
 
     handleViewAllClick(){
         this.props.onViewAllClick();
@@ -145,4 +135,4 @@ class HomeTodoContainer extends View {
   }
 }
 
-module.exports = HomeTodoContainer;
+module.exports = ResourceContainer;

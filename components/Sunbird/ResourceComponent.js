@@ -10,11 +10,12 @@ var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 
-var SearchToolbar = require('../Sunbird/SearchToolbar');
+var SearchToolbar = require('../Sunbird/core/SearchToolbar');
 var CourseContainer = require('../Sunbird/CourseContainer');
-var CommunityViewallList = require('../Sunbird/CommunityViewallList');
-var CommunityInfoComponent = require('../Sunbird/CommunityInfoComponent');
 var HomeRecommendedContainer = require('../Sunbird/HomeRecommendedContainer');
+var ResourceContainer = require('../Sunbird/ResourceContainer');
+var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
+
 var _this;
 class ResourceComponent extends View {
   constructor(props, children) {
@@ -32,12 +33,31 @@ class ResourceComponent extends View {
     this.popularCommunitySelected="";
     this.recommendedCommunitySelected="";
 
+    this.data = [];
+
+
+    this.getLocalContent();
+
     this.menuData = {
       url: [
+        { imageUrl: "ic_action_filter" },
         { imageUrl: "ic_notification_red" },
         { imageUrl: "ic_action_search"}
       ]
     }
+
+  }
+
+
+  
+  getLocalContent = () =>{
+            var callback = callbackMapper.map(function(params) {
+              console.log("params in resource",JSON.parse(params));
+              _this.data= params;
+
+          });
+
+    JBridge.getAllLocalContent(callback);
   }
 
 
@@ -70,26 +90,37 @@ class ResourceComponent extends View {
                   background={window.__Colors.WHITE}
                   orientation="vertical">
 
-                 <HomeRecommendedContainer
+                 <ResourceContainer
                  onResourceOpenClick = {this.handleResourceOpen}
+                 data = {this.data}
                  title="Saved Resources"
+                 onViewAllClick = {this.handleViewAllClick}
                  />
 
                   {this.getSpaceSeparator()}
 
-                  <CourseContainer
-                    title="Featured"/>
+                  <ResourceContainer
+                   data = {this.data}
+                   title="Featured"/>
 
                   {this.getSpaceSeparator()}
 
-                  <CourseContainer
-                    title="Textbooks"/>
+                  <ResourceContainer
+                   data = {this.data}
+                   title="Textbooks"/>
 
                 </LinearLayout>
 
            </ScrollView>
            </LinearLayout>
       )
+  }
+
+  handleViewAllClick = () =>{
+    console.log("dasdasdasdasd",this.data);
+     window.__runDuiCallback({tag:"StartResourceViewAllFlow",contents:{resourceDetails:JSON.stringify(this.data)}});
+
+
   }
 
   handleMenuClick = (url) => {
@@ -104,7 +135,7 @@ class ResourceComponent extends View {
   }
 
   handleResourceOpen = (data) =>{
-    window.__runDuiCallback({ tag: "StartResourceDetailFlow",contents:{resourceDetails:"nothing"} });
+    window.__runDuiCallback({tag:"StartResourceDetailFlow",contents:{resourceDetails:"nothing"}});
   }
 
   

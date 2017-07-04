@@ -16,7 +16,8 @@ class SearchResult extends View {
   }
   getData = () => {
     var answerLayout = this.props.data.map((item, index) => {
-      var appIcon = item.appIcon == undefined ? "ic_home" : item.appIcon ;
+      var appIcon = item.hasOwnProperty("appIcon") ? item.appIcon : "ic_launcher" ;
+      console.log("appIcon",appIcon);
      return (<LinearLayout
             width="match_parent"
             height="wrap_content"
@@ -35,7 +36,7 @@ class SearchResult extends View {
                 margin = "10,12,0,12"
                 scaleType="fixXY"
                 gravity="center"
-                circularImageUrl={"10,"+ appIcon }/>
+                circularImageUrl={"0,"+ appIcon }/>
 
               <LinearLayout
                 width = "wrap_content"
@@ -55,7 +56,7 @@ class SearchResult extends View {
                     <TextView
                       height="wrap_content"
                       padding = "0,10,10,0"
-                      text= {this.formatBytes(item.size)}
+                      text= { item.hasOwnProperty("size") ? this.formatBytes(item.size) : " "}
                       style={window.__TextStyle.textStyle.HINT.SEMI}/>
                 </LinearLayout>
                   <TextView
@@ -90,10 +91,11 @@ class SearchResult extends View {
 
 
   handleItemClick = (item) =>{
-    console.log("clicked item",item);
+    console.log("clicked item<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<",item);
     var itemDetails = JSON.stringify(item);
     console.log("itemDetails in rresourceDDDDD",itemDetails)
     window.__runDuiCallback({tag:"StartResourceDetailFlow",contents:{resourceDetails:itemDetails}});
+
 
 
   }

@@ -13,7 +13,7 @@ var FeedComponent = require('./FeedComponent');
 window.R = require("ramda");
 
 
-var SearchToolbar = require('../Sunbird/SearchToolbar');
+var SearchToolbar = require('../Sunbird/core/SearchToolbar');
 
 
 
@@ -27,7 +27,7 @@ class HomeComponent extends View {
 
     this.menuData = {
       url: [
-        { imageUrl: "ic_notification_red" },
+        { imageUrl: "ic_action_notification_blue" },
         { imageUrl: "ic_action_search" },
       ]
     }
@@ -226,7 +226,7 @@ class HomeComponent extends View {
             hint="Enter your search"
             invert="true"
             hideBack="true"
-            showAppIcon="true"
+            showAppIcon = "true"
             onMenuItemClick={this.handleMenuClick}
             menuData={this.menuData}
             onSearch={this.handleSearch}/>

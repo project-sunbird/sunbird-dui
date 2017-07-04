@@ -22,7 +22,7 @@ data HomeScreen = HomeScreen
 data HomeScreenAction = ShowHome {name::String} | StartCourseFlow |
  StartResourceFlow | StartCommunityFlow | StartProfileFlow | 
  StartCommunityInfoFlow {community::String} | StartCommunityViewAllFlow | 
- StartCourseInfoFlow {course::String} | GetCoursePage | GetResourcePage | StartNotificationFlow | StartResourceDetailFlow {resourceDetails::String}
+ StartCourseInfoFlow {course::String} | GetCoursePage | GetResourcePage | StartNotificationFlow | StartResourceDetailFlow {resourceDetails::String} | StartResourceViewAllFlow {resourceDetails::String}
 
 data InitScreen = InitScreen 
 data InitScreenAction = ShowInit  | StartInit
@@ -46,6 +46,9 @@ data NotificationAction = DummyNotificationAction
 data ResourceDetailScreen = ResourceDetailScreen {resourceDetails::String}
 data ResourceDetailAction = DummyResourceDetailAction
 
+
+data ResourceViewAllScreen = ResourceViewAllScreen {resourceDetails::String}
+data ResourceViewAllAction = DummyResourceViewAllAction | StartResourceInfoFlow {resourceDetails::String}
 
 instance homeScreen :: UIScreen HomeScreen HomeScreenAction where
   generateMockEvents _ = [ShowHome {name:"Kiran"} ,StartCourseFlow]
@@ -121,4 +124,13 @@ instance resourceDetailScreen :: UIScreen ResourceDetailScreen ResourceDetailAct
 derive instance genericResourceDetailAction  :: Generic ResourceDetailAction _
 instance decodeResourceDetailAction :: Decode ResourceDetailAction where decode = defaultDecode
 instance encodeResourceDetailAction :: Encode ResourceDetailAction where encode = defaultEncode
+
+
+instance resourceViewAllScreen :: UIScreen ResourceViewAllScreen ResourceViewAllAction where
+  generateMockEvents _ = [DummyResourceViewAllAction]
+  ui x = genericUI x (generateMockEvents x :: Array ResourceViewAllAction)
+
+derive instance genericResourceViewAllAction  :: Generic ResourceViewAllAction _
+instance decodeResourceViewAllAction :: Decode ResourceViewAllAction where decode = defaultDecode
+instance encodeResourceViewAllAction :: Encode ResourceViewAllAction where encode = defaultEncode
 

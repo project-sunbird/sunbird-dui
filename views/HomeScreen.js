@@ -10,7 +10,7 @@ var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 var objectAssign = require('object-assign');
 
-var BottomNavBar = require("../components/Sunbird/BottomNavBar")
+var BottomNavBar = require("../components/Sunbird/core/BottomNavBar")
 
 var ResourceComponent = require("../components/Sunbird/ResourceComponent")
 var HomeComponent = require('../components/Sunbird/HomeComponent');
@@ -19,7 +19,6 @@ var CommunityInfoComponent = require('../components/Sunbird/CommunityInfoCompone
 var CommunityComponent = require('../components/Sunbird/CommunityComponent');
 var ProfileComponent = require('../components/Sunbird/ProfileComponent');
 
-var ProfileActivityComponent = require('../components/Sunbird/ProfileActivityComponent');
 var ContentLoadingComponent = require('../components/Sunbird/ContentLoadingComponent');
 var FilterComponent = require('../components/Sunbird/FilterComponent');
 var CourseComponent = require('../components/Sunbird/CourseComponent');
@@ -319,10 +318,13 @@ class HomeScreen extends View {
 
 module.exports = Connector(HomeScreen);
 
-//
 // <HomeComponent
-//     recommendedData={this.recommendedData}
-//     recommendedimageUrls={this.recommendedimageUrls}
-//     menuData={this.menuData}
-//     todoData = {this.todoData}
-//     feedData = {this.feedData}/>
+                // response = {data} 
+                // recommendedData={this.recommendedData}
+                // recommendedimageUrls={this.recommendedimageUrls}
+                // menuData={this.menuData}
+                // todoData = {this.todoData}
+                // feedData = {this.feedData}
+                // height="match_parent"
+                // root="true"
+                // width="match_parent"/>
