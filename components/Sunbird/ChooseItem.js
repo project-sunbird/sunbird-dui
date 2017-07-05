@@ -4,13 +4,14 @@ var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout
 var RelativeLayout = require("@juspay/mystique-backend").androidViews.RelativeLayout;
 var FrameLayout = require("@juspay/mystique-backend").androidViews.FrameLayout;
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
+var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var EditText = require("@juspay/mystique-backend").androidViews.EditText;
 var HorizontalScrollView = require("@juspay/mystique-backend").androidViews.HorizontalScrollView;
 var Space = require("@juspay/mystique-backend").androidViews.Space;
 var ViewWidget = require('@juspay/mystique-backend').androidViews.ViewWidget;
-var DoubleRadioList = require('../../components/Sunbird/DoubleRadioList');
 var FeatureButton = require('../../components/Sunbird/FeatureButton');
+var RadioListItem = require('../Sunbird/RadioListItem');
 
 var Styles = require("../../res/Styles");
 
@@ -25,24 +26,23 @@ class ChooseItem extends View {
     ]);
     _this = this;
     this.chosenItem;
+    this.selectedList = [];
   }
 
 
 
-  getFeatureButton (isClickable){
+ getFeatureButton = (isClickable) =>{
      var color = isClickable=="true" ? window.__Colors.PRIMARY_ACCENT:window.__Colors.PRIMARY_BLACK_22;
          return (<LinearLayout
                   width = "match_parent"
-                  alignParentBottom = "true,-1"
-                  width="match_parent"
                   orientation="vertical"
-                  height="wrap_content"
+                  height="0"
+                  alignParentBottom="true,-1"
                   id={this.idSet.featureContainer}
-                  weight = "1"
                   padding = "3,3,3,3"
+                  weight="20"
                   gravity = "center">
                   <FeatureButton
-                    weight = "0.5"
                     typeface = "bold"
                     clickable={isClickable}
                     width = "match_parent"
@@ -59,45 +59,120 @@ class ChooseItem extends View {
   }
 
 
+  getList = () => {
+      var lengthOfMenu = Object.keys(this.props.data.items).length;
+      this.totalItems = this.props.data.items.splice(0,lengthOfMenu/2)
+      this.rightItems = this.props.data.items.splice(0,lengthOfMenu/2);
+      this.leftItems = this.totalItems.splice(0,lengthOfMenu/2);
+
+
+      var leftBar = "";
+      var rightBar = "";
+      leftBar = this.leftItems.map((item, index) => {
+        return (<RadioListItem
+                  onItemClick={this.handleItemClick}
+                  title={item}
+                  index={index}/>)
+      });
+
+      rightBar = this.rightItems.map((item, index) => {
+        return (<RadioListItem
+                  onItemClick={this.handleItemClick}
+                  title={item}
+                  index={index}/>)
+      });
+      console.log("leftBar BBBBAR",this.leftItems);
+      this.totalBar = (
+          <LinearLayout
+          orientation = "horizontal"
+          width = "wrap_content"
+          height = "wrap_content">
+          <LinearLayout
+          orientation = "vertical"
+          width = "wrap_content"
+          height = "wrap_content">
+          {leftBar}
+          </LinearLayout>
+          <LinearLayout
+          orientation = "vertical"
+          width = "wrap_content"
+          height = "wrap_content"
+          margin = "86,0,0,0">
+          {rightBar}
+          </LinearLayout>
+          </LinearLayout>
+        )
+
+    return this.totalBar;
+  }
+
+
+
   getRadioList (){
     return( <LinearLayout
-            alignParentBottom = "true,-1"
             width = "match_parent"
-            height = "wrap_content"
+            height = "0"
+            weight="70"
             margin = "0,0,0,0"
             padding = "0,0,10,10"
-            orientation = "vertical"
-            weight = "1">
-               <DoubleRadioList items = {this.props.data.items} onSelect={this.handleSelection}/>
+            orientation = "vertical">
+
+             <ScrollView
+              height="wrap_content"
+              width="match_parent">
+
+              {this.getList()}
+            
+              </ScrollView>
+
             </LinearLayout>)
   }
 
   getHeader (){
-    return(<LinearLayout
-            alignParentBottom = "true,-1"
-            width = "match_parent"
-            height = "wrap_content"
-            margin = "0,16,0,16"
-            padding = "0,0,16,0"
-            weight = "1">
+    return(
+      <LinearLayout
+      width="wrap_content"
+      height="0"
+      weight="10">
+
           <TextView
            width = "wrap_content"
            height = "wrap_content"
-           text = {this.props.data.heading}
+           text = "Choose from following"
            style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
-    
-          </LinearLayout>)
+
+      </LinearLayout>
+           )
+  }
+
+
+  handleItemClick = (title,checked) =>{
+
+    if(checked)
+    this.selectedList.push(title)
+    else{
+          var position = this.selectedList.indexOf(title);
+          this.selectedList.splice(position, 1);
+    }
+
+    if(this.selectedList.length>0){
+      this.replaceChild(this.idSet.featureContainer, this.getFeatureButton("true").render(), 0);
+    }
+    else{
+      this.replaceChild(this.idSet.featureContainer, this.getFeatureButton("false").render(), 0);
+    }
+
   }
 
 
   onConfirm(){
-    _this.replaceChild(_this.idSet.featureContainer, _this.getFeatureButton("false").render(), 0);
+    console.log("submitted",_this.selectedList);
+
     window.__RootScreen.hideFilterDialog();
-    _this.props.onSelect(_this.chosenItem);
+    _this.props.onSelect(_this.selectedList);
   }
 
   handleSelection=(index)=>{
-    this.replaceChild(this.idSet.featureContainer, this.getFeatureButton("true").render(), 0);
     this.chosenItem=index;
   }
 
@@ -111,7 +186,7 @@ class ChooseItem extends View {
           cornerRadius = "2"
           afterRender={this.afterRender}
           width = "match_parent"
-          height = "wrap_content"
+          height = "450"
           orientation= "vertical"
           clickable = "true"
           padding="16,18,16,16"
@@ -123,8 +198,7 @@ class ChooseItem extends View {
          {this.getRadioList()}
 
          {this.getFeatureButton("false")}
-            
-           
+
         </LinearLayout>
     )
 

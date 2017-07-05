@@ -34,7 +34,6 @@ class FeatureButton extends View {
     this.layout = (
       <LinearLayout
         id = {this.props.id} 
-        weight={this.props.weight||"1"}
         height={this.props.height || "wrap_content"}
         width={this.props.width || "wrap_content"}
         orientation="horizontal"

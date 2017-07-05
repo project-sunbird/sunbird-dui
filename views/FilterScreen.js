@@ -17,16 +17,22 @@ class FilterScreen extends View {
   constructor(props, children) {
     super(props, children);
     this.filterData = [
-    "Standard",
-    "Subject",
-    "Language",
-    "Author name"
-    ]   
+                        "Language",
+                        "Grade",
+                        "Domain",
+                        "Framework",
+                        "Concepts",
+                        "Type",
+                        "Subject",
+                        "Medium",
+                        "Ownership"
+                      ]   
    _this=this;
 
     this.screenName = "FilterScreen";
     this.shouldCacheScreen = false;
   }
+  
 
 
   getSortCard(){

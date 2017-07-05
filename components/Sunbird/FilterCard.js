@@ -10,18 +10,210 @@ var ChooseItem = require('../Sunbird/ChooseItem');
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 const transitParams = require('../../transitions');
+const filterParams = require('../../FilterParams');
 
 var _this;
 class FilterCard extends View {
   constructor(props, children) {
     super(props, children);
     this.setIds([
-      'filterCount'
+      'filterCount',
+      'rowsContainer'
     ]);
     _this=this;
+    this.params = filterParams;
    
-  this.EaseOut = transitParams.animParams.EaseOut;
+   this.EaseOut = transitParams.animParams.EaseOut;
 
+  }
+
+  handleClick = (type) =>{
+
+    var languageParams =
+{
+  type : "language",
+  items : [ "English",
+            "Hindi",
+            "Assamese",
+            "Bengali",
+            "Gujarati",
+            "Kannada",
+            "Malayalam",
+            "Marathi",
+            "Nepali",
+            "Odia",
+            "Punjabi",
+            "Tamil",
+            "Telugu",
+            "Urdu",
+            "Sanskrit",
+            "Maithili",
+            "Munda",
+            "Santali",
+            "Juang",
+            "Ho",
+            "Other" ]
+
+};
+
+var gradeParams =
+{
+  type : "grade",
+  items : [   "Kindergarten",
+              "Grade 1",
+              "Grade 2",
+              "Grade 3",
+              "Grade 4",
+              "Grade 5",
+              "Grade 6",
+              "Grade 7",
+              "Grade 8",
+              "Grade 9",
+              "Grade 10",
+              "Grade 11",
+              "Grade 12",
+              "Other"   ]
+};
+
+var domainParams =
+{
+  type : "domain",
+  items : [ "numeracy",
+            "literacy",
+            "science" ]
+             
+};
+
+var frameworkParams =
+{
+  type : "framework",
+  items : []
+             
+};
+
+var conceptParams =
+{
+  type : "concepts",
+  items : []
+             
+};
+
+var typeParams =
+{
+  type : "type",
+  items : [ "Story",
+            "Worksheet",
+            "Collection",
+            "LessonPlan",
+            "TextBook"  ]
+             
+};
+
+var subjectParams =
+{
+  type : "subject",
+  items : [ "Maths",
+            "English",
+            "Hindi",
+            "Assamese",
+            "Bengali",
+            "Gujarati",
+            "Kannada",
+            "Malayalam",
+            "Marathi",
+            "Nepali",
+            "Odia",
+            "Punjabi",
+            "Tamil",
+            "Telugu",
+            "Urdu",
+            "Other", ]
+             
+};
+
+var mediumParams =
+{
+  type : "medium",
+  items : [ "English",
+            "Hindi",
+            "Assamese",
+            "Bengali",
+            "Gujarati",
+            "Kannada",
+            "Malayalam",
+            "Marathi",
+            "Nepali",
+            "Odia",
+            "Punjabi",
+            "Tamil",
+            "Telugu",
+            "Urdu",
+            "Other"  ]
+             
+};
+
+var ownershipParams =
+{
+  type : "ownership",
+  items : [ "current user",
+            "all" ]
+             
+};
+
+    console.log("TYPE OF FILTER ACTOIN",type)
+    console.log("HANDLE CLICK",_this.params.languageParams)
+
+    if(type == "Language")
+        this.showFilterDialog(languageParams);
+    if(type == "Grade")
+        this.showFilterDialog(gradeParams);
+    if(type == "Domain")
+        this.showFilterDialog(domainParams);
+    if(type == "Framework")
+      this.showFilterDialog(frameworkParams);
+    if(type == "Concepts")
+      this.showFilterDialog(conceptsParams);
+    if(type == "Type")
+      this.showFilterDialog(typeParams);
+    if(type == "Subject")
+      this.showFilterDialog(subjectParams);
+    if(type == "Medium")
+      this.showFilterDialog(mediumParams);
+    if(type == "Ownership")
+      this.showFilterDialog(ownershipParams);
+  }
+
+  handleSelection(list){
+
+    let cmd = _this.set({
+    id: _this.idSet.filterCount,
+      text: list.length + " added"
+    });
+
+  Android.runInUI(cmd,null);
+
+  }
+
+  showFilterDialog = (data) =>{
+    console.log("DATA IN showFilterDialog",data)
+
+    var layout = ( <LinearLayout
+                    width="match_parent"
+                    height="wrap_content"
+                    visibility="visible"
+                    alignParentBottom = "true,-1"
+                    weight="1"
+                    orientation="vertical"
+                    background={window.__Colors.WHITE}
+                    >
+
+                    <ChooseItem
+                    data={data}
+                    onSelect={this.handleSelection}
+                    />
+
+                  </LinearLayout>);
+    window.__RootScreen.showFilterDialog(layout,this.EaseOut);
   }
 
 
@@ -34,7 +226,7 @@ class FilterCard extends View {
                             height="wrap_content"
                             margin="16,16,16,0"
                             gravity="center_vertical"
-                            onClick={()=>{this.handleClick(index)}}>
+                            onClick={()=>{this.handleClick(item)}}>
                           
                            <LinearLayout
                             width="match_parent"
@@ -66,64 +258,29 @@ class FilterCard extends View {
                               imageUrl="ic_chevron_right"/>
 
                             </LinearLayout>
-                          </LinearLayout>
-                            )
+                          </LinearLayout>      )
+                            
     })
 
-    return layout;
+      return   (
+                <LinearLayout
+                  width="match_parent"
+                  height="wrap_content"
+                  orientation="vertical"
+                  gravity="center_vertical">
+
+                    {layout}
+
+                </LinearLayout>)
 
   }
 
-  handleClick(index){
-   this.showFilterDialog();
-  }
+  afterRender = () =>{
 
-  handleSelection(index){
-    console.log("selected"+index);
+    var layout = _this.getFilterRows(_this.props.filterData);
 
-    let cmd = _this.set({
-    id: _this.idSet.filterCount,
-      text:"1 added"
-    });
+    this.replaceChild(this.idSet.rowsContainer, layout.render(), 0);
 
-  Android.runInUI(cmd,null);
-
-  }
-
-  showFilterDialog = () =>{
-
-    this.listData ={
-              confirmText:"SUBMIT",
-              items: ["class I",
-                      "class II",
-                      "class III",
-                      "class IV",
-                      "class V",
-                      "class VI",
-                      "class VII",
-                      "class VIII",
-                      "class IX",
-                      "class X" ],
-              heading: "Please choose the Standard"
-            }
-
-    var layout = ( <LinearLayout
-                    width="match_parent"
-                    height="wrap_content"
-                    visibility="visible"
-                    alignParentBottom = "true,-1"
-                    weight="1"
-                    orientation="vertical"
-                    background={window.__Colors.WHITE}
-                    >
-
-                    <ChooseItem
-                    data={this.listData}
-                    onSelect={this.handleSelection}
-                    />
-
-                  </LinearLayout>);
-    window.__RootScreen.showFilterDialog(layout,this.EaseOut);
   }
 
 
@@ -133,10 +290,17 @@ class FilterCard extends View {
               <LinearLayout
                 height="400"
                 width="match_parent"
+                afterRender={this.afterRender}
                 background={window.__Colors.WHITE}
                 orientation="vertical">
 
-                {this.getFilterRows(this.props.filterData)}
+              
+                <LinearLayout
+                  width="match_parent"
+                  height="wrap_content"
+                  id={this.idSet.rowsContainer}
+                  gravity="center_vertical"/>
+
       
               </LinearLayout> 
 
