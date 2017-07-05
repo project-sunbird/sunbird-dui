@@ -29,6 +29,7 @@ const NotificationScreen = require("../views/NotificationScreen");
 const ResourceDetailScreen = require("../views/ResourceActivity/ResourceDetailScreen");
 const ResourceViewAllScreen = require("../views/ResourceActivity/ResourceViewAllScreen");
 const SearchScreen = require("../views/SearchScreen");
+const FilterScreen = require("../views/FilterScreen");
 
 // ScreenActions
 const RootScreenActions = require("../actions/RootScreenActions");
@@ -75,6 +76,9 @@ var determineScreen = (screenName, state) => {
       break;
     case "SearchScreen":
       screen = new(SearchScreen(dispatcher, RootScreenActions))(null, null, state);
+      break;
+    case "FilterScreen":
+      screen = new(FilterScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
   }
 

@@ -73,7 +73,6 @@ class SearchScreen extends View {
                   background="#ffffff"
                   onChange = {result=>_this.getSearchList(result)}
                   id={this.idSet.searchHolder}
-                  focus="true"
                   style={window.__TextStyle.textStyle.TOOLBAR.HEADING}/>
 
 
@@ -176,12 +175,6 @@ class SearchScreen extends View {
     window.__runDuiCallback({ action: "showMainFlow" });
   }
 
-  handleMenuClick = (url) => {
-   
-    if(url=="ic_action_close"){
-      this.handleClearClick();
-    }
-  }
 
   handleSearchClick = () =>{
 
@@ -216,7 +209,7 @@ class SearchScreen extends View {
   }
 
   handleFilterClick = () =>{
-
+      window.__runDuiCallback({ tag: "StartFilterFlow",contents:{} });
   }
 
   onItemClick = (params) =>{

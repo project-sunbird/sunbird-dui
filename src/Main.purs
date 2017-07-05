@@ -14,8 +14,8 @@ import Flows.CommunityFlow
 import Flows.CourseFlow
 import Flows.ProfileFlow
 import Flows.ResourceFlow
+import Flows.FilterFlow
 import Flows.NotificationFlow
-import Flows.SearchFlow
 import Data.Generic.Rep (class Generic)
 import Data.Foreign.Generic (encodeJSON)
 import Control.Monad.Eff.Exception (EXCEPTION)
@@ -68,8 +68,18 @@ cFlow = do
     StartProfileFlow -> startProfileFlow action
     StartNotificationFlow -> startNotificationFlow action
     StartResourceDetailFlow {resourceDetails : details} -> startResourceDetailFlow details
-    StartSearchFlow -> startSearchFlow action
+    StartSearchFlow -> startHomeSearchFlow action
+
     _ -> pure $ "aborted"
+
+startHomeSearchFlow state = do
+  liftEff $ log $ "Search FLow started"
+  state <- ui $ SearchScreen
+  case state of
+    ResourceDetailFlow {resourceDetails : details} -> startResourceDetailFlow details
+    StartFilterFlow -> startFilterFlow state
+    _ -> pure $ "aborted"
+
 
 changeFlow = void $ launchAff $ cFlow
 

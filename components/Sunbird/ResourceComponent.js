@@ -11,6 +11,7 @@ var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 
 var SearchToolbar = require('../Sunbird/core/SearchToolbar');
+var SimpleToolbar = require('../Sunbird/core/SimpleToolbar');
 var CourseContainer = require('../Sunbird/CourseContainer');
 var HomeRecommendedContainer = require('../Sunbird/HomeRecommendedContainer');
 var ResourceContainer = require('../Sunbird/ResourceContainer');
@@ -69,14 +70,14 @@ class ResourceComponent extends View {
         id={this.idSet.parentContainer}
         height="match_parent">
 
-          <SearchToolbar
-            hint="Enter your search"
-            invert="true"
-            hideBack="true"
-            title="Resources"
-            onMenuItemClick={this.handleMenuClick}
+          <SimpleToolbar
+            title=""
+            width="match_parent"
+            showMenu="true"
+            invert="true" 
+            hideBack="true" 
             menuData={this.menuData}
-            onSearch={this.handleSearch}/>
+            onMenuItemClick={this.handleMenuClick}/>
 
 
             <ScrollView
@@ -127,6 +128,10 @@ class ResourceComponent extends View {
     console.log("url clicked", url);
      if(url=="ic_notification_red"){
         window.__runDuiCallback({tag:"StartNotificationFlow",contents:[]});
+    }
+    if(url=="ic_action_search"){
+        window.__runDuiCallback({tag:"StartSearchFlow",contents:[]});
+
     }
   }
 

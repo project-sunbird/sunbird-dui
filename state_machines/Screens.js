@@ -76,6 +76,11 @@ module.exports = function(action, payload, state) {
       localState.currScreen = "SearchScreen";
       break;
 
+    case "FilterScreen":
+      localState.isInit = false;
+      localState.currScreen = "FilterScreen";
+      break;
+
     case "GO_BACK":
       break;
 

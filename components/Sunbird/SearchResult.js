@@ -94,9 +94,9 @@ class SearchResult extends View {
     console.log("clicked item<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<",item);
     var itemDetails = JSON.stringify(item);
     console.log("itemDetails in rresourceDDDDD",itemDetails)
-    window.__runDuiCallback({tag:"StartResourceDetailFlow",contents:{resourceDetails:itemDetails}});
+    window.__runDuiCallback({tag:"ResourceDetailFlow",contents:{resourceDetails:itemDetails}});
 
-
+    // window.__runDuiCallback({tag:"StartResourceDetailFlow",contents:{resourceDetails:itemDetails}});
 
   }
 
