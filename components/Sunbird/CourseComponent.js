@@ -82,6 +82,7 @@ class CourseComponent extends View {
 
     var tmp = JSON.stringify(content)
     var eventAction = { tag: 'StartCourseInfoFlow', contents: { "course": tmp } }
+      //var eventAction = { tag: 'StartEnrolledCourseFlow', contents: { "course": tmp } }
 
 
     window.__runDuiCallback(eventAction);

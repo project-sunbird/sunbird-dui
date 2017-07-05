@@ -15,11 +15,11 @@ window.R = require("ramda");
 var SimpleToolbar = require('../../components/Sunbird/core/SimpleToolbar');
 var CropParagraph = require('../../components/Sunbird/CropParagraph');
 var CourseCurriculum = require('../../components/Sunbird/CourseCurriculum');
-var PageOption = require('../../components/Sunbird/core/PageOption');
+var HorizontalProgressBar = require('../../components/Sunbird/HorizontalProgressBar');
 var CourseProgress = require('../../components/Sunbird/CourseProgress');
-var ProgressButton = require('../../components/Sunbird/core/ProgressButton');
 
-class CourseInfoScreen extends View {
+
+class CourseEnrolledScreen extends View {
   constructor(props, children, state) {
     super(props, children, state);
 
@@ -29,8 +29,7 @@ class CourseInfoScreen extends View {
     ]);
     this.state = state;
     this.screenName = "CourseEnrolledScreen"
-      // console.log("GOT STATE", JSON.stringify(state))
-      // window.__RootScreen.snackBar("Hellllllo")
+
     this.menuData = {
       url: [
         { imageUrl: "ic_action_bookmark" },
@@ -150,60 +149,10 @@ class CourseInfoScreen extends View {
     );
   }
 
-  afterRender = () => {
-    if (this.details.isProgress == "true") {
-      console.log("Already enrolled")
-      var eventAction = { tag: 'ShowEnrolledCourse', contents: { "course": this.state.data.value0.courseDetails } }
-      window.__runDuiCallback(eventAction);
-
-    }
-
-  }
-
-  handleEnrollClick = (data) => {
-    console.log("---->\t", "handleEnrollClick");
-
-    if (data === "ENROLL NOW") {
-      var req = {
-        "request": {
-          "userId": "user1",
-          "courseId": "course1",
-          "coursename": "course name ",
-          "description": "course description",
-          "delta": {}
-        }
-      }
-      var eventAction = {
-        "tag": "enrollCourse",
-        "contents": { reqparams: req }
-      }
-      window.__runDuiCallback(eventAction);
-
-    }
-
-
-  }
 
   handleBackPress = () => {
     window.__changePureScriptFlow();
     window.__runDuiCallback({ action: "showMainFlow" });
-  }
-
-  getCurriculumnBrief = () => {
-
-    var items = this.data.courseBrief.map((item, i) => {
-      return (<TextView
-                style={window.__TextStyle.textStyle.HINT.REGULAR} 
-                text ={(i==0?"":" | ") +item.count + " "+item.type}/>)
-    })
-
-    return (
-      <LinearLayout
-        margin="0,0,0,0"
-        height="wrap_content"
-        width="match_parent">
-        {items}
-      </LinearLayout>);
   }
 
 
@@ -212,7 +161,6 @@ class CourseInfoScreen extends View {
     this.layout = (
       <LinearLayout
         root="true"
-        afterRender={this.afterRender()}
         background={window.__Colors.WHITE}
         orientation="vertical"
         width="match_parent"
@@ -225,64 +173,55 @@ class CourseInfoScreen extends View {
           width="match_parent"
           invert="true"
           showMenu="true"/>
+
+        <HorizontalProgressBar  
+          currentProgress={this.data.competedCount}
+          totalProgress={this.data.totalProgress}
+          width="match_parent"
+          height="wrap_content"/>
+
         <LinearLayout
           height="match_parent"
           orientation="vertical"
           id={this.idSet.parentContainer}
           width="match_parent">
-            <ScrollView
+           
+          <ScrollView
               height="0"
               weight="1"
               width="match_parent"
               fillViewPort="true">
-
               <LinearLayout
                 height="match_parent"
                 width="match_parent"
+                root="true"
                 padding="16,24,16,16"
                 orientation="vertical">
 
-                <TextView
-                  width="wrap_content"
-                  height="wrap_content"
-                  margin="0,0,0,7"
-                  text={this.data.courseName}
-                  style={window.__TextStyle.textStyle.HEADING.DARK}
-                  />
-
-                <CropParagraph
-                  height="wrap_content"
-                  margin="0,0,0,12"
-                  width="match_parent"
-                  contentText={this.data.courseDesc}
-                  />
-
-                <TextView
-                  margin="0,0,0,4"
-                  text="Curriculum" 
-                  style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
-
-                  {this.getCurriculumnBrief()}  
+                <CourseProgress
+                    height="wrap_content"
+                    width="wrap_content"
+                    content={this.data}
+                    title={this.data.courseName}
+                    onResumeClick={this.handleCourseResume}/>
 
                  <CourseCurriculum
                   height="match_parent"
-                  margin="0,0,0,12"
+                  content={this.data}
+                  onItemSelected={this.handleItemSelect}
+                  enrolledStatus={true}
+                  title=""
                   brief={true}
-                  content= {this.data}
                   width="match_parent"/>
+
+
 
 
                 </LinearLayout>
 
+                </ScrollView>
 
-             </ScrollView>
-
-             <PageOption
-             width="match_parent"
-             buttonItems={buttonList}
-             onButtonClick={this.handleEnrollClick}/>
-
-            </LinearLayout>
+          </LinearLayout>
 
       </LinearLayout>
     );
@@ -291,4 +230,4 @@ class CourseInfoScreen extends View {
   }
 }
 
-module.exports = Connector(CourseInfoScreen);
+module.exports = Connector(CourseEnrolledScreen);
