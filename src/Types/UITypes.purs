@@ -35,7 +35,7 @@ data ResourceScreenAction = DummyResourceAction
 data CommunityInfoScreen = CommunityInfoScreen {name::String}
 data CommunityInfoScreenAction = DummyInfoAction | ExAction
 
-data CourseInfoScreen = CourseInfoScreen
+data CourseInfoScreen = CourseInfoScreen {courseDetails::String}
 data CourseInfoScreenAction = DummyCourseInfoAction
 
 data CommunityViewAllScreen = CommunityViewAllScreen

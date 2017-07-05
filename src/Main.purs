@@ -68,7 +68,6 @@ cFlow = do
     StartProfileFlow -> startProfileFlow action
     StartNotificationFlow -> startNotificationFlow action
     StartResourceDetailFlow {resourceDetails : details} -> startResourceDetailFlow details
-    StartCourseInfoFlow {course:x} -> startCourseInfoFlow action
     StartSearchFlow -> startSearchFlow action
     _ -> pure $ "aborted"
 

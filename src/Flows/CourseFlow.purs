@@ -19,16 +19,16 @@ import Types.APITypes
 
 
 startCourseFlow state = do
-	state <- ui $ HomeScreen
-	case state of
-		StartCourseInfoFlow {course:courseName} -> startCourseInfoFlow courseName
+	event <- ui $ HomeScreen
+	case event of
+		StartCourseInfoFlow {course:courseDetail} -> startCourseInfoFlow courseDetail
 		StartNotificationFlow -> startNotificationFlow state
 		_ -> pure $ "default"
 
     
-startCourseInfoFlow state = do
-	state <- ui $ CourseInfoScreen
-	case state of
+startCourseInfoFlow state= do
+	event <- ui $ CourseInfoScreen {courseDetails:state}
+	case event of
 		DummyCourseInfoAction -> pure $ "handled"
   		_ -> pure $ "default"
 

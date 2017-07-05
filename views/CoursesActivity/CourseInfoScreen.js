@@ -31,19 +31,26 @@ class CourseInfoScreen extends View {
     this.screenName = "CourseInfoScreen"
       // console.log("GOT STATE", JSON.stringify(state))
       // window.__RootScreen.snackBar("Hellllllo")
-     this.menuData = {
+    this.menuData = {
       url: [
         { imageUrl: "ic_action_bookmark" },
-        { imageUrl: "ic_action_overflow"}
+        { imageUrl: "ic_action_overflow" }
       ]
     }
+
+    this.shouldCacheScreen = false;
+
+    console.log("GOT VALUES ", state)
+    this.details = JSON.parse(state.data.value0.courseDetails);
+    console.log("GOT VALUES ", this.details)
+
 
 
 
     this.data = {
-      courseName: this.state.values ? this.state.values.courseName : "",
-      courseDesc: this.state.values ? this.state.values.courseDesc : "This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced",
-      competedCount: this.state.values ? this.state.values.competedCount : "10",
+      courseName: this.details ? this.details.title : "",
+      courseDesc: this.details ? this.details.courseDesc : "This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced",
+      competedCount: this.details && this.details.footerTitle ? this.details.footerTitle.split('%')[0] : "10",
       totalCount: "150",
       courseBrief: [{
         count: "50",
@@ -93,7 +100,7 @@ class CourseInfoScreen extends View {
           type: "QUIZ",
           status: "PENDING"
         }]
-      },{
+      }, {
         chapterName: "Scientific Notations",
         chapterFinished: "2",
         chapterDuration: "50",
@@ -114,8 +121,7 @@ class CourseInfoScreen extends View {
           type: "QUIZ",
           status: "PENDING"
         }]
-      },
-       {
+      }, {
         chapterName: "Progression",
         chapterFinished: "0",
         chapterDuration: "10",
@@ -278,7 +284,7 @@ class CourseInfoScreen extends View {
                   width="wrap_content"
                   height="wrap_content"
                   margin="0,0,0,7"
-                  text="Organic Chemistry Reactions"
+                  text={this.data.courseName}
                   style={window.__TextStyle.textStyle.HEADING.DARK}
                   />
 

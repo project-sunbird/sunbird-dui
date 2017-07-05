@@ -10,17 +10,15 @@ var Button = require('../Sunbird/Button');
 var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 var _this;
-var CourseCard = require('../Sunbird/CourseCard');
 var CardComponent = require('../Sunbird/core/CardComponent');
 
 
 class CourseContainer extends View {
   constructor(props, children) {
     super(props, children);
-    _this=this;
+    _this = this;
 
-    this.setIds([
-    ]);   
+    this.setIds([]);
   }
 
 
@@ -28,13 +26,16 @@ class CourseContainer extends View {
 
   }
 
-  getRows = () =>{
-    var rows = this.props.data.map((item,i) => {
-         return (<CardComponent 
+
+
+  getRows = () => {
+    var rows = this.props.data.map((item, i) => {
+      return (<CardComponent 
                  data={item}
+                 index={i}
                  content={item}
                  onCardClick={this.handleCardClick}/>)
-                 
+
     });
 
     var layout = (<LinearLayout
@@ -45,12 +46,12 @@ class CourseContainer extends View {
 
                   </LinearLayout>);
     return layout;
-                    
+
   }
 
 
 
-  getHeader(){
+  getHeader() {
     return (<LinearLayout
             width="match_parent"
             height="wrap_content"
@@ -79,25 +80,18 @@ class CourseContainer extends View {
   }
 
 
-    handleCourseClick = (courseName)=>{
-      // not used
 
-      this.state = { tag: 'StartCourseInfoFlow',contents: {"course":courseName}}
-      window.__runDuiCallback(this.state);
-      console.log("course selected",courseName);
-    }
+  handleCardClick = (content, type) => {
+    this.props.onCourseClick(content, type);
 
-    handleCardClick = (content,type) =>{
-      console.log("content is",content);
-      console.log("type is",type);
-    }
+  }
 
-    
 
-   
+
+
   render() {
-      this.layout = (
-        <LinearLayout
+    this.layout = (
+      <LinearLayout
           height="match_parent"
           width="match_parent"
           background={this.props.transparent?window.__Colors.WHITE_F2:window.__Colors.WHITE}

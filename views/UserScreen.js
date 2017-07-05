@@ -255,6 +255,10 @@ class UserScreen extends View {
   }
 
   handleLoginClick = () => {
+    this.skipLogin();
+    return;
+
+
 
     if (this.userName === "sunbird" || this.userName === "Sunbird") {
       this.skipLogin();
