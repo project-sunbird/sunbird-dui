@@ -286,29 +286,26 @@ class UserScreen extends View {
     return (<LinearLayout
       height="wrap_content"
       width="match_parent"
-      padding="12,12,12,12"
+      padding="12,20,12,20"
       gravity="center"
       orientation="vertical">
 
         <ImageView
-        height="125"
-        width="125"
+        height="100"
+        width="100"
         imageUrl={"ic_launcher"}/>
 
         <TextView
-        width="match_parent"
+          width="match_parent"
           text="Welcome to Sunbird"
-          textSize="20"
           gravity="center"
-          fontStyle= {window.__Font.fontStyle.EXTRABOLD}
-          />
+          style={window.__TextStyle.textStyle.HEADING.DARK}/>
 
-          <TextView
+        <TextView
           width="match_parent"
           gravity="center"
           text="Structured education for the educators"
-          textSize="18"
-          /> 
+          style={window.__TextStyle.textStyle.HINT.REGULAR}/> 
 
       </LinearLayout>)
   }
@@ -331,8 +328,7 @@ class UserScreen extends View {
                   weight="1"
                   text="FORGOT PASSWORD?"
                   id={this.idSet.forgotPasswordHolder}
-                  textSize="18"
-                  color={window.__Colors.THICK_BLUE}/>
+                  style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
             </LinearLayout>  
               <LinearLayout
                 height="wrap_content"
@@ -350,11 +346,8 @@ class UserScreen extends View {
                   onClick={this.handleLoginClick}>
 
                     <TextView
-                      textSize="14"
-                      color={window.__Colors.WHITE}
-                      text="SIGN IN"
-                      fontStyle= {window.__Font.fontStyle.EXTRABOLD}
-                      />
+                      style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
+                      text="SIGN IN"/>
                   </LinearLayout>
                   <LinearLayout
                       height="match_parent"
@@ -366,11 +359,8 @@ class UserScreen extends View {
                       onClick={this.handleSignUpClick}>
 
                     <TextView
-                      textSize="14"
-                      color={window.__Colors.WHITE}
                       text="SIGN UP"
-                      fontStyle= {window.__Font.fontStyle.EXTRABOLD}
-                      />
+                      style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}/>
                   </LinearLayout>
 
                </LinearLayout>
@@ -409,7 +399,6 @@ class UserScreen extends View {
                   hintText="Enter you'r first name"
                   labelText="FIRST NAME"
                   padding="12,0,12,0"
-                  color={window.__Colors.DARK_GRAY}
                   _onChange={this.updateFirstName}/>  
             
             </LinearLayout>  
@@ -420,7 +409,6 @@ class UserScreen extends View {
                 hintText="sample@test.com"
                 labelText="E-MAIL ID"
                 padding="12,0,12,0"
-                color={window.__Colors.DARK_GRAY}
                 _onChange={this.updateUserName}/>
 
             <TextInputView
@@ -429,7 +417,6 @@ class UserScreen extends View {
                 hintText="Enter a 8-digit password"
                 labelText="PASSWORD"
                 padding="12,0,12,0"
-                color={window.__Colors.DARK_GRAY}
                 _onChange={this.updateUserPassword}/>  
             
             
@@ -444,7 +431,6 @@ class UserScreen extends View {
                 labelText="LANGUAGE"
                 padding="12,0,12,0"
                 text="English"
-                color={window.__Colors.DARK_GRAY}
                 _onChange={this.updateLanguage}/>  
            
             </LinearLayout>
@@ -473,7 +459,7 @@ class UserScreen extends View {
             onClick={this.handleAlreadyHaveAccClick}
             visibility={this.isLoginMode?"gone":"visible"}
             text="Already have an Account? Sign in now"
-            color={window.__Colors.THICK_BLUE}/>
+            style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
 
           <TextView
             height="wrap_content"
@@ -484,7 +470,7 @@ class UserScreen extends View {
             onClick={this.handleCreateAccountClick}
             visibility={this.isLoginMode?"visible":"gone"}
             text="No Account yet? Sign up now"
-            color={window.__Colors.THICK_BLUE}/>
+            style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
           <ViewWidget
             background={window.__Colors.THICK_BLUE}
             height="2"

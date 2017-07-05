@@ -11,10 +11,6 @@ class ChapterOverView extends View {
     super(props, children);
     this.displayName = "chapter_overview"
 
-    console.log(">>>>> PROPS Index", this.props.index)
-    console.log(">>>>> PROPS Item", this.props.item)
-
-
   }
 
   setDownloading = () => {
@@ -22,7 +18,7 @@ class ChapterOverView extends View {
   }
 
   render() {
-    var chapterName = "Module " + this.props.index + ": " + this.props.item.chapterName;
+    var chapterName = "Module " + (this.props.index + 1) + ": " + this.props.item.chapterName;
     var chapterDuration = "[ " + this.props.item.chapterDuration + " minutes ]";
 
     this.layout = (
@@ -42,12 +38,12 @@ class ChapterOverView extends View {
 
         <TextView
           text={chapterName}
-          style={window.__TextStyle.textStyle.CARD.HEADDING}/>
+          style={window.__TextStyle.textStyle.CARD.HEADING}/>
 
         <TextView
           text={chapterDuration}
           margin="6,0,0,0"
-          style={window.__TextStyle.textStyle.CARD.HEADDING}/>
+          style={window.__TextStyle.textStyle.CARD.SEMI_DARK}/>
 
         <ViewWidget
           width="0"

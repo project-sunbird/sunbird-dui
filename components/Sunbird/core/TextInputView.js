@@ -41,9 +41,8 @@ class TextInputView extends View {
         <TextView
           text={this.props.labelText}
           padding="6,0,0,0"
-          color={this.props.color}
+          style={window.__TextStyle.textStyle.BOTTOMBAR.DEFAULT}
           width="match_parent"
-          fontStyle= {window.__Font.fontStyle.MEDIUM}
           height="wrap_content"/>
 
         

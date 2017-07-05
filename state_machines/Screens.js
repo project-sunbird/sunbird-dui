@@ -37,6 +37,10 @@ module.exports = function(action, payload, state) {
       localState.isInit = false;
       localState.currScreen = "CommunityInfoScreen";
       break;
+    case "CourseEnrolledScreen":
+      localState.isInit = false;
+      localState.currScreen = "CourseEnrolledScreen";
+      break;
 
     case "CommunityViewAllScreen":
       localState.isInit = false;
@@ -61,7 +65,7 @@ module.exports = function(action, payload, state) {
       localState.isInit = false;
       localState.currScreen = "ResourceViewAllScreen";
       break;
-      
+
     case "CourseInfoScreen":
       localState.isInit = false;
       localState.currScreen = "CourseInfoScreen";

@@ -20,7 +20,7 @@ class CourseCurriculum extends View {
   }
 
 
-  
+
   getChapterList = () => {
     var items = this.props.content.chapterList.map((item) => {
       return (<ChapterList 
@@ -76,7 +76,7 @@ class CourseCurriculum extends View {
        width="match_parent">
         <TextView
           margin="0,24,0,24"
-          text="Structure" 
+          text={this.props.title} 
           style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
         {this.getContent()}
