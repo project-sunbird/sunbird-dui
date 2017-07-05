@@ -67,6 +67,11 @@ module.exports = function(action, payload, state) {
       localState.currScreen = "CourseInfoScreen";
       break;
 
+    case "SearchScreen":
+      localState.isInit = false;
+      localState.currScreen = "SearchScreen";
+      break;
+
     case "GO_BACK":
       break;
 

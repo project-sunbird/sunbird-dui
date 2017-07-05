@@ -15,6 +15,7 @@ import Flows.CourseFlow
 import Flows.ProfileFlow
 import Flows.ResourceFlow
 import Flows.NotificationFlow
+import Flows.SearchFlow
 import Data.Generic.Rep (class Generic)
 import Data.Foreign.Generic (encodeJSON)
 import Control.Monad.Eff.Exception (EXCEPTION)
@@ -68,6 +69,7 @@ cFlow = do
     StartNotificationFlow -> startNotificationFlow action
     StartResourceDetailFlow {resourceDetails : details} -> startResourceDetailFlow details
     StartCourseInfoFlow {course:x} -> startCourseInfoFlow action
+    StartSearchFlow -> startSearchFlow action
     _ -> pure $ "aborted"
 
 changeFlow = void $ launchAff $ cFlow

@@ -86,7 +86,7 @@ class ProgressButton extends View {
     }
     else{
         console.log("download");
-            JBridge.importCourse(this.props.identifier);
+        JBridge.importCourse(this.props.identifier);
 
     }
 
