@@ -54,7 +54,11 @@ data ResourceViewAllAction = DummyResourceViewAllAction | StartResourceInfoFlow 
 
 
 data SearchScreen = SearchScreen
-data SearchScreenAction = DummySearchScreenAction
+data SearchScreenAction = ResourceDetailFlow {resourceDetails::String} | StartFilterFlow
+
+data FilterScreen = FilterScreen
+data FilterScreenAction = SearchScreenFromFilter
+
 
 instance homeScreen :: UIScreen HomeScreen HomeScreenAction where
   generateMockEvents _ = [ShowHome {name:"Kiran"} ,StartCourseFlow]
@@ -141,10 +145,17 @@ instance decodeResourceViewAllAction :: Decode ResourceViewAllAction where decod
 instance encodeResourceViewAllAction :: Encode ResourceViewAllAction where encode = defaultEncode
 
 instance searchScreen :: UIScreen SearchScreen SearchScreenAction where
-  generateMockEvents _ = [DummySearchScreenAction]
+  generateMockEvents _ = []
   ui x = genericUI x (generateMockEvents x :: Array SearchScreenAction)
 
 derive instance genericSearchScreenAction  :: Generic SearchScreenAction _
 instance decodeSearchScreenAction :: Decode SearchScreenAction where decode = defaultDecode
 instance encodeSearchScreenAction :: Encode SearchScreenAction where encode = defaultEncode
 
+instance filterScreen :: UIScreen FilterScreen FilterScreenAction where
+  generateMockEvents _ = []
+  ui x = genericUI x (generateMockEvents x :: Array FilterScreenAction)
+
+derive instance genericFilterScreenAction  :: Generic FilterScreenAction _
+instance decodeFilterScreenAction :: Decode FilterScreenAction where decode = defaultDecode
+instance encodeFilterScreenAction :: Encode FilterScreenAction where encode = defaultEncode

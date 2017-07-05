@@ -11,6 +11,8 @@ import Control.Monad.Eff.Class(liftEff)
 import Data.Foreign.Class (class Decode, class Encode, encode)
 import Data.Generic.Rep (class Generic)
 import Flows.NotificationFlow
+import Flows.ResourceFlow
+import Flows.FilterFlow
 import Data.Foreign.Generic (encodeJSON)
 import Control.Monad.Eff.Exception (EXCEPTION)
 import Prelude
@@ -23,9 +25,18 @@ startResourceFlow state = do
 		StartNotificationFlow -> startNotificationFlow state
 		StartResourceDetailFlow {resourceDetails:details} -> startResourceDetailFlow details
 		StartResourceViewAllFlow {resourceDetails:details} -> startResourceViewAllFlow details
+		StartSearchFlow -> startResourceSearchFlow state
 		_ -> pure $ "default"
 
 
+
+startResourceSearchFlow state = do
+  liftEff $ log $ "Search FLow started"
+  state <- ui $ SearchScreen
+  case state of
+    ResourceDetailFlow {resourceDetails : details} -> startResourceDetailFlow details
+    StartFilterFlow -> startFilterFlow state
+    _ -> pure $ "aborted"
 
 
 startResourceDetailFlow state = do
