@@ -17,26 +17,26 @@ var _this;
 class CardComponent extends View {
   constructor(props, children) {
     super(props, children);
-    _this=this;
+    _this = this;
 
     this.setIds([
       "leftProgress",
       "rightProgress",
       "ratingBar"
     ]);
-    
+
   }
 
 
 
-  getRemainingProgress = (progress) =>{
+  getRemainingProgress = (progress) => {
     var remainingProgress = 100 - parseInt(progress);
     return remainingProgress;
   }
 
-  getBody = () =>{
-    return(
-            <LinearLayout
+  getBody = () => {
+    return (
+      <LinearLayout
             width="wrap_content"
             height="wrap_content"
             margin="16,0,0,22"
@@ -117,10 +117,10 @@ class CardComponent extends View {
 
 
   afterRender = () => {
-      JBridge.setRating(this.idSet.ratingBar,this.props.data.stars);
+    JBridge.setRating(this.idSet.ratingBar, this.props.data.stars);
   }
 
-  getFooter= ()=>{
+  getFooter = () => {
     return (<LinearLayout
             margin="0,8,0,0"
             width="200"
@@ -170,19 +170,18 @@ class CardComponent extends View {
             text={this.props.data.actionText? this.props.data.actionText : "OPEN"}/>
 
 
-            </LinearLayout>
-        )
-    }
+            </LinearLayout>)
+  }
 
-  
-    handleCardClick = () =>{
-      this.props.onCardClick(this.props.content,this.props.data.type);
-    }
 
-   
+  handleCardClick = () => {
+    this.props.onCardClick(this.props.content, this.props.data.type);
+  }
+
+
   render() {
-      this.layout = (
-        <LinearLayout
+    this.layout = (
+      <LinearLayout
           height="wrap_content"
           width="match_parent"
           afterRender={this.afterRender}

@@ -16,7 +16,8 @@ import Flows.FilterFlow
 import Data.Foreign.Generic (encodeJSON)
 import Control.Monad.Eff.Exception (EXCEPTION)
 import Prelude
-import PureTypes
+import Types.UITypes
+import Types.APITypes
     	
 
 startResourceFlow state = do

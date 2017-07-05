@@ -175,6 +175,16 @@ userLogin userName userPass =
                                                    ]) in
   (post requestUrl headers payload)
 
+userSignup userName firstName password language =
+  let requestUrl = "/v1/user/create" 
+      headers = (generateRequestHeaders)
+      payload = A.fromObject (StrMap.fromFoldable [(Tuple "request" (A.fromObject (StrMap.fromFoldable  [ (Tuple "userName" (A.fromString userName))
+                                                                                                          , (Tuple "firstName" (A.fromString firstName))
+                                                                                                          , (Tuple "password" (A.fromString password))
+                                                                                                          , (Tuple "language" (A.fromString "language"))
+                                                                                                          ])))
+                                                   ]) in
+  (post requestUrl headers payload)
 
 
 

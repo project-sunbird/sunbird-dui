@@ -20,8 +20,8 @@ import Data.Generic.Rep (class Generic)
 import Data.Foreign.Generic (encodeJSON)
 import Control.Monad.Eff.Exception (EXCEPTION)
 import Prelude
-import PureTypes
-
+import Types.UITypes
+import Types.APITypes
 
 main :: Eff (exception::EXCEPTION, ui::UI, console::CONSOLE) Unit
 main = void $ launchAff $ begin
@@ -31,7 +31,7 @@ begin :: Aff(ui::UI,console::CONSOLE) String
 begin = do
   action <- ui $ InitScreen
   case action of
-    StartInit -> cFlow
+    StartInit -> userScreenFlow
     _ -> pure $ "aborted"
 
 
@@ -43,6 +43,12 @@ userScreenFlow = do
       responseData <- userLogin x y
       --userScreenFlow {state:"tab3"}
       _ <- sendUpdatedState {response : responseData, responseFor : "LoginApiAction", screen:"asas"} 
+      pure $ "Aborted 3"
+    SignUpApiAction{userName:x1,firstName:x2,password:x3,language:x4} -> do
+      --liftEff $ log "FOR UN :" <> x <> " PASS :" <> y
+      responseData <- userSignup x1 x2 x3 x4
+      --userScreenFlow {state:"tab3"}
+      _ <- sendUpdatedState {response : responseData, responseFor : "SignUpApiAction", screen:"asas"} 
       pure $ "Aborted 3"
     LoginAction -> do
       liftEff $ log $ "LoginAction"
@@ -62,7 +68,6 @@ cFlow = do
     StartProfileFlow -> startProfileFlow action
     StartNotificationFlow -> startNotificationFlow action
     StartResourceDetailFlow {resourceDetails : details} -> startResourceDetailFlow details
-    StartCourseInfoFlow {course:x} -> startCourseInfoFlow action
     StartSearchFlow -> startHomeSearchFlow action
 
     _ -> pure $ "aborted"

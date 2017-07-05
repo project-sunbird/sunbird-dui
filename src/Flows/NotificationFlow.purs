@@ -13,8 +13,8 @@ import Data.Maybe
 import Data.Generic.Rep (class Generic)
 import Data.Foreign.Generic (encodeJSON)
 import Control.Monad.Eff.Exception (EXCEPTION)
-import Prelude
-import PureTypes
+import Types.UITypes
+import Types.APITypes
 
 startNotificationFlow state = do
 	state <- ui $ NotificationScreen

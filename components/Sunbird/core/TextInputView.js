@@ -22,6 +22,11 @@ class TextInputView extends View {
 
   }
 
+  handleOnChange = (data) => {
+    console.log("TEXT CHANGE ", data)
+    this.props._onChange(data);
+  }
+
   render() {
 
 
@@ -45,10 +50,12 @@ class TextInputView extends View {
             <EditText
               width="match_parent"
               height="wrap_content"
+              singleLine="true"
+              maxLine="1"
               color={this.props.color}
               hint={this.props.hintText}
               text={this.props.text?this.props.text:""}
-              onChange={this.props.onChange}/>
+              onChange={this.handleOnChange}/>
           
       </LinearLayout>
     )

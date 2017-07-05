@@ -1,4 +1,4 @@
-module PureTypes where
+module Types.UITypes where
 
 import Control.Monad.Aff
 import Prelude (bind, ($), (<>), pure, discard)
@@ -14,8 +14,8 @@ import Data.Foreign.Generic (encodeJSON)
 import Control.Monad.Eff.Exception (EXCEPTION)
 import Prelude
 
-data UserScreen = UserScreen
-data UserScreenAction = LoginAction | LoginApiAction {userName::String, userPass::String}  
+data UserScreen = UserScreen 
+data UserScreenAction = LoginAction | LoginApiAction {userName::String, userPass::String} | SignUpApiAction{userName::String,firstName::String,password::String,language::String}
 
 
 data HomeScreen = HomeScreen
@@ -35,7 +35,7 @@ data ResourceScreenAction = DummyResourceAction
 data CommunityInfoScreen = CommunityInfoScreen {name::String}
 data CommunityInfoScreenAction = DummyInfoAction | ExAction
 
-data CourseInfoScreen = CourseInfoScreen
+data CourseInfoScreen = CourseInfoScreen {courseDetails::String}
 data CourseInfoScreenAction = DummyCourseInfoAction
 
 data CommunityViewAllScreen = CommunityViewAllScreen
@@ -77,7 +77,7 @@ instance decodeInitScreenAction :: Decode InitScreenAction where decode = defaul
 instance encodeInitScreenAction :: Encode InitScreenAction where encode = defaultEncode
 
 instance userScreen :: UIScreen UserScreen UserScreenAction where
-  generateMockEvents _ = [LoginAction , LoginApiAction {userName:"String",userPass:"String"} 
+  generateMockEvents _ = [LoginAction , LoginApiAction {userName:"String",userPass:"String"} , SignUpApiAction{userName:"test1@juspay.in",firstName:"Beta Tester 1",password:"beta",language:"English"}
 ]
   ui x = genericUI x (generateMockEvents x :: Array UserScreenAction)
 

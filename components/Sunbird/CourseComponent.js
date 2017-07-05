@@ -12,10 +12,8 @@ var Space = require('@juspay/mystique-backend').androidViews.Space;
 
 var SearchToolbar = require('../Sunbird/core/SearchToolbar');
 var SimpleToolbar = require('../Sunbird/core/SimpleToolbar');
+
 var CourseContainer = require('../Sunbird/CourseContainer');
-var CourseContainer = require('../Sunbird/CourseContainer');
-var CommunityViewallList = require('../Sunbird/CommunityViewallList');
-var CommunityInfoComponent = require('../Sunbird/CommunityInfoComponent');
 var _this;
 class CourseComponent extends View {
   constructor(props, children) {
@@ -27,62 +25,73 @@ class CourseComponent extends View {
       "infoContainer",
       "viewallContainer"
     ]);
-    _this=this;
+    _this = this;
 
-    this.myCommunitySelected="";
-    this.popularCommunitySelected="";
-    this.recommendedCommunitySelected="";
+    this.myCommunitySelected = "";
+    this.popularCommunitySelected = "";
+    this.recommendedCommunitySelected = "";
 
     this.menuData = {
       url: [
         { imageUrl: "ic_notification_red" },
-        { imageUrl: "ic_action_search"}
+        { imageUrl: "ic_action_search" }
       ]
     }
 
-     this.progressData = [{
-                            imageUrl : "https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
-                            type : "COURSE",
-                            title : "Organic Chemistry",
-                            footerTitle : "30% done",
-                            footerSubTitle : "(2350) votes",
-                            actionText : "RESUME",
-                            isProgress : "true",
-                          },
-                          {
-                            imageUrl : "https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
-                            type : "COURSE",
-                            title : "Organic Chemistry",
-                            footerTitle : "30% done",
-                            footerSubTitle : "(2350) votes",
-                            actionText : "RESUME",
-                            isProgress : "true",
-                          }
-                          ];
-      
+    this.progressData = [{
+      imageUrl: "https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
+      type: "COURSE",
+      title: "Organic Chemistry",
+      footerTitle: "30% done",
+      footerSubTitle: "(1350) votes",
+      actionText: "RESUME",
+      isProgress: "true",
+    }, {
+      imageUrl: "https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
+      type: "COURSE",
+      title: "Chemical Chemistry",
+      footerTitle: "60% done",
+      footerSubTitle: "(2350) votes",
+      actionText: "RESUME",
+      isProgress: "true",
+    }];
 
-       this.data = [{
-                      imageUrl : "https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
-                      type : "COURSE",
-                      title : "Organic Chemistry for Std VII",
-                      footerSubTitle : "(2350) votes",
-                      stars:"4",
-                      actionText : "OPEN",
-                    },
-                    {
-                      imageUrl : "https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
-                      type : "COURSE",
-                      title : "Physics",
-                      stars : "4",
-                      footerSubTitle : "Saved on 10 May ‘17",
-                      actionText : "OPEN"
-                    }
-                  ];
-                  
+
+    this.data = [{
+      imageUrl: "https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
+      type: "COURSE",
+      title: "Organic Chemistry for Std VII",
+      footerSubTitle: "(2350) votes",
+      stars: "4",
+      actionText: "OPEN",
+    }, {
+      imageUrl: "https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
+      type: "COURSE",
+      title: "Physics",
+      stars: "4",
+      footerSubTitle: "Saved on 10 May ‘17",
+      actionText: "OPEN"
+    }];
+
   }
 
 
-  getBody = () =>{
+  handleCourseClick = (content, type) => {
+    //console.log("content is", content);
+    //console.log("type is", type);
+    //console.log("data is", tmp);
+
+    var tmp = JSON.stringify(content)
+    var eventAction = { tag: 'StartCourseInfoFlow', contents: { "course": tmp } }
+
+
+    window.__runDuiCallback(eventAction);
+
+
+  }
+
+
+  getBody = () => {
     return (
       <LinearLayout
         orientation="vertical"
@@ -116,6 +125,7 @@ class CourseComponent extends View {
                     transparent="true"
                     isViewAllExist="true"
                     title="Courses In Progress"
+                    onCourseClick={this.handleCourseClick}
                     data = {this.progressData} />
                    
 
@@ -123,26 +133,28 @@ class CourseComponent extends View {
 
                   <CourseContainer
                     title="Popular"
-                    data = {this.data}/>
+                    data = {this.data}
+                    onCourseClick={this.handleCourseClick}/>
                     
 
                   {this.getSpaceSeparator()}
 
                   <CourseContainer
                     title="Recommended"
-                    data = {this.data}/>
+                    data = {this.data}
+                    onCourseClick={this.handleCourseClick}/>
 
                 </LinearLayout>
 
            </ScrollView>
            </LinearLayout>
-      )
+    )
   }
 
   handleMenuClick = (url) => {
     console.log("url clicked", url);
-    if(url=="ic_notification_red"){
-        window.__runDuiCallback({tag:"StartNotificationFlow",contents:[]});
+    if (url == "ic_notification_red") {
+      window.__runDuiCallback({ tag: "StartNotificationFlow", contents: [] });
     }
     if(url=="ic_action_search"){
         window.__runDuiCallback({tag:"StartSearchFlow",contents:[]});
@@ -154,10 +166,10 @@ class CourseComponent extends View {
     console.log("searched", data);
   }
 
-  
 
-  
-  getSpaceSeparator = () =>{
+
+
+  getSpaceSeparator = () => {
     return (<LinearLayout
              height="6"
              orientation="vertical"
@@ -165,8 +177,7 @@ class CourseComponent extends View {
              background={window.__Colors.WHITE_F2}/>)
   }
 
-  afterRender(){
-  }
+  afterRender() {}
 
 
   render() {
