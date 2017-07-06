@@ -37,7 +37,7 @@ class FilterScreen extends View {
 
   getSortCard(){
     return(<LinearLayout
-                    height="match_parent"
+                    height="wrap_content"
                     width="match_parent"
                     padding="0,25,0,25"
                     background={window.__Colors.WHITE}
@@ -114,7 +114,7 @@ class FilterScreen extends View {
   render() {
     this.layout = (
 
-      <RelativeLayout
+      <LinearLayout
       root="true"
       width="match_parent"
       height="match_parent">
@@ -132,10 +132,7 @@ class FilterScreen extends View {
           invert="true"
           width="match_parent"/>
         
-            <ScrollView
-              height="0"
-              weight="1"
-              width="match_parent">
+           
         
                 <LinearLayout
                   height="match_parent"
@@ -167,13 +164,12 @@ class FilterScreen extends View {
 
                </LinearLayout>
 
-            </ScrollView>
 
 
       </LinearLayout>
      
 
-      </RelativeLayout>
+      </LinearLayout>
 
     )
     return this.layout.render();

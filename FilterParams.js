@@ -1,4 +1,4 @@
-exports.languageParams =
+exports.params =[
 {
   type : "language",
   items : [ "English",
@@ -23,9 +23,7 @@ exports.languageParams =
             "Ho",
             "Other" ]
 
-};
-
-exports.gradeParams =
+},
 {
   type : "grade",
   items : [   "Kindergarten",
@@ -42,32 +40,24 @@ exports.gradeParams =
               "Grade 11",
               "Grade 12",
               "Other"   ]
-};
-
-exports.domainParams =
+},
 {
   type : "domain",
   items : [ "numeracy",
             "literacy",
             "science" ]
              
-};
-
-exports.frameworkParams =
+},
 {
   type : "framework",
   items : []
              
-};
-
-exports.conceptParams =
+},
 {
   type : "concepts",
   items : []
              
-};
-
-exports.typeParams =
+},
 {
   type : "type",
   items : [ "Story",
@@ -76,9 +66,7 @@ exports.typeParams =
             "LessonPlan",
             "TextBook"  ]
              
-};
-
-exports.subjectParams =
+},
 {
   type : "subject",
   items : [ "Maths",
@@ -98,9 +86,7 @@ exports.subjectParams =
             "Urdu",
             "Other", ]
              
-};
-
-exports.mediumParams =
+},
 {
   type : "medium",
   items : [ "English",
@@ -119,15 +105,13 @@ exports.mediumParams =
             "Urdu",
             "Other"  ]
              
-};
-
-exports.ownershipParams =
+},
 {
   type : "ownership",
   items : [ "current user",
             "all" ]
              
-};
+}];
 
 
 
