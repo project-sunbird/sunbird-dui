@@ -13,6 +13,8 @@ import Data.Generic.Rep (class Generic)
 import Data.Foreign.Generic (encodeJSON)
 import Control.Monad.Eff.Exception (EXCEPTION)
 import Prelude
+import UI
+
 
 data UserScreen = UserScreen 
 data UserScreenAction = LoginAction | LoginApiAction {userName::String, userPass::String} | SignUpApiAction{userName::String,firstName::String,password::String,language::String}

@@ -152,7 +152,7 @@ class SearchScreen extends View {
     var temp = [];
     var totalJson={};
     var callback = callbackMapper.map(function(data) {
-      
+      console.log("search results",JSON.parse(data));
       if(searchText == "" || data == "[]"){
         _this.renderNoResult();
       }
@@ -165,6 +165,7 @@ class SearchScreen extends View {
     });
 
     if(searchText.length >2){
+      console.log("searchtext",searchText);
       JBridge.searchContent(callback,searchText);
     }
   }
