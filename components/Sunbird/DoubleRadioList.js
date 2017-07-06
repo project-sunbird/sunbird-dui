@@ -10,108 +10,31 @@ var HorizontalScrollView = require("@juspay/mystique-backend").androidViews.Hori
 var Space = require("@juspay/mystique-backend").androidViews.Space;
 var Styles = require("../../res/Styles"); 
 var TextStyle = require("../../res/TextStyle"); 
+var RadioListItem = require('../Sunbird/RadioListItem');
 
-class RadioListItem extends View {
-  constructor(props, children) {
-    super(props, children);
-    this.displayName = "RadioListItem";
+var _this;
 
-    this.setIds([
-      'image'
-    ]);
-  }
-  
-  handleClick = () => {
-    this.props.onClick(this.props.index);
-  }
-
-  afterRender = () => {
-    console.log(this.props.item);
-    if(this.props.item.check) {
-      this.check();
-    }
-  }
-  
-  check = () =>  {
-    let cmd = "";
-
-    cmd += this.set({
-      id: this.idSet.image,
-      imageUrl: "ic_checked"
-    });
-
-    Android.runInUI(
-      cmd, 
-      null
-    );
-  }
-   
-  uncheck = () => {
-    let cmd = "";
-
-    cmd += this.set({
-      id: this.idSet.image,
-      imageUrl: "ic_unchecked"
-    });
-     
-    Android.runInUI(
-      cmd, 
-      null
-    );
-  }
-
-  render() {
-    this.layout = (
-      <LinearLayout
-         afterRender={this.afterRender}
-        gravity="center_vertical"
-        root="true" 
-        margin="0,0,0,10"
-        width="wrap_content"
-        background="#00000" >
-
-        <ImageView 
-          id={this.idSet.image}
-          onClick={this.handleClick}
-          padding="0,12,12,12"
-          imageUrl="ic_unchecked"
-          margin="0,0,10,0"
-          width="48"
-          height="48"/>
-
-        <TextView style={TextStyle.textStyle.bigBody} text={this.props.item}/>
-
-      </LinearLayout>
-    )
-
-    return this.layout.render();
-  }
-}
 
 class DoubleRadioList extends View {
   constructor(props, children) {
     super(props, children);
     this.displayName = "DoubleRadioList";
+    this.list = this.props.items;
+    _this = this;
   }
 
-  handleClick = (index) => {
-    let RadioListItems = this.find("RadioListItem");
-    
-    RadioListItems.map((item, i)=> {
-      if (index == i) {
-        item.check();
-      } else {
-        item.uncheck();
-      }
-    });
 
-     this.props.onSelect(index);
-  }
+
+getSingleRow = (item,index) =>{
+  return (<RadioListItem
+          title={item}
+          index={index}/>);
+}
 
 
 
 renderItems() {
-      var lengthOfMenu = Object.keys(this.props.items).length;
+      var lengthOfMenu = Object.keys(this.list).length;
       this.totalItems = this.props.items.splice(0,lengthOfMenu/2)
       this.rightItems = this.props.items.splice(0,lengthOfMenu/2);
       this.leftItems = this.totalItems.splice(0,lengthOfMenu/2);
@@ -119,11 +42,11 @@ renderItems() {
       var leftBar = "";
       var rightBar = "";
       leftBar = this.leftItems.map((item, index) => {
-        return this.setMenu(item,index);
+        return this.getSingleRow(item,index);
       });
 
       rightBar = this.rightItems.map((item, index) => {
-        return this.setMenu(item,index+(lengthOfMenu/2));
+        return this.getSingleRow(item,index);
       });
       this.totalBar = (
           <LinearLayout
@@ -149,13 +72,6 @@ renderItems() {
     return this.totalBar;
   }
 
-
-  setMenu = (item,index) => {
-    return  <RadioListItem
-          index = {index}
-          onClick={this.handleClick}
-          item = {item}/>
-  }
 
   render() {
     this.layout = (

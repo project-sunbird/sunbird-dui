@@ -24,8 +24,8 @@ data HomeScreen = HomeScreen
 data HomeScreenAction = ShowHome {name::String} | StartCourseFlow |
  StartResourceFlow | StartCommunityFlow | StartProfileFlow | 
  StartCommunityInfoFlow {community::String} | StartCommunityViewAllFlow | 
- StartCourseInfoFlow {course::String} | GetCoursePage | GetResourcePage | 
- StartNotificationFlow | StartResourceDetailFlow {resourceDetails::String} | 
+ StartCourseInfoFlow {course::String} | StartEnrolledCourseFlow {course::String} |
+ GetCoursePage | GetResourcePage | StartNotificationFlow | StartResourceDetailFlow {resourceDetails::String} | 
  StartResourceViewAllFlow {resourceDetails::String} | StartSearchFlow
 
 data InitScreen = InitScreen 
@@ -38,7 +38,10 @@ data CommunityInfoScreen = CommunityInfoScreen {name::String}
 data CommunityInfoScreenAction = DummyInfoAction | ExAction
 
 data CourseInfoScreen = CourseInfoScreen {courseDetails::String}
-data CourseInfoScreenAction = DummyCourseInfoAction
+data CourseInfoScreenAction = DummyCourseInfoAction | ShowEnrolledCourse {course::String} 
+
+data CourseEnrolledScreen = CourseEnrolledScreen {courseDetails::String}
+data CourseEnrolledScreenAction = DummyCourseEnrolledAction
 
 data CommunityViewAllScreen = CommunityViewAllScreen
 data CommunityViewAllAction = DummyCommunityViewAllAction
@@ -97,12 +100,20 @@ instance encodeCommunityInfoScreenAction :: Encode CommunityInfoScreenAction whe
 
 
 instance courseInfoScreen :: UIScreen CourseInfoScreen CourseInfoScreenAction where
-  generateMockEvents _ = [DummyCourseInfoAction]
+  generateMockEvents _ = [DummyCourseInfoAction,ShowEnrolledCourse {course:"Dummy"} ]
   ui x = genericUI x (generateMockEvents x :: Array CourseInfoScreenAction)
 
 derive instance genericCourseInfoScreenAction  :: Generic CourseInfoScreenAction _
 instance decodeCourseInfoScreenAction :: Decode CourseInfoScreenAction where decode = defaultDecode
 instance encodeCourseInfoScreenAction :: Encode CourseInfoScreenAction where encode = defaultEncode
+
+instance courseEnrolledScreen :: UIScreen CourseEnrolledScreen CourseEnrolledScreenAction where
+  generateMockEvents _ = [DummyCourseEnrolledAction]
+  ui x = genericUI x (generateMockEvents x :: Array CourseEnrolledScreenAction)
+
+derive instance genericCourseEnrolledScreenAction  :: Generic CourseEnrolledScreenAction _
+instance decodeCourseEnrolledScreenAction :: Decode CourseEnrolledScreenAction where decode = defaultDecode
+instance encodeCourseEnrolledScreenAction :: Encode CourseEnrolledScreenAction where encode = defaultEncode
 
 instance communityViewAllScreen :: UIScreen CommunityViewAllScreen CommunityViewAllAction where
   generateMockEvents _ = [DummyCommunityViewAllAction]

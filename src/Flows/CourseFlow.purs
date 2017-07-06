@@ -26,6 +26,7 @@ startCourseFlow state = do
 	event <- ui $ HomeScreen
 	case event of
 		StartCourseInfoFlow {course:courseDetail} -> startCourseInfoFlow courseDetail
+		StartEnrolledCourseFlow {course:courseDetail} -> startEnrolledCourseFlow courseDetail
 		StartNotificationFlow -> startNotificationFlow state
 		StartSearchFlow -> startCourseSearchFlow state
 		_ -> pure $ "default"
@@ -35,8 +36,14 @@ startCourseInfoFlow state= do
 	event <- ui $ CourseInfoScreen {courseDetails:state}
 	case event of
 		DummyCourseInfoAction -> pure $ "handled"
-  		_ -> pure $ "default"
+		ShowEnrolledCourse {course:courseDetail} -> startEnrolledCourseFlow courseDetail
+		_ -> pure $ "default"
 
+startEnrolledCourseFlow state= do
+	event <- ui $ CourseEnrolledScreen {courseDetails:state}
+	case event of
+		DummyCourseEnrolledAction -> pure $ "handled"
+  		_ -> pure $ "default"
 
 startCourseSearchFlow state = do
   liftEff $ log $ "Search FLow started"

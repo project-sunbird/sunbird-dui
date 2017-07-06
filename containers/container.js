@@ -17,6 +17,7 @@ const HomeScreen = require("../views/HomeScreen");
 const UserScreen = require("../views/UserScreen");
 //Course or Learn
 const CourseInfoScreen = require("../views/CoursesActivity/CourseInfoScreen");
+const CourseEnrolledScreen = require("../views/CoursesActivity/CourseEnrolledScreen");
 
 //Resource
 
@@ -53,7 +54,10 @@ var determineScreen = (screenName, state) => {
     case "CourseInfoScreen":
       screen = new(CourseInfoScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
-        
+    case "CourseEnrolledScreen":
+      screen = new(CourseEnrolledScreen(dispatcher, RootScreenActions))(null, null, state);
+      break;
+
     case "CommunityInfoScreen":
       screen = new(CommunityInfoScreen(dispatcher, RootScreenActions))(null, null, state);
       break;

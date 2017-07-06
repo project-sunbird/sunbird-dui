@@ -205,6 +205,7 @@ class CommunityInfoComponent extends View {
       }
 
       Android.runInUI(cmd,null);
+
   }
 
   handleMenuClick = (url) =>{

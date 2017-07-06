@@ -7,123 +7,59 @@ var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var SimpleToolbar = require('../Sunbird/core/SimpleToolbar');
 var ChooseItem = require('../Sunbird/ChooseItem');
+var FilterItem = require('../Sunbird/FilterItem');
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 const transitParams = require('../../transitions');
+const filterParams = require('../../FilterParams');
 
 var _this;
+
 class FilterCard extends View {
   constructor(props, children) {
     super(props, children);
     this.setIds([
-      'filterCount'
+      'filterCount',
+      'rowsContainer'
     ]);
     _this=this;
+    this.params = filterParams;
    
-  this.EaseOut = transitParams.animParams.EaseOut;
+   this.EaseOut = transitParams.animParams.EaseOut;
 
   }
-
 
   getFilterRows(data){
     var layout = data.map((item, index) => {
 
-                    return (
-                          <LinearLayout
-                            width="match_parent"
-                            height="wrap_content"
-                            margin="16,16,16,0"
-                            gravity="center_vertical"
-                            onClick={()=>{this.handleClick(index)}}>
-                          
-                           <LinearLayout
-                            width="match_parent"
-                            height="match_parent"
-                            padding="10,10,0,10"
-                            gravity="center_vertical"
-                            background={window.__Colors.WHITE_F4}>
+                  var data = filterParams.params.map((elem, i) => { if(elem.type == item.toLowerCase()) return elem });
+                    return (<FilterItem
+                            data = {data[index]}/>)   
 
-                              <TextView
-                              width="wrap_content"
-                              height="wrap_content"
-                              text={item}
-                              style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>
+                  })
 
-                              <ViewWidget 
-                              height = "1"
-                              width = "0"
-                              weight = "1"/>
+      return   (
+                <LinearLayout
+                  width="match_parent"
+                  height="wrap_content"
+                  orientation="vertical"
+                  gravity="center_vertical">
 
-                              <TextView
-                              width="wrap_content"
-                              height="wrap_content"
-                              id={this.idSet.filterCount}
-                              style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>
+                    {layout}
 
-                              <ImageView
-                              width="24"
-                              height="24"
-                              imageUrl="ic_chevron_right"/>
-
-                            </LinearLayout>
-                          </LinearLayout>
-                            )
-    })
-
-    return layout;
+                </LinearLayout>)
 
   }
 
-  handleClick(index){
-   this.showFilterDialog();
-  }
 
-  handleSelection(index){
-    console.log("selected"+index);
 
-    let cmd = _this.set({
-    id: _this.idSet.filterCount,
-      text:"1 added"
-    });
 
-  Android.runInUI(cmd,null);
+  afterRender = () =>{
 
-  }
+    var layout = _this.getFilterRows(_this.props.filterData);
 
-  showFilterDialog = () =>{
+    this.replaceChild(this.idSet.rowsContainer, layout.render(), 0);
 
-    this.listData ={
-              confirmText:"SUBMIT",
-              items: ["class I",
-                      "class II",
-                      "class III",
-                      "class IV",
-                      "class V",
-                      "class VI",
-                      "class VII",
-                      "class VIII",
-                      "class IX",
-                      "class X" ],
-              heading: "Please choose the Standard"
-            }
-
-    var layout = ( <LinearLayout
-                    width="match_parent"
-                    height="wrap_content"
-                    visibility="visible"
-                    alignParentBottom = "true,-1"
-                    weight="1"
-                    orientation="vertical"
-                    background={window.__Colors.WHITE}
-                    >
-
-                    <ChooseItem
-                    data={this.listData}
-                    onSelect={this.handleSelection}
-                    />
-
-                  </LinearLayout>);
-    window.__RootScreen.showFilterDialog(layout,this.EaseOut);
   }
 
 
@@ -131,12 +67,26 @@ class FilterCard extends View {
   render() {
     this.layout = (
               <LinearLayout
-                height="400"
+                height="wrap_content"
                 width="match_parent"
+                afterRender={this.afterRender}
                 background={window.__Colors.WHITE}
                 orientation="vertical">
 
-                {this.getFilterRows(this.props.filterData)}
+                <ScrollView
+                width="match_parent"
+                height="match_parent">
+
+              
+                <LinearLayout
+                  width="match_parent"
+                  height="wrap_content"
+                  id={this.idSet.rowsContainer}
+                  gravity="center_vertical"/>
+
+
+                </ScrollView>
+
       
               </LinearLayout> 
 

@@ -65,17 +65,14 @@ class CourseProgress extends View {
           height="wrap_content"
           background={window.__Colors.PRIMARY_ACCENT}
           cornerRadius="2"
-          gravity="center"
-        >
-          <TextView
-          
-          width="wrap_content"
-          height="wrap_content"
-          text="RESUME"
-          gravity="center"
-          onClick={this.handleResumeClick}
-          style={window.__TextStyle.textStyle.TABBAR.WHITE}
-          />
+          gravity="center">
+          <TextView 
+            width="wrap_content"
+            height="wrap_content"
+            text="RESUME"
+            gravity="center"
+            onClick={this.handleResumeClick}
+            style={window.__TextStyle.textStyle.TABBAR.WHITE}/>
 
         </LinearLayout>)
   }
@@ -97,8 +94,8 @@ class CourseProgress extends View {
           height="match_parent"
           orientation="vertical">
             <TextView
-              text = {"Course Progress"}
-              style= {window.__TextStyle.textStyle.CARD.TITLE.DARK}
+              text = {this.props.title||"Course Progress"}
+              style= {window.__TextStyle.textStyle.HEADING.DARK}
               margin="0,0,0,8"/>
 
             {this.getProgressStatus()}
