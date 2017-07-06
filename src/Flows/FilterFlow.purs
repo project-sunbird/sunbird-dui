@@ -15,6 +15,7 @@ import Data.Foreign.Generic (encodeJSON)
 import Control.Monad.Eff.Exception (EXCEPTION)
 import Prelude
 import Types.UITypes
+import UI
 
 startFilterFlow state = do
   liftEff $ log $ "Search FLow started"

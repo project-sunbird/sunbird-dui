@@ -22,6 +22,8 @@ import Control.Monad.Eff.Exception (EXCEPTION)
 import Prelude
 import Types.UITypes
 import Types.APITypes
+import UI
+
 
 main :: Eff (exception::EXCEPTION, ui::UI, console::CONSOLE) Unit
 main = void $ launchAff $ begin

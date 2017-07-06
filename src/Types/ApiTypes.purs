@@ -1,7 +1,8 @@
 module Types.APITypes where
 
 import Prelude
-import Core.API
+-- import Core.API
+import Api
 import Control.Monad.Aff (Aff, makeAff)
 import Data.Foreign.Class (class Decode, class Encode)
 import Data.Foreign.Generic (defaultOptions, encodeJSON, genericDecode, genericEncode)
