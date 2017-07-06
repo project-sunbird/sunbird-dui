@@ -19,57 +19,59 @@ class FilterItem extends View {
   constructor(props, children) {
     super(props, children);
     this.setIds([
-      'filterCount'
+      "filterCount",
+
     ]);
-    console.log("FITLER ITEM PARAMA",this.props.data);
-    _this=this;
+    this.content = this.props.data;
+
+    this.filterList = this.content.values;
+    this.filterLable = this.content.name;
+
+
+    console.log("FITLER ITEM PARAMA", this.content);
   }
 
 
-  handleClick = () =>{
-        this.showFilterDialog(_this.props.data); 
+  handleClick = () => {
+
+    console.log("SHOWING POPUP")
+    console.log("FOR ", this.filterList);
+    window.__FilterPopup.setContent(this.filterList, this.handleSelection)
+    window.__FilterPopup.show()
   }
 
 
-  handleSelection(list){
-    console.log("handleSelection",list)
+  getSelectedCount = (list) => {
 
-    var cmd = _this.set({
-    id: _this.idSet.filterCount,
-    text: list.length + " added"
+    var count = 0;
+    list.map((item) => {
+      if (item.apply == true)
+        count++;
+    })
+    return count;
+  }
+
+
+  handleSelection = (newList) => {
+    console.log("handleSelection", newList)
+    console.log("seected Length", this.getSelectedCount(newList))
+
+    window.__FilterPopup.hide()
+    this.filterList = newList;
+    this.content.values = this.filterList;
+    var cmd = this.set({
+      id: this.idSet.filterCount,
+      text: this.getSelectedCount(newList) + " added"
     });
 
-  Android.runInUI(cmd,null);
+    Android.runInUI(cmd, null);
+    this.props.onUpdate(this.content)
 
   }
 
-
-  showFilterDialog = (data) =>{
-
-    var layout = ( <LinearLayout
-                    width="match_parent"
-                    height="wrap_content"
-                    visibility="visible"
-                    alignParentBottom = "true,-1"
-                    weight="1"
-                    orientation="vertical"
-                    background={window.__Colors.WHITE}
-                    >
-
-                    <ChooseItem
-                    data={data}
-                    onSelect={this.handleSelection}
-                    />
-
-                  </LinearLayout>);
-    window.__RootScreen.showFilterDialog(layout,this.EaseOut);
-  }
-
-
-
-render() {
+  render() {
     this.layout = (
-             <LinearLayout
+      <LinearLayout
               width="match_parent"
               height="wrap_content"
               margin="16,16,16,0"
@@ -86,7 +88,7 @@ render() {
                 <TextView
                 width="wrap_content"
                 height="wrap_content"
-                text={this.props.data.type}
+                text={this.filterLable}
                 style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>
 
                 <ViewWidget 

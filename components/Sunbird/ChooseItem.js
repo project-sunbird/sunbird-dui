@@ -16,24 +16,23 @@ var RadioListItem = require('../Sunbird/RadioListItem');
 var Styles = require("../../res/Styles");
 
 let IconStyle = Styles.Params.IconStyle;
-var _this;
+
 class ChooseItem extends View {
-    constructor(props, children) {
+  constructor(props, children) {
     super(props, children);
     this.setIds([
       "chooseItemContainer",
       "featureContainer"
     ]);
-    _this = this;
     this.chosenItem;
     this.selectedList = [];
   }
 
 
 
- getFeatureButton = (isClickable) =>{
-     var color = isClickable=="true" ? window.__Colors.PRIMARY_ACCENT:window.__Colors.PRIMARY_BLACK_22;
-         return (<LinearLayout
+  getFeatureButton = (isClickable) => {
+    var color = isClickable == "true" ? window.__Colors.PRIMARY_ACCENT : window.__Colors.PRIMARY_BLACK_22;
+    return (<LinearLayout
                   width = "match_parent"
                   orientation="vertical"
                   height="0"
@@ -54,36 +53,36 @@ class ChooseItem extends View {
                     textColor = {window.__Colors.WHITE}
                     textSize = "18"/>
                 </LinearLayout>)
-    
+
 
   }
 
 
   getList = () => {
-      var lengthOfMenu = Object.keys(this.props.data.items).length;
-      this.totalItems = this.props.data.items.splice(0,lengthOfMenu/2)
-      this.rightItems = this.props.data.items.splice(0,lengthOfMenu/2);
-      this.leftItems = this.totalItems.splice(0,lengthOfMenu/2);
+    var lengthOfMenu = Object.keys(this.props.data.items).length;
+    this.totalItems = this.props.data.items.splice(0, lengthOfMenu / 2)
+    this.rightItems = this.props.data.items.splice(0, lengthOfMenu / 2);
+    this.leftItems = this.totalItems.splice(0, lengthOfMenu / 2);
 
 
-      var leftBar = "";
-      var rightBar = "";
-      leftBar = this.leftItems.map((item, index) => {
-        return (<RadioListItem
+    var leftBar = "";
+    var rightBar = "";
+    leftBar = this.leftItems.map((item, index) => {
+      return (<RadioListItem
                   onItemClick={this.handleItemClick}
                   title={item}
                   index={index}/>)
-      });
+    });
 
-      rightBar = this.rightItems.map((item, index) => {
-        return (<RadioListItem
+    rightBar = this.rightItems.map((item, index) => {
+      return (<RadioListItem
                   onItemClick={this.handleItemClick}
                   title={item}
                   index={index}/>)
-      });
-      console.log("leftBar BBBBAR",this.leftItems);
-      this.totalBar = (
-          <LinearLayout
+    });
+    console.log("leftBar BBBBAR", this.leftItems);
+    this.totalBar = (
+      <LinearLayout
           orientation = "horizontal"
           width = "wrap_content"
           height = "wrap_content">
@@ -101,15 +100,15 @@ class ChooseItem extends View {
           {rightBar}
           </LinearLayout>
           </LinearLayout>
-        )
+    )
 
     return this.totalBar;
   }
 
 
 
-  getRadioList (){
-    return( <LinearLayout
+  getRadioList() {
+    return (<LinearLayout
             width = "match_parent"
             height = "0"
             weight="70"
@@ -128,8 +127,8 @@ class ChooseItem extends View {
             </LinearLayout>)
   }
 
-  getHeader (){
-    return(
+  getHeader() {
+    return (
       <LinearLayout
       width="wrap_content"
       height="0"
@@ -142,47 +141,45 @@ class ChooseItem extends View {
            style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
       </LinearLayout>
-           )
+    )
   }
 
 
-  handleItemClick = (title,checked) =>{
+  handleItemClick = (title, checked) => {
 
-    if(checked)
-    this.selectedList.push(title)
-    else{
-          var position = this.selectedList.indexOf(title);
-          this.selectedList.splice(position, 1);
+    if (checked)
+      this.selectedList.push(title)
+    else {
+      var position = this.selectedList.indexOf(title);
+      this.selectedList.splice(position, 1);
     }
 
-    if(this.selectedList.length>0){
+    if (this.selectedList.length > 0) {
       this.replaceChild(this.idSet.featureContainer, this.getFeatureButton("true").render(), 0);
-    }
-    else{
+    } else {
       this.replaceChild(this.idSet.featureContainer, this.getFeatureButton("false").render(), 0);
     }
 
   }
 
 
-  onConfirm(){
-    console.log("submitted",_this.selectedList);
+  onConfirm = () => {
+    console.log("submitted", this.selectedList);
 
     window.__RootScreen.hideFilterDialog();
-    _this.props.onSelect(_this.selectedList);
+    this.props.onSelect(this.selectedList);
   }
 
-  handleSelection=(index)=>{
-    this.chosenItem=index;
+  handleSelection = (index) => {
+    this.chosenItem = index;
   }
 
-  afterRender = () => {
-  }
+  afterRender = () => {}
 
   render() {
-  
+
     this.layout = (
-       <LinearLayout
+      <LinearLayout
           cornerRadius = "2"
           afterRender={this.afterRender}
           width = "match_parent"

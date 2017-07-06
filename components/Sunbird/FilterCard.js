@@ -11,7 +11,6 @@ var FilterItem = require('../Sunbird/FilterItem');
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 const transitParams = require('../../transitions');
-const filterParams = require('../../FilterParams');
 
 var _this;
 
@@ -22,24 +21,37 @@ class FilterCard extends View {
       'filterCount',
       'rowsContainer'
     ]);
-    _this=this;
-    this.params = filterParams;
-   
-   this.EaseOut = transitParams.animParams.EaseOut;
+    _this = this;
+    this.listOfFilters = this.props.filterData;
+    this.EaseOut = transitParams.animParams.EaseOut;
 
   }
 
-  getFilterRows(data){
-    var layout = data.map((item, index) => {
+  handleUpdate = (newList) => {
+    var newList = [];
+    this.listOfFilters.map((item) => {
+      var tmpVar = item;
+      if (tmpVar.name === newList.name) {
+        tmpVar = newList
+      }
+      newList.push(tmpVar)
+    })
+    this.updateFilterList = newList;
+    this.props.onFilterUpdate(this.updateFilterList)
+  }
 
-                  var data = filterParams.params.map((elem, i) => { if(elem.type == item.toLowerCase()) return elem });
-                    return (<FilterItem
-                            data = {data[index]}/>)   
+  getFilterRows = () => {
+    var layout = this.listOfFilters.map((item, index) => {
 
-                  })
 
-      return   (
-                <LinearLayout
+      return (<FilterItem
+                  data = {item}
+                  onUpdate={this.handleUpdate}/>)
+
+    })
+
+    return (
+      <LinearLayout
                   width="match_parent"
                   height="wrap_content"
                   orientation="vertical"
@@ -52,24 +64,11 @@ class FilterCard extends View {
   }
 
 
-
-
-  afterRender = () =>{
-
-    var layout = _this.getFilterRows(_this.props.filterData);
-
-    this.replaceChild(this.idSet.rowsContainer, layout.render(), 0);
-
-  }
-
-
-
   render() {
     this.layout = (
-              <LinearLayout
+      <LinearLayout
                 height="wrap_content"
                 width="match_parent"
-                afterRender={this.afterRender}
                 background={window.__Colors.WHITE}
                 orientation="vertical">
 
@@ -82,13 +81,18 @@ class FilterCard extends View {
                   width="match_parent"
                   height="wrap_content"
                   id={this.idSet.rowsContainer}
-                  gravity="center_vertical"/>
+                  gravity="center_vertical">
+
+
+                    {this.getFilterRows()}
+                
+                </LinearLayout>  
 
 
                 </ScrollView>
 
       
-              </LinearLayout> 
+              </LinearLayout>
 
     )
     return this.layout.render();

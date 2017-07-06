@@ -6,8 +6,8 @@ var FrameLayout = require("@juspay/mystique-backend").androidViews.FrameLayout;
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var Space = require("@juspay/mystique-backend").androidViews.Space;
-var Styles = require("../../res/Styles"); 
-var TextStyle = require("../../res/TextStyle"); 
+var Styles = require("../../res/Styles");
+var TextStyle = require("../../res/TextStyle");
 var _this;
 
 
@@ -19,38 +19,33 @@ class RadioListItem extends View {
       'image'
     ]);
 
-    _this = this;
-    this.clickCount = 2;
+    this.isSelected = this.props.isSelected ? this.props.isSelected : false;
+
+    console.log("SELCTED STATUS FOR ", this.props.title, "\t", this.isSelected);
   }
 
- 
 
-handleClick = () =>{
 
-  var cmd ="";
+  handleClick = () => {
+    this.isSelected = !this.isSelected;
+    var cmd = "";
 
-  if(this.clickCount % 2 == 0){
-    cmd = this.set({
-      id: this.idSet.image,
-      imageUrl : "ic_checked"
-    })
+    if (this.isSelected) {
+      cmd = this.set({
+        id: this.idSet.image,
+        imageUrl: "ic_checked"
+      })
+    } else {
+      cmd = this.set({
+        id: this.idSet.image,
+        imageUrl: "ic_unchecked"
+      })
+    }
+    this.props.onItemClick(this.props.title, this.isSelected);
 
-    this.props.onItemClick(this.props.title,true);
-  }
-  else {
-    cmd = this.set({
-      id: this.idSet.image,
-      imageUrl : "ic_unchecked"
-    })
-
-    this.props.onItemClick(this.props.title,false);
-
-  }
-
-    this.clickCount++;
     Android.runInUI(cmd, 0);
 
-}
+  }
 
 
 
@@ -68,7 +63,7 @@ handleClick = () =>{
           onClick={this.handleClick}
           id={this.idSet.image}
           padding="0,12,12,12"
-          imageUrl="ic_unchecked"
+          imageUrl={this.isSelected?"ic_checked":"ic_unchecked"}
           margin="0,0,10,0"
           width="48"
           height="48"/>
@@ -78,7 +73,7 @@ handleClick = () =>{
 
        </LinearLayout>
     )
-     
+
     return this.layout.render();
   }
 }

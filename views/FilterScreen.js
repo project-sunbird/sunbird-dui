@@ -9,34 +9,49 @@ var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
 var FilterCard = require('../components/Sunbird/FilterCard');
 var DoubleRadioList = require('../components/Sunbird/DoubleRadioList');
-var ChooseItem = require('../components/Sunbird/ChooseItem');
+var FilterPopup = require('../components/Sunbird/FilterPopup');
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 var _this;
+
+
+
+const filterParams = require('../FilterParams');
+
+
 class FilterScreen extends View {
   constructor(props, children) {
     super(props, children);
-    this.filterData = [
-                        "Language",
-                        "Grade",
-                        "Domain",
-                        "Framework",
-                        "Concepts",
-                        "Type",
-                        "Subject",
-                        "Medium",
-                        "Ownership"
-                      ]   
-   _this=this;
+    // this.filterData = [
+    //   "Language",
+    //   "Grade",
+    //   "Domain",
+    //   "Framework",
+    //   "Concepts",
+    //   "Type",
+    //   "Subject",
+    //   "Medium",
+    //   "Ownership"
+    // ]
+
+    this.data = filterParams.params[0];
+    console.log("FILTER DATA", this.data)
+    this.filterData = this.data.facetFilters;
 
     this.screenName = "FilterScreen";
     this.shouldCacheScreen = false;
   }
-  
 
 
-  getSortCard(){
-    return(<LinearLayout
+  handleFilterChange = (newData) => {
+    this.filterData = newData;
+
+    console.log("NEW LIST", newData)
+  }
+
+
+  getSortCard = () => {
+    return (<LinearLayout
                     height="wrap_content"
                     width="match_parent"
                     padding="0,25,0,25"
@@ -100,19 +115,19 @@ class FilterScreen extends View {
                   </LinearLayout>)
   }
 
-  handleSelection = (index) =>{
+
+  handleBackPress = () => {
+    window.__runDuiCallback({ tag: "SearchScreenFromFilter", contents: [] });
 
   }
 
-  handleBackPress = () =>{
-      window.__runDuiCallback({tag:"SearchScreenFromFilter",contents:[]});
-    
-  }
-
-  
 
   render() {
     this.layout = (
+      <RelativeLayout
+      root="true"
+      width="match_parent"
+      height="match_parent">
 
       <LinearLayout
       root="true"
@@ -160,6 +175,8 @@ class FilterScreen extends View {
 
                       <FilterCard
                       filterData={this.filterData}
+                      onItemClick={this.showPopup}
+                      onFilterUpdate={this.handleFilterChange}
                       />
 
                </LinearLayout>
@@ -170,6 +187,12 @@ class FilterScreen extends View {
      
 
       </LinearLayout>
+
+      <FilterPopup
+        height="match_parent"
+        width="match_parent"/>
+
+      </RelativeLayout>
 
     )
     return this.layout.render();
