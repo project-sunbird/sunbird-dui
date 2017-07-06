@@ -47,28 +47,9 @@ import Data.Generic.Rep.Show (genericShow)
 import Data.Identity (Identity(..))
 import Data.List.NonEmpty (NonEmptyList(..))
 import Utils
+import UI
 
-foreign import data UI :: Effect
 foreign import ui' :: forall a c e. (Error -> Eff e Unit) -> (a -> Eff e Unit) -> c -> String -> Eff e Unit
-
-class UIScreen a b where
-  ui::forall e. Encode b => a -> Aff (ui::UI|e) b
-  generateMockEvents :: Encode b => a -> Array b
-
-
-
-
-isValidAction :: forall a e. Decode a => String -> Aff e a
-isValidAction x = case (runExcept (decodeJSON x)) of
-  Right y -> pure $ y
-  Left err -> throwError (error (show err))
-
-defaultDecode :: forall a b. Generic a b => GenericDecode b => Foreign -> F a
-defaultDecode x = genericDecode (defaultOptions {unwrapSingleConstructors=true}) x
-
-defaultEncode ::  forall a b. Generic a b => GenericEncode b => a -> Foreign
-defaultEncode x = genericEncode (defaultOptions {unwrapSingleConstructors=true}) x
-
 
 
 -- getEulerLocation = "https://qa.ekstep.in"

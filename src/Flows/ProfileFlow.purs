@@ -15,6 +15,8 @@ import Data.Foreign.Generic (encodeJSON)
 import Control.Monad.Eff.Exception (EXCEPTION)
 import Types.UITypes
 import Types.APITypes
+import UI
+
 
 
 startProfileFlow state = do

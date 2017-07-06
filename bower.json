@@ -12,6 +12,7 @@
     "purescript-aff": "^3.1.0",
     "purescript-affjax": "^4.0.0",
     "purescript-foreign-generic": "^4.1.0",
+    "purescript-flow":"https://bitbucket.org/juspay/purescript-flow.git",
     "purescript-transformers": "^3.4.0",
     "purescript-foreign": "^4.0.1"
   },
@@ -46,7 +47,6 @@
     "purescript-globals": "^2.0.0",
     "purescript-strings": "^2.0.0",
     "purescript-lists": "^3.0.0",
-    "purescript-jui": "https://bitbucket.org/juspay/purescript-jui.git",
     "purescript-console": "^3.0.0",
     "purescript-psci-support": "^3.0.0"
   }
