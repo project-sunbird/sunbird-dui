@@ -28,17 +28,27 @@ class ResourceContainer extends View {
   afterRender = () => {
   }
 
+  formatBytes = (bytes)=> {
+      if(bytes < 1024) return bytes + " Bytes";
+      else if(bytes < 1048576) return(bytes / 1024).toFixed(2) + " KB";
+      else if(bytes < 1073741824) return(bytes / 1048576).toFixed(2) + " MB";
+      else return(bytes / 1073741824).toFixed(3) + " GB";
+  };
+
   getRows = () =>{
     this.data = JSON.parse(this.props.data);
     var rows = this.data.map((item,i) => {
 
                 
                 console.log("item data in getrows",item);
-
+                var size = item.contentData.hasOwnProperty("size") ? this.formatBytes(item.contentData.size) : "N/A";
+                var type = item.mimeType.split('.')[2];
+                var footerTitle = type+" ["+size+"]";
+               
                 var temp = {};
-                temp['imageUrl'] = item.contentData.appIcon;
+                temp['imageUrl'] = "file://storage/emulated/0/SunbirdTest/content/domain_8808-64dd60d5-94cd-4896-a60e-11897bf69fd6/domain_8808/1461668536884adb212cfde_1465896981928.jpg";
                 temp['title'] = item.contentData.name;
-                temp['footerTitle'] = "";
+                temp['footerTitle'] = footerTitle;
                 temp['footerSubTitle'] = "";
                 temp['actionText'] = "OPEN";
 
