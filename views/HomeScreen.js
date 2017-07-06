@@ -26,6 +26,9 @@ var FeedParams = require('../FeedParams');
 var debounce = require("debounce");
 window.R = require("ramda");
 
+
+const mockResponse = require('../mockResponse.js');
+
 class HomeScreen extends View {
   constructor(props, children, state) {
     super(props, children, state);
@@ -39,7 +42,9 @@ class HomeScreen extends View {
       "tabLayoutContainer",
     ]);
     this.currentPageIndex = 0;
+
     this.setupDuiCallback();
+
     this.feedData = FeedParams.feedParams;
 
     this.screenName = "HOME_SCREEN"
@@ -85,7 +90,10 @@ class HomeScreen extends View {
 
 
   handleStateChange = (state) => {
-    console.log("GOT RESPONSE\n\n\n\n", state.response.status[1])
+    console.log("HANDLE STATE CHANGE HOME SCREEN")
+      //console.log("GOT RESPONSE\n\n\n\n", state.response.status[1])
+    var responseData = {};
+    //var responseData =responseData=state.response.status[1];;
     this.currentViewPagerIndex = isNaN(this.currentViewPagerIndex) ? 0 : this.currentViewPagerIndex;
     var shouldBeModified = false;
     var contentLayout;
@@ -99,12 +107,16 @@ class HomeScreen extends View {
         if (shouldBeModified) {
           JBridge.setInSharedPrefs("chooseCourse", JSON.stringify(state.response.status[1]))
         }
+        responseData = state.response.status[1];
         break;
       case 2:
-        shouldBeModified = (JBridge.getFromSharedPrefs("userResource") != JSON.stringify(state.response.status[1]))
-        if (shouldBeModified) {
-          JBridge.setInSharedPrefs("userResource", JSON.stringify(state.response.status[1]))
-        }
+        shouldBeModified = true;
+        // shouldBeModified = (JBridge.getFromSharedPrefs("userResource") != JSON.stringify(state.response.status[1]))
+        // if (shouldBeModified) {
+        //   JBridge.setInSharedPrefs("userResource", JSON.stringify(state.response.status[1]))
+        // }
+        console.log("mockResponse :", mockResponse)
+        responseData = JSON.parse(mockResponse);
         break;
       case 3:
 
@@ -118,7 +130,7 @@ class HomeScreen extends View {
     if (shouldBeModified) {
 
       console.log("[REPLACING ui at index ]\t\t", this.currentViewPagerIndex)
-      this.switchContent(this.currentPageIndex, state.response.status[1]);
+      this.switchContent(this.currentPageIndex, responseData);
 
     } else {
       console.log("GOT SAME DATA, not modifying")
@@ -130,7 +142,9 @@ class HomeScreen extends View {
     var tmp;
     var contentLayout;
     this.color = "#123123"
-
+    if (index == 1) {
+      data = mockResponse.mockResponse
+    }
     console.log("SWITCHING CONTENT OF", index)
     switch (index) {
       case 0:
@@ -319,12 +333,12 @@ class HomeScreen extends View {
 module.exports = Connector(HomeScreen);
 
 // <HomeComponent
-                // response = {data} 
-                // recommendedData={this.recommendedData}
-                // recommendedimageUrls={this.recommendedimageUrls}
-                // menuData={this.menuData}
-                // todoData = {this.todoData}
-                // feedData = {this.feedData}
-                // height="match_parent"
-                // root="true"
-                // width="match_parent"/>
+// response = {data} 
+// recommendedData={this.recommendedData}
+// recommendedimageUrls={this.recommendedimageUrls}
+// menuData={this.menuData}
+// todoData = {this.todoData}
+// feedData = {this.feedData}
+// height="match_parent"
+// root="true"
+// width="match_parent"/>

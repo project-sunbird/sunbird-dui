@@ -13,17 +13,18 @@ class Screen extends View {
   constructor(props, children, state) {
     super(props, children);
     this.state = state;
-     
+
     var _this = this;
     setTimeout(() => {
       Android.runInUI(
         _this.animateView(),
         null
-      )	;
+      );
     });
   }
 
   onPop = (type) => {
+    var _this = this;
     Android.runInUI(
       _this.animateView(),
       null
@@ -32,13 +33,13 @@ class Screen extends View {
 
   render() {
     this.layout = (
-      <RelativeLayout
+      <LinearLayout
          background="#ffff00"
          root="true"
          width="match_parent" 
          height="match_parent">
           
-      </RelativeLayout> 
+      </LinearLayout>
     );
 
     return this.layout.render();

@@ -38,6 +38,8 @@ class CourseComponent extends View {
       ]
     }
 
+
+
     this.progressData = [{
       imageUrl: "https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
       type: "COURSE",
@@ -56,7 +58,6 @@ class CourseComponent extends View {
       isProgress: "true",
     }];
 
-
     this.data = [{
       imageUrl: "https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
       type: "COURSE",
@@ -72,6 +73,33 @@ class CourseComponent extends View {
       footerSubTitle: "Saved on 10 May ‘17",
       actionText: "OPEN"
     }];
+
+
+    if (this.props.response) {
+      this.details = this.props.response.result.response;
+      //console.log("SERVER TOLD : ", this.details)
+
+      this.details.sections.map((item) => {
+        if (item.index == 2) {
+
+          this.data = [];
+          item.contents.map((subContents) => {
+            console.log("SERVER TOLD : ", subContents)
+
+            var tmp = {
+              imageUrl: subContents.appIcon,
+              type: subContents.name,
+              title: subContents.description,
+              footerSubTitle: "(2350) votes",
+              stars: "4",
+              actionText: subContents.status,
+            }
+            this.data.push(tmp)
+          })
+
+        }
+      })
+    }
 
   }
 
@@ -157,8 +185,8 @@ class CourseComponent extends View {
     if (url == "ic_notification_red") {
       window.__runDuiCallback({ tag: "StartNotificationFlow", contents: [] });
     }
-    if(url=="ic_action_search"){
-        window.__runDuiCallback({tag:"StartSearchFlow",contents:[]});
+    if (url == "ic_action_search") {
+      window.__runDuiCallback({ tag: "StartSearchFlow", contents: [] });
 
     }
   }

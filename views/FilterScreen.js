@@ -19,6 +19,7 @@ var _this;
 const filterParams = require('../FilterParams');
 
 
+
 class FilterScreen extends View {
   constructor(props, children) {
     super(props, children);
