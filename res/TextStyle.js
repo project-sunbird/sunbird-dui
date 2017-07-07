@@ -87,6 +87,11 @@ exports.textStyle = {
         textSize: Font.fontSize.FONT_12,
         fontStyle: Font.fontStyle.SEMIBOLD
       },
+      REGULAR_BLACK: {
+        color: Colors.PRIMARY_BLACK,
+        textSize: Font.fontSize.FONT_12,
+        fontStyle: Font.fontStyle.REGULAR
+      },
       FADE_DARK: {
         color: Colors.DARK_GRAY,
         textSize: Font.fontSize.FONT_16,
