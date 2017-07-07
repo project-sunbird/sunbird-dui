@@ -34,10 +34,24 @@ class SearchScreen extends View {
     this.state = state;
     this.shouldCacheScreen=false;
     this.screenName = "SearchScreen"
-    this.filterData = "";
-    console.log("filter in search ^^^^^^^^^^^^^^^^^^",state);
+    this.filterData = state.data.value0.filterDetails;
+    this.filterParams = "empty";
+    console.log("filter in search ^^^^^^^^^^^^^^^^^^",state.data.value0.filterDetails);
+    this.temp = state.data.value0.filterDetails;
      
     _this = this;
+    this.checkSearchList(this.filterData.length,state.data.value0.filterDetails);
+  }
+
+  checkSearchList = (length,data)=>{
+    if(length!=0){
+      this.handleSearchClick();
+      data=JSON.parse(data)
+      console.log("query!",data.query)
+      this.getSearchList(data.query);
+
+
+    }
   }
 
   onPop = () => {
@@ -177,8 +191,19 @@ class SearchScreen extends View {
     });
 
     if(searchText.length >2){
+      if(this.filterData.length==0){
+        status = "false";
+      }
+      else{
+        status = "true";
+        this.filterData = this.temp;
+      }
       console.log("searchtext",searchText);
-      JBridge.searchContent(callback,searchText,"Course");
+
+      console.log("this.filterData",this.filterData.length);
+      console.log("this.filterData",this.filterData);
+
+      JBridge.searchContent(callback,this.filterData,searchText,"Resource",status);
     }
   }
  

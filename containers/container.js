@@ -1,5 +1,7 @@
 const uiHandler = require("@juspay/mystique-backend").uiHandlers.android;
 var dispatcher;
+const R = require('ramda');
+
 
 //Reducer
 const ScreenReducer = require("../state_machines/Screens");
@@ -125,14 +127,17 @@ var renderScreen = function(data) {
   var takeFromCache = true;
   var screenData = window.__CACHED_SCREENS[data.action];
 
+
   if (screenData) {
     isCached = true;
 
     screen = screenData.screen;
+
     if (typeof screen.shouldCacheScreen !== "undefined" && !screen.shouldCacheScreen) {
       console.info("updating screen ", data.action);
       updateNode(data);
       takeFromCache = false;
+      console.log("data.action", screen);
     }
   } else {
     window.__ANIMATE_DIR = 1;
@@ -168,24 +173,38 @@ var handleGoBack = function(data) {
 
   var stackLen = window.__SCREEN_STACK.length;
   var cmd = "";
-  if (stackLen == 1) {
+  if (stackLen == 1)  {
     __ROOTSCREEN.minimizeApp();
     return;
   }
 
   var screenData = window.__CACHED_SCREENS[window.__CURR_SCREEN];
   if (screenData.screen.onBackPress) {
-    if (!screenData.screen.onBackPress()) {
+    if (!screenData.screen.onBackPress()){
       console.log("failed");
       return;
     }
   }
 
+
   window.__PREV_SCREEN = window.__SCREEN_STACK[stackLen - 1];
   window.__CURR_SCREEN = window.__SCREEN_STACK[stackLen - 2];
-  window.__ANIMATE_DIR = -1;
   window.__SCREEN_STACK.pop();
-  window.__CACHED_SCREENS[window.__CURR_SCREEN].screen.onPop(data.state, "backPress");
+
+  var screen = window.__CACHED_SCREENS[window.__CURR_SCREEN].screen;
+  var state = R.merge(data.state, {currScreen: window.__CURR_SCREEN});
+
+  data = R.merge(data, {action: window.__CURR_SCREEN, state: state});
+
+  if (typeof screen.shouldCacheScreen  !== "undefined" && !screen.shouldCacheScreen) {
+    console.info("updating screen ", window.__CURR_SCREEN);
+    updateNode(data);
+    window.__ANIMATE_DIR = getDirection();
+    appendToRoot(window.__CACHED_SCREENS[window.__CURR_SCREEN].screen);
+  } else {
+    window.__ANIMATE_DIR = -1;
+    screen.onPop(data.state, "backPress");
+  }
 }
 
 var handleScreenActions = function(data) {
@@ -225,6 +244,8 @@ var handleScreenActions = function(data) {
   window.__CURR_SCREEN = data.action;
 
   res = renderScreen(data);
+
+  console.log(res);
   if (!res.isCached) {
     appendToRoot(res.screen);
     return {};
@@ -234,6 +255,7 @@ var handleScreenActions = function(data) {
     if (res.screen.onPop)
       res.screen.onPop(data.state);
   } else {
+    console.log("appendToRoot");
     window.__ANIMATE_DIR = getDirection();
     appendToRoot(res.screen);
   }
