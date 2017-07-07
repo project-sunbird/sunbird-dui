@@ -91,9 +91,10 @@ class ResourceContainer extends View {
             <TextView
             width="wrap_content"
             height="wrap_content"
-            text="View all"
+            text="VIEW ALL"
             onClick={()=>{this.handleViewAllClick()}}
-            style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
+            style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
+
 
             </LinearLayout>)
   }
@@ -127,6 +128,7 @@ class ResourceContainer extends View {
            fillViewport="true">
 
            <LinearLayout
+                    padding="0,0,16,0"
                     width="match_parent"
                     height="wrap_content">
 

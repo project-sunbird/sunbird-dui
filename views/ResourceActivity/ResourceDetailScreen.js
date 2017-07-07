@@ -74,7 +74,7 @@ class ResourceDetailScreen extends View {
 
   
 
-  handleBackPress = () => {
+  onBackPressed = () => {
     window.__changePureScriptFlow();
     window.__runDuiCallback({ action: "showMainFlow" });
   }
@@ -92,7 +92,7 @@ class ResourceDetailScreen extends View {
           afterRender={this.afterRender}
           width="match_parent"
           menuData={this.menuData}
-          onBackPress={this.handleBackPress}
+          onBackPress={onBackPressed}
           showMenu="true"
           invert="true"/>
 

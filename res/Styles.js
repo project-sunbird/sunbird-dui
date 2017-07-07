@@ -54,9 +54,9 @@ exports.Params = {
   },
   SmallButton: {
     "WB_Secondary_Layout": {
-      background: Colors.PRIMARY_LIGHT,
       stroke: "2," + Colors.PRIMARY_DARK,
-      style: BaseParams.SmallButton
+      style: BaseParams.SmallButton,
+      background: Colors.TRANSPARENT,
     },
     "WB_Primary_Layout": {
       background: Colors.PRIMARY_DARK,
