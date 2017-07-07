@@ -19,20 +19,19 @@ import UI
 
 startFilterFlow state = do
   liftEff $ log $ "Search FLow started"
-  state <- ui $ FilterScreen
-  case state of
-    SearchScreenFromFilter -> startFilterSearchFlow state
-       	
+  event <- ui $ FilterScreen {filterDetails : state}
+  case event of
+    SearchScreenFromFilter {filterData: details} -> startFilterSearchFlow details	
     _ -> pure $ "aborted"
 
 
 
 startFilterSearchFlow state = do
-  liftEff $ log $ "Search FLow started"
-  state <- ui $ SearchScreen
+  liftEff $ log $ "Search FLow<><><><><>< started"
+  state <- ui $ SearchScreen {filterDetails : state}
   case state of
     ResourceDetailFlow {resourceDetails : details} -> resourceDetailFlow details
-    StartFilterFlow -> startFilterFlow state
+    StartFilterFlow{filterDetails : details} -> startFilterFlow details 
     _ -> pure $ "aborted"
 
 

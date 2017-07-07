@@ -119,7 +119,7 @@ class ResourceComponent extends View {
 
   handleViewAllClick = () =>{
     console.log("dasdasdasdasd",this.data);
-     window.__runDuiCallback({tag:"StartResourceViewAllFlow",contents:{resourceDetails:JSON.stringify(this.data)}});
+     window.__runDuiCallback({tag:"StartResourceViewAllFlow",contents:{"resourceDetails":JSON.stringify(this.data)}});
 
 
   }
@@ -130,7 +130,7 @@ class ResourceComponent extends View {
         window.__runDuiCallback({tag:"StartNotificationFlow",contents:[]});
     }
     if(url=="ic_action_search"){
-        window.__runDuiCallback({tag:"StartSearchFlow",contents:[]});
+        window.__runDuiCallback({tag:"StartSearchFlow",contents:{filterDetails:""}});
 
     }
   }

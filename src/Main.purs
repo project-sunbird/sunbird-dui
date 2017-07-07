@@ -70,16 +70,16 @@ cFlow = do
     StartProfileFlow -> startProfileFlow action
     StartNotificationFlow -> startNotificationFlow action
     StartResourceDetailFlow {resourceDetails : details} -> startResourceDetailFlow details
-    StartSearchFlow -> startHomeSearchFlow action
+    StartSearchFlow {filterDetails : details} -> startHomeSearchFlow details
 
     _ -> pure $ "aborted"
 
 startHomeSearchFlow state = do
   liftEff $ log $ "Search FLow started"
-  state <- ui $ SearchScreen
+  state <- ui $ SearchScreen {filterDetails:state}
   case state of
     ResourceDetailFlow {resourceDetails : details} -> startResourceDetailFlow details
-    StartFilterFlow -> startFilterFlow state
+    StartFilterFlow{filterDetails : details} -> startFilterFlow details 
     _ -> pure $ "aborted"
 
 

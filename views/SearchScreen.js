@@ -34,6 +34,8 @@ class SearchScreen extends View {
     this.state = state;
     this.shouldCacheScreen=false;
     this.screenName = "SearchScreen"
+    this.filterData = "";
+    console.log("filter in search ^^^^^^^^^^^^^^^^^^",state);
      
     _this = this;
   }
@@ -152,20 +154,31 @@ class SearchScreen extends View {
     var temp = [];
     var totalJson={};
     var callback = callbackMapper.map(function(data) {
-      console.log("search results",data);
+      console.log("search results",JSON.parse(data[1]));
+      _this.filterData = data[1];
       if(searchText == "" || data[0] == "[]"){
         _this.renderNoResult();
       }
       else
       {
-          _this.renderResult(JSON.parse(data[0]));                
+          var s = data[0];
+          s = s.replace(/\\n/g, "\\n")  
+               .replace(/\\'/g, "\\'")
+               .replace(/\\"/g, '\\"')
+               .replace(/\\&/g, "\\&")
+               .replace(/\\r/g, "\\r")
+               .replace(/\\t/g, "\\t")
+               .replace(/\\b/g, "\\b")
+               .replace(/\\f/g, "\\f");
+          s = s.replace(/[\u0000-\u0019]+/g,""); 
+          _this.renderResult(JSON.parse(s));                
       }
 
     });
 
     if(searchText.length >2){
       console.log("searchtext",searchText);
-      JBridge.searchContent(callback,searchText,"Resource");
+      JBridge.searchContent(callback,searchText,"Course");
     }
   }
  
@@ -209,7 +222,9 @@ class SearchScreen extends View {
   }
 
   handleFilterClick = () =>{
-      window.__runDuiCallback({ tag: "StartFilterFlow",contents:{} });
+      console.log("fdata!!!!!!!!!!!!!!!!!!",_this.filterData);
+
+      window.__runDuiCallback({ tag: "StartFilterFlow",contents:{filterDetails:this.filterData} });
   }
 
   onItemClick = (params) =>{

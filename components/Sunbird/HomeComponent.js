@@ -144,7 +144,7 @@ class HomeComponent extends View {
         window.__runDuiCallback({tag:"StartNotificationFlow",contents:[]});
     }
     if(url=="ic_action_search"){
-      window.__runDuiCallback({tag:"StartSearchFlow",contents:[]});
+      window.__runDuiCallback({tag:"StartSearchFlow",contents:{filterDetails:""}});
     }
   }
 
