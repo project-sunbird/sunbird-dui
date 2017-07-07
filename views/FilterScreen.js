@@ -21,8 +21,8 @@ const filterParams = require('../FilterParams');
 
 
 class FilterScreen extends View {
-  constructor(props, children) {
-    super(props, children);
+  constructor(props, children,state) {
+    super(props, children,state);
     // this.filterData = [
     //   "Language",
     //   "Grade",
@@ -34,8 +34,8 @@ class FilterScreen extends View {
     //   "Medium",
     //   "Ownership"
     // ]
-
-    this.data = filterParams.params[0];
+    // this.data = filterParams.params[0];
+    this.data = JSON.parse(state.data.value0.filterDetails);
     console.log("FILTER DATA", this.data)
     this.filterData = this.data.facetFilters;
 
@@ -55,7 +55,7 @@ class FilterScreen extends View {
     return (<LinearLayout
                     height="wrap_content"
                     width="match_parent"
-                    padding="0,25,0,25"
+                    padding="0,16,0,25"
                     background={window.__Colors.WHITE}
                     orientation="vertical">
                     
@@ -118,7 +118,7 @@ class FilterScreen extends View {
 
 
   handleBackPress = () => {
-    window.__runDuiCallback({ tag: "SearchScreenFromFilter", contents: [] });
+    window.__runDuiCallback( {filterData:JSON.stringify(this.data)} );
 
   }
 

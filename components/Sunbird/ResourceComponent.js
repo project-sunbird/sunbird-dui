@@ -27,7 +27,7 @@ class ResourceComponent extends View {
     this.setIds([
       "parentContainer",
       "infoContainer",
-      "viewallContainer"
+      "viewallContainer",
     ]);
     _this = this;
 
@@ -51,12 +51,14 @@ class ResourceComponent extends View {
     }
 
 
+
     this.handleResponse();
 
   }
 
 
   handleResponse = () => {
+
 
 
     if (this.props.response) {
@@ -117,7 +119,48 @@ class ResourceComponent extends View {
   }
 
 
+
+
+  getNoInternetLayout = () => {
+
+    var layout = (
+
+      <LinearLayout
+          background={window.__Colors.WHITE}
+          width="match_parent"
+          alpha="0.9"
+          weight="1"
+          orientation="vertical"
+          gravity="center_horizontal"
+          clickable="true"
+          visibility={JBridge.isNetworkAvailable()==false?"visible":"gone"}
+          height="400">
+
+            <ImageView
+            width="100"
+            height="100"
+            margin="0,58,0,0"
+            gravity="center_horizontal"
+            imageUrl="ic_no_internet"/>
+
+            <TextView
+            width="wrap_content"
+            height="wrap_content"
+            gravity="center_horizontal"
+            padding="0,16,0,0"
+            style={window.__TextStyle.textStyle.CARD.HEADING}
+            text="You’re not connected to the internet."/>
+
+
+          </LinearLayout>
+    )
+    return layout;
+  }
+
+
+
   getBody = () => {
+
     return (
       <LinearLayout
         orientation="vertical"
@@ -146,6 +189,7 @@ class ResourceComponent extends View {
                   background={window.__Colors.WHITE}
                   orientation="vertical">
 
+
                    <OfflineResourceContainer
                        onResourceOpenClick = {this.handleResourceOpen}
                        data = {this.data}
@@ -162,10 +206,10 @@ class ResourceComponent extends View {
     )
   }
 
+
   handleViewAllClick = () => {
     console.log("dasdasdasdasd", this.data);
-    window.__runDuiCallback({ tag: "StartResourceViewAllFlow", contents: { resourceDetails: JSON.stringify(this.data) } });
-
+    window.__runDuiCallback({ tag: "StartResourceViewAllFlow", contents: { "resourceDetails": JSON.stringify(this.data) } });
 
   }
 
@@ -174,8 +218,9 @@ class ResourceComponent extends View {
     if (url == "ic_notification_red") {
       window.__runDuiCallback({ tag: "StartNotificationFlow", contents: [] });
     }
+
     if (url == "ic_action_search") {
-      window.__runDuiCallback({ tag: "StartSearchFlow", contents: [] });
+      window.__runDuiCallback({ tag: "StartSearchFlow", contents: { filterDetails: "" } });
 
     }
   }

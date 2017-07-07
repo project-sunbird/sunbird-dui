@@ -29,7 +29,7 @@ startCourseFlow state = do
 		StartCourseInfoFlow {course:courseDetail} -> startCourseInfoFlow courseDetail
 		StartEnrolledCourseFlow {course:courseDetail} -> startEnrolledCourseFlow courseDetail
 		StartNotificationFlow -> startNotificationFlow state
-		StartSearchFlow -> startCourseSearchFlow state
+		StartSearchFlow {filterDetails : details} -> startCourseSearchFlow details
 		_ -> pure $ "default"
 
     
@@ -48,10 +48,10 @@ startEnrolledCourseFlow state= do
 
 startCourseSearchFlow state = do
   liftEff $ log $ "Search FLow started"
-  state <- ui $ SearchScreen
+  state <- ui $ SearchScreen {filterDetails:state}
   case state of
     ResourceDetailFlow {resourceDetails : details} -> startResourceDetailFlow details
-    StartFilterFlow -> startFilterFlow state
+    StartFilterFlow{filterDetails : details} -> startFilterFlow details 
     _ -> pure $ "aborted"
 
 

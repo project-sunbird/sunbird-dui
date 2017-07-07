@@ -19,26 +19,23 @@ import Prelude
 import Types.UITypes
 import Types.APITypes
 import UI
-
     	
-
 startResourceFlow state = do
 	event <- ui $ HomeScreen
 	case event of
 		StartNotificationFlow -> startNotificationFlow state
 		StartResourceDetailFlow {resourceDetails:details} -> startResourceDetailFlow details
 		StartResourceViewAllFlow {resourceDetails:details} -> startResourceViewAllFlow details
-		StartSearchFlow -> startResourceSearchFlow state
+		StartSearchFlow {filterDetails: details} -> startResourceSearchFlow details
 		_ -> pure $ "default"
-
 
 
 startResourceSearchFlow state = do
   liftEff $ log $ "Search FLow started"
-  state <- ui $ SearchScreen
+  state <- ui $ SearchScreen {filterDetails:state}
   case state of
     ResourceDetailFlow {resourceDetails : details} -> startResourceDetailFlow details
-    StartFilterFlow -> startFilterFlow state
+    StartFilterFlow{filterDetails : details} -> startFilterFlow details 
     _ -> pure $ "aborted"
 
 
@@ -55,3 +52,4 @@ startResourceViewAllFlow state = do
 		StartResourceInfoFlow {resourceDetails:details} -> startResourceDetailFlow details
 		DummyResourceViewAllAction -> pure $ "handled"
 		_ -> pure $ "default"
+

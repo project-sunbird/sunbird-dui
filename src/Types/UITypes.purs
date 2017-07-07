@@ -26,7 +26,7 @@ data HomeScreenAction = ShowHome {name::String} | StartCourseFlow |
  StartCommunityInfoFlow {community::String} | StartCommunityViewAllFlow | 
  StartCourseInfoFlow {course::String} | StartEnrolledCourseFlow {course::String} |
  GetCoursePage | GetResourcePage | StartNotificationFlow | StartResourceDetailFlow {resourceDetails::String} | 
- StartResourceViewAllFlow {resourceDetails::String} | StartSearchFlow | StartResourcePageApi | StartCoursePageApi
+ StartResourceViewAllFlow {resourceDetails::String} | StartSearchFlow {filterDetails::String}| StartResourcePageApi | StartCoursePageApi
 
 data InitScreen = InitScreen 
 data InitScreenAction = ShowInit  | StartInit
@@ -58,11 +58,11 @@ data ResourceViewAllScreen = ResourceViewAllScreen {resourceDetails::String}
 data ResourceViewAllAction = DummyResourceViewAllAction | StartResourceInfoFlow {resourceDetails::String}
 
 
-data SearchScreen = SearchScreen
-data SearchScreenAction = ResourceDetailFlow {resourceDetails::String} | StartFilterFlow
+data SearchScreen = SearchScreen {filterDetails::String}
+data SearchScreenAction = ResourceDetailFlow {resourceDetails::String} | StartFilterFlow {filterDetails::String}
 
-data FilterScreen = FilterScreen
-data FilterScreenAction = SearchScreenFromFilter
+data FilterScreen = FilterScreen {filterDetails::String}
+data FilterScreenAction = SearchScreenFromFilter {filterData::String}
 
 
 instance homeScreen :: UIScreen HomeScreen HomeScreenAction where

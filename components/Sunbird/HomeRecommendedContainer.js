@@ -89,17 +89,6 @@ class HomeRecommendedContainer extends View {
             text={this.props.title}
             style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
-            <ViewWidget
-            weight="1"
-            height="0"/>
-
-            <TextView
-            width="wrap_content"
-            height="wrap_content"
-            text="VIEW ALL"
-            onClick={()=>{this.handleViewAllClick()}}
-            style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
-
             </LinearLayout>)
   }
 
@@ -129,6 +118,7 @@ class HomeRecommendedContainer extends View {
            fillViewport="true">
 
            <LinearLayout
+                    padding="0,0,16,0"
                     width="match_parent"
                     height="wrap_content">
 

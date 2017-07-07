@@ -96,7 +96,7 @@ class HomeTodoContainer extends View {
             height="wrap_content"
             text="VIEW ALL"
             onClick={()=>{this.handleViewAllClick()}}
-            style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
+            style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
 
             </LinearLayout>)
   }
@@ -127,6 +127,7 @@ class HomeTodoContainer extends View {
            fillViewport="true">
 
            <LinearLayout
+                    padding="0,0,16,0"
                     width="match_parent"
                     height="wrap_content">
 

@@ -70,7 +70,6 @@ cFlow = do
     StartProfileFlow -> startProfileFlow action
     StartNotificationFlow -> startNotificationFlow action
     StartResourceDetailFlow {resourceDetails : details} -> startResourceDetailFlow details
-    StartSearchFlow -> startHomeSearchFlow action
     StartCoursePageApi -> do
                   responseData <- getCoursesPageApi
                   _ <- sendUpdatedState {response : responseData, responseFor : "StartCoursePageApi", screen:"asas"} 
@@ -79,16 +78,16 @@ cFlow = do
                   responseData <- getResourcePageApi
                   _ <- sendUpdatedState {response : responseData, responseFor : "StartResourcePageApi", screen:"asas"} 
                   startResourceFlow action
-    
+    StartSearchFlow {filterDetails : details} -> startHomeSearchFlow details
 
     _ -> pure $ "aborted"
 
 startHomeSearchFlow state = do
   liftEff $ log $ "Search FLow started"
-  state <- ui $ SearchScreen
+  state <- ui $ SearchScreen {filterDetails:state}
   case state of
     ResourceDetailFlow {resourceDetails : details} -> startResourceDetailFlow details
-    StartFilterFlow -> startFilterFlow state
+    StartFilterFlow{filterDetails : details} -> startFilterFlow details 
     _ -> pure $ "aborted"
 
 

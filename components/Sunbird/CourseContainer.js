@@ -74,7 +74,8 @@ class CourseContainer extends View {
             height="wrap_content"
             visibility={this.props.isViewAllExist?"visible":"gone"}
             text="VIEW ALL"
-            style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
+            style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
+            
 
             </LinearLayout>)
   }
@@ -106,6 +107,7 @@ class CourseContainer extends View {
            fillViewport="true">
 
            <LinearLayout
+                    padding="0,0,16,0"
                     width="match_parent"
                     height="wrap_content">
 

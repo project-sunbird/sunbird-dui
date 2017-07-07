@@ -161,7 +161,7 @@ class NotificationScreen extends View {
   }
 
 
-  handleBackPress = () => {
+  onBackPressed = () => {
     window.__changePureScriptFlow();
     window.__runDuiCallback({ action: "showMainFlow" });
   }
@@ -178,7 +178,7 @@ class NotificationScreen extends View {
           title="Notifications"
           afterRender={this.afterRender}
           width="match_parent"
-          onBackPress={this.handleBackPress}
+          onBackPress={this.onBackPressed}
           invert="true"/>
 
               <ScrollView

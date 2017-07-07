@@ -184,7 +184,7 @@ class CourseInfoScreen extends View {
 
   }
 
-  handleBackPress = () => {
+  onBackPressed = () => {
     window.__changePureScriptFlow();
     window.__runDuiCallback({ action: "showMainFlow" });
   }
@@ -221,7 +221,7 @@ class CourseInfoScreen extends View {
         <SimpleToolbar
           title={this.data.courseName}
           menuData={this.menuData}
-          onBackPress={this.handleBackPress}
+          onBackPress={this.onBackPressed}
           width="match_parent"
           invert="true"
           showMenu="true"/>
