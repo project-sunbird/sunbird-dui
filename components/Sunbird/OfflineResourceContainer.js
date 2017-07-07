@@ -26,18 +26,34 @@ class OfflineResourceContainer extends View {
 
   afterRender = () => {}
 
+
+
+  formatBytes = (bytes) => {
+    if (bytes < 1024) return bytes + " Bytes";
+    else if (bytes < 1048576) return (parseInt(bytes / 1024)) + " KB";
+    else if (bytes < 1073741824) return (parseInt(bytes / 1048576)) + " MB";
+    else return (bytes / 1073741824).toFixed(3) + " GB";
+  };
+
   getRows = () => {
     this.data = JSON.parse(this.props.data);
     var rows = this.data.map((item, i) => {
 
 
-      console.log("item data in getrows", item);
+      console.log("OFFLINE RESOURCE ROW ITEMS", item);
+
+      var size = item.hasOwnProperty("size") ? " ["+this.formatBytes(item.size)+"]" : "";
+      var footerTitle = item.contentType + size;
 
       var temp = {};
-      temp['imageUrl'] = item.contentData.appIcon;
+
+      var fileImageUrl = "file://"+item.basePath + "/" +item.contentData.appIcon;
+      console.log("FILE IJMAGEURL",fileImageUrl);
+
+      temp['imageUrl'] = fileImageUrl;
       temp['title'] = item.contentData.name;
-      temp['footerTitle'] = "";
-      temp['footerSubTitle'] = "";
+      temp['footerTitle'] = footerTitle;
+      temp['footerSubTitle'] = "Saved on 10 May' 17";
       temp['actionText'] = "OPEN";
 
       return (<CardComponent 
