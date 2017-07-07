@@ -333,6 +333,7 @@ class UserScreen extends View {
               <LinearLayout
                 height="wrap_content"
                 width="wrap_content"
+                margin = "0,0,16,0"
                 background={window.__Colors.THICK_BLUE}
                 stroke={"5,"+window.__Colors.THICK_BLUE}
                 cornerRadius="5">
@@ -458,7 +459,7 @@ class UserScreen extends View {
             id={this.idSet.alreadyHaveAccHolder}
             onClick={this.handleAlreadyHaveAccClick}
             visibility={this.isLoginMode?"gone":"visible"}
-            text="Already have an Account? Sign in now"
+            textFromHtml= "<font color='#007AFF'><a href=''>Already have an Account? Sign in now</a></font>"
             style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
 
           <TextView
@@ -469,15 +470,9 @@ class UserScreen extends View {
             id={this.idSet.needAccHolder}
             onClick={this.handleCreateAccountClick}
             visibility={this.isLoginMode?"visible":"gone"}
-            text="No Account yet? Sign up now"
+            textFromHtml= "<font color='#007AFF'><a href=''>No Account yet? Sign up now</a></font>"
             style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
-          <ViewWidget
-            background={window.__Colors.THICK_BLUE}
-            height="2"
-            width="match_parent"/>   
-
-
-
+         
         </LinearLayout>)
   }
 

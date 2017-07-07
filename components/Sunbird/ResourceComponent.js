@@ -26,7 +26,7 @@ class ResourceComponent extends View {
     this.setIds([
       "parentContainer",
       "infoContainer",
-      "viewallContainer"
+      "viewallContainer",
     ]);
     _this=this;
 
@@ -47,7 +47,9 @@ class ResourceComponent extends View {
       ]
     }
 
+
   }
+
 
 
   
@@ -60,6 +62,47 @@ class ResourceComponent extends View {
 
     JBridge.getAllLocalContent(callback);
   }
+
+
+
+
+
+    getNoInternetLayout = ()=>{
+
+        var layout = (
+
+          <LinearLayout
+          background={window.__Colors.WHITE}
+          width="match_parent"
+          alpha="0.9"
+          weight="1"
+          orientation="vertical"
+          gravity="center_horizontal"
+          clickable="true"
+          visibility={JBridge.isNetworkAvailable()==false?"visible":"gone"}
+          height="400">
+
+            <ImageView
+            width="100"
+            height="100"
+            margin="0,58,0,0"
+            gravity="center_horizontal"
+            imageUrl="ic_no_internet"/>
+
+            <TextView
+            width="wrap_content"
+            height="wrap_content"
+            gravity="center_horizontal"
+            padding="0,16,0,0"
+            style={window.__TextStyle.textStyle.CARD.HEADING}
+            text="You’re not connected to the internet."/>
+
+
+          </LinearLayout>
+          )
+        return layout;
+  }
+
 
 
   getBody = () =>{
@@ -95,20 +138,38 @@ class ResourceComponent extends View {
                  onResourceOpenClick = {this.handleResourceOpen}
                  data = {this.data}
                  title="Saved Resources"
-                 onViewAllClick = {this.handleViewAllClick}
-                 />
+                 onViewAllClick = {this.handleViewAllClick}/>
+                 
 
                   {this.getSpaceSeparator()}
 
-                  <ResourceContainer
-                   data = {this.data}
-                   title="Featured"/>
 
-                  {this.getSpaceSeparator()}
+                  <RelativeLayout
+                  width="match_parent"
+                  height="wrap_content">
 
-                  <ResourceContainer
-                   data = {this.data}
-                   title="Textbooks"/>
+
+                    <LinearLayout
+                    width="match_parent"
+                    height="wrap_content"
+                    orientation="vertical">
+
+                    <ResourceContainer
+                     data = {this.data}
+                     title="Featured"/>
+
+                    {this.getSpaceSeparator()}
+
+                    <ResourceContainer
+                     data = {this.data}
+                     title="Textbooks"/>
+
+
+                     </LinearLayout>
+
+                     {this.getNoInternetLayout()}
+
+                   </RelativeLayout>
 
                 </LinearLayout>
 

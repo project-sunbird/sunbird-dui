@@ -88,6 +88,7 @@ class BottomNavBarItem extends View {
           height="18"
           width="18"
           id = {this.idSet.imageSelected} 
+          margin="0,0,0,4"
           imageUrl={this.props.item.icon +"_blue"}
           visibility={this.props.item.select=="1"?"visible":"gone"} 
           />
@@ -105,6 +106,7 @@ class BottomNavBarItem extends View {
           color={this.props.item.select=="1"?window.__Colors.PRIMARY_ACCENT:window.__Colors.DARK_GRAY} 
           width="match_parent"
           typeface = "bold"
+          letterSpacing="0.05"
           height = "wrap_content"
           fontstyle ="SourceSansPro/Bold"
           gravity="center"

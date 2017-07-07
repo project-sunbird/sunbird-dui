@@ -93,6 +93,7 @@ class CardComponent extends View {
                 padding = "10,10,10,10"
                 alignParentBottom="true,-1"
                 text= {this.props.data.title}
+                letterSpacing="0.05"
                 style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}/>
 
               <TextView
@@ -101,6 +102,7 @@ class CardComponent extends View {
                 margin = "10,10,10,10"
                 visibility={this.props.data.type?"visible":"gone"}
                 text= {this.props.data.type}
+                letterSpacing="0.07"
                 padding="5,3,5,3"
                 cornerRadius="4"
                 background={window.__Colors.PRIMARY_BLACK}

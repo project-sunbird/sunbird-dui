@@ -2,6 +2,7 @@ var dom = require("@juspay/mystique-backend").doms.android;
 var Connector = require("@juspay/mystique-backend").connector;
 var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
+var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
@@ -211,9 +212,6 @@ class HomeComponent extends View {
              width="match_parent"
              background={window.__Colors.WHITE_F2}/>)
   }
-
-
-
 
 
 
