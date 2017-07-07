@@ -23,8 +23,8 @@ import UI
 
 
 startCourseFlow state = do
+	liftEff $ log $ "startCourseFlow"
 	event <- ui $ HomeScreen
-	_ <- sendUpdatedState {response : "responseData", responseFor : "API", screen:"asas"} 
 	case event of
 		StartCourseInfoFlow {course:courseDetail} -> startCourseInfoFlow courseDetail
 		StartEnrolledCourseFlow {course:courseDetail} -> startEnrolledCourseFlow courseDetail

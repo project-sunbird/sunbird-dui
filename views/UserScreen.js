@@ -57,6 +57,8 @@ class UserScreen extends View {
 
   skipLogin = () => {
     JBridge.showSnackBar("MASTER USER SUNBIRD");
+    JBridge.setInSharedPrefs("user_name", "Master User");
+
     console.log("TESTER ->", this.userName)
     var eventAction = { tag: "LoginAction", contents: {} };
     window.__runDuiCallback(eventAction);

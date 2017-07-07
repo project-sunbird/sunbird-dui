@@ -14,37 +14,40 @@ var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callba
 var CardComponent = require('../Sunbird/core/CardComponent');
 
 
-class ResourceContainer extends View {
+class OfflineResourceContainer extends View {
   constructor(props, children) {
     super(props, children);
+    _this = this;
 
     this.setIds([]);
 
   }
 
 
+  afterRender = () => {}
+
   getRows = () => {
-    this.data = this.props.data; //JSON.parse(this.props.data);
+    this.data = JSON.parse(this.props.data);
     var rows = this.data.map((item, i) => {
 
+
+      console.log("item data in getrows", item);
+
       var temp = {};
-      temp['imageUrl'] = item.appIcon;
-      temp['title'] = item.name;
-      temp['type'] = item.contentType;
+      temp['imageUrl'] = item.contentData.appIcon;
+      temp['title'] = item.contentData.name;
       temp['footerTitle'] = "";
       temp['footerSubTitle'] = "";
       temp['actionText'] = "OPEN";
 
       return (<CardComponent 
                  data={temp}
-                 content={item}
+                 content={item.contentData}
                  onCardClick = {this.handleCardClick}/>)
     });
 
-
     var layout = (<LinearLayout
-                    width="match_parent"
-                    root="true"
+                    width="wrap_content"
                     height="wrap_content">
 
                     {rows}
@@ -130,4 +133,4 @@ class ResourceContainer extends View {
   }
 }
 
-module.exports = ResourceContainer;
+module.exports = OfflineResourceContainer;

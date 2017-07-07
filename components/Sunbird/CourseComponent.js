@@ -77,11 +77,9 @@ class CourseComponent extends View {
 
     if (this.props.response) {
       this.details = this.props.response.result.response;
-      //console.log("SERVER TOLD : ", this.details)
-
+      console.log("SERVER TOLD : ", this.details)
       this.details.sections.map((item) => {
         if (item.index == 2) {
-
           this.data = [];
           item.contents.map((subContents) => {
             console.log("SERVER TOLD : ", subContents)
@@ -99,6 +97,8 @@ class CourseComponent extends View {
 
         }
       })
+    } else {
+      console.log("SERVER TOLD NOthing ")
     }
 
   }

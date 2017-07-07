@@ -64,13 +64,22 @@ cFlow = do
     ShowHome {name:x} -> do
       liftEff $ log $ "Action handled Show HomeScreen"
       pure $ "action handled"
-    StartCourseFlow -> startCourseFlow action
-    StartResourceFlow -> startResourceFlow action
+    --StartCourseFlow -> startCourseFlow action
+    --StartResourceFlow -> startResourceFlow action
     StartCommunityFlow -> startCommunityFlow action
     StartProfileFlow -> startProfileFlow action
     StartNotificationFlow -> startNotificationFlow action
     StartResourceDetailFlow {resourceDetails : details} -> startResourceDetailFlow details
     StartSearchFlow -> startHomeSearchFlow action
+    StartCoursePageApi -> do
+                  responseData <- getCoursesPageApi
+                  _ <- sendUpdatedState {response : responseData, responseFor : "StartCoursePageApi", screen:"asas"} 
+                  startCourseFlow action
+    StartResourcePageApi -> do
+                  responseData <- getResourcePageApi
+                  _ <- sendUpdatedState {response : responseData, responseFor : "StartResourcePageApi", screen:"asas"} 
+                  startResourceFlow action
+    
 
     _ -> pure $ "aborted"
 

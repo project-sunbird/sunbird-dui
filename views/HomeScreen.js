@@ -90,11 +90,11 @@ class HomeScreen extends View {
 
 
   handleStateChange = (state) => {
-    console.log("HANDLE STATE CHANGE HOME SCREEN")
+    console.log("HANDLE STATE CHANGE HOME SCREEN", state)
       //console.log("GOT RESPONSE\n\n\n\n", state.response.status[1])
     var responseData = {};
-    //var responseData =responseData=state.response.status[1];;
-    this.currentViewPagerIndex = isNaN(this.currentViewPagerIndex) ? 0 : this.currentViewPagerIndex;
+
+    this.currentPageIndex = isNaN(this.currentPageIndex) ? 0 : this.currentPageIndex;
     var shouldBeModified = false;
     var contentLayout;
     var jso = [];
@@ -103,20 +103,25 @@ class HomeScreen extends View {
 
         break;
       case 1:
-        shouldBeModified = (JBridge.getFromSharedPrefs("chooseCourse") != JSON.stringify(state.response.status[1]))
-        if (shouldBeModified) {
-          JBridge.setInSharedPrefs("chooseCourse", JSON.stringify(state.response.status[1]))
-        }
-        responseData = state.response.status[1];
+        //shouldBeModified = (JBridge.getFromSharedPrefs("chooseCourse") != JSON.stringify(state.response.status[1].result.response))
+        // if (shouldBeModified) {
+        //   JBridge.setInSharedPrefs("chooseCourse", JSON.stringify(state.response.status[1]))
+        // }
+        // responseData = state.response.status[1];
+        shouldBeModified = true;
+        console.log("using mockResponse :", mockResponse.mockResponse)
+        responseData = mockResponse.mockResponse;
+
         break;
       case 2:
         shouldBeModified = true;
-        // shouldBeModified = (JBridge.getFromSharedPrefs("userResource") != JSON.stringify(state.response.status[1]))
+        // shouldBeModified = (JBridge.getFromSharedPrefs("userResource") != JSON.stringify(state.response.status[1].result.response))
         // if (shouldBeModified) {
-        //   JBridge.setInSharedPrefs("userResource", JSON.stringify(state.response.status[1]))
+        //   JBridge.setInSharedPrefs("userResource", JSON.stringify(state.response.status[1].result.response))
         // }
-        console.log("mockResponse :", mockResponse)
-        responseData = JSON.parse(mockResponse);
+
+        responseData = JSON.parse(state.response.status[1]);
+        //shouldBeModified = true;
         break;
       case 3:
 
@@ -129,7 +134,7 @@ class HomeScreen extends View {
     }
     if (shouldBeModified) {
 
-      console.log("[REPLACING ui at index ]\t\t", this.currentViewPagerIndex)
+      console.log("[REPLACING ui at index ]\t\t", this.currentPageIndex)
       this.switchContent(this.currentPageIndex, responseData);
 
     } else {
@@ -142,9 +147,7 @@ class HomeScreen extends View {
     var tmp;
     var contentLayout;
     this.color = "#123123"
-    if (index == 1) {
-      data = mockResponse.mockResponse
-    }
+
     console.log("SWITCHING CONTENT OF", index)
     switch (index) {
       case 0:
@@ -175,8 +178,8 @@ class HomeScreen extends View {
         break;
       case 2:
         contentLayout = (<ResourceComponent
-                  showScreen = {this.props.showScreen}
                   root="true"
+                  response={data}
                   height="match_parent"
                   width="match_parent"/>)
 
@@ -246,10 +249,11 @@ class HomeScreen extends View {
         eventAction = { "tag": "ShowHome", contents: { "name": "Kiran" } };
         break;
       case 1:
-        eventAction = { "tag": "StartCourseFlow", contents: [] };
+        eventAction = { "tag": "StartCoursePageApi", contents: [] };
         break;
       case 2:
-        eventAction = { "tag": "StartResourceFlow", contents: [] };
+        eventAction = { "tag": "StartResourcePageApi", contents: [] };
+        //eventAction = { "tag": "StartResourceFlow", contents: [] };
         break;
       case 3:
         eventAction = { "tag": "StartCommunityFlow", contents: [] };

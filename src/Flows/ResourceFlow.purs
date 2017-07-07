@@ -23,8 +23,8 @@ import UI
     	
 
 startResourceFlow state = do
-	state <- ui $ HomeScreen
-	case state of
+	event <- ui $ HomeScreen
+	case event of
 		StartNotificationFlow -> startNotificationFlow state
 		StartResourceDetailFlow {resourceDetails:details} -> startResourceDetailFlow details
 		StartResourceViewAllFlow {resourceDetails:details} -> startResourceViewAllFlow details

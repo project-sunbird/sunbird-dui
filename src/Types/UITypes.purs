@@ -26,7 +26,7 @@ data HomeScreenAction = ShowHome {name::String} | StartCourseFlow |
  StartCommunityInfoFlow {community::String} | StartCommunityViewAllFlow | 
  StartCourseInfoFlow {course::String} | StartEnrolledCourseFlow {course::String} |
  GetCoursePage | GetResourcePage | StartNotificationFlow | StartResourceDetailFlow {resourceDetails::String} | 
- StartResourceViewAllFlow {resourceDetails::String} | StartSearchFlow
+ StartResourceViewAllFlow {resourceDetails::String} | StartSearchFlow | StartResourcePageApi | StartCoursePageApi
 
 data InitScreen = InitScreen 
 data InitScreenAction = ShowInit  | StartInit
