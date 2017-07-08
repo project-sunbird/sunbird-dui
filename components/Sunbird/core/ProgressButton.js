@@ -1,4 +1,3 @@
-
 var dom = require("@juspay/mystique-backend").doms.android;
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
@@ -20,16 +19,13 @@ class ProgressButton extends View {
       "downloadBarContainer",
       "downloadBar"
     ])
-    window.__getDownloadStatus = this.updateProgress;
+
     this.isDownloaded = false;
     this.checkContentLocalStatus(this.props.identifier);
     _this = this;
 
   }
 
-  handleClick = () => {
-    this.props.onButtonClick();
-  }
 
 
   checkContentLocalStatus = (identifier) => {
@@ -81,6 +77,7 @@ class ProgressButton extends View {
 
 
   handleButtonClick = () => {
+    window.__getDownloadStatus = this.updateProgress;
     console.log("dp", this.isDownloaded);
     if (this.isDownloaded) {
       console.log("play");

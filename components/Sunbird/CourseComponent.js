@@ -1,5 +1,3 @@
-
-
 var dom = require("@juspay/mystique-backend").doms.android;
 var Connector = require("@juspay/mystique-backend").connector;
 var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
@@ -15,6 +13,7 @@ var Space = require('@juspay/mystique-backend').androidViews.Space;
 var SearchToolbar = require('../Sunbird/core/SearchToolbar');
 var SimpleToolbar = require('../Sunbird/core/SimpleToolbar');
 
+var CourseInProgressContainer = require('../Sunbird/CourseInProgressContainer');
 var CourseContainer = require('../Sunbird/CourseContainer');
 var _this;
 class CourseComponent extends View {
@@ -179,6 +178,12 @@ class CourseComponent extends View {
 
   }
 
+  handleUserCoursesClick = (content, type) => {
+    var tmp = JSON.stringify(content)
+    var eventAction = { tag: 'StartEnrolledCourseFlow', contents: { "course": tmp } }
+    window.__runDuiCallback(eventAction);
+  }
+
 
   getBody = () => {
     return (
@@ -210,11 +215,11 @@ class CourseComponent extends View {
                   orientation="vertical">
 
                   
-                  <CourseContainer
+                  <CourseInProgressContainer
                     transparent="true"
                     isViewAllExist="true"
                     title="Courses In Progress"
-                    onCourseClick={this.handleCourseClick}
+                    onCourseClick={this.handleUserCoursesClick}
                     data = {this.progressData} />
                    
 
@@ -232,10 +237,10 @@ class CourseComponent extends View {
     if (url == "ic_notification_red") {
       window.__runDuiCallback({ tag: "StartNotificationFlow", contents: [] });
     }
-    if(url=="ic_action_search"){
-        var searchDetails = {filterDetails: "",searchType: "Course"}
-      window.__runDuiCallback({tag:"StartSearchFlow",contents:{filterDetails:JSON.stringify(searchDetails)}});
-        // window.__runDuiCallback({tag:"StartSearchFlow",contents:{filterDetails:""}});
+    if (url == "ic_action_search") {
+      var searchDetails = { filterDetails: "", searchType: "Course" }
+      window.__runDuiCallback({ tag: "StartSearchFlow", contents: { filterDetails: JSON.stringify(searchDetails) } });
+      // window.__runDuiCallback({tag:"StartSearchFlow",contents:{filterDetails:""}});
 
     }
   }

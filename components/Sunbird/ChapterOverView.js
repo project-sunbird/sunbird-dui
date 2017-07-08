@@ -19,8 +19,12 @@ class ChapterOverView extends View {
 
   }
 
+  handleClick = () => {
+    this.props._onClick(this.chapterName, this.props.item)
+  }
+
   render() {
-    var chapterName = "Module " + (this.props.index + 1) + ": " + this.props.item.contentData.name;
+    this.chapterName = "Module " + (this.props.index + 1) + ": " + this.props.item.contentData.name;
     //var chapterDuration = "[ " + this.props.item.chapterDuration + " minutes ]";
     var chapterDuration = "[ " + "N/A" + " minutes ]";
 
@@ -32,15 +36,16 @@ class ChapterOverView extends View {
        padding="6,0,6,15"
        orientation="vertical"
        gravity="center_vertical"
-       onClick={this.props.onClick}
+       
        width="match_parent">
 
        <LinearLayout
        width="match_parent"
-       height="wrap_content">
+       height="wrap_content"
+       gravity="center_vertical">
 
         <TextView
-          text={chapterName}
+          text={this.chapterName}
           style={window.__TextStyle.textStyle.CARD.HEADING}/>
 
         <TextView
@@ -53,8 +58,10 @@ class ChapterOverView extends View {
           weight="1"/>
 
         <ImageView
-          width="20"
-          height="12"
+          width="32"
+          height="32"
+          padding="8,8,8,8"
+          onClick={this.handleClick}
           imageUrl="ic_action_right"/>
 
 

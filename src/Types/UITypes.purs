@@ -27,7 +27,7 @@ data HomeScreenAction = ShowHome {name::String} | StartCourseFlow |
  StartCommunityInfoFlow {community::String} | StartCommunityViewAllFlow | 
  StartCourseInfoFlow {course::String} | StartEnrolledCourseFlow {course::String} |
  GetCoursePage | GetResourcePage | StartNotificationFlow | StartResourceDetailFlow {resourceDetails::String} | 
- StartResourceViewAllFlow {resourceDetails::String} | StartSearchFlow {filterDetails::String}| StartResourcePageApi | StartCoursePageApi
+ StartResourceViewAllFlow {resourceDetails::String} | StartSearchFlow {filterDetails::String}| StartResourcePageApi | StartCoursePageApi | GetEnrolledCourseApi
 
 data InitScreen = InitScreen 
 data InitScreenAction = ShowInit  | StartInit
@@ -39,10 +39,14 @@ data CommunityInfoScreen = CommunityInfoScreen {name::String}
 data CommunityInfoScreenAction = DummyInfoAction | ExAction
 
 data CourseInfoScreen = CourseInfoScreen {courseDetails::String}
-data CourseInfoScreenAction = DummyCourseInfoAction | ShowEnrolledCourse {course::String} | EnrollCourse {reqParams :: String}
+data CourseInfoScreenAction = DummyCourseInfoAction | ShowEnrolledCourse {course::String} | EnrollCourse {reqParams :: String} | ShowModuleDetails {moduleName::String,moduleDetails::String}
 
 data CourseEnrolledScreen = CourseEnrolledScreen {courseDetails::String}
-data CourseEnrolledScreenAction = DummyCourseEnrolledAction
+data CourseEnrolledScreenAction = DummyCourseEnrolledAction | ShowModuleScreen {moduleName::String,moduleDetails::String}
+
+data ModuleDetailScreen = ModuleDetailScreen {moduleName::String,moduleDetails::String}
+data ModuleDetailScreenAction = DummyModuleDetailsAction | BackToParent
+
 
 data CommunityViewAllScreen = CommunityViewAllScreen
 data CommunityViewAllAction = DummyCommunityViewAllAction
@@ -73,6 +77,16 @@ instance homeScreen :: UIScreen HomeScreen HomeScreenAction where
 derive instance genericHomeScreenAction  :: Generic HomeScreenAction _
 instance decodeHomeScreenAction :: Decode HomeScreenAction where decode = defaultDecode
 instance encodeHomeScreenAction :: Encode HomeScreenAction where encode = defaultEncode
+
+
+instance moduleDetailScreen :: UIScreen ModuleDetailScreen ModuleDetailScreenAction where
+  generateMockEvents _ = [DummyModuleDetailsAction]
+  ui x = genericUI x (generateMockEvents x :: Array ModuleDetailScreenAction)
+
+derive instance genericModuleDetailScreenAction  :: Generic ModuleDetailScreenAction _
+instance decodeModuleDetailScreenAction :: Decode ModuleDetailScreenAction where decode = defaultDecode
+instance encodeModuleDetailScreenAction :: Encode ModuleDetailScreenAction where encode = defaultEncode
+
 
 instance initScreen :: UIScreen InitScreen InitScreenAction where
   generateMockEvents _ = [ShowInit ,StartInit]

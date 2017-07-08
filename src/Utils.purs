@@ -108,8 +108,8 @@ getUserToken = readFromMemory "user_token"
 --API CALLS
 generateRequestHeaders =
   let filtered = filter (\x -> not $ snd(x) == "__failed")  [(Tuple "Authorization" ("Bearer " <> getApiKey))
-                                                            ,(Tuple "X-Authenticated-Userid" "97fa1246-f259-380d-b2f9-a5f3221899c4") --user token
-                                                            ,(Tuple "X-Consumer-ID" "7c03ca2e78326957afbb098044a3f60783388d5cc731a37821a20d95ad497ca8") --7c03ca2e78326957afbb098044a3f60783388d5cc731a37821a20d95ad497ca8
+                                                            ,(Tuple "X-Authenticated-Userid" (getUserToken)) --user token
+                                                            ,(Tuple "X-Consumer-ID" (getUserId)) --7c03ca2e78326957afbb098044a3f60783388d5cc731a37821a20d95ad497ca8
                                                             ,(Tuple "X-Device-ID" "X-Device-ID")
                                                             ,(Tuple "X-msgid" "8e27cbf5-e299-43b0-bca7-8347f7e5abcf")
                                                             ,(Tuple "ts" "2017-05-28 10:52:56:578+0530")  
@@ -150,6 +150,12 @@ getCoursesPageApi =
   let requestUrl = "/v1/page/assemble/Course"
       headers = (generateRequestHeaders) in
   (get requestUrl headers) 
+
+getUserEnrolledCourses =
+  let requestUrl = "/v1/user/courses/" <> getUserToken
+      headers = (generateRequestHeaders) in
+  (get requestUrl headers) 
+
 
 getResourcePageApi =
   let requestUrl = "/v1/page/assemble/Resources" 
