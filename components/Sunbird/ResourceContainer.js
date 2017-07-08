@@ -39,6 +39,8 @@ var Space = require('@juspay/mystique-backend').androidViews.Space;
 var _this;
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 var CardComponent = require('../Sunbird/core/CardComponent');
+var utils = require('../../utils/GenericFunctions');
+
 
 
 class ResourceContainer extends View {
@@ -50,19 +52,12 @@ class ResourceContainer extends View {
   }
 
 
-  formatBytes = (bytes) => {
-    if (bytes < 1024) return bytes + " Bytes";
-    else if (bytes < 1048576) return (parseInt(bytes / 1024)) + " KB";
-    else if (bytes < 1073741824) return (parseInt(bytes / 1048576)) + " MB";
-    else return (bytes / 1073741824).toFixed(3) + " GB";
-  };
-
   getRows = () => {
     this.data = this.props.data;
 
     var rows = this.data.map((item, i) => {
 
-      var size = item.hasOwnProperty("size") ? " ["+this.formatBytes(item.size)+"]" : "";
+      var size = item.hasOwnProperty("size") ? " ["+ utils.formatBytes(item.size)+"]" : "";
       var footerTitle = item.contentType + size;
 
       var temp = {};
@@ -129,7 +124,7 @@ class ResourceContainer extends View {
 
   handleCardClick = (item, type) => {
 
-      var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+this.formatBytes(item.size)+"]" : "");      
+      var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");      
       var resDetails = {};
       resDetails['imageUrl'] = item.appIcon;
       resDetails['title'] = item.name;

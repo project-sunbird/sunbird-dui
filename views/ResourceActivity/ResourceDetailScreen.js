@@ -43,6 +43,7 @@ var CropParagraph = require('../../components/Sunbird/CropParagraph');
 var ProgressButton = require('../../components/Sunbird/core/ProgressButton');
 
 
+
 class ResourceDetailScreen extends View {
   constructor(props, children, state) {
     super(props, children, state);

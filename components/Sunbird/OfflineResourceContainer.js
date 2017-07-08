@@ -39,6 +39,8 @@ var Space = require('@juspay/mystique-backend').androidViews.Space;
 var _this;
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 var CardComponent = require('../Sunbird/core/CardComponent');
+var utils = require('../../utils/GenericFunctions');
+
 
 
 class OfflineResourceContainer extends View {
@@ -54,20 +56,6 @@ class OfflineResourceContainer extends View {
   afterRender = () => {}
 
 
- prettifyDate = (date) => {
-  var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
-  return months[date.getUTCMonth()] + ' ' + date.getUTCDate() + ', ' + date.getUTCFullYear();
-}
-
-
-  formatBytes = (bytes) => {
-    if (bytes < 1024) return bytes + " Bytes";
-    else if (bytes < 1048576) return (parseInt(bytes / 1024)) + " KB";
-    else if (bytes < 1073741824) return (parseInt(bytes / 1048576)) + " MB";
-    else return (bytes / 1073741824).toFixed(3) + " GB";
-  };
 
   getRows = () => {
     this.data = JSON.parse(this.props.data);
@@ -75,15 +63,14 @@ class OfflineResourceContainer extends View {
 
       console.log("item content type",item.contentType);
       if(item.contentType != "course"){
-          var size = item.hasOwnProperty("size") ? " ["+this.formatBytes(item.size)+"]" : "";
+
+          var size = item.hasOwnProperty("size") ? " ["+ utils.formatBytes(item.size)+"]" : "";
           var footerTitle = item.contentType + size;
-
           var temp = {};
-      var fileSavedTime = this.prettifyDate(new Date(item.lastUpdatedTime));
-
+          var fileSavedTime = utils.prettifyDate(item.lastUpdatedTime);
           var fileImageUrl = "file://"+item.basePath + "/" +item.contentData.appIcon;
 
-           temp['imageUrl'] = fileImageUrl;
+            temp['imageUrl'] = fileImageUrl;
             temp['title'] = item.contentData.name;
             temp['footerTitle'] = footerTitle;
             temp['footerSubTitle'] = "Saved on "+fileSavedTime;
@@ -91,14 +78,14 @@ class OfflineResourceContainer extends View {
 
           return (<CardComponent 
                      data={temp}
-                     content={item.contentData}
+                     content={item}
                      onCardClick = {this.handleCardClick}/>)
     }
     else
     {
       return(<LinearLayout
-              width ="0"
-              height = "0" />)
+              width="0"
+              height="0"/>)
     }
     });
 
@@ -150,7 +137,7 @@ class OfflineResourceContainer extends View {
 
   handleCardClick = (item, type) => {
 
-      var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+this.formatBytes(item.size)+"]" : "");   
+      var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");   
       var fileImageUrl = "file://"+item.basePath + "/" +item.contentData.appIcon;
       var resDetails = {};
       resDetails['imageUrl'] = fileImageUrl;
