@@ -70,6 +70,7 @@ class CourseCurriculum extends View {
     var items = this.props.content.map((item, index) => {
       return (<ChapterOverView
               item={item}
+              _onClick={this.handleClick}
               index={index}/>)
     })
 
@@ -81,6 +82,11 @@ class CourseCurriculum extends View {
         width="match_parent">
         {items}
       </LinearLayout>);
+  }
+
+
+  handleClick = (mName, module) => {
+    this.props.onClick(mName, module)
   }
 
 

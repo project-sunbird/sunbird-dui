@@ -64,12 +64,20 @@ startCourseInfoFlow state= do
 	case event of
 		DummyCourseInfoAction -> pure $ "handled"
 		ShowEnrolledCourse {course:courseDetail} -> startEnrolledCourseFlow courseDetail
+		ShowModuleDetails {moduleName:mName,moduleDetails:mDetails}-> startModuleDetailsFlow mName mDetails
 		_ -> pure $ "default"
 
 startEnrolledCourseFlow state= do
 	event <- ui $ CourseEnrolledScreen {courseDetails:state}
 	case event of
 		DummyCourseEnrolledAction -> pure $ "handled"
+  		ShowModuleScreen {moduleName:mName,moduleDetails:mDetails}-> startModuleDetailsFlow mName mDetails
+		_ -> pure $ "default"
+
+startModuleDetailsFlow mName mDetails= do
+	event <- ui $ ModuleDetailScreen {moduleName:mName,moduleDetails:mDetails}
+	case event of
+		DummyModuleDetailsAction -> pure $ "handled"
   		_ -> pure $ "default"
 
 startCourseSearchFlow state = do

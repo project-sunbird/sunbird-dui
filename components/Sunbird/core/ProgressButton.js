@@ -45,7 +45,7 @@ class ProgressButton extends View {
       "downloadBarContainer",
       "downloadBar"
     ])
-    window.__getDownloadStatus = this.updateProgress;
+
     this.isDownloaded = false;
     this.checkContentLocalStatus(this.props.identifier);
     _this = this;
@@ -53,6 +53,7 @@ class ProgressButton extends View {
   }
 
   handleClick = () => {
+    window.__getDownloadStatus = this.updateProgress;
     this.props.onButtonClick();
   }
 

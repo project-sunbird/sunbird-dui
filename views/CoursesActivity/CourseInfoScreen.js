@@ -181,6 +181,13 @@ class CourseInfoScreen extends View {
   }
 
 
+  handleModuleClick = (moduleName, module) => {
+    var eventAction = { "tag": "ShowModuleDetails", contents: { "moduleName": moduleName, "moduleDetails": JSON.stringify(module) } };
+    window.__runDuiCallback(eventAction);
+
+  }
+
+
   getSpineStatus = (pValue) => {
     var cmd;
     console.log("--->\t\t\t\n\n\n", pValue);
@@ -240,6 +247,7 @@ class CourseInfoScreen extends View {
                   root="true"
                   margin="0,0,0,12"
                   brief={true}
+                  onClick={this.handleModuleClick}
                   content= {this.courseContent.children}
                   width="match_parent"/>)
 

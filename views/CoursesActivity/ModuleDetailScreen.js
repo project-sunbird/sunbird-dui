@@ -41,6 +41,7 @@ window.R = require("ramda");
 var SimpleToolbar = require('../../components/Sunbird/core/SimpleToolbar');
 var CropParagraph = require('../../components/Sunbird/CropParagraph');
 var ProgressButton = require('../../components/Sunbird/core/ProgressButton');
+var CourseCurriculum = require('../../components/Sunbird/CourseCurriculum');
 
 
 class ModuleDetailScreen extends View {
@@ -48,7 +49,9 @@ class ModuleDetailScreen extends View {
     super(props, children, state);
 
     this.setIds([
-      'ratingBar'
+      'ratingBar',
+      "downloadProgressText",
+      "descriptionContainer"
     ]);
     this.state = state;
     this.screenName = "ModuleDetailScreen"
@@ -63,10 +66,21 @@ class ModuleDetailScreen extends View {
     this.shouldCacheScreen = false;
 
 
-    this.details = JSON.parse(state.data.value0.moduleDetails);
-    console.log("ModueDetail description", this.details.description)
-    console.log("Module Title", this.details.name)
-    console.log("Got Title", state)
+    //to get geneie callback for download of spine
+    window.__getDownloadStatus = this.getSpineStatus;
+
+
+
+    this.module = state.data.value0.moduleDetails;
+    this.moduleName = state.data.value0.moduleName;
+
+
+    console.log("ModueDetail ", this.module)
+    this.module = JSON.parse(this.module)
+    console.log("Module Title", this.moduleName)
+    console.log("ModueContentDetials ", this.module)
+    this.checkContentLocalStatus(this.module.identifier);
+
 
   }
 
@@ -88,11 +102,6 @@ class ModuleDetailScreen extends View {
     );
   }
 
-  afterRender = () => {
-
-    JBridge.setRating(this.idSet.ratingBar, "3.3");
-  }
-
 
   getSpineStatus = (pValue) => {
     var cmd;
@@ -100,7 +109,7 @@ class ModuleDetailScreen extends View {
 
     var data = JSON.parse(pValue);
 
-    if (data.identifier != this.details.identifier)
+    if (data.identifier != this.module.identifier)
       return;
 
     var textToShow = ""
@@ -112,7 +121,7 @@ class ModuleDetailScreen extends View {
     if (downloadedPercent == 100) {
 
       console.log("SPINE IMPORTED -> ")
-      this.checkContentLocalStatus(this.details.identifier);
+      this.checkContentLocalStatus(this.module.identifier);
 
     } else {
       var cmd = this.set({
@@ -124,14 +133,15 @@ class ModuleDetailScreen extends View {
   }
 
   checkContentLocalStatus = (identifier) => {
+    var _this = this;
     var callback = callbackMapper.map(function(status) {
 
       if (status == "true") {
         console.log("Spine Found")
         var callback1 = callbackMapper.map(function(data) {
-          console.log("course details;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;", JSON.parse(data));
-          _this.courseContent = JSON.parse(data);
-          _this.renderCourseChildren()
+          console.log("module details;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;", JSON.parse(data));
+          _this.module = JSON.parse(data);
+          _this.renderModuleChildren()
         });
         JBridge.getChildContent(identifier, callback1)
       } else {
@@ -146,6 +156,27 @@ class ModuleDetailScreen extends View {
   }
 
 
+  renderModuleChildren = () => {
+    var layout;
+    console.log("RENDRING BREKAUP", this.module.children)
+    if (this.module.children) {
+      layout = (<CourseCurriculum
+                  height="match_parent"
+                  root="true"
+                  margin="0,0,0,12"
+                  brief={true}
+                  content= {this.module.children}
+                  width="match_parent"/>)
+    } else {
+      layout = (<TextView 
+        height="50"
+        width="match_parent"
+        text="NO CHILD"/>)
+    }
+    this.replaceChild(this.idSet.descriptionContainer, layout.render(), 0)
+  }
+
+
   getLineSeperator = () => {
     return (<LinearLayout
             width="match_parent"
@@ -156,13 +187,83 @@ class ModuleDetailScreen extends View {
 
 
 
-  onBackPressed = () => {
+  getHeader = () => {
+    var headerLayout = (<LinearLayout
+        height="wrap_content"
+        width="match_parent"
+        orientation="vertical">
+
+          <LinearLayout
+            height="wrap_content"
+            gravity="center_vertical"
+            margin="0,0,0,12"  
+            width="match_parent">
+            <TextView
+              height="wrap_content"
+              width="0"
+              weight="1"
+              text={this.moduleName}/>
+
+            <ImageView
+              imageUrl="ic_action_share"
+              width="48"
+              height="48"
+              padding="12,12,12,12"/>
+
+          </LinearLayout>  
 
 
+          <TextView
+            height="wrap_content"
+            margin="0,0,0,12"
+            width="match_parent"
+            text={"Module Size "+this.formatBytes(this.module.contentData.size)}/>
+
+
+          <CropParagraph
+                  height="wrap_content"
+                  margin="0,0,0,12"
+                  width="match_parent"
+                  contentText={this.module.contentData.description}
+                  />
+
+
+           {this.getLineSeperator()}       
+
+        </LinearLayout>)
+
+
+
+    return headerLayout;
   }
 
+
+
+  getBody = () => {
+    var bodyLayout = (<LinearLayout
+                  height="match_parent"
+                  width="match_parent"
+                  gravity="center"
+                  root="true"
+                  orientation="vertical"
+                  id={this.idSet.descriptionContainer}>
+                     <TextView
+                        id={this.idSet.downloadProgressText}
+                        test="Fetching spine"
+                        height="300"
+                        gravity="center"
+                        width="match_parent"/>
+                </LinearLayout>)
+
+
+    return bodyLayout;
+  }
+
+
+
+
   render() {
-    var buttonList = ["ENROLL FOR THIS COURSE"];
+    var buttonList = ["DOWNLOAD THIS MODULE"];
     this.layout = (
       <LinearLayout
         root = "true"
@@ -194,8 +295,7 @@ class ModuleDetailScreen extends View {
 
                   {this.getHeader()}
 
-                  {this.getLineSeperator()}
-
+                 
                   {this.getBody()}
                   
 
@@ -206,7 +306,7 @@ class ModuleDetailScreen extends View {
                <ProgressButton
                  width="match_parent"
                  buttonItems={buttonList}
-                 identifier = {this.details.identifier}/>
+                 identifier = {this.module.identifier}/>
        
       </LinearLayout>
     );
