@@ -181,7 +181,20 @@ class CourseInfoScreen extends View {
   }
 
 
-
+<<<<<<< HEAD
+        if(status == "true"){
+          console.log("course exists")
+           var callback1 = callbackMapper.map(function(data) {
+              console.log("course details;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;",JSON.parse(data));
+              _this.courseContent = JSON.parse(data);
+           });
+           JBridge.getChildContent(identifier,callback1)
+        }
+        else{
+          console.log("not exist")
+          
+        }
+=======
   getSpineStatus = (pValue) => {
     var cmd;
     console.log("--->\t\t\t\n\n\n", pValue);
@@ -193,6 +206,7 @@ class CourseInfoScreen extends View {
 
     var textToShow = ""
     console.log("DATA -> ", data)
+>>>>>>> 14615a9aa5ef954f569824fbc25cbeb71b026ad5
 
     var downloadedPercent = parseInt(data.downloadProgress);
     downloadedPercent = downloadedPercent < 0 ? 0 : downloadedPercent;
