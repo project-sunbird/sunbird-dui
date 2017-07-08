@@ -41,6 +41,8 @@ class HomeScreen extends View {
       "viewPagerContainer",
       "tabLayoutContainer",
     ]);
+
+
     this.currentPageIndex = 0;
 
     this.setupDuiCallback();
@@ -89,14 +91,33 @@ class HomeScreen extends View {
     this.currentPageIndex = isNaN(this.currentPageIndex) ? 0 : this.currentPageIndex;
     var shouldBeModified = false;
     var status = state.response.status[0];
-    var responseData = JSON.parse(state.response.status[1]);
+    var responseData = state.response.status[1];
     var responseCode = state.response.status[2];
     var responseUrl = state.response.status[3];
 
+    if ((status + "") == "failure") {
+      JBridge.showSnackBar("INTERNET CONNECTION ISSUE")
+      var tmp = {
+        params: {},
+        result: {
+          response: {
+            sections: [],
+            courses: [],
+
+          }
+        }
+      }
+      responseData = tmp;
+    } else {
+      responseData = JSON.parse(responseData);
+    }
+
+    console.log("RESPONSE :", responseData)
+
     if (parseInt(responseCode) != 200) {
-      JBridge.showSnackBar("Response code ->" + responseCode)
+      JBridge.showSnackBar("Response code " + responseCode)
       console.log("DIDN't GOT 200")
-      return;
+        //return;
     }
 
 
@@ -127,11 +148,6 @@ class HomeScreen extends View {
         // }
         // responseData = state.response.status[1];
         shouldBeModified = true;
-        console.log("using mockResponse :", mockResponse.mockResponse)
-        if (responseData.result.length == 0)
-          responseData = mockResponse.mockResponse
-          //responseData = JSON.parse(state.response.status[1]);
-
         window.__runDuiCallback({ "tag": "StartCourseFlow", contents: [] });
 
         break;
@@ -141,8 +157,6 @@ class HomeScreen extends View {
         // if (shouldBeModified) {
         //   JBridge.setInSharedPrefs("userResource", JSON.stringify(state.response.status[1].result.response))
         // }
-
-        responseData = JSON.parse(state.response.status[1]);
         window.__runDuiCallback({ "tag": "StartResourceFlow", contents: [] });
 
         //shouldBeModified = true;
@@ -268,6 +282,7 @@ class HomeScreen extends View {
     window.__changePureScriptFlow();
     var eventAction;
 
+
     switch (this.currentPageIndex) {
       case 0:
         eventAction = { "tag": "ShowHome", contents: { "name": "Kiran" } };
@@ -289,18 +304,22 @@ class HomeScreen extends View {
         eventAction = { "tag": "DummyFlow", contents: [] };
         break;
     }
+
+
+
     console.log("--------->VIEWPAGER TRIGGERS ", JSON.stringify(eventAction), "ON INDEX", this.currentPageIndex);
-
-    // this.state = window.__ObjectAssign({}, this.state, eventAction);
-
-
     window.__runDuiCallback(eventAction);
   }
 
-  // eventAction = { "tag": "ShowHome" ,contents:{"name":"Kiran"}};
 
 
   handleBottomNavBarAction = (index) => {
+    if (index == 1) {
+      if (!JBridge.isNetworkAvailable()) {
+        JBridge.showSnackBar("NO INTERNET CONNECTION")
+        this.handleBottomNavBarAction(0);
+      }
+    }
     this.currentPageIndex = index;
     this.setupDuiCallback();
     this.bNavBar.handleNavigationChange(index);

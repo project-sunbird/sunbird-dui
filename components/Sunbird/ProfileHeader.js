@@ -1,4 +1,3 @@
-
 var dom = require("@juspay/mystique-backend").doms.android;
 var Connector = require("@juspay/mystique-backend").connector;
 var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
@@ -17,13 +16,16 @@ class ProfileHeader extends View {
     ]);
 
     this.userName = JBridge.getFromSharedPrefs("user_name")
-    this.userName = (this.userName == "__failed") ? "Harish Bookwalla" : this.userName;
+    this.userName = (this.userName === "__failed") ? "Harish Bookwalla" : this.userName;
 
 
   }
 
-  profileBody = () => {
-    return (<LinearLayout
+
+
+
+  render() {
+    this.layout = (<LinearLayout
               width="wrap_content"
               height="wrap_content"
               gravity="center_horizontal"
@@ -33,7 +35,6 @@ class ProfileHeader extends View {
               width="80"
               height="80"
               circularImageUrl={"0,"+"https://s-media-cache-ak0.pinimg.com/originals/b7/fd/99/b7fd9903db658b1a2d9824d17cdefd6b.jpg"}/>
-              />
 
               <TextView
               width="wrap_content"
@@ -57,11 +58,7 @@ class ProfileHeader extends View {
 
 
               </LinearLayout>)
-  }
-
-
-  render() {
-    return this.profileBody().render();
+    return this.layout.render();
   }
 }
 
