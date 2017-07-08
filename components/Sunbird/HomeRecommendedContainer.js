@@ -121,9 +121,27 @@ class HomeRecommendedContainer extends View {
 
 
     handleCardClick  = (content,type) =>{
-      console.log("content is",content);
+      console.log("content is!!",content);
+
       console.log("type is ",type);
+
+      var callback2 = callbackMapper.map(function(data) {
+        console.log("data!",JSON.parse(data));
+      });
+
+      JBridge.getLocalContentStatus("do_20043627",callback2);
+
+      
+      JBridge.deleteContent("do_20043627")
+
+      var callback = callbackMapper.map(function(data) {
+        console.log("data!",JSON.parse(data));
+      });
+
+      JBridge.getLocalContentStatus("do_20043627",callback);
     }
+
+
 
     handleViewAllClick(){
         this.props.onViewAllClick();

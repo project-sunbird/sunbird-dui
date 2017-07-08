@@ -186,6 +186,7 @@ class CourseInfoScreen extends View {
         }
         else{
           console.log("not exist")
+          
         }
 
       

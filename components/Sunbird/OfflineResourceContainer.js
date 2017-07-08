@@ -65,24 +65,32 @@ class OfflineResourceContainer extends View {
   getRows = () => {
     this.data = JSON.parse(this.props.data);
     var rows = this.data.map((item, i) => {
+      console.log("item content type",item.contentType);
+      if(item.contentType != "course"){
+          var size = item.hasOwnProperty("size") ? " ["+this.formatBytes(item.size)+"]" : "";
+          var footerTitle = item.contentType + size;
 
-      var size = item.hasOwnProperty("size") ? " ["+this.formatBytes(item.size)+"]" : "";
-      var footerTitle = item.contentType + size;
+          var temp = {};
 
-      var temp = {};
+          var fileImageUrl = "file://"+item.basePath + "/" +item.contentData.appIcon;
 
-      var fileImageUrl = "file://"+item.basePath + "/" +item.contentData.appIcon;
+          temp['imageUrl'] = fileImageUrl;
+          temp['title'] = item.contentData.name;
+          temp['footerTitle'] = footerTitle;
+          temp['footerSubTitle'] = "Saved on 10 May' 17";
+          temp['actionText'] = "OPEN";
 
-      temp['imageUrl'] = fileImageUrl;
-      temp['title'] = item.contentData.name;
-      temp['footerTitle'] = footerTitle;
-      temp['footerSubTitle'] = "Saved on 10 May' 17";
-      temp['actionText'] = "OPEN";
-
-      return (<CardComponent 
-                 data={temp}
-                 content={item.contentData}
-                 onCardClick = {this.handleCardClick}/>)
+          return (<CardComponent 
+                     data={temp}
+                     content={item.contentData}
+                     onCardClick = {this.handleCardClick}/>)
+    }
+    else
+    {
+      return(<LinearLayout
+              width ="0"
+              height = "0" />)
+    }
     });
 
     var layout = (<LinearLayout
