@@ -46,22 +46,21 @@ class OfflineResourceContainer extends View {
   getRows = () => {
     this.data = JSON.parse(this.props.data);
     var rows = this.data.map((item, i) => {
-
+<<<<<<< HEAD
       console.log("item content type",item.contentType);
       if(item.contentType != "course"){
           var size = item.hasOwnProperty("size") ? " ["+this.formatBytes(item.size)+"]" : "";
           var footerTitle = item.contentType + size;
 
           var temp = {};
-      var fileSavedTime = this.prettifyDate(new Date(item.lastUpdatedTime));
 
           var fileImageUrl = "file://"+item.basePath + "/" +item.contentData.appIcon;
 
-           temp['imageUrl'] = fileImageUrl;
-            temp['title'] = item.contentData.name;
-            temp['footerTitle'] = footerTitle;
-            temp['footerSubTitle'] = "Saved on "+fileSavedTime;
-            temp['actionText'] = "OPEN";
+          temp['imageUrl'] = fileImageUrl;
+          temp['title'] = item.contentData.name;
+          temp['footerTitle'] = footerTitle;
+          temp['footerSubTitle'] = "Saved on 10 May' 17";
+          temp['actionText'] = "OPEN";
 
           return (<CardComponent 
                      data={temp}
@@ -74,6 +73,28 @@ class OfflineResourceContainer extends View {
               width ="0"
               height = "0" />)
     }
+=======
+
+      var size = item.hasOwnProperty("size") ? " ["+this.formatBytes(item.size)+"]" : "";
+      var footerTitle = item.contentType + size;
+
+      var fileSavedTime = this.prettifyDate(new Date(item.lastUpdatedTime));
+
+      var temp = {};
+
+      var fileImageUrl = "file://"+item.basePath + "/" +item.contentData.appIcon;
+
+      temp['imageUrl'] = fileImageUrl;
+      temp['title'] = item.contentData.name;
+      temp['footerTitle'] = footerTitle;
+      temp['footerSubTitle'] = "Saved on "+fileSavedTime;
+      temp['actionText'] = "OPEN";
+
+      return (<CardComponent 
+                 data={temp}
+                 content={item}
+                 onCardClick = {this.handleCardClick}/>)
+>>>>>>> 14615a9aa5ef954f569824fbc25cbeb71b026ad5
     });
 
     var layout = (<LinearLayout
