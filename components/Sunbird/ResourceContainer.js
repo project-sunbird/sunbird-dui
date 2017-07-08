@@ -59,6 +59,7 @@ class ResourceContainer extends View {
 
   getRows = () => {
     this.data = this.props.data;
+
     var rows = this.data.map((item, i) => {
 
       var size = item.hasOwnProperty("size") ? " ["+this.formatBytes(item.size)+"]" : "";
@@ -126,8 +127,17 @@ class ResourceContainer extends View {
     this.props.onCourseOpenClick(courseName);
   }
 
-  handleCardClick = (content, type) => {
-    window.__runDuiCallback({ tag: "StartResourceDetailFlow", contents: { resourceDetails: JSON.stringify(content) } });
+  handleCardClick = (item, type) => {
+
+      var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+this.formatBytes(item.size)+"]" : "");      
+      var resDetails = {};
+      resDetails['imageUrl'] = item.appIcon;
+      resDetails['title'] = item.name;
+      resDetails['description'] = item.description;
+      resDetails['headFooterTitle'] = headFooterTitle;
+      resDetails['identifier'] = item.identifier;
+      window.__runDuiCallback({tag:"StartResourceDetailFlow",contents:{resourceDetails:JSON.stringify(resDetails)}});
+
   }
 
   handleViewAllClick() {

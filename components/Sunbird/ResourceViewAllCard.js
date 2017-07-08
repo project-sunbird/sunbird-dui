@@ -148,7 +148,7 @@ class ResourceViewAllCard extends View {
                   width="match_parent"
                   height="match_parent"
                   gravity="center"
-                  circularImageUrl={"25,"+ "https://images.fineartamerica.com/images-medium-large-5/sunflower-abstract-by-nature-square-lee-craig.jpg"}/>
+                  circularImageUrl={"25,"+this.props.data.imageUrl}/>
                
                 </RelativeLayout>
 
