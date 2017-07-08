@@ -12,9 +12,10 @@
     "purescript-aff": "^3.1.0",
     "purescript-affjax": "^4.0.0",
     "purescript-foreign-generic": "^4.1.0",
-    "purescript-flow":"https://bitbucket.org/juspay/purescript-flow.git",
+    "purescript-flow": "https://bitbucket.org/juspay/purescript-flow.git",
     "purescript-transformers": "^3.4.0",
-    "purescript-foreign": "^4.0.1"
+    "purescript-foreign": "^4.0.1",
+    "purescript-argonaut-core": "^3.1.0"
   },
   "devDependencies": {
     "purescript-psci-support": "^3.0.0"

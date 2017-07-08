@@ -127,10 +127,19 @@ getDummyData =
       headers = (generateRequestHeaders) in
   (get requestUrl headers)
 
-enrollCourse req=
+enrollCourse req =
   let requestUrl = "/v1/user/courses/enroll"
-      headers = (generateRequestHeaders) in
- (post requestUrl headers req)
+      headers = (generateRequestHeaders)
+      payload = A.fromObject (StrMap.fromFoldable [ (Tuple "id" (A.fromString "unique API ID"))
+                                                   ,(Tuple "ts" (A.fromString "2013/10/15 16:16:39"))
+                                                   ,(Tuple "request" (A.fromObject (StrMap.fromFoldable  [ (Tuple "courseId" (A.fromString "do_212282810256941056178"))
+                                                                                                          , (Tuple "courseName" (A.fromString "Teacher Training Course"))
+                                                                                                          , (Tuple "description" (A.fromString "course description"))
+                                                                                                          , (Tuple "delta" (A.fromString "delta"))
+                                                                                                          , (Tuple "userId" (A.fromString "f660ab912ec121d1b1e928a0bb4bc61b15f5ad44d5efdc4e1c92a25e99b8e44a"))
+                                                                                                          ])))
+                                                   ]) in
+ (post requestUrl headers payload)
 
 postExploreData req regTokens=
   let requestUrl = "/v1/page/assemble/learn.explore/org.sunbird.mobile"

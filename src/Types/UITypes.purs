@@ -39,7 +39,7 @@ data CommunityInfoScreen = CommunityInfoScreen {name::String}
 data CommunityInfoScreenAction = DummyInfoAction | ExAction
 
 data CourseInfoScreen = CourseInfoScreen {courseDetails::String}
-data CourseInfoScreenAction = DummyCourseInfoAction | ShowEnrolledCourse {course::String} | ShowModuleDetails {moduleName::String,moduleDetails::String}
+data CourseInfoScreenAction = DummyCourseInfoAction | ShowEnrolledCourse {course::String} | EnrollCourse {reqParams :: String} | ShowModuleDetails {moduleName::String,moduleDetails::String}
 
 data CourseEnrolledScreen = CourseEnrolledScreen {courseDetails::String}
 data CourseEnrolledScreenAction = DummyCourseEnrolledAction | ShowModuleScreen {moduleName::String,moduleDetails::String}
