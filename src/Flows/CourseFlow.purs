@@ -76,7 +76,7 @@ startCourseSearchFlow state = do
   liftEff $ log $ "Search FLow started"
   state <- ui $ SearchScreen {filterDetails:state}
   case state of
-    CourseDetailFlow {courseDetails : details} -> startEnrolledCourseFlow details
+    CourseInfoFlow {course : details} -> startCourseInfoFlow details
     StartFilterFlow{filterDetails : details} -> startFilterFlow details 
     _ -> pure $ "aborted"
 

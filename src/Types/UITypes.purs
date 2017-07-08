@@ -85,7 +85,7 @@ data ResourceViewAllAction = DummyResourceViewAllAction | StartResourceInfoFlow 
 
 
 data SearchScreen = SearchScreen {filterDetails::String}
-data SearchScreenAction = ResourceDetailFlow {resourceDetails::String} | StartFilterFlow {filterDetails::String} | CourseDetailFlow {courseDetails::String}
+data SearchScreenAction = ResourceDetailFlow {resourceDetails::String} | StartFilterFlow {filterDetails::String} | CourseInfoFlow {course::String}
 
 data FilterScreen = FilterScreen {filterDetails::String}
 data FilterScreenAction = SearchScreenFromFilter {filterData::String}

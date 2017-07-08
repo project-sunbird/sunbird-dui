@@ -91,12 +91,12 @@ class CropParagraph extends View {
       background={window.__Colors.WHITE}
       width="match_parent"
       height="match_parent"
+      visibility = {(this.props.headText==undefined || this.props.headText.length == 0) ? "gone":"visible"}
       layoutTransition="true"
       orientation="vertical">
 
         <TextView
           text = {this.props.headText}
-          visibility = {(this.props.headText==undefined || this.props.headText.length == 0) ? "gone":"visible"}
           style= {window.__TextStyle.textStyle.CARD.TITLE.DARK}
           margin="0,0,0,8"/>
 
