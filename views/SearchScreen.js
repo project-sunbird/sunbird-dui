@@ -252,17 +252,17 @@ class SearchScreen extends View {
   }
 
 
-  handleSearchClick = () =>{
-
-    JBridge.hideKeyboard();
-
+  handleSearchClick = (searchtext) =>{
     var cmd ="";
     cmd += _this.set({
       id: _this.idSet.filterHolder,
       visibility:"visible"
     })
 
-    Android.runInUI(cmd, 0);
+    if(searchtext != ""){
+      JBridge.hideKeyboard();
+      Android.runInUI(cmd, 0);
+    }
      
   }
 
@@ -302,7 +302,7 @@ class SearchScreen extends View {
 
       var callback = callbackMapper.map(function(data) {
 
-          _this.handleSearchClick();
+          _this.handleSearchClick(data);
 
       });
 

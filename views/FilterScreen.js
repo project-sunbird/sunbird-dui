@@ -40,9 +40,6 @@ var FilterPopup = require('../components/Sunbird/FilterPopup');
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 var _this;
-var R = require("ramda");
-
-
 
 const filterParams = require('../FilterParams');
 

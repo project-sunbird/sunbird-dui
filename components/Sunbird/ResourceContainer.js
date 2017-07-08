@@ -61,13 +61,11 @@ class ResourceContainer extends View {
     this.data = this.props.data;
     var rows = this.data.map((item, i) => {
 
-
-      console.log("item data in getrows", item);
       var size = item.hasOwnProperty("size") ? " ["+this.formatBytes(item.size)+"]" : "";
       var footerTitle = item.contentType + size;
 
       var temp = {};
-      temp['imageUrl'] = "file://storage/emulated/0/SunbirdTest/content/domain_8808-64dd60d5-94cd-4896-a60e-11897bf69fd6/domain_8808/1461668536884adb212cfde_1465896981928.jpg";
+      temp['imageUrl'] = item.appIcon;
       temp['title'] = item.name;
       temp['footerTitle'] = footerTitle;
       temp['footerSubTitle'] = item.contentType;

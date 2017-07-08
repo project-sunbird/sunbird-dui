@@ -118,13 +118,31 @@ class HomeScreen extends View {
 
   handleStateChange = (state) => {
     console.log("HANDLE STATE CHANGE HOME SCREEN", state)
-      //console.log("GOT RESPONSE\n\n\n\n", state.response.status[1])
-    var responseData = {};
 
     this.currentPageIndex = isNaN(this.currentPageIndex) ? 0 : this.currentPageIndex;
     var shouldBeModified = false;
-    var contentLayout;
-    var jso = [];
+    var status = state.response.status[0];
+    var responseData = JSON.parse(state.response.status[1]);
+    var responseCode = state.response.status[2];
+    var responseUrl = state.response.status[3];
+
+    if (parseInt(responseCode) != 200) {
+      JBridge.showSnackBar("Response code ->" + responseCode)
+      console.log("DIDN't GOT 200")
+      return;
+    }
+
+
+
+    if (responseData.params.err) {
+      console.log("EROR MESSAGE :", response.params.errmsg)
+      JBridge.showSnackBar("ERROR MESSAGE ->" + response.params.errmsg)
+      return;
+    }
+
+
+
+
     switch (this.currentPageIndex) {
       case 0:
 
@@ -137,7 +155,9 @@ class HomeScreen extends View {
         // responseData = state.response.status[1];
         shouldBeModified = true;
         console.log("using mockResponse :", mockResponse.mockResponse)
-        responseData = mockResponse.mockResponse;
+        if (responseData.result.length == 0)
+          responseData = mockResponse.mockResponse
+          //responseData = JSON.parse(state.response.status[1]);
 
         break;
       case 2:

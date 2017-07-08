@@ -90,7 +90,7 @@ cFlow = do
     ShowHome {name:x} -> do
       liftEff $ log $ "Action handled Show HomeScreen"
       pure $ "action handled"
-    --StartCourseFlow -> startCourseFlow action
+   -- StartCourseFlow -> startCourseFlow action
     --StartResourceFlow -> startResourceFlow action
     StartCommunityFlow -> startCommunityFlow action
     StartProfileFlow -> startProfileFlow action
