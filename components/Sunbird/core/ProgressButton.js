@@ -41,7 +41,8 @@ class ProgressButton extends View {
     this.displayName = "ProgressButton";
     this.setIds([
       "downloadingText",
-      "downloadBarContainer"
+      "downloadBarContainer",
+      "downloadBar"
       ])
     window.__updateDownload = this.updateProgress;
     this.isDownloaded=false;
@@ -61,7 +62,6 @@ class ProgressButton extends View {
 
         if(status == "true"){
            _this.isDownloaded = true;
-
            _this.replaceChild(_this.idSet.downloadBarContainer,_this.getButtons("100","PLAY").render(),0);
 
         }
@@ -189,7 +189,9 @@ class ProgressButton extends View {
         height="wrap_content"
         orientation="vertical"
         width="match_parent"
-        background={window.__Colors.WHITE}>
+        background={window.__Colors.WHITE}
+        id={this.idSet.downloadBar}
+        >
         <LinearLayout
           height="2"
           visibility={this.props.hideDivider?"gone":"visible"}

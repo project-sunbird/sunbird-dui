@@ -120,8 +120,13 @@ class SearchResult extends View {
     console.log("clicked item<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<",item);
     var itemDetails = JSON.stringify(item);
     console.log("itemDetails in rresourceDDDDD",itemDetails)
-    window.__runDuiCallback({tag:"ResourceDetailFlow",contents:{resourceDetails:itemDetails}});
-
+    if(item.contentType != "Course"){
+      window.__runDuiCallback({tag:"ResourceDetailFlow",contents:{resourceDetails:itemDetails}});
+    }
+    else
+    {
+      window.__runDuiCallback({tag:"CourseDetailFlow",contents:{courseDetails:itemDetails}});
+    }
     // window.__runDuiCallback({tag:"StartResourceDetailFlow",contents:{resourceDetails:itemDetails}});
 
   }
