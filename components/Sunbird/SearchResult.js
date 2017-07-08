@@ -125,7 +125,7 @@ class SearchResult extends View {
     }
     else
     {
-      window.__runDuiCallback({tag:"CourseDetailFlow",contents:{courseDetails:itemDetails}});
+      window.__runDuiCallback({tag:"CourseInfoFlow",contents:{course:itemDetails}});
     }
     // window.__runDuiCallback({tag:"StartResourceDetailFlow",contents:{resourceDetails:itemDetails}});
 

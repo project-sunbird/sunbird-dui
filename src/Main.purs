@@ -114,7 +114,7 @@ startHomeSearchFlow state = do
   state <- ui $ SearchScreen {filterDetails:state}
   case state of
     ResourceDetailFlow {resourceDetails : details} -> startResourceDetailFlow details
-    CourseDetailFlow {courseDetails : details} -> startEnrolledCourseFlow details
+    CourseInfoFlow {course : details} -> startCourseInfoFlow details
     StartFilterFlow{filterDetails : details} -> startFilterFlow details 
     _ -> pure $ "aborted"
 

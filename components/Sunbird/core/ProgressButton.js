@@ -23,7 +23,8 @@ You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/agpl.html>.
 
 
-*/var dom = require("@juspay/mystique-backend").doms.android;
+*/
+var dom = require("@juspay/mystique-backend").doms.android;
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
 var RelativeLayout = require("@juspay/mystique-backend").androidViews.RelativeLayout;
@@ -43,9 +44,9 @@ class ProgressButton extends View {
       "downloadingText",
       "downloadBarContainer",
       "downloadBar"
-      ])
-    window.__updateDownload = this.updateProgress;
-    this.isDownloaded=false;
+    ])
+    window.__getDownloadStatus = this.updateProgress;
+    this.isDownloaded = false;
     this.checkContentLocalStatus(this.props.identifier);
     _this = this;
 
@@ -56,45 +57,47 @@ class ProgressButton extends View {
   }
 
 
-  checkContentLocalStatus = (identifier) =>{
-      var callback = callbackMapper.map(function(status) {
+  checkContentLocalStatus = (identifier) => {
+    var callback = callbackMapper.map(function(status) {
 
 
-        if(status == "true"){
-           _this.isDownloaded = true;
-           _this.replaceChild(_this.idSet.downloadBarContainer,_this.getButtons("100","PLAY").render(),0);
+      if (status == "true") {
+        _this.isDownloaded = true;
+        _this.replaceChild(_this.idSet.downloadBarContainer, _this.getButtons("100", "PLAY").render(), 0);
 
-        }
+      }
 
-      
 
-      });
-      JBridge.getLocalContentStatus(identifier,callback);
+
+    });
+    JBridge.getLocalContentStatus(identifier, callback);
   }
 
-  
 
-  updateProgress = (pValue) =>{
+
+  updateProgress = (pValue) => {
     var cmd;
-    console.log("--->\t\t\t\n\n\n",pValue);
+    console.log("--->\t\t\t\n\n\n", pValue);
 
-    var data=JSON.parse(pValue);
-    
-    var textToShow=""
-    
-    if(parseInt(data.downloadProgress)==100)
-    {
+    var data = JSON.parse(pValue);
 
-      _this.isDownloaded=true;
-      textToShow="PLAY"
-      
+    if (data.identifier != this.props.identifier)
+      return;
 
-    }else{
-      _this.isDownloaded=false;
-      textToShow="DOWNLOADED " + data.downloadProgress + "%"
-      
+    var textToShow = ""
+
+    if (parseInt(data.downloadProgress) == 100) {
+
+      _this.isDownloaded = true;
+      textToShow = "PLAY"
+
+
+    } else {
+      _this.isDownloaded = false;
+      textToShow = "DOWNLOADED " + data.downloadProgress + "%"
+
     }
-    _this.replaceChild(_this.idSet.downloadBarContainer,_this.getButtons(data.downloadProgress,textToShow).render(),0);
+    _this.replaceChild(_this.idSet.downloadBarContainer, _this.getButtons(data.downloadProgress, textToShow).render(), 0);
 
 
 
@@ -102,16 +105,15 @@ class ProgressButton extends View {
   }
 
 
-  handleButtonClick = () =>{
-    console.log("dp",this.isDownloaded);
-    if(this.isDownloaded){
-        console.log("play");
-        JBridge.playContent(this.props.identifier);
+  handleButtonClick = () => {
+    console.log("dp", this.isDownloaded);
+    if (this.isDownloaded) {
+      console.log("play");
+      JBridge.playContent(this.props.identifier);
 
-    }
-    else{
-        console.log("download");
-        JBridge.importCourse(this.props.identifier);
+    } else {
+      console.log("download");
+      JBridge.importCourse(this.props.identifier);
 
     }
 
@@ -122,14 +124,14 @@ class ProgressButton extends View {
 
 
 
- getDownloadBackground = (value)=>{
+  getDownloadBackground = (value) => {
 
-   value =(value<0)?0:value;
+    value = (value < 0) ? 0 : value;
 
-   var pLeft= parseFloat(value)/parseFloat(100);
-   var pRight=(1-pLeft);
+    var pLeft = parseFloat(value) / parseFloat(100);
+    var pRight = (1 - pLeft);
 
-   return(<LinearLayout
+    return (<LinearLayout
         width="match_parent"
         onClick={this.handleButtonClick}
         root="true"
@@ -149,14 +151,14 @@ class ProgressButton extends View {
 
         </LinearLayout>)
 
- }
+  }
 
 
 
-  getButtons = (value,text) => {
-    var _this=this;
-  var layout = (
-        <RelativeLayout
+  getButtons = (value, text) => {
+    var _this = this;
+    var layout = (
+      <RelativeLayout
         width="match_parent"
         height="48"
         root="true">
@@ -173,9 +175,9 @@ class ProgressButton extends View {
         style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
         text={text}/>
 
-        </RelativeLayout> )
+        </RelativeLayout>)
 
-        return layout;
+    return layout;
   }
 
 

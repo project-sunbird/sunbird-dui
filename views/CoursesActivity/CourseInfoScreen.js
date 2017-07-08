@@ -35,6 +35,7 @@ var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 var ScrollView = require('@juspay/mystique-backend').androidViews.ScrollView;
+var ProgressBar = require("@juspay/mystique-backend").androidViews.ProgressBar;
 
 var objectAssign = require('object-assign');
 
@@ -46,7 +47,7 @@ var CourseCurriculum = require('../../components/Sunbird/CourseCurriculum');
 var PageOption = require('../../components/Sunbird/core/PageOption');
 var CourseProgress = require('../../components/Sunbird/CourseProgress');
 var ProgressButton = require('../../components/Sunbird/core/ProgressButton');
-
+var _this;
 class CourseInfoScreen extends View {
   constructor(props, children, state) {
     super(props, children, state);
@@ -54,6 +55,7 @@ class CourseInfoScreen extends View {
     this.setIds([
       "parentContainer",
       "pageOption",
+      "descriptionContainer"
     ]);
     this.state = state;
     this.screenName = "CourseEnrolledScreen"
@@ -67,10 +69,16 @@ class CourseInfoScreen extends View {
     }
 
     this.shouldCacheScreen = false;
+    //to get geneie callback for download of spine
+    window.__getDownloadStatus = this.getSpineStatus;
 
-    //console.log("GOT VALUES ", state)
+
+    _this = this;
+
     this.details = JSON.parse(state.data.value0.courseDetails);
     console.log("GOT VALUES ", this.details)
+
+    this.checkContentLocalStatus(this.details.identifier);
 
 
 
@@ -170,6 +178,65 @@ class CourseInfoScreen extends View {
     };
 
   }
+
+
+  getSpineStatus = (pValue) => {
+    var cmd;
+    console.log("--->\t\t\t\n\n\n", pValue);
+
+    var data = JSON.parse(pValue);
+
+    if (data.identifier != this.details.identifier)
+      return;
+
+    var textToShow = ""
+    console.log("DATA -> ", data)
+
+    if (parseInt(data.downloadProgress) == 100) {
+
+      console.log("SPINE IMPORTED -> ")
+      this.checkContentLocalStatus(this.details.identifier);
+
+    }
+  }
+
+  checkContentLocalStatus = (identifier) => {
+    var callback = callbackMapper.map(function(status) {
+
+      if (status == "true") {
+        console.log("Spine Found")
+        var callback1 = callbackMapper.map(function(data) {
+          console.log("course details;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;", JSON.parse(data));
+          _this.courseContent = JSON.parse(data);
+          _this.renderCourseChildren()
+        });
+        JBridge.getChildContent(identifier, callback1)
+      } else {
+        console.log("Spine Not Found, IMPORTING ")
+        JBridge.importCourse(identifier)
+      }
+
+
+
+    });
+    JBridge.getLocalContentStatus(identifier, callback);
+  }
+
+
+  renderCourseChildren = () => {
+    console.log("RENDRING BREKAUP", this.courseContent.children)
+    var layout = (<CourseCurriculum
+                  height="match_parent"
+                  root="true"
+                  margin="0,0,0,12"
+                  brief={true}
+                  content= {this.courseContent.children}
+                  width="match_parent"/>)
+
+    this.replaceChild(this.idSet.descriptionContainer, layout.render(), 0)
+  }
+
+
 
   onPop = () => {
     Android.runInUI(
@@ -292,13 +359,19 @@ class CourseInfoScreen extends View {
 
                   {this.getCurriculumnBrief()}  
 
-                 <CourseCurriculum
-                  height="match_parent"
-                  margin="0,0,0,12"
-                  brief={true}
-                  content= {this.data}
-                  width="match_parent"/>
+                 
 
+                <LinearLayout
+                  height="match_parent"
+                  width="match_parent"
+                  gravity="center"
+                  root="true"
+                  orientation="vertical"
+                  id={this.idSet.descriptionContainer}>
+                     <ProgressBar
+                        height="70"
+                        width="70"/>
+                </LinearLayout>    
 
                 </LinearLayout>
 

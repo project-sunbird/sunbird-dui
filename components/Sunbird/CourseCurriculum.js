@@ -43,13 +43,13 @@ class CourseCurriculum extends View {
 
     this.displayName = "course_curriculumn"
     this.enrolledStatus = this.props.enrolledStatus == undefined ? false : this.props.enrolledStatus;
-
+    console.log("\n\n\n\nHERE--->")
   }
 
 
 
   getChapterList = () => {
-    var items = this.props.content.chapterList.map((item) => {
+    var items = this.props.content.map((item) => {
       return (<ChapterList 
               item={item} 
               _onClick={this.props.onItemSelected}
@@ -67,7 +67,7 @@ class CourseCurriculum extends View {
 
   getCourseBreakUp = () => {
 
-    var items = this.props.content.chapterList.map((item, index) => {
+    var items = this.props.content.map((item, index) => {
       return (<ChapterOverView
               item={item}
               index={index}/>)
