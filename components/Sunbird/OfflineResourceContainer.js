@@ -54,6 +54,13 @@ class OfflineResourceContainer extends View {
   afterRender = () => {}
 
 
+ prettifyDate = (date) => {
+  var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+  return months[date.getUTCMonth()] + ' ' + date.getUTCDate() + ', ' + date.getUTCFullYear();
+}
+
 
   formatBytes = (bytes) => {
     if (bytes < 1024) return bytes + " Bytes";
@@ -65,20 +72,22 @@ class OfflineResourceContainer extends View {
   getRows = () => {
     this.data = JSON.parse(this.props.data);
     var rows = this.data.map((item, i) => {
+
       console.log("item content type",item.contentType);
       if(item.contentType != "course"){
           var size = item.hasOwnProperty("size") ? " ["+this.formatBytes(item.size)+"]" : "";
           var footerTitle = item.contentType + size;
 
           var temp = {};
+      var fileSavedTime = this.prettifyDate(new Date(item.lastUpdatedTime));
 
           var fileImageUrl = "file://"+item.basePath + "/" +item.contentData.appIcon;
 
-          temp['imageUrl'] = fileImageUrl;
-          temp['title'] = item.contentData.name;
-          temp['footerTitle'] = footerTitle;
-          temp['footerSubTitle'] = "Saved on 10 May' 17";
-          temp['actionText'] = "OPEN";
+           temp['imageUrl'] = fileImageUrl;
+            temp['title'] = item.contentData.name;
+            temp['footerTitle'] = footerTitle;
+            temp['footerSubTitle'] = "Saved on "+fileSavedTime;
+            temp['actionText'] = "OPEN";
 
           return (<CardComponent 
                      data={temp}
@@ -139,8 +148,18 @@ class OfflineResourceContainer extends View {
     this.props.onCourseOpenClick(courseName);
   }
 
-  handleCardClick = (content, type) => {
-    window.__runDuiCallback({ tag: "StartResourceDetailFlow", contents: { resourceDetails: JSON.stringify(content) } });
+  handleCardClick = (item, type) => {
+
+      var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+this.formatBytes(item.size)+"]" : "");   
+      var fileImageUrl = "file://"+item.basePath + "/" +item.contentData.appIcon;
+      var resDetails = {};
+      resDetails['imageUrl'] = fileImageUrl;
+      resDetails['title'] = item.contentData.name;
+      resDetails['description'] = item.contentData.description;
+      resDetails['headFooterTitle'] = headFooterTitle;
+      resDetails['identifier'] = item.identifier;
+
+      window.__runDuiCallback({tag:"StartResourceDetailFlow",contents:{resourceDetails:JSON.stringify(resDetails)}});
   }
 
   handleViewAllClick() {

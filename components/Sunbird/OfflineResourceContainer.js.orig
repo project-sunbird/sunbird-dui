@@ -41,13 +41,25 @@ var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callba
 var CardComponent = require('../Sunbird/core/CardComponent');
 
 
-class ResourceContainer extends View {
+class OfflineResourceContainer extends View {
   constructor(props, children) {
     super(props, children);
+    _this = this;
 
     this.setIds([]);
 
   }
+
+
+  afterRender = () => {}
+
+
+ prettifyDate = (date) => {
+  var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+  return months[date.getUTCMonth()] + ' ' + date.getUTCDate() + ', ' + date.getUTCFullYear();
+}
 
 
   formatBytes = (bytes) => {
@@ -58,31 +70,62 @@ class ResourceContainer extends View {
   };
 
   getRows = () => {
-    this.data = this.props.data;
-
+    this.data = JSON.parse(this.props.data);
     var rows = this.data.map((item, i) => {
+<<<<<<< HEAD
+      console.log("item content type",item.contentType);
+      if(item.contentType != "course"){
+          var size = item.hasOwnProperty("size") ? " ["+this.formatBytes(item.size)+"]" : "";
+          var footerTitle = item.contentType + size;
+
+          var temp = {};
+
+          var fileImageUrl = "file://"+item.basePath + "/" +item.contentData.appIcon;
+
+          temp['imageUrl'] = fileImageUrl;
+          temp['title'] = item.contentData.name;
+          temp['footerTitle'] = footerTitle;
+          temp['footerSubTitle'] = "Saved on 10 May' 17";
+          temp['actionText'] = "OPEN";
+
+          return (<CardComponent 
+                     data={temp}
+                     content={item.contentData}
+                     onCardClick = {this.handleCardClick}/>)
+    }
+    else
+    {
+      return(<LinearLayout
+              width ="0"
+              height = "0" />)
+    }
+=======
 
       var size = item.hasOwnProperty("size") ? " ["+this.formatBytes(item.size)+"]" : "";
       var footerTitle = item.contentType + size;
 
-      var temp = {};
-      temp['imageUrl'] = item.appIcon;
-      temp['title'] = item.name;
-      temp['footerTitle'] = footerTitle;
-      temp['footerSubTitle'] = item.contentType;
-      temp['actionText'] = "OPEN";
+      var fileSavedTime = this.prettifyDate(new Date(item.lastUpdatedTime));
 
+      var temp = {};
+
+      var fileImageUrl = "file://"+item.basePath + "/" +item.contentData.appIcon;
+
+      temp['imageUrl'] = fileImageUrl;
+      temp['title'] = item.contentData.name;
+      temp['footerTitle'] = footerTitle;
+      temp['footerSubTitle'] = "Saved on "+fileSavedTime;
+      temp['actionText'] = "OPEN";
 
       return (<CardComponent 
                  data={temp}
                  content={item}
                  onCardClick = {this.handleCardClick}/>)
+>>>>>>> 14615a9aa5ef954f569824fbc25cbeb71b026ad5
     });
 
-
     var layout = (<LinearLayout
-                    width="match_parent"
-                    root="true"
+                    margin="0,0,16,0"
+                    width="wrap_content"
                     height="wrap_content">
 
                     {rows}
@@ -114,10 +157,9 @@ class ResourceContainer extends View {
             <TextView
             width="wrap_content"
             height="wrap_content"
-            text="VIEW ALL"
+            text="View all"
             onClick={()=>{this.handleViewAllClick()}}
-            style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
-
+            style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
 
             </LinearLayout>)
   }
@@ -129,15 +171,16 @@ class ResourceContainer extends View {
 
   handleCardClick = (item, type) => {
 
-      var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+this.formatBytes(item.size)+"]" : "");      
+      var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+this.formatBytes(item.size)+"]" : "");   
+      var fileImageUrl = "file://"+item.basePath + "/" +item.contentData.appIcon;
       var resDetails = {};
-      resDetails['imageUrl'] = item.appIcon;
-      resDetails['title'] = item.name;
-      resDetails['description'] = item.description;
+      resDetails['imageUrl'] = fileImageUrl;
+      resDetails['title'] = item.contentData.name;
+      resDetails['description'] = item.contentData.description;
       resDetails['headFooterTitle'] = headFooterTitle;
       resDetails['identifier'] = item.identifier;
-      window.__runDuiCallback({tag:"StartResourceDetailFlow",contents:{resourceDetails:JSON.stringify(resDetails)}});
 
+      window.__runDuiCallback({tag:"StartResourceDetailFlow",contents:{resourceDetails:JSON.stringify(resDetails)}});
   }
 
   handleViewAllClick() {
@@ -160,7 +203,6 @@ class ResourceContainer extends View {
            fillViewport="true">
 
            <LinearLayout
-                    padding="0,0,16,0"
                     width="match_parent"
                     height="wrap_content">
 
@@ -179,4 +221,4 @@ class ResourceContainer extends View {
   }
 }
 
-module.exports = ResourceContainer;
+module.exports = OfflineResourceContainer;

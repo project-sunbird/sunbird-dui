@@ -45,8 +45,9 @@ class ChapterOverView extends View {
   }
 
   render() {
-    var chapterName = "Module " + (this.props.index + 1) + ": " + this.props.item.chapterName;
-    var chapterDuration = "[ " + this.props.item.chapterDuration + " minutes ]";
+    var chapterName = "Module " + (this.props.index + 1) + ": " + this.props.item.contentData.name;
+    //var chapterDuration = "[ " + this.props.item.chapterDuration + " minutes ]";
+    var chapterDuration = "[ " + "N/A" + " minutes ]";
 
     this.layout = (
 

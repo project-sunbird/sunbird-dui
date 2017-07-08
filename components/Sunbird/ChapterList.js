@@ -167,7 +167,7 @@ class ChapterList extends View {
   }
 
   render() {
-    var chapterName = this.props.item.chapterName;
+    var chapterName = this.props.item.contentData.name;
     chapterName += (this.enrolledStatus ? (" (" + this.props.item.chapterFinished + "/" + this.props.item.chapterContent.length + ")") : " ")
 
     this.layout = (

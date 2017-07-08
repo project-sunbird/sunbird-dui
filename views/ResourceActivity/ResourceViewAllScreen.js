@@ -79,14 +79,16 @@ getRows = () =>{
 
                 
                 console.log("item data in getrows",item);
+                var size = item.contentData.size ? " [" + this.formatBytes(item.contentData.size) + "]" : "";
+                var fileImageUrl = "file://"+item.basePath + "/" +item.contentData.appIcon;
 
                 var temp = {};
-                temp['imageUrl'] = item.contentData.appIcon;
+                temp['imageUrl'] = fileImageUrl;
                 temp['name'] = item.contentData.name;
                 temp['progress'];
                 temp['footerTitle'] = "20% done";
                 temp['actionText'] = "RESUME";
-                temp["footerSubTitle"] = item.contentData.contentType + " [" + this.formatBytes(item.contentData.size) + "]";
+                temp["footerSubTitle"] = item.contentData.contentType + size;
 
                
      
