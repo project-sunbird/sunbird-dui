@@ -157,6 +157,12 @@ class CourseEnrolledScreen extends View {
     );
   }
 
+  handleModuleClick = (moduleName, module) => {
+    var eventAction = { "tag": "ShowModuleScreen", contents: { "moduleName": moduleName, "moduleDetails": JSON.stringify(module) } };
+    window.__runDuiCallback(eventAction);
+
+  }
+
 
   getSpineStatus = (pValue) => {
     var cmd;

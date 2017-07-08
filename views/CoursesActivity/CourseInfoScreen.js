@@ -153,12 +153,6 @@ class CourseInfoScreen extends View {
   }
 
 
-  handleModuleClick = (moduleName, module) => {
-    var eventAction = { "tag": "ShowModuleDetails", contents: { "moduleName": moduleName, "moduleDetails": JSON.stringify(module) } };
-    window.__runDuiCallback(eventAction);
-
-  }
-
 
   getSpineStatus = (pValue) => {
     var cmd;
@@ -219,7 +213,6 @@ class CourseInfoScreen extends View {
                   root="true"
                   margin="0,0,0,12"
                   brief={true}
-                  onClick={this.handleModuleClick}
                   content= {this.courseContent.children}
                   width="match_parent"/>)
 
@@ -245,29 +238,29 @@ class CourseInfoScreen extends View {
 
   }
 
-  handleStateChange = (data) =>{
-    console.log("GOT RESPONSE FROM ENROLL API",data);
+  handleStateChange = (data) => {
+    console.log("GOT RESPONSE FROM ENROLL API", data);
   }
 
   handleEnrollClick = (data) => {
     console.log("---->\t", "handleEnrollClick");
 
     var req = {
-        "request": {
-          "userId": "user1",
-          "courseId": "course1",
-          "coursename": "course name ",
-          "description": "course description",
-          "delta": {}
-        }
+      "request": {
+        "userId": "user1",
+        "courseId": "course1",
+        "coursename": "course name ",
+        "description": "course description",
+        "delta": {}
       }
+    }
 
-     var eventAction = {
-        "tag": "EnrollCourse",
-        "contents": { reqParams: "" }
-      }
-      console.log("IN ENROLLNOW")
-      window.__runDuiCallback(eventAction);
+    var eventAction = {
+      "tag": "EnrollCourse",
+      "contents": { reqParams: "" }
+    }
+    console.log("IN ENROLLNOW")
+    window.__runDuiCallback(eventAction);
 
 
   }

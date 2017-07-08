@@ -1,5 +1,3 @@
-
-
 var dom = require("@juspay/mystique-backend").doms.android;
 var Connector = require("@juspay/mystique-backend").connector;
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
@@ -36,7 +34,7 @@ class ChapterOverView extends View {
        padding="6,0,6,15"
        orientation="vertical"
        gravity="center_vertical"
-       
+       onClick={this.handleClick}
        width="match_parent">
 
        <LinearLayout
@@ -61,7 +59,7 @@ class ChapterOverView extends View {
           width="32"
           height="32"
           padding="8,8,8,8"
-          onClick={this.handleClick}
+          
           imageUrl="ic_action_right"/>
 
 
