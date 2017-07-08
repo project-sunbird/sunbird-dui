@@ -39,68 +39,6 @@ class CourseComponent extends View {
       ]
     }
 
-
-
-    this.progressData = [{
-      imageUrl: "https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
-      type: "COURSE",
-      title: "Organic Chemistry",
-      footerTitle: "30% done",
-      footerSubTitle: "(1350) votes",
-      actionText: "RESUME",
-      isProgress: "true",
-    }, {
-      imageUrl: "https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
-      type: "COURSE",
-      title: "Chemical Chemistry",
-      footerTitle: "60% done",
-      footerSubTitle: "(2350) votes",
-      actionText: "RESUME",
-      isProgress: "true",
-    }];
-
-    this.data = [{
-      imageUrl: "https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
-      type: "COURSE",
-      title: "Organic Chemistry for Std VII",
-      footerSubTitle: "(2350) votes",
-      stars: "4",
-      actionText: "OPEN",
-    }, {
-      imageUrl: "https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
-      type: "COURSE",
-      title: "Physics",
-      stars: "4",
-      footerSubTitle: "Saved on 10 May ‘17",
-      actionText: "OPEN"
-    }];
-
-
-    // if (this.props.response) {
-    //   this.details = this.props.response.result.response;
-    //   console.log("SERVER TOLD : ", this.details)
-    //   this.details.sections.map((item) => {
-    //     if (item.index == 2) {
-    //       this.data = [];
-    //       item.contents.map((subContents) => {
-    //         console.log("SERVER TOLD : ", subContents)
-
-    //         var tmp = {
-    //           imageUrl: subContents.appIcon,
-    //           type: subContents.name,
-    //           title: subContents.description,
-    //           footerSubTitle: "(2350) votes",
-    //           stars: "4",
-    //           actionText: subContents.status,
-    //         }
-    //         this.data.push(tmp)
-    //       })
-
-    //     }
-    //   })
-    // } else {
-    //   console.log("SERVER TOLD NOthing ")
-    // }
     this.handleResponse();
   }
 
