@@ -158,7 +158,9 @@ class CourseComponent extends View {
       window.__runDuiCallback({ tag: "StartNotificationFlow", contents: [] });
     }
     if(url=="ic_action_search"){
-        window.__runDuiCallback({tag:"StartSearchFlow",contents:{filterDetails:""}});
+        var searchDetails = {filterDetails: "",searchType: "Course"}
+      window.__runDuiCallback({tag:"StartSearchFlow",contents:{filterDetails:JSON.stringify(searchDetails)}});
+        // window.__runDuiCallback({tag:"StartSearchFlow",contents:{filterDetails:""}});
 
     }
   }

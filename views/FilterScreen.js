@@ -34,7 +34,10 @@ class FilterScreen extends View {
     //   "Ownership"
     // ]
     // this.data = filterParams.params[0];
-    this.data = JSON.parse(state.data.value0.filterDetails);
+    this.tempData = JSON.parse(state.data.value0.filterDetails);
+    console.log("tempData in filter",this.tempData);
+    this.data = JSON.parse(this.tempData.filterDetails);
+    // this.data = JSON.parse(this.data);
     console.log("FILTER DATA", this.data)
     this.filterData = this.data.facetFilters;
 
@@ -117,7 +120,8 @@ class FilterScreen extends View {
 
 
   handleBackPress = () => {
-    window.__runDuiCallback( {filterData:JSON.stringify(this.data)} );
+    var searchDetails = {filterDetails: JSON.stringify(this.data),searchType: this.tempData.filterType}
+    window.__runDuiCallback( {filterData:JSON.stringify(searchDetails)} );
 
   }
 

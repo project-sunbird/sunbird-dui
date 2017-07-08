@@ -17,7 +17,6 @@ class SearchResult extends View {
   getData = () => {
     var answerLayout = this.props.data.map((item, index) => {
       var appIcon = item.hasOwnProperty("appIcon") ? item.appIcon : "ic_launcher" ;
-      console.log("appIcon",appIcon);
      return (<LinearLayout
             width="match_parent"
             height="wrap_content"

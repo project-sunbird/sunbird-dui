@@ -34,13 +34,15 @@ class SearchScreen extends View {
     this.state = state;
     this.shouldCacheScreen=false;
     this.screenName = "SearchScreen"
-    this.filterData = state.data.value0.filterDetails;
-    this.filterParams = "empty";
-    console.log("filter in search ^^^^^^^^^^^^^^^^^^",state.data.value0.filterDetails);
-    this.temp = state.data.value0.filterDetails;
+    this.tempData = JSON.parse(state.data.value0.filterDetails);
+    this.filterData = this.tempData.filterDetails;
+    console.log("filter in search ^^^^^^^^^^^^^^^^^^",state.data);
+    this.temp = state.data;
+    this.searchType = this.tempData.searchType;
+    console.log("type",this.searchType);
      
     _this = this;
-    this.checkSearchList(this.filterData.length,state.data.value0.filterDetails);
+    this.checkSearchList(this.filterData.length,this.filterData);
   }
 
   checkSearchList = (length,data)=>{
@@ -199,11 +201,20 @@ class SearchScreen extends View {
         this.filterData = this.temp;
       }
       console.log("searchtext",searchText);
+      console.log("this.filterData",this.filterData);
+
+      var s = "";
+      if(typeof this.filterData == 'object'){
+        this.filterData = this.filterData.value0.filterDetails;
+        var s = JSON.parse(this.filterData);
+        console.log("filterHolder",s.filterDetails);
+        this.filterData = s.filterDetails;
+      }
 
       console.log("this.filterData",this.filterData.length);
       console.log("this.filterData",this.filterData);
 
-      JBridge.searchContent(callback,this.filterData,searchText,"Resource",status);
+      JBridge.searchContent(callback,this.filterData,searchText,this.searchType,status);
     }
   }
  
@@ -249,7 +260,9 @@ class SearchScreen extends View {
   handleFilterClick = () =>{
       console.log("fdata!!!!!!!!!!!!!!!!!!",_this.filterData);
 
-      window.__runDuiCallback({ tag: "StartFilterFlow",contents:{filterDetails:this.filterData} });
+      // window.__runDuiCallback({ tag: "StartFilterFlow",contents:{filterDetails:JSON.stringify(this.filterData)} });
+      var filteredData = {filterDetails: _this.filterData, filterType: _this.searchType}
+      window.__runDuiCallback({ tag: "StartFilterFlow",contents:{filterDetails:JSON.stringify(filteredData)} });
   }
 
   onItemClick = (params) =>{
