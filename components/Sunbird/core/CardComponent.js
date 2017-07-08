@@ -144,7 +144,9 @@ class CardComponent extends View {
 
 
   afterRender = () => {
-    JBridge.setRating(this.idSet.ratingBar, this.props.data.stars);
+
+    if(this.props.data.stars)
+      JBridge.setRating(this.idSet.ratingBar, this.props.data.stars);
   }
 
   getFooter = () => {

@@ -66,16 +66,12 @@ class OfflineResourceContainer extends View {
     this.data = JSON.parse(this.props.data);
     var rows = this.data.map((item, i) => {
 
-
-      console.log("OFFLINE RESOURCE ROW ITEMS", item);
-
       var size = item.hasOwnProperty("size") ? " ["+this.formatBytes(item.size)+"]" : "";
       var footerTitle = item.contentType + size;
 
       var temp = {};
 
       var fileImageUrl = "file://"+item.basePath + "/" +item.contentData.appIcon;
-      console.log("FILE IJMAGEURL",fileImageUrl);
 
       temp['imageUrl'] = fileImageUrl;
       temp['title'] = item.contentData.name;
@@ -90,6 +86,7 @@ class OfflineResourceContainer extends View {
     });
 
     var layout = (<LinearLayout
+                    margin="0,0,16,0"
                     width="wrap_content"
                     height="wrap_content">
 
