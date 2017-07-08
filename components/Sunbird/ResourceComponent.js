@@ -218,9 +218,10 @@ class ResourceComponent extends View {
     if (url == "ic_notification_red") {
       window.__runDuiCallback({ tag: "StartNotificationFlow", contents: [] });
     }
-
-    if (url == "ic_action_search") {
-      window.__runDuiCallback({ tag: "StartSearchFlow", contents: { filterDetails: "" } });
+    if(url=="ic_action_search"){
+      var searchDetails = {filterDetails: "",searchType: "Resource"}
+      window.__runDuiCallback({tag:"StartSearchFlow",contents:{filterDetails:JSON.stringify(searchDetails)}});
+        // window.__runDuiCallback({tag:"StartSearchFlow",contents:{filterDetails:""}});
 
     }
   }
