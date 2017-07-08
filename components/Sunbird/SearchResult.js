@@ -9,7 +9,10 @@ var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
-window.R = require("ramda");
+var utils = require('../../utils/GenericFunctions');
+
+
+
 class SearchResult extends View {
   constructor(props, children) {
     super(props, children);
@@ -57,7 +60,7 @@ class SearchResult extends View {
                     <TextView
                       height="wrap_content"
                       padding = "0,10,10,0"
-                      text= { item.hasOwnProperty("size") ? this.formatBytes(item.size) : " "}
+                      text= { item.hasOwnProperty("size") ? utils.formatBytes(item.size) : " "}
                       style={window.__TextStyle.textStyle.HINT.SEMI}/>
                 </LinearLayout>
                   <TextView
@@ -82,12 +85,6 @@ class SearchResult extends View {
     return answerLayout;
   }
 
-  formatBytes = (bytes)=> {
-    if(bytes < 1024) return bytes + " Bytes";
-    else if(bytes < 1048576) return(bytes / 1024).toFixed(2) + " KB";
-    else if(bytes < 1073741824) return(bytes / 1048576).toFixed(2) + " MB";
-    else return(bytes / 1073741824).toFixed(3) + " GB";
-};
 
 
 
@@ -98,7 +95,7 @@ class SearchResult extends View {
 
     if(item.contentType != "Course" && item.contentType != "Collection"){
      
-      var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+this.formatBytes(item.size)+"]" : "");      
+      var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");      
       var resDetails = {};
       resDetails['imageUrl'] = item.appIcon;
       resDetails['title'] = item.name;

@@ -15,6 +15,8 @@ var SimpleToolbar = require('../../components/Sunbird/core/SimpleToolbar');
 var CropParagraph = require('../../components/Sunbird/CropParagraph');
 var ProgressButton = require('../../components/Sunbird/core/ProgressButton');
 var ResourceViewAllCard = require('../../components/Sunbird/ResourceViewAllCard');
+var utils = require('../../utils/GenericFunctions');
+
 
 
 class ResourceViewAllScreen extends View {
@@ -40,36 +42,35 @@ class ResourceViewAllScreen extends View {
   }
 
   
-formatBytes = (bytes)=> {
-    if(bytes < 1024) return bytes + " Bytes";
-    else if(bytes < 1048576) return(bytes / 1024).toFixed(2) + " KB";
-    else if(bytes < 1073741824) return(bytes / 1048576).toFixed(2) + " MB";
-    else return(bytes / 1073741824).toFixed(3) + " GB";
-};
 
 getRows = () =>{
 
     var rows = this.details.map((item,i) => {
 
-                
-                console.log("item data in getrows",item);
-                var size = item.contentData.size ? " [" + this.formatBytes(item.contentData.size) + "]" : "";
-                var fileImageUrl = "file://"+item.basePath + "/" +item.contentData.appIcon;
+      if(item.contentType != "course"){
 
+                var size = item.contentData.size ? " [" + utils.formatBytes(item.contentData.size) + "]" : "";
+                var fileImageUrl = "file://"+item.basePath + "/" +item.contentData.appIcon;
                 var temp = {};
                 temp['imageUrl'] = fileImageUrl;
                 temp['name'] = item.contentData.name;
                 temp['progress'];
-                temp['footerTitle'] = "20% done";
+                temp['footerTitle'] = utils.prettifyDate(item.lastUpdatedTime);
                 temp['actionText'] = "RESUME";
                 temp["footerSubTitle"] = item.contentData.contentType + size;
 
-               
-     
          return (<ResourceViewAllCard 
                  data={temp}
                  content={item}
                  onResourceClick = {this.handleResourceClick}/>)
+
+     }
+     else {
+         return  (<LinearLayout
+                  width ="0"
+                  height = "0"/>)
+    }
+
     });
 
     var layout = (<LinearLayout
@@ -84,16 +85,11 @@ getRows = () =>{
     return layout;
                     
   }
-    formatBytes = (bytes)=> {
-    if(bytes < 1024) return bytes + " Bytes";
-    else if(bytes < 1048576) return(bytes / 1024).toFixed(2) + " KB";
-    else if(bytes < 1073741824) return(bytes / 1048576).toFixed(2) + " MB";
-    else return(bytes / 1073741824).toFixed(3) + " GB";
-};
+
 
     handleResourceClick = (item)=>{
 
-      var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+this.formatBytes(item.size)+"]" : "");   
+      var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");   
       var fileImageUrl = "file://"+item.basePath + "/" +item.contentData.appIcon;
       var resDetails = {};
       resDetails['imageUrl'] = fileImageUrl;
