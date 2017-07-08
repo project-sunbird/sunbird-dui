@@ -15,7 +15,7 @@ import Flows.NotificationFlow
 import Flows.FilterFlow
 import Flows.ResourceFlow
 import Data.Generic.Rep (class Generic)
-import Data.Foreign.Generic (encodeJSON)
+import Data.Foreign.Generic (encodeJSON,decodeJSON)
 import Control.Monad.Eff.Exception (EXCEPTION)
 import Types.UITypes
 import Types.APITypes
@@ -39,6 +39,12 @@ startCourseInfoFlow state= do
 	case event of
 		DummyCourseInfoAction -> pure $ "handled"
 		ShowEnrolledCourse {course:courseDetail} -> startEnrolledCourseFlow courseDetail
+		EnrollCourse {reqParams:details} -> do
+			output <- enrollCourse details
+			liftEff $ log $ "output"
+  			_ <- sendUpdatedState {response : output, responseFor : "EnrollCourse", screen:"asas"} 
+			pure $ "handled"
+
 		_ -> pure $ "default"
 
 startEnrolledCourseFlow state= do

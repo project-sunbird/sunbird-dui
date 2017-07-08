@@ -240,11 +240,14 @@ class CourseInfoScreen extends View {
 
   }
 
+  handleStateChange = (data) =>{
+    console.log("GOT RESPONSE FROM ENROLL API",data);
+  }
+
   handleEnrollClick = (data) => {
     console.log("---->\t", "handleEnrollClick");
 
-    if (data === "ENROLL NOW") {
-      var req = {
+    var req = {
         "request": {
           "userId": "user1",
           "courseId": "course1",
@@ -253,13 +256,13 @@ class CourseInfoScreen extends View {
           "delta": {}
         }
       }
-      var eventAction = {
-        "tag": "enrollCourse",
-        "contents": { reqparams: req }
-      }
-      window.__runDuiCallback(eventAction);
 
-    }
+     var eventAction = {
+        "tag": "EnrollCourse",
+        "contents": { reqParams: "" }
+      }
+      console.log("IN ENROLLNOW")
+      window.__runDuiCallback(eventAction);
 
 
   }
