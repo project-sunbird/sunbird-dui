@@ -68,7 +68,7 @@ class CourseInfoScreen extends View {
 
     this.shouldCacheScreen = false;
 
-    console.log("GOT VALUES ", state)
+    //console.log("GOT VALUES ", state)
     this.details = JSON.parse(state.data.value0.courseDetails);
     console.log("GOT VALUES ", this.details)
 
@@ -76,7 +76,7 @@ class CourseInfoScreen extends View {
 
 
     this.data = {
-      courseName: this.details ? this.details.title : "",
+      courseName: this.details ? this.details.name : "",
       courseDesc: this.details ? this.details.courseDesc : "This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced",
       competedCount: this.details && this.details.footerTitle ? this.details.footerTitle.split('%')[0] : "10",
       totalCount: "150",

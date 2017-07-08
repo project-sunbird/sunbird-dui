@@ -66,7 +66,7 @@ class ContentLoadingComponent extends View {
     setTimeout(() => {
       console.log("Rendering Content to holder")
       this.replaceChild(this.idSet.holder, this.contentLayout.render(), 0);
-    }, 500);
+    }, 300);
   }
 
 

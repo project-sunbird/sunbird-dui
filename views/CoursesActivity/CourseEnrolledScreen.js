@@ -176,25 +176,24 @@ class CourseEnrolledScreen extends View {
       null
     );
   }
-    checkContentLocalStatus = (identifier) =>{
-      var callback = callbackMapper.map(function(status) {
+  checkContentLocalStatus = (identifier) => {
+    var callback = callbackMapper.map(function(status) {
 
 
-        if(status == "true"){
-          console.log("course exists")
-           var callback1 = callbackMapper.map(function(data) {
-              console.log("course details;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;",JSON.parse(data));
-              _this.courseContent = JSON.parse(data);
-           });
-           JBridge.getChildContent(identifier,callback1)
-        }
-        else
-          console.log("not exist")
+      if (status == "true") {
+        console.log("course exists")
+        var callback1 = callbackMapper.map(function(data) {
+          console.log("course details;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;", JSON.parse(data));
+          _this.courseContent = JSON.parse(data);
+        });
+        JBridge.getChildContent(identifier, callback1)
+      } else
+        console.log("not exist")
 
-      
 
-      });
-      JBridge.getLocalContentStatus(identifier,callback);
+
+    });
+    JBridge.getLocalContentStatus(identifier, callback);
   }
 
 
