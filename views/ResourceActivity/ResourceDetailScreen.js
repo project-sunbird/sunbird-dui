@@ -64,23 +64,12 @@ class ResourceDetailScreen extends View {
 
 
       this.details = JSON.parse(state.data.value0.resourceDetails);
-      console.log("ResourceDetail description",this.details.description)
-      console.log("Resource Title",this.details.name)
+    
       console.log("Got Title",state)
 
   }
 
-    formatBytes = (bytes)=> {
-    if(bytes < 1024) return bytes + " Bytes";
-    else if(bytes < 1048576) return(bytes / 1024).toFixed(2) + " KB";
-    else if(bytes < 1073741824) return(bytes / 1048576).toFixed(2) + " MB";
-    else return(bytes / 1073741824).toFixed(3) + " GB";
-};
 
-
-  
-
-  
   onPop = () => {
     Android.runInUI(
       this.animateView(),
@@ -135,6 +124,7 @@ class ResourceDetailScreen extends View {
        <LinearLayout
         width="match_parent"
         height="wrap_content"
+        visibility="gone"
         margin="0,8,0,0">
       
 
@@ -160,7 +150,6 @@ class ResourceDetailScreen extends View {
         width="wrap_content"
         height="wrap_content"
         text="No preview available"
-        visibility="gone"
         style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
 
@@ -224,6 +213,11 @@ class ResourceDetailScreen extends View {
         cornerRadius="4"
         background={window.__Colors.PRIMARY_BLACK_66}>
 
+        <ImageView
+        width="80"
+        height="50"
+        circularImageUrl={"4,"+this.details.imageUrl}/>
+
         </LinearLayout>
 
         <TextView
@@ -231,7 +225,7 @@ class ResourceDetailScreen extends View {
         height="wrap_content"
         padding="8,0,0,0"
         style={window.__TextStyle.textStyle.CARD.TITLE.DARK}
-        text={this.details.name}/>
+        text={this.details.title}/>
 
         </LinearLayout>
 
@@ -243,7 +237,7 @@ class ResourceDetailScreen extends View {
         <TextView
         width="wrap_content"
         height="wrap_content"
-        text="PDF file [207 KB]"
+        text={this.details.headFooterTitle}
         style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
         <ViewWidget

@@ -118,16 +118,25 @@ class SearchResult extends View {
 
   handleItemClick = (item) =>{
     console.log("clicked item<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<",item);
+
     var itemDetails = JSON.stringify(item);
-    console.log("itemDetails in rresourceDDDDD",itemDetails)
+
     if(item.contentType != "Course" && item.contentType != "Collection"){
-      window.__runDuiCallback({tag:"ResourceDetailFlow",contents:{resourceDetails:itemDetails}});
+     
+      var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+this.formatBytes(item.size)+"]" : "");      
+      var resDetails = {};
+      resDetails['imageUrl'] = item.appIcon;
+      resDetails['title'] = item.name;
+      resDetails['description'] = item.description;
+      resDetails['headFooterTitle'] = headFooterTitle;
+      resDetails['identifier'] = item.identifier;
+      window.__runDuiCallback({tag:"ResourceDetailFlow",contents:{resourceDetails:JSON.stringify(resDetails)}});
+
     }
     else
     {
       window.__runDuiCallback({tag:"CourseInfoFlow",contents:{course:itemDetails}});
     }
-    // window.__runDuiCallback({tag:"StartResourceDetailFlow",contents:{resourceDetails:itemDetails}});
 
   }
 
