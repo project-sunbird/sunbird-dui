@@ -1,3 +1,30 @@
+/*
+Copyright (c) 2012-2017 "JUSPAY Technologies"
+JUSPAY Technologies Pvt. Ltd. [https://www.juspay.in]
+
+This file is part of JUSPAY Platform.
+
+JUSPAY Platform is free software: you can redistribute it and/or modify
+it for only educational purposes under the terms of the GNU Affero General
+Public License (GNU AGPL) as published by the Free Software Foundation,
+either version 3 of the License, or (at your option) any later version.
+For Enterprise/Commerical licenses, contact <info@juspay.in>.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  The end user will
+be liable for all damages without limitation, which is caused by the
+ABUSE of the LICENSED SOFTWARE and shall INDEMNIFY JUSPAY for such
+damages, claims, cost, including reasonable attorney fee claimed on Juspay.
+The end user has NO right to claim any indemnification based on its use
+of Licensed Software. See the GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/agpl.html>.
+
+
+*/
+
 var dom = require("@juspay/mystique-backend").doms.android;
 var Connector = require("@juspay/mystique-backend").connector;
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
@@ -91,13 +118,31 @@ class HomeScreen extends View {
 
   handleStateChange = (state) => {
     console.log("HANDLE STATE CHANGE HOME SCREEN", state)
-      //console.log("GOT RESPONSE\n\n\n\n", state.response.status[1])
-    var responseData = {};
 
     this.currentPageIndex = isNaN(this.currentPageIndex) ? 0 : this.currentPageIndex;
     var shouldBeModified = false;
-    var contentLayout;
-    var jso = [];
+    var status = state.response.status[0];
+    var responseData = JSON.parse(state.response.status[1]);
+    var responseCode = state.response.status[2];
+    var responseUrl = state.response.status[3];
+
+    if (parseInt(responseCode) != 200) {
+      JBridge.showSnackBar("Response code ->" + responseCode)
+      console.log("DIDN't GOT 200")
+      return;
+    }
+
+
+
+    if (responseData.params.err) {
+      console.log("EROR MESSAGE :", response.params.errmsg)
+      JBridge.showSnackBar("ERROR MESSAGE ->" + response.params.errmsg)
+      return;
+    }
+
+
+
+
     switch (this.currentPageIndex) {
       case 0:
 
@@ -110,7 +155,9 @@ class HomeScreen extends View {
         // responseData = state.response.status[1];
         shouldBeModified = true;
         console.log("using mockResponse :", mockResponse.mockResponse)
-        responseData = mockResponse.mockResponse;
+        if (responseData.result.length == 0)
+          responseData = mockResponse.mockResponse
+          //responseData = JSON.parse(state.response.status[1]);
 
         break;
       case 2:
