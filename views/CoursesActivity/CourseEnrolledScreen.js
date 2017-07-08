@@ -67,10 +67,10 @@ class CourseEnrolledScreen extends View {
     this.shouldCacheScreen = false;
     this.courseContent = "";
     console.log("GOT VALUES ", state)
-    this.details = JSON.parse(state.data.value0.courseDetails);
+    //this.details = JSON.parse(state.data.value0.courseDetails);
     console.log("GOT VALUES ", this.details)
 
-    this.checkContentLocalStatus(this.details.identifier);
+    //this.checkContentLocalStatus(this.details.identifier);
 
 
 
@@ -176,26 +176,7 @@ class CourseEnrolledScreen extends View {
       null
     );
   }
-    checkContentLocalStatus = (identifier) =>{
-      var callback = callbackMapper.map(function(status) {
-
-
-        if(status == "true"){
-          console.log("course exists")
-           var callback1 = callbackMapper.map(function(data) {
-              console.log("course details;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;",JSON.parse(data));
-              _this.courseContent = JSON.parse(data);
-           });
-           JBridge.getChildContent(identifier,callback1)
-        }
-        else
-          console.log("not exist")
-
-      
-
-      });
-      JBridge.getLocalContentStatus(identifier,callback);
-  }
+    
 
 
 

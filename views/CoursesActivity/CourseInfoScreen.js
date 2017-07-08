@@ -46,7 +46,7 @@ var CourseCurriculum = require('../../components/Sunbird/CourseCurriculum');
 var PageOption = require('../../components/Sunbird/core/PageOption');
 var CourseProgress = require('../../components/Sunbird/CourseProgress');
 var ProgressButton = require('../../components/Sunbird/core/ProgressButton');
-
+var _this;
 class CourseInfoScreen extends View {
   constructor(props, children, state) {
     super(props, children, state);
@@ -67,10 +67,12 @@ class CourseInfoScreen extends View {
     }
 
     this.shouldCacheScreen = false;
-
+    _this = this;
     console.log("GOT VALUES ", state)
     this.details = JSON.parse(state.data.value0.courseDetails);
     console.log("GOT VALUES ", this.details)
+
+    this.checkContentLocalStatus(this.details.identifier);
 
 
 
@@ -169,6 +171,27 @@ class CourseInfoScreen extends View {
       }]
     };
 
+  }
+
+  checkContentLocalStatus = (identifier) =>{
+      var callback = callbackMapper.map(function(status) {
+
+        if(status == "true"){
+          console.log("course exists")
+           var callback1 = callbackMapper.map(function(data) {
+              console.log("course details;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;",JSON.parse(data));
+              _this.courseContent = JSON.parse(data);
+           });
+           JBridge.getChildContent(identifier,callback1)
+        }
+        else{
+          console.log("not exist")
+        }
+
+      
+
+      });
+      JBridge.getLocalContentStatus(identifier,callback);
   }
 
   onPop = () => {
