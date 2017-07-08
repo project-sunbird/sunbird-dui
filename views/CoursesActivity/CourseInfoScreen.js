@@ -55,7 +55,8 @@ class CourseInfoScreen extends View {
     this.setIds([
       "parentContainer",
       "pageOption",
-      "descriptionContainer"
+      "descriptionContainer",
+      "downloadProgressText"
     ]);
     this.state = state;
     this.screenName = "CourseEnrolledScreen"
@@ -192,11 +193,20 @@ class CourseInfoScreen extends View {
     var textToShow = ""
     console.log("DATA -> ", data)
 
-    if (parseInt(data.downloadProgress) == 100) {
+    var downloadedPercent = parseInt(data.downloadProgress);
+    downloadedPercent = downloadedPercent < 0 ? 0 : downloadedPercent;
+
+    if (downloadedPercent == 100) {
 
       console.log("SPINE IMPORTED -> ")
       this.checkContentLocalStatus(this.details.identifier);
 
+    } else {
+      var cmd = this.set({
+        id: this.idSet.downloadProgressText,
+        text: "Downloaded " + downloadedPercent + "%"
+      })
+      Android.runInUI(cmd, 0);
     }
   }
 
@@ -368,9 +378,12 @@ class CourseInfoScreen extends View {
                   root="true"
                   orientation="vertical"
                   id={this.idSet.descriptionContainer}>
-                     <ProgressBar
-                        height="70"
-                        width="70"/>
+                     <TextView
+                        id={this.idSet.downloadProgressText}
+                        test="Fetching spine"
+                        height="300"
+                        gravity="center"
+                        width="match_parent"/>
                 </LinearLayout>    
 
                 </LinearLayout>
