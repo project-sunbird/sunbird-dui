@@ -45,7 +45,7 @@ var CourseCurriculum = require('../../components/Sunbird/CourseCurriculum');
 var HorizontalProgressBar = require('../../components/Sunbird/HorizontalProgressBar');
 var CourseProgress = require('../../components/Sunbird/CourseProgress');
 
-
+var _this;
 class CourseEnrolledScreen extends View {
   constructor(props, children, state) {
     super(props, children, state);
@@ -63,13 +63,14 @@ class CourseEnrolledScreen extends View {
         { imageUrl: "ic_action_overflow" }
       ]
     }
-
+    _this = this;
     this.shouldCacheScreen = false;
-
+    this.courseContent = "";
     console.log("GOT VALUES ", state)
     this.details = JSON.parse(state.data.value0.courseDetails);
     console.log("GOT VALUES ", this.details)
 
+    this.checkContentLocalStatus(this.details.identifier);
 
 
 
@@ -175,6 +176,27 @@ class CourseEnrolledScreen extends View {
       null
     );
   }
+    checkContentLocalStatus = (identifier) =>{
+      var callback = callbackMapper.map(function(status) {
+
+
+        if(status == "true"){
+          console.log("course exists")
+           var callback1 = callbackMapper.map(function(data) {
+              console.log("course details;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;",JSON.parse(data));
+              _this.courseContent = JSON.parse(data);
+           });
+           JBridge.getChildContent(identifier,callback1)
+        }
+        else
+          console.log("not exist")
+
+      
+
+      });
+      JBridge.getLocalContentStatus(identifier,callback);
+  }
+
 
 
   onBackPressed = () => {
