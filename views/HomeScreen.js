@@ -159,6 +159,8 @@ class HomeScreen extends View {
           responseData = mockResponse.mockResponse
           //responseData = JSON.parse(state.response.status[1]);
 
+        window.__runDuiCallback({"tag": "StartCourseFlow", contents: []});
+
         break;
       case 2:
         shouldBeModified = true;
@@ -168,6 +170,8 @@ class HomeScreen extends View {
         // }
 
         responseData = JSON.parse(state.response.status[1]);
+        window.__runDuiCallback({"tag": "StartResourceFlow", contents: []});
+
         //shouldBeModified = true;
         break;
       case 3:

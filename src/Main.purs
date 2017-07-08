@@ -90,20 +90,21 @@ cFlow = do
     ShowHome {name:x} -> do
       liftEff $ log $ "Action handled Show HomeScreen"
       pure $ "action handled"
-   -- StartCourseFlow -> startCourseFlow action
-    --StartResourceFlow -> startResourceFlow action
+    StartCourseFlow -> startCourseFlow action
+    StartResourceFlow -> startResourceFlow action
     StartCommunityFlow -> startCommunityFlow action
     StartProfileFlow -> startProfileFlow action
     StartNotificationFlow -> startNotificationFlow action
-    StartResourceDetailFlow {resourceDetails : details} -> startResourceDetailFlow details
     StartCoursePageApi -> do
+                  liftEff $ log $ "START COURSE PAGE API"
                   responseData <- getCoursesPageApi
                   _ <- sendUpdatedState {response : responseData, responseFor : "StartCoursePageApi", screen:"asas"} 
-                  startCourseFlow action
+                  pure $ "handled"
     StartResourcePageApi -> do
+                  liftEff $ log $ "START RESOURCE PAGE API"
                   responseData <- getResourcePageApi
-                  _ <- sendUpdatedState {response : responseData, responseFor : "StartResourcePageApi", screen:"asas"} 
-                  startResourceFlow action
+                  _ <- sendUpdatedState {response : responseData, responseFor : "StartResourcePageApi", screen:"asas"}
+                  pure $ "handled"
     StartSearchFlow {filterDetails : details} -> startHomeSearchFlow details
 
     _ -> pure $ "aborted"
