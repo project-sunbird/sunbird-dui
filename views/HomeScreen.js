@@ -132,7 +132,7 @@ class HomeScreen extends View {
       return;
     }
 
-    var result = response.result;
+
 
     if (responseData.params.err) {
       console.log("EROR MESSAGE :", response.params.errmsg)
