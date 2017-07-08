@@ -13,44 +13,38 @@ var FilterPopup = require('../components/Sunbird/FilterPopup');
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 var _this;
+var R = require("ramda");
 
 
 
 const filterParams = require('../FilterParams');
 
 
-
 class FilterScreen extends View {
   constructor(props, children,state) {
     super(props, children,state);
-    // this.filterData = [
-    //   "Language",
-    //   "Grade",
-    //   "Domain",
-    //   "Framework",
-    //   "Concepts",
-    //   "Type",
-    //   "Subject",
-    //   "Medium",
-    //   "Ownership"
-    // ]
-    // this.data = filterParams.params[0];
-    this.tempData = JSON.parse(state.data.value0.filterDetails);
-    console.log("tempData in filter",this.tempData);
-    this.data = JSON.parse(this.tempData.filterDetails);
-    // this.data = JSON.parse(this.data);
-    console.log("FILTER DATA", this.data)
-    this.filterData = this.data.facetFilters;
 
+    this.tempData = JSON.parse(state.data.value0.filterDetails);
+    this.data = JSON.parse(this.tempData.filterDetails);
+    this.facetData = this.data.facetFilters;
     this.screenName = "FilterScreen";
     this.shouldCacheScreen = false;
+    this.filterData  = [];
+
+    for(let i in this.facetData){
+      if(this.facetData[i].values){
+        if(this.facetData[i].values.length != 0){
+          this.filterData.push(this.facetData[i]);
+        }
+      }
+    }
+    
+
   }
 
 
   handleFilterChange = (newData) => {
     this.filterData = newData;
-
-    console.log("NEW LIST", newData)
   }
 
 
