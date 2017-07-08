@@ -92,7 +92,7 @@ class HomeScreen extends View {
   handleStateChange = (state) => {
     console.log("HANDLE STATE CHANGE HOME SCREEN", state)
       //console.log("GOT RESPONSE\n\n\n\n", state.response.status[1])
-    var responseData = {};
+    var responseData = JSON.parse(state.response.status[1]);
 
     this.currentPageIndex = isNaN(this.currentPageIndex) ? 0 : this.currentPageIndex;
     var shouldBeModified = false;
@@ -110,7 +110,9 @@ class HomeScreen extends View {
         // responseData = state.response.status[1];
         shouldBeModified = true;
         console.log("using mockResponse :", mockResponse.mockResponse)
-        responseData = mockResponse.mockResponse;
+        if (responseData.result.length == 0)
+          responseData = mockResponse.mockResponse
+          //responseData = JSON.parse(state.response.status[1]);
 
         break;
       case 2:

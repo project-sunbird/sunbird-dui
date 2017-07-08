@@ -75,32 +75,90 @@ class CourseComponent extends View {
     }];
 
 
+    // if (this.props.response) {
+    //   this.details = this.props.response.result.response;
+    //   console.log("SERVER TOLD : ", this.details)
+    //   this.details.sections.map((item) => {
+    //     if (item.index == 2) {
+    //       this.data = [];
+    //       item.contents.map((subContents) => {
+    //         console.log("SERVER TOLD : ", subContents)
+
+    //         var tmp = {
+    //           imageUrl: subContents.appIcon,
+    //           type: subContents.name,
+    //           title: subContents.description,
+    //           footerSubTitle: "(2350) votes",
+    //           stars: "4",
+    //           actionText: subContents.status,
+    //         }
+    //         this.data.push(tmp)
+    //       })
+
+    //     }
+    //   })
+    // } else {
+    //   console.log("SERVER TOLD NOthing ")
+    // }
+    this.handleResponse();
+  }
+
+
+  handleResponse = () => {
+
+
+
     if (this.props.response) {
+      console.log("SERVER GAVE RESPONSE")
       this.details = this.props.response.result.response;
-      console.log("SERVER TOLD : ", this.details)
-      this.details.sections.map((item) => {
-        if (item.index == 2) {
-          this.data = [];
-          item.contents.map((subContents) => {
-            console.log("SERVER TOLD : ", subContents)
 
-            var tmp = {
-              imageUrl: subContents.appIcon,
-              type: subContents.name,
-              title: subContents.description,
-              footerSubTitle: "(2350) votes",
-              stars: "4",
-              actionText: subContents.status,
-            }
-            this.data.push(tmp)
-          })
-
-        }
+      var cardsContent = this.details.sections.map((item) => {
+        return (this.getCourseCardLayout(item))
       })
-    } else {
-      console.log("SERVER TOLD NOthing ")
-    }
+      this.cards = (<LinearLayout
+          height="wrap_content"
+          width="match_parent"
+          orientation="vertical"
+          root="true">
 
+            {cardsContent}
+
+          </LinearLayout>)
+    } else {
+      console.log("SERVER TOLD NULL")
+      this.cards = (<LinearLayout
+          height="wrap_content"
+          width="match_parent"
+          orientation="vertical"
+          root="true">
+
+            <TextView
+              text="Empty Body"
+              height="100"
+              width="200"
+              gravity="center"/>
+            
+          </LinearLayout>)
+    }
+  }
+
+
+  getCourseCardLayout = (item) => {
+
+    return (<LinearLayout
+        height="wrap_content"
+        width="match_parent"
+        root="true"
+        orientation="vertical">
+          {this.getSpaceSeparator()}
+
+                  <CourseContainer
+                    title={item.name}
+                    data = {item.contents}
+                    onCourseClick={this.handleCourseClick}/>
+
+
+        </LinearLayout>)
   }
 
 
@@ -158,20 +216,7 @@ class CourseComponent extends View {
                     data = {this.progressData} />
                    
 
-                  {this.getSpaceSeparator()}
-
-                  <CourseContainer
-                    title="Popular"
-                    data = {this.data}
-                    onCourseClick={this.handleCourseClick}/>
-                    
-
-                  {this.getSpaceSeparator()}
-
-                  <CourseContainer
-                    title="Recommended"
-                    data = {this.data}
-                    onCourseClick={this.handleCourseClick}/>
+                  {this.cards}
 
                 </LinearLayout>
 

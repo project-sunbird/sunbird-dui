@@ -26,12 +26,30 @@ class CourseContainer extends View {
 
   }
 
+  formatBytes = (bytes) => {
+    if (bytes < 1024) return bytes + " Bytes";
+    else if (bytes < 1048576) return (bytes / 1024).toFixed(2) + " KB";
+    else if (bytes < 1073741824) return (bytes / 1048576).toFixed(2) + " MB";
+    else return (bytes / 1073741824).toFixed(3) + " GB";
+  };
+
 
 
   getRows = () => {
     var rows = this.props.data.map((item, i) => {
+
+      var temp = {
+        imageUrl: (item.appIcon ? item.appIcon : "file://storage/emulated/0/SunbirdTest/content/domain_8808-64dd60d5-94cd-4896-a60e-11897bf69fd6/domain_8808/1461668536884adb212cfde_1465896981928.jpg"),
+        title: item.name,
+        type: item.sectionDataType,
+        actionText: "OPEN",
+        footerSubTitle: "(2350) votes",
+        stars: "4",
+        actionText: item.status
+      };
+
       return (<CardComponent 
-                 data={item}
+                 data={temp}
                  index={i}
                  content={item}
                  onCardClick={this.handleCardClick}/>)
