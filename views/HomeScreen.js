@@ -1,5 +1,3 @@
-
-
 var dom = require("@juspay/mystique-backend").doms.android;
 var Connector = require("@juspay/mystique-backend").connector;
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
@@ -76,12 +74,6 @@ class HomeScreen extends View {
     ]
   }
 
-
-  handleCourseInfoClick = (data) => {
-    this.state = R.merge(this.state, { event: 'showCourseInfo' })
-    window.__runDuiCallback({ action: "showCourseInfo" });
-  }
-
   onPop = () => {
     Android.runInUI(
       this.animateView(),
@@ -116,6 +108,12 @@ class HomeScreen extends View {
     }
 
 
+    if (state.responseFor == "GetEnrolledCourseApi") {
+      //CourseInProgressContainer of CourseScreen gets upated
+      console.log("GOT USER COURSES ->", responseData.result.courses)
+      window.__UpdateUserCourses(responseData.result.courses);
+      return;
+    }
 
 
     switch (this.currentPageIndex) {
@@ -134,7 +132,7 @@ class HomeScreen extends View {
           responseData = mockResponse.mockResponse
           //responseData = JSON.parse(state.response.status[1]);
 
-        window.__runDuiCallback({"tag": "StartCourseFlow", contents: []});
+        window.__runDuiCallback({ "tag": "StartCourseFlow", contents: [] });
 
         break;
       case 2:
@@ -145,7 +143,7 @@ class HomeScreen extends View {
         // }
 
         responseData = JSON.parse(state.response.status[1]);
-        window.__runDuiCallback({"tag": "StartResourceFlow", contents: []});
+        window.__runDuiCallback({ "tag": "StartResourceFlow", contents: [] });
 
         //shouldBeModified = true;
         break;

@@ -31,28 +31,33 @@ startCourseFlow state = do
 		StartEnrolledCourseFlow {course:courseDetail} -> startEnrolledCourseFlow courseDetail
 		StartNotificationFlow -> startNotificationFlow state
 		StartSearchFlow {filterDetails : details} -> startCourseSearchFlow details
+		GetEnrolledCourseApi -> do
+			responseData <- getUserEnrolledCourses 
+	 		_ <- sendUpdatedState {response : responseData, responseFor : "GetEnrolledCourseApi", screen:"asas"} 
+	  		pure $ "Aborted 3"
 		_ -> pure $ "default"
 
     
-startCourseInfoFlow state= do
-	event <- ui $ CourseInfoScreen {courseDetails:state}
+startCourseInfoFlow cDetail= do
+	event <- ui $ CourseInfoScreen {courseDetails:cDetail}
 	case event of
 		DummyCourseInfoAction -> pure $ "handled"
 		ShowEnrolledCourse {course:courseDetail} -> startEnrolledCourseFlow courseDetail
-		ShowModuleDetails {moduleName:mName,moduleDetails:mDetails}-> startModuleDetailsFlow mName mDetails
+		ShowModuleDetails {moduleName:mName,moduleDetails:mDetails}-> startModuleDetailsFlow mName mDetails cDetail
 		_ -> pure $ "default"
 
-startEnrolledCourseFlow state= do
-	event <- ui $ CourseEnrolledScreen {courseDetails:state}
+startEnrolledCourseFlow cDetail= do
+	event <- ui $ CourseEnrolledScreen {courseDetails:cDetail}
 	case event of
 		DummyCourseEnrolledAction -> pure $ "handled"
-  		ShowModuleScreen {moduleName:mName,moduleDetails:mDetails}-> startModuleDetailsFlow mName mDetails
+  		ShowModuleScreen {moduleName:mName,moduleDetails:mDetails}-> startModuleDetailsFlow mName mDetails cDetail
 		_ -> pure $ "default"
 
-startModuleDetailsFlow mName mDetails= do
+startModuleDetailsFlow mName mDetails parentCourse= do
 	event <- ui $ ModuleDetailScreen {moduleName:mName,moduleDetails:mDetails}
 	case event of
 		DummyModuleDetailsAction -> pure $ "handled"
+		BackToParent -> startCourseInfoFlow parentCourse
   		_ -> pure $ "default"
 
 startCourseSearchFlow state = do

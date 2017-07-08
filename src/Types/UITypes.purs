@@ -27,7 +27,7 @@ data HomeScreenAction = ShowHome {name::String} | StartCourseFlow |
  StartCommunityInfoFlow {community::String} | StartCommunityViewAllFlow | 
  StartCourseInfoFlow {course::String} | StartEnrolledCourseFlow {course::String} |
  GetCoursePage | GetResourcePage | StartNotificationFlow | StartResourceDetailFlow {resourceDetails::String} | 
- StartResourceViewAllFlow {resourceDetails::String} | StartSearchFlow {filterDetails::String}| StartResourcePageApi | StartCoursePageApi
+ StartResourceViewAllFlow {resourceDetails::String} | StartSearchFlow {filterDetails::String}| StartResourcePageApi | StartCoursePageApi | GetEnrolledCourseApi
 
 data InitScreen = InitScreen 
 data InitScreenAction = ShowInit  | StartInit
@@ -45,7 +45,7 @@ data CourseEnrolledScreen = CourseEnrolledScreen {courseDetails::String}
 data CourseEnrolledScreenAction = DummyCourseEnrolledAction | ShowModuleScreen {moduleName::String,moduleDetails::String}
 
 data ModuleDetailScreen = ModuleDetailScreen {moduleName::String,moduleDetails::String}
-data ModuleDetailScreenAction = DummyModuleDetailsAction
+data ModuleDetailScreenAction = DummyModuleDetailsAction | BackToParent
 
 
 data CommunityViewAllScreen = CommunityViewAllScreen

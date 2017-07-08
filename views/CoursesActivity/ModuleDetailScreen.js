@@ -259,7 +259,10 @@ class ModuleDetailScreen extends View {
     return bodyLayout;
   }
 
-
+  onBackPressed = () => {
+    var eventAction = { "tag": "BackToParent", contents: [] };
+    window.__runDuiCallback(eventAction);
+  }
 
 
   render() {
