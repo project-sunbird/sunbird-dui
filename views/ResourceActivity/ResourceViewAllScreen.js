@@ -68,7 +68,7 @@ getRows = () =>{
      
          return (<ResourceViewAllCard 
                  data={temp}
-                 content={item.contentData}
+                 content={item}
                  onResourceClick = {this.handleResourceClick}/>)
     });
 
@@ -91,9 +91,19 @@ getRows = () =>{
     else return(bytes / 1073741824).toFixed(3) + " GB";
 };
 
-    handleResourceClick = (content)=>{
-      console.log("content -------------->",content);
-      window.__runDuiCallback({tag:"StartResourceInfoFlow",contents:{resourceDetails:JSON.stringify(content)}});
+    handleResourceClick = (item)=>{
+
+      var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+this.formatBytes(item.size)+"]" : "");   
+      var fileImageUrl = "file://"+item.basePath + "/" +item.contentData.appIcon;
+      var resDetails = {};
+      resDetails['imageUrl'] = fileImageUrl;
+      resDetails['title'] = item.contentData.name;
+      resDetails['description'] = item.contentData.description;
+      resDetails['headFooterTitle'] = headFooterTitle;
+      resDetails['identifier'] = item.identifier;
+
+      window.__runDuiCallback({tag:"StartResourceInfoFlow",contents:{resourceDetails:JSON.stringify(resDetails)}});
+
         
     }
 
@@ -119,10 +129,6 @@ getRows = () =>{
             margin="0,16,0,0"
             background={window.__Colors.PRIMARY_BLACK_22}/>)
   }
-
-  
-
-  
 
   handleBackPress = () => {
     window.__changePureScriptFlow();
