@@ -67,6 +67,10 @@ module.exports = function(action, payload, state) {
       localState.isInit = false;
       localState.currScreen = "CourseEnrolledScreen";
       break;
+    case "ModuleDetailScreen":
+      localState.isInit = false;
+      localState.currScreen = "ModuleDetailScreen";
+      break;
 
     case "CommunityViewAllScreen":
       localState.isInit = false;

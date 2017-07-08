@@ -47,6 +47,7 @@ const UserScreen = require("../views/UserScreen");
 //Course or Learn
 const CourseInfoScreen = require("../views/CoursesActivity/CourseInfoScreen");
 const CourseEnrolledScreen = require("../views/CoursesActivity/CourseEnrolledScreen");
+const ModuleDetailScreen = require("../views/CoursesActivity/ModuleDetailScreen");
 
 //Resource
 
@@ -85,6 +86,9 @@ var determineScreen = (screenName, state) => {
       break;
     case "CourseEnrolledScreen":
       screen = new(CourseEnrolledScreen(dispatcher, RootScreenActions))(null, null, state);
+      break;
+    case "ModuleDetailScreen":
+      screen = new(ModuleDetailScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
 
     case "CommunityInfoScreen":
@@ -200,14 +204,14 @@ var handleGoBack = function(data) {
 
   var stackLen = window.__SCREEN_STACK.length;
   var cmd = "";
-  if (stackLen == 1)  {
+  if (stackLen == 1) {
     __ROOTSCREEN.minimizeApp();
     return;
   }
 
   var screenData = window.__CACHED_SCREENS[window.__CURR_SCREEN];
   if (screenData.screen.onBackPress) {
-    if (!screenData.screen.onBackPress()){
+    if (!screenData.screen.onBackPress()) {
       console.log("failed");
       return;
     }
@@ -219,11 +223,11 @@ var handleGoBack = function(data) {
   window.__SCREEN_STACK.pop();
 
   var screen = window.__CACHED_SCREENS[window.__CURR_SCREEN].screen;
-  var state = R.merge(data.state, {currScreen: window.__CURR_SCREEN});
+  var state = R.merge(data.state, { currScreen: window.__CURR_SCREEN });
 
-  data = R.merge(data, {action: window.__CURR_SCREEN, state: state});
+  data = R.merge(data, { action: window.__CURR_SCREEN, state: state });
 
-  if (typeof screen.shouldCacheScreen  !== "undefined" && !screen.shouldCacheScreen) {
+  if (typeof screen.shouldCacheScreen !== "undefined" && !screen.shouldCacheScreen) {
     console.info("updating screen ", window.__CURR_SCREEN);
     updateNode(data);
     window.__ANIMATE_DIR = getDirection();
