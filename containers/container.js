@@ -1,5 +1,34 @@
+/*
+Copyright (c) 2012-2017 "JUSPAY Technologies"
+JUSPAY Technologies Pvt. Ltd. [https://www.juspay.in]
+
+This file is part of JUSPAY Platform.
+
+JUSPAY Platform is free software: you can redistribute it and/or modify
+it for only educational purposes under the terms of the GNU Affero General
+Public License (GNU AGPL) as published by the Free Software Foundation,
+either version 3 of the License, or (at your option) any later version.
+For Enterprise/Commerical licenses, contact <info@juspay.in>.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  The end user will
+be liable for all damages without limitation, which is caused by the
+ABUSE of the LICENSED SOFTWARE and shall INDEMNIFY JUSPAY for such
+damages, claims, cost, including reasonable attorney fee claimed on Juspay.
+The end user has NO right to claim any indemnification based on its use
+of Licensed Software. See the GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/agpl.html>.
+
+
+*/
+
 const uiHandler = require("@juspay/mystique-backend").uiHandlers.android;
 var dispatcher;
+const R = require('ramda');
+
 
 //Reducer
 const ScreenReducer = require("../state_machines/Screens");
@@ -125,14 +154,17 @@ var renderScreen = function(data) {
   var takeFromCache = true;
   var screenData = window.__CACHED_SCREENS[data.action];
 
+
   if (screenData) {
     isCached = true;
 
     screen = screenData.screen;
+
     if (typeof screen.shouldCacheScreen !== "undefined" && !screen.shouldCacheScreen) {
       console.info("updating screen ", data.action);
       updateNode(data);
       takeFromCache = false;
+      console.log("data.action", screen);
     }
   } else {
     window.__ANIMATE_DIR = 1;
@@ -168,24 +200,38 @@ var handleGoBack = function(data) {
 
   var stackLen = window.__SCREEN_STACK.length;
   var cmd = "";
-  if (stackLen == 1) {
+  if (stackLen == 1)  {
     __ROOTSCREEN.minimizeApp();
     return;
   }
 
   var screenData = window.__CACHED_SCREENS[window.__CURR_SCREEN];
   if (screenData.screen.onBackPress) {
-    if (!screenData.screen.onBackPress()) {
+    if (!screenData.screen.onBackPress()){
       console.log("failed");
       return;
     }
   }
 
+
   window.__PREV_SCREEN = window.__SCREEN_STACK[stackLen - 1];
   window.__CURR_SCREEN = window.__SCREEN_STACK[stackLen - 2];
-  window.__ANIMATE_DIR = -1;
   window.__SCREEN_STACK.pop();
-  window.__CACHED_SCREENS[window.__CURR_SCREEN].screen.onPop(data.state, "backPress");
+
+  var screen = window.__CACHED_SCREENS[window.__CURR_SCREEN].screen;
+  var state = R.merge(data.state, {currScreen: window.__CURR_SCREEN});
+
+  data = R.merge(data, {action: window.__CURR_SCREEN, state: state});
+
+  if (typeof screen.shouldCacheScreen  !== "undefined" && !screen.shouldCacheScreen) {
+    console.info("updating screen ", window.__CURR_SCREEN);
+    updateNode(data);
+    window.__ANIMATE_DIR = getDirection();
+    appendToRoot(window.__CACHED_SCREENS[window.__CURR_SCREEN].screen);
+  } else {
+    window.__ANIMATE_DIR = -1;
+    screen.onPop(data.state, "backPress");
+  }
 }
 
 var handleScreenActions = function(data) {
@@ -225,6 +271,8 @@ var handleScreenActions = function(data) {
   window.__CURR_SCREEN = data.action;
 
   res = renderScreen(data);
+
+  console.log(res);
   if (!res.isCached) {
     appendToRoot(res.screen);
     return {};
@@ -234,6 +282,7 @@ var handleScreenActions = function(data) {
     if (res.screen.onPop)
       res.screen.onPop(data.state);
   } else {
+    console.log("appendToRoot");
     window.__ANIMATE_DIR = getDirection();
     appendToRoot(res.screen);
   }

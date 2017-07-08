@@ -1,3 +1,30 @@
+/*
+Copyright (c) 2012-2017 "JUSPAY Technologies"
+JUSPAY Technologies Pvt. Ltd. [https://www.juspay.in]
+
+This file is part of JUSPAY Platform.
+
+JUSPAY Platform is free software: you can redistribute it and/or modify
+it for only educational purposes under the terms of the GNU Affero General
+Public License (GNU AGPL) as published by the Free Software Foundation,
+either version 3 of the License, or (at your option) any later version.
+For Enterprise/Commerical licenses, contact <info@juspay.in>.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  The end user will
+be liable for all damages without limitation, which is caused by the
+ABUSE of the LICENSED SOFTWARE and shall INDEMNIFY JUSPAY for such
+damages, claims, cost, including reasonable attorney fee claimed on Juspay.
+The end user has NO right to claim any indemnification based on its use
+of Licensed Software. See the GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/agpl.html>.
+
+
+*/
+
 var dom = require("@juspay/mystique-backend").doms.android;
 var Connector = require("@juspay/mystique-backend").connector;
 var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
@@ -25,8 +52,8 @@ class ResourceContainer extends View {
 
   formatBytes = (bytes) => {
     if (bytes < 1024) return bytes + " Bytes";
-    else if (bytes < 1048576) return (bytes / 1024).toFixed(2) + " KB";
-    else if (bytes < 1073741824) return (bytes / 1048576).toFixed(2) + " MB";
+    else if (bytes < 1048576) return (parseInt(bytes / 1024)) + " KB";
+    else if (bytes < 1073741824) return (parseInt(bytes / 1048576)) + " MB";
     else return (bytes / 1073741824).toFixed(3) + " GB";
   };
 
@@ -36,16 +63,14 @@ class ResourceContainer extends View {
 
 
       console.log("item data in getrows", item);
-      var size = item.hasOwnProperty("size") ? this.formatBytes(item.size) : "N/A";
-      var type = item.mimeType.split('.')[2];
-      var footerTitle = type + " [" + size + "]";
+      var size = item.hasOwnProperty("size") ? " ["+this.formatBytes(item.size)+"]" : "";
+      var footerTitle = item.contentType + size;
 
       var temp = {};
       temp['imageUrl'] = "file://storage/emulated/0/SunbirdTest/content/domain_8808-64dd60d5-94cd-4896-a60e-11897bf69fd6/domain_8808/1461668536884adb212cfde_1465896981928.jpg";
       temp['title'] = item.name;
-      temp['type'] = item.contentType;
       temp['footerTitle'] = footerTitle;
-      temp['footerSubTitle'] = "";
+      temp['footerSubTitle'] = item.contentType;
       temp['actionText'] = "OPEN";
 
 

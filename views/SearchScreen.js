@@ -1,3 +1,30 @@
+/*
+Copyright (c) 2012-2017 "JUSPAY Technologies"
+JUSPAY Technologies Pvt. Ltd. [https://www.juspay.in]
+
+This file is part of JUSPAY Platform.
+
+JUSPAY Platform is free software: you can redistribute it and/or modify
+it for only educational purposes under the terms of the GNU Affero General
+Public License (GNU AGPL) as published by the Free Software Foundation,
+either version 3 of the License, or (at your option) any later version.
+For Enterprise/Commerical licenses, contact <info@juspay.in>.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  The end user will
+be liable for all damages without limitation, which is caused by the
+ABUSE of the LICENSED SOFTWARE and shall INDEMNIFY JUSPAY for such
+damages, claims, cost, including reasonable attorney fee claimed on Juspay.
+The end user has NO right to claim any indemnification based on its use
+of Licensed Software. See the GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/agpl.html>.
+
+
+*/
+
 var dom = require("@juspay/mystique-backend").doms.android;
 var Connector = require("@juspay/mystique-backend").connector;
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
@@ -34,10 +61,26 @@ class SearchScreen extends View {
     this.state = state;
     this.shouldCacheScreen=false;
     this.screenName = "SearchScreen"
-    this.filterData = "";
-    console.log("filter in search ^^^^^^^^^^^^^^^^^^",state);
+    this.tempData = JSON.parse(state.data.value0.filterDetails);
+    this.filterData = this.tempData.filterDetails;
+    console.log("filter in search ^^^^^^^^^^^^^^^^^^",state.data);
+    this.temp = state.data;
+    this.searchType = this.tempData.searchType;
+    console.log("type",this.searchType);
      
     _this = this;
+    this.checkSearchList(this.filterData.length,this.filterData);
+  }
+
+  checkSearchList = (length,data)=>{
+    if(length!=0){
+      this.handleSearchClick();
+      data=JSON.parse(data)
+      console.log("query!",data.query)
+      this.getSearchList(data.query);
+
+
+    }
   }
 
   onPop = () => {
@@ -177,8 +220,28 @@ class SearchScreen extends View {
     });
 
     if(searchText.length >2){
+      if(this.filterData.length==0){
+        status = "false";
+      }
+      else{
+        status = "true";
+        this.filterData = this.temp;
+      }
       console.log("searchtext",searchText);
-      JBridge.searchContent(callback,searchText,"Course");
+      console.log("this.filterData",this.filterData);
+
+      var s = "";
+      if(typeof this.filterData == 'object'){
+        this.filterData = this.filterData.value0.filterDetails;
+        var s = JSON.parse(this.filterData);
+        console.log("filterHolder",s.filterDetails);
+        this.filterData = s.filterDetails;
+      }
+
+      console.log("this.filterData",this.filterData.length);
+      console.log("this.filterData",this.filterData);
+
+      JBridge.searchContent(callback,this.filterData,searchText,this.searchType,status);
     }
   }
  
@@ -224,7 +287,9 @@ class SearchScreen extends View {
   handleFilterClick = () =>{
       console.log("fdata!!!!!!!!!!!!!!!!!!",_this.filterData);
 
-      window.__runDuiCallback({ tag: "StartFilterFlow",contents:{filterDetails:this.filterData} });
+      // window.__runDuiCallback({ tag: "StartFilterFlow",contents:{filterDetails:JSON.stringify(this.filterData)} });
+      var filteredData = {filterDetails: _this.filterData, filterType: _this.searchType}
+      window.__runDuiCallback({ tag: "StartFilterFlow",contents:{filterDetails:JSON.stringify(filteredData)} });
   }
 
   onItemClick = (params) =>{
