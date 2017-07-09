@@ -59,8 +59,9 @@ getMenu = () =>{
   setMenu = (imageUrl,index) => {
     if(index <=2) {
     return  <ImageView  
-        style = {IconStyle}
         popupMenu = {this.props.items}
+        width="16"
+        height="16"
         onClick = {() => {this.handleMenuClick(index)}}
         popupMenu = {this.homePopUpMenu}
         onMenuItemClick = {this.more}
@@ -78,6 +79,8 @@ getMenu = () =>{
     return (
       <ImageView
       margin="0,0,10,0"
+      width="16"
+      height="16"
       style={IconStyle}
       onClick={this.props.onBackPress}
       imageUrl = {"ic_action_arrow_left"}/>)
@@ -115,6 +118,8 @@ getMenu = () =>{
 
     return this.props.icons.map((icon, index) => {
       return (<ImageView  
+        width="16"
+        height="16"
         onClick={() => {this.props.onIconClick(icon)}}
         style = {IconStyle}
         imageUrl = {icon}/>)

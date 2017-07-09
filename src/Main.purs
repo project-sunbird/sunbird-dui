@@ -42,7 +42,6 @@ userScreenFlow = do
   action <- ui UserScreen
   case action of
     LoginApiAction{userName:x,userPass:y} -> do
-      --liftEff $ log "FOR UN :" <> x <> " PASS :" <> y
       responseData <- userLogin x y
       --userScreenFlow {state:"tab3"}
       _ <- sendUpdatedState {response : responseData, responseFor : "LoginApiAction", screen:"asas"} 
