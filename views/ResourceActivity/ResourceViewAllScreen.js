@@ -35,10 +35,15 @@ class ResourceViewAllScreen extends View {
     this.shouldCacheScreen = false;
     console.log("state in view all",state);
     this.details = JSON.parse(state.data.value0.resourceDetails);
-
+    console.log("this.details",this.details)
+    console.log("type",typeof(this.details))
     console.log("data in view all",JSON.parse(this.details));
     this.details = JSON.parse(this.details);
-
+    this.size;
+    this.fileImageUrl;
+    this.cType;
+    this.name;
+    this.time;
   }
 
   
@@ -48,16 +53,33 @@ getRows = () =>{
     var rows = this.details.map((item,i) => {
 
       if(item.contentType != "course"){
+              
+                if(item.hasOwnProperty("contentData")){
+                  this.size = " [" + utils.formatBytes(item.contentData.size) + "]";
+                  this.fileImageUrl = "file://"+item.basePath + "/" +item.contentData.appIcon;
+                  this.cType = item.contentData.contentType
+                  this.name = item.contentData.name;
+                  this.time = utils.prettifyDate(item.lastUpdatedTime);
+                }
+                else{
+                   this.size = " [" + utils.formatBytes(item.size) + "]"; 
+                   this.fileImageUrl = item.appIcon;
+                   this.cType = item.contentType
+                   this.name = item.name;
+                   var d =  new Date(item.createdOn);
+                   this.time = d.getDay() + "-" + d.getMonth()+ "-" + d.getUTCFullYear();
+                }
 
-                var size = item.contentData.size ? " [" + utils.formatBytes(item.contentData.size) + "]" : "";
-                var fileImageUrl = "file://"+item.basePath + "/" +item.contentData.appIcon;
+
+
+
                 var temp = {};
-                temp['imageUrl'] = fileImageUrl;
-                temp['name'] = item.contentData.name;
+                temp['imageUrl'] = this.fileImageUrl;
+                temp['name'] = this.name;
                 temp['progress'];
-                temp['footerTitle'] = utils.prettifyDate(item.lastUpdatedTime);
-                temp['actionText'] = "RESUME";
-                temp["footerSubTitle"] = item.contentData.contentType + size;
+                temp['footerTitle'] = this.time;
+                temp['actionText'] = "OPEN";
+                temp["footerSubTitle"] = this.cType + this.size;
 
          return (<ResourceViewAllCard 
                  data={temp}
@@ -89,12 +111,11 @@ getRows = () =>{
 
     handleResourceClick = (item)=>{
 
-      var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");   
-      var fileImageUrl = "file://"+item.basePath + "/" +item.contentData.appIcon;
+      var headFooterTitle = this.cType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");   
       var resDetails = {};
-      resDetails['imageUrl'] = fileImageUrl;
-      resDetails['title'] = item.contentData.name;
-      resDetails['description'] = item.contentData.description;
+      resDetails['imageUrl'] = this.fileImageUrl;
+      resDetails['title'] = this.name;
+      resDetails['description'] = item.hasOwnProperty("description") ? item.description : item.contentData.description;
       resDetails['headFooterTitle'] = headFooterTitle;
       resDetails['identifier'] = item.identifier;
 
