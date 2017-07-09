@@ -328,15 +328,20 @@ class CourseInfoScreen extends View {
                   height="wrap_content"
                   margin="0,0,0,7"
                   text={this.data.courseName}
-                  style={window.__TextStyle.textStyle.HEADING.DARK}
-                  />
+                  style={window.__TextStyle.textStyle.HEADING.DARK} />
+                 
 
-                <CropParagraph
+                <TextView
                   height="wrap_content"
                   margin="0,0,0,12"
                   width="match_parent"
-                  contentText={this.data.courseDesc}
-                  />
+                  text="lorem ipsum, quia dolor sit
+                  dolore magnam aliquam quaerat voluptatem.
+                  Ut enim ad minima veniam, quis nostrum 
+                  qui in ea voluptate velit esse,
+                  quam nihil molestiae consequatur,
+                  vel illum, qui dolorem eum fugiat, quo voluptas nulla pariatur" />
+                 
 
                 <TextView
                   margin="0,0,0,4"

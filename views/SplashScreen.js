@@ -28,11 +28,30 @@ class SplashScreen extends View {
   }
 
   afterRender = () => {
-    console.log("Im in initial screen")
+
+    if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "false") {
+      this.setPermissions();
+    }
+
     setTimeout(() => {
       window.__runDuiCallback({ tag: "StartInit" });
     }, 1000);
   }
+
+
+  setPermissions = () => {
+
+    var callback = callbackMapper.map(function(data) {
+
+      if (data == "SUCCESS") {
+        JBridge.setKey("isPermissionSetWriteExternalStorage", "true");
+      }
+
+    });
+
+    JBridge.setPermissions(callback);
+  }
+
 
   render() {
     this.layout = (

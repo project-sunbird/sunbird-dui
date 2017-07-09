@@ -57,6 +57,7 @@ class ProgressButton extends View {
       return;
 
     var textToShow = ""
+    data.downloadProgress=data.downloadProgress<0?0:data.downloadProgress;
 
     if (parseInt(data.downloadProgress) == 100) {
 

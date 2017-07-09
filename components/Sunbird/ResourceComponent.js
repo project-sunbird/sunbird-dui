@@ -28,6 +28,7 @@ class ResourceComponent extends View {
       "parentContainer",
       "infoContainer",
       "viewallContainer",
+      "offlineContainer"
     ]);
     _this = this;
 
@@ -37,14 +38,8 @@ class ResourceComponent extends View {
 
     this.data = [];
 
-
-
-
-    this.getLocalContent();
-
     this.menuData = {
       url: [
-        { imageUrl: "ic_action_filter" },
         { imageUrl: "ic_notification_red" },
         { imageUrl: "ic_action_search" }
       ]
@@ -87,18 +82,6 @@ class ResourceComponent extends View {
             
           </LinearLayout>)
     }
-  }
-
-
-
-  getLocalContent = () => {
-    var callback = callbackMapper.map(function(params) {
-      console.log("params in resource", JSON.parse(params));
-      _this.data = params;
-
-    });
-
-    JBridge.getAllLocalContent(callback);
   }
 
 
@@ -193,12 +176,11 @@ handleResourceViewAllClick= (data) =>{
                   orientation="vertical">
 
 
-                   <OfflineResourceContainer
-                       onResourceOpenClick = {this.handleResourceOpen}
-                       data = {this.data}
-                       title="Saved Resources"
-                       onViewAllClick = {this.handleViewAllClick}
-                       />
+                  <LinearLayout
+                  width="match_parent"
+                  height="wrap_content"
+                  orientation="vertical"
+                  id={this.idSet.offlineContainer}/>
 
                   {this.cards}
 
@@ -248,7 +230,24 @@ handleResourceViewAllClick= (data) =>{
              background={window.__Colors.WHITE_F2}/>)
   }
 
-  afterRender() {}
+  afterRender = () => {
+  
+     var callback = callbackMapper.map(function(params) {
+      _this.data = params;
+
+      var layout = (<OfflineResourceContainer
+                       onResourceOpenClick = {_this.handleResourceOpen}
+                       data = {_this.data}
+                       title="Saved Resources"
+                       onViewAllClick = {_this.handleViewAllClick}/>)
+
+    _this.replaceChild(_this.idSet.offlineContainer,layout.render(),0);             
+
+    });
+
+    JBridge.getAllLocalContent(callback);
+
+  }
 
 
   render() {
