@@ -13,6 +13,7 @@ var FilterCard = require('../components/Sunbird/FilterCard');
 var DoubleRadioList = require('../components/Sunbird/DoubleRadioList');
 var FilterPopup = require('../components/Sunbird/FilterPopup');
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
+var PageOption = require('../components/Sunbird/core/PageOption');
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 var _this;
 
@@ -118,9 +119,14 @@ class FilterScreen extends View {
     window.__runDuiCallback( {filterData:JSON.stringify(searchDetails)} );
 
   }
+  handleFilterClick = () =>{
+    var searchDetails = {filterDetails: JSON.stringify(this.data),searchType: this.tempData.filterType}
+    window.__runDuiCallback( {filterData:JSON.stringify(searchDetails)} );    
+  }
 
 
   render() {
+    var buttonList = ["APPLY FILTER"];
     this.layout = (
       <RelativeLayout
       root="true"
@@ -145,7 +151,11 @@ class FilterScreen extends View {
           invert="true"
           width="match_parent"/>
         
-           
+            <ScrollView
+              height="0"
+              weight="1"
+              width="match_parent"
+              fillViewPort="true">
         
                 <LinearLayout
                   height="match_parent"
@@ -177,18 +187,29 @@ class FilterScreen extends View {
                       onFilterUpdate={this.handleFilterChange}
                       />
 
+                      <PageOption
+                          alignParentBottom="true,-1"
+                           width="match_parent"
+                           buttonItems={buttonList}
+                           onButtonClick={this.handleFilterClick}/>
+
+
+
                </LinearLayout>
+            </ScrollView>
 
 
 
       </LinearLayout>
-     
+
+
 
       </LinearLayout>
 
       <FilterPopup
         height="match_parent"
         width="match_parent"/>
+
 
       </RelativeLayout>
 
