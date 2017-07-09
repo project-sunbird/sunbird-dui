@@ -1,5 +1,3 @@
-
-
 var dom = require("@juspay/mystique-backend").doms.android;
 var Connector = require("@juspay/mystique-backend").connector;
 var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
@@ -104,12 +102,12 @@ class CourseContainer extends View {
   render() {
     this.layout = (
       <LinearLayout
-          height="match_parent"
-          width="match_parent"
-          background={this.props.transparent?window.__Colors.WHITE_F2:window.__Colors.WHITE}
-          orientation="vertical">
+      height="match_parent"
+      width="match_parent"
+      background={this.props.transparent?window.__Colors.WHITE_F2:window.__Colors.WHITE}
+      orientation="vertical">
 
-          {this.getHeader()}
+      {this.getHeader()}
 
           <HorizontalScrollView
            width = "wrap_content"

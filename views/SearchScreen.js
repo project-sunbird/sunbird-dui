@@ -52,8 +52,6 @@ class SearchScreen extends View {
       data=JSON.parse(data)
       console.log("query!",data.query)
       this.getSearchList(data.query);
-
-
     }
   }
 

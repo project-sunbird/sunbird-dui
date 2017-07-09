@@ -28,13 +28,15 @@ class ResourceDetailScreen extends View {
     this.screenName = "ResourceDetailScreen"
     this.menuData = {
       url: [
-        { imageUrl: "ic_action_share" },
+        { imageUrl: "ic_share_black" },
         { imageUrl: "ic_action_bookmark" },
         { imageUrl: "ic_action_overflow" },
       ]
     }
 
     this.shouldCacheScreen = false;
+
+
 
 
     this.details = state.data.value0.resourceDetails;
@@ -258,8 +260,8 @@ class ResourceDetailScreen extends View {
 
 
   onBackPressed = () => {
-    window.__changePureScriptFlow();
-    window.__runDuiCallback({ action: "showMainFlow" });
+       window.__changePureScriptFlow();
+       window.__runDuiCallback({ action: "showMainFlow" });
   }
 
   render() {

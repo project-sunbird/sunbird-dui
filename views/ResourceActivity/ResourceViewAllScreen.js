@@ -149,7 +149,7 @@ getRows = () =>{
             background={window.__Colors.PRIMARY_BLACK_22}/>)
   }
 
-  handleBackPress = () => {
+  onBackPressed = () => {
     window.__changePureScriptFlow();
     window.__runDuiCallback({ action: "showMainFlow" });
   }
@@ -167,7 +167,7 @@ getRows = () =>{
           afterRender={this.afterRender}
           width="match_parent"
           menuData={this.menuData}
-          onBackPress={this.handleBackPress}
+          onBackPress={this.onBackPressed}
           showMenu="true"
           invert="true"
           title= "Saved Resources"/>
