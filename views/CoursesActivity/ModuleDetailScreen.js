@@ -31,7 +31,6 @@ class ModuleDetailScreen extends View {
     this.screenName = "ModuleDetailScreen"
     this.menuData = {
       url: [
-        { imageUrl: "ic_action_share" },
         { imageUrl: "ic_action_bookmark" },
         { imageUrl: "ic_action_overflow" },
       ]
@@ -209,7 +208,8 @@ class ModuleDetailScreen extends View {
               text={this.moduleName}/>
 
             <ImageView
-              imageUrl="ic_action_share"
+              imageUrl="ic_share_black"
+              visibility="gone"
               width="48"
               height="48"
               padding="12,12,12,12"/>

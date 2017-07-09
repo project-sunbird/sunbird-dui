@@ -25,23 +25,23 @@ class ChapterOverView extends View {
 
     this.chapterName = "Module " + (this.props.index + 1) + ": " + this.props.item.contentData.name;
     //var chapterDuration = "[ " + this.props.item.chapterDuration + " minutes ]";
-    var chapterDuration = "[ " + "N/A" + " minutes ]";
+    var chapterDuration = "[ " + "N/A" + " min ]";
 
     this.layout = (
 
       <LinearLayout
-       height="45"
+       height="50"
        cornerRadius="2"
        padding="6,0,6,15"
-       orientation="vertical"
        gravity="center_vertical"
        onClick={this.handleClick}
        width="match_parent">
 
        <LinearLayout
-       width="match_parent"
-       height="wrap_content"
-       gravity="center_vertical">
+         width="0"
+         height="wrap_content"
+         weight="90"
+         gravity="center_vertical">
 
         <TextView
           text={this.chapterName}
@@ -52,25 +52,22 @@ class ChapterOverView extends View {
           margin="6,0,0,0"
           style={window.__TextStyle.textStyle.CARD.SEMI_DARK}/>
 
-        <ViewWidget
-          width="0"
-          weight="1"/>
+      </LinearLayout>
+
+
+      <LinearLayout
+        width="0"
+        height="wrap_content"
+        weight="10">
 
         <ImageView
           width="32"
           height="32"
           padding="8,8,8,8"
-          
           imageUrl="ic_action_right"/>
-
 
       </LinearLayout>
 
-        <LinearLayout
-        width="match_parent"
-        height="2"
-        margin="0,17,0,0"
-        background={window.__Colors.WHITE_F4}/>
 
        </LinearLayout>
 
