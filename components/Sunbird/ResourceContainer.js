@@ -111,7 +111,7 @@ class ResourceContainer extends View {
   }
 
   handleViewAllClick() {
-    this.props.onViewAllClick();
+    this.props.onViewAllClick(this.data);
   }
 
   render() {

@@ -112,12 +112,15 @@ class ResourceComponent extends View {
           {this.getSpaceSeparator()}
             <ResourceContainer
              data = {content.contents}
-             title={content.name}/>
-
+             title={content.name}
+             onViewAllClick = {this.handleResourceViewAllClick}/>
 
         </LinearLayout>)
   }
-
+handleResourceViewAllClick= (data) =>{
+  console.log("view all",data)
+   window.__runDuiCallback({ tag: "StartResourceViewAllFlow", contents: { "resourceDetails": JSON.stringify(JSON.stringify(data)) } });
+}
 
 
 

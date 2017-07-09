@@ -35,10 +35,14 @@ class ResourceViewAllScreen extends View {
     this.shouldCacheScreen = false;
     console.log("state in view all",state);
     this.details = JSON.parse(state.data.value0.resourceDetails);
-
+    console.log("this.details",this.details)
+    console.log("type",typeof(this.details))
     console.log("data in view all",JSON.parse(this.details));
     this.details = JSON.parse(this.details);
-
+    this.size;
+    this.fileImageUrl;
+    this.cType;
+    this.name;
   }
 
   
@@ -48,16 +52,36 @@ getRows = () =>{
     var rows = this.details.map((item,i) => {
 
       if(item.contentType != "course"){
-
-                var size = item.contentData.size ? " [" + utils.formatBytes(item.contentData.size) + "]" : "";
-                var fileImageUrl = "file://"+item.basePath + "/" +item.contentData.appIcon;
+                if(item.hasOwnProperty("size")){
+                  this.size = utils.formatBytes(item.size); 
+                }
+                else if(item.hasOwnProperty("contentData")){
+                  this.size = utils.formatBytes(item.contentData.size)
+                }
+                else
+                {
+                  this.size = "";
+                }
+                if(item.hasOwnProperty("appIcon"))
+                {
+                  this.fileImageUrl = item.appIcon;
+                }
+                else if (item.hasOwnProperty("contentData")){
+                  this.fileImageUrl = "file://"+item.basePath + "/" +item.contentData.appIcon;
+                }
+                else
+                {
+                  this.fileImageUrl = "ic_launcher";
+                }
                 var temp = {};
-                temp['imageUrl'] = fileImageUrl;
-                temp['name'] = item.contentData.name;
+                temp['imageUrl'] = this.fileImageUrl;
+                this.name = item.hasOwnProperty("name") ? item.name : item.contentData.name;
+                temp['name'] = this.name;
+                this.cType = item.hasOwnProperty("contentType") ? item.contentType : item.contentData.contentType;
                 temp['progress'];
                 temp['footerTitle'] = utils.prettifyDate(item.lastUpdatedTime);
                 temp['actionText'] = "RESUME";
-                temp["footerSubTitle"] = item.contentData.contentType + size;
+                temp["footerSubTitle"] = this.cType + this.size;
 
          return (<ResourceViewAllCard 
                  data={temp}
@@ -90,11 +114,10 @@ getRows = () =>{
     handleResourceClick = (item)=>{
 
       var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");   
-      var fileImageUrl = "file://"+item.basePath + "/" +item.contentData.appIcon;
       var resDetails = {};
-      resDetails['imageUrl'] = fileImageUrl;
-      resDetails['title'] = item.contentData.name;
-      resDetails['description'] = item.contentData.description;
+      resDetails['imageUrl'] = this.fileImageUrl;
+      resDetails['title'] = this.name;
+      resDetails['description'] = item.hasOwnProperty("description") ? item.description : item.contentData.description;
       resDetails['headFooterTitle'] = headFooterTitle;
       resDetails['identifier'] = item.identifier;
 
