@@ -20,6 +20,7 @@ class ProgressButton extends View {
       "downloadBar"
     ])
 
+    window.__ProgressButton = this;
     this.isDownloaded = false;
     this.checkContentLocalStatus(this.props.identifier);
     _this = this;
@@ -75,42 +76,49 @@ class ProgressButton extends View {
 
   }
 
+  setVisibility = (value) => {
+    var cmd = this.set({
+      id: this.idSet.downloadBar,
+      visibility: value
+
+    })
+    Android.runInUI(cmd, 0);
+  }
+
 
   handleButtonClick = () => {
 
     window.__getDownloadStatus = this.updateProgress;
     console.log("dp", this.isDownloaded);
 
-      if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
+    if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
 
-          if (this.isDownloaded) {
-            console.log("play");
-            JBridge.playContent(this.props.identifier);
+      if (this.isDownloaded) {
+        console.log("play");
+        JBridge.playContent(this.props.identifier);
 
-          } else {
-            console.log("download");
-            JBridge.importCourse(this.props.identifier);
+      } else {
+        console.log("download");
+        JBridge.importCourse(this.props.identifier);
 
-        }
       }
-
-      else {
-        console.log("handleButtonClick PERMISSION");
-        this.setPermissions();
-      }
+    } else {
+      console.log("handleButtonClick PERMISSION");
+      this.setPermissions();
+    }
 
   }
 
 
-  setPermissions = () =>{
+  setPermissions = () => {
 
     var callback = callbackMapper.map(function(data) {
 
-         if(data == "SUCCESS"){
-            JBridge.setKey("isPermissionSetWriteExternalStorage", "true");
-         }
-         
-      });
+      if (data == "SUCCESS") {
+        JBridge.setKey("isPermissionSetWriteExternalStorage", "true");
+      }
+
+    });
 
     JBridge.setPermissions(callback);
   }
@@ -184,6 +192,7 @@ class ProgressButton extends View {
         orientation="vertical"
         width="match_parent"
         background={window.__Colors.WHITE}
+        visibility = {this.props.visibility?this.props.visibility : "visible"}
         id={this.idSet.downloadBar}
         >
         <LinearLayout
