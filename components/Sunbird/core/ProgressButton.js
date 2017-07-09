@@ -77,23 +77,43 @@ class ProgressButton extends View {
 
 
   handleButtonClick = () => {
+
     window.__getDownloadStatus = this.updateProgress;
     console.log("dp", this.isDownloaded);
-    if (this.isDownloaded) {
-      console.log("play");
-      JBridge.playContent(this.props.identifier);
 
-    } else {
-      console.log("download");
-      JBridge.importCourse(this.props.identifier);
+      if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
 
-    }
+          if (this.isDownloaded) {
+            console.log("play");
+            JBridge.playContent(this.props.identifier);
+
+          } else {
+            console.log("download");
+            JBridge.importCourse(this.props.identifier);
+
+        }
+      }
+
+      else {
+        console.log("handleButtonClick PERMISSION");
+        this.setPermissions();
+      }
 
   }
 
 
+  setPermissions = () =>{
 
+    var callback = callbackMapper.map(function(data) {
 
+         if(data == "SUCCESS"){
+            JBridge.setKey("isPermissionSetWriteExternalStorage", "true");
+         }
+         
+      });
+
+    JBridge.setPermissions(callback);
+  }
 
 
   getDownloadBackground = (value) => {
