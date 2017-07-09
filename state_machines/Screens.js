@@ -1,5 +1,3 @@
-
-
 var objectAssign = require('object-assign');
 
 var localState = {
@@ -45,6 +43,10 @@ module.exports = function(action, payload, state) {
     case "ModuleDetailScreen":
       localState.isInit = false;
       localState.currScreen = "ModuleDetailScreen";
+      break;
+    case "AlternateModuleDetailScreen":
+      localState.isInit = false;
+      localState.currScreen = "AlternateModuleDetailScreen";
       break;
 
     case "CommunityViewAllScreen":

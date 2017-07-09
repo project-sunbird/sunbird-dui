@@ -62,8 +62,17 @@ startModuleDetailsFlow mName mDetails parentCourse= do
 	event <- ui $ ModuleDetailScreen {moduleName:mName,moduleDetails:mDetails}
 	case event of
 		DummyModuleDetailsAction -> pure $ "handled"
-		BackToParent -> startCourseInfoFlow parentCourse
+		ShowSubModuleScreen {moduleName:mName,moduleDetails:mDetails}-> startSubModuleDetailsFlow mName mDetails parentCourse
+		BackToParent -> startEnrolledCourseFlow parentCourse
   		_ -> pure $ "default"
+
+startSubModuleDetailsFlow mName mDetails parentCourse= do
+	event <- ui $ AlternateModuleDetailScreen {moduleName:mName,moduleDetails:mDetails}
+	case event of
+		DummyAlternateModuleDetailAction -> pure $ "handled"
+		ShowModuleAgainScreen {moduleName:mName,moduleDetails:mDetails}-> startModuleDetailsFlow mName mDetails parentCourse
+		BackToHome -> startEnrolledCourseFlow parentCourse
+  		_ -> pure $ "default"  		
 
 startCourseSearchFlow state = do
   liftEff $ log $ "Search FLow started"

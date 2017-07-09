@@ -17,7 +17,7 @@ var ProgressButton = require('../../components/Sunbird/core/ProgressButton');
 var CourseCurriculum = require('../../components/Sunbird/CourseCurriculum');
 
 
-class ModuleDetailScreen extends View {
+class AlternateModuleDetailScreen extends View {
   constructor(props, children, state) {
     super(props, children, state);
 
@@ -25,10 +25,10 @@ class ModuleDetailScreen extends View {
       'ratingBar',
       "downloadProgressText",
       "descriptionContainer",
-      "playButtonContainer"
+      "playButtonContainer2"
     ]);
     this.state = state;
-    this.screenName = "ModuleDetailScreen"
+    this.screenName = "AlternateModuleDetailScreen"
     this.menuData = {
       url: [
         { imageUrl: "ic_action_share" },
@@ -137,7 +137,7 @@ class ModuleDetailScreen extends View {
   }
 
   handleModuleClick = (moduleName, module) => {
-    var eventAction = { "tag": "ShowSubModuleScreen", contents: { "moduleName": moduleName, "moduleDetails": JSON.stringify(module) } };
+    var eventAction = { "tag": "ShowModuleAgainScreen", contents: { "moduleName": moduleName, "moduleDetails": JSON.stringify(module) } };
     window.__runDuiCallback(eventAction);
 
   }
@@ -162,8 +162,8 @@ class ModuleDetailScreen extends View {
       this.replaceChild(this.idSet.descriptionContainer, layout.render(), 0);
     } else {
       var cmd = this.set({
-        id: this.idSet.playButtonContainer,
-        visibility: "visible"
+        id: this.idSet.playButtonContainer2,
+        visibility: "visibile"
       });
       cmd += this.set({
         id: this.idSet.downloadProgressText,
@@ -264,7 +264,7 @@ class ModuleDetailScreen extends View {
   }
 
   onBackPressed = () => {
-    var eventAction = { "tag": "BackToParent", contents: [] };
+    var eventAction = { "tag": "BackToHome", contents: [] };
     window.__runDuiCallback(eventAction);
   }
 
@@ -311,7 +311,7 @@ class ModuleDetailScreen extends View {
                 </ScrollView>
 
                <ProgressButton
-                 id={this.idSet.playButtonContainer}
+                 id={this.idSet.playButtonContainer2} 
                  width="match_parent"
                  visibility="gone"
                  buttonText="DOWNLOAD THIS MODULE"
@@ -324,4 +324,4 @@ class ModuleDetailScreen extends View {
   }
 }
 
-module.exports = Connector(ModuleDetailScreen);
+module.exports = Connector(AlternateModuleDetailScreen);

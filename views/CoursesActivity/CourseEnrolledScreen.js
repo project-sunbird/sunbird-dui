@@ -50,7 +50,7 @@ class CourseEnrolledScreen extends View {
     window.__getDownloadStatus = this.getSpineStatus;
 
     this.baseIdentifier = this.details.identifier ? this.details.identifier : this.details.contentId;
-    this.checkContentLocalStatus(this.baseIdentifier);
+
 
 
 
@@ -151,16 +151,17 @@ class CourseEnrolledScreen extends View {
   }
 
   onPop = () => {
+    window.__getDownloadStatus = this.getSpineStatus;
     Android.runInUI(
       this.animateView(),
       null
     );
   }
 
-  handleModuleClick = (moduleName, module) => {
-    var eventAction = { "tag": "ShowModuleScreen", contents: { "moduleName": moduleName, "moduleDetails": JSON.stringify(module) } };
-    window.__runDuiCallback(eventAction);
 
+
+  afterRender = () => {
+    this.checkContentLocalStatus(this.baseIdentifier);
   }
 
 
@@ -212,7 +213,15 @@ class CourseEnrolledScreen extends View {
 
 
     });
+    window.__getDownloadStatus = this.getSpineStatus;
     JBridge.getLocalContentStatus(identifier, callback);
+  }
+
+
+  handleModuleClick = (moduleName, module) => {
+    var eventAction = { "tag": "ShowModuleScreen", contents: { "moduleName": moduleName, "moduleDetails": JSON.stringify(module) } };
+    window.__runDuiCallback(eventAction);
+
   }
 
 
@@ -294,6 +303,7 @@ class CourseEnrolledScreen extends View {
                     width="match_parent"
                     gravity="center"
                     root="true"
+                    afterRender={this.afterRender}
                     orientation="vertical"
                     id={this.idSet.descriptionContainer}>
                        <TextView
