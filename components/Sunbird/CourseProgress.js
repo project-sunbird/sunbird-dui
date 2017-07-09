@@ -32,7 +32,7 @@ class CourseProgress extends View {
   getProgressStatus = () => {
     return (<LinearLayout
             width="match_parent"
-            margin="0,0,0,12">
+            margin="0,0,0,0">
                 <TextView
                   style={window.__TextStyle.textStyle.HINT.REGULAR}
                   text={"Your Progress: "}/>
@@ -110,7 +110,7 @@ class CourseProgress extends View {
           margin="24,0,0,0"
           window="wrap_content"
           gravity="center"> 
-           {this.getResumeButton()}
+           
          </LinearLayout>
       </LinearLayout>
     )

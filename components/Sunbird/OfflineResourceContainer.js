@@ -148,8 +148,8 @@ class OfflineResourceContainer extends View {
            fillViewport="true">
 
            <LinearLayout
-                    width="match_parent"
-                    height="wrap_content">
+            width="match_parent"
+            height="wrap_content">
 
            {this.getRows()}
 

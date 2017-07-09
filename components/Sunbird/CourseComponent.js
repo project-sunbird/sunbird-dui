@@ -155,7 +155,7 @@ class CourseComponent extends View {
                   
                   <CourseInProgressContainer
                     transparent="true"
-                    isViewAllExist="true"
+                    isViewAllExist="false"
                     title="Courses In Progress"
                     onCourseClick={this.handleUserCoursesClick}
                     data = {this.progressData} />

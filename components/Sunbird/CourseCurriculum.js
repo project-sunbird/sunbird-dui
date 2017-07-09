@@ -81,10 +81,6 @@ class CourseCurriculum extends View {
        height="match_parent"
        orientation="vertical"
        width="match_parent">
-        <TextView
-          margin="0,24,0,24"
-          text={this.props.title} 
-          style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
         {this.getContent()}
 

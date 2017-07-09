@@ -298,6 +298,7 @@ class CourseEnrolledScreen extends View {
                       title={this.data.courseName}
                       onResumeClick={this.handleCourseResume}/>
 
+
                   <LinearLayout
                     height="match_parent"
                     width="match_parent"
@@ -308,7 +309,7 @@ class CourseEnrolledScreen extends View {
                     id={this.idSet.descriptionContainer}>
                        <TextView
                           id={this.idSet.downloadProgressText}
-                          test="Fetching spine"
+                          text="Fetching spine"
                           height="300"
                           gravity="center"
                           width="match_parent"/>

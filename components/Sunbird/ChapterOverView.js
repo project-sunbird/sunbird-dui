@@ -21,6 +21,15 @@ class ChapterOverView extends View {
     this.props._onClick(this.chapterName, this.props.item)
   }
 
+
+  getLineSeperator = () => {
+    return (<LinearLayout
+            width="match_parent"
+            height="1"
+            margin="0,16,0,16"
+            background={window.__Colors.PRIMARY_BLACK_22}/>)
+  }
+
   render() {
 
     this.chapterName = "Module " + (this.props.index + 1) + ": " + this.props.item.contentData.name;
@@ -30,43 +39,53 @@ class ChapterOverView extends View {
     this.layout = (
 
       <LinearLayout
-       height="50"
+       height="wrap_content"
        cornerRadius="2"
-       padding="6,0,6,15"
+       padding="6,0,6,0"
        gravity="center_vertical"
+       orientation="vertical"
        onClick={this.handleClick}
        width="match_parent">
 
-       <LinearLayout
-         width="0"
-         height="wrap_content"
-         weight="90"
-         gravity="center_vertical">
 
-        <TextView
-          text={this.chapterName}
-          style={window.__TextStyle.textStyle.CARD.HEADING}/>
+       {this.getLineSeperator()}
 
-        <TextView
-          text={chapterDuration}
-          margin="6,0,0,0"
-          style={window.__TextStyle.textStyle.CARD.SEMI_DARK}/>
+           <LinearLayout
+           gravity="center_vertical"
+           width="match_parent"
+           height="wrap_content">
 
-      </LinearLayout>
+           <LinearLayout
+             width="0"
+             height="wrap_content"
+             weight="90">
+
+            <TextView
+              text={this.chapterName}
+              style={window.__TextStyle.textStyle.CARD.HEADING}/>
+
+            <TextView
+              text={chapterDuration}
+              margin="6,0,0,0"
+              style={window.__TextStyle.textStyle.CARD.SEMI_DARK}/>
+
+          </LinearLayout>
 
 
-      <LinearLayout
-        width="0"
-        height="wrap_content"
-        weight="10">
+          <LinearLayout
+            width="0"
+            height="wrap_content"
+            weight="10">
 
-        <ImageView
-          width="32"
-          height="32"
-          padding="8,8,8,8"
-          imageUrl="ic_action_right"/>
+            <ImageView
+              width="32"
+              height="32"
+              padding="8,8,8,8"
+              imageUrl="ic_action_right"/>
 
-      </LinearLayout>
+          </LinearLayout>
+
+          </LinearLayout>
 
 
        </LinearLayout>
