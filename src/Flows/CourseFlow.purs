@@ -62,6 +62,7 @@ startModuleDetailsFlow mName mDetails parentCourse= do
 	event <- ui $ ModuleDetailScreen {moduleName:mName,moduleDetails:mDetails}
 	case event of
 		DummyModuleDetailsAction -> pure $ "handled"
+		ShowSubModuleScreen {moduleName:mName,moduleDetails:mDetails}-> startModuleDetailsFlow mName mDetails parentCourse
 		BackToParent -> startCourseInfoFlow parentCourse
   		_ -> pure $ "default"
 

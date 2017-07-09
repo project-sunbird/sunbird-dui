@@ -67,7 +67,7 @@ class ModuleDetailScreen extends View {
 
 
     //to get geneie callback for download of spine
-    window.__getDownloadStatus = this.getSpineStatus;
+
 
 
 
@@ -79,7 +79,7 @@ class ModuleDetailScreen extends View {
     this.module = JSON.parse(this.module)
     console.log("Module Title", this.moduleName)
     console.log("ModueContentDetials ", this.module)
-    this.checkContentLocalStatus(this.module.identifier);
+
 
 
   }
@@ -96,6 +96,7 @@ class ModuleDetailScreen extends View {
 
 
   onPop = () => {
+    window.__getDownloadStatus = this.getSpineStatus;
     Android.runInUI(
       this.animateView(),
       null
@@ -126,7 +127,7 @@ class ModuleDetailScreen extends View {
     } else {
       var cmd = this.set({
         id: this.idSet.downloadProgressText,
-        text: "Downloaded " + downloadedPercent + "%"
+        text: "Fetching content\n" + downloadedPercent + "%"
       })
       Android.runInUI(cmd, 0);
     }
@@ -152,7 +153,19 @@ class ModuleDetailScreen extends View {
 
 
     });
-    JBridge.getLocalContentStatus(identifier, callback);
+    if (!this.module.isAvailableLocally || this.module.isUpdateAvailable) {
+      window.__getDownloadStatus = this.getSpineStatus;
+      JBridge.getLocalContentStatus(identifier, callback);
+    } else {
+      console.log("ALREADY PRESENT")
+      this.renderModuleChildren();
+    }
+  }
+
+  handleModuleClick = (moduleName, module) => {
+    var eventAction = { "tag": "ShowSubModuleScreen", contents: { "moduleName": moduleName, "moduleDetails": JSON.stringify(module) } };
+    window.__runDuiCallback(eventAction);
+
   }
 
 
@@ -160,20 +173,29 @@ class ModuleDetailScreen extends View {
     var layout;
     console.log("RENDRING BREKAUP", this.module.children)
     if (this.module.children) {
-      layout = (<CourseCurriculum
+      layout = (
+        <CourseCurriculum
                   height="match_parent"
                   root="true"
                   margin="0,0,0,12"
                   brief={true}
+                  title=""
+                  onClick={this.handleModuleClick}
                   content= {this.module.children}
-                  width="match_parent"/>)
+                  width="match_parent"/>
+      )
     } else {
       layout = (<TextView 
         height="50"
         width="match_parent"
         text="NO CHILD"/>)
     }
-    this.replaceChild(this.idSet.descriptionContainer, layout.render(), 0)
+
+    this.replaceChild(this.idSet.descriptionContainer, layout.render(), 0);
+  }
+
+  afterRender = () => {
+    this.checkContentLocalStatus(this.module.identifier);
   }
 
 
@@ -243,14 +265,14 @@ class ModuleDetailScreen extends View {
     var bodyLayout = (<LinearLayout
                   height="match_parent"
                   width="match_parent"
-                  gravity="center"
                   root="true"
                   orientation="vertical"
+                  afterRender={this.afterRender}
                   id={this.idSet.descriptionContainer}>
                      <TextView
                         id={this.idSet.downloadProgressText}
                         test="Fetching spine"
-                        height="300"
+                        height="match_parent"
                         gravity="center"
                         width="match_parent"/>
                 </LinearLayout>)
@@ -275,7 +297,7 @@ class ModuleDetailScreen extends View {
         width="match_parent"
         height="match_parent">
         <SimpleToolbar
-          afterRender={this.afterRender}
+          
           width="match_parent"
           menuData={this.menuData}
           onBackPress={onBackPressed}

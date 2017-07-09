@@ -22,6 +22,7 @@ class ChapterOverView extends View {
   }
 
   render() {
+
     this.chapterName = "Module " + (this.props.index + 1) + ": " + this.props.item.contentData.name;
     //var chapterDuration = "[ " + this.props.item.chapterDuration + " minutes ]";
     var chapterDuration = "[ " + "N/A" + " minutes ]";
@@ -29,7 +30,7 @@ class ChapterOverView extends View {
     this.layout = (
 
       <LinearLayout
-       height="match_parent"
+       height="45"
        cornerRadius="2"
        padding="6,0,6,15"
        orientation="vertical"

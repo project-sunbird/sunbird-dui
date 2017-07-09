@@ -1,5 +1,3 @@
-
-
 var dom = require("@juspay/mystique-backend").doms.android;
 var Connector = require("@juspay/mystique-backend").connector;
 var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
@@ -18,7 +16,7 @@ class CourseCurriculum extends View {
 
     this.displayName = "course_curriculumn"
     this.enrolledStatus = this.props.enrolledStatus == undefined ? false : this.props.enrolledStatus;
-    console.log("\n\n\n\nHERE--->")
+
   }
 
 
@@ -45,6 +43,7 @@ class CourseCurriculum extends View {
     var items = this.props.content.map((item, index) => {
       return (<ChapterOverView
               item={item}
+              height="wrap_content"
               _onClick={this.handleClick}
               index={index}/>)
     })

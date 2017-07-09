@@ -45,7 +45,7 @@ data CourseEnrolledScreen = CourseEnrolledScreen {courseDetails::String}
 data CourseEnrolledScreenAction = DummyCourseEnrolledAction | ShowModuleScreen {moduleName::String,moduleDetails::String}
 
 data ModuleDetailScreen = ModuleDetailScreen {moduleName::String,moduleDetails::String}
-data ModuleDetailScreenAction = DummyModuleDetailsAction | BackToParent
+data ModuleDetailScreenAction = DummyModuleDetailsAction | BackToParent | ShowSubModuleScreen {moduleName::String,moduleDetails::String}
 
 
 data CommunityViewAllScreen = CommunityViewAllScreen
