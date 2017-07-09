@@ -47,6 +47,9 @@ data CourseEnrolledScreenAction = DummyCourseEnrolledAction | ShowModuleScreen {
 data ModuleDetailScreen = ModuleDetailScreen {moduleName::String,moduleDetails::String}
 data ModuleDetailScreenAction = DummyModuleDetailsAction | BackToParent | ShowSubModuleScreen {moduleName::String,moduleDetails::String}
 
+data AlternateModuleDetailScreen = AlternateModuleDetailScreen {moduleName::String,moduleDetails::String}
+data AlternateModuleDetailScreenAction = DummyAlternateModuleDetailAction | BackToHome | ShowModuleAgainScreen {moduleName::String,moduleDetails::String}
+
 
 data CommunityViewAllScreen = CommunityViewAllScreen
 data CommunityViewAllAction = DummyCommunityViewAllAction
@@ -86,6 +89,15 @@ instance moduleDetailScreen :: UIScreen ModuleDetailScreen ModuleDetailScreenAct
 derive instance genericModuleDetailScreenAction  :: Generic ModuleDetailScreenAction _
 instance decodeModuleDetailScreenAction :: Decode ModuleDetailScreenAction where decode = defaultDecode
 instance encodeModuleDetailScreenAction :: Encode ModuleDetailScreenAction where encode = defaultEncode
+
+
+instance alternateModuleDetailScreen :: UIScreen AlternateModuleDetailScreen AlternateModuleDetailScreenAction where
+  generateMockEvents _ = [DummyAlternateModuleDetailAction]
+  ui x = genericUI x (generateMockEvents x :: Array AlternateModuleDetailScreenAction)
+
+derive instance genericAlternateModuleDetailScreenAction  :: Generic AlternateModuleDetailScreenAction _
+instance decodeAlternateModuleDetailScreenAction :: Decode AlternateModuleDetailScreenAction where decode = defaultDecode
+instance encodeAlternateModuleDetailScreenAction :: Encode AlternateModuleDetailScreenAction where encode = defaultEncode
 
 
 instance initScreen :: UIScreen InitScreen InitScreenAction where

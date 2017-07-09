@@ -1,4 +1,3 @@
-
 const uiHandler = require("@juspay/mystique-backend").uiHandlers.android;
 var dispatcher;
 const R = require('ramda');
@@ -22,6 +21,7 @@ const UserScreen = require("../views/UserScreen");
 const CourseInfoScreen = require("../views/CoursesActivity/CourseInfoScreen");
 const CourseEnrolledScreen = require("../views/CoursesActivity/CourseEnrolledScreen");
 const ModuleDetailScreen = require("../views/CoursesActivity/ModuleDetailScreen");
+const AlternateModuleDetailScreen = require("../views/CoursesActivity/AlternateModuleDetailScreen");
 
 //Resource
 
@@ -63,6 +63,9 @@ var determineScreen = (screenName, state) => {
       break;
     case "ModuleDetailScreen":
       screen = new(ModuleDetailScreen(dispatcher, RootScreenActions))(null, null, state);
+      break;
+    case "AlternateModuleDetailScreen":
+      screen = new(AlternateModuleDetailScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
 
     case "CommunityInfoScreen":
