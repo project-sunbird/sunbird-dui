@@ -161,14 +161,12 @@ class ModuleDetailScreen extends View {
       this.replaceChild(this.idSet.descriptionContainer, layout.render(), 0);
     } else {
       var cmd = this.set({
-        id: this.idSet.playButtonContainer,
-        visibility: "visible"
-      });
-      cmd += this.set({
         id: this.idSet.downloadProgressText,
         visibility: "gone"
       });
       Android.runInUI(cmd, 0);
+
+      window.__ProgressButton.setVisibility("visible")
 
     }
 

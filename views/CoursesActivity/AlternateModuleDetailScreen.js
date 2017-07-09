@@ -25,7 +25,7 @@ class AlternateModuleDetailScreen extends View {
       'ratingBar',
       "downloadProgressText",
       "descriptionContainer",
-      "playButtonContainer2"
+      "playButtonContainer"
     ]);
     this.state = state;
     this.screenName = "AlternateModuleDetailScreen"
@@ -162,14 +162,11 @@ class AlternateModuleDetailScreen extends View {
       this.replaceChild(this.idSet.descriptionContainer, layout.render(), 0);
     } else {
       var cmd = this.set({
-        id: this.idSet.playButtonContainer2,
-        visibility: "visibile"
-      });
-      cmd += this.set({
         id: this.idSet.downloadProgressText,
         visibility: "gone"
       });
       Android.runInUI(cmd, 0);
+      window.__ProgressButton.setVisibility("visible")
 
     }
 
@@ -311,7 +308,7 @@ class AlternateModuleDetailScreen extends View {
                 </ScrollView>
 
                <ProgressButton
-                 id={this.idSet.playButtonContainer2} 
+                 id={this.idSet.playButtonContainer} 
                  width="match_parent"
                  visibility="gone"
                  buttonText="DOWNLOAD THIS MODULE"
