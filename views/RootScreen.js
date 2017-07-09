@@ -1,4 +1,3 @@
-
 var dom = require("@juspay/mystique-backend").doms.android;
 var Connector = require("@juspay/mystique-backend").connector;
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
@@ -35,6 +34,13 @@ class RootScreen extends View {
     window.__ObjectAssign = objectAssign;
 
     this.setStatusBarColor(window.__Colors.BLACK);
+
+    //Setting mock data for api purpose
+    JBridge.setInSharedPrefs("user_id", "7c03ca2e78326957afbb098044a3f60783388d5cc731a37821a20d95ad497ca8");
+    JBridge.setInSharedPrefs("user_name", "Beta User");
+    JBridge.setInSharedPrefs("user_token", "11ab5273-c998-4d50-9737-fd29315c9dd5");
+
+
   }
 
   handleStateChange = () => {

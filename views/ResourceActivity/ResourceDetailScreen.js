@@ -1,4 +1,3 @@
-
 var dom = require("@juspay/mystique-backend").doms.android;
 var Connector = require("@juspay/mystique-backend").connector;
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
@@ -27,20 +26,21 @@ class ResourceDetailScreen extends View {
     ]);
     this.state = state;
     this.screenName = "ResourceDetailScreen"
-      this.menuData = {
+    this.menuData = {
       url: [
-        { imageUrl: "ic_action_share"},
-        { imageUrl: "ic_action_bookmark"},
-        { imageUrl: "ic_action_overflow"},
+        { imageUrl: "ic_action_share" },
+        { imageUrl: "ic_action_bookmark" },
+        { imageUrl: "ic_action_overflow" },
       ]
-      }
+    }
 
     this.shouldCacheScreen = false;
 
 
-      this.details = JSON.parse(state.data.value0.resourceDetails);
-    
-      console.log("Got Title",state)
+    this.details = state.data.value0.resourceDetails;
+    this.details = JSON.parse(this.details);
+
+    console.log("Got Title", this.details)
 
   }
 
@@ -54,11 +54,11 @@ class ResourceDetailScreen extends View {
 
   afterRender = () => {
 
-         JBridge.setRating(this.idSet.ratingBar,"3.3");   
+    JBridge.setRating(this.idSet.ratingBar, "3.3");
   }
 
 
-  getLineSeperator = () =>{
+  getLineSeperator = () => {
     return (<LinearLayout
             width="match_parent"
             height="2"
@@ -67,7 +67,7 @@ class ResourceDetailScreen extends View {
   }
 
 
-  getBody = () =>{
+  getBody = () => {
     return (
       <LinearLayout
       width="match_parent"
@@ -162,15 +162,15 @@ class ResourceDetailScreen extends View {
       </LinearLayout>
       </LinearLayout>
 
-      )
+    )
   }
 
 
-  getHeader = () =>{
+  getHeader = () => {
 
-      return (
+    return (
 
-        <LinearLayout
+      <LinearLayout
         width="match_parent"
         height="wrap_content"
         margin="0,16,0,0"
@@ -252,7 +252,7 @@ class ResourceDetailScreen extends View {
         </LinearLayout>
         </LinearLayout>
 
-        )
+    )
 
   }
 
@@ -263,7 +263,7 @@ class ResourceDetailScreen extends View {
   }
 
   render() {
-    var buttonList = ["ENROLL FOR THIS COURSE"];
+
     this.layout = (
       <LinearLayout
         root = "true"
@@ -306,7 +306,7 @@ class ResourceDetailScreen extends View {
 
                <ProgressButton
                  width="match_parent"
-                 buttonItems={buttonList}
+                 buttonText="DOWNLOAD THIS RESOURCE"
                  identifier = {this.details.identifier}/>
        
       </LinearLayout>
@@ -317,5 +317,3 @@ class ResourceDetailScreen extends View {
 }
 
 module.exports = Connector(ResourceDetailScreen);
-
-

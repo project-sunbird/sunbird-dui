@@ -266,7 +266,7 @@ class ModuleDetailScreen extends View {
 
 
   render() {
-    var buttonList = ["DOWNLOAD THIS MODULE"];
+
     this.layout = (
       <LinearLayout
         root = "true"
@@ -308,7 +308,7 @@ class ModuleDetailScreen extends View {
 
                <ProgressButton
                  width="match_parent"
-                 buttonItems={buttonList}
+                 buttonText="DOWNLOAD THIS MODULE"
                  identifier = {this.module.identifier}/>
        
       </LinearLayout>

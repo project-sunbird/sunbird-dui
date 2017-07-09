@@ -198,7 +198,7 @@ class ProgressButton extends View {
           root="true"
           id={this.idSet.downloadBarContainer}>
        
-            {this.getButtons(0,"DOWNLOAD COURSE")}
+            {this.getButtons(0,this.props.buttonText)}
        
          </LinearLayout>     
 

@@ -1,4 +1,3 @@
-
 var dom = require("@juspay/mystique-backend").doms.android;
 var Connector = require("@juspay/mystique-backend").connector;
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
@@ -27,6 +26,8 @@ class CourseEnrolledScreen extends View {
     this.setIds([
       "parentContainer",
       "pageOption",
+      "descriptionContainer",
+      "downloadProgressText"
     ]);
     this.state = state;
     this.screenName = "CourseEnrolledScreen"
@@ -40,16 +41,21 @@ class CourseEnrolledScreen extends View {
     _this = this;
     this.shouldCacheScreen = false;
     this.courseContent = "";
-    console.log("GOT VALUES ", state)
-      //this.details = JSON.parse(state.data.value0.courseDetails);
-    console.log("GOT VALUES ", this.details)
 
     //this.checkContentLocalStatus(this.details.identifier);
+    this.details = JSON.parse(state.data.value0.courseDetails);
+    console.log("GOT VALUES ", this.details)
+
+    //to get geneie callback for download of spine
+    window.__getDownloadStatus = this.getSpineStatus;
+
+    this.baseIdentifier = this.details.identifier ? this.details.identifier : this.details.contentId;
+    this.checkContentLocalStatus(this.baseIdentifier);
 
 
 
     this.data = {
-      courseName: this.details ? this.details.title : "",
+      courseName: this.details ? this.details.courseName : "",
       courseDesc: this.details ? this.details.courseDesc : "This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced",
       competedCount: this.details && this.details.footerTitle ? this.details.footerTitle.split('%')[0] : "10",
       totalCount: "150",
@@ -151,6 +157,80 @@ class CourseEnrolledScreen extends View {
     );
   }
 
+  handleModuleClick = (moduleName, module) => {
+    var eventAction = { "tag": "ShowModuleScreen", contents: { "moduleName": moduleName, "moduleDetails": JSON.stringify(module) } };
+    window.__runDuiCallback(eventAction);
+
+  }
+
+
+  getSpineStatus = (pValue) => {
+    var cmd;
+    console.log("--->\t\t\t\n\n\n", pValue);
+
+    var data = JSON.parse(pValue);
+
+    if (data.identifier != this.baseIdentifier)
+      return;
+
+    var textToShow = ""
+    console.log("DATA -> ", data)
+
+    var downloadedPercent = parseInt(data.downloadProgress);
+    downloadedPercent = downloadedPercent < 0 ? 0 : downloadedPercent;
+
+    if (downloadedPercent == 100) {
+
+      console.log("SPINE IMPORTED -> ")
+      this.checkContentLocalStatus(this.baseIdentifier);
+
+    } else {
+      var cmd = this.set({
+        id: this.idSet.downloadProgressText,
+        text: "Downloaded " + downloadedPercent + "%"
+      })
+      Android.runInUI(cmd, 0);
+    }
+  }
+
+  checkContentLocalStatus = (identifier) => {
+    var callback = callbackMapper.map(function(status) {
+
+      if (status == "true") {
+        console.log("Spine Found")
+        var callback1 = callbackMapper.map(function(data) {
+          console.log("course details;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;", JSON.parse(data));
+          _this.courseContent = JSON.parse(data);
+          _this.renderCourseChildren()
+        });
+        JBridge.getChildContent(identifier, callback1)
+      } else {
+        console.log("Spine Not Found, IMPORTING ")
+        JBridge.importCourse(identifier)
+      }
+
+
+
+    });
+    JBridge.getLocalContentStatus(identifier, callback);
+  }
+
+
+  renderCourseChildren = () => {
+    console.log("RENDRING BREKAUP", this.courseContent.children)
+    var layout = (<CourseCurriculum
+                  height="match_parent"
+                  root="true"
+                  margin="0,0,0,12"
+                  brief={true}
+                  title=""
+                  onClick={this.handleModuleClick}
+                  content= {this.courseContent.children}
+                  width="match_parent"/>)
+
+    this.replaceChild(this.idSet.descriptionContainer, layout.render(), 0)
+  }
+
 
 
 
@@ -202,22 +282,27 @@ class CourseEnrolledScreen extends View {
                 padding="16,24,16,16"
                 orientation="vertical">
 
-                <CourseProgress
-                    height="wrap_content"
-                    width="wrap_content"
-                    content={this.data}
-                    title={this.data.courseName}
-                    onResumeClick={this.handleCourseResume}/>
+                  <CourseProgress
+                      height="wrap_content"
+                      width="wrap_content"
+                      content={this.data}
+                      title={this.data.courseName}
+                      onResumeClick={this.handleCourseResume}/>
 
-                 <CourseCurriculum
-                  height="match_parent"
-                  content={this.data}
-                  onItemSelected={this.handleItemSelect}
-                  enrolledStatus={true}
-                  title=""
-                  brief={true}
-                  width="match_parent"/>
-
+                  <LinearLayout
+                    height="match_parent"
+                    width="match_parent"
+                    gravity="center"
+                    root="true"
+                    orientation="vertical"
+                    id={this.idSet.descriptionContainer}>
+                       <TextView
+                          id={this.idSet.downloadProgressText}
+                          test="Fetching spine"
+                          height="300"
+                          gravity="center"
+                          width="match_parent"/>
+                  </LinearLayout>   
 
 
 
