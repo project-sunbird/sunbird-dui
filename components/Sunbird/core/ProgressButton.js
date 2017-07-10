@@ -25,6 +25,9 @@ class ProgressButton extends View {
     this.checkContentLocalStatus(this.props.identifier);
     _this = this;
 
+
+    this.startedDownloading = false;
+
   }
 
 
@@ -57,7 +60,7 @@ class ProgressButton extends View {
       return;
 
     var textToShow = ""
-    data.downloadProgress=data.downloadProgress<0?0:data.downloadProgress;
+    data.downloadProgress = data.downloadProgress < 0 ? 0 : data.downloadProgress;
 
     if (parseInt(data.downloadProgress) == 100) {
 
@@ -100,7 +103,11 @@ class ProgressButton extends View {
 
       } else {
         console.log("download");
-        JBridge.importCourse(this.props.identifier,this.props.isCourse);
+        if (!this.startedDownloading) {
+          this.startedDownloading = true;
+          JBridge.importCourse(this.props.identifier, this.props.isCourse);
+
+        }
 
       }
     } else {
