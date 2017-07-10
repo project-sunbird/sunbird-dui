@@ -108,7 +108,7 @@ getUserToken = readFromMemory "user_token"
 --API CALLS
 generateRequestHeaders =
   let filtered = filter (\x -> not $ snd(x) == "__failed")  [(Tuple "Authorization" ("Bearer " <> getApiKey))
-                                                            ,(Tuple "X-Authenticated-Userid" (getUserToken)) --user token
+                                                            ,(Tuple "X-Authenticated-Userid" "7d89f4ec-55ad-4eca-a026-7e9fe4c2fbb0") --user token
                                                             ,(Tuple "X-Consumer-ID" (getUserId)) --7c03ca2e78326957afbb098044a3f60783388d5cc731a37821a20d95ad497ca8
                                                             ,(Tuple "X-Device-ID" "X-Device-ID")
                                                             ,(Tuple "X-msgid" "8e27cbf5-e299-43b0-bca7-8347f7e5abcf")
@@ -127,12 +127,12 @@ getDummyData =
       headers = (generateRequestHeaders) in
   (get requestUrl headers)
 
-enrollCourse req =
+enrollCourse courseId =
   let requestUrl = "/v1/user/courses/enroll"
       headers = (generateRequestHeaders)
       payload = A.fromObject (StrMap.fromFoldable [ (Tuple "id" (A.fromString "unique API ID"))
                                                    ,(Tuple "ts" (A.fromString "2013/10/15 16:16:39"))
-                                                   ,(Tuple "request" (A.fromObject (StrMap.fromFoldable  [ (Tuple "courseId" (A.fromString "do_212282810256941056178"))
+                                                   ,(Tuple "request" (A.fromObject (StrMap.fromFoldable  [ (Tuple "courseId" (A.fromString courseId))
                                                                                                           , (Tuple "courseName" (A.fromString "Teacher Training Course"))
                                                                                                           , (Tuple "description" (A.fromString "course description"))
                                                                                                           , (Tuple "delta" (A.fromString "delta"))
@@ -156,11 +156,17 @@ getUserEnrolledCourses =
       headers = (generateRequestHeaders) in
   (get requestUrl headers) 
 
+getProfileDetail =
+  let requestUrl = "/v1/user/read/" <> "7d89f4ec-55ad-4eca-a026-7e9fe4c2fbb0"
+      headers = (generateRequestHeaders) in
+  (get requestUrl headers) 
+
 
 getResourcePageApi =
   let requestUrl = "/v1/page/assemble/Resources" 
       headers = (generateRequestHeaders) in
   (get requestUrl headers)
+
 
 userLogin userName userPass =
   let requestUrl = "/v1/user/login" 

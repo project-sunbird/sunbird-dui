@@ -44,9 +44,16 @@ class ResourceViewAllScreen extends View {
     this.cType;
     this.name;
     this.time;
-  }
 
-  
+
+    var _this = this;
+    setTimeout(function() {
+      Android.runInUI(
+        _this.animateView(),
+        null
+      );  
+    },100)
+  }
 
 getRows = () =>{
 

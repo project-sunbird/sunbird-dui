@@ -81,6 +81,8 @@ class HomeScreen extends View {
       this.animateView(),
       null
     );
+
+    
     this.setupDuiCallback();
   }
 
@@ -162,6 +164,8 @@ class HomeScreen extends View {
         //shouldBeModified = true;
         break;
       case 3:
+        shouldBeModified = true;
+        window.__runDuiCallback({ "tag": "StartProfileFlow", contents: [] });
 
         break;
 

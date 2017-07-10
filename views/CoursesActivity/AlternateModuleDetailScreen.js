@@ -121,7 +121,7 @@ class AlternateModuleDetailScreen extends View {
         JBridge.getChildContent(identifier, callback1)
       } else {
         console.log("Spine Not Found, IMPORTING ")
-        JBridge.importCourse(identifier)
+        JBridge.importCourse(identifier,"false")
       }
 
 
@@ -311,6 +311,7 @@ class AlternateModuleDetailScreen extends View {
                  id={this.idSet.playButtonContainer} 
                  width="match_parent"
                  visibility="gone"
+                 isCourse = "true"
                  buttonText="DOWNLOAD THIS MODULE"
                  identifier = {this.module.identifier}/>
        

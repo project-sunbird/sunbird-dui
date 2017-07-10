@@ -79,6 +79,11 @@ cFlow = do
                   responseData <- getResourcePageApi
                   _ <- sendUpdatedState {response : responseData, responseFor : "StartResourcePageApi", screen:"asas"}
                   pure $ "handled"
+    StartProfileApi -> do
+                  liftEff $ log $ "START RESOURCE PAGE API"
+                  responseData <- getProfileDetail
+                  _ <- sendUpdatedState {response : responseData, responseFor : "StartProfileApi", screen:"asas"}
+                  pure $ "handled"                  
     StartSearchFlow {filterDetails : details} -> startHomeSearchFlow details
 
     _ -> pure $ "aborted"

@@ -28,6 +28,7 @@ class ProfileComponent extends View {
     this.setIds([
 
     ]);
+    console.log("profile api response",this.props);
     _this = this;
 
     this.menuData = {

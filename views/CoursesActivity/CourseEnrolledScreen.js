@@ -207,7 +207,7 @@ class CourseEnrolledScreen extends View {
         JBridge.getChildContent(identifier, callback1)
       } else {
         console.log("Spine Not Found, IMPORTING ")
-        JBridge.importCourse(identifier)
+        JBridge.importCourse(identifier,"false")
       }
 
 

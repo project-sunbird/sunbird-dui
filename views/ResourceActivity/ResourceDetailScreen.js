@@ -43,6 +43,14 @@ class ResourceDetailScreen extends View {
     this.details = JSON.parse(this.details);
 
     console.log("Got Title", this.details)
+    
+    var _this = this;
+    setTimeout(function() {
+      Android.runInUI(
+        _this.animateView(),
+        null
+      );  
+    },100)
 
   }
 
@@ -308,6 +316,7 @@ class ResourceDetailScreen extends View {
 
                <ProgressButton
                  width="match_parent"
+                 isCourse = "false"
                  buttonText="DOWNLOAD THIS RESOURCE"
                  identifier = {this.details.identifier}/>
        

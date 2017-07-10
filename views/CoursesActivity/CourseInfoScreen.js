@@ -196,7 +196,7 @@ class CourseInfoScreen extends View {
         JBridge.getChildContent(identifier, callback1)
       } else {
         console.log("Spine Not Found, IMPORTING ")
-        JBridge.importCourse(identifier)
+        JBridge.importCourse(identifier,"false")
       }
 
 
@@ -239,7 +239,7 @@ class CourseInfoScreen extends View {
   }
 
   handleStateChange = (data) => {
-    console.log("GOT RESPONSE FROM ENROLL API", data);
+    console.log("GOT RESPONSE FROM ENROLL API", data.response);
   }
 
   handleEnrollClick = (data) => {
@@ -257,7 +257,7 @@ class CourseInfoScreen extends View {
 
     var eventAction = {
       "tag": "EnrollCourse",
-      "contents": { reqParams: "" }
+      "contents": { reqParams: this.details.identifier }
     }
     console.log("IN ENROLLNOW")
     window.__runDuiCallback(eventAction);
