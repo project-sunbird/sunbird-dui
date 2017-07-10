@@ -45,25 +45,42 @@ class CourseComponent extends View {
 
   handleResponse = () => {
 
-
+    console.log("response in CC",this.props.response)
 
     if (this.props.response) {
-      console.log("SERVER GAVE RESPONSE")
+      console.log("SERVER GAVE RESPONSE",this.props.response)
       this.details = this.props.response.result.response;
+          if(this.details.hasOwnProperty("name")){
 
-      var cardsContent = this.details.sections.map((item) => {
-        return (this.getCourseCardLayout(item))
-      })
-      this.cards = (<LinearLayout
-          height="wrap_content"
-          width="match_parent"
-          orientation="vertical"
-          root="true">
+                var cardsContent = this.details.sections.map((item) => {
+                  return (this.getCourseCardLayout(item))
+                })
+                this.cards = (<LinearLayout
+                    height="wrap_content"
+                    width="match_parent"
+                    orientation="vertical"
+                    root="true">
 
-            {cardsContent}
+                      {cardsContent}
 
-          </LinearLayout>)
-    } else {
+                    </LinearLayout>)
+              }
+              
+              else
+              {
+                  this.cards = (<LinearLayout
+                    height="wrap_content"
+                    width="match_parent"
+                    orientation="vertical"
+                    root="true">
+
+                      
+                      
+                    </LinearLayout>)
+                  JBridge.showSnackBar("Error Fetching Data")
+              } 
+    }
+    else {
       console.log("SERVER TOLD NULL")
       this.cards = (<LinearLayout
           height="wrap_content"
