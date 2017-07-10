@@ -102,9 +102,9 @@ class OfflineResourceContainer extends View {
             <TextView
             width="wrap_content"
             height="wrap_content"
-            text="View all"
+            text="VIEW ALL"
             onClick={()=>{this.handleViewAllClick()}}
-            style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
+            style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
 
             </LinearLayout>)
   }

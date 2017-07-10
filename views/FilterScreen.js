@@ -1,5 +1,3 @@
-
-
 var dom = require("@juspay/mystique-backend").doms.android;
 var Connector = require("@juspay/mystique-backend").connector;
 var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
@@ -57,8 +55,8 @@ class FilterScreen extends View {
                     orientation="vertical">
                     
                       <LinearLayout
-                      width="match_parent"
-                      height="wrap_content">
+                        width="match_parent"
+                        height="wrap_content">
                       
                           <ImageView
                           width="26"
@@ -80,11 +78,11 @@ class FilterScreen extends View {
                       </LinearLayout>
 
                       <LinearLayout
-                      width="match_parent"
-                      height="wrap_content"
-                      gravity="center_horizontal"
-                      margin="0,10,0,0">
-                      
+                        width="match_parent"
+                        height="wrap_content"
+                        gravity="center_horizontal"
+                        margin="0,10,0,0">
+                        
                           <TextView
                           width="match_parent"
                           height="wrap_content"
@@ -184,25 +182,19 @@ class FilterScreen extends View {
                       <FilterCard
                       filterData={this.filterData}
                       onItemClick={this.showPopup}
-                      onFilterUpdate={this.handleFilterChange}
-                      />
+                      onFilterUpdate={this.handleFilterChange}/>
 
-                      <PageOption
-                          alignParentBottom="true,-1"
-                           width="match_parent"
-                           buttonItems={buttonList}
-                           onButtonClick={this.handleFilterClick}/>
-
-
-
+                    
                </LinearLayout>
             </ScrollView>
 
 
+          <PageOption
+             width="match_parent"
+             buttonItems={buttonList}
+             onButtonClick={this.handleFilterClick}/>
 
       </LinearLayout>
-
-
 
       </LinearLayout>
 

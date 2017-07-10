@@ -72,7 +72,12 @@ class FilterItem extends View {
   }
 
   render() {
+
+      var label = this.filterLable.charAt(0).toUpperCase() + this.filterLable.substring(1,this.filterLable.length);
+      
+
     this.layout = (
+
       <LinearLayout
               width="match_parent"
               height="wrap_content"
@@ -90,7 +95,7 @@ class FilterItem extends View {
                 <TextView
                 width="wrap_content"
                 height="wrap_content"
-                text={this.filterLable}
+                text={label}
                 style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>
 
                 <ViewWidget 

@@ -63,13 +63,14 @@ class FilterPopup extends View {
                   alignParentBottom="true,-1"
                   id={this.idSet.featureContainer}
                   padding = "3,3,3,3"
+                  cornerRadius="5"
                   weight="20"
                   gravity = "center">
                   <FeatureButton
                     typeface = "bold"
                     clickable={isClickable}
                     width = "match_parent"
-                    height = "64"
+                    height = "56"
                     stroke = {"3," + window.__Colors.WHITE}
                     background = {color}
                     text = {"Confirm"}
@@ -169,8 +170,9 @@ class FilterPopup extends View {
     return (
       <LinearLayout
       width="match_parent"
-      height="20"
-      margin="0,0,8,0">
+      height="0"
+      weight="10"
+      margin="0,0,16,0">
 
           <TextView
            width = "wrap_content"

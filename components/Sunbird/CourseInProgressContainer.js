@@ -55,9 +55,10 @@ class CourseInProgressContainer extends View {
       var temp = {
         imageUrl: (item.courseLogoUrl ? item.courseLogoUrl : "file://storage/emulated/0/SunbirdTest/content/domain_8808-64dd60d5-94cd-4896-a60e-11897bf69fd6/domain_8808/1461668536884adb212cfde_1465896981928.jpg"),
         title: item.courseName,
-        actionText: "OPEN",
-        footerSubTitle: "(2350) votes",
-        stars: "4",
+        actionText: "RESUME",
+        footerTitle:"60% done",
+        footerSubTitle: "20 hrs remaining",
+        isProgress : "true"
       };
 
       return (<CardComponent 
