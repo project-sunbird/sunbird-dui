@@ -124,6 +124,7 @@ class CourseComponent extends View {
 
 
   getBody = () => {
+    console.log("this.PROGRESSSSS",this.progressData)
     return (
       <LinearLayout
         orientation="vertical"
@@ -155,7 +156,6 @@ class CourseComponent extends View {
                   
                   <CourseInProgressContainer
                     transparent="true"
-                    isViewAllExist="false"
                     title="Courses In Progress"
                     onCourseClick={this.handleUserCoursesClick}
                     data = {this.progressData} />
