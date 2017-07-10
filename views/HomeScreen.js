@@ -82,7 +82,7 @@ class HomeScreen extends View {
       null
     );
 
-    
+
     this.setupDuiCallback();
   }
 
@@ -134,7 +134,7 @@ class HomeScreen extends View {
     if (state.responseFor == "GetEnrolledCourseApi") {
       //CourseInProgressContainer of CourseScreen gets upated
       console.log("GOT USER COURSES ->", responseData.result.courses)
-      window.__UpdateUserCourses(responseData.result.courses);
+      window.setEnrolledCourses(responseData.result.courses);
       return;
     }
 

@@ -40,22 +40,51 @@ class CourseComponent extends View {
     }
 
     this.handleResponse();
+    this.enrolledCourses = []
+
+    window.setEnrolledCourses = this.setEnrolledCourses;
   }
+
+
+  setEnrolledCourses = (list) => {
+    this.enrolledCourses = list;
+
+    window.__UpdateUserCourses(this.enrolledCourses);
+  }
+
+
+  checkIfEnrolled = (identifier) => {
+    var enrolled = false;
+
+    this.enrolledCourses.map((item) => {
+      console.log("CHECKING", item)
+      if (item.identifier === identifier) {
+        enrolled = true;
+      } else if (item.contentId === identifier) {
+        enrolled = true;
+      } else if (item.courseId === identifier) {
+        enrolled = true;
+      }
+    })
+    return enrolled;
+  }
+
+
 
 
   handleResponse = () => {
 
-    console.log("response in CC",this.props.response)
+    console.log("response in CC", this.props.response)
 
     if (this.props.response) {
-      console.log("SERVER GAVE RESPONSE",this.props.response)
+      console.log("SERVER GAVE RESPONSE", this.props.response)
       this.details = this.props.response.result.response;
-          if(this.details.hasOwnProperty("name")){
+      if (this.details.hasOwnProperty("name")) {
 
-                var cardsContent = this.details.sections.map((item) => {
-                  return (this.getCourseCardLayout(item))
-                })
-                this.cards = (<LinearLayout
+        var cardsContent = this.details.sections.map((item) => {
+          return (this.getCourseCardLayout(item))
+        })
+        this.cards = (<LinearLayout
                     height="wrap_content"
                     width="match_parent"
                     orientation="vertical"
@@ -64,11 +93,8 @@ class CourseComponent extends View {
                       {cardsContent}
 
                     </LinearLayout>)
-              }
-              
-              else
-              {
-                  this.cards = (<LinearLayout
+      } else {
+        this.cards = (<LinearLayout
                     height="wrap_content"
                     width="match_parent"
                     orientation="vertical"
@@ -77,10 +103,9 @@ class CourseComponent extends View {
                       
                       
                     </LinearLayout>)
-                  JBridge.showSnackBar("Error Fetching Data")
-              } 
-    }
-    else {
+        JBridge.showSnackBar("Error Fetching Data")
+      }
+    } else {
       console.log("SERVER TOLD NULL")
       this.cards = (<LinearLayout
           height="wrap_content"
@@ -124,8 +149,18 @@ class CourseComponent extends View {
     //console.log("data is", tmp);
 
     var tmp = JSON.stringify(content)
-    var eventAction = { tag: 'StartCourseInfoFlow', contents: { "course": tmp } }
-      //var eventAction = { tag: 'StartEnrolledCourseFlow', contents: { "course": tmp } }
+    var eventAction;
+    console.log("CHECKING ->", content.identifier);
+    if (this.checkIfEnrolled(content.identifier)) {
+      console.log("\n\n\nENROLLED")
+      eventAction = { tag: 'StartEnrolledCourseFlow', contents: { "course": tmp } }
+    } else {
+      console.log("\n\n\nNOT ENROLLED")
+      eventAction = { tag: 'StartCourseInfoFlow', contents: { "course": tmp } }
+    }
+
+
+    //var eventAction = { tag: 'StartEnrolledCourseFlow', contents: { "course": tmp } }
 
 
     window.__runDuiCallback(eventAction);
@@ -141,7 +176,7 @@ class CourseComponent extends View {
 
 
   getBody = () => {
-    console.log("this.PROGRESSSSS",this.progressData)
+
     return (
       <LinearLayout
         orientation="vertical"
@@ -174,8 +209,7 @@ class CourseComponent extends View {
                   <CourseInProgressContainer
                     transparent="true"
                     title="Courses In Progress"
-                    onCourseClick={this.handleUserCoursesClick}
-                    data = {this.progressData} />
+                    onCourseClick={this.handleUserCoursesClick}/>
                    
 
                   {this.cards}
@@ -195,7 +229,6 @@ class CourseComponent extends View {
     if (url == "ic_action_search") {
       var searchDetails = { filterDetails: "", searchType: "Course" }
       window.__runDuiCallback({ tag: "StartSearchFlow", contents: { filterDetails: JSON.stringify(searchDetails) } });
-      // window.__runDuiCallback({tag:"StartSearchFlow",contents:{filterDetails:""}});
 
     }
   }
@@ -215,7 +248,7 @@ class CourseComponent extends View {
              background={window.__Colors.WHITE_F2}/>)
   }
 
-  afterRender() {}
+
 
 
   render() {
