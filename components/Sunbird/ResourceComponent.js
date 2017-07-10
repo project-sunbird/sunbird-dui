@@ -55,23 +55,36 @@ class ResourceComponent extends View {
   handleResponse = () => {
 
 
-
+    console.log("response in RC",this.props.response)
     if (this.props.response) {
       console.log("SERVER GAVE RESPONSE")
       this.details = this.props.response.result.response;
+      if(this.details.hasOwnProperty("name")){
 
-      var cardsContent = this.details.sections.map((item) => {
-        return (this.getResourceCardLayout(item))
-      })
-      this.cards = (<LinearLayout
+        var cardsContent = this.details.sections.map((item) => {
+          return (this.getResourceCardLayout(item))
+        })
+        this.cards = (<LinearLayout
+            height="wrap_content"
+            width="match_parent"
+            orientation="vertical"
+            root="true">
+
+              {cardsContent}
+
+            </LinearLayout>)
+      }
+      else
+      {
+        JBridge.showSnackBar("Error Fetching Data")
+        this.cards = (<LinearLayout
           height="wrap_content"
           width="match_parent"
           orientation="vertical"
           root="true">
-
-            {cardsContent}
-
+            
           </LinearLayout>)
+      }
     } else {
       console.log("SERVER TOLD NULL")
       this.cards = (<LinearLayout
