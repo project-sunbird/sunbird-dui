@@ -262,6 +262,11 @@ exports.textStyle = {
       textSize: Font.fontSize.FONT_14,
       fontStyle: Font.fontStyle.SEMIBOLD
     }
+  },
+  NOTHING:{
+      color: Colors.PRIMARY_ACCENT,
+      textSize: Font.fontSize.FONT_22,
+      fontStyle: Font.fontStyle.BOLD
   }
 
 };

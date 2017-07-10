@@ -197,12 +197,13 @@ class ModuleDetailScreen extends View {
           <LinearLayout
             height="wrap_content"
             gravity="center_vertical"
-            margin="0,0,0,12"  
+            margin="0,12,0,12"  
             width="match_parent">
             <TextView
               height="wrap_content"
               width="0"
               weight="1"
+              style={window.__TextStyle.textStyle.HEADING.DARK}
               text={this.moduleName}/>
 
             <ImageView
@@ -222,15 +223,25 @@ class ModuleDetailScreen extends View {
             text={"Module Size "+this.formatBytes(this.module.contentData.size)}/>
 
 
-          <CropParagraph
+          <TextView
+            height="wrap_content"
+            margin="0,0,0,12"
+            width="match_parent"
+            style={window.__TextStyle.textStyle.CARD.TITLE.DARK}
+            text="Description"/>
+
+
+          <TextView
                   height="wrap_content"
                   margin="0,0,0,12"
                   width="match_parent"
-                  contentText={this.module.contentData.description}
-                  />
+                  text="Lorem Ipsum is simply dummy text of the printing 
+                  and typesetting industry. Lorem Ipsum has been the 
+                  industry's standard dummy text ever since the 1500s, 
+                  when an unknown printer took a galley of type and
+                   scrambled it to make a type specimen book"/>
 
 
-           {this.getLineSeperator()}       
 
         </LinearLayout>)
 

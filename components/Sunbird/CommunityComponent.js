@@ -153,10 +153,17 @@ class CommunityComponent extends View {
   render() {
     this.layout = (
 
+      <RelativeLayout
+      root="true"
+      clickable="false"
+      width="match_parent"
+      height="match_parent">
+
+
       <LinearLayout
-        root="true"
         orientation="vertical"
         width="match_parent"
+        clickable="false"
         afterRender={this.afterRender}
         height="match_parent">
 
@@ -164,6 +171,30 @@ class CommunityComponent extends View {
         
 
         </LinearLayout>
+
+        <LinearLayout
+        gravity="center"
+        centerInParent="true,-1"
+        clickable="false"
+        alpha = "0.9"
+        background={window.__Colors.WHITE}
+        width="match_parent"
+        height="match_parent">
+
+          <TextView
+          gravity="center"
+          width="match_parent"
+          height="match_parent"
+          style ={window.__TextStyle.textStyle.NOTHING}
+          text="Coming Soon.."/>
+        
+
+
+        </LinearLayout>
+
+
+      </RelativeLayout>
+
     )
 
     return this.layout.render();

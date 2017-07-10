@@ -64,6 +64,13 @@ class ProfileComponent extends View {
   render() {
     this.layout = (
 
+    <RelativeLayout
+      root="true"
+      clickable="false"
+      width="match_parent"
+      height="match_parent">
+
+
       <LinearLayout
         root="true"
         orientation="vertical"
@@ -113,6 +120,26 @@ class ProfileComponent extends View {
          </ScrollView>
 
         </LinearLayout>
+       <LinearLayout
+          gravity="center"
+          centerInParent="true,-1"
+          clickable="false"
+          alpha = "0.9"
+          background={window.__Colors.WHITE}
+          width="match_parent"
+          height="match_parent">
+
+            <TextView
+            gravity="center"
+            width="match_parent"
+            height="match_parent"
+            style ={window.__TextStyle.textStyle.NOTHING}
+            text="Coming Soon.."/>
+          
+
+        </LinearLayout>
+
+      </RelativeLayout>
     )
 
     return this.layout.render();
