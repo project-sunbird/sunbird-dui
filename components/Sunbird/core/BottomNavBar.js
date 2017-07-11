@@ -1,4 +1,3 @@
-
 var dom = require("@juspay/mystique-backend").doms.android;
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
@@ -134,13 +133,17 @@ class BottomNavBar extends View {
 
     ]);
 
+
+
     this.bottomNavItemList = this.props.tabItems
     this.currentIndex = (this.props.defaultIndex === undefined ? 0 : this.props.defaultIndex)
+    window.__BottomNavBar = this;
   }
 
 
 
   handleNavigationChange = (index) => {
+    console.log("\t\t\tB NAV TO INDEX -> ", index)
     if (this.currentIndex == index) {
       return;
     }
