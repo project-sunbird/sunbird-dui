@@ -42,6 +42,11 @@ class ResourceContainer extends View {
       temp['footerSubTitle'] = item.contentType;
       temp['actionText'] = "OPEN";
 
+<<<<<<< HEAD
+
+
+=======
+>>>>>>> 2c759142b2c3e4573a7d00d272b9b7341d16977c
       return (<CardComponent 
                  data={temp}
                  content={item}

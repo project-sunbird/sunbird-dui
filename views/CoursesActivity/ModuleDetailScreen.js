@@ -49,6 +49,8 @@ class ModuleDetailScreen extends View {
 
     console.log("ModueDetail ", this.module)
     this.module = JSON.parse(this.module)
+    console.log("module local status",this.module.isAvailableLocally)
+    this.localStatus = this.module.isAvailableLocally;
     console.log("Module Title", this.moduleName)
     console.log("ModueContentDetials ", this.module)
 
@@ -325,8 +327,11 @@ class ModuleDetailScreen extends View {
                  width="match_parent"
                  visibility="gone"
                  isCourse = "true"
-                 buttonText="DOWNLOAD THIS MODULE"
-                 identifier = {this.module.identifier}/>
+                 buttonText="DOWNLOAD"
+                 localStatus = {this.localStatus}
+                 identifier = {this.module.identifier}
+                 contentDetails = {this.module}
+                 />
        
       </LinearLayout>
     );

@@ -56,6 +56,7 @@ class OfflineResourceContainer extends View {
         temp['footerTitle'] = footerTitle;
         temp['footerSubTitle'] = "Saved on " + fileSavedTime;
         temp['actionText'] = "OPEN";
+        temp['content'] = item;
 
         return (<CardComponent 
                      data={temp}
@@ -125,6 +126,7 @@ class OfflineResourceContainer extends View {
     resDetails['description'] = item.contentData.description;
     resDetails['headFooterTitle'] = headFooterTitle;
     resDetails['identifier'] = item.identifier;
+    resDetails['content'] = item;
 
     window.__runDuiCallback({ tag: "StartResourceDetailFlow", contents: { resourceDetails: JSON.stringify(resDetails) } });
   }

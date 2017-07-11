@@ -22,30 +22,30 @@ class ProgressButton extends View {
 
     window.__ProgressButton = this;
     this.isDownloaded = false;
-    this.checkContentLocalStatus(this.props.identifier);
+    // console.log("props in console",this.props.contentDetails.isAvailableLocally);
+    // this.checkContentLocalStatus(this.props.identifier);
+    this.checkContentLocalStatus(this.props.localStatus);
     _this = this;
 
-
+    console.log("local status content",this.props.localStatus)
     this.startedDownloading = false;
 
   }
 
 
+  checkContentLocalStatus = (status) => {
+      // console.log("this.props.contentDetails",this.props.contentDetails)
+        // var callback = callbackMapper.map(function(status) {
+          if (status == true) {
+            this.isDownloaded = true;
+            console.log("status",status=="true")
+            this.replaceChild(this.idSet.downloadBarContainer, this.getButtons("100", "PLAY").render(), 0);
 
-  checkContentLocalStatus = (identifier) => {
-    var callback = callbackMapper.map(function(status) {
+          }
 
-
-      if (status == "true") {
-        _this.isDownloaded = true;
-        _this.replaceChild(_this.idSet.downloadBarContainer, _this.getButtons("100", "PLAY").render(), 0);
-
-      }
-
-
-
-    });
-    JBridge.getLocalContentStatus(identifier, callback);
+        // });
+        // JBridge.getLocalContentStatus(this.props.identifier, callback);
+  
   }
 
 
@@ -99,7 +99,11 @@ class ProgressButton extends View {
 
       if (this.isDownloaded) {
         console.log("play");
-        JBridge.playContent(this.props.identifier);
+        if(this.props.isCourse == "true"){
+          JBridge.playChildContent(this.props.identifier)
+        }
+        else
+          JBridge.playContent(this.props.identifier);
 
       } else {
         console.log("download");
