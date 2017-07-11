@@ -119,10 +119,11 @@ class HomeScreen extends View {
     console.log("RESPONSE :", responseData)
 
     if (parseInt(responseCode) != 200) {
-      JBridge.showSnackBar("Response code " + responseCode)
+      JBridge.showSnackBar("Connection error")
       console.log("DIDN't GOT 200")
         //return;
     }
+
 
 
 

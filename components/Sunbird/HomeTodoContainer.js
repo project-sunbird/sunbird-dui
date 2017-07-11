@@ -31,7 +31,7 @@ class HomeTodoContainer extends View {
         type : "COURSE",
         title : "Organic Chemistry",
         footerTitle : "20% done",
-        footerSubTitle : "(2350) votes",
+        footerSubTitle : "20 hrs remaining",
         actionText : "RESUME",
         isProgress : "true",
       },
@@ -40,7 +40,7 @@ class HomeTodoContainer extends View {
         type : "COURSE",
         title : "Organic Chemistry",
         footerTitle : "20% done",
-        footerSubTitle : "(2350) votes",
+        footerSubTitle : "20 hrs remaining",
         actionText : "RESUME",
         isProgress : "true",
       }
