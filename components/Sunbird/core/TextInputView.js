@@ -1,4 +1,3 @@
-
 var dom = require("@juspay/mystique-backend").doms.android;
 var Connector = require("@juspay/mystique-backend").connector;
 var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
@@ -36,7 +35,7 @@ class TextInputView extends View {
       id={this.idSet.parentContainer}
       width="match_parent"
       height="wrap_content"
-      margin="0,2,0,2"
+      margin={this.props.margin}
       orientation="vertical">
 
         <TextView

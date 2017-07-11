@@ -316,7 +316,7 @@ class UserScreen extends View {
             height="wrap_content"
             width="match_parent"
             gravity="center_vertical"
-            padding="6,0,0,0"
+            margin="24,0,24,0"
             >
             <LinearLayout
               height="wrap_content"
@@ -333,7 +333,6 @@ class UserScreen extends View {
               <LinearLayout
                 height="wrap_content"
                 width="wrap_content"
-                margin = "0,0,16,0"
                 background={window.__Colors.THICK_BLUE}
                 stroke={"5,"+window.__Colors.THICK_BLUE}
                 cornerRadius="5">
@@ -390,7 +389,6 @@ class UserScreen extends View {
             <LinearLayout
               height="wrap_content"
               width="match_parent"
-
               id={this.idSet.firstNameHolder}
               visibility={this.isLoginMode?"gone":"visible"}>
 
@@ -399,7 +397,7 @@ class UserScreen extends View {
                   width="match_parent"
                   hintText="Enter you'r first name"
                   labelText="FIRST NAME"
-                  padding="12,0,12,0"
+                  margin="18,0,24,0"
                   _onChange={this.updateFirstName}/>  
             
             </LinearLayout>  
@@ -409,7 +407,7 @@ class UserScreen extends View {
                 width="match_parent"
                 hintText="sample@test.com"
                 labelText="E-MAIL ID"
-                padding="12,0,12,0"
+                margin="18,0,24,0"
                 _onChange={this.updateUserName}/>
 
             <TextInputView
@@ -417,7 +415,7 @@ class UserScreen extends View {
                 width="match_parent"
                 hintText="Enter a 8-digit password"
                 labelText="PASSWORD"
-                padding="12,0,12,0"
+                margin="18,0,24,0"
                 _onChange={this.updateUserPassword}/>  
             
             
@@ -430,7 +428,7 @@ class UserScreen extends View {
               <TextInputView
                 hintText="Enter preffered language"
                 labelText="LANGUAGE"
-                padding="12,0,12,0"
+                margin="18,0,24,0"
                 text="English"
                 _onChange={this.updateLanguage}/>  
            
@@ -494,10 +492,8 @@ class UserScreen extends View {
           height="0"
           weight="1"
           root="true"
-          padding="12,12,12,12"
           id={this.idSet.userForumContainer}
           width="match_parent" 
-          padding="10,10,10,10"
           gravity="center"
           orientation="vertical">
 
