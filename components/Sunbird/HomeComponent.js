@@ -103,7 +103,7 @@ class HomeComponent extends View {
       }]
     }
 
-    
+
     // Todo Data
     this.todoData = [{
       name: "Mastering in Organic Chemistry",
@@ -142,16 +142,16 @@ class HomeComponent extends View {
 
   handleMenuClick = (url) => {
     console.log("url clicked", url);
-    if(url=="ic_notification_red"){
-        window.__runDuiCallback({tag:"StartNotificationFlow",contents:[]});
+    if (url == "ic_notification_red") {
+      window.__runDuiCallback({ tag: "StartNotificationFlow", contents: [] });
     }
-    if(url=="ic_action_search"){
-      var searchDetails = {filterDetails: "",searchType: "Combined"}
-      window.__runDuiCallback({tag:"StartSearchFlow",contents:{filterDetails:JSON.stringify(searchDetails)}});
+    if (url == "ic_action_search") {
+      var searchDetails = { filterDetails: "", searchType: "Combined" }
+      window.__runDuiCallback({ tag: "StartSearchFlow", contents: { filterDetails: JSON.stringify(searchDetails) } });
     }
   }
 
-  
+
   handleSearch = (data) => {
     console.log("searched", data);
   }
@@ -180,34 +180,34 @@ class HomeComponent extends View {
     console.log("bookmark clicked")
   }
 
-  handleResourceOpen = (data) =>{
+  handleResourceOpen = (data) => {
     console.log("resourceDetails");
-    window.__runDuiCallback({ tag: "StartResourceDetailFlow",contents:{"resourceDetails":"nothing"} });
+    window.__runDuiCallback({ tag: "StartResourceDetailFlow", contents: { "resourceDetails": "nothing" } });
   }
 
-  handleCourseOpen = (data) =>{
-        window.__runDuiCallback({tag:"StartCourseInfoFlow",contents:{"course":"something"}});
+  handleCourseOpen = (data) => {
+    window.__runDuiCallback({ tag: "StartCourseInfoFlow", contents: { "course": "something" } });
   }
 
   handleRecommendedClick = (content) => {
     console.log("Recommended clicked :", content.downloadUrl)
-    // JBridge.downloadFile("https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/ecar_files/do_11218758465395097616/verbs_1487744032502_do_11218758465395097616_1.0.ecar")
+      // JBridge.downloadFile("https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/ecar_files/do_11218758465395097616/verbs_1487744032502_do_11218758465395097616_1.0.ecar")
       //JBridge.downloadFile(content.downloadUrl)
-    
+
 
     var callback = callbackMapper.map((params) => {
       this.getLocalData([params[0]])
-      console.log("darta from android",params);
+      console.log("darta from android", params);
     });
 
     JBridge.getAllLocalContent(callback);
 
   }
   getLocalData = (data) => {
-    console.log("data from android ",JSON.parse(data));
+    console.log("data from android ", JSON.parse(data));
   }
 
-  getSpaceSeparator = () =>{
+  getSpaceSeparator = () => {
     return (<LinearLayout
              height="6"
              orientation="vertical"
@@ -260,27 +260,9 @@ class HomeComponent extends View {
                    onCourseOpenClick = {this.handleCourseOpen}
                    onResourceOpenClick = {this.handleResourceOpen}/>
                    
-                   <LinearLayout
-                   width="match_parent"
-                   height="wrap_content"
-                   background={window.__Colors.WHITE_F2}>
+                  
 
-                   <TextView
-                   width="wrap_content"
-                   height="wrap_content"
-                   text="Feed"
-                   padding="16,7,0,7"
-                   style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
-
-
-                   </LinearLayout>
-
-                   <FeedComponent
-                   feedData = {this.props.feedData}
-                   voteClick = {this.handleVoteClick}
-                   answerClick={this.handleAnswerClick}
-                   bookmarkClick={this.handleBookmarkClick}
-                   />
+                  
 
 
 
@@ -289,7 +271,7 @@ class HomeComponent extends View {
             </ScrollView>
 
 
-      </LinearLayout> )
+      </LinearLayout>)
 
 
     return this.layout.render();
@@ -298,6 +280,29 @@ class HomeComponent extends View {
 
 
 module.exports = HomeComponent;
+
+//To be added
+//  <LinearLayout
+//                    width="match_parent"
+//                    height="wrap_content"
+//                    background={window.__Colors.WHITE_F2}>
+
+//                    <TextView
+//                    width="wrap_content"
+//                    height="wrap_content"
+//                    text="Feed"
+//                    padding="16,7,0,7"
+//                    style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
+//                    </LinearLayout> 
+// <FeedComponent
+// feedData = {this.props.feedData}
+// voteClick = {this.handleVoteClick}
+// answerClick={this.handleAnswerClick}
+// bookmarkClick={this.handleBookmarkClick}
+// />
+
+
+
 
 
 // <SearchToolbar
@@ -315,9 +320,9 @@ module.exports = HomeComponent;
 //                     todoData = {this.todoData}
 //                     onViewTodoClick={this.handleViewAllTodoClick}
 //                    />
-                   //  <RecommendedContainer
-                   //  hideRating = "visible"
-                   //  recommendedData = {this.recommendedData}
-                   //  Data ={this.recommendedServerData}
-                   //  onClick={this.handleRecommendedClick}
-                   // />
+//  <RecommendedContainer
+//  hideRating = "visible"
+//  recommendedData = {this.recommendedData}
+//  Data ={this.recommendedServerData}
+//  onClick={this.handleRecommendedClick}
+// />
