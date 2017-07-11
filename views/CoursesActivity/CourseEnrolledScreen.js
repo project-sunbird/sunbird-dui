@@ -34,8 +34,7 @@ class CourseEnrolledScreen extends View {
 
     this.menuData = {
       url: [
-        { imageUrl: "ic_action_bookmark" },
-        { imageUrl: "ic_action_overflow" }
+        
       ]
     }
     _this = this;
@@ -227,7 +226,8 @@ class CourseEnrolledScreen extends View {
 
   renderCourseChildren = () => {
     console.log("RENDRING BREKAUP", this.courseContent.children)
-    var layout = (<CourseCurriculum
+    var layout = (
+                  <CourseCurriculum
                   height="match_parent"
                   root="true"
                   margin="0,0,0,12"
@@ -235,7 +235,8 @@ class CourseEnrolledScreen extends View {
                   title=""
                   onClick={this.handleModuleClick}
                   content= {this.courseContent.children}
-                  width="match_parent"/>)
+                  width="match_parent"/>
+                  )
 
     this.replaceChild(this.idSet.descriptionContainer, layout.render(), 0)
   }

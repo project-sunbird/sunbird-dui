@@ -86,7 +86,7 @@ class CourseInfoItem extends View {
       width="match_parent"
       cornerRadius="2"
       height="100"
-      margin="0,8,0,8"
+      margin="0,0,0,8"
       background={window.__Colors.WHITE}>
         <LinearLayout
           height="match_parent"
@@ -222,8 +222,7 @@ class CourseInfoItemList extends View {
       width="match_parent"
       height="match_parent"
       afterRender={this.afterRender}
-      id={this.idSet.courseContainer}
-      />
+      id={this.idSet.courseContainer}/>
     )
 
     return this.layout.render();

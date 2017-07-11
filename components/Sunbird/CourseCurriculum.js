@@ -41,11 +41,22 @@ class CourseCurriculum extends View {
   getCourseBreakUp = () => {
 
     var items = this.props.content.map((item, index) => {
-      return (<ChapterOverView
-              item={item}
-              height="wrap_content"
-              _onClick={this.handleClick}
-              index={index}/>)
+      return (
+        <LinearLayout
+          width="match_parent"
+          height="wrap_content"
+          orientation="vertical">
+
+          {this.getLineSeperator()}
+
+          <ChapterOverView
+            item={item}
+            height="wrap_content"
+            _onClick={this.handleClick}
+            index={index}/>
+
+        </LinearLayout> )
+
     })
 
 
@@ -56,6 +67,13 @@ class CourseCurriculum extends View {
         width="match_parent">
         {items}
       </LinearLayout>);
+  }
+
+  getLineSeperator = () => {
+    return (<LinearLayout
+            width="match_parent"
+            height="1"
+            background={window.__Colors.PRIMARY_BLACK_22}/>)
   }
 
 
@@ -78,6 +96,7 @@ class CourseCurriculum extends View {
     this.layout = (
 
       <LinearLayout
+       padding="0,16,0,0"
        height="match_parent"
        orientation="vertical"
        width="match_parent">
