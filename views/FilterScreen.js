@@ -112,7 +112,7 @@ class FilterScreen extends View {
   }
 
 
-  handleBackPress = () => {
+  onBackPressed = () => {
     var searchDetails = {filterDetails: JSON.stringify(this.data),searchType: this.tempData.filterType}
     window.__runDuiCallback( {filterData:JSON.stringify(searchDetails)} );
 
@@ -145,7 +145,7 @@ class FilterScreen extends View {
 
         <SimpleToolbar
           title="Filter"
-          onBackPress={this.handleBackPress}
+          onBackPress={this.onBackPressed}
           invert="true"
           width="match_parent"/>
         
