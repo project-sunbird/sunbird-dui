@@ -103,6 +103,7 @@ class OfflineResourceContainer extends View {
             width="wrap_content"
             height="wrap_content"
             text="VIEW ALL"
+            padding="8,8,8,8"
             onClick={()=>{this.handleViewAllClick()}}
             style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
 
