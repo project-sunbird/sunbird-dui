@@ -22,30 +22,36 @@ class ProgressButton extends View {
 
     window.__ProgressButton = this;
     this.isDownloaded = false;
+    this.startedDownloading = false;
     // console.log("props in console",this.props.contentDetails.isAvailableLocally);
     // this.checkContentLocalStatus(this.props.identifier);
-    this.checkContentLocalStatus(this.props.localStatus);
+
+
     _this = this;
 
-    console.log("local status content",this.props.localStatus)
-    this.startedDownloading = false;
+    console.log("local status content", this.props.localStatus)
 
+
+  }
+
+  afterRender = () => {
+    this.checkContentLocalStatus(this.props.localStatus);
   }
 
 
   checkContentLocalStatus = (status) => {
-      // console.log("this.props.contentDetails",this.props.contentDetails)
-        // var callback = callbackMapper.map(function(status) {
-          if (status == true) {
-            this.isDownloaded = true;
-            console.log("status",status=="true")
-            this.replaceChild(this.idSet.downloadBarContainer, this.getButtons("100", "PLAY").render(), 0);
+    // console.log("this.props.contentDetails",this.props.contentDetails)
+    // var callback = callbackMapper.map(function(status) {
+    if (status == true) {
+      this.isDownloaded = true;
+      console.log("status", status == "true")
+      this.replaceChild(this.idSet.downloadBarContainer, this.getButtons("100", "PLAY").render(), 0);
 
-          }
+    }
 
-        // });
-        // JBridge.getLocalContentStatus(this.props.identifier, callback);
-  
+    // });
+    // JBridge.getLocalContentStatus(this.props.identifier, callback);
+
   }
 
 
@@ -99,10 +105,9 @@ class ProgressButton extends View {
 
       if (this.isDownloaded) {
         console.log("play");
-        if(this.props.isCourse == "true"){
+        if (this.props.isCourse == "true") {
           JBridge.playChildContent(this.props.identifier)
-        }
-        else
+        } else
           JBridge.playContent(this.props.identifier);
 
       } else {
@@ -203,6 +208,7 @@ class ProgressButton extends View {
         height="wrap_content"
         orientation="vertical"
         width="match_parent"
+        afterRender={this.afterRender}
         background={window.__Colors.WHITE}
         visibility = {this.props.visibility?this.props.visibility : "visible"}
         id={this.idSet.downloadBar}
