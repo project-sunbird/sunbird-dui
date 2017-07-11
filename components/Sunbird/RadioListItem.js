@@ -1,5 +1,3 @@
-
-
 var dom = require("@juspay/mystique-backend").doms.android;
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
@@ -64,6 +62,7 @@ class RadioListItem extends View {
         <ImageView 
           onClick={this.handleClick}
           id={this.idSet.image}
+          allowMultipleClicks="true"
           padding="0,12,12,12"
           imageUrl={this.isSelected?"ic_checked":"ic_unchecked"}
           margin="0,0,10,0"
