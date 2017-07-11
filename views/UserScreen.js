@@ -291,14 +291,15 @@ class UserScreen extends View {
       orientation="vertical">
 
         <ImageView
-        height="100"
-        width="100"
+        height="60"
+        width="60"
         imageUrl={"ic_launcher"}/>
 
         <TextView
           width="match_parent"
           text="Welcome to Sunbird"
           gravity="center"
+          margin="0,12,0,6"
           style={window.__TextStyle.textStyle.HEADING.DARK}/>
 
         <TextView
@@ -386,6 +387,7 @@ class UserScreen extends View {
           width="match_parent"
           orientation="vertical"
           layoutTransition="true"
+          gravity="center"
           root="true">
 
             <LinearLayout
