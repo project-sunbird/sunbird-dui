@@ -120,7 +120,7 @@ class CardComponent extends View {
 
   afterRender = () => {
 
-    if(this.props.data.stars)
+    if (this.props.data.stars)
       JBridge.setRating(this.idSet.ratingBar, this.props.data.stars);
   }
 
@@ -158,7 +158,7 @@ class CardComponent extends View {
             width="wrap_content"
             height="wrap_content"
             text={this.props.data.footerSubTitle}
-            style={window.__TextStyle.textStyle.HINT.REGULAR}/>
+            style={window.__TextStyle.textStyle.HINT.TINY}/>
 
             </LinearLayout>
 

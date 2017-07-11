@@ -1,4 +1,3 @@
-
 exports.fontSize = {
   FONT_36: "36",
   FONT_22: "22",
@@ -7,6 +6,7 @@ exports.fontSize = {
   FONT_14: "14",
   FONT_13: "13",
   FONT_12: "12",
+  FONT_11: "11",
   FONT_10: "10",
   FONT_8: "8"
 }

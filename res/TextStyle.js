@@ -1,4 +1,3 @@
-
 const Colors = require('./Colors').color;
 const Font = require('./Font');
 
@@ -197,6 +196,11 @@ exports.textStyle = {
       textSize: Font.fontSize.FONT_12,
       fontStyle: Font.fontStyle.REGULAR
     },
+    TINY: {
+      color: Colors.DARK_GRAY,
+      textSize: Font.fontSize.FONT_11,
+      fontStyle: Font.fontStyle.REGULAR
+    },
     RED: {
       color: Colors.ERROR_RED,
       textSize: Font.fontSize.FONT_12,
@@ -263,10 +267,10 @@ exports.textStyle = {
       fontStyle: Font.fontStyle.SEMIBOLD
     }
   },
-  NOTHING:{
-      color: Colors.PRIMARY_ACCENT,
-      textSize: Font.fontSize.FONT_22,
-      fontStyle: Font.fontStyle.BOLD
+  NOTHING: {
+    color: Colors.PRIMARY_ACCENT,
+    textSize: Font.fontSize.FONT_22,
+    fontStyle: Font.fontStyle.BOLD
   }
 
 };

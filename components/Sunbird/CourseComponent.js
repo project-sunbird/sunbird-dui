@@ -224,7 +224,8 @@ class CourseComponent extends View {
   handleMenuClick = (url) => {
     console.log("url clicked", url);
     if (url == "ic_notification_red") {
-      window.__runDuiCallback({ tag: "StartNotificationFlow", contents: [] });
+      JBridge.showSnackBar("Comming Soon")
+        // window.__runDuiCallback({ tag: "StartNotificationFlow", contents: [] });
     }
     if (url == "ic_action_search") {
       var searchDetails = { filterDetails: "", searchType: "Course" }

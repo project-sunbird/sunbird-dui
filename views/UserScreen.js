@@ -291,14 +291,15 @@ class UserScreen extends View {
       orientation="vertical">
 
         <ImageView
-        height="100"
-        width="100"
+        height="60"
+        width="60"
         imageUrl={"ic_launcher"}/>
 
         <TextView
           width="match_parent"
           text="Welcome to Sunbird"
           gravity="center"
+          margin="0,12,0,6"
           style={window.__TextStyle.textStyle.HEADING.DARK}/>
 
         <TextView
@@ -316,7 +317,7 @@ class UserScreen extends View {
             height="wrap_content"
             width="match_parent"
             gravity="center_vertical"
-            padding="6,0,0,0"
+            margin="24,0,24,0"
             >
             <LinearLayout
               height="wrap_content"
@@ -333,7 +334,6 @@ class UserScreen extends View {
               <LinearLayout
                 height="wrap_content"
                 width="wrap_content"
-                margin = "0,0,16,0"
                 background={window.__Colors.THICK_BLUE}
                 stroke={"5,"+window.__Colors.THICK_BLUE}
                 cornerRadius="5">
@@ -373,6 +373,8 @@ class UserScreen extends View {
 
 
   getForum = () => {
+    //TextInputView be carefull with the margin, internal EditText position might break
+
     return (
       <ScrollView
         height="match_parent"
@@ -385,12 +387,12 @@ class UserScreen extends View {
           width="match_parent"
           orientation="vertical"
           layoutTransition="true"
+          gravity="center"
           root="true">
 
             <LinearLayout
               height="wrap_content"
               width="match_parent"
-
               id={this.idSet.firstNameHolder}
               visibility={this.isLoginMode?"gone":"visible"}>
 
@@ -399,7 +401,7 @@ class UserScreen extends View {
                   width="match_parent"
                   hintText="Enter you'r first name"
                   labelText="FIRST NAME"
-                  padding="12,0,12,0"
+                  margin="20,0,24,12"
                   _onChange={this.updateFirstName}/>  
             
             </LinearLayout>  
@@ -409,7 +411,7 @@ class UserScreen extends View {
                 width="match_parent"
                 hintText="sample@test.com"
                 labelText="E-MAIL ID"
-                padding="12,0,12,0"
+                margin="20,0,24,12"
                 _onChange={this.updateUserName}/>
 
             <TextInputView
@@ -417,7 +419,7 @@ class UserScreen extends View {
                 width="match_parent"
                 hintText="Enter a 8-digit password"
                 labelText="PASSWORD"
-                padding="12,0,12,0"
+                margin="20,0,24,12"
                 _onChange={this.updateUserPassword}/>  
             
             
@@ -430,7 +432,7 @@ class UserScreen extends View {
               <TextInputView
                 hintText="Enter preffered language"
                 labelText="LANGUAGE"
-                padding="12,0,12,0"
+                margin="20,0,24,12"
                 text="English"
                 _onChange={this.updateLanguage}/>  
            
@@ -494,10 +496,8 @@ class UserScreen extends View {
           height="0"
           weight="1"
           root="true"
-          padding="12,12,12,12"
           id={this.idSet.userForumContainer}
           width="match_parent" 
-          padding="10,10,10,10"
           gravity="center"
           orientation="vertical">
 
