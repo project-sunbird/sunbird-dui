@@ -56,7 +56,7 @@ class CourseEnrolledScreen extends View {
     this.data = {
       courseName: this.details ? this.details.courseName : "",
       courseDesc: this.details ? this.details.courseDesc : "This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced",
-      competedCount: this.details && this.details.footerTitle ? this.details.footerTitle.split('%')[0] : "10",
+      completedProgress: "60",
       totalCount: "150",
       courseBrief: [{
         count: "50",
@@ -269,7 +269,7 @@ class CourseEnrolledScreen extends View {
           showMenu="true"/>
 
         <HorizontalProgressBar  
-          currentProgress={this.data.competedCount}
+          currentProgress={this.data.completedProgress}
           totalProgress={this.data.totalProgress}
           width="match_parent"
           height="wrap_content"/>

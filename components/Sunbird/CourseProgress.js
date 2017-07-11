@@ -39,7 +39,7 @@ class CourseProgress extends View {
                 <TextView
                   style={window.__TextStyle.textStyle.HINT.REGULAR}
                   id ={this.idSet.completedTextView}
-                  text={this.percentVal.toFixed(2)}/>
+                  text={"60"}/>
                 <TextView
                   style={window.__TextStyle.textStyle.HINT.REGULAR}
                   text={" %"}/> 

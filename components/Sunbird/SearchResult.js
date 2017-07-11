@@ -102,6 +102,7 @@ class SearchResult extends View {
       resDetails['description'] = item.description;
       resDetails['headFooterTitle'] = headFooterTitle;
       resDetails['identifier'] = item.identifier;
+      resDetails['content'] = item;
       window.__runDuiCallback({tag:"ResourceDetailFlow",contents:{resourceDetails:JSON.stringify(resDetails)}});
 
     }
