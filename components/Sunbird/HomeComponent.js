@@ -220,13 +220,6 @@ class HomeComponent extends View {
   render() {
     this.layout = (
 
-    <RelativeLayout
-      root="true"
-      clickable="false"
-      width="match_parent"
-      height="match_parent">
-
-
       <LinearLayout
         root="true"
         orientation="vertical"
@@ -296,31 +289,9 @@ class HomeComponent extends View {
             </ScrollView>
 
 
-      </LinearLayout>
-
-       <LinearLayout
-        gravity="center"
-        centerInParent="true,-1"
-        clickable="false"
-        alpha = "0.9"
-        background={window.__Colors.WHITE}
-        width="match_parent"
-        height="match_parent">
-
-          <TextView
-          gravity="center"
-          width="match_parent"
-          height="match_parent"
-          style ={window.__TextStyle.textStyle.NOTHING}
-          text="Coming Soon.."/>
-        
-
-        </LinearLayout>
-
-      </RelativeLayout>
+      </LinearLayout> )
 
 
-    )
     return this.layout.render();
   }
 }

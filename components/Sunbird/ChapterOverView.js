@@ -97,3 +97,56 @@ class ChapterOverView extends View {
 }
 
 module.exports = ChapterOverView;
+
+
+// <LinearLayout
+//        height="wrap_content"
+//        cornerRadius="2"
+//        padding="6,0,6,0"
+//        gravity="center_vertical"
+//        orientation="vertical"
+//        onClick={this.handleClick}
+//        width="match_parent">
+
+
+//        {this.getLineSeperator()}
+
+//            <LinearLayout
+//            gravity="center_vertical"
+//            width="match_parent"
+//            height="wrap_content">
+
+//            <LinearLayout
+//              width="0"
+//              height="wrap_content"
+//              weight="90">
+
+//             <TextView
+//               text={this.chapterName}
+//               style={window.__TextStyle.textStyle.CARD.HEADING}/>
+
+//             <TextView
+//               text={chapterDuration}
+//               margin="6,0,0,0"
+//               style={window.__TextStyle.textStyle.CARD.SEMI_DARK}/>
+
+//           </LinearLayout>
+
+
+//           <LinearLayout
+//             width="0"
+//             height="wrap_content"
+//             weight="10">
+
+//             <ImageView
+//               width="32"
+//               height="32"
+//               padding="8,8,8,8"
+//               imageUrl="ic_action_right"/>
+
+//           </LinearLayout>
+
+//           </LinearLayout>
+
+
+//        </LinearLayout>
