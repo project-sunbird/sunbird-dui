@@ -40,13 +40,15 @@ class TextInputView extends View {
 
         <TextView
           text={this.props.labelText}
-          padding="6,0,0,0"
+          padding="4,0,0,0"
           style={window.__TextStyle.textStyle.BOTTOMBAR.DEFAULT}
           width="match_parent"
           height="wrap_content"/>
 
         
             <EditText
+              margin="0,0,0,0"
+              padding="4,4,0,10"
               width="match_parent"
               height="wrap_content"
               singleLine="true"

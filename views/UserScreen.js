@@ -372,6 +372,8 @@ class UserScreen extends View {
 
 
   getForum = () => {
+    //TextInputView be carefull with the margin, internal EditText position might break
+
     return (
       <ScrollView
         height="match_parent"
@@ -397,7 +399,7 @@ class UserScreen extends View {
                   width="match_parent"
                   hintText="Enter you'r first name"
                   labelText="FIRST NAME"
-                  margin="18,0,24,0"
+                  margin="20,0,24,12"
                   _onChange={this.updateFirstName}/>  
             
             </LinearLayout>  
@@ -407,7 +409,7 @@ class UserScreen extends View {
                 width="match_parent"
                 hintText="sample@test.com"
                 labelText="E-MAIL ID"
-                margin="18,0,24,0"
+                margin="20,0,24,12"
                 _onChange={this.updateUserName}/>
 
             <TextInputView
@@ -415,7 +417,7 @@ class UserScreen extends View {
                 width="match_parent"
                 hintText="Enter a 8-digit password"
                 labelText="PASSWORD"
-                margin="18,0,24,0"
+                margin="20,0,24,12"
                 _onChange={this.updateUserPassword}/>  
             
             
@@ -428,7 +430,7 @@ class UserScreen extends View {
               <TextInputView
                 hintText="Enter preffered language"
                 labelText="LANGUAGE"
-                margin="18,0,24,0"
+                margin="20,0,24,12"
                 text="English"
                 _onChange={this.updateLanguage}/>  
            
