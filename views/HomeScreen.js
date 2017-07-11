@@ -318,15 +318,14 @@ class HomeScreen extends View {
 
 
   handleBottomNavBarAction = (index) => {
-    this.setupDuiCallback();
-
+    this.currentPageIndex = index;
     if (index == 1) {
       if (!JBridge.isNetworkAvailable()) {
         JBridge.showSnackBar("NO INTERNET CONNECTION")
         this.handleBottomNavBarAction(2);
       }
     }
-    this.currentPageIndex = index;
+    this.setupDuiCallback();
     console.log("\n\nSwitching B Nav Bar ")
     window.__BottomNavBar.handleNavigationChange(index);
     this.switchContent(index)
