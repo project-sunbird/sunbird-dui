@@ -35,7 +35,7 @@ class OfflineResourceContainer extends View {
     if (this.props.data == undefined || this.props.data.length == 0)
       this.jsData = []
     else {
-      this.jsData = JSON.parse(this.props.data);
+      this.jsData = this.props.data;
     }
 
     console.log("OFFLINE CONTENT", this.jsData);
@@ -104,7 +104,7 @@ class OfflineResourceContainer extends View {
             height="wrap_content"
             text="VIEW ALL"
             padding="8,8,8,8"
-            onClick={()=>{this.handleViewAllClick()}}
+            onClick={this.handleViewAllClick}
             style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
 
             </LinearLayout>)
@@ -130,7 +130,8 @@ class OfflineResourceContainer extends View {
   }
 
   handleViewAllClick() {
-    this.props.onViewAllClick();
+    console.log("OFFLINE RESOURCE CONTAINER",_this.props.data)
+    _this.props.onViewAllClick(_this.props.data,_this.props.title);
   }
 
   render() {

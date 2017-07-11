@@ -113,9 +113,16 @@ class ResourceComponent extends View {
 
         </LinearLayout>)
   }
-handleResourceViewAllClick= (data) =>{
-  console.log("view all",data)
-   window.__runDuiCallback({ tag: "StartResourceViewAllFlow", contents: { "resourceDetails": JSON.stringify(JSON.stringify(data)) } });
+
+
+handleResourceViewAllClick= (data,title) =>{
+
+   var resourceDetails = {
+                            "title" : title,
+                            "resourceDetails" : data
+                         }
+
+   window.__runDuiCallback({ tag: "StartResourceViewAllFlow", contents: { "resourceDetails": JSON.stringify(resourceDetails)} });
 }
 
 
@@ -246,13 +253,13 @@ handleResourceViewAllClick= (data) =>{
   afterRender = () => {
   
      var callback = callbackMapper.map(function(params) {
-      _this.data = params;
+      _this.data = JSON.parse(params);
 
       var layout = (<OfflineResourceContainer
                        onResourceOpenClick = {_this.handleResourceOpen}
                        data = {_this.data}
                        title="Saved Resources"
-                       onViewAllClick = {_this.handleViewAllClick}/>)
+                       onViewAllClick = {_this.handleResourceViewAllClick}/>)
 
     _this.replaceChild(_this.idSet.offlineContainer,layout.render(),0);             
 

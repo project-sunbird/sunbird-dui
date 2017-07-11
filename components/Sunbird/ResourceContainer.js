@@ -28,9 +28,9 @@ class ResourceContainer extends View {
 
 
   getRows = () => {
-    this.data = this.props.data;
+      this.data = this.props.data;
 
-    var rows = this.data.map((item, i) => {
+      var rows = this.data.map((item, i) => {
 
       var size = item.hasOwnProperty("size") ? " ["+ utils.formatBytes(item.size)+"]" : "";
       var footerTitle = item.contentType + size;
@@ -41,7 +41,6 @@ class ResourceContainer extends View {
       temp['footerTitle'] = footerTitle;
       temp['footerSubTitle'] = item.contentType;
       temp['actionText'] = "OPEN";
-
 
       return (<CardComponent 
                  data={temp}
@@ -112,7 +111,7 @@ class ResourceContainer extends View {
   }
 
   handleViewAllClick() {
-    this.props.onViewAllClick(this.data);
+    this.props.onViewAllClick(this.data,this.props.title);
   }
 
   render() {
