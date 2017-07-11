@@ -31,9 +31,7 @@ class AlternateModuleDetailScreen extends View {
     this.screenName = "AlternateModuleDetailScreen"
     this.menuData = {
       url: [
-        { imageUrl: "ic_action_share" },
-        { imageUrl: "ic_action_bookmark" },
-        { imageUrl: "ic_action_overflow" },
+       
       ]
     }
 
@@ -197,19 +195,14 @@ class AlternateModuleDetailScreen extends View {
           <LinearLayout
             height="wrap_content"
             gravity="center_vertical"
-            margin="0,0,0,12"  
+            margin="0,12,0,12"  
             width="match_parent">
             <TextView
               height="wrap_content"
               width="0"
               weight="1"
+              style={window.__TextStyle.textStyle.CARD.TITLE.DARK}
               text={this.moduleName}/>
-
-            <ImageView
-              imageUrl="ic_action_share"
-              width="48"
-              height="48"
-              padding="12,12,12,12"/>
 
           </LinearLayout>  
 

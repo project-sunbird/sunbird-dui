@@ -29,7 +29,6 @@ class ResourceViewAllScreen extends View {
     this.screenName = "ResourceViewAllScreen";
       this.menuData = {
       url: [
-        { imageUrl: "ic_action_overflow"}
       ]
       }
     this.shouldCacheScreen = false;

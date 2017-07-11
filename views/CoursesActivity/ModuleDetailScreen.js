@@ -31,8 +31,7 @@ class ModuleDetailScreen extends View {
     this.screenName = "ModuleDetailScreen"
     this.menuData = {
       url: [
-        { imageUrl: "ic_action_bookmark" },
-        { imageUrl: "ic_action_overflow" },
+       
       ]
     }
 
@@ -148,7 +147,8 @@ class ModuleDetailScreen extends View {
     if (this.module.children) {
 
       layout = (
-        <CourseCurriculum
+           
+              <CourseCurriculum
                   height="match_parent"
                   root="true"
                   margin="0,0,0,12"
@@ -158,6 +158,7 @@ class ModuleDetailScreen extends View {
                   content= {this.module.children}
                   width="match_parent"/>
       )
+
       this.replaceChild(this.idSet.descriptionContainer, layout.render(), 0);
     } else {
       var cmd = this.set({

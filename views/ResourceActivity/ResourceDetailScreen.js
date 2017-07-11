@@ -28,9 +28,6 @@ class ResourceDetailScreen extends View {
     this.screenName = "ResourceDetailScreen"
     this.menuData = {
       url: [
-        { imageUrl: "ic_share_black" },
-        { imageUrl: "ic_action_bookmark" },
-        { imageUrl: "ic_action_overflow" },
       ]
     }
 
