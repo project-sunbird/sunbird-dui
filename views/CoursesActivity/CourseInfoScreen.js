@@ -196,7 +196,7 @@ class CourseInfoScreen extends View {
         JBridge.getChildContent(identifier, callback1)
       } else {
         console.log("Spine Not Found, IMPORTING ")
-        JBridge.importCourse(identifier,"false")
+        JBridge.importCourse(identifier, "false")
       }
 
 
@@ -267,7 +267,6 @@ class CourseInfoScreen extends View {
 
   onBackPressed = () => {
     window.__changePureScriptFlow();
-    window.__runDuiCallback({ action: "showMainFlow" });
   }
 
   getCurriculumnBrief = () => {
