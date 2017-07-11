@@ -96,7 +96,7 @@ class CourseProgress extends View {
           height="match_parent"
           orientation="vertical">
             <TextView
-              text = {this.props.title||"Course Progress"}
+              text = {this.props.title||"No title"}
               style= {window.__TextStyle.textStyle.HEADING.DARK}
               margin="0,0,0,8"/>
 

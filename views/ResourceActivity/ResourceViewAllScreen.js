@@ -123,7 +123,7 @@ getRows = () =>{
       var headFooterTitle = this.cType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");   
       var resDetails = {};
       resDetails['imageUrl'] = this.fileImageUrl;
-      resDetails['title'] = this.name;
+      resDetails['title'] = item.name;
       resDetails['description'] = item.hasOwnProperty("description") ? item.description : item.contentData.description;
       resDetails['headFooterTitle'] = headFooterTitle;
       resDetails['identifier'] = item.identifier;
@@ -158,7 +158,6 @@ getRows = () =>{
 
   onBackPressed = () => {
     window.__changePureScriptFlow();
-    window.__runDuiCallback({ action: "showMainFlow" });
   }
 
   render() {

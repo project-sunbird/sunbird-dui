@@ -270,7 +270,6 @@ class ResourceDetailScreen extends View {
 
   onBackPressed = () => {
        window.__changePureScriptFlow();
-       window.__runDuiCallback({ action: "showMainFlow" });
   }
 
   render() {
