@@ -40,7 +40,11 @@ class ResourceDetailScreen extends View {
     this.details = JSON.parse(this.details);
 
     console.log("Got Title", this.details)
-    
+    this.localStatus = false;
+    if(this.details.content.hasOwnProperty("isAvailableLocally")){
+      this.localStatus = true;
+    }
+
     var _this = this;
     setTimeout(function() {
       Android.runInUI(
@@ -314,7 +318,9 @@ class ResourceDetailScreen extends View {
                <ProgressButton
                  width="match_parent"
                  isCourse = "false"
+                 contentDetail = {this.details.content}
                  buttonText="DOWNLOAD THIS RESOURCE"
+                 localStatus = {this.localStatus}
                  identifier = {this.details.identifier}/>
        
       </LinearLayout>

@@ -43,6 +43,7 @@ class ResourceContainer extends View {
       temp['actionText'] = "OPEN";
 
 
+
       return (<CardComponent 
                  data={temp}
                  content={item}
@@ -107,6 +108,7 @@ class ResourceContainer extends View {
       resDetails['description'] = item.description;
       resDetails['headFooterTitle'] = headFooterTitle;
       resDetails['identifier'] = item.identifier;
+      resDetails['content'] = item;
       window.__runDuiCallback({tag:"StartResourceDetailFlow",contents:{resourceDetails:JSON.stringify(resDetails)}});
 
   }
