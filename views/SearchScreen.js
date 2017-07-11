@@ -84,7 +84,7 @@ class SearchScreen extends View {
                   height="match_parent"
                   width="match_parent"
                   maxLines="1"
-                  hint="search"
+                  hint="Search"
                   layoutTransition="true"
                   gravity="center_vertical"
                   background="#ffffff"
