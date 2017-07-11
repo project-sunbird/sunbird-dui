@@ -44,7 +44,7 @@ class HomeScreen extends View {
 
 
     this.currentPageIndex = 2;
-
+    console.log("CURRENT INDEX", this.currentPageIndex);
 
 
     this.feedData = FeedParams.feedParams;
@@ -77,13 +77,15 @@ class HomeScreen extends View {
   }
 
   onPop = () => {
+
+
     Android.runInUI(
       this.animateView(),
       null
     );
 
 
-    //this.setupDuiCallback();
+    this.setupDuiCallback();
   }
 
 

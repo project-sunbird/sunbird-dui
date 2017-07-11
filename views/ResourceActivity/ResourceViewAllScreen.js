@@ -32,12 +32,15 @@ class ResourceViewAllScreen extends View {
       ]
       }
     this.shouldCacheScreen = false;
-    console.log("state in view all",state);
-    this.details = JSON.parse(state.data.value0.resourceDetails);
-    console.log("this.details",this.details)
-    console.log("type",typeof(this.details))
-    console.log("data in view all",JSON.parse(this.details));
-    this.details = JSON.parse(this.details);
+    this.totalDetails = JSON.parse(state.data.value0.resourceDetails);
+
+    console.log(this.totalDetails,"TOTAL")
+
+    this.details = this.totalDetails.resourceDetails;
+    this.appbarTitle = this.totalDetails.title;
+
+    console.log("DETAILS IN ResourceViewAllScreen",this.details)
+
     this.size;
     this.fileImageUrl;
     this.cType;
@@ -174,7 +177,7 @@ getRows = () =>{
           onBackPress={this.onBackPressed}
           showMenu="true"
           invert="true"
-          title= "Saved Resources"/>
+          title= {this.appbarTitle}/>
           
 
               <ScrollView
