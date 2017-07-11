@@ -231,6 +231,7 @@ class HomeComponent extends View {
             title=""
             width="match_parent"
             showMenu="true"
+            logo="ic_launcher"
             invert="true" 
             hideBack="true" 
             menuData={this.menuData}

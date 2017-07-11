@@ -168,7 +168,7 @@ handleResourceViewAllClick= (data) =>{
         height="match_parent">
 
           <SimpleToolbar
-            title=""
+            title="Resources"
             width="match_parent"
             showMenu="true"
             invert="true" 

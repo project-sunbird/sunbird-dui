@@ -99,11 +99,11 @@ getMenu = () =>{
     if (!this.props.logo)
       return <Space width="0"/>
 
-    return ( < ImageView margin = "0,0,10,0"
+    return ( < ImageView margin = "15,0,10,0"
       style = {
         {
-          width: '48',
-          height: '48'
+          width: '32',
+          height: '32'
         }
       }
       imageUrl = { this.props.logo }/> );
