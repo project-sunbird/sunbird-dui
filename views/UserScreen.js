@@ -37,7 +37,7 @@ class UserScreen extends View {
       "signInHolder",
       "signUpHolder"
     ]);
-
+    this.backPressCount = 0;
     this.screenName = "UserScreen"
     this.isLoginMode = true;
     this.language = "English";
@@ -48,6 +48,7 @@ class UserScreen extends View {
   }
 
   onPop = () => {
+    this.backPressCount = 0;
     Android.runInUI(
       this.animateView(),
       null
@@ -60,6 +61,21 @@ class UserScreen extends View {
     console.log("TESTER ->", this.userName)
     var eventAction = { tag: "LoginAction", contents: {} };
     window.__runDuiCallback(eventAction);
+  }
+
+  onBackPressed = () => {
+    this.backPressCount++;
+    if (this.backPressCount == 1) {
+      JBridge.showSnackBar("Press back again to exit app")
+    }
+    if (this.backPressCount > 1) {
+      JBridge.closeApp();
+    }
+    console.log("BACK COUNT ", this.backPressCount)
+    setTimeout(() => {
+      console.log("RESET BACK COUNT ", this.backPressCount)
+      this.backPressCount = 0
+    }, 1500)
   }
 
 
