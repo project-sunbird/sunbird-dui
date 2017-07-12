@@ -46,6 +46,7 @@ class HomeScreen extends View {
     this.currentPageIndex = 2;
     console.log("CURRENT INDEX", this.currentPageIndex);
 
+    this.backPressCount = 0;
 
     this.feedData = FeedParams.feedParams;
 
@@ -83,11 +84,26 @@ class HomeScreen extends View {
       this.animateView(),
       null
     );
-
+    this.backPressCount = 0;
 
     this.setupDuiCallback();
   }
 
+
+  onBackPressed = () => {
+    this.backPressCount++;
+    if (this.backPressCount == 1) {
+      JBridge.showSnackBar("Press back again to exit app")
+    }
+    if (this.backPressCount > 1) {
+      JBridge.closeApp();
+    }
+    console.log("BACK COUNT ", this.backPressCount)
+    setTimeout(() => {
+      console.log("RESET BACK COUNT ", this.backPressCount)
+      this.backPressCount = 0
+    }, 1500)
+  }
 
   handleStateChange = (state) => {
     console.log("HANDLE STATE CHANGE HOME SCREEN", state)

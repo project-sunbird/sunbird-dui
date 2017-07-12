@@ -151,6 +151,7 @@ class OfflineResourceContainer extends View {
   }
 
   handleViewAllClick() {
+    
     console.log("OFFLINE RESOURCE CONTAINER",_this.props.data)
     _this.props.onViewAllClick(_this.props.data,_this.props.title);
   }

@@ -69,13 +69,6 @@ class CourseInProgressContainer extends View {
 
     });
 
-    if (data.length < 1) {
-      rows = (<TextView
-          height="300"
-          width="match_parent"
-          text="NO COURSES ENROLLED"
-          gravity="center"/>)
-    }
 
     var layout = (<LinearLayout
                     width="wrap_content"

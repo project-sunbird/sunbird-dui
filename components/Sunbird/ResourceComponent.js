@@ -9,7 +9,7 @@ var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
-
+window.R = require("ramda");
 var SearchToolbar = require('../Sunbird/core/SearchToolbar');
 var SimpleToolbar = require('../Sunbird/core/SimpleToolbar');
 var CourseContainer = require('../Sunbird/CourseContainer');
@@ -254,6 +254,8 @@ handleResourceViewAllClick= (data,title) =>{
   afterRender = () => {
   
      var callback = callbackMapper.map(function(params) {
+      console.log("p[arams from local",params)
+      
       _this.data = JSON.parse(params);
 
       var layout = (<OfflineResourceContainer

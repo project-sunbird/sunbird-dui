@@ -29,21 +29,21 @@ class SearchToolbar extends View {
       "appIcon"
 
     ])
-  this.getSearchList = debounce(this.getSearchList, 200);
+    this.getSearchList = debounce(this.getSearchList, 200);
     _this = this;
 
     this.searchText = debounce(this.searchText, 200);
     this.isSearchEnabled = this.props.startWithSearch ? this.props.startWithSearch : false;
     this.textData = {
-          type: "Subjects",
-          values: [
-            { color: "#10D50000", imageUrl: "ic_action_search", subject: "Dot Structure",comment:"Assignment",logo:[]},
-            { color: "#F0E9FD", imageUrl: "ic_account", subject: "Hybridization",comment:"How to use bond-line structures to perf…", logo:[] },
-            { color: "#10E3C31C", imageUrl: "ic_action_search", subject: "Bond Line Structure",comment:"Quiz", logo:[] },
-            { color: "#10FF9F00", imageUrl: "ic_action_search", subject: "Counting Electrons",comment:"(250 members)", logo:[] },
-            { color: "#10D50000", imageUrl: "ic_action_search", subject: "Dot Structure",comment:"Jawahar Vidya Mandir, Pune", logo:[] },
-          ]
-        }
+      type: "Subjects",
+      values: [
+        { color: "#10D50000", imageUrl: "ic_action_search", subject: "Dot Structure", comment: "Assignment", logo: [] },
+        { color: "#F0E9FD", imageUrl: "ic_account", subject: "Hybridization", comment: "How to use bond-line structures to perf…", logo: [] },
+        { color: "#10E3C31C", imageUrl: "ic_action_search", subject: "Bond Line Structure", comment: "Quiz", logo: [] },
+        { color: "#10FF9F00", imageUrl: "ic_action_search", subject: "Counting Electrons", comment: "(250 members)", logo: [] },
+        { color: "#10D50000", imageUrl: "ic_action_search", subject: "Dot Structure", comment: "Jawahar Vidya Mandir, Pune", logo: [] },
+      ]
+    }
 
     window.__SearchToolbar = this;
   }
@@ -54,7 +54,7 @@ class SearchToolbar extends View {
 
   handleSearchClick = () => {
     var cmd = ""
-    this.isSearchEnabled=true;
+    this.isSearchEnabled = true;
     JBridge.showKeyboard();
 
     cmd += this.set({
@@ -99,7 +99,7 @@ class SearchToolbar extends View {
 
   handleCloseClick = () => {
     var cmd = "";
-    this.isSearchEnabled=false;
+    this.isSearchEnabled = false;
     JBridge.hideKeyboard();
 
     cmd += this.set({
@@ -130,28 +130,28 @@ class SearchToolbar extends View {
     cmd += _this.set({
       id: _this.idSet.searchHolder,
       text: "",
-      focusOut:"true",
+      focusOut: "true",
       visibility: "gone"
     })
 
-    if(!this.props.hideBack){
+    if (!this.props.hideBack) {
       cmd += this.set({
-      id: this.idSet.backIcon,
-      visibility: "visible"
-    })
+        id: this.idSet.backIcon,
+        visibility: "visible"
+      })
     }
 
     Android.runInUI(cmd, 0);
   }
 
 
-   handleItemClick = (itemNo,logoNo) =>{
+  handleItemClick = (itemNo, logoNo) => {
     console.log(itemNo + " itemNo")
     console.log(logoNo + " logoNo")
   }
 
 
-  clearSearch(){
+  clearSearch() {
     var cmd = "";
     cmd += _this.set({
       id: _this.idSet.searchHolder,
@@ -190,7 +190,7 @@ class SearchToolbar extends View {
       imageUrl = {"ic_action_arrow_left"}/>)
   }
 
-  getSearchBack(){
+  getSearchBack() {
     return (<ImageView
             margin="0,0,0,0"
             style={IconStyle}
@@ -233,12 +233,13 @@ class SearchToolbar extends View {
 
                <EditText
                   height="match_parent"
-                  width="match_parent"
+                  width="0"
+                  weight="1"
                   maxLines="1"
                   hint={this.props.hint}
                   layoutTransition="true"
                   gravity="center_vertical"
-                  background="#ffffff"
+                  background="#123123"
                   visibility={this.isSearchEnabled?"visible":"gone"}
                   onChange = {result=>_this.getSearchList(result)}
                   id={this.idSet.searchHolder}
@@ -248,7 +249,7 @@ class SearchToolbar extends View {
           </LinearLayout>)
 
   }
- 
+
 
   getMenu = () => {
     if (!this.props.menuData)
@@ -266,39 +267,38 @@ class SearchToolbar extends View {
              height="wrap_content"
              id={this.idSet.menuContainer}>
              {menu}
-             </LinearLayout>
-           )
+             </LinearLayout>)
   }
 
   handleMenuClick = (url) => {
     this.props.onMenuItemClick(url);
-    if(url=="ic_action_search"){
+    if (url == "ic_action_search") {
       this.handleSearchClick();
     }
   }
 
-  handleBackPress = () =>{
+  handleBackPress = () => {
     this.props.onBackPress();
   }
 
-  handleSearchBackPress=()=>{
+  handleSearchBackPress = () => {
     this.handleCloseClick();
   }
 
 
-  getSearchList(searchText){
+  getSearchList(searchText) {
     var data = [];
-    var listData=[];
+    var listData = [];
     var temp = [];
-    var totalJson={};
+    var totalJson = {};
     var callback = callbackMapper.map(function(data) {
-        // console.log("params",JSON.parse(data));
-        
-        console.log("length",searchText);
-        console.log(data);
-      if(searchText == "" || data == "[]"){
+      // console.log("params",JSON.parse(data));
 
-          var layout = (<LinearLayout
+      console.log("length", searchText);
+      console.log(data);
+      if (searchText == "" || data == "[]") {
+
+        var layout = (<LinearLayout
                          width="match_parent"
                          height="1500"
                          root="true"
@@ -316,11 +316,9 @@ class SearchToolbar extends View {
                             text="No Search Results Found"/>
 
                         </LinearLayout>);
-      }
-      else
-      {
-          data = JSON.parse(data);
-          var layout = (<LinearLayout
+      } else {
+        data = JSON.parse(data);
+        var layout = (<LinearLayout
                          width="match_parent"
                          height="1500"
                          root="true"
@@ -329,13 +327,13 @@ class SearchToolbar extends View {
                           <SearchResult 
                             data={data} />
                         </LinearLayout>)
-                         
+
       }
-      
-      
 
 
-    _this.replaceChild(_this.idSet.searchListContainer,layout.render(),0);
+
+
+      _this.replaceChild(_this.idSet.searchListContainer, layout.render(), 0);
 
       // if(searchText.length != 0){
       //     for(var i = 0;i<data.length;i++){
@@ -364,27 +362,27 @@ class SearchToolbar extends View {
       //     _this.replaceChild(_this.idSet.searchListContainer,layout.render(),0);
       // }
     });
-    if(searchText.length >2){
-      JBridge.searchContent(callback,searchText);
+    if (searchText.length > 2) {
+      JBridge.searchContent(callback, searchText);
     }
 
-    
+
   }
 
 
-  replaceAll (target,search, replacement) {
+  replaceAll(target, search, replacement) {
     return target.split(search).join(replacement);
   };
 
 
-  afterRender = () =>{
+  afterRender = () => {
 
-     var callback = callbackMapper.map(function(data) {
-              console.log("data ENTERED IN SEARCH",data[0]);
+    var callback = callbackMapper.map(function(data) {
+      console.log("data ENTERED IN SEARCH", data[0]);
 
-          });
+    });
 
-    JBridge.handleImeAction(this.idSet.searchHolder,callback);
+    JBridge.handleImeAction(this.idSet.searchHolder, callback);
   }
 
 

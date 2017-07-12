@@ -272,7 +272,9 @@ class CourseEnrolledScreen extends View {
           currentProgress={this.data.completedProgress}
           totalProgress={this.data.totalProgress}
           width="match_parent"
-          height="wrap_content"/>
+          height="wrap_content"
+          
+          />
 
         <LinearLayout
           height="match_parent"

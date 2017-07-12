@@ -4,6 +4,7 @@ var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
 var RelativeLayout = require("@juspay/mystique-backend").androidViews.RelativeLayout;
 var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
+var ProgressBar = require("@juspay/mystique-backend").androidViews.ProgressBar;
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
@@ -31,7 +32,7 @@ class ModuleDetailScreen extends View {
     this.screenName = "ModuleDetailScreen"
     this.menuData = {
       url: [
-       
+
       ]
     }
 
@@ -49,7 +50,7 @@ class ModuleDetailScreen extends View {
 
     console.log("ModueDetail ", this.module)
     this.module = JSON.parse(this.module)
-    console.log("module local status",this.module.isAvailableLocally)
+    console.log("module local status", this.module.isAvailableLocally)
     this.localStatus = this.module.isAvailableLocally;
     console.log("Module Title", this.moduleName)
     console.log("ModueContentDetials ", this.module)
@@ -101,7 +102,7 @@ class ModuleDetailScreen extends View {
     } else {
       var cmd = this.set({
         id: this.idSet.downloadProgressText,
-        text: "Fetching content\n" + downloadedPercent + "%"
+        text: "Fetching Contents: " + downloadedPercent + "%"
       })
       Android.runInUI(cmd, 0);
     }
@@ -121,7 +122,7 @@ class ModuleDetailScreen extends View {
         JBridge.getChildContent(identifier, callback1)
       } else {
         console.log("Spine Not Found, IMPORTING ")
-        JBridge.importCourse(identifier,"false")
+        JBridge.importCourse(identifier, "false")
       }
 
 
@@ -149,8 +150,8 @@ class ModuleDetailScreen extends View {
     if (this.module.children) {
 
       layout = (
-           
-              <CourseCurriculum
+
+        <CourseCurriculum
                   height="match_parent"
                   root="true"
                   margin="0,0,0,12"
@@ -263,6 +264,10 @@ class ModuleDetailScreen extends View {
                   orientation="vertical"
                   afterRender={this.afterRender}
                   id={this.idSet.descriptionContainer}>
+                     
+                    <ProgressBar
+                      height="30"
+                      width="30"/>
                      <TextView
                         id={this.idSet.downloadProgressText}
                         test="Fetching spine"

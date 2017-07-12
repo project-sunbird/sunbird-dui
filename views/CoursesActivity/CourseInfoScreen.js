@@ -3,6 +3,7 @@ var Connector = require("@juspay/mystique-backend").connector;
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
 var RelativeLayout = require("@juspay/mystique-backend").androidViews.RelativeLayout;
+var ProgressBar = require("@juspay/mystique-backend").androidViews.ProgressBar;
 var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
@@ -177,7 +178,7 @@ class CourseInfoScreen extends View {
     } else {
       var cmd = this.set({
         id: this.idSet.downloadProgressText,
-        text: "Downloaded " + downloadedPercent + "%"
+        text: "Fetching Contents: " + downloadedPercent + "%"
       })
       Android.runInUI(cmd, 0);
     }
@@ -352,16 +353,20 @@ class CourseInfoScreen extends View {
                  
 
                 <LinearLayout
-                  height="match_parent"
+                  height="300"
                   width="match_parent"
                   gravity="center"
                   root="true"
                   orientation="vertical"
                   id={this.idSet.descriptionContainer}>
+                      <ProgressBar
+                        height="30"
+                        width="30"
+                        margin="20,20,20,20"/>
                      <TextView
                         id={this.idSet.downloadProgressText}
                         test="Fetching spine"
-                        height="300"
+                        height="wrap_content"
                         gravity="center"
                         width="match_parent"/>
                 </LinearLayout>    

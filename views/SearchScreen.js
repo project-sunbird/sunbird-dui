@@ -102,13 +102,16 @@ class SearchScreen extends View {
   getTitle = () => {
     return (<LinearLayout
             height="match_parent"
+            width="0"
             layoutTransition="true"
             gravity="center_vertical"
             weight="1">
 
               <EditText
                   height="match_parent"
-                  width="match_parent"
+                  width="0"
+                  weight="1"
+
                   maxLines="1"
                   hint="Search"
                   layoutTransition="true"
@@ -186,6 +189,9 @@ class SearchScreen extends View {
     this.replaceChild(this.idSet.searchListContainer, layout.render(), 0);
   }
 
+  updateSearchText = (data) => {
+    this.searchTextValue = data;
+  }
 
 
   getSearchList(searchText) {
@@ -210,7 +216,7 @@ class SearchScreen extends View {
       }
 
     });
-
+    console.log("searchText",searchText)
     if (searchText.length > 2) {
       if (this.filterData.length == 0) {
         status = "false";
@@ -296,13 +302,34 @@ class SearchScreen extends View {
 
 
   
+  getToolbar = () => {
+    return (<LinearLayout
+            height="56"
+            padding="0,0,0,2"
+            gravity="center_vertical"
+            background={window.__Colors.PRIMARY_BLACK_22}
+            width="match_parent" >
+                <LinearLayout
+                  height="56"
+                  padding="0,0,0,0"
+                  gravity="center_vertical"
+                  root="true"
+                  background={window.__Colors.WHITE}
+                  width="match_parent" >
 
+                    {this.getBack()}
+                    {this.getTitle()}
+
+                    
+                    {this.getMenu()}
+
+                 </LinearLayout>
+
+             </LinearLayout>)
+  }
 
   render() {
 
-    let back = this.getBack();
-    let title = this.getTitle();
-    let menu = this.getMenu();
     let spinnerData = "tty,hbhb"
 
     this.layout = (
@@ -318,29 +345,8 @@ class SearchScreen extends View {
         width="match_parent"
         height="match_parent">
 
-          <LinearLayout
-            height="56"
-            padding="0,0,0,2"
-            gravity="center_vertical"
-            background={window.__Colors.PRIMARY_BLACK_22}
-            width="match_parent" >
-            <LinearLayout
-              height="56"
-              padding="0,0,0,0"
-              gravity="center_vertical"
-              root="true"
-              background={window.__Colors.WHITE}
-              width="match_parent" >
-
-                {back}
-                {title}
-
-                <Space width="0" weight="1"/>
-                
-                {menu}
-
-             </LinearLayout>
-          </LinearLayout>
+         
+            {this.getToolbar()}
         
 
               <ScrollView
