@@ -33,7 +33,7 @@ class AlternateModuleDetailScreen extends View {
     this.screenName = "AlternateModuleDetailScreen"
     this.menuData = {
       url: [
-       
+
       ]
     }
 
@@ -51,7 +51,7 @@ class AlternateModuleDetailScreen extends View {
 
     console.log("ModueDetail ", this.module)
     this.module = JSON.parse(this.module)
-    console.log("module local statuws",this.module.isAvailableLocally)
+    console.log("module local statuws", this.module.isAvailableLocally)
     this.localStatus = this.module.isAvailableLocally;
     console.log("Module Title", this.moduleName)
     console.log("ModueContentDetials ", this.module)
@@ -103,7 +103,7 @@ class AlternateModuleDetailScreen extends View {
     } else {
       var cmd = this.set({
         id: this.idSet.downloadProgressText,
-        text: "Fetching content\n" + downloadedPercent + "%"
+        text: "Fetching Contents: " + downloadedPercent + "%"
       })
       Android.runInUI(cmd, 0);
     }
@@ -123,7 +123,7 @@ class AlternateModuleDetailScreen extends View {
         JBridge.getChildContent(identifier, callback1)
       } else {
         console.log("Spine Not Found, IMPORTING ")
-        JBridge.importCourse(identifier,"false")
+        JBridge.importCourse(identifier, "false")
       }
 
 
