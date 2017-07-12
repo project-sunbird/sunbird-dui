@@ -276,6 +276,7 @@ class SearchScreen extends View {
   afterRender = () => {
 
     var callback = callbackMapper.map(function(data) {
+      JBridge.showSnackBar("Loading results")
       _this.getSearchList(_this.searchTextValue);
       _this.handleSearchClick(data);
 
