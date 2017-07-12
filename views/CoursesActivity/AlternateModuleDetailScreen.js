@@ -17,6 +17,8 @@ var ProgressButton = require('../../components/Sunbird/core/ProgressButton');
 var CourseCurriculum = require('../../components/Sunbird/CourseCurriculum');
 
 
+
+
 class AlternateModuleDetailScreen extends View {
   constructor(props, children, state) {
     super(props, children, state);

@@ -109,7 +109,7 @@ class ProgressButton extends View {
           JBridge.playChildContent(this.props.identifier)
         } else
           JBridge.playContent(this.props.identifier);
-
+        window.__getGenieEvents = this.checkTelemetry;
       } else {
         console.log("download");
         if (!this.startedDownloading) {
@@ -124,6 +124,9 @@ class ProgressButton extends View {
       this.setPermissions();
     }
 
+  }
+  checkTelemetry = (telemetryData) =>{
+    console.log("telemetryData",JSON.parse(telemetryData));
   }
 
 

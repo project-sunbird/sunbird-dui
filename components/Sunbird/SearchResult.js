@@ -1,5 +1,3 @@
-
-
 var dom = require("@juspay/mystique-backend").doms.android;
 var Connector = require("@juspay/mystique-backend").connector;
 var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
@@ -93,8 +91,12 @@ class SearchResult extends View {
 
     var itemDetails = JSON.stringify(item);
 
-    if(item.contentType != "Course" && item.contentType != "Collection"){
-     
+    if(item.contentType == "Course" || item.contentType == "Collection"){
+      
+      window.__runDuiCallback({tag:"CourseInfoFlow",contents:{course:itemDetails}});
+    }
+    else
+    {
       var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");      
       var resDetails = {};
       resDetails['imageUrl'] = item.appIcon;
@@ -103,12 +105,7 @@ class SearchResult extends View {
       resDetails['headFooterTitle'] = headFooterTitle;
       resDetails['identifier'] = item.identifier;
       resDetails['content'] = item;
-      window.__runDuiCallback({tag:"ResourceDetailFlow",contents:{resourceDetails:JSON.stringify(resDetails)}});
-
-    }
-    else
-    {
-      window.__runDuiCallback({tag:"CourseInfoFlow",contents:{course:itemDetails}});
+      window.__runDuiCallback({tag:"ResourceDetailFlow",contents:{resourceDetails:JSON.stringify(resDetails)}}); 
     }
 
   }

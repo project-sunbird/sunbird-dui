@@ -37,6 +37,7 @@ startResourceSearchFlow state = do
   case state of
     ResourceDetailFlow {resourceDetails : details} -> startResourceDetailFlow details
     StartFilterFlow{filterDetails : details} -> startFilterFlow details 
+    CourseInfoFlow {course : details} -> resourceEnrolledCourseFlow details
     _ -> pure $ "aborted"
 
 
@@ -53,4 +54,28 @@ startResourceViewAllFlow state = do
 		StartResourceInfoFlow {resourceDetails:details} -> startResourceDetailFlow details
 		DummyResourceViewAllAction -> pure $ "handled"
 		_ -> pure $ "default"
+
+
+resourceEnrolledCourseFlow cDetail= do
+	event <- ui $ CourseEnrolledScreen {courseDetails:cDetail}
+	case event of
+		DummyCourseEnrolledAction -> pure $ "handled"
+  		ShowModuleScreen {moduleName:mName,moduleDetails:mDetails}-> resourceModuleDetailsFlow mName mDetails cDetail
+		_ -> pure $ "default"
+
+resourceModuleDetailsFlow mName mDetails parentCourse= do
+	event <- ui $ ModuleDetailScreen {moduleName:mName,moduleDetails:mDetails}
+	case event of
+		DummyModuleDetailsAction -> pure $ "handled"
+		ShowSubModuleScreen {moduleName:mName,moduleDetails:mDetails}-> resourceSubModuleDetailsFlow mName mDetails parentCourse
+		BackToParent -> resourceEnrolledCourseFlow parentCourse
+  		_ -> pure $ "default"
+
+resourceSubModuleDetailsFlow mName mDetails parentCourse= do
+	event <- ui $ AlternateModuleDetailScreen {moduleName:mName,moduleDetails:mDetails}
+	case event of
+		DummyAlternateModuleDetailAction -> pure $ "handled"
+		ShowModuleAgainScreen {moduleName:mName,moduleDetails:mDetails}-> resourceModuleDetailsFlow mName mDetails parentCourse
+		BackToHome -> resourceEnrolledCourseFlow parentCourse
+  		_ -> pure $ "default"  		
 
