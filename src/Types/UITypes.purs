@@ -27,7 +27,7 @@ data HomeScreenAction = ShowHome {name::String} | StartCourseFlow |
  StartCommunityInfoFlow {community::String} | StartCommunityViewAllFlow | 
  StartCourseInfoFlow {course::String} | StartEnrolledCourseFlow {course::String} |
  GetCoursePage | GetResourcePage | StartNotificationFlow | StartResourceDetailFlow {resourceDetails::String} | 
- StartResourceViewAllFlow {resourceDetails::String} | StartSearchFlow {filterDetails::String}| StartResourcePageApi | StartCoursePageApi | GetEnrolledCourseApi | StartProfileApi
+ StartResourceViewAllFlow {resourceDetails::String} | StartSearchFlow {filterDetails::String}| StartResourcePageApi | StartCoursePageApi | GetEnrolledCourseApi | StartProfileApi | ResourceCourseInfoFlow {course ::String}
 
 data InitScreen = InitScreen 
 data InitScreenAction = ShowInit  | StartInit
@@ -63,11 +63,11 @@ data ResourceDetailAction = DummyResourceDetailAction
 
 
 data ResourceViewAllScreen = ResourceViewAllScreen {resourceDetails::String}
-data ResourceViewAllAction = DummyResourceViewAllAction | StartResourceInfoFlow {resourceDetails::String}
+data ResourceViewAllAction = DummyResourceViewAllAction | StartResourceInfoFlow {resourceDetails::String} | StartResourceViewAllDetailFlow {resourceDetails::String}
 
 
 data SearchScreen = SearchScreen {filterDetails::String}
-data SearchScreenAction = ResourceDetailFlow {resourceDetails::String} | StartFilterFlow {filterDetails::String} | CourseInfoFlow {course::String}
+data SearchScreenAction = ResourceDetailFlow {resourceDetails::String} | StartFilterFlow {filterDetails::String} | CourseInfoFlow {course::String} | SearchResourceFlow {course::String}
 
 data FilterScreen = FilterScreen {filterDetails::String}
 data FilterScreenAction = SearchScreenFromFilter {filterData::String}

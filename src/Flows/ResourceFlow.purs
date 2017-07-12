@@ -28,6 +28,7 @@ startResourceFlow state = do
 		StartResourceDetailFlow {resourceDetails:details} -> startResourceDetailFlow details
 		StartResourceViewAllFlow {resourceDetails:details} -> startResourceViewAllFlow details
 		StartSearchFlow {filterDetails: details} -> startResourceSearchFlow details
+		ResourceCourseInfoFlow {course : details} -> resourceEnrolledCourseFlow details
 		_ -> pure $ "default"
 
 
@@ -37,7 +38,7 @@ startResourceSearchFlow state = do
   case state of
     ResourceDetailFlow {resourceDetails : details} -> startResourceDetailFlow details
     StartFilterFlow{filterDetails : details} -> startFilterFlow details 
-    CourseInfoFlow {course : details} -> resourceEnrolledCourseFlow details
+    SearchResourceFlow {course : details} -> resourceEnrolledCourseFlow details
     _ -> pure $ "aborted"
 
 
@@ -52,6 +53,7 @@ startResourceViewAllFlow state = do
 	state <- ui $ ResourceViewAllScreen {resourceDetails : state}
 	case state of
 		StartResourceInfoFlow {resourceDetails:details} -> startResourceDetailFlow details
+		StartResourceViewAllDetailFlow {resourceDetails:details} -> resourceEnrolledCourseFlow details
 		DummyResourceViewAllAction -> pure $ "handled"
 		_ -> pure $ "default"
 

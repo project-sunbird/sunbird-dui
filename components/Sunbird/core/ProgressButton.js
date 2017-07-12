@@ -126,7 +126,7 @@ class ProgressButton extends View {
 
   }
   checkTelemetry = (telemetryData) =>{
-    console.log("telemetryData",JSON.parse(telemetryData));
+    console.log("telemetryData",telemetryData);
   }
 
 

@@ -91,9 +91,9 @@ class SearchResult extends View {
 
     var itemDetails = JSON.stringify(item);
 
-    if(item.contentType == "Course" || item.contentType == "Collection"){
+    if(item.contentType.toLowerCase() == "course" || item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "TextBook"){
       
-      window.__runDuiCallback({tag:"CourseInfoFlow",contents:{course:itemDetails}});
+      window.__runDuiCallback({tag:"SearchResourceFlow",contents:{course:itemDetails}});
     }
     else
     {

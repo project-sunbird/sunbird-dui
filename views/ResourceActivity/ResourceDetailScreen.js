@@ -41,7 +41,7 @@ class ResourceDetailScreen extends View {
 
     console.log("Got Title", this.details)
     this.localStatus = false;
-    if(this.details.content.hasOwnProperty("isAvailableLocally")){
+    if(this.details.hasOwnProperty("content") && this.details.content.hasOwnProperty("isAvailableLocally")){
       this.localStatus = true;
     }
 

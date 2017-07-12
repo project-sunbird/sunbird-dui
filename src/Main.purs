@@ -94,6 +94,7 @@ startHomeSearchFlow state = do
   case state of
     ResourceDetailFlow {resourceDetails : details} -> startResourceDetailFlow details
     CourseInfoFlow {course : details} -> startCourseInfoFlow details
+    SearchResourceFlow {course : details} -> startCourseInfoFlow details
     StartFilterFlow{filterDetails : details} -> startFilterFlow details 
     _ -> pure $ "aborted"
 

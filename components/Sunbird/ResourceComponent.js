@@ -236,6 +236,7 @@ handleResourceViewAllClick= (data,title) =>{
   }
 
   handleResourceOpen = (data) => {
+    console.log("data",data);
     window.__runDuiCallback({ tag: "StartResourceDetailFlow", contents: { resourceDetails: "nothing" } });
   }
 

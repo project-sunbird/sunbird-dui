@@ -99,16 +99,33 @@ class ResourceContainer extends View {
 
   handleCardClick = (item, type) => {
 
-      var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");      
-      var resDetails = {};
-      resDetails['imageUrl'] = item.appIcon;
-      resDetails['title'] = item.name;
-      resDetails['description'] = item.description;
-      resDetails['headFooterTitle'] = headFooterTitle;
-      resDetails['identifier'] = item.identifier;
-      resDetails['content'] = item;
-      window.__runDuiCallback({tag:"StartResourceDetailFlow",contents:{resourceDetails:JSON.stringify(resDetails)}});
+      // var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");      
+      // var resDetails = {};
+      // resDetails['imageUrl'] = item.appIcon;
+      // resDetails['title'] = item.name;
+      // resDetails['description'] = item.description;
+      // resDetails['headFooterTitle'] = headFooterTitle;
+      // resDetails['identifier'] = item.identifier;
+      // resDetails['content'] = item;
+      // window.__runDuiCallback({tag:"StartResourceDetailFlow",contents:{resourceDetails:JSON.stringify(resDetails)}});
 
+      
+       if(item.contentType.toLowerCase() == "course" || item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "TextBook"){
+        
+        window.__runDuiCallback({tag:"ResourceCourseInfoFlow",contents:{course:JSON.stringify(item)}});
+      }
+      else
+      {
+        var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");      
+        var resDetails = {};
+        resDetails['imageUrl'] = item.appIcon;
+        resDetails['title'] = item.name;
+        resDetails['description'] = item.description;
+        resDetails['headFooterTitle'] = headFooterTitle;
+        resDetails['identifier'] = item.identifier;
+        resDetails['content'] = item;
+        window.__runDuiCallback({tag:"StartResourceDetailFlow",contents:{resourceDetails:JSON.stringify(resDetails)}}); 
+      }
   }
 
   handleViewAllClick() {

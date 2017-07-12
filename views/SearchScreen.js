@@ -42,16 +42,43 @@ class SearchScreen extends View {
     console.log("type", this.searchType);
 
     _this = this;
-    this.checkSearchList(this.filterData.length, this.filterData);
+    // this.checkSearchList(this.filterData.length, this.filterData);
   }
 
   checkSearchList = (length, data) => {
     if (length != 0) {
-      this.handleSearchClick();
+
       data = JSON.parse(data)
       console.log("query!", data.query)
       this.getSearchList(data.query);
+
+      
+
     }
+  }
+
+  afterRender = () => {
+
+    if(this.filterData.length != 0){
+    JBridge.showSnackBar("Loading Search Results Please Wait......")      
+       var cmd = "";
+        cmd += _this.set({
+          id: _this.idSet.filterHolder,
+          visibility: "visible"
+        })
+      Android.runInUI(cmd, 0);
+      var searchData = JSON.parse(this.filterData)
+      this.getSearchList(searchData.query);
+    }
+
+    var callback = callbackMapper.map(function(data) {
+
+      _this.handleSearchClick(data);
+
+    });
+
+    JBridge.handleImeAction(this.idSet.searchHolder, callback);
+
   }
 
   onPop = () => {
@@ -87,7 +114,6 @@ class SearchScreen extends View {
                   layoutTransition="true"
                   gravity="center_vertical"
                   background="#ffffff"
-                  onChange = {result=>_this.getSearchList(result)}
                   id={this.idSet.searchHolder}
                   style={window.__TextStyle.textStyle.TOOLBAR.HEADING}/>
 
@@ -163,10 +189,7 @@ class SearchScreen extends View {
 
 
   getSearchList(searchText) {
-    var data = [];
-    var listData = [];
-    var temp = [];
-    var totalJson = {};
+    console.log("oin get search List",searchText);
     var callback = callbackMapper.map(function(data) {
       console.log("search results", JSON.parse(data[1]));
       _this.filterData = data[1];
@@ -221,14 +244,18 @@ class SearchScreen extends View {
   }
 
 
-  handleSearchClick = (searchtext) => {
+  handleSearchClick = (searchText) => {
+    JBridge.showSnackBar("Loading Search Results Please Wait......")
+    this.getSearchList(searchText[0]);
+    
+
     var cmd = "";
     cmd += _this.set({
       id: _this.idSet.filterHolder,
       visibility: "visible"
     })
 
-    if (searchtext != "") {
+    if (searchText != "") {
       JBridge.hideKeyboard();
       Android.runInUI(cmd, 0);
     }
@@ -268,17 +295,7 @@ class SearchScreen extends View {
 
 
 
-  afterRender = () => {
-
-    var callback = callbackMapper.map(function(data) {
-
-      _this.handleSearchClick(data);
-
-    });
-
-    JBridge.handleImeAction(this.idSet.searchHolder, callback);
-
-  }
+  
 
 
   render() {

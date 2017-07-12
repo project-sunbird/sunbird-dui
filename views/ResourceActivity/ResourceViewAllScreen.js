@@ -120,18 +120,23 @@ getRows = () =>{
 
     handleResourceClick = (item)=>{
 
-      var headFooterTitle = this.cType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");   
-      var resDetails = {};
-      resDetails['imageUrl'] = this.fileImageUrl;
-      resDetails['title'] = item.name;
-      resDetails['description'] = item.hasOwnProperty("description") ? item.description : item.contentData.description;
-      resDetails['headFooterTitle'] = headFooterTitle;
-      resDetails['identifier'] = item.identifier;
-      resDetails['content'] = item;
-
-      window.__runDuiCallback({tag:"StartResourceInfoFlow",contents:{resourceDetails:JSON.stringify(resDetails)}});
-
+      
+       if(item.contentType.toLowerCase() == "course" || item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook"){
         
+        window.__runDuiCallback({tag:"StartResourceViewAllDetailFlow",contents:{resourceDetails:JSON.stringify(item)}});
+      }
+      else
+      {
+        var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");      
+        var resDetails = {};
+        resDetails['imageUrl'] = item.appIcon;
+        resDetails['title'] = item.name;
+        resDetails['description'] = item.description;
+        resDetails['headFooterTitle'] = headFooterTitle;
+        resDetails['identifier'] = item.identifier;
+        resDetails['content'] = item;
+        window.__runDuiCallback({tag:"StartResourceInfoFlow",contents:{resourceDetails:JSON.stringify(resDetails)}}); 
+      }
     }
 
   

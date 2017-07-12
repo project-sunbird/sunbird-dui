@@ -118,17 +118,36 @@ class OfflineResourceContainer extends View {
 
   handleCardClick = (item, type) => {
 
-    var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " [" + utils.formatBytes(item.size) + "]" : "");
-    var fileImageUrl = "file://" + item.basePath + "/" + item.contentData.appIcon;
-    var resDetails = {};
-    resDetails['imageUrl'] = fileImageUrl;
-    resDetails['title'] = item.contentData.name;
-    resDetails['description'] = item.contentData.description;
-    resDetails['headFooterTitle'] = headFooterTitle;
-    resDetails['identifier'] = item.identifier;
-    resDetails['content'] = item;
+    // var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " [" + utils.formatBytes(item.size) + "]" : "");
+    // var fileImageUrl = "file://" + item.basePath + "/" + item.contentData.appIcon;
+    // var resDetails = {};
+    // resDetails['imageUrl'] = fileImageUrl;
+    // resDetails['title'] = item.contentData.name;
+    // resDetails['description'] = item.contentData.description;
+    // resDetails['headFooterTitle'] = headFooterTitle;
+    // resDetails['identifier'] = item.identifier;
+    // resDetails['content'] = item;
 
-    window.__runDuiCallback({ tag: "StartResourceDetailFlow", contents: { resourceDetails: JSON.stringify(resDetails) } });
+    // window.__runDuiCallback({ tag: "StartResourceDetailFlow", contents: { resourceDetails: JSON.stringify(resDetails) } });
+     console.log("item",item)
+     
+     if(item.contentType.toLowerCase() == "course" || item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook"){
+      
+      window.__runDuiCallback({tag:"ResourceCourseInfoFlow",contents:{course:JSON.stringify(item)}});
+    }
+    else
+    {
+      var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");      
+      var resDetails = {};
+      resDetails['imageUrl'] = item.appIcon;
+      resDetails['title'] = item.name;
+      resDetails['description'] = item.description;
+      resDetails['headFooterTitle'] = headFooterTitle;
+      resDetails['identifier'] = item.identifier;
+      resDetails['content'] = item;
+      window.__runDuiCallback({tag:"StartResourceDetailFlow",contents:{resourceDetails:JSON.stringify(resDetails)}}); 
+    }
+
   }
 
   handleViewAllClick() {

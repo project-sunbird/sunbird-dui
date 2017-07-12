@@ -296,7 +296,7 @@ class CourseEnrolledScreen extends View {
                       height="wrap_content"
                       width="wrap_content"
                       content={this.data}
-                      title={this.data.courseName || this.details.name}
+                      title={this.data.courseName || this.details.name || this.details.contentData.name}
                       onResumeClick={this.handleCourseResume}/>
 
 
