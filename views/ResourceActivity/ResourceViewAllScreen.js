@@ -127,6 +127,7 @@ getRows = () =>{
       resDetails['description'] = item.hasOwnProperty("description") ? item.description : item.contentData.description;
       resDetails['headFooterTitle'] = headFooterTitle;
       resDetails['identifier'] = item.identifier;
+      resDetails['content'] = item;
 
       window.__runDuiCallback({tag:"StartResourceInfoFlow",contents:{resourceDetails:JSON.stringify(resDetails)}});
 
