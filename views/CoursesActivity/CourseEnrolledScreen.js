@@ -43,7 +43,7 @@ class CourseEnrolledScreen extends View {
 
     //this.checkContentLocalStatus(this.details.identifier);
     this.details = JSON.parse(state.data.value0.courseDetails);
-    console.log("GOT VALUES ", this.details)
+    console.log("GOT VALUES CES", this.details)
 
     //to get geneie callback for download of spine
     window.__getDownloadStatus = this.getSpineStatus;
@@ -296,7 +296,7 @@ class CourseEnrolledScreen extends View {
                       height="wrap_content"
                       width="wrap_content"
                       content={this.data}
-                      title={this.data.courseName}
+                      title={this.data.courseName || this.details.name}
                       onResumeClick={this.handleCourseResume}/>
 
 

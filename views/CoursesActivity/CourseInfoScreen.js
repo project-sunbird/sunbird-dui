@@ -49,7 +49,7 @@ class CourseInfoScreen extends View {
     _this = this;
 
     this.details = JSON.parse(state.data.value0.courseDetails);
-    console.log("GOT VALUES ", this.details)
+    console.log("GOT VALUES CIS ", this.details)
 
     this.checkContentLocalStatus(this.details.identifier);
 
