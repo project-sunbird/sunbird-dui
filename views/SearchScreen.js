@@ -1,4 +1,3 @@
-
 var dom = require("@juspay/mystique-backend").doms.android;
 var Connector = require("@juspay/mystique-backend").connector;
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
@@ -33,24 +32,24 @@ class SearchScreen extends View {
       "spinner"
     ]);
     this.state = state;
-    this.shouldCacheScreen=false;
+    this.shouldCacheScreen = false;
     this.screenName = "SearchScreen"
     this.tempData = JSON.parse(state.data.value0.filterDetails);
     this.filterData = this.tempData.filterDetails;
-    console.log("filter in search ^^^^^^^^^^^^^^^^^^",state.data);
+    console.log("filter in search ^^^^^^^^^^^^^^^^^^", state.data);
     this.temp = state.data;
     this.searchType = this.tempData.searchType;
-    console.log("type",this.searchType);
-     
+    console.log("type", this.searchType);
+
     _this = this;
-    this.checkSearchList(this.filterData.length,this.filterData);
+    this.checkSearchList(this.filterData.length, this.filterData);
   }
 
-  checkSearchList = (length,data)=>{
-    if(length!=0){
+  checkSearchList = (length, data) => {
+    if (length != 0) {
       this.handleSearchClick();
-      data=JSON.parse(data)
-      console.log("query!",data.query)
+      data = JSON.parse(data)
+      console.log("query!", data.query)
       this.getSearchList(data.query);
     }
   }
@@ -97,7 +96,7 @@ class SearchScreen extends View {
 
   }
 
-   getMenu = () => {
+  getMenu = () => {
     var layout = (<LinearLayout
                    width="wrap_content"
                    height="wrap_content">
@@ -117,10 +116,10 @@ class SearchScreen extends View {
                    
                    </LinearLayout>)
     return layout;
-    
+
   }
 
-  renderNoResult = () =>{
+  renderNoResult = () => {
 
     var layout = (<LinearLayout
                    width="match_parent"
@@ -141,12 +140,12 @@ class SearchScreen extends View {
 
                   </LinearLayout>);
 
-    this.replaceChild(this.idSet.searchListContainer,layout.render(),0);
+    this.replaceChild(this.idSet.searchListContainer, layout.render(), 0);
 
   }
 
 
-  renderResult = (data) =>{
+  renderResult = (data) => {
 
     var layout = (<LinearLayout
                    width="match_parent"
@@ -158,91 +157,89 @@ class SearchScreen extends View {
                       data={data} />
                   </LinearLayout>)
 
-    this.replaceChild(this.idSet.searchListContainer,layout.render(),0);
+    this.replaceChild(this.idSet.searchListContainer, layout.render(), 0);
   }
 
 
 
-  getSearchList(searchText){
+  getSearchList(searchText) {
     var data = [];
-    var listData=[];
+    var listData = [];
     var temp = [];
-    var totalJson={};
+    var totalJson = {};
     var callback = callbackMapper.map(function(data) {
-      console.log("search results",JSON.parse(data[1]));
+      console.log("search results", JSON.parse(data[1]));
       _this.filterData = data[1];
-      if(searchText == "" || data[0] == "[]"){
+      if (searchText == "" || data[0] == "[]") {
         _this.renderNoResult();
-      }
-      else
-      {
-          var s = data[0];
-          s = s.replace(/\\n/g, "\\n")  
-               .replace(/\\'/g, "\\'")
-               .replace(/\\"/g, '\\"')
-               .replace(/\\&/g, "\\&")
-               .replace(/\\r/g, "\\r")
-               .replace(/\\t/g, "\\t")
-               .replace(/\\b/g, "\\b")
-               .replace(/\\f/g, "\\f");
-          s = s.replace(/[\u0000-\u0019]+/g,""); 
-          _this.renderResult(JSON.parse(s));                
+      } else {
+        var s = data[0];
+        s = s.replace(/\\n/g, "\\n")
+          .replace(/\\'/g, "\\'")
+          .replace(/\\"/g, '\\"')
+          .replace(/\\&/g, "\\&")
+          .replace(/\\r/g, "\\r")
+          .replace(/\\t/g, "\\t")
+          .replace(/\\b/g, "\\b")
+          .replace(/\\f/g, "\\f");
+        s = s.replace(/[\u0000-\u0019]+/g, "");
+        _this.renderResult(JSON.parse(s));
       }
 
     });
 
-    if(searchText.length >2){
-      if(this.filterData.length==0){
+    if (searchText.length > 2) {
+      if (this.filterData.length == 0) {
         status = "false";
-      }
-      else{
+      } else {
         status = "true";
         this.filterData = this.temp;
       }
-      console.log("searchtext",searchText);
-      console.log("this.filterData",this.filterData);
+      console.log("searchtext", searchText);
+      console.log("this.filterData", this.filterData);
 
       var s = "";
-      if(typeof this.filterData == 'object'){
+      if (typeof this.filterData == 'object') {
         this.filterData = this.filterData.value0.filterDetails;
         var s = JSON.parse(this.filterData);
-        console.log("filterHolder",s.filterDetails);
+        console.log("filterHolder", s.filterDetails);
         this.filterData = s.filterDetails;
       }
 
-      console.log("this.filterData",this.filterData.length);
-      console.log("this.filterData",this.filterData);
+      console.log("this.filterData", this.filterData.length);
+      console.log("this.filterData", this.filterData);
 
-      JBridge.searchContent(callback,this.filterData,searchText,this.searchType,status);
+      JBridge.searchContent(callback, this.filterData, searchText, this.searchType, status);
     }
   }
- 
+
 
   handleBackPress = () => {
+    JBridge.hideKeyboard();
     window.__changePureScriptFlow();
     window.__runDuiCallback({ action: "showMainFlow" });
   }
 
 
-  handleSearchClick = (searchtext) =>{
-    var cmd ="";
+  handleSearchClick = (searchtext) => {
+    var cmd = "";
     cmd += _this.set({
       id: _this.idSet.filterHolder,
-      visibility:"visible"
+      visibility: "visible"
     })
 
-    if(searchtext != ""){
+    if (searchtext != "") {
       JBridge.hideKeyboard();
       Android.runInUI(cmd, 0);
     }
-     
+
   }
 
-  handleClearClick = () =>{
+  handleClearClick = () => {
 
     JBridge.showKeyboard();
 
-    var cmd ="";
+    var cmd = "";
     cmd += _this.set({
       id: _this.idSet.searchHolder,
       text: "",
@@ -250,35 +247,36 @@ class SearchScreen extends View {
 
     cmd += _this.set({
       id: _this.idSet.filterHolder,
-      visibility:"gone"
+      visibility: "gone"
     })
 
     Android.runInUI(cmd, 0);
   }
 
-  handleFilterClick = () =>{
-      console.log("fdata!!!!!!!!!!!!!!!!!!",_this.filterData);
+  handleFilterClick = () => {
+    JBridge.hideKeyboard();
+    console.log("fdata!!!!!!!!!!!!!!!!!!", _this.filterData);
 
-      // window.__runDuiCallback({ tag: "StartFilterFlow",contents:{filterDetails:JSON.stringify(this.filterData)} });
-      var filteredData = {filterDetails: _this.filterData, filterType: _this.searchType}
-      window.__runDuiCallback({ tag: "StartFilterFlow",contents:{filterDetails:JSON.stringify(filteredData)} });
+    // window.__runDuiCallback({ tag: "StartFilterFlow",contents:{filterDetails:JSON.stringify(this.filterData)} });
+    var filteredData = { filterDetails: _this.filterData, filterType: _this.searchType }
+    window.__runDuiCallback({ tag: "StartFilterFlow", contents: { filterDetails: JSON.stringify(filteredData) } });
   }
 
-  onItemClick = (params) =>{
-    console.log("parmas sare",params);
+  onItemClick = (params) => {
+    console.log("parmas sare", params);
   }
 
 
 
   afterRender = () => {
 
-      var callback = callbackMapper.map(function(data) {
+    var callback = callbackMapper.map(function(data) {
 
-          _this.handleSearchClick(data);
+      _this.handleSearchClick(data);
 
-      });
+    });
 
-      JBridge.handleImeAction(this.idSet.searchHolder,callback);
+    JBridge.handleImeAction(this.idSet.searchHolder, callback);
 
   }
 

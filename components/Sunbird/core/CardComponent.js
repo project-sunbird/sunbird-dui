@@ -50,8 +50,6 @@ class CardComponent extends View {
               <ImageView
                 width="200"
                 height="110"
-                scaleType="fixXY"
-                gravity="center"
                 circularImageUrl={"10,"+this.props.data.imageUrl}/>
 
               <LinearLayout
