@@ -16,7 +16,7 @@ var CropParagraph = require('../../components/Sunbird/CropParagraph');
 var ProgressButton = require('../../components/Sunbird/core/ProgressButton');
 
 
-
+var _this;
 class ResourceDetailScreen extends View {
   constructor(props, children, state) {
     super(props, children, state);
@@ -41,11 +41,12 @@ class ResourceDetailScreen extends View {
 
     console.log("Got Title", this.details)
     this.localStatus = false;
-    if(this.details.hasOwnProperty("content") && this.details.content.hasOwnProperty("isAvailableLocally")){
-      this.localStatus = true;
-    }
-
-    var _this = this;
+    // if(this.details.hasOwnProperty("content") && this.details.content.hasOwnProperty("isAvailableLocally")){
+    //   this.localStatus = true;
+    // }
+    _this = this;
+    console.log("true",this.localStatus)
+    
     setTimeout(function() {
       Android.runInUI(
         _this.animateView(),
@@ -53,6 +54,29 @@ class ResourceDetailScreen extends View {
       );  
     },100)
 
+  }
+
+  checkLocalStatus = (data) =>{
+    if(data.hasOwnProperty("content")){
+      if(data.content.hasOwnProperty("isAvailableLocally")){
+        this.localStatus = true;
+      }
+      else{
+        console.log("data in RRC",data);
+        var callback  = callbackMapper.map(function(params){
+          console.log("params in RC",params);
+
+            if(params[0] == "true"){
+              _this.localStatus = true;
+              console.log("true",_this.localStatus)
+
+
+            }
+        });
+        JBridge.getLocalContentStatus(data.content.identifier,callback);
+
+      }
+    }
   }
 
 
@@ -64,8 +88,9 @@ class ResourceDetailScreen extends View {
   }
 
   afterRender = () => {
-
+    this.checkLocalStatus(this.details);
     JBridge.setRating(this.idSet.ratingBar, "3.3");
+
   }
 
 

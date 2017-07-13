@@ -265,9 +265,7 @@ class ModuleDetailScreen extends View {
                   afterRender={this.afterRender}
                   id={this.idSet.descriptionContainer}>
                      
-                    <ProgressBar
-                      height="30"
-                      width="30"/>
+                    
                      <TextView
                         id={this.idSet.downloadProgressText}
                         test="Fetching spine"

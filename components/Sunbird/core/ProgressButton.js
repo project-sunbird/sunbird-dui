@@ -107,8 +107,9 @@ class ProgressButton extends View {
         console.log("play");
         if (this.props.isCourse == "true") {
           JBridge.playChildContent(this.props.identifier)
-        } else
+        } else{
           JBridge.playContent(this.props.identifier);
+        }
         window.__getGenieEvents = this.checkTelemetry;
       } else {
         console.log("download");
@@ -127,6 +128,8 @@ class ProgressButton extends View {
   }
   checkTelemetry = (telemetryData) =>{
     console.log("telemetryData",telemetryData);
+    console.log("telemetryData",JSON.parse(telemetryData));
+    // JBridge.syncTelemetry();
   }
 
 
