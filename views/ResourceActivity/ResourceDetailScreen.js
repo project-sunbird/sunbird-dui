@@ -22,7 +22,8 @@ class ResourceDetailScreen extends View {
     super(props, children, state);
 
     this.setIds([
-      'ratingBar'
+      'ratingBar',
+      "progressButtonContainer"
     ]);
     this.state = state;
     this.screenName = "ResourceDetailScreen"
@@ -45,8 +46,8 @@ class ResourceDetailScreen extends View {
     //   this.localStatus = true;
     // }
     _this = this;
-    console.log("true",this.localStatus)
-    
+    console.log("true", this.localStatus)
+
 
     setTimeout(function() {
       Android.runInUI(
@@ -57,24 +58,33 @@ class ResourceDetailScreen extends View {
 
   }
 
-  checkLocalStatus = (data) =>{
-    if(data.hasOwnProperty("content")){
-      if(data.content.hasOwnProperty("isAvailableLocally")){
+  checkLocalStatus = (data) => {
+    if (data.hasOwnProperty("content")) {
+      if (data.content.hasOwnProperty("isAvailableLocally")) {
         this.localStatus = true;
-      }
-      else{
-        console.log("data in RRC",data);
-        var callback  = callbackMapper.map(function(params){
-          console.log("params in RC",params);
+      } else {
+        console.log("data in RRC", data);
+        var callback = callbackMapper.map(function(params) {
+          console.log("params in RC", params);
 
-            if(params[0] == "true"){
-              _this.localStatus = true;
-              console.log("true",_this.localStatus)
+          if (params[0] == "true") {
+            _this.localStatus = true;
+            console.log("true", _this.localStatus)
 
 
-            }
+          }
+
+          var pButonLayout = (<ProgressButton
+                 width="match_parent"
+                 isCourse = "false"
+                 contentDetail = {_this.details.content}
+                 buttonText="DOWNLOAD THIS RESOURCE"
+                 localStatus = {_this.localStatus}
+                 identifier = {_this.details.identifier}/>)
+
+          _this.replaceChild(_this.idSet.progressButtonContainer, pButonLayout.render(), 0);
         });
-        JBridge.getLocalContentStatus(data.content.identifier,callback);
+        JBridge.getLocalContentStatus(data.content.identifier, callback);
 
       }
     }
@@ -341,13 +351,11 @@ class ResourceDetailScreen extends View {
 
                 </ScrollView>
 
-               <ProgressButton
-                 width="match_parent"
-                 isCourse = "false"
-                 contentDetail = {this.details.content}
-                 buttonText="DOWNLOAD THIS RESOURCE"
-                 localStatus = {this.localStatus}
-                 identifier = {this.details.identifier}/>
+               <LinearLayout
+                height="wrap_content"
+                width="match_parent"
+                id={this.idSet.progressButtonContainer}
+                root="true"/>
        
       </LinearLayout>
     );
