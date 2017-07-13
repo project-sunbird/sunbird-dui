@@ -110,7 +110,8 @@ class UserScreen extends View {
       return;
     }
 
-    switch (state.responseFor) {
+    console.log("BEFOR SWITCH", state.responseFor)
+    switch (state.responseFor + "") {
       case "LoginApiAction":
         JBridge.setInSharedPrefs("user_id", JSON.stringify(result.response.userId));
         JBridge.setInSharedPrefs("user_name", JSON.stringify(result.response.firstName));
@@ -123,16 +124,30 @@ class UserScreen extends View {
         window.__runDuiCallback(eventAction);
 
         break;
-      case "SignupApiAction":
-        JBridge.showSnackbar("Sign Up Completed")
-        JBridge.setInSharedPrefs("user_name", this.userFirstName);
 
-        this.handleLoginClick();
+      case "SignUpApiAction":
+        console.log("--->", result.response)
+        console.log("--->", result.userId)
+        if (result.response == "SUCCESS") {
+          JBridge.showSnackbar("Sign Up Completed", result.userId)
+          JBridge.setInSharedPrefs("user_name", this.userFirstName);
+          JBridge.setInSharedPrefs("user_id", result.userId);
+          var eventAction = { tag: "LoginAction", contents: {} };
+          window.__runDuiCallback(eventAction);
+        } else {
+          JBridge.showSnackbar("Please retry")
+        }
 
+
+        break;
+      default:
+        console.log("default SWITCH")
         break;
 
 
     }
+
+    console.log("AFTER SWITCH")
 
 
   }
@@ -286,9 +301,8 @@ class UserScreen extends View {
         "userName": this.userName,
         "firstName": this.firstName,
         "password": this.userPass,
-        "language": [this.language],
-        "provider": "ntp",
-        "phone": this.mobileNumber,
+        "language": this.language,
+        "mobileNumber": this.mobileNumber,
         "email": this.email
       };
       console.log("START SignUpApiAction ", dummyBody)
@@ -436,6 +450,7 @@ class UserScreen extends View {
           width="match_parent"
           orientation="vertical"
           layoutTransition="true"
+          padding="0,40,0,50"
           gravity="center"
           root="true">
 

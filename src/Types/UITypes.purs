@@ -15,10 +15,10 @@ import Data.Foreign.Generic (encodeJSON)
 import Control.Monad.Eff.Exception (EXCEPTION)
 import Prelude
 import UI
-
+--A.JSON import argonaut for json and try
 
 data UserScreen = UserScreen 
-data UserScreenAction = LoginAction | LoginApiAction {userName::String, userPass::String} | SignUpApiAction{userName::String,firstName::String,password::String,language::String}
+data UserScreenAction = LoginAction | LoginApiAction {userName::String, userPass::String} | SignUpApiAction{userName::String,email::String,firstName::String,password::String,mobileNumber::String,language::String}
 
 
 data HomeScreen = HomeScreen
@@ -109,7 +109,7 @@ instance decodeInitScreenAction :: Decode InitScreenAction where decode = defaul
 instance encodeInitScreenAction :: Encode InitScreenAction where encode = defaultEncode
 
 instance userScreen :: UIScreen UserScreen UserScreenAction where
-  generateMockEvents _ = [LoginAction , LoginApiAction {userName:"String",userPass:"String"} , SignUpApiAction{userName:"test1@juspay.in",firstName:"Beta Tester 1",password:"beta",language:"English"}
+  generateMockEvents _ = [LoginAction , LoginApiAction {userName:"String",userPass:"String"} , SignUpApiAction{userName:"amit.rohan",email:"amit@rohan.com",firstName:"Amit Rohan",password:"beta",mobileNumber:"6756756743",language:"English"}
 ]
   ui x = genericUI x (generateMockEvents x :: Array UserScreenAction)
 
