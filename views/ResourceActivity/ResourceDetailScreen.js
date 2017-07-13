@@ -27,8 +27,7 @@ class ResourceDetailScreen extends View {
     this.state = state;
     this.screenName = "ResourceDetailScreen"
     this.menuData = {
-      url: [
-      ]
+      url: []
     }
 
     this.shouldCacheScreen = false;
@@ -41,18 +40,20 @@ class ResourceDetailScreen extends View {
 
     console.log("Got Title", this.details)
     this.localStatus = false;
+
     // if(this.details.hasOwnProperty("content") && this.details.content.hasOwnProperty("isAvailableLocally")){
     //   this.localStatus = true;
     // }
     _this = this;
     console.log("true",this.localStatus)
     
+
     setTimeout(function() {
       Android.runInUI(
         _this.animateView(),
         null
-      );  
-    },100)
+      );
+    }, 100)
 
   }
 
@@ -294,7 +295,8 @@ class ResourceDetailScreen extends View {
 
 
   onBackPressed = () => {
-       window.__changePureScriptFlow();
+    var eventAction = { "tag": "ResourceDetailaBack", contents: [] };
+    window.__runDuiCallback(eventAction);
   }
 
   render() {

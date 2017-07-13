@@ -59,7 +59,7 @@ data NotificationAction = DummyNotificationAction
 
 
 data ResourceDetailScreen = ResourceDetailScreen {resourceDetails::String}
-data ResourceDetailAction = DummyResourceDetailAction 
+data ResourceDetailAction = DummyResourceDetailAction | ResourceDetailaBack
 
 
 data ResourceViewAllScreen = ResourceViewAllScreen {resourceDetails::String}

@@ -15,6 +15,7 @@ import Flows.CommunityFlow
 import Flows.CourseFlow
 import Flows.ProfileFlow
 import Flows.ResourceFlow
+import Flows.HomeFlow
 import Flows.FilterFlow
 import Flows.NotificationFlow
 import Data.Generic.Rep (class Generic)
@@ -64,8 +65,8 @@ cFlow = do
     ShowHome {name:x} -> do
       liftEff $ log $ "Action handled Show HomeScreen"
       pure $ "action handled"
-    StartCourseFlow -> startCourseFlow action
-    StartResourceFlow -> startResourceFlow action
+    StartCourseFlow -> startCourseFlow action 
+    StartResourceFlow -> startResourceFlow "Dummy"
     StartCommunityFlow -> startCommunityFlow action
     StartProfileFlow -> startProfileFlow action
     StartNotificationFlow -> startNotificationFlow action
@@ -84,20 +85,9 @@ cFlow = do
                   responseData <- getProfileDetail
                   _ <- sendUpdatedState {response : responseData, responseFor : "StartProfileApi", screen:"asas"}
                   pure $ "handled"                  
-    StartSearchFlow {filterDetails : details} -> startHomeSearchFlow details
+    StartSearchFlow {filterDetails : details} -> startHomeSearchFlow details 
 
     _ -> pure $ "aborted"
-
-startHomeSearchFlow state = do
-  liftEff $ log $ "Search FLow started"
-  state <- ui $ SearchScreen {filterDetails:state}
-  case state of
-    ResourceDetailFlow {resourceDetails : details} -> startResourceDetailFlow details
-    CourseInfoFlow {course : details} -> startCourseInfoFlow details
-    SearchResourceFlow {course : details} -> startCourseInfoFlow details
-    StartFilterFlow{filterDetails : details} -> startFilterFlow details 
-    _ -> pure $ "aborted"
-
 
 changeFlow = void $ launchAff $ cFlow
 
