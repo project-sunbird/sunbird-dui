@@ -108,7 +108,7 @@ getUserToken = readFromMemory "user_token"
 --API CALLS
 generateRequestHeaders =
   let filtered = filter (\x -> not $ snd(x) == "__failed")  [(Tuple "Authorization" ("Bearer " <> getApiKey))
-                                                            ,(Tuple "X-Authenticated-Userid" "7d89f4ec-55ad-4eca-a026-7e9fe4c2fbb0") --getUserToken
+                                                            ,(Tuple "X-Authenticated-Userid" "ad54e968-d52f-30a0-bdba-de182aab43b1") --getUserToken
                                                             ,(Tuple "X-Consumer-ID" "7c03ca2e78326957afbb098044a3f60783388d5cc731a37821a20d95ad497ca8") --getUserId
                                                             ,(Tuple "X-Device-ID" "X-Device-ID")
                                                             ,(Tuple "X-msgid" "8e27cbf5-e299-43b0-bca7-8347f7e5abcf")
@@ -147,9 +147,17 @@ postExploreData req regTokens=
  (post requestUrl headers req)
 
 getCoursesPageApi =
-  let requestUrl = "/v1/page/assemble/Course"
-      headers = (generateRequestHeaders) in
-  (get requestUrl headers) 
+  let requestUrl = "/v1/page/assemble"
+      headers = (generateRequestHeaders)
+      payload = A.fromObject (StrMap.fromFoldable [ (Tuple "id" (A.fromString "unique API ID"))
+                                                   , (Tuple "ts" (A.fromString "2013/10/15 16:16:3"))
+                                                   , (Tuple "request" (A.fromObject (StrMap.fromFoldable  [ (Tuple "name" (A.fromString "Course"))
+                                                                                                          , (Tuple "source" (A.fromString "web"))
+                                                                                                          , (Tuple "filters" (A.fromObject (StrMap.fromFoldable[ (Tuple "status" (A.fromString "Live"))
+                                                                                                                                                                ])))
+                                                                                                          ])))
+                                                   ]) in
+  (post requestUrl headers payload) 
 
 getUserEnrolledCourses =
   let requestUrl = "/v1/user/courses/" <> getUserToken
@@ -161,11 +169,18 @@ getProfileDetail =
       headers = (generateRequestHeaders) in
   (get requestUrl headers) 
 
-
 getResourcePageApi =
-  let requestUrl = "/v1/page/assemble/Resources" 
-      headers = (generateRequestHeaders) in
-  (get requestUrl headers)
+  let requestUrl = "/v1/page/assemble"
+      headers = (generateRequestHeaders)
+      payload = A.fromObject (StrMap.fromFoldable [ (Tuple "id" (A.fromString "unique API ID"))
+                                                   , (Tuple "ts" (A.fromString "2013/10/15 16:16:3"))
+                                                   , (Tuple "request" (A.fromObject (StrMap.fromFoldable  [ (Tuple "name" (A.fromString "Resources"))
+                                                                                                          , (Tuple "source" (A.fromString "web"))
+                                                                                                          , (Tuple "filters" (A.fromObject (StrMap.fromFoldable[ (Tuple "status" (A.fromString "Live"))
+                                                                                                                                                                ])))
+                                                                                                          ])))
+                                                   ]) in
+  (post requestUrl headers payload) 
 
 
 userLogin userName userPass =
