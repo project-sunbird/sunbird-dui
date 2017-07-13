@@ -54,8 +54,6 @@ class ProgressButton extends View {
 
   }
 
-
-
   updateProgress = (pValue) => {
     var cmd;
     console.log("--->\t\t\t\n\n\n", pValue);
@@ -81,9 +79,6 @@ class ProgressButton extends View {
     }
     _this.replaceChild(_this.idSet.downloadBarContainer, _this.getButtons(data.downloadProgress, textToShow).render(), 0);
 
-
-
-
   }
 
   setVisibility = (value) => {
@@ -106,11 +101,12 @@ class ProgressButton extends View {
       if (this.isDownloaded) {
         console.log("play");
         if (this.props.isCourse == "true") {
+          window.__getGenieEvents = this.checkTelemetry;
           JBridge.playChildContent(this.props.identifier)
         } else {
           JBridge.playContent(this.props.identifier);
         }
-        window.__getGenieEvents = this.checkTelemetry;
+        
       } else {
         console.log("download");
         if (!this.startedDownloading) {
@@ -128,7 +124,11 @@ class ProgressButton extends View {
   }
   checkTelemetry = (telemetryData) => {
     console.log("telemetryData", telemetryData);
-    console.log("telemetryData", JSON.parse(telemetryData));
+    telemetryData = JSON.parse(telemetryData);
+    console.log(telemetryData)
+    if(telemetryData.eid == "OE_END"){
+      console.log("reached end of content");
+    }
     // JBridge.syncTelemetry();
   }
 
