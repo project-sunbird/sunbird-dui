@@ -47,9 +47,9 @@ userScreenFlow = do
       --userScreenFlow {state:"tab3"}
       _ <- sendUpdatedState {response : responseData, responseFor : "LoginApiAction", screen:"asas"} 
       pure $ "Aborted 3"
-    SignUpApiAction{userName:x1,firstName:x2,password:x3,language:x4} -> do
+    SignUpApiAction{userName:x1,email:x2,firstName:x3,password:x4,mobileNumber:x5,language:x6} -> do
       --liftEff $ log "FOR UN :" <> x <> " PASS :" <> y
-      responseData <- userSignup x1 x2 x3 x4
+      responseData <- userSignup x1 x2 x3 x4 x5 x6
       --userScreenFlow {state:"tab3"}
       _ <- sendUpdatedState {response : responseData, responseFor : "SignUpApiAction", screen:"asas"} 
       pure $ "Aborted 3"
