@@ -229,7 +229,9 @@ class ResourceDetailScreen extends View {
 
         <LinearLayout
         width="match_parent"
-        height="wrap_content">
+        height="wrap_content"
+        
+        >
 
 
         <LinearLayout
@@ -312,6 +314,10 @@ class ResourceDetailScreen extends View {
     window.__runDuiCallback(eventAction);
   }
 
+  handleCancelDownload = () =>{
+    JBridge.cancelDownload(this.details.content.identifier)
+  }
+
   render() {
 
     this.layout = (
@@ -348,6 +354,7 @@ class ResourceDetailScreen extends View {
                   {this.getLineSeperator()}
 
                   {this.getBody()}
+
                   
 
                 </LinearLayout>
@@ -359,6 +366,9 @@ class ResourceDetailScreen extends View {
                 width="match_parent"
                 id={this.idSet.progressButtonContainer}
                 root="true"/>
+
+                
+
                 
        
       </LinearLayout>

@@ -28,6 +28,7 @@ class ProgressButton extends View {
 
 
     _this = this;
+    console.log("progress button data",this.props)
 
     console.log("local status content", this.props.localStatus)
 
@@ -128,6 +129,17 @@ class ProgressButton extends View {
     console.log(telemetryData)
     if(telemetryData.eid == "OE_END"){
       console.log("reached end of content");
+      var contentProgress = {};
+      console.log("hierarchy info",this.props.contentDetails.hierarchyInfo)
+      contentProgress['contentId'] = this.props.identifier;
+      contentProgress['courseId'] = this.props.contentDetails.hierarchyInfo[0].identifier;
+      contentProgress['status']  = 1;
+      var d = new Date();
+      contentProgress['lastAccessTime'] = d.toISOString();
+      console.log("progress status",contentProgress)
+      JBridge.setInSharedPrefs(this.props.identifier, JSON.stringify(contentProgress));
+
+      var sharedData = JBridge.getFromSharedPrefs(this.props.identifier)
     }
     // JBridge.syncTelemetry();
   }
