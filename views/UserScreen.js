@@ -35,7 +35,10 @@ class UserScreen extends View {
       "needAccHolder",
       "forgotPasswordHolder",
       "signInHolder",
-      "signUpHolder"
+      "signUpHolder",
+      "mobileNumberHolder",
+      "emailHolder",
+
     ]);
     this.backPressCount = 0;
     this.screenName = "UserScreen"
@@ -145,6 +148,16 @@ class UserScreen extends View {
     console.log("--->", data);
   }
 
+  updateMobileNumber = (data) => {
+    this.mobileNumber = data;
+    console.log("--->", data);
+  }
+
+  updateEmail = (data) => {
+    this.email = data;
+    console.log("--->", data);
+  }
+
   updateUserPassword = (data) => {
     this.userPass = data;
     console.log("--->", data);
@@ -164,6 +177,14 @@ class UserScreen extends View {
     this.isLoginMode = true;
     var cmd = this.set({
       id: this.idSet.firstNameHolder,
+      visibility: "gone"
+    });
+    cmd += this.set({
+      id: this.idSet.emailHolder,
+      visibility: "gone"
+    });
+    cmd += this.set({
+      id: this.idSet.mobileNumberHolder,
       visibility: "gone"
     });
     cmd += this.set({
@@ -199,6 +220,14 @@ class UserScreen extends View {
     this.isLoginMode = false;
     var cmd = this.set({
       id: this.idSet.firstNameHolder,
+      visibility: "visible"
+    });
+    cmd += this.set({
+      id: this.idSet.emailHolder,
+      visibility: "visible"
+    });
+    cmd += this.set({
+      id: this.idSet.mobileNumberHolder,
       visibility: "visible"
     });
     cmd += this.set({
@@ -238,25 +267,29 @@ class UserScreen extends View {
     } else if (this.userName.length <= 0) {
       JBridge.showSnackBar("User Name can't be empty");
       return;
+    } else if (this.email.length <= 0) {
+      JBridge.showSnackBar("Email can't be empty");
+      return;
     } else if (this.userPass.length <= 0) {
       JBridge.showSnackBar("Password can't be empty");
+      return;
+    } else if (this.mobileNumber.length <= 0) {
+      JBridge.showSnackBar("Mobile Number can't be empty");
       return;
     } else if (this.language.length <= 0) {
       JBridge.showSnackBar("Language can't be empty");
       return;
     }
 
-    // this.userName = "amit@juspay.in"
-    // this.firstName = "Amit Rohan"
-    // this.userPass = "sunbird"
-    // this.language = "English"
-
-    if (this.userName.length > 0 && this.userPass.length > 0 && this.firstName.length > 0 && this.language.length > 0) {
+    if (this.userName.length > 0 && this.userPass.length > 0 && this.firstName.length > 0 && this.language.length > 0 && this.email.length > 0 && this.mobileNumber.length > 0) {
       var dummyBody = {
         "userName": this.userName,
         "firstName": this.firstName,
         "password": this.userPass,
-        "language": this.language
+        "language": [this.language],
+        "provider": "ntp",
+        "phone": this.mobileNumber,
+        "email": this.email
       };
       console.log("START SignUpApiAction ", dummyBody)
 
@@ -420,13 +453,29 @@ class UserScreen extends View {
                   margin="20,0,24,12"
                   _onChange={this.updateFirstName}/>  
             
+            </LinearLayout> 
+
+            <LinearLayout
+              height="wrap_content"
+              width="match_parent"
+              id={this.idSet.emailHolder}
+              visibility={this.isLoginMode?"gone":"visible"}>
+
+              <TextInputView
+                height="wrap_content"
+                width="match_parent"
+                hintText="sample@test.com"
+                labelText="E-MAIL IDr"
+                margin="20,0,24,12"
+                _onChange={this.updateEmail}/>  
+           
             </LinearLayout>  
 
             <TextInputView
                 height="wrap_content"
                 width="match_parent"
-                hintText="sample@test.com"
-                labelText="E-MAIL ID"
+                hintText="Enter user name"
+                labelText="User Name"
                 margin="20,0,24,12"
                 _onChange={this.updateUserName}/>
 
@@ -438,6 +487,19 @@ class UserScreen extends View {
                 margin="20,0,24,12"
                 _onChange={this.updateUserPassword}/>  
             
+            <LinearLayout
+              height="wrap_content"
+              width="match_parent"
+              id={this.idSet.mobileNumberHolder}
+              visibility={this.isLoginMode?"gone":"visible"}>
+
+              <TextInputView
+                hintText="Enter mobile number"
+                labelText="Mobile Number"
+                margin="20,0,24,12"
+                _onChange={this.updateMobileNumber}/>  
+           
+            </LinearLayout> 
             
             <LinearLayout
               height="wrap_content"
