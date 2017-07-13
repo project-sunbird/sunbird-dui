@@ -21,43 +21,49 @@ import Types.UITypes
 import Types.APITypes
 import UI
     	
-startResourceFlow state = do
+startResourceFlow values = do
 	event <- ui $ HomeScreen
 	case event of
-		StartNotificationFlow -> startNotificationFlow state
-		StartResourceDetailFlow {resourceDetails:details} -> startResourceDetailFlow details
+		StartNotificationFlow -> startNotificationFlow values
+		StartResourceDetailFlow {resourceDetails:details} -> startResourceDetailFlow details "ResourceFlow" values
 		StartResourceViewAllFlow {resourceDetails:details} -> startResourceViewAllFlow details
 		StartSearchFlow {filterDetails: details} -> startResourceSearchFlow details
 		ResourceCourseInfoFlow {course : details} -> resourceEnrolledCourseFlow details
 		_ -> pure $ "default"
 
 
-startResourceSearchFlow state = do
+startResourceSearchFlow values = do
   liftEff $ log $ "Search FLow started"
-  state <- ui $ SearchScreen {filterDetails:state}
-  case state of
-    ResourceDetailFlow {resourceDetails : details} -> startResourceDetailFlow details
+  event <- ui $ SearchScreen {filterDetails:values}
+  case event of
+    ResourceDetailFlow {resourceDetails : details} -> startResourceDetailFlow details "ResourceSearch" values
     StartFilterFlow{filterDetails : details} -> startFilterFlow details 
     SearchResourceFlow {course : details} -> resourceEnrolledCourseFlow details
     _ -> pure $ "aborted"
 
 
-startResourceDetailFlow state = do
-	state <- ui $ ResourceDetailScreen {resourceDetails : state}
-	case state of
-		DummyResourceDetailAction -> pure $ "handled"
-		_ -> pure $ "default"
 
 
-startResourceViewAllFlow state = do
-	state <- ui $ ResourceViewAllScreen {resourceDetails : state}
+startResourceViewAllFlow rDetails = do
+	state <- ui $ ResourceViewAllScreen {resourceDetails : rDetails}
 	case state of
-		StartResourceInfoFlow {resourceDetails:details} -> startResourceDetailFlow details
+		StartResourceInfoFlow {resourceDetails:details} -> startResourceDetailFlow details "ResourceViewAll" rDetails
 		StartResourceViewAllDetailFlow {resourceDetails:details} -> resourceEnrolledCourseFlow details
 		DummyResourceViewAllAction -> pure $ "handled"
 		_ -> pure $ "default"
 
+startResourceDetailFlow values fromWhere sendBack= do
+	state <- ui $ ResourceDetailScreen {resourceDetails : values}
+	case state of
+		DummyResourceDetailAction -> pure $ "handled"
+		ResourceDetailaBack -> case fromWhere of
+			"ResourceViewAll" -> startResourceViewAllFlow sendBack
+			"ResourceSearch" -> startResourceSearchFlow sendBack
+			"ResourceFlow" -> startResourceFlow sendBack
+			_ -> startResourceFlow sendBack
+		_ -> pure $ "default"
 
+--for collection and textbooks
 resourceEnrolledCourseFlow cDetail= do
 	event <- ui $ CourseEnrolledScreen {courseDetails:cDetail}
 	case event of
