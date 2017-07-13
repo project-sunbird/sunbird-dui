@@ -1,5 +1,3 @@
-
-
 var dom = require("@juspay/mystique-backend").doms.android;
 var Connector = require("@juspay/mystique-backend").connector;
 var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
@@ -53,6 +51,14 @@ class ProfileExperiences extends View {
               style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
 
               </LinearLayout>)
+  }
+
+  getLineSeperator = () => {
+    return (<LinearLayout
+            width="match_parent"
+            height="1"
+            margin="0,0,0,24"
+            background={window.__Colors.PRIMARY_BLACK_22}/>)
   }
 
   getBody(input) {

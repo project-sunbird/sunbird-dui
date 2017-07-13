@@ -183,10 +183,17 @@ class HomeScreen extends View {
         //shouldBeModified = true;
         break;
       case 3:
+        //shouldBeModified = true;
+        //window.__runDuiCallback({ "tag": "StartProfileFlow", contents: [] });
+
+        break;
+
+      case 4:
         shouldBeModified = true;
         window.__runDuiCallback({ "tag": "StartProfileFlow", contents: [] });
 
         break;
+
 
       default:
         console.log("[handleStateChange]\t\t MATCHED WITH default")
@@ -321,7 +328,7 @@ class HomeScreen extends View {
         eventAction = { "tag": "StartCommunityFlow", contents: [] };
         break;
       case 4:
-        eventAction = { "tag": "StartProfileFlow", contents: [] };
+        eventAction = { "tag": "StartProfileApi", contents: [] };
         break;
       default:
         eventAction = { "tag": "DummyFlow", contents: [] };

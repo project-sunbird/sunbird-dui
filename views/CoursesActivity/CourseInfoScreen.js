@@ -239,22 +239,65 @@ class CourseInfoScreen extends View {
 
   }
 
-  handleStateChange = (data) => {
-    console.log("GOT RESPONSE FROM ENROLL API", data.response);
+
+  handleStateChange = (state) => {
+
+    var status = state.response.status[0];
+    var response = JSON.parse(state.response.status[1]);
+    var responseCode = state.response.status[2];
+    var responseUrl = state.response.status[3];
+
+    if (parseInt(responseCode) != 200) {
+      console.log("INVALID FORMAT")
+      return;
+    }
+
+    var result = response.result;
+
+    if (response.params.err) {
+      console.log("EROR MESSAGE :", response.params.errmsg)
+      JBridge.showSnackBar("E MSG ->" + response.params.errmsg)
+      return;
+    }
+
+    console.log("GOT RESULT FORM RESPONSE ->>", result)
+
+    if (response.params.err == "INVALID_CREDENTIAL") {
+      console.log("EROR MESSAGE :", response.params.errmsg)
+      JBridge.showSnackbar("E MSG ->" + response.params.errmsg)
+      return;
+    }
+
+    console.log("BEFOR SWITCH", state.responseFor)
+    switch (state.responseFor + "") {
+      case "EnrollCourse":
+        if (result.response == "SUCCESS") {
+          console.log("WELCOME -->>", result.response.firstName);
+          JBridge.showSnackBar("Course enrolled")
+
+          //"{"id":null,"ver":"v1","ts":"2017-06-28 02:09:30:032+0000","params":{"resmsgid":null,"msgid":null,"err":"INVALID_CREDENTIAL","status":"SERVER_ERROR","errmsg":"Invalid credential."},"responseCode":"CLIENT_ERROR","result":{}}"
+          var eventAction = { tag: 'ShowEnrolledCourse', contents: { "course": this.state.data.value0.courseDetails } }
+          window.__runDuiCallback(eventAction);
+        } else {
+          JBridge.showSnackBar("Please retry")
+        }
+        break;
+
+        break;
+      default:
+        console.log("default SWITCH")
+        break;
+
+
+    }
+
+    console.log("AFTER SWITCH")
+
+
   }
 
   handleEnrollClick = (data) => {
     console.log("---->\t", "handleEnrollClick");
-
-    var req = {
-      "request": {
-        "userId": "user1",
-        "courseId": "course1",
-        "coursename": "course name ",
-        "description": "course description",
-        "delta": {}
-      }
-    }
 
     var eventAction = {
       "tag": "EnrollCourse",

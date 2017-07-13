@@ -129,13 +129,13 @@ class UserScreen extends View {
         console.log("--->", result.response)
         console.log("--->", result.userId)
         if (result.response == "SUCCESS") {
-          JBridge.showSnackbar("Sign Up Completed", result.userId)
+          JBridge.showSnackBar("Sign Up Completed", result.userId)
           JBridge.setInSharedPrefs("user_name", this.userFirstName);
           JBridge.setInSharedPrefs("user_id", result.userId);
           var eventAction = { tag: "LoginAction", contents: {} };
           window.__runDuiCallback(eventAction);
         } else {
-          JBridge.showSnackbar("Please retry")
+          JBridge.showSnackBar("Please retry")
         }
 
 

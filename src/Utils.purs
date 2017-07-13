@@ -58,6 +58,7 @@ foreign import ui' :: forall a c e. (Error -> Eff e Unit) -> (a -> Eff e Unit) -
 getEulerLocation = "http://52.172.36.121:9000"
 getApiKey ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkMWE2OTgxOWQ0OTc0YzhiYjRlOTQ4YjMxMjBkYjg0NyJ9.AFu4mPKLuYhclntDjbri_L5FN-rQWXk9dVXhlYO2YcA"
 
+getMockUserId ="b155e618-0066-43be-b221-6fcbaeb99d2a"
     
 type State a = {screen :: String |a}
 
@@ -108,7 +109,7 @@ getUserToken = readFromMemory "user_token"
 --API CALLS
 generateRequestHeaders =
   let filtered = filter (\x -> not $ snd(x) == "__failed")  [(Tuple "Authorization" ("Bearer " <> getApiKey))
-                                                            ,(Tuple "X-Authenticated-Userid" "b155e618-0066-43be-b221-6fcbaeb99d2a") --getUserToken
+                                                            ,(Tuple "X-Authenticated-Userid" getMockUserId) --getUserToken
                                                             ,(Tuple "X-Consumer-ID" "7c03ca2e78326957afbb098044a3f60783388d5cc731a37821a20d95ad497ca8") --getUserId
                                                             ,(Tuple "X-Device-ID" "X-Device-ID")
                                                             ,(Tuple "X-msgid" "8e27cbf5-e299-43b0-bca7-8347f7e5abcf")
@@ -122,11 +123,6 @@ generateRequestHeaders =
 
 
 
-getDummyData =
-  let requestUrl = "/v1/user/courses/user1"
-      headers = (generateRequestHeaders) in
-  (get requestUrl headers)
-
 enrollCourse courseId =
   let requestUrl = "/v1/user/courses/enroll"
       headers = (generateRequestHeaders)
@@ -136,15 +132,11 @@ enrollCourse courseId =
                                                                                                           , (Tuple "courseName" (A.fromString "Teacher Training Course"))
                                                                                                           , (Tuple "description" (A.fromString "course description"))
                                                                                                           , (Tuple "delta" (A.fromString "delta"))
-                                                                                                          , (Tuple "userId" (A.fromString "f660ab912ec121d1b1e928a0bb4bc61b15f5ad44d5efdc4e1c92a25e99b8e44a"))
+                                                                                                          , (Tuple "userId" (A.fromString getMockUserId))
                                                                                                           ])))
                                                    ]) in
  (post requestUrl headers payload)
 
-postExploreData req regTokens=
-  let requestUrl = "/v1/page/assemble/learn.explore/org.sunbird.mobile"
-      headers = (generateRequestHeaders) in
- (post requestUrl headers req)
 
 getCoursesPageApi =
   let requestUrl = "/v1/page/assemble"
@@ -160,12 +152,12 @@ getCoursesPageApi =
   (post requestUrl headers payload) 
 
 getUserEnrolledCourses =
-  let requestUrl = "/v1/user/courses/" <> getUserToken
+  let requestUrl = "/v1/user/courses/" <> getMockUserId
       headers = (generateRequestHeaders) in
   (get requestUrl headers) 
 
 getProfileDetail =
-  let requestUrl = "/v1/user/read/" <> "7d89f4ec-55ad-4eca-a026-7e9fe4c2fbb0"
+  let requestUrl = "/v1/user/read/" <> getMockUserId
       headers = (generateRequestHeaders) in
   (get requestUrl headers) 
 

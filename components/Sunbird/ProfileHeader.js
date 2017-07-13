@@ -15,8 +15,9 @@ class ProfileHeader extends View {
 
     ]);
 
-    this.userName = JBridge.getFromSharedPrefs("user_name")
-    this.userName = (this.userName === "__failed") ? "Harish Bookwalla" : this.userName;
+
+    this.userName = (this.props.data.userName == undefined) ? "Mock User" : this.props.data.userName;
+
 
 
   }

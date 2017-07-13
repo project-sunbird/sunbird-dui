@@ -1,4 +1,3 @@
-
 var dom = require("@juspay/mystique-backend").doms.android;
 var Connector = require("@juspay/mystique-backend").connector;
 var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
@@ -12,6 +11,7 @@ var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 var SearchToolbar = require('../Sunbird/core/SearchToolbar');
 var ProfileHeader = require('../Sunbird/ProfileHeader');
+var PersonalDetails = require('../Sunbird/PersonalDetails');
 var ProfileExperiences = require('../Sunbird/ProfileExperiences');
 var ProfileSkillTags = require('../Sunbird/ProfileSkillTags');
 var ProfileAccomplishments = require('../Sunbird/ProfileAccomplishments');
@@ -24,11 +24,12 @@ class ProfileComponent extends View {
   constructor(props, children) {
     super(props, children);
 
+
     this.props.appendText = this.props.appendText || "";
     this.setIds([
 
     ]);
-    console.log("profile api response",this.props);
+    console.log("profile api response", this.props);
     _this = this;
 
     this.menuData = {
@@ -38,14 +39,29 @@ class ProfileComponent extends View {
         { imageUrl: "ic_action_search" }
       ]
     }
+    this.handleResponse();
   }
 
   handleMenuClick = (url) => {
 
-    if(url=="ic_action_notification_blue"){
-        window.__runDuiCallback({tag:"StartNotificationFlow",contents:[]});
+    if (url == "ic_action_notification_blue") {
+      window.__runDuiCallback({ tag: "StartNotificationFlow", contents: [] });
     }
 
+  }
+
+  handleResponse = () => {
+
+    console.log("response in CC", this.props.response)
+
+    if (this.props.response) {
+      console.log("SERVER GAVE RESPONSE", this.props.response)
+      this.details = this.props.response.result.response;
+
+    } else {
+      console.log("SERVER TOLD NULL")
+      this.details = {};
+    }
   }
 
   handleSearch = (data) => {}
@@ -64,7 +80,7 @@ class ProfileComponent extends View {
   render() {
     this.layout = (
 
-    <RelativeLayout
+      <RelativeLayout
       root="true"
       clickable="false"
       width="match_parent"
@@ -99,7 +115,13 @@ class ProfileComponent extends View {
                 padding="16,16,16,0"
                 orientation="vertical">
 
-                <ProfileHeader/>
+                <ProfileHeader
+                data={this.details}/>
+
+                <PersonalDetails
+                data={this.details}/>
+
+
 
                 <ProfileExperiences/>
 
