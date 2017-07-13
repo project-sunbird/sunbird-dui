@@ -137,9 +137,9 @@ class ProgressButton extends View {
       var d = new Date();
       contentProgress['lastAccessTime'] = d.toISOString();
       console.log("progress status",contentProgress)
-      JBridge.setInSharedPrefs(this.props.identifier, JSON.stringify(contentProgress));
+      // JBridge.setInSharedPrefs(this.props.identifier, JSON.stringify(contentProgress));
 
-      var sharedData = JBridge.getFromSharedPrefs(this.props.identifier)
+      // var sharedData = JBridge.getFromSharedPrefs(this.props.identifier)
     }
     // JBridge.syncTelemetry();
   }
