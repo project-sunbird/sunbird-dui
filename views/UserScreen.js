@@ -286,6 +286,11 @@ class UserScreen extends View {
   }
 
   handleSignUpClick = () => {
+     if (!JBridge.isNetworkAvailable()) {
+        JBridge.showSnackBar("NO INTERNET CONNECTION")
+        return;
+      }
+
     if (this.firstName.length <= 0) {
       JBridge.showSnackBar("Firsr Name can't be empty");
       return;
@@ -334,7 +339,10 @@ class UserScreen extends View {
   }
 
   handleLoginClick = () => {
-   
+    if (!JBridge.isNetworkAvailable()) {
+        JBridge.showSnackBar("NO INTERNET CONNECTION")
+        return;
+      }
     if (this.userName.length <= 0) {
       JBridge.showSnackBar("User Name can't be empty");
       return;
