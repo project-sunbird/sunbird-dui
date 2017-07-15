@@ -27,8 +27,8 @@ class ProfileHeader extends View {
 
   render() {
     this.layout = (<LinearLayout
-              width="wrap_content"
-              height="wrap_content"
+              width="match_parent"
+              height="160"
               gravity="center_horizontal"
               orientation="vertical">
 
@@ -54,6 +54,7 @@ class ProfileHeader extends View {
               <TextView
               padding="40,0,40,0"
               height="wrap_content"
+              visibility="gone"
               spanText="Lorem Ipsum is simply dummy text of the printing and typesetting industry… $#Read more#$"
               style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
 

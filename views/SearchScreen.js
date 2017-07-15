@@ -95,7 +95,7 @@ class SearchScreen extends View {
       <ImageView
       margin="0,0,10,0"
       style={IconStyle}
-      onClick={this.handleBackPress}
+      onClick={this.onBackPressed}
       imageUrl = {"ic_action_arrow_left"}/>)
   }
 
@@ -243,10 +243,12 @@ class SearchScreen extends View {
   }
 
 
-  handleBackPress = () => {
-    JBridge.hideKeyboard();
+
+  onBackPressed = () => {
+     JBridge.hideKeyboard();
     window.__changePureScriptFlow();
-    window.__runDuiCallback({ action: "showMainFlow" });
+  
+
   }
 
 

@@ -227,23 +227,13 @@ class ModuleDetailScreen extends View {
             text={"Module Size "+this.formatBytes(this.module.contentData.size)}/>
 
 
-          <TextView
-            height="wrap_content"
-            margin="0,0,0,12"
-            width="match_parent"
-            style={window.__TextStyle.textStyle.CARD.TITLE.DARK}
-            text="Description"/>
-
-
-          <TextView
+           <CropParagraph
                   height="wrap_content"
                   margin="0,0,0,12"
                   width="match_parent"
-                  text="Lorem Ipsum is simply dummy text of the printing 
-                  and typesetting industry. Lorem Ipsum has been the 
-                  industry's standard dummy text ever since the 1500s, 
-                  when an unknown printer took a galley of type and
-                   scrambled it to make a type specimen book"/>
+                  headText={this.module.contentData.description?"Description":undefined}
+                  contentText={this.module.contentData.description}
+                  />
 
 
 

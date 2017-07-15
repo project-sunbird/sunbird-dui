@@ -146,7 +146,7 @@ class UserScreen extends View {
         console.log("--->", result.response)
         console.log("--->", result.userId)
         if (result.response == "SUCCESS") {
-          JBridge.showSnackBar("Sign Up Completed", result.userId)
+          JBridge.showSnackBar("Sign Up Completed"+result.userId)
           JBridge.setInSharedPrefs("user_name", this.userFirstName);
           JBridge.setInSharedPrefs("user_id", result.userId);
           var eventAction = { tag: "LoginAction", contents: {} };
@@ -305,8 +305,14 @@ class UserScreen extends View {
     } else if (this.userPass.length <= 0) {
       JBridge.showSnackBar("Password can't be empty");
       return;
+    } else if (this.userPass.length < 8) {
+      JBridge.showSnackBar("Short password");
+      return;
     } else if (this.mobileNumber.length <= 0) {
       JBridge.showSnackBar("Mobile Number can't be empty");
+      return;
+    } else if (this.mobileNumber.length < 10) {
+      JBridge.showSnackBar("Mobile number should contain 10 digits");
       return;
     } else if (this.language.length <= 0) {
       JBridge.showSnackBar("Language can't be empty");
@@ -578,7 +584,7 @@ class UserScreen extends View {
             id={this.idSet.alreadyHaveAccHolder}
             onClick={this.handleAlreadyHaveAccClick}
             visibility={this.isLoginMode?"gone":"visible"}
-            textFromHtml= "<font color='#007AFF'><a href=''>Already have an Account? Sign in now</a></font>"
+            textFromHtml= {"<font color='#007AFF'><a href=''>"+"Already have an Account? Sign in now"+"</a></font>"}
             style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
 
           <TextView
@@ -589,7 +595,7 @@ class UserScreen extends View {
             id={this.idSet.needAccHolder}
             onClick={this.handleCreateAccountClick}
             visibility={this.isLoginMode?"visible":"gone"}
-            textFromHtml= "<font color='#007AFF'><a href=''>No Account yet? Sign up now</a></font>"
+            textFromHtml= {"<font color='#007AFF'><a href=''>"+"No Account yet? Sign up now"+"</a></font>"}
             style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
          
         </LinearLayout>)
@@ -602,6 +608,7 @@ class UserScreen extends View {
         root="true"
         orientation="vertical"
         width="match_parent"
+        padding="0,12,0,0"
         background={window.__Colors.WHITE}
         afterRender = {this.afterRender}
         height="match_parent">

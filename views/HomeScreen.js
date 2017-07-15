@@ -45,7 +45,7 @@ class HomeScreen extends View {
     ]);
 
 
-    this.currentPageIndex = 2;
+    this.currentPageIndex = 0;
     console.log("CURRENT INDEX", this.currentPageIndex);
 
     this.backPressCount = 0;
@@ -56,7 +56,7 @@ class HomeScreen extends View {
     this.data = ["HOME", "COURSES", "RESOURCES", "COMMUNITY", "PROFILE"];
     this.tabValues = [{
         name: "HOME",
-        select: "0",
+        select: "1",
         icon: "ic_home"
       }, {
         name: "COURSES",
@@ -64,10 +64,10 @@ class HomeScreen extends View {
         icon: "ic_courses"
       }, {
         name: "RESOURCES",
-        select: "1",
+        select: "0",
         icon: "ic_notebook"
       }, {
-        name: "COMMUNITY",
+        name: "GROUPS",
         select: "0",
         icon: "ic_chat"
       }, {
@@ -81,6 +81,9 @@ class HomeScreen extends View {
 
   onPop = () => {
 
+    if(this.currentPageIndex==undefined){
+      this.currentPageIndex=0;
+    }
 
     Android.runInUI(
       this.animateView(),
@@ -116,10 +119,7 @@ class HomeScreen extends View {
     var responseData = state.response.status[1];
     var responseCode = state.response.status[2];
     var responseUrl = state.response.status[3];
-
-    if ((status + "") == "failure") {
-      JBridge.showSnackBar("INTERNET CONNECTION ISSUE")
-      var tmp = {
+    var tmp = {
         params: {},
         result: {
           response: {
@@ -129,10 +129,15 @@ class HomeScreen extends View {
           }
         }
       }
+    if ((status + "") == "failure") {
+      JBridge.showSnackBar("INTERNET CONNECTION ISSUE")
+      
       responseData = tmp;
     } else {
+
       responseData = utils.jsonifyData(responseData);
       responseData = JSON.parse(responseData);
+
     }
 
     console.log("RESPONSE :", responseData)
@@ -305,8 +310,8 @@ class HomeScreen extends View {
   }
 
   afterRender = () => {
-    this.currentPageIndex = 2;
-    this.handleBottomNavBarAction(2);
+    this.currentPageIndex = 0;
+    this.handleBottomNavBarAction(0);
 
 
   }
@@ -347,6 +352,8 @@ class HomeScreen extends View {
 
 
   handleBottomNavBarAction = (index) => {
+    if(index==undefined)
+      index=0;
     this.currentPageIndex = index;
     if (index == 1) {
       if (!JBridge.isNetworkAvailable()) {
@@ -354,8 +361,9 @@ class HomeScreen extends View {
         this.handleBottomNavBarAction(2);
       }
     }
-    this.setupDuiCallback();
+   
     console.log("\n\nSwitching B Nav Bar ")
+    this.setupDuiCallback();
     window.__BottomNavBar.handleNavigationChange(index);
     this.switchContent(index)
 

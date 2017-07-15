@@ -1,6 +1,7 @@
 var dom = require("@juspay/mystique-backend").doms.android;
 var Connector = require("@juspay/mystique-backend").connector;
 var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
+var RelativeLayout = require("@juspay/mystique-backend").androidViews.RelativeLayout;
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
@@ -126,9 +127,10 @@ class ProfileExperiences extends View {
 
   render() {
     this.layout = (
+    
       <LinearLayout
                 width="wrap_content"
-                height="wrap_content"
+                height="match_parent"
                 margin="0,16,0,0"
                 orientation="vertical">
 
@@ -139,6 +141,9 @@ class ProfileExperiences extends View {
                 {this.experienceBody()}
 
               </LinearLayout>
+
+               
+     
     )
     return this.layout.render();
   }

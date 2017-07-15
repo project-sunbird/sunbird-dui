@@ -187,7 +187,7 @@ class CourseEnrolledScreen extends View {
     } else {
       var cmd = this.set({
         id: this.idSet.downloadProgressText,
-        text: "Downloaded " + downloadedPercent + "%"
+        text: "Fetching content: " + downloadedPercent + "%"
       })
       Android.runInUI(cmd, 0);
     }
