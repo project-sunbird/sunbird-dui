@@ -79,6 +79,9 @@ class HomeScreen extends View {
 
   onPop = () => {
 
+    if(this.currentPageIndex==undefined){
+      this.currentPageIndex=0;
+    }
 
     Android.runInUI(
       this.animateView(),
@@ -349,6 +352,8 @@ class HomeScreen extends View {
 
 
   handleBottomNavBarAction = (index) => {
+    if(index==undefined)
+      index=0;
     this.currentPageIndex = index;
     if (index == 1) {
       if (!JBridge.isNetworkAvailable()) {
@@ -356,8 +361,9 @@ class HomeScreen extends View {
         this.handleBottomNavBarAction(2);
       }
     }
-    this.setupDuiCallback();
+   
     console.log("\n\nSwitching B Nav Bar ")
+    this.setupDuiCallback();
     window.__BottomNavBar.handleNavigationChange(index);
     this.switchContent(index)
 

@@ -211,7 +211,7 @@ exports["callAPI'"] = function(success) {
               hdr[header.value0] = header.value1;
               return hdr;
             });
-            console.log("RESPONSE FROM android :", JSON.parse(arguments[1] || "{}"))
+            
             var callback = callbackMapper.map(function(params) {
               if (arguments && arguments[0].length >= 3) {
                 success({
