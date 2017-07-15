@@ -226,6 +226,7 @@ class ResourceDetailScreen extends View {
 
 
   getHeader = () => {
+    console.log("DETAIL IMAGE",this.details.imageUrl)
 
     return (
 
@@ -249,7 +250,7 @@ class ResourceDetailScreen extends View {
                 <ImageView
                 width="80"
                 height="50"
-                circularImageUrl={"4,"+this.details.imageUrl}/>
+                circularImageUrl={"4,"+ (this.details.imageUrl?this.details.imageUrl:"ic_action_resource")}/>
 
             </LinearLayout>
 

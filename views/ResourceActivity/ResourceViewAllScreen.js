@@ -65,22 +65,19 @@ getRows = () =>{
               
                 if(item.hasOwnProperty("contentData")){
                   this.size = " [" + utils.formatBytes(item.contentData.size) + "]";
-                  this.fileImageUrl = "file://"+item.basePath + "/" +item.contentData.appIcon;
+                  this.fileImageUrl = "file://"+item.basePath + "/" +item.contentData.appIcon?item.contentData.appIcon:"ic_action_resource";
                   this.cType = item.contentData.contentType
                   this.name = item.contentData.name;
                   this.time = utils.prettifyDate(item.lastUpdatedTime);
                 }
                 else{
                    this.size = " [" + utils.formatBytes(item.size) + "]"; 
-                   this.fileImageUrl = item.appIcon;
+                   this.fileImageUrl = item.appIcon?item.appIcon:"ic_action_resource";
                    this.cType = item.contentType
                    this.name = item.name;
                    var d =  new Date(item.createdOn);
                    this.time = d.getDay() + "-" + d.getMonth()+ "-" + d.getUTCFullYear();
                 }
-
-
-
 
                 var temp = {};
                 temp['imageUrl'] = this.fileImageUrl;

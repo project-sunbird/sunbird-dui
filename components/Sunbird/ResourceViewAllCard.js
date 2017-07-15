@@ -26,11 +26,8 @@ class ResourceViewAllCard extends View {
     ]);
     console.log("download card contetn",this.props.content);
     console.log("subtitle i gotISSSSS",this.props.data.footerSubTitle);
-
     
   }
-
-
 
 
   afterRender = () => {
@@ -122,7 +119,7 @@ class ResourceViewAllCard extends View {
                   width="match_parent"
                   height="match_parent"
                   gravity="center"
-                  circularImageUrl={"25,"+this.props.data.imageUrl}/>
+                  circularImageUrl={"5,"+this.props.data.imageUrl}/>
                
                 </RelativeLayout>
 
@@ -172,12 +169,10 @@ class ResourceViewAllCard extends View {
 
 
   
-    handleCardClick = () =>{
-      console.log("click card",this.props.content);
-        this.props.onResourceClick(this.props.content);
-    }
-
-   
+  handleCardClick = () =>{
+    console.log("click card",this.props.content);
+    this.props.onResourceClick(this.props.content);
+  }
 
    
 
@@ -186,9 +181,7 @@ class ResourceViewAllCard extends View {
         <LinearLayout
           height="wrap_content"
           width="match_parent"
-          orientation="vertical"
-          >
-
+          orientation="vertical">
           
            {this.getBody()}
 
