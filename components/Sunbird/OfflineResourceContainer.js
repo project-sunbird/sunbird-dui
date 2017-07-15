@@ -21,8 +21,8 @@ class OfflineResourceContainer extends View {
     super(props, children);
     _this = this;
 
-    this.setIds([]);
-
+    this.setIds(["viewAllContainer"]);
+    this.offlineCount=0;
   }
 
 
@@ -32,9 +32,10 @@ class OfflineResourceContainer extends View {
 
   getRows = () => {
     console.log("OFFLINE CONTENT", this.props.data);
-    if (this.props.data == undefined || this.props.data.length == 0)
+    if (this.props.data == undefined || this.props.data.length == 0){
       this.jsData = []
-    else {
+    
+    }else {
       this.jsData = this.props.data;
     }
 
@@ -44,7 +45,7 @@ class OfflineResourceContainer extends View {
 
       console.log("item content type", item.contentType);
       if (item.contentType != "course") {
-
+        this.offlineCount++;
         var size = item.hasOwnProperty("size") ? " [" + utils.formatBytes(item.size) + "]" : "";
         var footerTitle = item.contentType + size;
         var temp = {};
@@ -72,13 +73,18 @@ class OfflineResourceContainer extends View {
       }
     });
 
-    if(this.jsData.length==0){
+    if(this.offlineCount==0){
       rows =( <TextView
                     width="match_parent"
                     height="50"
                     gravity="center"
                     text={"No offline resource yet"}
                     style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>)
+                      Android.runInUI(this.set({
+                          id:this.idSet.viewAllContainer,
+                          visibility : "gone"
+                        }),0);
+      
     }
 
     var layout = (<LinearLayout
@@ -116,7 +122,7 @@ class OfflineResourceContainer extends View {
             width="wrap_content"
             height="wrap_content"
             text="VIEW ALL"
-            visibility={(this.props.data == undefined || this.props.data.length == 0)?"gone":"visible"}
+            id={this.idSet.viewAllContainer}
             padding="8,8,8,8"
             onClick={this.handleViewAllClick}
             style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
