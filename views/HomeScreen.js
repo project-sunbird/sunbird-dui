@@ -114,10 +114,7 @@ class HomeScreen extends View {
     var responseData = state.response.status[1];
     var responseCode = state.response.status[2];
     var responseUrl = state.response.status[3];
-
-    if ((status + "") == "failure") {
-      JBridge.showSnackBar("INTERNET CONNECTION ISSUE")
-      var tmp = {
+    var tmp = {
         params: {},
         result: {
           response: {
@@ -127,9 +124,17 @@ class HomeScreen extends View {
           }
         }
       }
+    if ((status + "") == "failure") {
+      JBridge.showSnackBar("INTERNET CONNECTION ISSUE")
+      
       responseData = tmp;
     } else {
-      responseData = JSON.parse(responseData);
+      try{
+        responseData = JSON.parse(responseData);
+      }catch(e){
+        console.log("API RESPONSE INVALID ERROR  ->\t\t\t",e.message)
+        responseData=tmp;
+      }
     }
 
     console.log("RESPONSE :", responseData)
