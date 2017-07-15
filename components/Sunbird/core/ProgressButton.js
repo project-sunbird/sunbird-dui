@@ -47,6 +47,11 @@ class ProgressButton extends View {
       visibility: "gone"
     })
     Android.runInUI(cmd, 0);
+
+     this.startedDownloading=false;
+     this.isDownloaded=false;
+     this.replaceChild(this.idSet.downloadBarContainer, this.getButtons(0,this.props.buttonText).render(), 0);
+
   }
 
 
@@ -57,6 +62,7 @@ class ProgressButton extends View {
       this.isDownloaded = true;
       console.log("status", status == "true")
       this.replaceChild(this.idSet.downloadBarContainer, this.getButtons("100", "PLAY").render(), 0);
+
 
     }
 

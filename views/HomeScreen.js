@@ -43,7 +43,7 @@ class HomeScreen extends View {
     ]);
 
 
-    this.currentPageIndex = 4;
+    this.currentPageIndex = 0;
     console.log("CURRENT INDEX", this.currentPageIndex);
 
     this.backPressCount = 0;
@@ -54,7 +54,7 @@ class HomeScreen extends View {
     this.data = ["HOME", "COURSES", "RESOURCES", "COMMUNITY", "PROFILE"];
     this.tabValues = [{
         name: "HOME",
-        select: "0",
+        select: "1",
         icon: "ic_home"
       }, {
         name: "COURSES",
@@ -62,7 +62,7 @@ class HomeScreen extends View {
         icon: "ic_courses"
       }, {
         name: "RESOURCES",
-        select: "1",
+        select: "0",
         icon: "ic_notebook"
       }, {
         name: "COMMUNITY",
@@ -307,8 +307,8 @@ class HomeScreen extends View {
   }
 
   afterRender = () => {
-    this.currentPageIndex = 4;
-    this.handleBottomNavBarAction(4);
+    this.currentPageIndex = 0;
+    this.handleBottomNavBarAction(0);
 
 
   }
