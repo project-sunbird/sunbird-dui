@@ -72,7 +72,8 @@ class UserScreen extends View {
     JBridge.setInSharedPrefs("user_id", contentBody.sub);
     JBridge.setInSharedPrefs("user_name", contentBody.given_name);
     JBridge.setInSharedPrefs("user_token", contentBody.sub);
-    JBridge.showSnackBar("Welcome Back"+ contentBody.given_name)
+    window.__userToken=contentBody.sub;    
+    JBridge.showSnackBar("Welcome Back "+ contentBody.given_name)
 
     var eventAction = { tag: "LoginAction", contents: {} };
     window.__runDuiCallback(eventAction);
@@ -143,6 +144,7 @@ class UserScreen extends View {
           JBridge.showSnackBar("Welcome On Board "+this.userName)
           JBridge.setInSharedPrefs("user_name", this.userFirstName);
           JBridge.setInSharedPrefs("user_token", result.userId);
+          window.__userToken=result.userId;
           var eventAction = { tag: "LoginAction", contents: {} };
           window.__runDuiCallback(eventAction);
         } else {

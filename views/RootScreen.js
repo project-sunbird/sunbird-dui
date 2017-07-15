@@ -36,6 +36,11 @@ class RootScreen extends View {
     window.__Font = Font;
     window.__ObjectAssign = objectAssign;
 
+    window.__userOrgImg=JBridge.getFromSharedPrefs("org_img");
+    if(window.__userOrgImg==="__failed"){
+      window.__userOrgImg=ic_launcher;
+    }
+
     this.setStatusBarColor(window.__Colors.BLACK);
 
 

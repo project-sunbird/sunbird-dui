@@ -44,7 +44,7 @@ class HomeScreen extends View {
       "tabLayoutContainer",
     ]);
 
-    window.__userToken=JBridge.getFromSharedPrefs("user_token");
+    //window.__userToken=JBridge.getFromSharedPrefs("user_token");
     this.userToken=window.__userToken;
 
 

@@ -226,6 +226,7 @@ class HomeComponent extends View {
       <LinearLayout
         orientation="vertical"
         width="match_parent"
+        root="true"
         height="match_parent">
 
 
