@@ -57,7 +57,7 @@ class LoaderDialog extends View {
         id={this.idSet.parentContainer}
         gravity="center"
         visibility="gone"
-        centerInParent="true,-1"
+        clickable="true"
         width="match_parent"
         height="match_parent">
 
@@ -71,7 +71,7 @@ class LoaderDialog extends View {
 
                     <TextView
                       style ={window.__TextStyle.textStyle.LOADING_TEXT}
-                      text = "Preparing notes..."/>
+                      text = "Please wait..."/>
 
                     <ProgressBar
                       margin="20,0,0,0"

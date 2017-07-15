@@ -61,6 +61,7 @@ class UserScreen extends View {
   }
 
   getLoginCallback = (response) => {
+    window.__LoaderDialog.hide()
     try{
     var arr=response.split('.');
     var contentBody=atob(arr[1]);
@@ -105,7 +106,7 @@ class UserScreen extends View {
 
 
   handleStateChange = (state) => {
-
+    window.__LoaderDialog.show()
 
     var status = state.response.status[0];
     var response = JSON.parse(state.response.status[1]);
@@ -135,42 +136,13 @@ class UserScreen extends View {
 
     console.log("BEFOR SWITCH", state.responseFor)
     switch (state.responseFor + "") {
-      case "LoginApiAction":
-        
-        console.log("IN LOGIN API ACTION ");
-
-        console.log("RESPONSE ",response);
-        var token=response.access_token
-        console.log("TOKEN ",token);
-
-         var data=token.split('.');
-
-         token=data[1];
-
-         token = atob(token);
-         console.log("DECRYPTED  ",token);
-         token=JSON.parse(token)
-         console.log("JSON   ",token);
-
-        JBridge.setInSharedPrefs("user_id", JSON.stringify(result.response.userId));
-        JBridge.setInSharedPrefs("user_name", JSON.stringify(result.response.firstName));
-        JBridge.setInSharedPrefs("user_token", JSON.stringify(result.response.token));
-        console.log("WELCOME -->>", result.response.firstName);
-        JBridge.showSnackbar("WELCOME ", result.response.firstName)
-
-        //"{"id":null,"ver":"v1","ts":"2017-06-28 02:09:30:032+0000","params":{"resmsgid":null,"msgid":null,"err":"INVALID_CREDENTIAL","status":"SERVER_ERROR","errmsg":"Invalid credential."},"responseCode":"CLIENT_ERROR","result":{}}"
-        var eventAction = { tag: "LoginAction", contents: {} };
-        window.__runDuiCallback(eventAction);
-
-        break;
-
       case "SignUpApiAction":
         console.log("--->", result.response)
         console.log("--->", result.userId)
         if (result.response == "SUCCESS") {
-          JBridge.showSnackBar("Sign Up Completed"+result.userId)
+          JBridge.showSnackBar("Welcome On Board "+this.userName)
           JBridge.setInSharedPrefs("user_name", this.userFirstName);
-          JBridge.setInSharedPrefs("user_id", result.userId);
+          JBridge.setInSharedPrefs("user_token", result.userId);
           var eventAction = { tag: "LoginAction", contents: {} };
           window.__runDuiCallback(eventAction);
         } else {
@@ -348,7 +320,7 @@ class UserScreen extends View {
         "email": this.email
       };
       console.log("START SignUpApiAction ", dummyBody)
-
+      window.__LoaderDialog.show()
       var eventAction = { tag: "SignUpApiAction", contents: dummyBody };
       console.log("Triger---\SignUpApiAction\t>", eventAction)
       window.__runDuiCallback(eventAction);
@@ -368,7 +340,7 @@ class UserScreen extends View {
       JBridge.showSnackBar("Password can't be empty");
       return;
     }
-
+    window.__LoaderDialog.show()
     JBridge.keyCloakLogin("android","sunbird",this.userName,this.userPass);
   
 

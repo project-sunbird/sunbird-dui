@@ -255,10 +255,7 @@ class CourseComponent extends View {
   render() {
     this.layout = (
 
-    <RelativeLayout
-      root="true"
-      width="match_parent"
-      height="match_parent">
+   
 
         <LinearLayout
           root="true"
@@ -271,9 +268,8 @@ class CourseComponent extends View {
           
         </LinearLayout>
        
-       <LoaderDialog/>
+       
 
-      </RelativeLayout>
     )
 
     return this.layout.render();

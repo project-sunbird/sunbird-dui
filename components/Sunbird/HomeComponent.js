@@ -22,7 +22,7 @@ var SimpleToolbar = require('../Sunbird/core/SimpleToolbar');
 
 var HomeRecommendedContainer = require('../Sunbird/HomeRecommendedContainer');
 var HomeTodoContainer = require('../Sunbird/HomeTodoContainer');
-var LoaderDialog = require('../Sunbird/core/LoaderDialog');
+
 
 class HomeComponent extends View {
   constructor(props, children) {
@@ -221,10 +221,7 @@ class HomeComponent extends View {
   render() {
     this.layout = (
 
-      <RelativeLayout
-        root="true"
-        width="match_parent"
-        height="match_parent">
+     
 
       <LinearLayout
         orientation="vertical"
@@ -275,9 +272,6 @@ class HomeComponent extends View {
       </LinearLayout>
 
 
-      <LoaderDialog/>
-
-      </RelativeLayout>
 
 
       )

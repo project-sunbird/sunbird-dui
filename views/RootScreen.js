@@ -14,6 +14,9 @@ var Styles = require("../res/Styles");
 var Font = require("../res/Font");
 var objectAssign = require('object-assign');
 
+var LoaderDialog = require('../components/Sunbird/core/LoaderDialog');
+
+
 class RootScreen extends View {
   constructor(props, children) {
     super(props, children);
@@ -70,6 +73,7 @@ class RootScreen extends View {
           </RelativeLayout>
 
         </LinearLayout>
+        <LoaderDialog/>
       </RelativeLayout>
     );
 
