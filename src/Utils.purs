@@ -65,9 +65,7 @@ keyCLoakGrantType = "password"
 keyCloakAuthUrl = "https://keycloakidp-coacher.rhcloud.com/auth/realms/"<> keyCloakRealm <>"/protocol/openid-connect/token"
 
 
-
-getMockUserId ="b155e618-0066-43be-b221-6fcbaeb99d2a"
-    
+ 
 type State a = {screen :: String |a}
 
 type AffError e = (Error -> Eff e Unit)
@@ -122,8 +120,8 @@ getUserToken = readFromMemory "user_token"
 --API CALLS
 generateRequestHeaders =
   let filtered = filter (\x -> not $ snd(x) == "__failed")  [(Tuple "Authorization" ("Bearer " <> getApiKey))
-                                                            ,(Tuple "X-Authenticated-Userid" getMockUserId) --getUserToken
-                                                            ,(Tuple "X-Consumer-ID" "7c03ca2e78326957afbb098044a3f60783388d5cc731a37821a20d95ad497ca8") --getUserId
+                                                            ,(Tuple "X-Authenticated-Userid" getUserToken) --getUserToken
+                                                            ,(Tuple "X-Consumer-ID" getUserId) --getUserId
                                                             ,(Tuple "X-Device-ID" "X-Device-ID")
                                                             ,(Tuple "X-msgid" "8e27cbf5-e299-43b0-bca7-8347f7e5abcf")
                                                             ,(Tuple "ts" "2017-05-28 10:52:56:578+0530")  
@@ -157,7 +155,7 @@ enrollCourse courseId =
                                                                                                           , (Tuple "courseName" (A.fromString "Teacher Training Course"))
                                                                                                           , (Tuple "description" (A.fromString "course description"))
                                                                                                           , (Tuple "delta" (A.fromString "delta"))
-                                                                                                          , (Tuple "userId" (A.fromString getMockUserId))
+                                                                                                          , (Tuple "userId" (A.fromString getUserToken))
                                                                                                           ])))
                                                    ]) in
  (post requestUrl headers payload)
@@ -177,12 +175,12 @@ getCoursesPageApi =
   (post requestUrl headers payload) 
 
 getUserEnrolledCourses =
-  let requestUrl = "/v1/user/courses/" <> getMockUserId
+  let requestUrl = "/v1/user/courses/" <> getUserToken
       headers = (generateRequestHeaders) in
   (get requestUrl headers) 
 
 getProfileDetail =
-  let requestUrl = "/v1/user/read/" <> getMockUserId
+  let requestUrl = "/v1/user/read/" <> getUserToken
       headers = (generateRequestHeaders) in
   (get requestUrl headers) 
 
@@ -200,11 +198,6 @@ getResourcePageApi =
   (post requestUrl headers payload) 
 
 
-userLogin userName userPass =
-  let headers = (getDummyHeader)
-      payload= "client_id="<>keyCloakClientId<>"&username="<>userName<>"&password="<>userPass<>"&grant_type="<>keyCLoakGrantType in
-  (postLogin headers payload)
-
 userSignup userName email firstName password mobileNumber language  =
   let requestUrl = "/v1/user/create" 
       headers = (generateRequestHeaders)
@@ -219,7 +212,5 @@ userSignup userName email firstName password mobileNumber language  =
                                                    ]) in
   (post requestUrl headers payload)
 
-
- --b155e618-0066-43be-b221-6fcbaeb99d2a
 
 getExceptT value = ExceptT $ pure $ Right value

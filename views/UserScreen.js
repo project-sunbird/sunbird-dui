@@ -46,6 +46,7 @@ class UserScreen extends View {
     this.language = "English";
     this.userName = this.userPass = this.firstName = ""
 
+    window.__loginCallback=this.getLoginCallback;
 
 
   }
@@ -59,12 +60,33 @@ class UserScreen extends View {
 
   }
 
-  skipLogin = () => {
-    JBridge.showSnackBar("MASTER USER SUNBIRD");
-    console.log("TESTER ->", this.userName)
+  getLoginCallback = (response) => {
+    try{
+    var arr=response.split('.');
+    var contentBody=atob(arr[1]);
+    
+    contentBody=JSON.parse(contentBody);
+
+    console.log("USER TOKEN  ->",contentBody.sub)
+    JBridge.setInSharedPrefs("user_id", contentBody.sub);
+    JBridge.setInSharedPrefs("user_name", contentBody.given_name);
+    JBridge.setInSharedPrefs("user_token", contentBody.sub);
+    JBridge.showSnackBar("Welcome Back"+ contentBody.given_name)
+
     var eventAction = { tag: "LoginAction", contents: {} };
     window.__runDuiCallback(eventAction);
+    }catch(e){
+     console.log(e.message)
+     JBridge.showSnackBar("Invalid credential")
+
+   }
+
+
+
+
+
   }
+
 
   onBackPressed = () => {
     this.backPressCount++;
@@ -107,7 +129,7 @@ class UserScreen extends View {
 
     if (response.params.err == "INVALID_CREDENTIAL") {
       console.log("EROR MESSAGE :", response.params.errmsg)
-      JBridge.showSnackbar("E MSG ->" + response.params.errmsg)
+      JBridge.showSnackBar("E MSG ->" + response.params.errmsg)
       return;
     }
 
@@ -290,10 +312,7 @@ class UserScreen extends View {
   }
 
   handleSignUpClick = () => {
-    if (this.userName === "sunbird" || this.userName === "Sunbird") {
-      this.skipLogin();
-      return;
-    } else if (this.firstName.length <= 0) {
+    if (this.firstName.length <= 0) {
       JBridge.showSnackBar("Firsr Name can't be empty");
       return;
     } else if (this.userName.length <= 0) {
@@ -341,15 +360,7 @@ class UserScreen extends View {
   }
 
   handleLoginClick = () => {
-    // this.skipLogin();
-    // return;
-
-
-
-    if (this.userName === "sunbird" || this.userName === "Sunbird") {
-      this.skipLogin();
-      return;
-    }
+   
     if (this.userName.length <= 0) {
       JBridge.showSnackBar("User Name can't be empty");
       return;
@@ -357,21 +368,12 @@ class UserScreen extends View {
       JBridge.showSnackBar("Password can't be empty");
       return;
     }
-    window.__getLoginResponse = this.readResponse;
-    JBridge.myCustomAPiCall(this.userName,this.userPass);
 
-    var dummyBody = { "userName": this.userName, "userPass": this.userPass };
-    console.log("START API CALL LOGIN", dummyBody)
-
-    var eventAction = { tag: "LoginApiAction", contents: dummyBody };
-    console.log("Triger---\tLoginApiAction\t>", eventAction)
-    window.__runDuiCallback(eventAction);
+    JBridge.keyCloakLogin("android","sunbird",this.userName,this.userPass);
+  
 
   }
 
-  readResponse =(data)=>{
-    console.log("GOT RESPONSE",data)
-  }
 
 
 
