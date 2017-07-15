@@ -77,7 +77,7 @@ class OfflineResourceContainer extends View {
                     width="match_parent"
                     height="50"
                     gravity="center"
-                    text={"No offline content yet"}
+                    text={"No offline resource yet"}
                     style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>)
     }
 
