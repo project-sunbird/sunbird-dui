@@ -138,7 +138,7 @@ class FilterScreen extends View {
 
 
       <LinearLayout
-        background={window.__Colors.WHITE_F7}
+        background={window.__Colors.WHITE}
         orientation="vertical"
         width="match_parent"
         height="match_parent">
@@ -159,24 +159,27 @@ class FilterScreen extends View {
                   height="match_parent"
                   width="match_parent"
                   gravity="center_vertical"
-                  orientation="vertical">
+                  orientation="vertical"
+                  padding="0,0,0,80">
                       <TextView
-                      width="wrap_content"
+                      width="match_parent"
                       height="28"
-                      margin="16,6,0,6"
+                      padding="16,12,16,8"
                       gravity="center_vertical"
                       style={window.__TextStyle.textStyle.FILTER.REGULAR_BLACK}
+                      background={window.__Colors.WHITE_F7}
                       text="SORT BY"/>
 
                       {this.getSortCard()}
                       
                         
                       <TextView
-                      width="wrap_content"
+                      width="match_parent"
                       height="28"
                       gravity="center_vertical"
-                      margin="16,6,0,6"
+                      padding="16,8,16,8"
                       style={window.__TextStyle.textStyle.FILTER.REGULAR_BLACK}
+                      background={window.__Colors.WHITE_F7}
                       text="FILTER BY"/>
 
                       <FilterCard

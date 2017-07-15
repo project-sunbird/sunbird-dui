@@ -81,7 +81,7 @@ class ResourceDetailScreen extends View {
                  width="match_parent"
                  isCourse = "false"
                  contentDetail = {_this.details.content}
-                 buttonText="DOWNLOAD THIS RESOURCE"
+                 buttonText="DOWNLOAD"
                  localStatus = {_this.localStatus}
                  identifier = {_this.details.identifier}/>
         _this.replaceChild(_this.idSet.progressButtonContainer, pButonLayout.render(), 0);
