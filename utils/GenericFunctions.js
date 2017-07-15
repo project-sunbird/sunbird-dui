@@ -16,3 +16,17 @@ exports.prettifyDate = (data) => {
 
   return months[date.getUTCMonth()] + ' ' + date.getUTCDate() + ', ' + date.getUTCFullYear();
 }
+
+exports.jsonifyData = (data) =>{
+	data = data.replace(/\\n/g, "\\n")  
+               .replace(/\\'/g, "\\'")
+               .replace(/\\"/g, '\\"')
+               .replace(/\\&/g, "\\&")
+               .replace(/\\r/g, "\\r")
+               .replace(/\\t/g, "\\t")
+               .replace(/\\b/g, "\\b")
+               .replace(/\\f/g, "\\f");
+      data = data.replace(/[\u0000-\u0019]+/g,"");
+
+     return data;
+}

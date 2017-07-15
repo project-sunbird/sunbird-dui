@@ -24,6 +24,8 @@ var FilterComponent = require('../components/Sunbird/FilterComponent');
 var CourseComponent = require('../components/Sunbird/CourseComponent');
 var FeedParams = require('../FeedParams');
 var debounce = require("debounce");
+var utils = require('../utils/GenericFunctions');
+
 window.R = require("ramda");
 
 
@@ -49,7 +51,7 @@ class HomeScreen extends View {
     this.backPressCount = 0;
 
     this.feedData = FeedParams.feedParams;
-
+    this.s = "";
     this.screenName = "HOME_SCREEN"
     this.data = ["HOME", "COURSES", "RESOURCES", "COMMUNITY", "PROFILE"];
     this.tabValues = [{
@@ -129,6 +131,7 @@ class HomeScreen extends View {
       }
       responseData = tmp;
     } else {
+      responseData = utils.jsonifyData(responseData);
       responseData = JSON.parse(responseData);
     }
 

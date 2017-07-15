@@ -52,7 +52,7 @@ class ProfileExperiences extends View {
 
               </LinearLayout>)
   }
-
+  
   getLineSeperator = () => {
     return (<LinearLayout
             width="match_parent"

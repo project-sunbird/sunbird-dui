@@ -194,7 +194,7 @@ class ResourceDetailScreen extends View {
         margin="0,4,0,10"
         width="wrap_content"
         height="wrap_content"
-        text="Rajesh Kumar"
+        text={this.details.content.creator}
         style={window.__TextStyle.textStyle.CARD.TITLE.REGULAR_BLACK}/>
 
 
@@ -230,7 +230,7 @@ class ResourceDetailScreen extends View {
         <LinearLayout
         width="match_parent"
         height="wrap_content"
-        
+
         >
 
 

@@ -58,6 +58,14 @@ foreign import ui' :: forall a c e. (Error -> Eff e Unit) -> (a -> Eff e Unit) -
 getEulerLocation = "http://52.172.36.121:9000"
 getApiKey ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkMWE2OTgxOWQ0OTc0YzhiYjRlOTQ4YjMxMjBkYjg0NyJ9.AFu4mPKLuYhclntDjbri_L5FN-rQWXk9dVXhlYO2YcA"
 
+keyCloakRealm = "sunbird"
+keyCloakClientId ="android"
+keyCLoakGrantType = "password"
+
+keyCloakAuthUrl = "https://keycloakidp-coacher.rhcloud.com/auth/realms/"<> keyCloakRealm <>"/protocol/openid-connect/token"
+
+
+
 getMockUserId ="b155e618-0066-43be-b221-6fcbaeb99d2a"
     
 type State a = {screen :: String |a}
@@ -72,6 +80,7 @@ foreign import showUI' :: forall e a b. (AffSuccess (State a) e) -> (AffError e)
 foreign import callbackListner' :: forall e a b. (AffSuccess ({|a}) e) -> (AffError e) -> ({|b}) -> Boolean -> Eff e Unit
 foreign import updateState' :: forall a b s1 s2 e. (AffSuccess (State s2) e) -> (AffError e) -> a -> (State s1) -> Eff e Unit
 foreign import callAPI' :: forall e. (AffSuccess ApiResponse e) -> (AffError e) -> Method -> String -> A.Json -> Array RequestHeader -> Eff e Unit
+foreign import customCallApi' :: forall e. (AffSuccess ApiResponse e) -> (AffError e) -> Method -> String -> String-> Array RequestHeader -> Eff e Unit
 
 
 foreign import sendUpdatedState' :: forall a b.(State a)-> b
@@ -87,6 +96,10 @@ get path headers =
 post path headers body =
   makeAff(\error success -> callAPI' success error POST ((getEulerLocation) <> path) body headers')
   where headers' = cons (RequestHeader "Content-Type" "application/json") headers
+
+postLogin headers body =
+  makeAff(\error success -> customCallApi' success error POST (keyCloakAuthUrl) body headers')
+  where headers' = cons (RequestHeader "Content-Type" "application/x-www-form-urlencoded") headers
 
 
 showUI screen state = ExceptT $ pure <$>
@@ -111,6 +124,18 @@ generateRequestHeaders =
   let filtered = filter (\x -> not $ snd(x) == "__failed")  [(Tuple "Authorization" ("Bearer " <> getApiKey))
                                                             ,(Tuple "X-Authenticated-Userid" getMockUserId) --getUserToken
                                                             ,(Tuple "X-Consumer-ID" "7c03ca2e78326957afbb098044a3f60783388d5cc731a37821a20d95ad497ca8") --getUserId
+                                                            ,(Tuple "X-Device-ID" "X-Device-ID")
+                                                            ,(Tuple "X-msgid" "8e27cbf5-e299-43b0-bca7-8347f7e5abcf")
+                                                            ,(Tuple "ts" "2017-05-28 10:52:56:578+0530")  
+                                                            ,(Tuple "Accept" "application/json")
+                                                            ,(Tuple "X-Source" "web")
+                                                            
+
+                                                            ] in
+  map (\x -> (RequestHeader (fst x) (snd x))) filtered
+
+getDummyHeader =
+  let filtered = filter (\x -> not $ snd(x) == "__failed")  [(Tuple "X-Consumer-ID" "7c03ca2e78326957afbb098044a3f60783388d5cc731a37821a20d95ad497ca8") --getUserId
                                                             ,(Tuple "X-Device-ID" "X-Device-ID")
                                                             ,(Tuple "X-msgid" "8e27cbf5-e299-43b0-bca7-8347f7e5abcf")
                                                             ,(Tuple "ts" "2017-05-28 10:52:56:578+0530")  
@@ -176,16 +201,9 @@ getResourcePageApi =
 
 
 userLogin userName userPass =
-  let requestUrl = "/v1/user/login" 
-      headers = (generateRequestHeaders)
-      payload = A.fromObject (StrMap.fromFoldable [ (Tuple "userId" (A.fromString "unique API ID"))
-                                                   , (Tuple "ts" (A.fromString "2013/10/15 16:16:3"))
-                                                   , (Tuple "request" (A.fromObject (StrMap.fromFoldable  [ (Tuple "userName" (A.fromString userName))
-                                                                                                          , (Tuple "password" (A.fromString userPass))
-                                                                                                          , (Tuple "source" (A.fromString "web"))
-                                                                                                          ])))
-                                                   ]) in
-  (post requestUrl headers payload)
+  let headers = (getDummyHeader)
+      payload= "client_id="<>keyCloakClientId<>"&username="<>userName<>"&password="<>userPass<>"&grant_type="<>keyCLoakGrantType in
+  (postLogin headers payload)
 
 userSignup userName email firstName password mobileNumber language  =
   let requestUrl = "/v1/user/create" 

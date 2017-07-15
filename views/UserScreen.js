@@ -84,6 +84,7 @@ class UserScreen extends View {
 
   handleStateChange = (state) => {
 
+
     var status = state.response.status[0];
     var response = JSON.parse(state.response.status[1]);
     var responseCode = state.response.status[2];
@@ -113,6 +114,22 @@ class UserScreen extends View {
     console.log("BEFOR SWITCH", state.responseFor)
     switch (state.responseFor + "") {
       case "LoginApiAction":
+        
+        console.log("IN LOGIN API ACTION ");
+
+        console.log("RESPONSE ",response);
+        var token=response.access_token
+        console.log("TOKEN ",token);
+
+         var data=token.split('.');
+
+         token=data[1];
+
+         token = atob(token);
+         console.log("DECRYPTED  ",token);
+         token=JSON.parse(token)
+         console.log("JSON   ",token);
+
         JBridge.setInSharedPrefs("user_id", JSON.stringify(result.response.userId));
         JBridge.setInSharedPrefs("user_name", JSON.stringify(result.response.firstName));
         JBridge.setInSharedPrefs("user_token", JSON.stringify(result.response.token));
@@ -318,8 +335,8 @@ class UserScreen extends View {
   }
 
   handleLoginClick = () => {
-    this.skipLogin();
-    return;
+    // this.skipLogin();
+    // return;
 
 
 
@@ -334,7 +351,8 @@ class UserScreen extends View {
       JBridge.showSnackBar("Password can't be empty");
       return;
     }
-
+    window.__getLoginResponse = this.readResponse;
+    JBridge.myCustomAPiCall(this.userName,this.userPass);
 
     var dummyBody = { "userName": this.userName, "userPass": this.userPass };
     console.log("START API CALL LOGIN", dummyBody)
@@ -344,6 +362,12 @@ class UserScreen extends View {
     window.__runDuiCallback(eventAction);
 
   }
+
+  readResponse =(data)=>{
+    console.log("GOT RESPONSE",data)
+  }
+
+
 
   getTopLayout = () => {
     return (<LinearLayout

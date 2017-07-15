@@ -17,6 +17,8 @@ var HomeRecommendedContainer = require('../Sunbird/HomeRecommendedContainer');
 var ResourceContainer = require('../Sunbird/ResourceContainer');
 var OfflineResourceContainer = require('../Sunbird/OfflineResourceContainer');
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
+var utils = require('../../utils/GenericFunctions');
+
 
 var _this;
 class ResourceComponent extends View {
@@ -255,7 +257,8 @@ handleResourceViewAllClick= (data,title) =>{
   
      var callback = callbackMapper.map(function(params) {
       console.log("p[arams from local",params)
-      
+      params = params.toString();
+      params = utils.jsonifyData(params);
       _this.data = JSON.parse(params);
 
       var layout = (<OfflineResourceContainer
