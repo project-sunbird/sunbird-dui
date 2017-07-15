@@ -11,6 +11,7 @@ var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 var SearchToolbar = require('../Sunbird/core/SearchToolbar');
 var ProfileHeader = require('../Sunbird/ProfileHeader');
+var ComingSoonComponent = require('../Sunbird/ComingSoonComponent');
 var PersonalDetails = require('../Sunbird/PersonalDetails');
 var ProfileExperiences = require('../Sunbird/ProfileExperiences');
 var ProfileSkillTags = require('../Sunbird/ProfileSkillTags');
@@ -32,13 +33,13 @@ class ProfileComponent extends View {
     console.log("profile api response", this.props);
     _this = this;
 
-    this.menuData = {
-      url: [
-        { imageUrl: "ic_action_plus" },
-        { imageUrl: "ic_action_notification_blue" },
-        { imageUrl: "ic_action_search" }
-      ]
-    }
+    // this.menuData = {
+    //   url: [
+    //     { imageUrl: "ic_action_plus" },
+    //     { imageUrl: "ic_action_notification_blue" },
+    //     { imageUrl: "ic_action_search" }
+    //   ]
+    // }
     this.handleResponse();
   }
 
@@ -80,11 +81,7 @@ class ProfileComponent extends View {
   render() {
     this.layout = (
 
-      <RelativeLayout
-      root="true"
-      clickable="false"
-      width="match_parent"
-      height="match_parent">
+     
 
 
       <LinearLayout
@@ -99,19 +96,19 @@ class ProfileComponent extends View {
           invert="true"
           hideBack="true"
           title=""
-          onMenuItemClick={this.handleMenuClick}
-          menuData={this.menuData}
-          onSearch={this.handleSearch}/>
+          />
 
 
           <ScrollView
             height="0"
             weight="1"
+
             width="match_parent">
 
               <LinearLayout
                 height="match_parent"
                 width="match_parent"
+                padding={"0,0,0,50"}
                 padding="16,16,16,0"
                 orientation="vertical">
 
@@ -123,9 +120,28 @@ class ProfileComponent extends View {
 
 
 
-                <ProfileExperiences/>
+                <ComingSoonComponent
+                text="More details coming soon.."/>
 
-                <ProfileSkillTags/>
+                
+
+              </LinearLayout>
+
+         </ScrollView>
+
+        </LinearLayout>
+      
+
+      
+    )
+
+    return this.layout.render();
+  }
+}
+/*
+add these later
+ <ProfileExperiences/>
+<ProfileSkillTags/>
 
 
                 <ProfileAccomplishments/>
@@ -137,37 +153,7 @@ class ProfileComponent extends View {
 
                 <ProfileAdditionalInfo/>
 
-              </LinearLayout>
-
-         </ScrollView>
-
-        </LinearLayout>
-       <LinearLayout
-          gravity="center"
-          centerInParent="true,-1"
-          clickable="false"
-          alpha = "0.9"
-          background={window.__Colors.WHITE}
-          width="match_parent"
-          height="match_parent">
-
-            <TextView
-            gravity="center"
-            width="match_parent"
-            height="match_parent"
-            style ={window.__TextStyle.textStyle.NOTHING}
-            text="Coming Soon.."/>
-          
-
-        </LinearLayout>
-
-      </RelativeLayout>
-    )
-
-    return this.layout.render();
-  }
-}
-
+*/
 
 
 module.exports = ProfileComponent;

@@ -43,7 +43,7 @@ class HomeScreen extends View {
     ]);
 
 
-    this.currentPageIndex = 2;
+    this.currentPageIndex = 4;
     console.log("CURRENT INDEX", this.currentPageIndex);
 
     this.backPressCount = 0;
@@ -302,8 +302,8 @@ class HomeScreen extends View {
   }
 
   afterRender = () => {
-    this.currentPageIndex = 2;
-    this.handleBottomNavBarAction(2);
+    this.currentPageIndex = 4;
+    this.handleBottomNavBarAction(4);
 
 
   }

@@ -578,6 +578,7 @@ class UserScreen extends View {
         root="true"
         orientation="vertical"
         width="match_parent"
+        padding="0,12,0,0"
         background={window.__Colors.WHITE}
         afterRender = {this.afterRender}
         height="match_parent">
