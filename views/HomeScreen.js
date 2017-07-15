@@ -114,7 +114,7 @@ class HomeScreen extends View {
   }
 
   handleStateChange = (state) => {
-    console.log("HANDLE STATE CHANGE HOME SCREEN", state)
+    //console.log("HANDLE STATE CHANGE HOME SCREEN", state)
     
     window.__LoaderDialog.hide();
 
@@ -145,7 +145,7 @@ class HomeScreen extends View {
 
     }
 
-    console.log("RESPONSE :", responseData)
+   // console.log("RESPONSE :", responseData)
 
     if (parseInt(responseCode) != 200) {
       JBridge.showSnackBar("Connection error")
@@ -165,7 +165,7 @@ class HomeScreen extends View {
 
     if (state.responseFor == "GetEnrolledCourseApi") {
       //CourseInProgressContainer of CourseScreen gets upated
-      console.log("GOT USER COURSES ->", responseData.result.courses)
+   //   console.log("GOT USER COURSES ->", responseData.result.courses)
       window.setEnrolledCourses(responseData.result.courses);
       return;
     }
