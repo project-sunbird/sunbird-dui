@@ -29,13 +29,12 @@ class ResourceDetailScreen extends View {
     this.state = state;
     this.screenName = "ResourceDetailScreen"
     this.menuData = {
-      url: []
+      url: [
+        
+      ]
     }
 
     this.shouldCacheScreen = false;
-
-
-
 
     this.details = state.data.value0.resourceDetails;
     this.details = JSON.parse(this.details);
@@ -318,11 +317,23 @@ class ResourceDetailScreen extends View {
 
   }
 
+  handleMenuItemClick = (url) =>{
+    if(url == "ic_action_overflow"){
+
+    }
+  }
+
+  menuCallback = (params) => {
+    console.log("ITEM CLICKED",params);
+  }
+
 
   onBackPressed = () => {
     var eventAction = { "tag": "ResourceDetailaBack", contents: [] };
     window.__runDuiCallback(eventAction);
   }
+
+
 
 
   render() {
@@ -338,6 +349,9 @@ class ResourceDetailScreen extends View {
           afterRender={this.afterRender}
           width="match_parent"
           menuData={this.menuData}
+          menuCallback={this.menuCallback}
+          popupMenu={"Delete"}
+          onMenuItemClick={this.handleMenuItemClick}
           onBackPress={onBackPressed}
           showMenu="true"
           invert="true"/>
@@ -373,8 +387,6 @@ class ResourceDetailScreen extends View {
                 width="match_parent"
                 id={this.idSet.progressButtonContainer}
                 root="true"/>
-
-                
 
                 
        

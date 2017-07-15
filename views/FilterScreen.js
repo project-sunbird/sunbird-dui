@@ -161,6 +161,13 @@ class FilterScreen extends View {
                   gravity="center_vertical"
                   orientation="vertical"
                   padding="0,0,0,80">
+
+                  <LinearLayout
+                  width="match_parent"
+                  height="wrap_content"
+                  visibility="gone"
+                  orientation="vertical">
+
                       <TextView
                       width="match_parent"
                       height="28"
@@ -171,11 +178,12 @@ class FilterScreen extends View {
                       text="SORT BY"/>
 
                       {this.getSortCard()}
+
+                  </LinearLayout>
                       
                         
                       <TextView
                       width="match_parent"
-                      height="28"
                       gravity="center_vertical"
                       padding="16,8,16,8"
                       style={window.__TextStyle.textStyle.FILTER.REGULAR_BLACK}

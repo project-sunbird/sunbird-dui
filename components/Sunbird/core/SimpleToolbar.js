@@ -27,49 +27,24 @@ class SimpleToolbar extends View {
 
 getMenu = () =>{
 
-
       if (this.props.showMenu == undefined || !this.props.showMenu)
         return <Space width="0"/>
 
-
       var lenthOfMenu = Object.keys(this.props.menuData.url).length;
-      var answerCards = "";
-     
-      if(lenthOfMenu<=3) {
-        answerCards = this.props.menuData.url.map((item, index) => {
+      
+      var menuItems = this.props.menuData.url.map((item, index) => {
            return  <ImageView  
-            style = {IconStyle}
-            popupMenu = {this.props.items}
-            onClick = {() => {this.handleMenuClick(item.imageUrl)}}
-            imageUrl = {item.imageUrl}/> 
+                      style = {IconStyle}
+                      onMenuItemClick={this.props.menuCallback?this.props.menuCallback:""}
+                      popupMenu = {this.props.popupMenu?this.props.popupMenu:""}
+                      onClick = {() => {this.handleMenuClick(item.imageUrl)}}
+                      imageUrl = {item.imageUrl}/> 
         })
-      }
-      else {
-      answerCards = this.props.menuData.url.map((item, index) => {
-        return this.setMenu(item.imageUrl,index);
-      });
-    }
-   
-
-    return answerCards;
+     
+    return menuItems;
   }
 
 
-
-  setMenu = (imageUrl,index) => {
-    if(index <=2) {
-    return  <ImageView  
-        popupMenu = {this.props.items}
-        style = {IconStyle}
-        onClick = {() => {this.handleMenuClick(index)}}
-        popupMenu = {this.homePopUpMenu}
-        onMenuItemClick = {this.more}
-        imageUrl = { (index == 2) ? "ic_action_overflow" : imageUrl}/> 
-    }
-    else {
-      return <Space width="0"/>      
-    }
-  }
 
   getBack = () => {
     if (this.props.hideBack != undefined && this.props.hideBack)

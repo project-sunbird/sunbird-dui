@@ -513,6 +513,7 @@ class UserScreen extends View {
                 width="match_parent"
                 hintText="Enter a 8-digit password"
                 labelText="PASSWORD"
+                inputType="password"
                 margin="20,0,24,12"
                 _onChange={this.updateUserPassword}/>  
             

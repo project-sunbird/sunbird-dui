@@ -34,7 +34,6 @@ class CourseComponent extends View {
 
     this.menuData = {
       url: [
-        { imageUrl: "ic_notification_red" },
         { imageUrl: "ic_action_search" }
       ]
     }

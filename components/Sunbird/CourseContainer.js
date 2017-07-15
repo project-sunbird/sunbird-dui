@@ -29,6 +29,8 @@ class CourseContainer extends View {
   getRows = () => {
     var rows = this.props.data.map((item, i) => {
 
+      console.log("GET ROWS IN imageUrl",item.appIcon)
+
       var temp = {
         imageUrl: (item.appIcon ? item.appIcon : "ic_action_course"),
         title: item.name,

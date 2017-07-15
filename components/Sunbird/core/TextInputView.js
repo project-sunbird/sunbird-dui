@@ -53,6 +53,7 @@ class TextInputView extends View {
               height="wrap_content"
               singleLine="true"
               maxLine="1"
+              inputType={this.props.inputType?this.props.inputType:"text"}
               color={this.props.color}
               hint={this.props.hintText}
               text={this.props.text?this.props.text:""}

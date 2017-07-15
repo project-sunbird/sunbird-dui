@@ -80,6 +80,7 @@ startCourseSearchFlow state = do
   case state of
     CourseInfoFlow {course : details} -> startCourseInfoFlow details
     StartFilterFlow{filterDetails : details} -> startFilterFlow details 
+    SearchResourceFlow {course : details} -> startCourseInfoFlow details
     _ -> pure $ "aborted"
 
 
