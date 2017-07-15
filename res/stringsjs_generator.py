@@ -7,7 +7,7 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 import openpyxl 
-wb = openpyxl.load_workbook('SUNBIRD App Multilingual Strings Sheet.xlsx')
+wb = openpyxl.load_workbook('Sunbird App Multilingual Strings Sheet.xlsx')
 sheet = wb.get_sheet_by_name('Sheet1')
 
 blacklist = ['\n','"']
