@@ -212,16 +212,22 @@ exports["callAPI'"] = function(success) {
               hdr[header.value0] = header.value1;
               return hdr;
             });
-           
+            var shouldReturnCallback=true;
             var callback = callbackMapper.map(function(params) {
               console.log("RESPONSE FROM android :", JSON.parse(arguments[1] || "{}"))
-              if (arguments && arguments[0].length >= 3) {
+              if (arguments && arguments[0].length >= 3 && shouldReturnCallback) {
+                shouldReturnCallback=false;
                 success({
                   status: arguments[0],
                   response: JSON.parse(arguments[1] || "{}"),
                   statusCode: arguments[2]
                 })();
               } else {
+                if(!shouldReturnCallback){
+                  console.log("TIMEOUT reached")
+                  return;
+                }
+                shouldReturnCallback=false;
                 console.log("Invalid Response from android ", arguments);
                 success({
                   status: "failed",
@@ -230,7 +236,14 @@ exports["callAPI'"] = function(success) {
                 })();
               }
             });
-
+             setTimeout(function() {
+                success({
+                  status: "failed",
+                  response: {},
+                  statusCode: "500"
+                })();
+              }, 10000);
+            
             JBridge.callAPI(method, url, btoa(JSON.stringify(data)), btoa(JSON.stringify(headers)), true, callback);
           };
         };
