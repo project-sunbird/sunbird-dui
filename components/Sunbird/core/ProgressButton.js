@@ -17,7 +17,8 @@ class ProgressButton extends View {
     this.setIds([
       "downloadingText",
       "downloadBarContainer",
-      "downloadBar"
+      "downloadBar",
+      "cancelDownloadHolder"
     ])
 
     window.__ProgressButton = this;
@@ -28,7 +29,7 @@ class ProgressButton extends View {
 
 
     _this = this;
-    console.log("progress button data",this.props)
+    console.log("progress button data", this.props)
 
     console.log("local status content", this.props.localStatus)
 
@@ -37,6 +38,15 @@ class ProgressButton extends View {
 
   afterRender = () => {
     this.checkContentLocalStatus(this.props.localStatus);
+  }
+
+  handleCancelDownload = () => {
+    JBridge.cancelDownload(this.props.identifier)
+    var cmd = this.set({
+      id: this.idSet.cancelDownloadHolder,
+      visibility: "gone"
+    })
+    Android.runInUI(cmd, 0);
   }
 
 
@@ -70,7 +80,12 @@ class ProgressButton extends View {
     if (parseInt(data.downloadProgress) == 100) {
 
       _this.isDownloaded = true;
-      textToShow = "PLAY"
+      textToShow = "PLAY";
+      var cmd = this.set({
+        id: this.idSet.cancelDownloadHolder,
+        visibility: "gone"
+      })
+      Android.runInUI(cmd, 0);
 
 
     } else {
@@ -107,12 +122,18 @@ class ProgressButton extends View {
         } else {
           JBridge.playContent(this.props.identifier);
         }
-        
+
       } else {
         console.log("download");
         if (!this.startedDownloading) {
           this.startedDownloading = true;
           JBridge.importCourse(this.props.identifier, this.props.isCourse);
+
+          var cmd = this.set({
+            id: this.idSet.cancelDownloadHolder,
+            visibility: "visible"
+          })
+          Android.runInUI(cmd, 0);
 
         }
 
@@ -127,17 +148,17 @@ class ProgressButton extends View {
     console.log("telemetryData", telemetryData);
     telemetryData = JSON.parse(telemetryData);
     console.log(telemetryData)
-    if(telemetryData.eid == "OE_END"){
+    if (telemetryData.eid == "OE_END") {
       console.log("reached end of content");
       var contentProgress = {};
-      console.log("hierarchy info",this.props.contentDetails.hierarchyInfo)
+      console.log("hierarchy info", this.props.contentDetails.hierarchyInfo)
       contentProgress['contentId'] = this.props.identifier;
       contentProgress['courseId'] = this.props.contentDetails.hierarchyInfo[0].identifier;
-      contentProgress['status']  = 1;
+      contentProgress['status'] = 1;
       var d = new Date();
       contentProgress['lastAccessTime'] = d.toISOString();
-      console.log("progress status",contentProgress)
-      // JBridge.setInSharedPrefs(this.props.identifier, JSON.stringify(contentProgress));
+      console.log("progress status", contentProgress)
+        // JBridge.setInSharedPrefs(this.props.identifier, JSON.stringify(contentProgress));
 
       // var sharedData = JBridge.getFromSharedPrefs(this.props.identifier)
     }
@@ -216,6 +237,38 @@ class ProgressButton extends View {
   }
 
 
+  getCancelButton = (value, text) => {
+    var layout = (
+
+
+      <LinearLayout
+            width="match_parent"
+            id={this.idSet.cancelDownloadHolder}
+            height="48"
+            cornerRadius="5"
+            margin="16,16,16,4"
+            visibility="gone"
+            layoutTransition="true"
+            background={window.__Colors.WHITE}
+            stroke={"2,"+window.__Colors.THICK_BLUE}>
+
+
+              <TextView
+              width="match_parent"
+              height="match_parent"
+              gravity="center"
+              onClick={this.handleCancelDownload}
+              style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}
+              text="CANCEL DOWNLOAD"/>
+
+         </LinearLayout>
+
+    )
+
+    return layout;
+  }
+
+
 
   render() {
     var text = this.props.text;
@@ -230,18 +283,24 @@ class ProgressButton extends View {
         background={window.__Colors.WHITE}
         visibility = {this.props.visibility?this.props.visibility : "visible"}
         id={this.idSet.downloadBar}
+        layoutTransition="true"
         >
         <LinearLayout
           height="2"
           visibility={this.props.hideDivider?"gone":"visible"}
           width="match_parent"
           background={window.__Colors.PRIMARY_BLACK_22}/>
+        
+        {this.getCancelButton()}  
+        
         <LinearLayout
           height="match_parent"
           width="match_parent"
-          margin="16,16,16,16"
+          margin="16,4,16,16"
           root="true"
           id={this.idSet.downloadBarContainer}>
+
+
        
             {this.getButtons(0,this.props.buttonText)}
        
