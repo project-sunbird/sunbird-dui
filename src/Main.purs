@@ -70,26 +70,22 @@ cFlow = do
     StartCommunityFlow -> startCommunityFlow action
     StartProfileFlow -> startProfileFlow action
     StartNotificationFlow -> startNotificationFlow action
-    StartCoursePageApi -> do
+    StartCoursePageApi {user_token:x}-> do
                   liftEff $ log $ "START COURSE PAGE API"
-                  responseData <- getCoursesPageApi
+                  responseData <- getCoursesPageApi x
                   _ <- sendUpdatedState {response : responseData, responseFor : "StartCoursePageApi", screen:"asas"} 
                   pure $ "handled"
-    StartResourcePageApi -> do
+    StartResourcePageApi {user_token:x}-> do
                   liftEff $ log $ "START RESOURCE PAGE API"
-                  responseData <- getResourcePageApi
+                  responseData <- getResourcePageApi x
                   _ <- sendUpdatedState {response : responseData, responseFor : "StartResourcePageApi", screen:"asas"}
                   pure $ "handled"
-    StartProfileApi -> do
+    StartProfileApi {user_token:x}-> do
                   liftEff $ log $ "START RESOURCE PAGE API"
-                  responseData <- getProfileDetail
+                  responseData <- getProfileDetail x
                   _ <- sendUpdatedState {response : responseData, responseFor : "StartProfileApi", screen:"asas"}
                   pure $ "handled" 
-    StartProfileApi -> do
-                  liftEff $ log $ "START Profile PAGE API"
-                  responseData <- getProfileDetail
-                  _ <- sendUpdatedState {response : responseData, responseFor : "StartProfileApi", screen:"asas"}
-                  pure $ "handled"                  
+                    
     StartSearchFlow {filterDetails : details} -> startHomeSearchFlow details 
 
     _ -> pure $ "aborted"

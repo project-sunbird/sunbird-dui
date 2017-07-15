@@ -31,8 +31,8 @@ startCourseFlow state = do
 		StartEnrolledCourseFlow {course:courseDetail} -> startEnrolledCourseFlow courseDetail
 		StartNotificationFlow -> startNotificationFlow state
 		StartSearchFlow {filterDetails : details} -> startCourseSearchFlow details
-		GetEnrolledCourseApi -> do
-			responseData <- getUserEnrolledCourses 
+		GetEnrolledCourseApi {user_token:x}-> do
+			responseData <- getUserEnrolledCourses x
 	 		_ <- sendUpdatedState {response : responseData, responseFor : "GetEnrolledCourseApi", screen:"asas"} 
 	  		pure $ "Aborted 3"
 		_ -> pure $ "default"
@@ -43,8 +43,8 @@ startCourseInfoFlow cDetail= do
 	case event of
 		DummyCourseInfoAction -> pure $ "handled"
 		ShowEnrolledCourse {course:courseDetail} -> startEnrolledCourseFlow courseDetail
-		EnrollCourse {reqParams:details} -> do
-			output <- enrollCourse details
+		EnrollCourseApi {user_token:x,reqParams:details} -> do
+			output <- enrollCourse x details
   			_ <- sendUpdatedState {response : output, responseFor : "EnrollCourse", screen:"asas"} 
 			pure $ "handled"
 

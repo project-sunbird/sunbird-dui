@@ -78,7 +78,7 @@ foreign import showUI' :: forall e a b. (AffSuccess (State a) e) -> (AffError e)
 foreign import callbackListner' :: forall e a b. (AffSuccess ({|a}) e) -> (AffError e) -> ({|b}) -> Boolean -> Eff e Unit
 foreign import updateState' :: forall a b s1 s2 e. (AffSuccess (State s2) e) -> (AffError e) -> a -> (State s1) -> Eff e Unit
 foreign import callAPI' :: forall e. (AffSuccess ApiResponse e) -> (AffError e) -> Method -> String -> A.Json -> Array RequestHeader -> Eff e Unit
-foreign import customCallApi' :: forall e. (AffSuccess ApiResponse e) -> (AffError e) -> Method -> String -> String-> Array RequestHeader -> Eff e Unit
+
 
 
 foreign import sendUpdatedState' :: forall a b.(State a)-> b
@@ -95,10 +95,6 @@ post path headers body =
   makeAff(\error success -> callAPI' success error POST ((getEulerLocation) <> path) body headers')
   where headers' = cons (RequestHeader "Content-Type" "application/json") headers
 
-postLogin headers body =
-  makeAff(\error success -> customCallApi' success error POST (keyCloakAuthUrl) body headers')
-  where headers' = cons (RequestHeader "Content-Type" "application/x-www-form-urlencoded") headers
-
 
 showUI screen state = ExceptT $ pure <$>
   let updatedState = state {screen = screen} in
@@ -114,13 +110,11 @@ updateState changes state = makeAff(\error success -> updateState' success error
 getUserId ::String
 getUserId = readFromMemory "user_id"
 
-getUserToken :: String 
-getUserToken = readFromMemory "user_token"
 
 --API CALLS
-generateRequestHeaders =
+generateRequestHeaders user_token=
   let filtered = filter (\x -> not $ snd(x) == "__failed")  [(Tuple "Authorization" ("Bearer " <> getApiKey))
-                                                            ,(Tuple "X-Authenticated-Userid" getUserToken) --getUserToken
+                                                            ,(Tuple "X-Authenticated-Userid" user_token) --getUserToken
                                                             ,(Tuple "X-Consumer-ID" getUserId) --getUserId
                                                             ,(Tuple "X-Device-ID" "X-Device-ID")
                                                             ,(Tuple "X-msgid" "8e27cbf5-e299-43b0-bca7-8347f7e5abcf")
@@ -146,24 +140,24 @@ getDummyHeader =
 
 
 
-enrollCourse courseId =
+enrollCourse user_token courseId =
   let requestUrl = "/v1/user/courses/enroll"
-      headers = (generateRequestHeaders)
+      headers = (generateRequestHeaders user_token)
       payload = A.fromObject (StrMap.fromFoldable [ (Tuple "id" (A.fromString "unique API ID"))
                                                    ,(Tuple "ts" (A.fromString "2013/10/15 16:16:39"))
                                                    ,(Tuple "request" (A.fromObject (StrMap.fromFoldable  [ (Tuple "courseId" (A.fromString courseId))
                                                                                                           , (Tuple "courseName" (A.fromString "Teacher Training Course"))
                                                                                                           , (Tuple "description" (A.fromString "course description"))
                                                                                                           , (Tuple "delta" (A.fromString "delta"))
-                                                                                                          , (Tuple "userId" (A.fromString getUserToken))
+                                                                                                          , (Tuple "userId" (A.fromString user_token))
                                                                                                           ])))
                                                    ]) in
  (post requestUrl headers payload)
 
 
-getCoursesPageApi =
+getCoursesPageApi user_token =
   let requestUrl = "/v1/page/assemble"
-      headers = (generateRequestHeaders)
+      headers = (generateRequestHeaders user_token)
       payload = A.fromObject (StrMap.fromFoldable [ (Tuple "id" (A.fromString "unique API ID"))
                                                    , (Tuple "ts" (A.fromString "2013/10/15 16:16:3"))
                                                    , (Tuple "request" (A.fromObject (StrMap.fromFoldable  [ (Tuple "name" (A.fromString "Course"))
@@ -174,19 +168,9 @@ getCoursesPageApi =
                                                    ]) in
   (post requestUrl headers payload) 
 
-getUserEnrolledCourses =
-  let requestUrl = "/v1/user/courses/" <> getUserToken
-      headers = (generateRequestHeaders) in
-  (get requestUrl headers) 
-
-getProfileDetail =
-  let requestUrl = "/v1/user/read/" <> getUserToken
-      headers = (generateRequestHeaders) in
-  (get requestUrl headers) 
-
-getResourcePageApi =
+getResourcePageApi user_token =
   let requestUrl = "/v1/page/assemble"
-      headers = (generateRequestHeaders)
+      headers = (generateRequestHeaders user_token)
       payload = A.fromObject (StrMap.fromFoldable [ (Tuple "id" (A.fromString "unique API ID"))
                                                    , (Tuple "ts" (A.fromString "2013/10/15 16:16:3"))
                                                    , (Tuple "request" (A.fromObject (StrMap.fromFoldable  [ (Tuple "name" (A.fromString "Resources"))
@@ -197,10 +181,21 @@ getResourcePageApi =
                                                    ]) in
   (post requestUrl headers payload) 
 
+getUserEnrolledCourses user_token =
+  let requestUrl = "/v1/user/courses/" <> user_token
+      headers = (generateRequestHeaders user_token) in
+  (get requestUrl headers) 
+
+getProfileDetail user_token =
+  let requestUrl = "/v1/user/read/" <> user_token
+      headers = (generateRequestHeaders user_token) in
+  (get requestUrl headers) 
+
+
 
 userSignup userName email firstName password mobileNumber language  =
   let requestUrl = "/v1/user/create" 
-      headers = (generateRequestHeaders)
+      headers = (getDummyHeader )
       payload = A.fromObject (StrMap.fromFoldable [(Tuple "request" (A.fromObject (StrMap.fromFoldable  [ (Tuple "userName" (A.fromString userName))
                                                                                                           , (Tuple "firstName" (A.fromString firstName))
                                                                                                           , (Tuple "password" (A.fromString password))

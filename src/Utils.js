@@ -239,47 +239,6 @@ exports["callAPI'"] = function(success) {
   };
 };
 
-exports["customCallApi'"] = function(success) {
-  return function(err) {
-    return function(method) {
-      method = method.constructor.name;
-      return function(url) {
-        return function(data) {
-          return function(headers) {
-            console.log("------------------------> REQUEST AT URL :", url)
-            console.log("------------------------> DATA AT URL :", data)
-            console.log("------------------------> REQUEST headers :", headers)
-            headers = headers.map(function(header) {
-              var hdr = {};
-              hdr[header.value0] = header.value1;
-              return hdr;
-            });
-            
-            var callback = callbackMapper.map(function(params) {
-              if (arguments && arguments[0].length >= 3) {
-                success({
-                  status: arguments[0],
-                  response: JSON.parse(arguments[1] || "{}"),
-                  statusCode: arguments[2]
-                })();
-              } else {
-                console.log("Invalid Response from android ", arguments);
-                success({
-                  status: "failed",
-                  response: {},
-                  statusCode: "500"
-                })();
-              }
-            });
-
-            JBridge.callAPI(method, url, btoa(JSON.stringify(data)), btoa(JSON.stringify(headers)), true, callback);
-          };
-        };
-      };
-    };
-  };
-};
-
 exports["checkPermission'"] = function(success) {
   return function(err) {
     var callback = callbackMapper.map(function(params) {
