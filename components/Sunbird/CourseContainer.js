@@ -30,7 +30,7 @@ class CourseContainer extends View {
     var rows = this.props.data.map((item, i) => {
 
       var temp = {
-        imageUrl: (item.appIcon ? item.appIcon : "file://storage/emulated/0/SunbirdTest/content/domain_8808-64dd60d5-94cd-4896-a60e-11897bf69fd6/domain_8808/1461668536884adb212cfde_1465896981928.jpg"),
+        imageUrl: (item.appIcon ? item.appIcon : "ic_action_course"),
         title: item.name,
         actionText: "OPEN",
         footerTitle : "Unrated",

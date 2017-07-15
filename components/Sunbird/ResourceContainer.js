@@ -1,5 +1,3 @@
-
-
 var dom = require("@juspay/mystique-backend").doms.android;
 var Connector = require("@juspay/mystique-backend").connector;
 var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
@@ -36,7 +34,7 @@ class ResourceContainer extends View {
       var footerTitle = item.contentType + size;
 
       var temp = {};
-      temp['imageUrl'] = item.appIcon;
+      temp['imageUrl'] = item.hasOwnProperty("appIcon")?item.appIcon:"ic_action_resource";
       temp['title'] = item.name;
       temp['footerTitle'] = footerTitle;
       temp['footerSubTitle'] = item.contentType;
