@@ -54,7 +54,7 @@ class CommunityComponent extends View {
             hint="Enter your search"
             invert="true"
             hideBack="true"
-            title="Communities"
+            title="Groups"
             onMenuItemClick={this.handleMenuClick}
             menuData={this.menuData}
             onSearch={this.handleSearch}/>
