@@ -554,7 +554,7 @@ class UserScreen extends View {
             id={this.idSet.alreadyHaveAccHolder}
             onClick={this.handleAlreadyHaveAccClick}
             visibility={this.isLoginMode?"gone":"visible"}
-            textFromHtml= "<font color='#007AFF'><a href=''>Already have an Account? Sign in now</a></font>"
+            textFromHtml= {"<font color='#007AFF'><a href=''>"+"Already have an Account? Sign in now"+"</a></font>"}
             style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
 
           <TextView
@@ -565,7 +565,7 @@ class UserScreen extends View {
             id={this.idSet.needAccHolder}
             onClick={this.handleCreateAccountClick}
             visibility={this.isLoginMode?"visible":"gone"}
-            textFromHtml= "<font color='#007AFF'><a href=''>No Account yet? Sign up now</a></font>"
+            textFromHtml= {"<font color='#007AFF'><a href=''>"+"No Account yet? Sign up now"+"</a></font>"}
             style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
          
         </LinearLayout>)

@@ -65,7 +65,7 @@ class HomeScreen extends View {
         select: "0",
         icon: "ic_notebook"
       }, {
-        name: "COMMUNITY",
+        name: "GROUPS",
         select: "0",
         icon: "ic_chat"
       }, {
