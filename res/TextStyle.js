@@ -271,6 +271,11 @@ exports.textStyle = {
     color: Colors.PRIMARY_ACCENT,
     textSize: Font.fontSize.FONT_22,
     fontStyle: Font.fontStyle.BOLD
+  },
+   LOADING_TEXT: {
+    color: Colors.PRIMARY_ACCENT,
+    textSize: Font.fontSize.FONT_18,
+    fontStyle: Font.fontStyle.BOLD
   }
 
 };

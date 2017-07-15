@@ -112,6 +112,8 @@ class HomeScreen extends View {
 
   handleStateChange = (state) => {
     console.log("HANDLE STATE CHANGE HOME SCREEN", state)
+    
+    window.__LoaderDialog.hide();
 
     this.currentPageIndex = isNaN(this.currentPageIndex) ? 0 : this.currentPageIndex;
     var shouldBeModified = false;
@@ -326,6 +328,7 @@ class HomeScreen extends View {
         eventAction = { "tag": "ShowHome", contents: { "name": "Kiran" } };
         break;
       case 1:
+        window.__LoaderDialog.show();
         eventAction = { "tag": "StartCoursePageApi", contents: [] };
         break;
       case 2:
