@@ -255,17 +255,25 @@ class CourseComponent extends View {
   render() {
     this.layout = (
 
-      <LinearLayout
-        root="true"
-        orientation="vertical"
-        width="match_parent"
-        afterRender={this.afterRender}
-        height="match_parent">
+    <RelativeLayout
+      root="true"
+      width="match_parent"
+      height="match_parent">
 
-        {this.getBody()}
-        
+        <LinearLayout
+          root="true"
+          orientation="vertical"
+          width="match_parent"
+          afterRender={this.afterRender}
+          height="match_parent">
 
+          {this.getBody()}
+          
         </LinearLayout>
+       
+       <LoaderDialog/>
+
+      </RelativeLayout>
     )
 
     return this.layout.render();
