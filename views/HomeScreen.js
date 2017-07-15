@@ -44,6 +44,9 @@ class HomeScreen extends View {
       "tabLayoutContainer",
     ]);
 
+    window.__userToken=JBridge.getFromSharedPrefs("user_token");
+    this.userToken=window.__userToken;
+
 
     this.currentPageIndex = 0;
     console.log("CURRENT INDEX", this.currentPageIndex);
@@ -329,20 +332,22 @@ class HomeScreen extends View {
         break;
       case 1:
         window.__LoaderDialog.show();
-        eventAction = { "tag": "StartCoursePageApi", contents: [] };
+        eventAction = { "tag": "StartCoursePageApi", contents: {"user_token":this.userToken} };
         break;
       case 2:
-        eventAction = { "tag": "StartResourcePageApi", contents: [] };
-        //eventAction = { "tag": "StartResourceFlow", contents: [] };
+        window.__LoaderDialog.show();
+        eventAction = { "tag": "StartResourcePageApi", contents: {"user_token":this.userToken} };
+       
         break;
       case 3:
         eventAction = { "tag": "StartCommunityFlow", contents: [] };
         break;
       case 4:
-        eventAction = { "tag": "StartProfileApi", contents: [] };
+        window.__LoaderDialog.show();
+        eventAction = { "tag": "StartProfileApi", contents: {"user_token":this.userToken} };
         break;
       default:
-        eventAction = { "tag": "DummyFlow", contents: [] };
+        eventAction = { "tag": "ShowHome", contents: { "name": "Kiran" } };
         break;
     }
 

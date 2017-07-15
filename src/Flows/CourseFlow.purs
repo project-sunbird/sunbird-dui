@@ -45,7 +45,7 @@ startCourseInfoFlow cDetail= do
 		ShowEnrolledCourse {course:courseDetail} -> startEnrolledCourseFlow courseDetail
 		EnrollCourseApi {user_token:x,reqParams:details} -> do
 			output <- enrollCourse x details
-  			_ <- sendUpdatedState {response : output, responseFor : "EnrollCourse", screen:"asas"} 
+  			_ <- sendUpdatedState {response : output, responseFor : "EnrollCourseApi", screen:"asas"} 
 			pure $ "handled"
 
 		ShowModuleDetails {moduleName:mName,moduleDetails:mDetails}-> startModuleDetailsFlow mName mDetails cDetail

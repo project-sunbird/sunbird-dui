@@ -484,7 +484,7 @@ class UserScreen extends View {
                 height="wrap_content"
                 width="match_parent"
                 hintText="sample@test.com"
-                labelText="E-MAIL IDr"
+                labelText="E-MAIL ID"
                 margin="20,0,24,12"
                 _onChange={this.updateEmail}/>  
            

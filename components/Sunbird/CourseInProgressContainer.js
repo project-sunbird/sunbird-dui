@@ -28,7 +28,7 @@ class CourseInProgressContainer extends View {
 
 
   fetchFromServer = () => {
-    var eventAction = { "tag": "GetEnrolledCourseApi", contents: [] };
+    var eventAction = { "tag": "GetEnrolledCourseApi", contents: {"user_token":window.__userToken} };
     window.__runDuiCallback(eventAction);
   }
 

@@ -241,7 +241,7 @@ class CourseInfoScreen extends View {
 
 
   handleStateChange = (state) => {
-
+    window.__LoaderDialog.hide();
     var status = state.response.status[0];
     var response = JSON.parse(state.response.status[1]);
     var responseCode = state.response.status[2];
@@ -270,7 +270,7 @@ class CourseInfoScreen extends View {
 
     console.log("BEFOR SWITCH", state.responseFor)
     switch (state.responseFor + "") {
-      case "EnrollCourse":
+      case "EnrollCourseApi":
         if (result.response == "SUCCESS") {
           console.log("WELCOME -->>", result.response.firstName);
           JBridge.showSnackBar("Course enrolled")
@@ -300,10 +300,11 @@ class CourseInfoScreen extends View {
     console.log("---->\t", "handleEnrollClick");
 
     var eventAction = {
-      "tag": "EnrollCourse",
-      "contents": { reqParams: this.details.identifier }
+      "tag": "EnrollCourseApi",
+      "contents": { "user_token":window.__userToken,"reqParams": this.details.identifier }
     }
     console.log("IN ENROLLNOW")
+    window.__LoaderDialog.show();
     window.__runDuiCallback(eventAction);
 
 
