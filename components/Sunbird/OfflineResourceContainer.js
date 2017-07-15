@@ -64,14 +64,26 @@ class OfflineResourceContainer extends View {
                      onCardClick = {this.handleCardClick}/>)
       } else {
         return (<LinearLayout
-              width="0"
-              height="0"/>)
+              width="match_parent"
+              height="60">
+                
+
+              </LinearLayout>)
       }
     });
 
+    if(this.jsData.length==0){
+      rows =( <TextView
+                    width="match_parent"
+                    height="50"
+                    gravity="center"
+                    text={"No offline content yet"}
+                    style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>)
+    }
+
     var layout = (<LinearLayout
                     margin="0,0,16,0"
-                    width="wrap_content"
+                    width="match_parent"
                     height="wrap_content">
 
                     {rows}
@@ -104,6 +116,7 @@ class OfflineResourceContainer extends View {
             width="wrap_content"
             height="wrap_content"
             text="VIEW ALL"
+            visibility={(this.props.data == undefined || this.props.data.length == 0)?"gone":"visible"}
             padding="8,8,8,8"
             onClick={this.handleViewAllClick}
             style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
@@ -166,18 +179,18 @@ class OfflineResourceContainer extends View {
           {this.getHeader()}
 
           <HorizontalScrollView
-           width = "wrap_content"
+           width = "match_parent"
            height = "wrap_content"
            scrollBarX="false"
            fillViewport="true">
 
-           <LinearLayout
-            width="match_parent"
-            height="wrap_content">
+              <LinearLayout
+                width="match_parent"
+                height="wrap_content">
 
-           {this.getRows()}
+                 {this.getRows()}
 
-         </LinearLayout>
+              </LinearLayout>
 
 
 

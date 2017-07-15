@@ -23,7 +23,8 @@ class ResourceDetailScreen extends View {
 
     this.setIds([
       'ratingBar',
-      "progressButtonContainer"
+      "progressButtonContainer",
+      "ratingContainer"
     ]);
     this.state = state;
     this.screenName = "ResourceDetailScreen"
@@ -103,8 +104,16 @@ class ResourceDetailScreen extends View {
 
   afterRender = () => {
     this.checkLocalStatus(this.details);
-    JBridge.setRating(this.idSet.ratingBar, "3.3");
 
+    if(this.details && this.details.contentData && this.details.contentData.rating){
+    JBridge.setRating(this.idSet.ratingBar, this.details.contentData.rating);
+    }else{
+      var layout=(<TextView
+          text="Unrated"
+          style={window.__TextStyle.textStyle.HINT.TINY}/>)
+
+        this.replaceChild(this.idSet.ratingContainer,layout.render(),0)    
+    }
   }
 
 
@@ -135,7 +144,7 @@ class ResourceDetailScreen extends View {
         margin="0,4,0,0"
         width="wrap_content"
         height="wrap_content"
-        text={this.details.description}
+        text={this.details.description||this.details.content.contentData.description}
         style={window.__TextStyle.textStyle.CARD.TITLE.REGULAR_BLACK}/>
 
         <TextView
@@ -224,82 +233,82 @@ class ResourceDetailScreen extends View {
         width="match_parent"
         height="wrap_content"
         margin="0,16,0,0"
-        orientation="vertical"
-        >
+        orientation="vertical">
 
-        <LinearLayout
-        width="match_parent"
-        height="wrap_content"
-        
-        >
+          <LinearLayout
+          width="match_parent"
+          height="wrap_content">
 
 
-        <LinearLayout
-        width="80"
-        height="50"
-        cornerRadius="4"
-        background={window.__Colors.PRIMARY_BLACK_66}>
+            <LinearLayout
+            width="80"
+            height="50"
+            cornerRadius="4"
+            background={window.__Colors.PRIMARY_BLACK_66}>
 
-        <ImageView
-        width="80"
-        height="50"
-        circularImageUrl={"4,"+this.details.imageUrl}/>
+                <ImageView
+                width="80"
+                height="50"
+                circularImageUrl={"4,"+this.details.imageUrl}/>
 
-        </LinearLayout>
+            </LinearLayout>
 
-        <TextView
-        width="wrap_content"
-        height="wrap_content"
-        padding="8,0,0,0"
-        style={window.__TextStyle.textStyle.CARD.TITLE.DARK}
-        text={this.details.title}/>
+            <TextView
+            width="wrap_content"
+            height="wrap_content"
+            padding="8,0,0,0"
+            style={window.__TextStyle.textStyle.CARD.TITLE.DARK}
+            text={this.details.title}/>
 
-        </LinearLayout>
+          </LinearLayout>
 
-        <LinearLayout
-        margin="0,12,0,0"
-        width="match_parent"
-        height="wrap_content">
+          <LinearLayout
+          margin="0,12,0,0"
+          width="match_parent"
+          height="wrap_content">
 
-        <TextView
-        width="wrap_content"
-        height="wrap_content"
-        text={this.details.headFooterTitle}
-        style={window.__TextStyle.textStyle.HINT.REGULAR}/>
+            <TextView
+            width="wrap_content"
+            height="wrap_content"
+            text={this.details.headFooterTitle}
+            style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
-        <ViewWidget
-        width="0"
-        weight="1"
-        height="0"/>
+            <ViewWidget
+            width="0"
+            weight="1"
+            height="0"/>
 
-        <TextView
-        width="wrap_content"
-        height="wrap_content"
-        text="1870"
-        style={window.__TextStyle.textStyle.HINT.DULL}/>
+            <TextView
+            width="wrap_content"
+            height="wrap_content"
+            text="1870"
+            style={window.__TextStyle.textStyle.HINT.DULL}/>
 
-        </LinearLayout>
+          </LinearLayout>
 
         <LinearLayout
           margin="0,2,0,0"
           width="match_parent"
           height="wrap_content">
 
-          <RatingBar
-           id = {this.idSet.ratingBar}
-           width="wrap_content"
-           height="wrap_content"/>
+            <LinearLayout
+              id={this.idSet.ratingContainer}>
 
-          <ViewWidget
-            width="0"
-            weight="1"
-            height="0"/>
+              <RatingBar
+               id = {this.idSet.ratingBar}
+               width="wrap_content"
+               height="wrap_content"/>
+            </LinearLayout>     
+            <ViewWidget
+              width="0"
+              weight="1"
+              height="0"/>
 
-          <TextView
-            width="wrap_content"
-            height="wrap_content"
-            text="downloads"
-            style={window.__TextStyle.textStyle.HINT.REGULAR}/>
+            <TextView
+              width="wrap_content"
+              height="wrap_content"
+              text="downloads"
+              style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
         </LinearLayout>
         </LinearLayout>

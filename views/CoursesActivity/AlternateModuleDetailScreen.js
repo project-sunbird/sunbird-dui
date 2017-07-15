@@ -222,11 +222,10 @@ class AlternateModuleDetailScreen extends View {
                   height="wrap_content"
                   margin="0,0,0,12"
                   width="match_parent"
+                  headText={this.module.contentData.description?"Description":undefined}
                   contentText={this.module.contentData.description}
                   />
-
-
-           {this.getLineSeperator()}       
+      
 
         </LinearLayout>)
 
