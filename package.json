@@ -4,13 +4,15 @@
   "private": true,
   "scripts": {
     "compile": "webpack -p --progress --colors --watch",
-    "start": "pulp --then \"webpack-dev-server --inline --watch --hot --content-base dist/ --host  0.0.0.0\" --watch build",
+    "start": "pulp --then 'webpack-dev-server --inline --watch --hot --content    -base dist/ --host  0.0.0.0' --watch build",
     "pulp": "pulp --watch build"
   },
   "dependencies": {
     "babel-plugin-transform-function-source": "^1.0.0",
     "babel-plugin-transform-react-jsx": "^6.24.1",
     "babel-plugin-transform-react-jsx-source": "^6.22.0",
+    "debounce": "^1.0.2",
+    "immu": "^3.0.0",
     "moment": "^2.18.1",
     "nodemon": "^1.11.0",
     "object-assign": "^4.1.1",

@@ -42,11 +42,11 @@ begin = do
 userScreenFlow = do
   action <- ui UserScreen
   case action of
-    LoginApiAction{userName:x,userPass:y} -> do
-      responseData <- userLogin x y
-      --userScreenFlow {state:"tab3"}
-      _ <- sendUpdatedState {response : responseData, responseFor : "LoginApiAction", screen:"asas"} 
-      pure $ "Aborted 3"
+ --   LoginApiAction{userName:x,userPass:y} -> do
+ --     responseData <- userLogin x y
+ --     --userScreenFlow {state:"tab3"}
+ --     _ <- sendUpdatedState {response : responseData, responseFor : "LoginApiAction", screen:"asas"} 
+ --     pure $ "Aborted 3"
     SignUpApiAction{userName:x1,email:x2,firstName:x3,password:x4,mobileNumber:x5,language:x6} -> do
       --liftEff $ log "FOR UN :" <> x <> " PASS :" <> y
       responseData <- userSignup x1 x2 x3 x4 x5 x6
