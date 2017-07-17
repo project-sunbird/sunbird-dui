@@ -240,14 +240,24 @@ class SearchScreen extends View {
 
       JBridge.searchContent(callback, this.filterData, searchText, this.searchType, status);
     }
+    this.showFilter();
   }
 
 
 
   onBackPressed = () => {
      JBridge.hideKeyboard();
-    window.__changePureScriptFlow();
-  
+     window.__changePureScriptFlow();
+  }
+
+  showFilter = () =>{
+     var cmd = "";
+     cmd += _this.set({
+      id: _this.idSet.filterHolder,
+      visibility: "visible"
+     });
+
+    Android.runInUI(cmd, 0);
 
   }
 
@@ -256,16 +266,8 @@ class SearchScreen extends View {
     JBridge.showSnackBar("Loading Search Results Please Wait......")
     this.getSearchList(searchText[0]);
     
-
-    var cmd = "";
-    cmd += _this.set({
-      id: _this.idSet.filterHolder,
-      visibility: "visible"
-    })
-
     if (searchText != "") {
       JBridge.hideKeyboard();
-      Android.runInUI(cmd, 0);
     }
 
   }
