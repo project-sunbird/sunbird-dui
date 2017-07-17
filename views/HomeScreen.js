@@ -138,9 +138,9 @@ class HomeScreen extends View {
     if (status === "failure" || status=="f") {
       JBridge.showSnackBar("INTERNET CONNECTION ISSUE")
       
-      responseData = tmp;
+       responseData=tmp; 
     } else {
-
+      console.log("responseData",responseData);
       responseData = utils.jsonifyData(responseData);
       responseData = JSON.parse(responseData);
 
