@@ -194,7 +194,7 @@ getProfileDetail user_token =
 
 
 userSignup userName email firstName password mobileNumber language  =
-  let requestUrl = "/user/v1/user/create" 
+  let requestUrl = "/user/v1/create" 
       headers = (getDummyHeader )
       payload = A.fromObject (StrMap.fromFoldable [(Tuple "request" (A.fromObject (StrMap.fromFoldable  [ (Tuple "userName" (A.fromString userName))
                                                                                                           , (Tuple "firstName" (A.fromString firstName))
