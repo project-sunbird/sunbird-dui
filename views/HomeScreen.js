@@ -310,7 +310,7 @@ class HomeScreen extends View {
               contentLayout={contentLayout}/>)
 
 
-    this.replaceChild(this.idSet.viewPagerContainer, tmp.render(), 0);
+    this.replaceChild(this.idSet.viewPagerContainer, contentLayout.render(), 0);
 
 
   }

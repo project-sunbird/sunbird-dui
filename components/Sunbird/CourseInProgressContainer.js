@@ -38,10 +38,11 @@ class CourseInProgressContainer extends View {
 
   renderContent = (data) => {
     var emptyBody =(<LinearLayout
+        layoutTransition="true"
         height="match_parent"
         width="match_parent"/>)
     this.replaceChild(this.idSet.parentContainer, emptyBody.render(), 0) 
-
+    //this.removeAllChildren(this.idSet.parentContainer);
     console.log("GOT DATA-->", data);
      data.map((item, index) => {
       this.appendChild(this.idSet.parentContainer,this.getCardLayou(item).render(),index)
@@ -133,15 +134,11 @@ class CourseInProgressContainer extends View {
            <LinearLayout
                     padding="0,0,20,0"
                     id={this.idSet.parentContainer}
+                    layoutTransition="true"
                     width="match_parent"
                     gravity="center"
                     root="true"
                     height="match_parent">
-
-            <ProgressBar
-              id={this.idSet.progressContainer}
-              height="50"
-              width="50"/>
 
          </LinearLayout>
 

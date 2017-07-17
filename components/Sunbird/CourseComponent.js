@@ -24,7 +24,8 @@ class CourseComponent extends View {
     this.setIds([
       "parentContainer",
       "infoContainer",
-      "viewallContainer"
+      "viewallContainer",
+      "fetchingHolder"
     ]);
     _this = this;
 
@@ -38,7 +39,7 @@ class CourseComponent extends View {
       ]
     }
 
-    this.handleResponse();
+
     this.enrolledCourses = []
 
     window.setEnrolledCourses = this.setEnrolledCourses;
@@ -72,54 +73,39 @@ class CourseComponent extends View {
 
 
   handleResponse = () => {
-
-    console.log("response in CC", this.props.response)
-
-    if (this.props.response) {
+      console.log("handleResponse");
+      console.log("SERVER GAVE RESPONSE", this.props.response)     
+      if(this.props.response===undefined) {
+        return;
+      }
       console.log("SERVER GAVE RESPONSE", this.props.response)
       this.details = this.props.response.result.response;
-      if (this.details.hasOwnProperty("name")) {
-
-        var cardsContent = this.details.sections.map((item) => {
-          return (this.getCourseCardLayout(item))
-        })
-        this.cards = (<LinearLayout
-                    height="wrap_content"
-                    width="match_parent"
-                    orientation="vertical"
-                    root="true">
-
-                      {cardsContent}
-
-                    </LinearLayout>)
-      } else {
-        this.cards = (<LinearLayout
-                    height="wrap_content"
-                    width="match_parent"
-                    orientation="vertical"
-                    root="true">
-
-                      
-                      
-                    </LinearLayout>)
-        JBridge.showSnackBar("Error Fetching Data")
+      if (!this.details.hasOwnProperty("name")) {
+        JBridge.showSnackBar("Error Fetching Data");
+        return;
       }
-    } else {
-      console.log("SERVER TOLD NULL")
-      this.cards = (<LinearLayout
-          height="wrap_content"
-          width="match_parent"
-          orientation="vertical"
-          root="true">
 
-            <TextView
-              text="Empty Body"
-              height="100"
-              width="200"
-              gravity="center"/>
-            
-          </LinearLayout>)
-    }
+      if(this.details.sections==undefined && this.details.sections.length==0){
+          JBridge.showSnackBar("Error Fetching Data");
+          return;
+      } 
+
+      Android.runInUI(this.set({
+        id :this.idSet.fetchingHolder,
+        visibility : "gone"
+      }),0);
+      var emptyBody =(<LinearLayout
+                          layoutTransition="true"
+                          height="match_parent"
+                          width="match_parent"/>)
+      this.replaceChild(this.idSet.parentContainer, emptyBody.render(), 0) 
+
+      this.details.sections.map((item,index) => {
+          this.appendChild(this.idSet.parentContainer,this.getCourseCardLayout(item).render(),index);
+      })
+
+
+  
   }
 
 
@@ -180,7 +166,6 @@ class CourseComponent extends View {
       <LinearLayout
         orientation="vertical"
         width="match_parent"
-        id={this.idSet.parentContainer}
         height="match_parent">
 
           <SimpleToolbar
@@ -211,7 +196,23 @@ class CourseComponent extends View {
                     onCourseClick={this.handleUserCoursesClick}/>
                    
 
-                  {this.cards}
+                  <LinearLayout
+                    height="wrap_content"
+                    width="match_parent"
+                    afterRender={this.handleResponse}
+                    id={this.idSet.parentContainer}
+                    layoutTransition="true"
+                    orientation="vertical"
+                    root="true">
+
+                      <TextView
+                        id={this.idSet.fetchingHolder}
+                        text="Fetching .."
+                        height="100"
+                        width="200"
+                        gravity="center"/>
+                      
+                    </LinearLayout>
 
                 </LinearLayout>
 

@@ -19,15 +19,19 @@ class CourseContainer extends View {
     _this = this;
 
     this.setIds([
-      "courseContainer"]);
+      "courseContainer",
+      "parentContainer"]);
   }
 
 
   afterRender = () => {
 
+    
     var rows = this.props.data.map((item, i) => {
       this.appendChild(this.idSet.courseContainer,this.geCardLayout(item).render(),i)
     });
+
+    this.appendChild(this.idSet.parentContainer,this.getHeader().render(),0);
 
   
 
@@ -57,7 +61,7 @@ class CourseContainer extends View {
     return (<LinearLayout
             width="match_parent"
             height="wrap_content"
-            margin="16,16,16,16"
+            padding="16,16,16,16"
             orientation="horizontal">
 
             <TextView
@@ -98,9 +102,11 @@ class CourseContainer extends View {
       height="match_parent"
       width="match_parent"
       background={this.props.transparent?window.__Colors.WHITE_F2:window.__Colors.WHITE}
+      id={this.idSet.parentContainer}
+      root="true"
       orientation="vertical">
 
-      {this.getHeader()}
+      
 
           <HorizontalScrollView
            width = "wrap_content"
