@@ -20,10 +20,13 @@ class CourseInProgressContainer extends View {
     _this = this;
 
     this.setIds([
-      "parentContainer"
+      "parentContainer",
+      "progressContainer"
     ]);
     this.displayName = "course_in_progress_container";
     window.__UpdateUserCourses = this.renderContent;
+
+    this.appendAtPosition=0;
   }
 
 
@@ -34,9 +37,16 @@ class CourseInProgressContainer extends View {
 
 
   renderContent = (data) => {
-    console.log("GOT DATA-->", data);
+    var emptyBody =(<LinearLayout
+        height="match_parent"
+        width="match_parent"/>)
+    this.replaceChild(this.idSet.parentContainer, emptyBody.render(), 0) 
 
-    this.replaceChild(this.idSet.parentContainer, this.getRows(data).render(), 0)
+    console.log("GOT DATA-->", data);
+     data.map((item, index) => {
+      this.appendChild(this.idSet.parentContainer,this.getCardLayou(item).render(),index)
+    });
+    
 
   }
 
@@ -47,12 +57,8 @@ class CourseInProgressContainer extends View {
     else return (bytes / 1073741824).toFixed(3) + " GB";
   };
 
-
-
-  getRows = (data) => {
-    var rows = data.map((item, i) => {
-
-      var temp = {
+  getCardLayou =(item) => {
+     var temp = {
         imageUrl: (item.courseLogoUrl ? item.courseLogoUrl : "file://storage/emulated/0/SunbirdTest/content/domain_8808-64dd60d5-94cd-4896-a60e-11897bf69fd6/domain_8808/1461668536884adb212cfde_1465896981928.jpg"),
         title: item.courseName,
         actionText: "RESUME",
@@ -63,24 +69,9 @@ class CourseInProgressContainer extends View {
 
       return (<CardComponent 
                  data={temp}
-                 index={i}
                  content={item}
                  onCardClick={this.handleCardClick}/>)
-
-    });
-
-
-    var layout = (<LinearLayout
-                    width="wrap_content"
-                    height="wrap_content">
-
-                    {rows}
-
-                  </LinearLayout>);
-    return layout;
-
   }
-
 
 
   getHeader() {
@@ -148,6 +139,7 @@ class CourseInProgressContainer extends View {
                     height="match_parent">
 
             <ProgressBar
+              id={this.idSet.progressContainer}
               height="50"
               width="50"/>
 

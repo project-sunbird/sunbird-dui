@@ -18,20 +18,24 @@ class CourseContainer extends View {
     super(props, children);
     _this = this;
 
-    this.setIds([]);
+    this.setIds([
+      "courseContainer"]);
   }
 
 
   afterRender = () => {
 
+    var rows = this.props.data.map((item, i) => {
+      this.appendChild(this.idSet.courseContainer,this.geCardLayout(item).render(),i)
+    });
+
+  
+
+
   }
 
-  getRows = () => {
-    var rows = this.props.data.map((item, i) => {
-
-      console.log("GET ROWS IN imageUrl",item.appIcon)
-
-      var temp = {
+  geCardLayout = (item) => {
+    var temp = {
         imageUrl: (item.appIcon ? item.appIcon : "ic_action_course"),
         title: item.name,
         actionText: "OPEN",
@@ -42,20 +46,8 @@ class CourseContainer extends View {
 
       return (<CardComponent 
                  data={temp}
-                 index={i}
                  content={item}
                  onCardClick={this.handleCardClick}/>)
-
-    });
-
-    var layout = (<LinearLayout
-                    width="wrap_content"
-                    height="wrap_content">
-
-                    {rows}
-
-                  </LinearLayout>);
-    return layout;
 
   }
 
@@ -119,9 +111,11 @@ class CourseContainer extends View {
            <LinearLayout
                     padding="0,0,16,0"
                     width="match_parent"
+                    id={this.idSet.courseContainer}
+                    afterRender={this.afterRender}
                     height="wrap_content">
 
-           {this.getRows()}
+
 
          </LinearLayout>
 

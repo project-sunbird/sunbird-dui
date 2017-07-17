@@ -114,13 +114,14 @@ class HomeScreen extends View {
   }
 
   handleStateChange = (state) => {
-    //console.log("HANDLE STATE CHANGE HOME SCREEN", state)
+    console.log("HANDLE STATE CHANGE HOME SCREEN", state.response.status)
     
     window.__LoaderDialog.hide();
 
     this.currentPageIndex = isNaN(this.currentPageIndex) ? 0 : this.currentPageIndex;
     var shouldBeModified = false;
     var status = state.response.status[0];
+    console.log("HANDLE STATE CHANGE HOME SCREEN",status)
     var responseData = state.response.status[1];
     var responseCode = state.response.status[2];
     var responseUrl = state.response.status[3];
@@ -134,7 +135,7 @@ class HomeScreen extends View {
           }
         }
       }
-    if ((status + "") == "failure") {
+    if (status === "failure" || status=="f") {
       JBridge.showSnackBar("INTERNET CONNECTION ISSUE")
       
       responseData = tmp;

@@ -237,13 +237,19 @@ exports["callAPI'"] = function(success) {
               }
             });
              setTimeout(function() {
+                console.log("TIMEOUT")
+                if(!shouldReturnCallback){
+                  console.log("TIMEOUT reached")
+                  return;
+                }
+                shouldReturnCallback=false;
                 success({
                   status: "failed",
                   response: {},
-                  statusCode: "500"
+                  statusCode: "504"
                 })();
-              }, 10000);
-            
+              }, 20000);
+            console.log("->","BEGIN TEST")
             JBridge.callAPI(method, url, btoa(JSON.stringify(data)), btoa(JSON.stringify(headers)), true, callback);
           };
         };
