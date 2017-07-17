@@ -55,8 +55,8 @@ foreign import ui' :: forall a c e. (Error -> Eff e Unit) -> (a -> Eff e Unit) -
 
 
 -- getEulerLocation = "https://qa.ekstep.in"
-getEulerLocation = "http://52.172.36.121:9000"
-getApiKey ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkMWE2OTgxOWQ0OTc0YzhiYjRlOTQ4YjMxMjBkYjg0NyJ9.AFu4mPKLuYhclntDjbri_L5FN-rQWXk9dVXhlYO2YcA"
+getEulerLocation1 = "https://dev.open-sunbird.org/api"
+getApiKey ="eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI1MjMwZGU5YjA1Mzg5MWFjZDdkOTg2NGExOWNlNTRjMjE5MTUzM2VlIn0.PCO4-FSczWxCoZXwPOA9SAWo9bMNdhnOsrEoh-nu-zo"
 
 keyCloakRealm = "sunbird"
 keyCloakClientId ="android"
@@ -88,11 +88,11 @@ foreign import readFromMemory :: String -> String
 sendUpdatedState state = sendUpdatedState' state
 
 get path headers =
-  makeAff(\error success -> callAPI' success error GET ((getEulerLocation) <> path) (A.jsonEmptyObject) headers')
+  makeAff(\error success -> callAPI' success error GET ((getEulerLocation1) <> path) (A.jsonEmptyObject) headers')
   where headers' = cons (RequestHeader "Content-Type" "application/json") headers
 
 post path headers body =
-  makeAff(\error success -> callAPI' success error POST ((getEulerLocation) <> path) body headers')
+  makeAff(\error success -> callAPI' success error POST ((getEulerLocation1) <> path) body headers')
   where headers' = cons (RequestHeader "Content-Type" "application/json") headers
 
 
@@ -141,7 +141,7 @@ getDummyHeader =
 
 
 enrollCourse user_token courseId =
-  let requestUrl = "/v1/user/courses/enroll"
+  let requestUrl = "/course/v1/enroll"
       headers = (generateRequestHeaders user_token)
       payload = A.fromObject (StrMap.fromFoldable [ (Tuple "id" (A.fromString "unique API ID"))
                                                    ,(Tuple "ts" (A.fromString "2013/10/15 16:16:39"))
@@ -156,7 +156,7 @@ enrollCourse user_token courseId =
 
 
 getCoursesPageApi user_token =
-  let requestUrl = "/v1/page/assemble"
+  let requestUrl = "/data/v1/page/assemble"
       headers = (generateRequestHeaders user_token)
       payload = A.fromObject (StrMap.fromFoldable [ (Tuple "id" (A.fromString "unique API ID"))
                                                    , (Tuple "ts" (A.fromString "2013/10/15 16:16:3"))
@@ -169,7 +169,7 @@ getCoursesPageApi user_token =
   (post requestUrl headers payload) 
 
 getResourcePageApi user_token =
-  let requestUrl = "/v1/page/assemble"
+  let requestUrl = "/data/v1/page/assemble"
       headers = (generateRequestHeaders user_token)
       payload = A.fromObject (StrMap.fromFoldable [ (Tuple "id" (A.fromString "unique API ID"))
                                                    , (Tuple "ts" (A.fromString "2013/10/15 16:16:3"))
@@ -182,19 +182,19 @@ getResourcePageApi user_token =
   (post requestUrl headers payload) 
 
 getUserEnrolledCourses user_token =
-  let requestUrl = "/v1/user/courses/" <> user_token
+  let requestUrl = "/course/v1/user/enrollment/list/" <> user_token
       headers = (generateRequestHeaders user_token) in
   (get requestUrl headers) 
 
 getProfileDetail user_token =
-  let requestUrl = "/v1/user/read/" <> user_token
+  let requestUrl = "/user/v1/read/" <> user_token
       headers = (generateRequestHeaders user_token) in
   (get requestUrl headers) 
 
 
 
 userSignup userName email firstName password mobileNumber language  =
-  let requestUrl = "/v1/user/create" 
+  let requestUrl = "/user/v1/user/create" 
       headers = (getDummyHeader )
       payload = A.fromObject (StrMap.fromFoldable [(Tuple "request" (A.fromObject (StrMap.fromFoldable  [ (Tuple "userName" (A.fromString userName))
                                                                                                           , (Tuple "firstName" (A.fromString firstName))
