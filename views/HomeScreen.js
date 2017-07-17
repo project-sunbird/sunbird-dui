@@ -36,7 +36,7 @@ class HomeScreen extends View {
     super(props, children, state);
     this.state = state;
 
-    this.handleBottomNavBarAction = debounce(this.handleBottomNavBarAction, 200);
+    this.handleBottomNavBarAction = debounce(this.handleBottomNavBarAction, 50);
     //TODO : REVERT THIS LOGIC
 
     this.setIds([

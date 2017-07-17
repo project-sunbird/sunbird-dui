@@ -80,7 +80,6 @@ class UserScreen extends View {
     }catch(e){
      console.log(e.message)
      JBridge.showSnackBar("Invalid credential")
-
    }
 
 
@@ -107,13 +106,15 @@ class UserScreen extends View {
 
 
   handleStateChange = (state) => {
-    window.__LoaderDialog.show()
-
+    window.__LoaderDialog.hide();
     var status = state.response.status[0];
     var response = JSON.parse(state.response.status[1]);
     var responseCode = state.response.status[2];
     var responseUrl = state.response.status[3];
-
+    if (status === "failure" || status=="f") {
+      JBridge.showSnackBar("INTERNET CONNECTION ISSUE")
+      return;
+    }
     if (parseInt(responseCode) != 200) {
       console.log("INVALID FORMAT")
       return;
