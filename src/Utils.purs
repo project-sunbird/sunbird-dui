@@ -141,7 +141,7 @@ getDummyHeader =
 
 
 enrollCourse user_token courseId =
-  let requestUrl = "/v1/user/courses/enroll"
+  let requestUrl = "/course/v1/enroll"
       headers = (generateRequestHeaders user_token)
       payload = A.fromObject (StrMap.fromFoldable [ (Tuple "id" (A.fromString "unique API ID"))
                                                    ,(Tuple "ts" (A.fromString "2013/10/15 16:16:39"))
@@ -187,7 +187,7 @@ getUserEnrolledCourses user_token =
   (get requestUrl headers) 
 
 getProfileDetail user_token =
-  let requestUrl = "/v1/read/" <> user_token
+  let requestUrl = "/user/v1/read/" <> user_token
       headers = (generateRequestHeaders user_token) in
   (get requestUrl headers) 
 
