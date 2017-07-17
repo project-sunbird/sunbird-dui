@@ -247,7 +247,7 @@ exports["callAPI'"] = function(success) {
                   response: {},
                   statusCode: "504"
                 })();
-              }, 15000);
+              }, 10000);
             console.log("->","BEGIN TEST")
             JBridge.callAPI(method, url, btoa(JSON.stringify(data)), btoa(JSON.stringify(headers)), true, callback);
           };
