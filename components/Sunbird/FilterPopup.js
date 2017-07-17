@@ -54,8 +54,6 @@ class FilterPopup extends View {
 
 
   getFeatureButton = () => {
-    var isClickable = (this.getSelectedCount() > 0) ? "true" : "false";
-    var color = isClickable == "true" ? window.__Colors.PRIMARY_ACCENT : window.__Colors.PRIMARY_BLACK_22;
     return (<LinearLayout
                   width = "match_parent"
                   orientation="vertical"
@@ -68,11 +66,11 @@ class FilterPopup extends View {
                   gravity = "center">
                   <FeatureButton
                     typeface = "bold"
-                    clickable={isClickable}
+                    clickable="true"
                     width = "match_parent"
                     height = "56"
                     stroke = {"3," + window.__Colors.WHITE}
-                    background = {color}
+                    background = {window.__Colors.PRIMARY_ACCENT}
                     text = {"Confirm"}
                     buttonClick = {this.onConfirm}
                     textColor = {window.__Colors.WHITE}
