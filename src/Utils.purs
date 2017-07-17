@@ -56,7 +56,7 @@ foreign import ui' :: forall a c e. (Error -> Eff e Unit) -> (a -> Eff e Unit) -
 
 -- getEulerLocation = "https://qa.ekstep.in"
 getEulerLocation1 = "https://dev.open-sunbird.org/api"
-getApiKey ="eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI1MjMwZGU5YjA1Mzg5MWFjZDdkOTg2NGExOWNlNTRjMjE5MTUzM2VlIn0.PCO4-FSczWxCoZXwPOA9SAWo9bMNdhnOsrEoh-nu-zo"
+getApiKey ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkMTc1MDIwNDdlODc0ODZjOTM0ZDQ1ODdlYTQ4MmM3MyJ9.7LWocwCn5rrCScFQYOne8_Op2EOo-xTCK5JCFarHKSs"
 
 keyCloakRealm = "sunbird"
 keyCloakClientId ="android"
