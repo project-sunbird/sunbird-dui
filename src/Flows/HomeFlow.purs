@@ -32,7 +32,7 @@ startHomeSearchFlow values = do
   case event of
     ResourceDetailFlow {resourceDetails : details} -> startResourceDetailFlow details "HomeSearch" values
     CourseInfoFlow {course : details} -> startCourseInfoFlow details 
-    SearchResourceFlow {course : details} -> startCourseInfoFlow details
+    SearchResourceFlow {course : details} -> startEnrolledCourseFlow details
     StartFilterFlow{filterDetails : details} -> startFilterFlow details 
     _ -> pure $ "aborted"
 
