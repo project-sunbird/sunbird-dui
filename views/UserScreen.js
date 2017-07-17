@@ -293,7 +293,7 @@ class UserScreen extends View {
       }
 
     if (this.firstName.length <= 0) {
-      JBridge.showSnackBar("Firsr Name can't be empty");
+      JBridge.showSnackBar("First Name can't be empty");
       return;
     } else if (this.userName.length <= 0) {
       JBridge.showSnackBar("User Name can't be empty");
@@ -357,6 +357,11 @@ class UserScreen extends View {
 
   }
 
+  handleForgotPasscode = ()=>{
+      JBridge.showSnackBar("Yet to be added. Don't forget password until then");
+
+  }
+
 
 
 
@@ -400,6 +405,7 @@ class UserScreen extends View {
             <LinearLayout
               height="wrap_content"
               width="0"
+              onClick={this.handleForgotPasscode}
               weight="1">
                 <TextView
                   height="wrap_content"
