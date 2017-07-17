@@ -63,7 +63,7 @@ class FilterItem extends View {
     this.content.values = this.filterList;
     var cmd = this.set({
       id: this.idSet.filterCount,
-      text: this.getSelectedCount(newList) + " added"
+      text: (this.getSelectedCount(newList)!=0?this.getSelectedCount(newList) + " added":"")
     });
 
     Android.runInUI(cmd, null);
