@@ -359,7 +359,6 @@ class UserScreen extends View {
 
   handleForgotPasscode = ()=>{
       JBridge.showSnackBar("Yet to be added. Don't forget password until then");
-
   }
 
 
