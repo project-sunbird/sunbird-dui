@@ -37,6 +37,7 @@ class SplashScreen extends View {
 
     JBridge.getUserToken(callback);
 
+    
   }
 
   afterRender = () => {

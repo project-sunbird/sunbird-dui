@@ -59,7 +59,7 @@ class ResourceDetailScreen extends View {
   }
 
   checkLocalStatus = (data) => {
-
+    console.log("hewllo in lc RC");
     var callback = callbackMapper.map(function(params) {
       console.log("params in RC", params);
 
@@ -344,7 +344,6 @@ class ResourceDetailScreen extends View {
         root = "true"
         background={window.__Colors.WHITE}
         orientation="vertical"
-        afterRender={this.afterRender}
         width="match_parent"
         height="match_parent">
         <SimpleToolbar
