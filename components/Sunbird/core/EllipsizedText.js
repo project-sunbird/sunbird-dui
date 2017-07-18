@@ -29,7 +29,7 @@ class EllipsizedText extends View {
   afterRender = () =>{
 
    var text=this.props.text;
-   var shortenedText = text.substring(0,this.props.numChar) + "...";
+   var shortenedText = text.substring(0,parseInt(this.props.numChar)) + "...";
 
    console.log("SHORTENED TEXT",shortenedText);
 
@@ -43,13 +43,11 @@ class EllipsizedText extends View {
   }
 
 
-
-
   render() {
     this.layout = (
       <LinearLayout
-          height="wrap_content"
-          width="match_parent"
+          width={this.props.width?this.props.width:"wrap_content"}
+          height={this.props.height?this.props.height:"wrap_content"}
           visibility={this.props.visibility?this.props.visibility:"gone"}
           afterRender={this.afterRender}
           orientation="vertical">

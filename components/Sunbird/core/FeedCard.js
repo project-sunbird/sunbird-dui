@@ -317,7 +317,7 @@ class FeedCard extends View {
                 width="wrap_content"
                 height="wrap_content"
                 margin="0,18,0,0"
-                spanText={this.feedData.answer}
+                text={this.feedData.answer}
                 style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>
 
              <LinearLayout

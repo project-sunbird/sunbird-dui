@@ -11,7 +11,6 @@ var Button = require('../../Sunbird/Button');
 var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 var StarComponent = require('../../Sunbird/StarComponent');
-var EllipsizedText = require('../../Sunbird/core/EllipsizedText');
 var _this;
 
 
@@ -19,8 +18,6 @@ class CardComponent extends View {
   constructor(props, children) {
     super(props, children);
     _this = this;
-
-    console.log("IN CARDCOMPONENT \n\n\n\n\n IN CARDCOMPONENT")
 
     this.setIds([
       "leftProgress",
@@ -89,21 +86,14 @@ class CardComponent extends View {
 
               </LinearLayout>
 
-              <LinearLayout
-              width="200"
-              height="wrap_content"
-              alignParentBottom="true,-1">
-
-              <EllipsizedText
+              <TextView
                 width="200"
                 height="wrap_content"
                 padding = "10,10,10,10"
+                alignParentBottom="true,-1"
                 text= {this.props.data.title}
                 letterSpacing="0.05"
                 style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}/>
-
-
-              </LinearLayout>
 
               <TextView
                 width="wrap_content"
