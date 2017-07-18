@@ -56,6 +56,7 @@ foreign import ui' :: forall a c e. (Error -> Eff e Unit) -> (a -> Eff e Unit) -
 
 -- getEulerLocation = "https://qa.ekstep.in"
 getEulerLocation1 = "https://dev.open-sunbird.org/api"
+--getEulerLocation1 = "http://52.172.36.121:9000"
 getApiKey ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkMTc1MDIwNDdlODc0ODZjOTM0ZDQ1ODdlYTQ4MmM3MyJ9.7LWocwCn5rrCScFQYOne8_Op2EOo-xTCK5JCFarHKSs"
 
 keyCloakRealm = "sunbird"

@@ -219,9 +219,7 @@ exports["callAPI'"] = function(success) {
                   console.log("TIMEOUT reached")
                   return;
                 }
-            
-              console.log(arguments[1])
-            console.log("RESPONSE FROM android :", JSON.parse(arguments[1] || "{}"))
+               console.log("GOT -> from droid :",params) 
               if (arguments && arguments[0].length >= 3 && shouldReturnCallback) {
                 shouldReturnCallback=false;
                 success({
