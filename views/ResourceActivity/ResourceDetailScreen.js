@@ -85,6 +85,7 @@ class ResourceDetailScreen extends View {
                  identifier = {_this.details.identifier}/>
         _this.replaceChild(_this.idSet.progressButtonContainer, pButonLayout.render(), 0);
 
+
       }
 
 
