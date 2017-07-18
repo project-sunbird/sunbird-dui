@@ -78,6 +78,8 @@ class HomeScreen extends View {
       }
 
     ]
+    this.apiToken = window.__apiToken;
+    console.log("api token",window.__apiToken)
   }
 
   onPop = () => {
@@ -326,20 +328,20 @@ class HomeScreen extends View {
         eventAction = { "tag": "ShowHome", contents: { "name": "Kiran" } };
         break;
       case 1:
-        window.__LoaderDialog.show();
-        eventAction = { "tag": "StartCoursePageApi", contents: {"user_token":this.userToken,"api_token": ""} };
+        // window.__LoaderDialog.show();
+        eventAction = { "tag": "StartCoursePageApi", contents: {"user_token":this.userToken,"api_token": window.__apiToken} };
         break;
       case 2:
-        window.__LoaderDialog.show();
-        eventAction = { "tag": "StartResourcePageApi", contents: {"user_token":this.userToken,"api_token": ""} };
+        // window.__LoaderDialog.show();
+        eventAction = { "tag": "StartResourcePageApi", contents: {"user_token":this.userToken,"api_token": window.__apiToken} };
        
         break;
       case 3:
         eventAction = { "tag": "StartCommunityFlow", contents: [] };
         break;
       case 4:
-        window.__LoaderDialog.show();
-        eventAction = { "tag": "StartProfileApi", contents: {"user_token":this.userToken,"api_token": ""} };
+        // window.__LoaderDialog.show();
+        eventAction = { "tag": "StartProfileApi", contents: {"user_token":this.userToken,"api_token": window.__apiToken} };
         break;
       default:
         eventAction = { "tag": "ShowHome", contents: { "name": "Kiran" } };

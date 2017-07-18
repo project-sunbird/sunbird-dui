@@ -70,7 +70,7 @@ class ResourceDetailScreen extends View {
                  width="match_parent"
                  isCourse = "false"
                  contentDetail = {_this.details.content}
-                 buttonText="DOWNLOAD THIS RESOURCE"
+                 buttonText="PLAY"
                  localStatus = {_this.localStatus}
                  identifier = {_this.details.identifier}/>
         _this.replaceChild(_this.idSet.progressButtonContainer, pButonLayout.render(), 0);
@@ -343,10 +343,10 @@ class ResourceDetailScreen extends View {
         root = "true"
         background={window.__Colors.WHITE}
         orientation="vertical"
+        afterRender={this.afterRender}
         width="match_parent"
         height="match_parent">
         <SimpleToolbar
-          afterRender={this.afterRender}
           width="match_parent"
           menuData={this.menuData}
           menuCallback={this.menuCallback}
