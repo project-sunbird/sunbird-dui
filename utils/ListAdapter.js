@@ -1,0 +1,148 @@
+var dom = require("@juspay/mystique-backend").doms.android;
+var Connector = require("@juspay/mystique-backend").connector;
+var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
+var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
+var TextView = require("@juspay/mystique-backend").androidViews.TextView;
+
+var Space = require('@juspay/mystique-backend').androidViews.Space;
+var _this;
+
+var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
+var HorizontalScrollView = require("@juspay/mystique-backend").androidViews.HorizontalScrollView;
+
+const filterParams = require('../FilterParams');
+
+
+/*
+Created By : Amit Rohan
+How to use 
+Import the class
+
+
+list : list of items
+_getCardLayout : a function that returns layout based on item ( input -> variable, output design based input with text and all)
+scrollDirection=  ( 1 : vertical , 0 : horizontal , default : horizontal)
+
+ <ListAdapter
+    height="300"
+    width="300"
+    list={this.list1}
+    scrollDirection="1"
+    _getCardLayout={this.getCardDesign}/>
+
+
+
+
+
+*/
+
+class ListAdapter extends View {
+  constructor(props, children,state) {
+    super(props, children,state);
+
+   this.setIds([
+      "childContainer",
+      "parentContainer"]);
+  
+   
+   this.scrollDirection= (this.props.scrollDirection==undefined)? "0": this.props.scrollDirection;
+
+
+    
+
+  }
+
+  getHorizintalList = ()=>{
+    return (
+      
+          <HorizontalScrollView
+           width = "match_parent"
+           height = "wrap_content"
+           scrollBarX="false"
+           fillViewport="true">
+
+           <LinearLayout
+                    padding="0,0,16,0"
+                    width="match_parent"
+                    id={this.idSet.parentContainer}
+                    layoutTransition="true"
+                    height="wrap_content">
+
+
+
+         </LinearLayout>
+
+
+
+          </HorizontalScrollView>)
+  }
+
+
+  getVerticalList = ()=>{
+    return (
+      
+          <ScrollView
+           width = "match_parent"
+           height = "wrap_content"
+           scrollBarX="false"
+           fillViewport="true">
+
+           <LinearLayout
+                    padding="0,0,16,0"
+                    width="match_parent"
+                    id={this.idSet.parentContainer}
+                    layoutTransition="true"
+                    orientation="vertical"
+                    height="wrap_content">
+
+
+
+         </LinearLayout>
+
+
+
+          </ScrollView>)
+  }
+
+
+  getCardItem = (item) => {
+    if(this.props._getCardItem)
+      return this.props._getCardItem;
+
+    return (<TextView 
+        height="50"
+        width="50"
+        text={item || "Dummy"} />)
+  }
+
+
+
+  loadList = () => {
+
+    this.props.list.map((item,index)=>{
+      console.log("RENDERING",item)
+      this.appendChild(this.idSet.parentContainer,this.getCardItem(item).render(),index);
+    })
+  }
+
+
+  render() {
+
+    var scrollLayout=(this.scrollDirection==0)?this.getHorizintalList():this.getVerticalList();
+    this.layout = (
+     <LinearLayout
+      width={this.props.height || "match_parent" }
+      height={this.props.width || "match_parent" }
+      afterRender={this.loadList}
+      root="true">
+
+      {scrollLayout}
+
+     </LinearLayout> 
+
+    )
+    return this.layout.render();
+  }
+}
+
+module.exports = ListAdapter;
