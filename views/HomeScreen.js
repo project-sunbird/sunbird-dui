@@ -46,8 +46,6 @@ class HomeScreen extends View {
 
     //window.__userToken=JBridge.getFromSharedPrefs("user_token");
     this.userToken=window.__userToken;
-
-
     this.currentPageIndex = 0;
     console.log("CURRENT INDEX", this.currentPageIndex);
 
@@ -154,15 +152,11 @@ class HomeScreen extends View {
         //return;
     }
 
-
-
-
     if (responseData.params.err) {
       console.log("EROR MESSAGE :", response.params.errmsg)
       JBridge.showSnackBar("ERROR MESSAGE ->" + response.params.errmsg)
       return;
     }
-
 
     if (state.responseFor == "GetEnrolledCourseApi") {
       //CourseInProgressContainer of CourseScreen gets upated
@@ -333,11 +327,11 @@ class HomeScreen extends View {
         break;
       case 1:
         window.__LoaderDialog.show();
-        eventAction = { "tag": "StartCoursePageApi", contents: {"user_token":this.userToken} };
+        eventAction = { "tag": "StartCoursePageApi", contents: {"user_token":this.userToken,"api_token": ""} };
         break;
       case 2:
         window.__LoaderDialog.show();
-        eventAction = { "tag": "StartResourcePageApi", contents: {"user_token":this.userToken} };
+        eventAction = { "tag": "StartResourcePageApi", contents: {"user_token":this.userToken,"api_token": ""} };
        
         break;
       case 3:
@@ -345,7 +339,7 @@ class HomeScreen extends View {
         break;
       case 4:
         window.__LoaderDialog.show();
-        eventAction = { "tag": "StartProfileApi", contents: {"user_token":this.userToken} };
+        eventAction = { "tag": "StartProfileApi", contents: {"user_token":this.userToken,"api_token": ""} };
         break;
       default:
         eventAction = { "tag": "ShowHome", contents: { "name": "Kiran" } };

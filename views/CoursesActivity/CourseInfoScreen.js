@@ -301,7 +301,7 @@ class CourseInfoScreen extends View {
 
     var eventAction = {
       "tag": "EnrollCourseApi",
-      "contents": { "user_token":window.__userToken,"reqParams": this.details.identifier }
+      "contents": { "user_token":window.__userToken,"reqParams": this.details.identifier,"api_token": "" }
     }
     console.log("IN ENROLLNOW")
     window.__LoaderDialog.show();

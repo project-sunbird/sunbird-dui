@@ -70,19 +70,19 @@ cFlow = do
     StartCommunityFlow -> startCommunityFlow action
     StartProfileFlow -> startProfileFlow action
     StartNotificationFlow -> startNotificationFlow action
-    StartCoursePageApi {user_token:x}-> do
+    StartCoursePageApi {user_token:x,api_token:y}-> do
                   liftEff $ log $ "START COURSE PAGE API"
-                  responseData <- getCoursesPageApi x
+                  responseData <- getCoursesPageApi x y
                   _ <- sendUpdatedState {response : responseData, responseFor : "StartCoursePageApi", screen:"asas"} 
                   pure $ "handled"
-    StartResourcePageApi {user_token:x}-> do
+    StartResourcePageApi {user_token:x,api_token:y}-> do
                   liftEff $ log $ "START RESOURCE PAGE API"
-                  responseData <- getResourcePageApi x
+                  responseData <- getResourcePageApi x y
                   _ <- sendUpdatedState {response : responseData, responseFor : "StartResourcePageApi", screen:"asas"}
                   pure $ "handled"
-    StartProfileApi {user_token:x}-> do
+    StartProfileApi {user_token:x,api_token:y}-> do
                   liftEff $ log $ "START RESOURCE PAGE API"
-                  responseData <- getProfileDetail x
+                  responseData <- getProfileDetail x y
                   _ <- sendUpdatedState {response : responseData, responseFor : "StartProfileApi", screen:"asas"}
                   pure $ "handled" 
                     

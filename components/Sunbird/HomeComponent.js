@@ -34,6 +34,7 @@ class HomeComponent extends View {
         { imageUrl: "ic_action_search" },
       ]
     }
+    JBridge.getUserToken();
 
     this.recommendedServerData = {
       "display": {
