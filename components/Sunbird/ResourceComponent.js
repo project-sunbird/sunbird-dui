@@ -260,16 +260,15 @@ handleResourceViewAllClick= (data,title) =>{
       _this.data = JSON.parse(params);
       console.log("OFFLINE RESOURCE CONTENT ",_this.data);
 
-      if(_this.data != ""){
          var layout = (<OfflineResourceContainer
                        onResourceOpenClick = {_this.handleResourceOpen}
                        data = {_this.data}
                        title="Saved Resources"
+                       isViewAllExist={_this.data != ""?"true":"false"}
                        onViewAllClick = {_this.handleResourceViewAllClick}/>)
 
         _this.replaceChild(_this.idSet.offlineContainer,layout.render(),0);            
 
-      }
 
     });
 

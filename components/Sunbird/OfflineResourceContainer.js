@@ -67,7 +67,7 @@ class OfflineResourceContainer extends View {
         return (<LinearLayout
               width="match_parent"
               height="60">
-                
+
 
               </LinearLayout>)
       }
@@ -75,16 +75,11 @@ class OfflineResourceContainer extends View {
 
     if(this.offlineCount==0){
       rows =( <TextView
-                    width="match_parent"
-                    height="50"
-                    gravity="center"
-                    text={"No offline resource yet"}
-                    style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>)
-                      Android.runInUI(this.set({
-                          id:this.idSet.viewAllContainer,
-                          visibility : "gone"
-                        }),0);
-      
+              width="match_parent"
+              height="50"
+              gravity="center"
+              text={"No offline resource yet"}
+              style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>)
     }
 
     var layout = (<LinearLayout
@@ -122,6 +117,7 @@ class OfflineResourceContainer extends View {
             width="wrap_content"
             height="wrap_content"
             text="VIEW ALL"
+            visibility={this.props.isViewAllExist=="true"?"visible":"gone"}
             id={this.idSet.viewAllContainer}
             padding="8,8,8,8"
             onClick={this.handleViewAllClick}

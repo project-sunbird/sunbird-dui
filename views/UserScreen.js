@@ -514,7 +514,7 @@ class UserScreen extends View {
                 height="wrap_content"
                 width="match_parent"
                 hintText="Enter user name"
-                labelText="User Name"
+                labelText="USER NAME"
                 margin="20,0,24,12"
                 _onChange={this.updateUserName}/>
 
@@ -535,7 +535,7 @@ class UserScreen extends View {
 
               <TextInputView
                 hintText="Enter mobile number"
-                labelText="Mobile Number"
+                labelText="MOBILE NUMBER"
                 margin="20,0,24,12"
                 inputType="numeric"
                 _onChange={this.updateMobileNumber}/>  
