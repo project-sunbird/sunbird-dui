@@ -66,7 +66,7 @@ class OfflineResourceContainer extends View {
       } else {
         return (<LinearLayout
               width="match_parent"
-              height="60">
+              height="wrap_content">
 
 
               </LinearLayout>)
