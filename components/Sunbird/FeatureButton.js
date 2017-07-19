@@ -43,7 +43,7 @@ class FeatureButton extends View {
         margin={this.props.margin||"0,0,0,0"}
         stroke={this.props.stroke||"3,"+this.props.background||"1,#000000"}
         background={this.props.background||"#FFFFFF"}
-        onClick={this.buttonFunction}
+        
         visibility={this.props.visibility||"visible"}
         gravity="center">
         <TextView
@@ -51,6 +51,7 @@ class FeatureButton extends View {
           typeface={this.props.typeface||"normal"}
           text={this.props.text||"CONFIRM"}
           margin="8,0,8,0"
+          onClick={this.buttonFunction}
           width="match_parent"
           height="match_parent"
           gravity="center"

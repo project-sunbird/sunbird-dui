@@ -25,21 +25,30 @@ class FilterItem extends View {
 
     ]);
     this.content = this.props.data;
+    console.log(this.content)
 
+    this.selectedList=[];
     this.filterList = this.content.values;
     this.filterLable = this.content.name;
 
-
+    this.isForPageApi= this.props.forPage ? this.props.forPage:false;
     console.log("FITLER ITEM PARAMA", this.content);
+  
   }
 
 
   handleClick = () => {
 
-    console.log("SHOWING POPUP")
+    console.log("SHOWING POPUP",this.isForPageApi)
     console.log("FOR ", this.filterList);
+    if(this.isForPageApi){
+        window.__PageFilterChooser.setContent(this.filterList,this.handleSelection,this.selectedList);
+        window.__PageFilterChooser.show();
+    }else{
     window.__FilterPopup.setContent(this.filterList, this.handleSelection)
     window.__FilterPopup.show()
+      
+    }
   }
 
 
@@ -56,18 +65,31 @@ class FilterItem extends View {
 
   handleSelection = (newList) => {
     console.log("handleSelection", newList)
-    console.log("seected Length", this.getSelectedCount(newList))
+    if(this.isForPageApi){
+      this.selectedList=newList;
+      this.props.onUpdate(this.filterLable,this.selectedList)
+      var cmd = this.set({
+          id: this.idSet.filterCount,
+          text: (newList.length > 0 ? newList.length + " added":"")
+        });
 
-    window.__FilterPopup.hide()
-    this.filterList = newList;
-    this.content.values = this.filterList;
-    var cmd = this.set({
-      id: this.idSet.filterCount,
-      text: (this.getSelectedCount(newList)!=0?this.getSelectedCount(newList) + " added":"")
-    });
+      Android.runInUI(cmd, null);
 
-    Android.runInUI(cmd, null);
-    this.props.onUpdate(this.content)
+    }else{
+      console.log("seected Length", this.getSelectedCount(newList))
+      window.__FilterPopup.hide()
+      this.filterList = newList;
+      this.content.values = this.filterList;
+      this.props.onUpdate(this.content)
+      var cmd = this.set({
+          id: this.idSet.filterCount,
+          text: (this.getSelectedCount(newList)!=0?this.getSelectedCount(newList) + " added":"")
+        });
+
+      Android.runInUI(cmd, null);
+    }  
+   
+    
 
   }
 

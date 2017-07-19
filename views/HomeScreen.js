@@ -20,6 +20,7 @@ var CommunityComponent = require('../components/Sunbird/CommunityComponent');
 var ProfileComponent = require('../components/Sunbird/ProfileComponent');
 
 var ContentLoadingComponent = require('../components/Sunbird/ContentLoadingComponent');
+
 var FilterComponent = require('../components/Sunbird/FilterComponent');
 var CourseComponent = require('../components/Sunbird/CourseComponent');
 var FeedParams = require('../FeedParams');
@@ -375,6 +376,8 @@ class HomeScreen extends View {
         window.__BottomNavBar.handleNavigationChange(this.currentPageIndex);
         this.setupDuiCallback();
 
+  
+
   }
 
 
@@ -395,6 +398,7 @@ class HomeScreen extends View {
         root="true"
         orientation="vertical"
         width="match_parent"
+        clickable="true"
         background={window.__Colors.WHITE}
         afterRender = {this.afterRender}
         height="match_parent">

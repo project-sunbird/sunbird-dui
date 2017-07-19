@@ -15,6 +15,7 @@ var Font = require("../res/Font");
 var objectAssign = require('object-assign');
 
 var LoaderDialog = require('../components/Sunbird/core/LoaderDialog');
+var PageFilterPopup = require('../components/Sunbird/PageFilterPopup');
 
 
 class RootScreen extends View {
@@ -79,6 +80,7 @@ class RootScreen extends View {
 
         </LinearLayout>
         <LoaderDialog/>
+        <PageFilterPopup/>
       </RelativeLayout>
     );
 
