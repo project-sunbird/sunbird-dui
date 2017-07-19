@@ -330,7 +330,7 @@ class ResourceDetailScreen extends View {
 
 
   onBackPressed = () => {
-    var eventAction = { "tag": "ResourceDetailaBack", contents: [] };
+    var eventAction = { "tag": "ResourceDetailBack", contents: [] };
     window.__runDuiCallback(eventAction);
   }
 

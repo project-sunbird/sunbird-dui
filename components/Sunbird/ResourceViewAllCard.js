@@ -11,7 +11,6 @@ var RatingBar = require("@juspay/mystique-backend").androidViews.RatingBar;
 var Button = require('../Sunbird/Button');
 var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
-var StarComponent = require('../Sunbird/StarComponent');
 var _this;
 
 
@@ -156,6 +155,7 @@ class ResourceViewAllCard extends View {
                     width="wrap_content"
                     height="wrap_content"
                     text={this.props.data.name}
+                    enableEllipse="true"
                     margin = "12,9,12,0"
                     style={window.__TextStyle.textStyle.CARD.HEADING}/>
 

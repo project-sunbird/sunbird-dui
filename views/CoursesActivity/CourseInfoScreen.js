@@ -37,8 +37,7 @@ class CourseInfoScreen extends View {
       // window.__RootScreen.snackBar("Hellllllo")
     this.menuData = {
       url: [
-        { imageUrl: "ic_action_bookmark" },
-        { imageUrl: "ic_action_overflow" }
+        
       ]
     }
 
@@ -397,7 +396,7 @@ class CourseInfoScreen extends View {
                  
 
                 <LinearLayout
-                  height="300"
+                  height="wrap_content"
                   width="match_parent"
                   gravity="center"
                   root="true"

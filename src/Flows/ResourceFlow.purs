@@ -56,7 +56,7 @@ startResourceDetailFlow values fromWhere sendBack= do
 	state <- ui $ ResourceDetailScreen {resourceDetails : values}
 	case state of
 		DummyResourceDetailAction -> pure $ "handled"
-		ResourceDetailaBack -> case fromWhere of
+		ResourceDetailBack -> case fromWhere of
 			"ResourceViewAll" -> startResourceViewAllFlow sendBack
 			"ResourceSearch" -> startResourceSearchFlow sendBack
 			"ResourceFlow" -> startResourceFlow sendBack

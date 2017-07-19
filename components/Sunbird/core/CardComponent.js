@@ -11,6 +11,7 @@ var Button = require('../../Sunbird/Button');
 var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 var StarComponent = require('../../Sunbird/StarComponent');
+
 var _this;
 
 
@@ -92,6 +93,7 @@ class CardComponent extends View {
                 padding = "10,10,10,10"
                 alignParentBottom="true,-1"
                 text= {this.props.data.title}
+                enableEllipse="true"
                 letterSpacing="0.05"
                 style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}/>
 
