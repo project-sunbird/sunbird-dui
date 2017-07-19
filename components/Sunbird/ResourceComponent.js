@@ -264,7 +264,6 @@ handleResourceViewAllClick= (data,title) =>{
                        onResourceOpenClick = {_this.handleResourceOpen}
                        data = {_this.data}
                        title="Saved Resources"
-                       isViewAllExist={((_this.data != "") && (_this.data!=undefined))?"true":"false"}
                        onViewAllClick = {_this.handleResourceViewAllClick}/>)
 
         _this.replaceChild(_this.idSet.offlineContainer,layout.render(),0);            
