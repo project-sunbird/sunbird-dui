@@ -129,6 +129,7 @@ class FilterItem extends View {
                 width="wrap_content"
                 height="wrap_content"
                 id={this.idSet.filterCount}
+                text={!this.isForPageApi && this.getSelectedCount(this.filterList)!=0 ? this.getSelectedCount(this.filterList) + " added":""}
                 style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>
 
                 <ImageView
