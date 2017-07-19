@@ -35,8 +35,6 @@ getMenu = () =>{
       var menuItems = this.props.menuData.url.map((item, index) => {
            return  <ImageView  
                       style = {IconStyle}
-                      onMenuItemClick={this.props.menuCallback?this.props.menuCallback:""}
-                      popupMenu = {this.props.popupMenu?this.props.popupMenu:""}
                       onClick = {() => {this.handleMenuClick(item.imageUrl)}}
                       imageUrl = {item.imageUrl}/> 
         })
@@ -110,6 +108,7 @@ getMenu = () =>{
         padding="0,0,0,2"
         gravity="center_vertical"
         root="true" 
+        clickable="true"
         background={window.__Colors.PRIMARY_BLACK_22}
         >
 
