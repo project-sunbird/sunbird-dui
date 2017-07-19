@@ -41,6 +41,8 @@ class CourseCurriculum extends View {
   getCourseBreakUp = () => {
 
     var items = this.props.content.map((item, index) => {
+      console.log("INDEX IN COURSE CURRICULUME",index);
+      console.log("PROPS LENGTH",this.props.content.length-1);
       return (
         <LinearLayout
           width="match_parent"
@@ -54,8 +56,12 @@ class CourseCurriculum extends View {
             _onClick={this.handleClick}
             index={index}/>
 
-        {this.getLineSeperator()}
 
+         
+
+          {this.getLineSeperator()}
+
+         
         </LinearLayout> )
 
     })
