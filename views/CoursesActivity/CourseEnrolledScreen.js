@@ -60,7 +60,7 @@ class CourseEnrolledScreen extends View {
       totalCount: "150",
       courseBrief: [{
         count: "50",
-        type: "Assignments"
+        type: "Modules"
       }, {
         count: "25",
         type: "Videos"

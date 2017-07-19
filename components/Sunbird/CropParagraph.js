@@ -47,6 +47,7 @@ class CropParagraph extends View {
                 weight="1"/>
                <TextView
                 margin="0,0,8,0"
+                visibility="gone"
                 text="more"
                 layoutTransition="true"
                 onClick={this.handleMoreClick}

@@ -488,8 +488,8 @@ class UserScreen extends View {
                 <TextInputView
                   height="wrap_content"
                   width="match_parent"
-                  hintText="Enter you'r first name"
-                  labelText="FIRST NAME"
+                  hintText="Enter your name"
+                  labelText="NAME"
                   margin="20,0,24,12"
                   _onChange={this.updateFirstName}/>  
             
@@ -592,7 +592,7 @@ class UserScreen extends View {
             id={this.idSet.needAccHolder}
             onClick={this.handleCreateAccountClick}
             visibility={this.isLoginMode?"visible":"gone"}
-            textFromHtml= {"<font color='#007AFF'><a href=''>"+"No Account yet? Sign up now"+"</a></font>"}
+            textFromHtml= {"<font color='#007AFF'><a href=''>"+"No account yet? Sign up now"+"</a></font>"}
             style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
          
         </LinearLayout>)

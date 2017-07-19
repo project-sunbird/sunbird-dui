@@ -63,7 +63,7 @@ class CourseInfoScreen extends View {
       totalCount: "150",
       courseBrief: [{
         count: "50",
-        type: "Assignments"
+        type: "Modules"
       }, {
         count: "25",
         type: "Videos"
@@ -213,6 +213,7 @@ class CourseInfoScreen extends View {
                   root="true"
                   margin="0,0,0,12"
                   brief={true}
+                  shouldGoForward={"gone"}
                   content= {this.courseContent.children}
                   width="match_parent"/>)
 

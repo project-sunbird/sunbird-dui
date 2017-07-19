@@ -97,6 +97,7 @@ class HomeTodoContainer extends View {
             width="wrap_content"
             height="wrap_content"
             text="VIEW ALL"
+            visibility="gone"
             onClick={()=>{this.handleViewAllClick()}}
             style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
 

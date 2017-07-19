@@ -169,7 +169,7 @@ class CourseComponent extends View {
         height="match_parent">
 
           <SimpleToolbar
-            title="Courses"
+            title="Explore Courses"
             width="match_parent"
             showMenu="true"
             invert="true" 

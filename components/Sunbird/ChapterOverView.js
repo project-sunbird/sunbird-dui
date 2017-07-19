@@ -40,7 +40,7 @@ class ChapterOverView extends View {
 
       <LinearLayout
        width="match_parent"
-       height="wrap_content"
+       height="40"
        padding="0,8,0,8"
        onClick={this.handleClick}
        gravity="center_vertical">
@@ -62,6 +62,7 @@ class ChapterOverView extends View {
          height="32"
          gravity="center_vertical"
          padding="8,8,8,8"
+         visibility={this.props.shouldGoForward?this.props.shouldGoForward:"visible"}
          imageUrl="ic_action_right"/>
 
        </LinearLayout>
