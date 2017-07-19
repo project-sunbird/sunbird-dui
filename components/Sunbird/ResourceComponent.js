@@ -42,7 +42,8 @@ class ResourceComponent extends View {
 
     this.menuData = {
       url: [
-        { imageUrl: "ic_action_search" }
+        { imageUrl: "ic_action_search" },
+    //    { imageUrl: "ic_action_filter" }
       ]
     }
 
@@ -221,10 +222,12 @@ handleResourceViewAllClick= (data,title) =>{
 
   handleMenuClick = (url) => {
     console.log("url clicked", url);
-    if (url == "ic_notification_red") {
+    if (url == "ic_action_filter") {
+      window.__PageFilterPopup.resetPopup();
+      window.__PageFilterPopup.show();
+    }else if (url == "ic_notification_red") {
       window.__runDuiCallback({ tag: "StartNotificationFlow", contents: [] });
-    }
-    if (url == "ic_action_search") {
+    }else if (url == "ic_action_search") {
       var searchDetails = { filterDetails: "", searchType: "Resource" }
       window.__runDuiCallback({ tag: "StartSearchFlow", contents: { filterDetails: JSON.stringify(searchDetails) } });
       // window.__runDuiCallback({tag:"StartSearchFlow",contents:{filterDetails:""}});

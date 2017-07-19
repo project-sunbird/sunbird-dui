@@ -20,7 +20,8 @@ import Types.UITypes
 import Types.APITypes
 import UI
 import Flows.Commons
-    	
+import Partial.Unsafe
+ 
 startResourceFlow values = do
 	event <- ui $ HomeScreen
 	case event of
@@ -29,6 +30,10 @@ startResourceFlow values = do
 		StartResourceViewAllFlow {resourceDetails:details} -> startResourceViewAllFlow details
 		StartSearchFlow {filterDetails: details} -> startResourceSearchFlow details
 		ResourceCourseInfoFlow {course : details} -> startCourseDetailFlow details
+		StartFilterPageApi{user_token:user_token, api_token:api_key,filter_to_send:delta}  ->	do
+																									responseData <- getResourcePageFilterApi user_token api_key delta
+																									_ <- sendUpdatedState {response : responseData, responseFor : "StartResourcePageApi", screen:"asas"} 
+																									pure $ "handled" 
 		_ -> pure $ "default"
 
 

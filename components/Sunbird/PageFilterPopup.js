@@ -191,14 +191,27 @@ class PageFilterPopup extends View {
     this.replaceChild(this.idSet.contentContainer, this.getBody().render(), 0)
   }
 
+  isEmpty = (obj) => {
+    for (var key in obj) {
+        if (hasOwnProperty.call(obj, key)) return false;
+    }
+    return true;
+  }
 
   onConfirm = () => {
-    // if (this.propsOnConfirm != undefined) {
-    //   console.log("CALL PARENT FUNCTION")
-    //   this.propsOnConfirm(this.dataToChooseFrom);
-    // } else {
-    //   this.props.onConfirm(this.dataToChooseFrom);
-    // }
+
+    if(this.isEmpty(this.filter)){
+      JBridge.showSnackBar("No filter selected");
+      this.hide();
+      return;
+    }
+    this.hide();
+    var sendFilter=JSON.stringify(this.filter);
+
+    var eventAction = { "tag": "StartFilterPageApi", contents: {"user_token":window.__userToken,"api_token": window.__apiToken,"filter_to_send":sendFilter} };
+    console.log("--------->VIEWPAGER TRIGGERS ", JSON.stringify(eventAction), "ON INDEX", this.currentPageIndex);
+    window.__runDuiCallback(eventAction);
+    
   }
 
   handleDismissClick = () => {

@@ -334,7 +334,7 @@ class UserScreen extends View {
       console.log("START SignUpApiAction ", dummyBody)
       window.__LoaderDialog.show()
       var eventAction = { tag: "SignUpApiAction", contents: dummyBody };
-      console.log("Triger---\SignUpApiAction\t>", eventAction)
+      console.log("Triger---SignUpApiAction\t>", eventAction)
       window.__runDuiCallback(eventAction);
 
     } else {

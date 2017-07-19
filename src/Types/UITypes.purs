@@ -5,13 +5,14 @@ import Control.Monad.Aff
 import Prelude (bind, ($), (<>), pure, discard)
 import Control.Monad.Except.Trans (runExceptT)
 import Utils
+import Data.Argonaut.Core
 import Control.Monad.Eff (Eff)
 import Control.Monad.Aff (launchAff)
 import Control.Monad.Eff.Console
 import Control.Monad.Eff.Class(liftEff)
 import Data.Foreign.Class (class Decode, class Encode, encode)
 import Data.Generic.Rep (class Generic)
-import Data.Foreign.Generic (encodeJSON)
+--import Data.Foreign.Generic (encodeJSON)
 import Control.Monad.Eff.Exception (EXCEPTION)
 import Prelude
 import UI
@@ -28,7 +29,7 @@ data HomeScreenAction = ShowHome {name::String} | StartCourseFlow |
  StartCommunityInfoFlow {community::String} | StartCommunityViewAllFlow | 
  StartCourseInfoFlow {course::String} | StartEnrolledCourseFlow {course::String} |
  GetCoursePage | GetResourcePage | StartNotificationFlow | StartResourceDetailFlow {resourceDetails::String} | 
- StartResourceViewAllFlow {resourceDetails::String} | StartSearchFlow {filterDetails::String}| StartResourcePageApi {user_token::String, api_token::String}| StartCoursePageApi{user_token::String, api_token::String} | GetEnrolledCourseApi{user_token::String, api_token::String} | StartProfileApi {user_token::String, api_token::String}| ResourceCourseInfoFlow {course ::String} 
+ StartResourceViewAllFlow {resourceDetails::String} | StartSearchFlow {filterDetails::String}| StartResourcePageApi {user_token::String, api_token::String}| StartCoursePageApi{user_token::String, api_token::String} | GetEnrolledCourseApi{user_token::String, api_token::String} | StartProfileApi {user_token::String, api_token::String}| ResourceCourseInfoFlow {course ::String} | StartFilterPageApi{user_token::String, api_token::String,filter_to_send::String} 
 
 data InitScreen = InitScreen 
 data InitScreenAction = ShowInit  | StartInit
@@ -72,7 +73,6 @@ data SearchScreenAction = ResourceDetailFlow {resourceDetails::String} | StartFi
 
 data FilterScreen = FilterScreen {filterDetails::String}
 data FilterScreenAction = SearchScreenFromFilter {filterData::String}
-
 
 instance homeScreen :: UIScreen HomeScreen HomeScreenAction where
   generateMockEvents _ = [ShowHome {name:"Kiran"} ,StartCourseFlow]

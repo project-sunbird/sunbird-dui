@@ -85,6 +85,7 @@ foreign import callAPI' :: forall e. (AffSuccess ApiResponse e) -> (AffError e) 
 foreign import sendUpdatedState' :: forall a b.(State a)-> b
 foreign import saveToMemory :: String -> String -> Unit                           
 foreign import readFromMemory :: String -> String                           
+foreign import getJsonFromString :: String -> A.Json                           
 
 sendUpdatedState state = sendUpdatedState' state
 
@@ -182,6 +183,19 @@ getResourcePageApi user_token api_token =
                                                                                                           ])))
                                                    ]) in
   (post requestUrl headers payload) 
+
+getResourcePageFilterApi user_token api_token filter_to_use=
+  let requestUrl = "/data/v1/page/assemble"
+      headers = (generateRequestHeaders user_token api_token)
+      payload = A.fromObject (StrMap.fromFoldable [ (Tuple "id" (A.fromString "unique API ID"))
+                                                   , (Tuple "ts" (A.fromString "2013/10/15 16:16:3"))
+                                                   , (Tuple "request" (A.fromObject (StrMap.fromFoldable  [ (Tuple "name" (A.fromString "Resources"))
+                                                                                                          , (Tuple "source" (A.fromString "web"))
+                                                                                                          , (Tuple "filters" (getJsonFromString(filter_to_use)))
+                                                                                                                                                              
+                                                                                                          ])))
+                                                   ]) in
+  (post requestUrl headers payload)   
 
 getUserEnrolledCourses user_token api_token =
   let requestUrl = "/course/v1/user/enrollment/list/" <> user_token

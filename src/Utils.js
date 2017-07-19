@@ -110,6 +110,12 @@ exports["callbackListner'"] = function(callback) {
 };
 
 
+exports["getJsonFromString"] = function(normalString) {
+  return JSON.parse(normalString);
+ 
+};
+
+
 exports["sendUpdatedState'"] = function(state) {
 
   console.log('sendupdatedstate', state);
