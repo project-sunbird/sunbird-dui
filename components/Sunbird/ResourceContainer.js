@@ -33,6 +33,7 @@ class ResourceContainer extends View {
       var size = item.hasOwnProperty("size") ? " ["+ utils.formatBytes(item.size)+"]" : "";
       var footerTitle = item.contentType + size;
 
+
       var temp = {};
       temp['imageUrl'] = item.hasOwnProperty("appIcon")?item.appIcon:"ic_action_resource";
       temp['title'] = item.name;
@@ -97,16 +98,6 @@ class ResourceContainer extends View {
 
   handleCardClick = (item, type) => {
 
-      // var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");      
-      // var resDetails = {};
-      // resDetails['imageUrl'] = item.appIcon;
-      // resDetails['title'] = item.name;
-      // resDetails['description'] = item.description;
-      // resDetails['headFooterTitle'] = headFooterTitle;
-      // resDetails['identifier'] = item.identifier;
-      // resDetails['content'] = item;
-      // window.__runDuiCallback({tag:"StartResourceDetailFlow",contents:{resourceDetails:JSON.stringify(resDetails)}});
-
       
        if(item.contentType.toLowerCase() == "course" || item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "TextBook"){
         
@@ -116,6 +107,7 @@ class ResourceContainer extends View {
       {
         var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");      
         var resDetails = {};
+        console.log("ITEM NAME",item.name)
         resDetails['imageUrl'] = item.appIcon;
         resDetails['title'] = item.name;
         resDetails['description'] = item.description;

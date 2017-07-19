@@ -139,19 +139,6 @@ class OfflineResourceContainer extends View {
   }
 
   handleCardClick = (item, type) => {
-
-    // var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " [" + utils.formatBytes(item.size) + "]" : "");
-    // var fileImageUrl = "file://" + item.basePath + "/" + item.contentData.appIcon;
-    // var resDetails = {};
-    // resDetails['imageUrl'] = fileImageUrl;
-    // resDetails['title'] = item.contentData.name;
-    // resDetails['description'] = item.contentData.description;
-    // resDetails['headFooterTitle'] = headFooterTitle;
-    // resDetails['identifier'] = item.identifier;
-    // resDetails['content'] = item;
-
-    // window.__runDuiCallback({ tag: "StartResourceDetailFlow", contents: { resourceDetails: JSON.stringify(resDetails) } });
-     console.log("item",item)
      
      if(item.contentType.toLowerCase() == "course" || item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook"){
       
@@ -161,9 +148,11 @@ class OfflineResourceContainer extends View {
     {
       var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");      
       var resDetails = {};
+      console.log("ITEM NAME IN OFFLINE",item.name)
+      console.log("ITEM IN OFFLINE",item)
       resDetails['imageUrl'] = item.appIcon;
-      resDetails['title'] = item.name;
-      resDetails['description'] = item.description;
+      resDetails['title'] = item.contentData.name;
+      resDetails['description'] = item.contentData.description;
       resDetails['headFooterTitle'] = headFooterTitle;
       resDetails['identifier'] = item.identifier;
       resDetails['content'] = item;
