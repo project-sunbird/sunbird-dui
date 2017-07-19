@@ -55,7 +55,7 @@ class ProfileHeader extends View {
               padding="40,0,40,0"
               height="wrap_content"
               visibility="gone"
-              spanText="Lorem Ipsum is simply dummy text of the printing and typesetting industry… $#Read more#$"
+              text="Lorem Ipsum is simply dummy text of the printing and typesetting industry…"
               style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
 
 

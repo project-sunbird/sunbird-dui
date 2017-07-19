@@ -140,7 +140,7 @@ class CommunityDescription extends View {
                 width="match_parent"
                 height="wrap_content"
                 margin="0,8,0,0"
-                spanText="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text… $#Read more#$"
+                text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text… "
                 style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>
 
                 <LinearLayout

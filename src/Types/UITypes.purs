@@ -19,6 +19,7 @@ import UI
 
 data UserScreen = UserScreen 
 data UserScreenAction = LoginAction | LoginApiAction {userName::String, userPass::String} | SignUpApiAction{userName::String,email::String,firstName::String,password::String,mobileNumber::String,language::String}
+-- data UserScreenAction = LoginAction | LoginApiAction {|a}, userPass::String} | SignUpApiAction{userName::String,email::String,firstName::String,password::String,mobileNumber::String,language::String}
 
 
 data HomeScreen = HomeScreen
