@@ -19,6 +19,7 @@ import UI
 
 data UserScreen = UserScreen 
 data UserScreenAction = LoginAction | LoginApiAction {userName::String, userPass::String} | SignUpApiAction{userName::String,email::String,firstName::String,password::String,mobileNumber::String,language::String}
+-- data UserScreenAction = LoginAction | LoginApiAction {|a}, userPass::String} | SignUpApiAction{userName::String,email::String,firstName::String,password::String,mobileNumber::String,language::String}
 
 
 data HomeScreen = HomeScreen
@@ -27,7 +28,7 @@ data HomeScreenAction = ShowHome {name::String} | StartCourseFlow |
  StartCommunityInfoFlow {community::String} | StartCommunityViewAllFlow | 
  StartCourseInfoFlow {course::String} | StartEnrolledCourseFlow {course::String} |
  GetCoursePage | GetResourcePage | StartNotificationFlow | StartResourceDetailFlow {resourceDetails::String} | 
- StartResourceViewAllFlow {resourceDetails::String} | StartSearchFlow {filterDetails::String}| StartResourcePageApi {user_token::String}| StartCoursePageApi{user_token::String} | GetEnrolledCourseApi{user_token::String} | StartProfileApi {user_token::String}| ResourceCourseInfoFlow {course ::String} 
+ StartResourceViewAllFlow {resourceDetails::String} | StartSearchFlow {filterDetails::String}| StartResourcePageApi {user_token::String, api_token::String}| StartCoursePageApi{user_token::String, api_token::String} | GetEnrolledCourseApi{user_token::String, api_token::String} | StartProfileApi {user_token::String, api_token::String}| ResourceCourseInfoFlow {course ::String} 
 
 data InitScreen = InitScreen 
 data InitScreenAction = ShowInit  | StartInit
@@ -39,7 +40,7 @@ data CommunityInfoScreen = CommunityInfoScreen {name::String}
 data CommunityInfoScreenAction = DummyInfoAction | ExAction
 
 data CourseInfoScreen = CourseInfoScreen {courseDetails::String}
-data CourseInfoScreenAction = DummyCourseInfoAction | ShowEnrolledCourse {course::String} | EnrollCourseApi {user_token::String,reqParams :: String} | ShowModuleDetails {moduleName::String,moduleDetails::String}
+data CourseInfoScreenAction = DummyCourseInfoAction | ShowEnrolledCourse {course::String} | EnrollCourseApi {user_token::String,reqParams :: String, api_token::String} | ShowModuleDetails {moduleName::String,moduleDetails::String}
 
 data CourseEnrolledScreen = CourseEnrolledScreen {courseDetails::String}
 data CourseEnrolledScreenAction = DummyCourseEnrolledAction | ShowModuleScreen {moduleName::String,moduleDetails::String}

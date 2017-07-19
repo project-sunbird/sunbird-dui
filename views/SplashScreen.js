@@ -18,6 +18,7 @@ class SplashScreen extends View {
     this.state = state;
     this.screenName = "SplashScreen"
     console.log("Im in SplashScreen")
+    this.getUserToken()
   }
 
   onPop = () => {
@@ -25,6 +26,18 @@ class SplashScreen extends View {
       this.animateView(),
       null
     );
+  }
+
+  getUserToken= ()=>{
+    console.log("in user token")
+    var callback = callbackMapper.map(function(token){
+      console.log("user token",token[0]);
+      window.__apiToken = token[0];
+    });
+
+    JBridge.getUserToken(callback);
+
+    
   }
 
   afterRender = () => {

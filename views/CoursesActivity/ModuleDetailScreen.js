@@ -252,7 +252,7 @@ class ModuleDetailScreen extends View {
                   width="match_parent"
                   root="true"
                   orientation="vertical"
-                  afterRender={this.afterRender}
+                  
                   id={this.idSet.descriptionContainer}>
                      
                     
