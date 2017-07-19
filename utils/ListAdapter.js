@@ -28,7 +28,7 @@ scrollDirection=  ( 1 : vertical , 0 : horizontal , default : horizontal)
     width="300"
     list={this.list1}
     scrollDirection="1"
-    _getCardLayout={this.getCardDesign}/>
+    _getCardItem={this.getCardDesign}/>
 
 
 
@@ -48,7 +48,7 @@ class ListAdapter extends View {
    this.scrollDirection= (this.props.scrollDirection==undefined)? "0": this.props.scrollDirection;
 
 
-    
+    this.startIndex=0;
 
   }
 
@@ -105,24 +105,38 @@ class ListAdapter extends View {
   }
 
 
-  getCardItem = (item) => {
-    if(this.props._getCardItem)
-      return this.props._getCardItem;
+  loadNext = () => {
 
-    return (<TextView 
-        height="50"
-        width="50"
-        text={item || "Dummy"} />)
+    if(this.startIndex>=this.props.list.length){
+      return;
+    }
+
+
+    var item=this.props.list[this.startIndex];
+    console.log("RENDERING ",item);
+
+    var layout=(<LinearLayout
+                  height="wrap_content"
+                  width="wrap_content">
+
+                    {this.props._getCardItem(item)}
+
+                </LinearLayout>);
+          
+    this.appendChild(this.idSet.parentContainer,layout.render(),this.startIndex);
+
+    this.startIndex++;
+
+    var _this=this;
+    setTimeout(()=>{
+      _this.loadNext()
+    },200);
   }
 
-
-
+ 
   loadList = () => {
 
-    this.props.list.map((item,index)=>{
-      console.log("RENDERING",item)
-      this.appendChild(this.idSet.parentContainer,this.getCardItem(item).render(),index);
-    })
+      this.loadNext();
   }
 
 
@@ -131,8 +145,8 @@ class ListAdapter extends View {
     var scrollLayout=(this.scrollDirection==0)?this.getHorizintalList():this.getVerticalList();
     this.layout = (
      <LinearLayout
-      width={this.props.height || "match_parent" }
-      height={this.props.width || "match_parent" }
+      height={this.props.height || "match_parent" }
+      width={this.props.width || "match_parent" }
       afterRender={this.loadList}
       root="true">
 
