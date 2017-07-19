@@ -35,7 +35,7 @@ class HomeComponent extends View {
       ]
     }
     console.log("home component api token",window.__apiToken)
-    JBridge.syncTelemetry();
+    
     this.recommendedServerData = {
       "display": {
         "title": {
