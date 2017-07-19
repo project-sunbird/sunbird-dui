@@ -26,7 +26,15 @@ class OfflineResourceContainer extends View {
   }
 
 
-  afterRender = () => {}
+  afterRender = () => {
+     var cmd = this.set({
+        id: this.idSet.viewAllContainer,
+        visibility : (this.offlineCount==0?"gone":"visible")
+      })
+    
+    Android.runInUI(cmd, 0);
+
+  }
 
 
 
@@ -117,7 +125,6 @@ class OfflineResourceContainer extends View {
             width="wrap_content"
             height="wrap_content"
             text="VIEW ALL"
-            visibility={this.props.isViewAllExist=="true"?"visible":"gone"}
             id={this.idSet.viewAllContainer}
             padding="8,8,8,8"
             onClick={this.handleViewAllClick}
@@ -176,6 +183,7 @@ class OfflineResourceContainer extends View {
       <LinearLayout
           height="match_parent"
           width="match_parent"
+          afterRender={this.afterRender}
           orientation="vertical">
 
           {this.getHeader()}
