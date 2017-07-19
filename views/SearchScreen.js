@@ -66,7 +66,8 @@ class SearchScreen extends View {
           id: _this.idSet.filterHolder,
           visibility: "visible"
         })
-      Android.runInUI(cmd, 0);
+        Android.runInUI(cmd, 0);
+
       var searchData = JSON.parse(this.filterData)
       this.getSearchList(searchData.query);
     }
@@ -149,6 +150,12 @@ class SearchScreen extends View {
   }
 
   renderNoResult = () => {
+    var cmd = "";
+        cmd += _this.set({
+          id: _this.idSet.filterHolder,
+          visibility: "gone"
+        })
+    Android.runInUI(cmd, 0);
 
     var layout = (<LinearLayout
                    width="match_parent"
