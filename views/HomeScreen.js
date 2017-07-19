@@ -350,7 +350,7 @@ class HomeScreen extends View {
     }
 
 
-
+    
     console.log("--------->VIEWPAGER TRIGGERS ", JSON.stringify(eventAction), "ON INDEX", this.currentPageIndex);
     window.__runDuiCallback(eventAction);
   }

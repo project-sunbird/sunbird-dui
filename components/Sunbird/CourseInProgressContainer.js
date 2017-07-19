@@ -38,15 +38,27 @@ class CourseInProgressContainer extends View {
 
   renderContent = (data) => {
     var emptyBody =(<LinearLayout
-        layoutTransition="true"
         height="match_parent"
         width="match_parent"/>)
     this.replaceChild(this.idSet.parentContainer, emptyBody.render(), 0) 
     //this.removeAllChildren(this.idSet.parentContainer);
     console.log("GOT DATA-->", data);
-     data.map((item, index) => {
-      this.appendChild(this.idSet.parentContainer,this.getCardLayou(item).render(),index)
+     var rows=data.map((item, index) => {
+      //this.appendChild(this.idSet.parentContainer,this.getCardLayouy(item).render(),index)
+      return this.getCardLayout(item);
     });
+
+
+       var layout=(<LinearLayout
+        height="wrap_content"
+        width="match_parent">
+
+          {rows}
+
+        </LinearLayout>)
+
+    //this.appendChild(this.idSet.parentContainer,this.getHeader().render(),0);
+    this.replaceChild(this.idSet.parentContainer,layout.render(),0)
     
 
   }
@@ -58,7 +70,7 @@ class CourseInProgressContainer extends View {
     else return (bytes / 1073741824).toFixed(3) + " GB";
   };
 
-  getCardLayou =(item) => {
+  getCardLayout =(item) => {
      var temp = {
         imageUrl: (item.courseLogoUrl ? item.courseLogoUrl : "file://storage/emulated/0/SunbirdTest/content/domain_8808-64dd60d5-94cd-4896-a60e-11897bf69fd6/domain_8808/1461668536884adb212cfde_1465896981928.jpg"),
         title: item.courseName,

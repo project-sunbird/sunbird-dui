@@ -191,7 +191,7 @@ getResourcePageFilterApi user_token api_token filter_to_use=
                                                    , (Tuple "ts" (A.fromString "2013/10/15 16:16:3"))
                                                    , (Tuple "request" (A.fromObject (StrMap.fromFoldable  [ (Tuple "name" (A.fromString "Resources"))
                                                                                                           , (Tuple "source" (A.fromString "web"))
-                                                                                                          , (Tuple "filters" (getJsonFromString(filter_to_use)))
+                                                                                                          , (Tuple "filters" (getJsonFromString filter_to_use))
                                                                                                                                                               
                                                                                                           ])))
                                                    ]) in

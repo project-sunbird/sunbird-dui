@@ -100,10 +100,24 @@ class CourseComponent extends View {
                           width="match_parent"/>)
       this.replaceChild(this.idSet.parentContainer, emptyBody.render(), 0) 
 
-      this.details.sections.map((item,index) => {
-          this.appendChild(this.idSet.parentContainer,this.getCourseCardLayout(item).render(),index);
+      var rows=this.details.sections.map((item,index) => {
+          return this.getCourseCardLayout(item);
+          //this.appendChild(this.idSet.parentContainer,this.getCourseCardLayout(item).render(),index);
       })
 
+
+      var layout=(<LinearLayout
+        height="wrap_content"
+        width="match_parent"
+        orientation="vertical"
+        root="true">
+
+          {rows}
+
+        </LinearLayout>)
+
+      return layout;  
+    //this.replaceChild(this.idSet.parentContainer,layout.render(),0)
 
   
   }
@@ -196,23 +210,7 @@ class CourseComponent extends View {
                     onCourseClick={this.handleUserCoursesClick}/>
                    
 
-                  <LinearLayout
-                    height="wrap_content"
-                    width="match_parent"
-                    afterRender={this.handleResponse}
-                    id={this.idSet.parentContainer}
-                    layoutTransition="true"
-                    orientation="vertical"
-                    root="true">
-
-                      <TextView
-                        id={this.idSet.fetchingHolder}
-                        text="Fetching .."
-                        height="100"
-                        width="200"
-                        gravity="center"/>
-                      
-                    </LinearLayout>
+                  {this.handleResponse()}
 
                 </LinearLayout>
 
