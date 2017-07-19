@@ -13,7 +13,6 @@ import Data.Foreign.Class (class Decode, class Encode, encode)
 import Data.Maybe
 import Flows.NotificationFlow
 import Flows.FilterFlow
-import Flows.ResourceFlow
 import Data.Generic.Rep (class Generic)
 import Data.Foreign.Generic (encodeJSON,decodeJSON)
 import Control.Monad.Eff.Exception (EXCEPTION)
