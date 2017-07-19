@@ -134,7 +134,6 @@ class CourseInProgressContainer extends View {
            <LinearLayout
                     padding="0,0,20,0"
                     id={this.idSet.parentContainer}
-                    layoutTransition="true"
                     width="match_parent"
                     gravity="center"
                     root="true"
