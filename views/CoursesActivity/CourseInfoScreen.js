@@ -213,6 +213,7 @@ class CourseInfoScreen extends View {
                   root="true"
                   margin="0,0,0,12"
                   brief={true}
+                  shouldGoForward={"gone"}
                   content= {this.courseContent.children}
                   width="match_parent"/>)
 

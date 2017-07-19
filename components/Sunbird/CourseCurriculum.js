@@ -54,6 +54,7 @@ class CourseCurriculum extends View {
             item={item}
             height="wrap_content"
             _onClick={this.handleClick}
+            shouldGoForward={this.props.shouldGoForward?this.props.shouldGoForward:"visible"}
             index={index}/>
 
 
