@@ -1,4 +1,3 @@
-
 var dom = require("@juspay/mystique-backend").doms.android;
 var Connector = require("@juspay/mystique-backend").connector;
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
@@ -65,7 +64,7 @@ getRows = () =>{
               
                 if(item.hasOwnProperty("contentData")){
                   this.size = " [" + utils.formatBytes(item.contentData.size) + "]";
-                  this.fileImageUrl = "file://"+item.basePath + "/" +item.contentData.appIcon?item.contentData.appIcon:"ic_action_resource";
+                  this.fileImageUrl = "file://"+item.basePath + "/" +(item.contentData.appIcon?item.contentData.appIcon:"ic_action_resource");
                   this.cType = item.contentData.contentType
                   this.name = item.contentData.name;
                   this.time = utils.prettifyDate(item.lastUpdatedTime);
@@ -78,6 +77,8 @@ getRows = () =>{
                    var d =  new Date(item.createdOn);
                    this.time = d.getDay() + "-" + d.getMonth()+ "-" + d.getUTCFullYear();
                 }
+
+                console.log("FILE IMAGE URL ",this.fileImageUrl)
 
                 var temp = {};
                 temp['imageUrl'] = this.fileImageUrl;

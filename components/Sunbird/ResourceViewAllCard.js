@@ -11,7 +11,6 @@ var RatingBar = require("@juspay/mystique-backend").androidViews.RatingBar;
 var Button = require('../Sunbird/Button');
 var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
-var StarComponent = require('../Sunbird/StarComponent');
 var _this;
 
 
@@ -26,6 +25,8 @@ class ResourceViewAllCard extends View {
     ]);
     console.log("download card contetn",this.props.content);
     console.log("subtitle i gotISSSSS",this.props.data.footerSubTitle);
+    console.log("IMAGE URL IN RESOURCEV",this.props.data.imageUrl);
+
     
   }
 
@@ -116,8 +117,8 @@ class ResourceViewAllCard extends View {
                 multiCorners={"10,0,0,10,"+window.__Colors.BLACK}/>
       
                 <ImageView
-                  width="match_parent"
-                  height="match_parent"
+                  width="100"
+                  height="100"
                   gravity="center"
                   circularImageUrl={"5,"+this.props.data.imageUrl}/>
                
@@ -154,6 +155,7 @@ class ResourceViewAllCard extends View {
                     width="wrap_content"
                     height="wrap_content"
                     text={this.props.data.name}
+                    enableEllipse="true"
                     margin = "12,9,12,0"
                     style={window.__TextStyle.textStyle.CARD.HEADING}/>
 

@@ -115,39 +115,46 @@ class ProgressButton extends View {
 
   handleButtonClick = () => {
 
-    window.__getDownloadStatus = this.updateProgress;
-    console.log("dp", this.isDownloaded);
+    if(JBridge.isNetworkAvailable()){
 
-    if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
+      window.__getDownloadStatus = this.updateProgress;
+      console.log("dp", this.isDownloaded);
 
-      if (this.isDownloaded) {
-        console.log("play");
-        if (this.props.isCourse == "true") {
-          window.__getGenieEvents = this.checkTelemetry;
-          JBridge.playChildContent(this.props.identifier)
+      if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
+
+        if (this.isDownloaded) {
+          console.log("play");
+          if (this.props.isCourse == "true") {
+            window.__getGenieEvents = this.checkTelemetry;
+            JBridge.playChildContent(this.props.identifier)
+          } else {
+            JBridge.playContent(this.props.identifier);
+          }
+
         } else {
-          JBridge.playContent(this.props.identifier);
-        }
+          console.log("download");
+          if (!this.startedDownloading) {
+            this.startedDownloading = true;
+            JBridge.importCourse(this.props.identifier, this.props.isCourse);
 
+            var cmd = this.set({
+              id: this.idSet.cancelDownloadHolder,
+              visibility: "visible"
+            })
+            Android.runInUI(cmd, 0);
+
+          }
+
+        }
       } else {
-        console.log("download");
-        if (!this.startedDownloading) {
-          this.startedDownloading = true;
-          JBridge.importCourse(this.props.identifier, this.props.isCourse);
-
-          var cmd = this.set({
-            id: this.idSet.cancelDownloadHolder,
-            visibility: "visible"
-          })
-          Android.runInUI(cmd, 0);
-
-        }
-
+        console.log("handleButtonClick PERMISSION");
+        this.setPermissions();
       }
-    } else {
-      console.log("handleButtonClick PERMISSION");
-      this.setPermissions();
-    }
+  }
+  else{
+      JBridge.showSnackBar("No internet connection");
+  }
+
 
   }
   checkTelemetry = (telemetryData) => {

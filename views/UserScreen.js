@@ -295,23 +295,26 @@ class UserScreen extends View {
     if (this.firstName.length <= 0) {
       JBridge.showSnackBar("First Name can't be empty");
       return;
-    } else if (this.userName.length <= 0) {
-      JBridge.showSnackBar("User Name can't be empty");
-      return;
     } else if (this.email.length <= 0) {
       JBridge.showSnackBar("Email can't be empty");
+      return;
+    } else if (this.userName.length <= 0) {
+      JBridge.showSnackBar("User Name can't be empty");
       return;
     } else if (this.userPass.length <= 0) {
       JBridge.showSnackBar("Password can't be empty");
       return;
     } else if (this.userPass.length < 8) {
-      JBridge.showSnackBar("Short password");
+      JBridge.showSnackBar("Please enter password more than 8 digits");
       return;
     } else if (this.mobileNumber.length <= 0) {
       JBridge.showSnackBar("Mobile Number can't be empty");
       return;
     } else if (this.mobileNumber.length < 10) {
       JBridge.showSnackBar("Mobile number should contain 10 digits");
+      return;
+    }else if (this.mobileNumber.length > 10) {
+      JBridge.showSnackBar("Mobile number should not exceed 10 digits");
       return;
     } else if (this.language.length <= 0) {
       JBridge.showSnackBar("Language can't be empty");
@@ -352,6 +355,7 @@ class UserScreen extends View {
       return;
     }
     window.__LoaderDialog.show()
+    JBridge.hideKeyboard();
     JBridge.keyCloakLogin("android","sunbird",this.userName,this.userPass);
   
 
@@ -533,6 +537,7 @@ class UserScreen extends View {
                 hintText="Enter mobile number"
                 labelText="Mobile Number"
                 margin="20,0,24,12"
+                inputType="numeric"
                 _onChange={this.updateMobileNumber}/>  
            
             </LinearLayout> 

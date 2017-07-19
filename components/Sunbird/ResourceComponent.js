@@ -77,7 +77,7 @@ class ResourceComponent extends View {
       }
       else
       {
-        JBridge.showSnackBar("Error Fetching Data")
+        JBridge.showSnackBar("No internet. Offline Mode.")
         this.cards = (<LinearLayout
           height="wrap_content"
           width="match_parent"
@@ -255,18 +255,21 @@ handleResourceViewAllClick= (data,title) =>{
   afterRender = () => {
   
      var callback = callbackMapper.map(function(params) {
-      console.log("p[arams from local",params)
       params = params.toString();
       params = utils.jsonifyData(params);
       _this.data = JSON.parse(params);
+      console.log("OFFLINE RESOURCE CONTENT ",_this.data);
 
-      var layout = (<OfflineResourceContainer
+      if(_this.data != ""){
+         var layout = (<OfflineResourceContainer
                        onResourceOpenClick = {_this.handleResourceOpen}
                        data = {_this.data}
                        title="Saved Resources"
                        onViewAllClick = {_this.handleResourceViewAllClick}/>)
 
-    _this.replaceChild(_this.idSet.offlineContainer,layout.render(),0);             
+        _this.replaceChild(_this.idSet.offlineContainer,layout.render(),0);            
+
+      }
 
     });
 

@@ -284,17 +284,17 @@ class HomeScreen extends View {
 
       default:
         contentLayout = (<LinearLayout
-                  height="match_parent"
-                  root="true"
-                  width="match_parent">
-                    <TextView
-                      text=""
-                      background={this.color}
-                      color="#ffffff"
-                      height="match_parent"
-                      width="match_parent"
-                      gravity="center" />
-                </LinearLayout>)
+                          height="match_parent"
+                          root="true"
+                          width="match_parent">
+                            <TextView
+                              text=""
+                              background={this.color}
+                              color="#ffffff"
+                              height="match_parent"
+                              width="match_parent"
+                              gravity="center" />
+                        </LinearLayout>)
 
         break;
     }
@@ -356,21 +356,24 @@ class HomeScreen extends View {
 
 
 
+  
   handleBottomNavBarAction = (index) => {
-    if(index==undefined)
-      index=0;
-    this.currentPageIndex = index;
-    if (index == 1) {
-      if (!JBridge.isNetworkAvailable()) {
-        JBridge.showSnackBar("NO INTERNET CONNECTION")
-        this.handleBottomNavBarAction(2);
-      }
-    }
-   
-    console.log("\n\nSwitching B Nav Bar ")
-    this.setupDuiCallback();
-    window.__BottomNavBar.handleNavigationChange(index);
-    this.switchContent(index)
+
+        if(index==undefined){
+            index=0;
+        }
+
+        if(JBridge.isNetworkAvailable()||(index!=1&&index!=4)){
+              console.log("NETWORK AVAILABLE");
+              this.currentPageIndex = index;
+              this.switchContent(index);
+        }
+        else{
+            JBridge.showSnackBar("NO INTERNET CONNECTION")
+        }
+
+        window.__BottomNavBar.handleNavigationChange(this.currentPageIndex);
+        this.setupDuiCallback();
 
   }
 

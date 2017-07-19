@@ -41,7 +41,7 @@ class SplashScreen extends View {
   }
 
   afterRender = () => {
-
+    JBridge.syncTelemetry();
     if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "false") {
       this.setPermissions();
     }
