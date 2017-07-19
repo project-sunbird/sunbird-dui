@@ -45,8 +45,7 @@ class CourseContainer extends View {
         actionText: "OPEN",
         footerTitle : "Unrated",
         footerSubTitle: "No votes yet",
-        actionText: item.status
-      };
+    };
 
       return (<CardComponent 
                  data={temp}

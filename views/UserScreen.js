@@ -328,7 +328,8 @@ class UserScreen extends View {
         "password": this.userPass,
         "language": this.language,
         "mobileNumber": this.mobileNumber,
-        "email": this.email
+        "email": this.email,
+        "api_token": window.__apiToken
       };
       console.log("START SignUpApiAction ", dummyBody)
       window.__LoaderDialog.show()
@@ -362,7 +363,7 @@ class UserScreen extends View {
   }
 
   handleForgotPasscode = ()=>{
-      JBridge.showSnackBar("Yet to be added. Don't forget password until then");
+      JBridge.showSnackBar("Yet to be implemented.");
   }
 
 

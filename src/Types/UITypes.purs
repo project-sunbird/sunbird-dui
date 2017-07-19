@@ -18,7 +18,7 @@ import UI
 --A.JSON import argonaut for json and try
 
 data UserScreen = UserScreen 
-data UserScreenAction = LoginAction | LoginApiAction {userName::String, userPass::String} | SignUpApiAction{userName::String,email::String,firstName::String,password::String,mobileNumber::String,language::String}
+data UserScreenAction = LoginAction | LoginApiAction {userName::String, userPass::String} | SignUpApiAction{userName::String,email::String,firstName::String,password::String,mobileNumber::String,language::String,api_token::String}
 -- data UserScreenAction = LoginAction | LoginApiAction {|a}, userPass::String} | SignUpApiAction{userName::String,email::String,firstName::String,password::String,mobileNumber::String,language::String}
 
 
@@ -110,7 +110,7 @@ instance decodeInitScreenAction :: Decode InitScreenAction where decode = defaul
 instance encodeInitScreenAction :: Encode InitScreenAction where encode = defaultEncode
 
 instance userScreen :: UIScreen UserScreen UserScreenAction where
-  generateMockEvents _ = [LoginAction , LoginApiAction {userName:"String",userPass:"String"} , SignUpApiAction{userName:"amit.rohan",email:"amit@rohan.com",firstName:"Amit Rohan",password:"beta",mobileNumber:"6756756743",language:"English"}
+  generateMockEvents _ = [LoginAction , LoginApiAction {userName:"String",userPass:"String"} , SignUpApiAction{userName:"amit.rohan",email:"amit@rohan.com",firstName:"Amit Rohan",password:"beta",mobileNumber:"6756756743",language:"English",api_token:"__failed"}
 ]
   ui x = genericUI x (generateMockEvents x :: Array UserScreenAction)
 

@@ -47,13 +47,14 @@ class CourseCurriculum extends View {
           height="wrap_content"
           orientation="vertical">
 
-          {this.getLineSeperator()}
 
           <ChapterOverView
             item={item}
             height="wrap_content"
             _onClick={this.handleClick}
             index={index}/>
+
+        {this.getLineSeperator()}
 
         </LinearLayout> )
 

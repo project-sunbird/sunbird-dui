@@ -127,8 +127,9 @@ generateRequestHeaders user_token api_token=
                                                             ] in
   map (\x -> (RequestHeader (fst x) (snd x))) filtered
 
-getDummyHeader =
-  let filtered = filter (\x -> not $ snd(x) == "__failed")  [(Tuple "X-Consumer-ID" "7c03ca2e78326957afbb098044a3f60783388d5cc731a37821a20d95ad497ca8") --getUserId
+
+getDummyHeader api_token=
+  let filtered = filter (\x -> not $ snd(x) == "__failed")  [(Tuple "Authorization" ("Bearer " <> api_token)) --getUserId
                                                             ,(Tuple "X-Device-ID" "X-Device-ID")
                                                             ,(Tuple "X-msgid" "8e27cbf5-e299-43b0-bca7-8347f7e5abcf")
                                                             ,(Tuple "ts" "2017-05-28 10:52:56:578+0530")  
@@ -194,9 +195,9 @@ getProfileDetail user_token api_token =
 
 
 
-userSignup userName email firstName password mobileNumber language  =
+userSignup userName email firstName password mobileNumber language api_token =
   let requestUrl = "/user/v1/create" 
-      headers = (getDummyHeader )
+      headers = (getDummyHeader api_token)
       payload = A.fromObject (StrMap.fromFoldable [(Tuple "request" (A.fromObject (StrMap.fromFoldable  [ (Tuple "userName" (A.fromString userName))
                                                                                                           , (Tuple "firstName" (A.fromString firstName))
                                                                                                           , (Tuple "password" (A.fromString password))
