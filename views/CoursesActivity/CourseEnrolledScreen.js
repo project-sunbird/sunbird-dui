@@ -261,7 +261,7 @@ class CourseEnrolledScreen extends View {
         height="match_parent">
 
         <SimpleToolbar
-          title={this.data.courseName}
+          title={""}
           menuData={this.menuData}
           onBackPress={this.onBackPressed}
           width="match_parent"

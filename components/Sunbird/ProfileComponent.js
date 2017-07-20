@@ -38,7 +38,7 @@ class ProfileComponent extends View {
         { imageUrl: "ic_action_overflow" }
       ]
     }
-    this.popupMenu="logout";
+    this.popupMenu="Logout";
 
     this.handleResponse();
   }

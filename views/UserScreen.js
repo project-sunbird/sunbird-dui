@@ -44,7 +44,9 @@ class UserScreen extends View {
     this.screenName = "UserScreen"
     this.isLoginMode = true;
     this.language = "English";
-    this.userName = this.userPass = this.firstName = ""
+    this.userName = this.userPass = this.firstName = "";
+
+    this.shouldCacheScreen=false;
 
     window.__loginCallback=this.getLoginCallback;
 
