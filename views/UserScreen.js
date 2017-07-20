@@ -83,27 +83,33 @@ class UserScreen extends View {
     
     contentBody=JSON.parse(contentBody);
 
-    console.log("USER TOKEN  ->",contentBody.sub)
-    JBridge.setInSharedPrefs("user_id", contentBody.sub);
-    JBridge.setInSharedPrefs("user_name", contentBody.given_name);
-    JBridge.setInSharedPrefs("user_token", contentBody.sub);
+    this.userToken=contentBody.sub;
+    this.userName=contentBody.given_name;
+    
     window.__userToken=contentBody.sub;    
     JBridge.showSnackBar("Welcome Back "+ contentBody.given_name)
 
+    this.setDataInStorage();
+    
     this.performLogin();
     }catch(e){
      console.log(e.message)
      JBridge.showSnackBar("Invalid Email-ID")
    }
 
+  }
 
-
-
-
+  setDataInStorage = () => {
+    JBridge.setInSharedPrefs("user_id", this.userToken);
+    JBridge.setInSharedPrefs("user_name", this.userName);
+    JBridge.setInSharedPrefs("user_token", this.userToken);
   }
 
   performLogin = () => {
+    
     JBridge.setInSharedPrefs("logged_in","YES");
+
+    window.__userToken=JBridge.getFromSharedPrefs("user_token");
     var eventAction = { tag: "LoginAction", contents: {} };
     window.__runDuiCallback(eventAction);
   }
@@ -164,8 +170,14 @@ class UserScreen extends View {
           JBridge.showSnackBar("Welcome On Board "+this.userName)
           JBridge.setInSharedPrefs("user_name", this.userFirstName);
           JBridge.setInSharedPrefs("user_token", result.userId);
-          window.__userToken=result.userId;
+
+          this.userToken=result.userId;
+
+
+          this.setDataInStorage();
+          
           this.performLogin()
+
         } else {
           JBridge.showSnackBar("Please retry")
         }

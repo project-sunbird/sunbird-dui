@@ -27,7 +27,8 @@ class ResourceContainer extends View {
 
   getRows = () => {
       this.data = this.props.data;
-
+      if(this.data==undefined)
+          this.data=[];
       var rows = this.data.map((item, i) => {
 
       var size = item.hasOwnProperty("size") ? " ["+ utils.formatBytes(item.size)+"]" : "";

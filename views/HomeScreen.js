@@ -45,8 +45,7 @@ class HomeScreen extends View {
       "tabLayoutContainer",
     ]);
 
-    //window.__userToken=JBridge.getFromSharedPrefs("user_token");
-    this.userToken=window.__userToken;
+    
     this.currentPageIndex = 0;
     console.log("CURRENT INDEX", this.currentPageIndex);
 
@@ -330,11 +329,11 @@ class HomeScreen extends View {
         break;
       case 1:
         // window.__LoaderDialog.show();
-        eventAction = { "tag": "StartCoursePageApi", contents: {"user_token":this.userToken,"api_token": window.__apiToken} };
+        eventAction = { "tag": "StartCoursePageApi", contents: {"user_token":window.__userToken,"api_token": window.__apiToken} };
         break;
       case 2:
         // window.__LoaderDialog.show();
-        eventAction = { "tag": "StartResourcePageApi", contents: {"user_token":this.userToken,"api_token": window.__apiToken} };
+        eventAction = { "tag": "StartResourcePageApi", contents: {"user_token":window.__userToken,"api_token": window.__apiToken} };
        
         break;
       case 3:
@@ -342,7 +341,7 @@ class HomeScreen extends View {
         break;
       case 4:
         // window.__LoaderDialog.show();
-        eventAction = { "tag": "StartProfileApi", contents: {"user_token":this.userToken,"api_token": window.__apiToken} };
+        eventAction = { "tag": "StartProfileApi", contents: {"user_token":window.__userToken,"api_token": window.__apiToken} };
         break;
       default:
         eventAction = { "tag": "ShowHome", contents: { "name": "Kiran" } };

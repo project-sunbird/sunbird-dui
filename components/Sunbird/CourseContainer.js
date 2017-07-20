@@ -25,9 +25,11 @@ class CourseContainer extends View {
 
 
   afterRender = () => {
-
-    
-    var rows = this.props.data.map((item, i) => {
+    this.data= this.props.data;
+    if(this.data==undefined)
+          this.data=[];
+        
+    var rows = this.data.map((item, i) => {
       return this.geCardLayout(item);
       //this.appendChild(this.idSet.courseContainer,this.geCardLayout(item).render(),i)
     });
