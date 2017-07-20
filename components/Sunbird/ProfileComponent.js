@@ -35,9 +35,11 @@ class ProfileComponent extends View {
 
     this.menuData = {
       url: [
-        { imageUrl: "ic_action_plus" }
+        { imageUrl: "ic_action_overflow" }
       ]
     }
+    this.popupMenu="logout";
+
     this.handleResponse();
   }
 
@@ -49,7 +51,7 @@ class ProfileComponent extends View {
       JBridge.setInSharedPrefs("user_id", "__failed");
       JBridge.setInSharedPrefs("user_name",  "__failed");
       JBridge.setInSharedPrefs("user_token",  "__failed");
-      
+
       window.__Logout();
     }
 
@@ -79,13 +81,18 @@ class ProfileComponent extends View {
             background={window.__Colors.PRIMARY_BLACK_22}/>)
   }
 
+  overFlowCallback = (params) => {
+    console.log("ITEM CLICKED",params);
+  }
+
+
   afterRender() {}
 
 
   render() {
     this.layout = (
 
-     
+
 
 
       <LinearLayout
@@ -95,16 +102,15 @@ class ProfileComponent extends View {
         afterRender={this.afterRender}
         height="match_parent">
 
-        <SimpleToolbar
-          title="Profile"
-          height="wrap_content"
-          width="match_parent"
-          showMenu="true"
-          invert="true" 
-          hideBack="true" 
-          menuData={this.menuData}
-          onMenuItemClick={this.handleMenuClick}
-          />
+
+          <SimpleToolbar
+            title="Profile"
+            width="match_parent"
+            menuData={this.menuData}
+            popupMenu={this.popupMenu}
+            overFlowCallback = {this.overFlowCallback}
+            showMenu="true"
+            invert="true"/>
 
 
           <ScrollView
@@ -131,16 +137,16 @@ class ProfileComponent extends View {
                 <ComingSoonComponent
                 text="More details coming soon.."/>
 
-                
+
 
               </LinearLayout>
 
          </ScrollView>
 
         </LinearLayout>
-      
 
-      
+
+
     )
 
     return this.layout.render();
