@@ -84,7 +84,7 @@ class SplashScreen extends View {
               layout_gravity="center"
               imageUrl="ic_launcher"/>
             <TextView
-              text="Project SUNBIRD"
+              text="Project Sunbird"
               margin="20,120,20,20"
               layout_gravity="center"
               height="wrap_content"/>

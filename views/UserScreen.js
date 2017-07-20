@@ -49,6 +49,9 @@ class UserScreen extends View {
     window.__loginCallback=this.getLoginCallback;
 
 
+    this.checkAlreadyLoggedIn();
+
+
   }
 
   onPop = () => {
@@ -60,8 +63,17 @@ class UserScreen extends View {
 
   }
 
+  checkAlreadyLoggedIn = () =>{
+
+  }
+
   getLoginCallback = (response) => {
     window.__LoaderDialog.hide()
+    
+    if(!this.enableLoginCallback){
+      return;
+    }
+
     try{
     var arr=response.split('.');
     var contentBody=atob(arr[1]);
@@ -79,7 +91,7 @@ class UserScreen extends View {
     window.__runDuiCallback(eventAction);
     }catch(e){
      console.log(e.message)
-     JBridge.showSnackBar("Invalid credential")
+     JBridge.showSnackBar("Invalid Email-ID")
    }
 
 
@@ -209,7 +221,7 @@ class UserScreen extends View {
       visibility: "gone"
     });
     cmd += this.set({
-      id: this.idSet.emailHolder,
+      id: this.idSet.userNameHolder,
       visibility: "gone"
     });
     cmd += this.set({
@@ -252,7 +264,7 @@ class UserScreen extends View {
       visibility: "visible"
     });
     cmd += this.set({
-      id: this.idSet.emailHolder,
+      id: this.idSet.userNameHolder,
       visibility: "visible"
     });
     cmd += this.set({
@@ -292,16 +304,24 @@ class UserScreen extends View {
         return;
       }
 
+    this.firstName=this.firstName.trim();
+    this.userName=this.userName.trim();
+    this.email=this.email.trim();
+    this.userPass=this.userPass.trim();
+    this.userPass=this.userPass.trim();
+    this.mobileNumber=this.mobileNumber.trim();  
+
+
     if (this.firstName.length <= 0) {
       JBridge.showSnackBar("First Name can't be empty");
+      return;
+    }  else if (this.userName.length <= 0) {
+      JBridge.showSnackBar("User Name can't be empty");
       return;
     } else if (this.email.length <= 0) {
       JBridge.showSnackBar("Email can't be empty");
       return;
-    } else if (this.userName.length <= 0) {
-      JBridge.showSnackBar("User Name can't be empty");
-      return;
-    } else if (this.userPass.length <= 0) {
+    }else if (this.userPass.length <= 0) {
       JBridge.showSnackBar("Password can't be empty");
       return;
     } else if (this.userPass.length < 8) {
@@ -344,12 +364,21 @@ class UserScreen extends View {
   }
 
   handleLoginClick = () => {
+
+    this.enableLoginCallback=true;
+
+    // this.email="abcd@test.com"
+    // this.userPass="abcd"
+
+    this.userPass=this.userPass.trim();
+    this.email=this.email.trim();
+    
     if (!JBridge.isNetworkAvailable()) {
         JBridge.showSnackBar("NO INTERNET CONNECTION")
         return;
       }
-    if (this.userName.length <= 0) {
-      JBridge.showSnackBar("User Name can't be empty");
+    if (this.email.length <= 0) {
+      JBridge.showSnackBar("Email can't be empty");
       return;
     } else if (this.userPass.length <= 0) {
       JBridge.showSnackBar("Password can't be empty");
@@ -357,8 +386,12 @@ class UserScreen extends View {
     }
     window.__LoaderDialog.show()
     JBridge.hideKeyboard();
-    JBridge.keyCloakLogin("android","sunbird",this.userName,this.userPass);
-  
+    JBridge.keyCloakLogin("android","sunbird",this.email,this.userPass);
+    
+    setTimeout(()=>{
+      window.__LoaderDialog.hide();
+      this.enableLoginCallback=false
+    },window.__API_TIMEOUT);
 
   }
 
@@ -498,8 +531,19 @@ class UserScreen extends View {
             <LinearLayout
               height="wrap_content"
               width="match_parent"
-              id={this.idSet.emailHolder}
+              id={this.idSet.userNameHolder}
               visibility={this.isLoginMode?"gone":"visible"}>
+
+              <TextInputView
+                height="wrap_content"
+                width="match_parent"
+                hintText="Enter user name"
+                labelText="USER NAME"
+                margin="20,0,24,12"
+                _onChange={this.updateUserName}/>
+           
+            </LinearLayout>  
+
 
               <TextInputView
                 height="wrap_content"
@@ -508,16 +552,8 @@ class UserScreen extends View {
                 labelText="E-MAIL ID"
                 margin="20,0,24,12"
                 _onChange={this.updateEmail}/>  
-           
-            </LinearLayout>  
 
-            <TextInputView
-                height="wrap_content"
-                width="match_parent"
-                hintText="Enter user name"
-                labelText="USER NAME"
-                margin="20,0,24,12"
-                _onChange={this.updateUserName}/>
+            
 
             <TextInputView
                 height="wrap_content"
