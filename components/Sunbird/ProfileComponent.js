@@ -43,18 +43,15 @@ class ProfileComponent extends View {
     this.handleResponse();
   }
 
-  handleMenuClick = (url) => {
 
-    if (url == "ic_action_plus") {
-      JBridge.showSnackBar("Invalid Email-ID")
-      JBridge.setInSharedPrefs("logged_in","NO");
-      JBridge.setInSharedPrefs("user_id", "__failed");
-      JBridge.setInSharedPrefs("user_name",  "__failed");
-      JBridge.setInSharedPrefs("user_token",  "__failed");
+  logout = () =>{
+    JBridge.showSnackBar("Invalid Email-ID")
+    JBridge.setInSharedPrefs("logged_in","NO");
+    JBridge.setInSharedPrefs("user_id", "__failed");
+    JBridge.setInSharedPrefs("user_name",  "__failed");
+    JBridge.setInSharedPrefs("user_token",  "__failed");
 
-      window.__Logout();
-    }
-
+    window.__Logout();
   }
 
   handleResponse = () => {
@@ -82,7 +79,8 @@ class ProfileComponent extends View {
   }
 
   overFlowCallback = (params) => {
-    console.log("ITEM CLICKED",params);
+    if(params == 0)
+    this.logout();
   }
 
 
