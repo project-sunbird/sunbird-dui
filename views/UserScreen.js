@@ -72,7 +72,7 @@ class UserScreen extends View {
 
   getLoginCallback = (response) => {
     window.__LoaderDialog.hide()
-    
+
     if(!this.enableLoginCallback){
       return;
     }
@@ -80,17 +80,17 @@ class UserScreen extends View {
     try{
     var arr=response.split('.');
     var contentBody=atob(arr[1]);
-    
+
     contentBody=JSON.parse(contentBody);
 
     this.userToken=contentBody.sub;
     this.userName=contentBody.given_name;
-    
-    window.__userToken=contentBody.sub;    
+
+    window.__userToken=contentBody.sub;
     JBridge.showSnackBar("Welcome Back "+ contentBody.given_name)
 
     this.setDataInStorage();
-    
+
     this.performLogin();
     }catch(e){
      console.log(e.message)
@@ -106,7 +106,7 @@ class UserScreen extends View {
   }
 
   performLogin = () => {
-    
+
     JBridge.setInSharedPrefs("logged_in","YES");
 
     window.__userToken=JBridge.getFromSharedPrefs("user_token");
@@ -140,7 +140,7 @@ class UserScreen extends View {
       JBridge.showSnackBar("INTERNET CONNECTION ISSUE")
       return;
     }
-    
+
     if (parseInt(responseCode) != 200) {
       console.log("INVALID FORMAT")
       return;
@@ -176,7 +176,7 @@ class UserScreen extends View {
 
 
           this.setDataInStorage();
-          
+
           this.performLogin()
 
         } else {
@@ -328,7 +328,7 @@ class UserScreen extends View {
     this.email=this.email.trim();
     this.userPass=this.userPass.trim();
     this.userPass=this.userPass.trim();
-    this.mobileNumber=this.mobileNumber.trim();  
+    this.mobileNumber=this.mobileNumber.trim();
 
 
     if (this.firstName.length <= 0) {
@@ -391,7 +391,7 @@ class UserScreen extends View {
 
     this.userPass=this.userPass.trim();
     this.email=this.email.trim();
-    
+
     if (!JBridge.isNetworkAvailable()) {
         JBridge.showSnackBar("NO INTERNET CONNECTION")
         return;
@@ -406,7 +406,7 @@ class UserScreen extends View {
     window.__LoaderDialog.show()
     JBridge.hideKeyboard();
     JBridge.keyCloakLogin("android","sunbird",this.email,this.userPass);
-    
+
     setTimeout(()=>{
       window.__LoaderDialog.hide();
       this.enableLoginCallback=false
@@ -445,7 +445,7 @@ class UserScreen extends View {
           width="match_parent"
           gravity="center"
           text="Structured education for the educators"
-          style={window.__TextStyle.textStyle.HINT.REGULAR}/> 
+          style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
       </LinearLayout>)
   }
@@ -470,7 +470,7 @@ class UserScreen extends View {
                   text="FORGOT PASSWORD?"
                   id={this.idSet.forgotPasswordHolder}
                   style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
-            </LinearLayout>  
+            </LinearLayout>
               <LinearLayout
                 height="wrap_content"
                 width="wrap_content"
@@ -543,9 +543,9 @@ class UserScreen extends View {
                   hintText="Enter your name"
                   labelText="NAME"
                   margin="20,0,24,12"
-                  _onChange={this.updateFirstName}/>  
-            
-            </LinearLayout> 
+                  _onChange={this.updateFirstName}/>
+
+            </LinearLayout>
 
             <LinearLayout
               height="wrap_content"
@@ -560,8 +560,8 @@ class UserScreen extends View {
                 labelText="USER NAME"
                 margin="20,0,24,12"
                 _onChange={this.updateUserName}/>
-           
-            </LinearLayout>  
+
+            </LinearLayout>
 
 
               <TextInputView
@@ -570,9 +570,9 @@ class UserScreen extends View {
                 hintText="sample@test.com"
                 labelText="E-MAIL ID"
                 margin="20,0,24,12"
-                _onChange={this.updateEmail}/>  
+                _onChange={this.updateEmail}/>
 
-            
+
 
             <TextInputView
                 height="wrap_content"
@@ -581,8 +581,8 @@ class UserScreen extends View {
                 labelText="PASSWORD"
                 inputType="password"
                 margin="20,0,24,12"
-                _onChange={this.updateUserPassword}/>  
-            
+                _onChange={this.updateUserPassword}/>
+
             <LinearLayout
               height="wrap_content"
               width="match_parent"
@@ -594,10 +594,10 @@ class UserScreen extends View {
                 labelText="MOBILE NUMBER"
                 margin="20,0,24,12"
                 inputType="numeric"
-                _onChange={this.updateMobileNumber}/>  
-           
-            </LinearLayout> 
-            
+                _onChange={this.updateMobileNumber}/>
+
+            </LinearLayout>
+
             <LinearLayout
               height="wrap_content"
               width="match_parent"
@@ -609,8 +609,8 @@ class UserScreen extends View {
                 labelText="LANGUAGE"
                 margin="20,0,24,12"
                 text="English"
-                _onChange={this.updateLanguage}/>  
-           
+                _onChange={this.updateLanguage}/>
+
             </LinearLayout>
 
             {this.getOptions()}
@@ -649,7 +649,7 @@ class UserScreen extends View {
             visibility={this.isLoginMode?"visible":"gone"}
             textFromHtml= {"<font color='#007AFF'><a href=''>"+"No account yet? Sign up now"+"</a></font>"}
             style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
-         
+
         </LinearLayout>)
   }
 
@@ -673,12 +673,12 @@ class UserScreen extends View {
           weight="1"
           root="true"
           id={this.idSet.userForumContainer}
-          width="match_parent" 
+          width="match_parent"
           gravity="center"
           orientation="vertical">
 
          {this.getForum()}
-        
+
         </LinearLayout>
 
         <LinearLayout
@@ -690,7 +690,7 @@ class UserScreen extends View {
 
 
           {this.getSignUpSection()}
-         </LinearLayout> 
+         </LinearLayout>
 
 
 

@@ -15,7 +15,8 @@ class TextInputView extends View {
   constructor(props, children) {
     super(props, children);
     this.setIds([
-      "parentContainer"
+      "parentContainer",
+      "editText"
     ]);
     this.displayName = "TextInputview";
 
@@ -27,6 +28,12 @@ class TextInputView extends View {
     this.props._onChange(data);
   }
 
+  afterRender = () =>{
+    console.log("IN AFTER RENDER \n\n\n\n\n")
+
+  }
+
+
   render() {
 
 
@@ -35,6 +42,7 @@ class TextInputView extends View {
       id={this.idSet.parentContainer}
       width="match_parent"
       height="wrap_content"
+      afterRender={this.afterRender}
       margin={this.props.margin}
       orientation="vertical">
 
@@ -45,12 +53,13 @@ class TextInputView extends View {
           width="match_parent"
           height="wrap_content"/>
 
-        
+
             <EditText
               margin="0,0,0,0"
               padding="4,4,0,10"
               width="match_parent"
               height="wrap_content"
+              id={this.idSet.editText}
               singleLine="true"
               maxLine="1"
               inputType={this.props.inputType?this.props.inputType:"text"}
@@ -58,7 +67,7 @@ class TextInputView extends View {
               hint={this.props.hintText}
               text={this.props.text?this.props.text:""}
               onChange={this.handleOnChange}/>
-          
+
       </LinearLayout>
     )
 

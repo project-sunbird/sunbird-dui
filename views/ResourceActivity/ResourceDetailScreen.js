@@ -31,7 +31,7 @@ class ResourceDetailScreen extends View {
     this.screenName = "ResourceDetailScreen"
     this.menuData = {
       url: [
-        
+
       ]
     }
     this.menuData1 = {
@@ -48,7 +48,7 @@ class ResourceDetailScreen extends View {
 
     console.log("Got Title", this.details)
     this.localStatus = false;
-    
+
     // if(this.details.hasOwnProperty("content") && this.details.content.hasOwnProperty("isAvailableLocally")){
     //   this.localStatus = true;
     // }
@@ -341,7 +341,7 @@ class ResourceDetailScreen extends View {
           console.log("back to resource");
           _this.onBackPressed();
         }
-      }); 
+      });
       JBridge.deleteContent(this.details.identifier,callback);
     }
   }
@@ -362,7 +362,7 @@ class ResourceDetailScreen extends View {
           overFlowCallback = {this.overFlowCallback}
           showMenu="true"
           invert="true"
-          
+
           />)
 
     this.replaceChild(this.idSet.simpleToolBarOverFlow, toolbar.render(), 0);
@@ -393,7 +393,7 @@ class ResourceDetailScreen extends View {
           overFlowCallback = {this.overFlowCallback}
           showMenu="true"
           invert="true"
-          
+
           />
         </LinearLayout>
 
