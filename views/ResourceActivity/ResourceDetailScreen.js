@@ -24,11 +24,17 @@ class ResourceDetailScreen extends View {
     this.setIds([
       'ratingBar',
       "progressButtonContainer",
-      "ratingContainer"
+      "ratingContainer",
+      "simpleToolBarOverFlow"
     ]);
     this.state = state;
     this.screenName = "ResourceDetailScreen"
     this.menuData = {
+      url: [
+        
+      ]
+    }
+    this.menuData1 = {
       url: [
         {imageUrl:'ic_action_overflow'}
       ]
@@ -42,7 +48,7 @@ class ResourceDetailScreen extends View {
 
     console.log("Got Title", this.details)
     this.localStatus = false;
-
+    
     // if(this.details.hasOwnProperty("content") && this.details.content.hasOwnProperty("isAvailableLocally")){
     //   this.localStatus = true;
     // }
@@ -73,8 +79,11 @@ class ResourceDetailScreen extends View {
                  contentDetail = {_this.details.content}
                  buttonText="PLAY"
                  localStatus = {_this.localStatus}
-                 identifier = {_this.details.identifier}/>
+                 identifier = {_this.details.identifier}
+                 changeOverFlowMenu = {_this.changeOverFlow}
+                 />
         _this.replaceChild(_this.idSet.progressButtonContainer, pButonLayout.render(), 0);
+        _this.changeOverFlow();
 
       } else {
         var pButonLayout = <ProgressButton
@@ -83,7 +92,9 @@ class ResourceDetailScreen extends View {
                  contentDetail = {_this.details.content}
                  buttonText="DOWNLOAD"
                  localStatus = {_this.localStatus}
-                 identifier = {_this.details.identifier}/>
+                 identifier = {_this.details.identifier}
+                 changeOverFlowMenu = {_this.changeOverFlow}
+                 />
         _this.replaceChild(_this.idSet.progressButtonContainer, pButonLayout.render(), 0);
 
 
@@ -323,6 +334,16 @@ class ResourceDetailScreen extends View {
 
   overFlowCallback = (params) => {
     console.log("ITEM CLICKED",params);
+    if(params == 0){
+      var callback = callbackMapper.map(function(response){
+        console.log("repsonse for delete",response)
+        if(response[0] == "successful"){
+          console.log("back to resource");
+          _this.onBackPressed();
+        }
+      }); 
+      JBridge.deleteContent(this.details.identifier,callback);
+    }
   }
 
 
@@ -331,6 +352,21 @@ class ResourceDetailScreen extends View {
     window.__runDuiCallback(eventAction);
   }
 
+  changeOverFlow = () =>{
+    var toolbar = (
+      <SimpleToolbar
+          width="match_parent"
+          menuData={this.menuData1}
+          popupMenu={this.popupMenu}
+          onBackPress={onBackPressed}
+          overFlowCallback = {this.overFlowCallback}
+          showMenu="true"
+          invert="true"
+          
+          />)
+
+    this.replaceChild(this.idSet.simpleToolBarOverFlow, toolbar.render(), 0);
+  }
 
 
 
@@ -343,6 +379,12 @@ class ResourceDetailScreen extends View {
         orientation="vertical"
         width="match_parent"
         height="match_parent">
+        <LinearLayout
+        root = "true"
+        width="match_parent"
+        height="wrap_content"
+        id = {this.idSet.simpleToolBarOverFlow}
+        >
         <SimpleToolbar
           width="match_parent"
           menuData={this.menuData}
@@ -350,7 +392,10 @@ class ResourceDetailScreen extends View {
           onBackPress={onBackPressed}
           overFlowCallback = {this.overFlowCallback}
           showMenu="true"
-          invert="true"/>
+          invert="true"
+          
+          />
+        </LinearLayout>
 
               <ScrollView
                 height="0"

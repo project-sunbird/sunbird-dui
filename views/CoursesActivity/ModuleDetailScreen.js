@@ -26,15 +26,22 @@ class ModuleDetailScreen extends View {
       'ratingBar',
       "downloadProgressText",
       "descriptionContainer",
-      "playButtonContainer"
+      "playButtonContainer",
+      "simpleToolBarOverFlow"
     ]);
     this.state = state;
     this.screenName = "ModuleDetailScreen"
     this.menuData = {
       url: [
-
+        
       ]
     }
+    this.menuData1 = {
+      url: [
+        {imageUrl:'ic_action_overflow'}
+      ]
+    }
+    this.popupMenu = "Delete"
 
     this.shouldCacheScreen = false;
 
@@ -67,7 +74,21 @@ class ModuleDetailScreen extends View {
   };
 
 
+  changeOverFlow = () =>{
+    var toolbar = (
+      <SimpleToolbar
+          width="match_parent"
+          menuData={this.menuData1}
+          popupMenu={this.popupMenu}
+          onBackPress={onBackPressed}
+          overFlowCallback = {this.overFlowCallback}
+          showMenu="true"
+          invert="true"
+          
+          />)
 
+    this.replaceChild(this.idSet.simpleToolBarOverFlow, toolbar.render(), 0);
+  }
 
 
   onPop = () => {
@@ -268,6 +289,21 @@ class ModuleDetailScreen extends View {
     return bodyLayout;
   }
 
+overFlowCallback = (params) => {
+    console.log("ITEM CLICKED",params);
+    if(params == 0){
+      var callback = callbackMapper.map(function(response){
+        console.log("repsonse for delete",response)
+        if(response[0] == "successful"){
+          console.log("back to resource");
+          _this.onBackPressed();
+        }
+      }); 
+      JBridge.deleteContent(this.module.identifier,callback);
+    }
+  }
+
+
   onBackPressed = () => {
     var eventAction = { "tag": "BackToParent", contents: [] };
     window.__runDuiCallback(eventAction);
@@ -283,13 +319,24 @@ class ModuleDetailScreen extends View {
         orientation="vertical"
         width="match_parent"
         height="match_parent">
+
+      <LinearLayout
+        root = "true"
+        width="match_parent"
+        height="wrap_content"
+        id = {this.idSet.simpleToolBarOverFlow}
+        >
         <SimpleToolbar
-          
           width="match_parent"
           menuData={this.menuData}
+          popupMenu={this.popupMenu}
           onBackPress={onBackPressed}
+          overFlowCallback = {this.overFlowCallback}
           showMenu="true"
-          invert="true"/>
+          invert="true"
+          
+          />
+        </LinearLayout>
 
               <ScrollView
                 height="0"
