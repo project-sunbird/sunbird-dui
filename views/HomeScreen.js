@@ -100,7 +100,7 @@ class HomeScreen extends View {
     );
     this.backPressCount = 0;
 
-    this.setupDuiCallback();
+    this.handleBottomNavBarAction(this.currentPageIndex);
   }
 
 
@@ -141,6 +141,17 @@ class HomeScreen extends View {
           }
         }
       }
+
+    if(responseCode == 401){
+      var callback  = callbackMapper.map(function(token){
+        window.__apiToken = token;
+         eventAction = { "tag": state.responseFor, contents: {"user_token":window.__userToken,"api_token": window.__apiToken} };
+         window.__runDuiCallback(eventAction);
+      });
+      JBridge.getApiToken();
+      return;
+    }
+      
     if (status === "failure" || status=="f") {
       JBridge.showSnackBar("INTERNET CONNECTION ISSUE")
       

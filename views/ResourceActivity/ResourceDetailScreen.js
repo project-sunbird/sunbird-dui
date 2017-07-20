@@ -30,9 +30,10 @@ class ResourceDetailScreen extends View {
     this.screenName = "ResourceDetailScreen"
     this.menuData = {
       url: [
-        
+        {imageUrl:'ic_action_overflow'}
       ]
     }
+    this.popupMenu = "Delete"
 
     this.shouldCacheScreen = false;
 
@@ -112,7 +113,7 @@ class ResourceDetailScreen extends View {
           text="Unrated"
           style={window.__TextStyle.textStyle.HINT.TINY}/>)
 
-        this.replaceChild(this.idSet.ratingContainer,layout.render(),0)    
+        this.replaceChild(this.idSet.ratingContainer,layout.render(),0)
     }
   }
 
@@ -160,7 +161,7 @@ class ResourceDetailScreen extends View {
         height="wrap_content"
         visibility="gone"
         margin="0,8,0,0">
-      
+
 
           <ImageView
           width="156"
@@ -299,7 +300,7 @@ class ResourceDetailScreen extends View {
                id = {this.idSet.ratingBar}
                width="wrap_content"
                height="wrap_content"/>
-            </LinearLayout>     
+            </LinearLayout>
             <ViewWidget
               width="0"
               weight="1"
@@ -318,13 +319,9 @@ class ResourceDetailScreen extends View {
 
   }
 
-  handleMenuItemClick = (url) =>{
-    if(url == "ic_action_overflow"){
 
-    }
-  }
 
-  menuCallback = (params) => {
+  overFlowCallback = (params) => {
     console.log("ITEM CLICKED",params);
   }
 
@@ -349,10 +346,9 @@ class ResourceDetailScreen extends View {
         <SimpleToolbar
           width="match_parent"
           menuData={this.menuData}
-          menuCallback={this.menuCallback}
-          popupMenu={"Delete"}
-          onMenuItemClick={this.handleMenuItemClick}
+          popupMenu={this.popupMenu}
           onBackPress={onBackPressed}
+          overFlowCallback = {this.overFlowCallback}
           showMenu="true"
           invert="true"/>
 
@@ -376,7 +372,7 @@ class ResourceDetailScreen extends View {
 
                   {this.getBody()}
 
-                  
+
 
                 </LinearLayout>
 
@@ -388,8 +384,8 @@ class ResourceDetailScreen extends View {
                 id={this.idSet.progressButtonContainer}
                 root="true"/>
 
-                
-       
+
+
       </LinearLayout>
     );
 

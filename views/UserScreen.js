@@ -139,6 +139,7 @@ class UserScreen extends View {
       JBridge.showSnackBar("INTERNET CONNECTION ISSUE")
       return;
     }
+    
     if (parseInt(responseCode) != 200) {
       console.log("INVALID FORMAT")
       return;
