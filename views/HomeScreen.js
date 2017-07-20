@@ -83,6 +83,12 @@ class HomeScreen extends View {
   }
 
   onPop = () => {
+    console.log("IN POP ",window.__pressedLoggedOut)
+    if(window.__pressedLoggedOut){
+      console.log("IN POP ")
+      this.currentPageIndex=0
+      window.__pressedLoggedOut=false;
+    }
 
     if(this.currentPageIndex==undefined){
       this.currentPageIndex=0;
@@ -94,7 +100,7 @@ class HomeScreen extends View {
     );
     this.backPressCount = 0;
 
-    this.setupDuiCallback();
+    this.handleBottomNavBarAction(this.currentPageIndex);
   }
 
 

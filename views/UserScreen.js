@@ -15,7 +15,7 @@ var objectAssign = require('object-assign');
 var TextInputView = require('../components/Sunbird/core/TextInputView');
 
 
-
+var _this;
 var debounce = require("debounce");
 window.R = require("ramda");
 
@@ -44,7 +44,9 @@ class UserScreen extends View {
     this.screenName = "UserScreen"
     this.isLoginMode = true;
     this.language = "English";
-    this.userName = this.userPass = this.firstName = ""
+    this.userName = this.userPass = this.firstName = "";
+    _this = this;
+    this.shouldCacheScreen=false;
 
     window.__loginCallback=this.getLoginCallback;
 
@@ -108,7 +110,6 @@ class UserScreen extends View {
   performLogin = () => {
 
     JBridge.setInSharedPrefs("logged_in","YES");
-
     window.__userToken=JBridge.getFromSharedPrefs("user_token");
     var eventAction = { tag: "LoginAction", contents: {} };
     window.__runDuiCallback(eventAction);
@@ -136,6 +137,23 @@ class UserScreen extends View {
     var response = JSON.parse(state.response.status[1]);
     var responseCode = state.response.status[2];
     var responseUrl = state.response.status[3];
+
+    
+    if(responseCode == 401){
+      var callback  = callbackMapper.map(function(token){
+        window.__apiToken = token;
+        console.log("in key rotation user screen")
+        if(state.responseFor == "SignUpApiAction"){
+          _this.handleSignUpClick();
+        }
+         
+      });
+      JBridge.getApiToken();
+      return;
+        }
+    
+    
+
     if (status === "failure" || status=="f") {
       JBridge.showSnackBar("INTERNET CONNECTION ISSUE")
       return;

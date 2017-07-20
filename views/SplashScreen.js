@@ -19,6 +19,7 @@ class SplashScreen extends View {
     this.screenName = "SplashScreen"
     console.log("Im in SplashScreen")
     this.getUserToken()
+    window.__pressedLoggedOut=false;
   }
 
   onPop = () => {
