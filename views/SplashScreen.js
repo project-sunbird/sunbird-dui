@@ -35,7 +35,7 @@ class SplashScreen extends View {
       window.__apiToken = token[0];
     });
 
-    JBridge.getUserToken(callback);
+    JBridge.getApiToken(callback);
 
     
   }
