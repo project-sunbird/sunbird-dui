@@ -65,6 +65,9 @@ class UserScreen extends View {
 
   checkAlreadyLoggedIn = () =>{
 
+    if("YES"==JBridge.getFromSharedPrefs("logged_in"))
+        this.performLogin();
+
   }
 
   getLoginCallback = (response) => {
@@ -87,8 +90,7 @@ class UserScreen extends View {
     window.__userToken=contentBody.sub;    
     JBridge.showSnackBar("Welcome Back "+ contentBody.given_name)
 
-    var eventAction = { tag: "LoginAction", contents: {} };
-    window.__runDuiCallback(eventAction);
+    this.performLogin();
     }catch(e){
      console.log(e.message)
      JBridge.showSnackBar("Invalid Email-ID")
@@ -100,6 +102,11 @@ class UserScreen extends View {
 
   }
 
+  performLogin = () => {
+    JBridge.setInSharedPrefs("logged_in","YES");
+    var eventAction = { tag: "LoginAction", contents: {} };
+    window.__runDuiCallback(eventAction);
+  }
 
   onBackPressed = () => {
     this.backPressCount++;
@@ -158,8 +165,7 @@ class UserScreen extends View {
           JBridge.setInSharedPrefs("user_name", this.userFirstName);
           JBridge.setInSharedPrefs("user_token", result.userId);
           window.__userToken=result.userId;
-          var eventAction = { tag: "LoginAction", contents: {} };
-          window.__runDuiCallback(eventAction);
+          this.performLogin()
         } else {
           JBridge.showSnackBar("Please retry")
         }

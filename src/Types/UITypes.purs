@@ -24,7 +24,7 @@ data UserScreenAction = LoginAction | LoginApiAction {userName::String, userPass
 
 
 data HomeScreen = HomeScreen
-data HomeScreenAction = ShowHome {name::String} | StartCourseFlow |
+data HomeScreenAction = ShowHome {name::String} | StartCourseFlow | 
  StartResourceFlow | StartCommunityFlow | StartProfileFlow | 
  StartCommunityInfoFlow {community::String} | StartCommunityViewAllFlow | 
  StartCourseInfoFlow {course::String} | StartEnrolledCourseFlow {course::String} |

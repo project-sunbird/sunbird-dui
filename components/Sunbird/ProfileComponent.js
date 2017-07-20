@@ -9,7 +9,7 @@ var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
-var SearchToolbar = require('../Sunbird/core/SearchToolbar');
+var SimpleToolbar = require('../Sunbird/core/SimpleToolbar');
 var ProfileHeader = require('../Sunbird/ProfileHeader');
 var ComingSoonComponent = require('../Sunbird/ComingSoonComponent');
 var PersonalDetails = require('../Sunbird/PersonalDetails');
@@ -33,20 +33,24 @@ class ProfileComponent extends View {
     console.log("profile api response", this.props);
     _this = this;
 
-    // this.menuData = {
-    //   url: [
-    //     { imageUrl: "ic_action_plus" },
-    //     { imageUrl: "ic_action_notification_blue" },
-    //     { imageUrl: "ic_action_search" }
-    //   ]
-    // }
+    this.menuData = {
+      url: [
+        { imageUrl: "ic_action_plus" }
+      ]
+    }
     this.handleResponse();
   }
 
   handleMenuClick = (url) => {
 
-    if (url == "ic_action_notification_blue") {
-      window.__runDuiCallback({ tag: "StartNotificationFlow", contents: [] });
+    if (url == "ic_action_plus") {
+      JBridge.showSnackBar("Invalid Email-ID")
+      JBridge.setInSharedPrefs("logged_in","NO");
+      JBridge.setInSharedPrefs("user_id", "__failed");
+      JBridge.setInSharedPrefs("user_name",  "__failed");
+      JBridge.setInSharedPrefs("user_token",  "__failed");
+      
+      window.__Logout();
     }
 
   }
@@ -91,11 +95,15 @@ class ProfileComponent extends View {
         afterRender={this.afterRender}
         height="match_parent">
 
-        <SearchToolbar
-          hint="Enter your search"
-          invert="true"
-          hideBack="true"
-          title=""
+        <SimpleToolbar
+          title="Profile"
+          height="wrap_content"
+          width="match_parent"
+          showMenu="true"
+          invert="true" 
+          hideBack="true" 
+          menuData={this.menuData}
+          onMenuItemClick={this.handleMenuClick}
           />
 
 
