@@ -45,7 +45,7 @@ class ProfileComponent extends View {
 
 
   logout = () =>{
-    JBridge.showSnackBar("Invalid Email-ID")
+    JBridge.showSnackBar("Logged out")
     JBridge.setInSharedPrefs("logged_in","NO");
     JBridge.setInSharedPrefs("user_id", "__failed");
     JBridge.setInSharedPrefs("user_name",  "__failed");
@@ -79,8 +79,9 @@ class ProfileComponent extends View {
   }
 
   overFlowCallback = (params) => {
-    if(params == 0)
-    this.logout();
+    if(params == 0){
+      this.logout();
+    }
   }
 
 
