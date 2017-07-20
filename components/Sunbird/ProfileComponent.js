@@ -49,7 +49,9 @@ class ProfileComponent extends View {
       JBridge.setInSharedPrefs("user_id", "__failed");
       JBridge.setInSharedPrefs("user_name",  "__failed");
       JBridge.setInSharedPrefs("user_token",  "__failed");
-      
+      console.log("IN P1 ",window.__pressedLoggedOut)
+      window.__pressedLoggedOut=true;
+      console.log("IN P2 ",window.__pressedLoggedOut)
       window.__Logout();
     }
 

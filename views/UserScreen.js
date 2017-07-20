@@ -108,7 +108,6 @@ class UserScreen extends View {
   performLogin = () => {
     
     JBridge.setInSharedPrefs("logged_in","YES");
-
     window.__userToken=JBridge.getFromSharedPrefs("user_token");
     var eventAction = { tag: "LoginAction", contents: {} };
     window.__runDuiCallback(eventAction);
