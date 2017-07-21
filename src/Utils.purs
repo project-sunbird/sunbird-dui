@@ -198,6 +198,16 @@ getCourcePageFilterApi user_token api_token filter_to_use=
   (post requestUrl headers payload)   
 
 
+getContentStatus courseId user_token api_token =
+  let requestUrl = "/course/v1/content/state/read" 
+      headers = (generateRequestHeaders user_token api_token)
+      payload = A.fromObject (StrMap.fromFoldable [(Tuple "request" (A.fromObject (StrMap.fromFoldable  [ (Tuple "userId" (A.fromString user_token))
+                                                                                                          , (Tuple "courseIds" (A.fromArray [(A.fromString courseId)]))
+                                                                                                          ])))
+                                                   ]) in
+  (post requestUrl headers payload)
+
+
 getResourcePageFilterApi user_token api_token filter_to_use=
   let requestUrl = "/data/v1/page/assemble"
       headers = (generateRequestHeaders user_token api_token)

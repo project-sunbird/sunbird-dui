@@ -56,8 +56,13 @@ startCourseInfoFlow cDetail= do
 
 startEnrolledCourseFlow cDetail= do
 	event <- ui $ CourseEnrolledScreen {courseDetails:cDetail}
+
 	case event of
 		DummyCourseEnrolledAction -> pure $ "handled"
+		GetContentStateApi {courseId:x,user_token:y,api_token:z} -> do
+			responseData <- getContentStatus x y z
+			_ <- sendUpdatedState {response : responseData, responseFor : "GetContentStateApi", screen:"asas"} 
+			pure $ "handled"
   		ShowModuleScreen {moduleName:mName,moduleDetails:mDetails}-> startModuleDetailsFlow mName mDetails cDetail
 		_ -> pure $ "default"
 

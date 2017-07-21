@@ -44,7 +44,7 @@ data CourseInfoScreen = CourseInfoScreen {courseDetails::String}
 data CourseInfoScreenAction = DummyCourseInfoAction | ShowEnrolledCourse {course::String} | EnrollCourseApi {user_token::String,reqParams :: String, api_token::String} | ShowModuleDetails {moduleName::String,moduleDetails::String}
 
 data CourseEnrolledScreen = CourseEnrolledScreen {courseDetails::String}
-data CourseEnrolledScreenAction = DummyCourseEnrolledAction | ShowModuleScreen {moduleName::String,moduleDetails::String}
+data CourseEnrolledScreenAction = DummyCourseEnrolledAction | ShowModuleScreen {moduleName::String,moduleDetails::String} | GetContentStateApi {courseId::String,user_token::String,api_token::String}
 
 data ModuleDetailScreen = ModuleDetailScreen {moduleName::String,moduleDetails::String}
 data ModuleDetailScreenAction = DummyModuleDetailsAction | BackToParent | ShowSubModuleScreen {moduleName::String,moduleDetails::String}
