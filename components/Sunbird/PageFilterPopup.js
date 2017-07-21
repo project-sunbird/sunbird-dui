@@ -16,7 +16,8 @@ var PageFilterChooser = require('../Sunbird/PageFilterChooser');
 var FilterItem = require('../Sunbird/FilterItem')
 
 var Styles = require("../../res/Styles");
-var FilterParams = require("../../FilterParams")
+var FilterParamsCource = require("../../FilterParamsCource")
+var FilterParamsResource = require("../../FilterParamsResource")
 let IconStyle = Styles.Params.IconStyle;
 
 class PageFilterPopup extends View {
@@ -31,17 +32,25 @@ class PageFilterPopup extends View {
 
 
     window.__PageFilterPopup = this;
-    this.filterList=FilterParams.filterParams;
+    this.filterListCource=FilterParamsCource.filterParamsCource;
+    this.filterListResource=FilterParamsResource.filterParamsResource;
+    this.isForResouce=false;
 
   }
 
 
   show = () => {
+    this.visible=true;
     this.setVisibility("visible");
   }
 
   hide = () => {
+    this.visible=false;
     this.setVisibility("gone");
+  }
+
+  getVisibility = () => {
+    return this.visible;
   }
 
   setVisibility = (data) => {
@@ -94,8 +103,15 @@ class PageFilterPopup extends View {
 
 
   getFilterList = () => {
+    var listToUse;
 
-    var listItem=this.filterList.map((item,index)=>{
+    if(this.isForResouce){
+      listToUse = this.filterListResource
+    }else{
+      listToUse = this.filterListCource
+    }
+
+    var listItem=listToUse.map((item,index)=>{
       return (
 
                   <FilterItem
@@ -186,7 +202,13 @@ class PageFilterPopup extends View {
             </LinearLayout>)
   }
 
-  resetPopup = () => {
+  resetPopup = (isFor) => {
+    if(isFor=="Cource"){
+      this.isForResouce=false;
+    }else{
+      this.isForResouce=true;
+    }
+
     this.filter={};
     this.replaceChild(this.idSet.contentContainer, this.getBody().render(), 0)
   }

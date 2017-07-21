@@ -176,7 +176,7 @@ getResourcePageApi user_token api_token =
       headers = (generateRequestHeaders user_token api_token)
       payload = A.fromObject (StrMap.fromFoldable [ (Tuple "id" (A.fromString "unique API ID"))
                                                    , (Tuple "ts" (A.fromString "2013/10/15 16:16:3"))
-                                                   , (Tuple "request" (A.fromObject (StrMap.fromFoldable  [ (Tuple "name" (A.fromString "Resources"))
+                                                   , (Tuple "request" (A.fromObject (StrMap.fromFoldable  [ (Tuple "name" (A.fromString "Resource"))
                                                                                                           , (Tuple "source" (A.fromString "web"))
                                                                                                           , (Tuple "filters" (A.fromObject (StrMap.fromFoldable[ (Tuple "status" (A.fromString "Live"))
                                                                                                                                                                 ])))
@@ -184,12 +184,36 @@ getResourcePageApi user_token api_token =
                                                    ]) in
   (post requestUrl headers payload) 
 
+getCourcePageFilterApi user_token api_token filter_to_use=
+  let requestUrl = "/data/v1/page/assemble"
+      headers = (generateRequestHeaders user_token api_token)
+      payload = A.fromObject (StrMap.fromFoldable [ (Tuple "id" (A.fromString "unique API ID"))
+                                                   , (Tuple "ts" (A.fromString "2013/10/15 16:16:3"))
+                                                   , (Tuple "request" (A.fromObject (StrMap.fromFoldable  [ (Tuple "name" (A.fromString "Cource"))
+                                                                                                          , (Tuple "source" (A.fromString "web"))
+                                                                                                          , (Tuple "filters" (getJsonFromString filter_to_use))
+                                                                                                                                                              
+                                                                                                          ])))
+                                                   ]) in
+  (post requestUrl headers payload)   
+
+
+getContentStatus courseId user_token api_token =
+  let requestUrl = "/course/v1/content/state/read" 
+      headers = (generateRequestHeaders user_token api_token)
+      payload = A.fromObject (StrMap.fromFoldable [(Tuple "request" (A.fromObject (StrMap.fromFoldable  [ (Tuple "userId" (A.fromString user_token))
+                                                                                                          , (Tuple "courseIds" (A.fromArray [(A.fromString courseId)]))
+                                                                                                          ])))
+                                                   ]) in
+  (post requestUrl headers payload)
+
+
 getResourcePageFilterApi user_token api_token filter_to_use=
   let requestUrl = "/data/v1/page/assemble"
       headers = (generateRequestHeaders user_token api_token)
       payload = A.fromObject (StrMap.fromFoldable [ (Tuple "id" (A.fromString "unique API ID"))
                                                    , (Tuple "ts" (A.fromString "2013/10/15 16:16:3"))
-                                                   , (Tuple "request" (A.fromObject (StrMap.fromFoldable  [ (Tuple "name" (A.fromString "Resources"))
+                                                   , (Tuple "request" (A.fromObject (StrMap.fromFoldable  [ (Tuple "name" (A.fromString "Resource"))
                                                                                                           , (Tuple "source" (A.fromString "web"))
                                                                                                           , (Tuple "filters" (getJsonFromString filter_to_use))
                                                                                                                                                               

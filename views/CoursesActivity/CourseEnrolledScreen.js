@@ -146,7 +146,6 @@ class CourseEnrolledScreen extends View {
         }]
       }]
     };
-
   }
 
   onPop = () => {
@@ -157,10 +156,18 @@ class CourseEnrolledScreen extends View {
     );
   }
 
+  getContentState = (courseId,userToken) =>{
+    var eventAction = { "tag": "GetContentStateApi", contents: { "courseId": courseId, "user_token": userToken, "api_token": window.__apiToken } };
+    window.__runDuiCallback(eventAction);
+
+  }
+
 
 
   afterRender = () => {
     this.checkContentLocalStatus(this.baseIdentifier);
+    this.getContentState(this.baseIdentifier,window.__userToken);
+
   }
 
 
@@ -221,6 +228,9 @@ class CourseEnrolledScreen extends View {
     var eventAction = { "tag": "ShowModuleScreen", contents: { "moduleName": moduleName, "moduleDetails": JSON.stringify(module) } };
     window.__runDuiCallback(eventAction);
 
+  }
+  handleStateChange(state){
+    console.log("state in CES",state)
   }
 
 

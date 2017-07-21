@@ -136,7 +136,7 @@ class CourseInProgressContainer extends View {
       var courseListDetails = {
                                "title" : "Courses In Progress",
                                "courseListDetails" : this.data
-                            }
+                              }
 
       window.__runDuiCallback({ tag: "StartCourseViewAllFlow", contents: {"courseListDetails": JSON.stringify(courseListDetails)}});
 

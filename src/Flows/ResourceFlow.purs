@@ -12,7 +12,6 @@ import Control.Monad.Eff.Class(liftEff)
 import Data.Foreign.Class (class Decode, class Encode, encode)
 import Data.Generic.Rep (class Generic)
 import Flows.NotificationFlow
-import Flows.FilterFlow
 import Data.Foreign.Generic (encodeJSON)
 import Control.Monad.Eff.Exception (EXCEPTION)
 import Prelude
@@ -42,10 +41,17 @@ startResourceSearchFlow values = do
   event <- ui $ SearchScreen {filterDetails:values}
   case event of
     ResourceDetailFlow {resourceDetails : details} -> startResourceDetailFlow details "ResourceSearch" values
-    StartFilterFlow{filterDetails : details} -> startFilterFlow details
+    StartFilterFlow{filterDetails : details} -> startFilterFlowRes details
     SearchResourceFlow {course : details} -> startCourseDetailFlow details
     _ -> pure $ "aborted"
 
+
+startFilterFlowRes state = do
+  liftEff $ log $ "Search FLow started"
+  event <- ui $ FilterScreen {filterDetails : state}
+  case event of
+    SearchScreenFromFilter {filterData: details} -> startResourceSearchFlow details
+    _ -> pure $ "aborted"
 
 
 
