@@ -60,16 +60,16 @@ userScreenFlow = do
 
 cFlow = do
   liftEff $ log $ "Its in cFlow"
-  action <- ui $ HomeScreen
-  case action of
+  event <- ui $ HomeScreen
+  case event of
     ShowHome {name:x} -> do
       liftEff $ log $ "Action handled Show HomeScreen"
-      pure $ "action handled"
-    StartCourseFlow -> startCourseFlow action 
+      pure $ "event handled"
+    StartCourseFlow -> startCourseFlow "Dummy" 
     StartResourceFlow -> startResourceFlow "Dummy"
-    StartCommunityFlow -> startCommunityFlow action
-    StartProfileFlow -> startProfileFlow action
-    StartNotificationFlow -> startNotificationFlow action
+    StartCommunityFlow -> startCommunityFlow event
+    StartProfileFlow -> startProfileFlow event
+    StartNotificationFlow -> startNotificationFlow event
     StartCoursePageApi {user_token:x,api_token:y}-> do
                   liftEff $ log $ "START COURSE PAGE API"
                   responseData <- getCoursesPageApi x y

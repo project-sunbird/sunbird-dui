@@ -252,8 +252,8 @@ class CourseEnrolledScreen extends View {
 
 
   onBackPressed = () => {
-    window.__changePureScriptFlow();
-    window.__runDuiCallback({ action: "showMainFlow" });
+   var eventAction = { tag: 'CourseEnrolledBackpress', contents: [] }
+   window.__runDuiCallback(eventAction);
   }
 
 
