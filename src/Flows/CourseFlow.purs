@@ -34,6 +34,10 @@ startCourseFlow state = do
 			responseData <- getUserEnrolledCourses x y
 	 		_ <- sendUpdatedState {response : responseData, responseFor : "GetEnrolledCourseApi", screen:"asas"} 
 	  		pure $ "Aborted 3"
+	  	StartFilterPageApi{user_token:user_token, api_token:api_key,filter_to_send:delta}  ->	do 
+																									responseData <- getCourcePageFilterApi user_token api_key delta
+																									_ <- sendUpdatedState {response : responseData, responseFor : "StartCourcePageApi", screen:"asas"} 
+																									pure $ "handled" 	
 		_ -> pure $ "default"
 
     

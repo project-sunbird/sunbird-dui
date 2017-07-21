@@ -191,8 +191,17 @@ class PageFilterChooser extends View {
 
   handleItemClick = (title,checked) => {
     console.log("Filters",title,"\t",checked)
+    console.log("Filters",title,"\t",this.selectedList)
+
     if(checked=="true"){
-      this.selectedList.push(title);
+      var newList=[];
+      this.selectedList.map((item)=>{
+        if(title!=item)
+          newList.push(item)
+      })
+      newList.push(title)
+      this.selectedList=newList;
+
     }else{
       var newList=[];
       this.selectedList.map((item)=>{

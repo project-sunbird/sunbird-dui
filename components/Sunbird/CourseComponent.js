@@ -35,7 +35,8 @@ class CourseComponent extends View {
 
     this.menuData = {
       url: [
-        { imageUrl: "ic_action_search" }
+        { imageUrl: "ic_action_search" },
+        { imageUrl: "ic_action_filter" }
       ]
     }
 
@@ -225,10 +226,14 @@ class CourseComponent extends View {
       JBridge.showSnackBar("Comming Soon")
         // window.__runDuiCallback({ tag: "StartNotificationFlow", contents: [] });
     }
-    if (url == "ic_action_search") {
+    else if (url == "ic_action_search") {
       var searchDetails = { filterDetails: "", searchType: "Course" }
       window.__runDuiCallback({ tag: "StartSearchFlow", contents: { filterDetails: JSON.stringify(searchDetails) } });
 
+    }
+     else if (url == "ic_action_filter") {
+      window.__PageFilterPopup.resetPopup("Cource");
+      window.__PageFilterPopup.show();
     }
   }
 

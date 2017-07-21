@@ -12,7 +12,7 @@ var ChooseItem = require('../Sunbird/ChooseItem');
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 const transitParams = require('../../transitions');
-const filterParams = require('../../FilterParams');
+
 
 var _this;
 
