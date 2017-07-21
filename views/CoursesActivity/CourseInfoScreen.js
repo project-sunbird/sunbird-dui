@@ -310,8 +310,8 @@ class CourseInfoScreen extends View {
   }
 
   onBackPressed = () => {
-    var eventAction = { tag: 'CourseInfoBackPress', contents: [] }
-    window.__runDuiCallback(eventAction);
+    var eventAction = { tag: 'CourseInfoBackpress', contents: [] }
+   window.__runDuiCallback(eventAction);
   }
 
   getCurriculumnBrief = () => {
