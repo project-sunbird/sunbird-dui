@@ -35,24 +35,27 @@ class ProfileComponent extends View {
 
     this.menuData = {
       url: [
-        { imageUrl: "ic_action_plus" }
+        { imageUrl: "ic_action_overflow" }
       ]
     }
+    this.popupMenu="Logout";
+
     this.handleResponse();
   }
 
-  handleMenuClick = (url) => {
 
-    if (url == "ic_action_plus") {
-      JBridge.showSnackBar("Invalid Email-ID")
-      JBridge.setInSharedPrefs("logged_in","NO");
-      JBridge.setInSharedPrefs("user_id", "__failed");
-      JBridge.setInSharedPrefs("user_name",  "__failed");
-      JBridge.setInSharedPrefs("user_token",  "__failed");
-      
-      window.__Logout();
-    }
+  logout = () =>{
+    JBridge.showSnackBar("Logged out")
+    JBridge.setInSharedPrefs("logged_in","NO");
+    JBridge.setInSharedPrefs("user_id", "__failed");
+    JBridge.setInSharedPrefs("user_name",  "__failed");
+    JBridge.setInSharedPrefs("user_token",  "__failed");
 
+    console.log("IN P1 ",window.__pressedLoggedOut)
+    window.__pressedLoggedOut=true;
+    console.log("IN P2 ",window.__pressedLoggedOut)
+
+    window.__Logout();
   }
 
   handleResponse = () => {
@@ -79,13 +82,20 @@ class ProfileComponent extends View {
             background={window.__Colors.PRIMARY_BLACK_22}/>)
   }
 
+  overFlowCallback = (params) => {
+    if(params == 0){
+      this.logout();
+    }
+  }
+
+
   afterRender() {}
 
 
   render() {
     this.layout = (
 
-     
+
 
 
       <LinearLayout
@@ -95,16 +105,16 @@ class ProfileComponent extends View {
         afterRender={this.afterRender}
         height="match_parent">
 
-        <SimpleToolbar
-          title="Profile"
-          height="wrap_content"
-          width="match_parent"
-          showMenu="true"
-          invert="true" 
-          hideBack="true" 
-          menuData={this.menuData}
-          onMenuItemClick={this.handleMenuClick}
-          />
+
+          <SimpleToolbar
+            title="Profile"
+            width="match_parent"
+            menuData={this.menuData}
+            popupMenu={this.popupMenu}
+            overFlowCallback = {this.overFlowCallback}
+            showMenu="true"
+            hideBack="true"
+            invert="true"/>
 
 
           <ScrollView
@@ -127,20 +137,14 @@ class ProfileComponent extends View {
                 data={this.details}/>
 
 
-
-                <ComingSoonComponent
-                text="More details coming soon.."/>
-
-                
-
               </LinearLayout>
 
          </ScrollView>
 
         </LinearLayout>
-      
 
-      
+
+
     )
 
     return this.layout.render();

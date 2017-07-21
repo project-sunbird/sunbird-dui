@@ -83,6 +83,12 @@ class HomeScreen extends View {
   }
 
   onPop = () => {
+    console.log("IN POP ",window.__pressedLoggedOut)
+    if(window.__pressedLoggedOut){
+      console.log("IN POP ")
+      this.currentPageIndex=0
+      window.__pressedLoggedOut=false;
+    }
 
     if(this.currentPageIndex==undefined){
       this.currentPageIndex=0;
@@ -94,11 +100,22 @@ class HomeScreen extends View {
     );
     this.backPressCount = 0;
 
-    this.setupDuiCallback();
+    this.handleBottomNavBarAction(this.currentPageIndex);
   }
 
 
   onBackPressed = () => {
+
+    
+    if(window.__PageFilterChooser.getVisibility()){
+      window.__PageFilterChooser.hide();
+      return; 
+    }
+    if(window.__PageFilterPopup.getVisibility()){
+      window.__PageFilterPopup.hide();
+      return; 
+    }
+
     this.backPressCount++;
     if (this.backPressCount == 1) {
       JBridge.showSnackBar("Press back again to exit app")
@@ -135,6 +152,17 @@ class HomeScreen extends View {
           }
         }
       }
+
+    if(responseCode == 401){
+      var callback  = callbackMapper.map(function(token){
+        window.__apiToken = token;
+         eventAction = { "tag": state.responseFor, contents: {"user_token":window.__userToken,"api_token": window.__apiToken} };
+         window.__runDuiCallback(eventAction);
+      });
+      JBridge.getApiToken();
+      return;
+    }
+      
     if (status === "failure" || status=="f") {
       JBridge.showSnackBar("INTERNET CONNECTION ISSUE")
       
@@ -434,13 +462,3 @@ class HomeScreen extends View {
 
 module.exports = Connector(HomeScreen);
 
-// <HomeComponent
-// response = {data} 
-// recommendedData={this.recommendedData}
-// recommendedimageUrls={this.recommendedimageUrls}
-// menuData={this.menuData}
-// todoData = {this.todoData}
-// feedData = {this.feedData}
-// height="match_parent"
-// root="true"
-// width="match_parent"/>

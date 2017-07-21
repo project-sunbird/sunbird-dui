@@ -34,7 +34,7 @@ class CourseEnrolledScreen extends View {
 
     this.menuData = {
       url: [
-        
+
       ]
     }
     _this = this;
@@ -49,9 +49,6 @@ class CourseEnrolledScreen extends View {
     window.__getDownloadStatus = this.getSpineStatus;
 
     this.baseIdentifier = this.details.identifier ? this.details.identifier : this.details.contentId;
-
-
-
 
     this.data = {
       courseName: this.details ? this.details.courseName : "",
@@ -146,7 +143,6 @@ class CourseEnrolledScreen extends View {
         }]
       }]
     };
-
   }
 
   onPop = () => {
@@ -157,10 +153,18 @@ class CourseEnrolledScreen extends View {
     );
   }
 
+  getContentState = (courseId,userToken) =>{
+    var eventAction = { "tag": "GetContentStateApi", contents: { "courseId": courseId, "user_token": userToken, "api_token": window.__apiToken } };
+    window.__runDuiCallback(eventAction);
+
+  }
+
 
 
   afterRender = () => {
     this.checkContentLocalStatus(this.baseIdentifier);
+    this.getContentState(this.baseIdentifier,window.__userToken);
+
   }
 
 
@@ -222,6 +226,9 @@ class CourseEnrolledScreen extends View {
     window.__runDuiCallback(eventAction);
 
   }
+  handleStateChange(state){
+    console.log("state in CES",state)
+  }
 
 
   renderCourseChildren = () => {
@@ -245,8 +252,8 @@ class CourseEnrolledScreen extends View {
 
 
   onBackPressed = () => {
-    window.__changePureScriptFlow();
-    window.__runDuiCallback({ action: "showMainFlow" });
+   var eventAction = { tag: 'CourseEnrolledBackpress', contents: [] }
+   window.__runDuiCallback(eventAction);
   }
 
 
@@ -261,19 +268,19 @@ class CourseEnrolledScreen extends View {
         height="match_parent">
 
         <SimpleToolbar
-          title={this.data.courseName}
+          title={""}
           menuData={this.menuData}
           onBackPress={this.onBackPressed}
           width="match_parent"
           invert="true"
           showMenu="true"/>
 
-        <HorizontalProgressBar  
+        <HorizontalProgressBar
           currentProgress={this.data.completedProgress}
           totalProgress={this.data.totalProgress}
           width="match_parent"
           height="wrap_content"
-          
+
           />
 
         <LinearLayout
@@ -281,7 +288,7 @@ class CourseEnrolledScreen extends View {
           orientation="vertical"
           id={this.idSet.parentContainer}
           width="match_parent">
-           
+
           <ScrollView
               height="0"
               weight="1"
@@ -316,7 +323,7 @@ class CourseEnrolledScreen extends View {
                           height="300"
                           gravity="center"
                           width="match_parent"/>
-                  </LinearLayout>   
+                  </LinearLayout>
 
 
 

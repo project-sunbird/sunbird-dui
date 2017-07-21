@@ -19,6 +19,7 @@ class SplashScreen extends View {
     this.screenName = "SplashScreen"
     console.log("Im in SplashScreen")
     this.getUserToken()
+    window.__pressedLoggedOut=false;
   }
 
   onPop = () => {
@@ -35,7 +36,7 @@ class SplashScreen extends View {
       window.__apiToken = token[0];
     });
 
-    JBridge.getUserToken(callback);
+    JBridge.getApiToken(callback);
 
     
   }

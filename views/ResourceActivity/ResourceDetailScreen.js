@@ -24,15 +24,22 @@ class ResourceDetailScreen extends View {
     this.setIds([
       'ratingBar',
       "progressButtonContainer",
-      "ratingContainer"
+      "ratingContainer",
+      "simpleToolBarOverFlow"
     ]);
     this.state = state;
     this.screenName = "ResourceDetailScreen"
     this.menuData = {
       url: [
-        
+
       ]
     }
+    this.menuData1 = {
+      url: [
+        {imageUrl:'ic_action_overflow'}
+      ]
+    }
+    this.popupMenu = "Delete"
 
     this.shouldCacheScreen = false;
 
@@ -72,8 +79,11 @@ class ResourceDetailScreen extends View {
                  contentDetail = {_this.details.content}
                  buttonText="PLAY"
                  localStatus = {_this.localStatus}
-                 identifier = {_this.details.identifier}/>
+                 identifier = {_this.details.identifier}
+                 changeOverFlowMenu = {_this.changeOverFlow}
+                 />
         _this.replaceChild(_this.idSet.progressButtonContainer, pButonLayout.render(), 0);
+        _this.changeOverFlow();
 
       } else {
         var pButonLayout = <ProgressButton
@@ -82,7 +92,9 @@ class ResourceDetailScreen extends View {
                  contentDetail = {_this.details.content}
                  buttonText="DOWNLOAD"
                  localStatus = {_this.localStatus}
-                 identifier = {_this.details.identifier}/>
+                 identifier = {_this.details.identifier}
+                 changeOverFlowMenu = {_this.changeOverFlow}
+                 />
         _this.replaceChild(_this.idSet.progressButtonContainer, pButonLayout.render(), 0);
 
 
@@ -112,7 +124,7 @@ class ResourceDetailScreen extends View {
           text="Unrated"
           style={window.__TextStyle.textStyle.HINT.TINY}/>)
 
-        this.replaceChild(this.idSet.ratingContainer,layout.render(),0)    
+        this.replaceChild(this.idSet.ratingContainer,layout.render(),0)
     }
   }
 
@@ -160,7 +172,7 @@ class ResourceDetailScreen extends View {
         height="wrap_content"
         visibility="gone"
         margin="0,8,0,0">
-      
+
 
           <ImageView
           width="156"
@@ -282,7 +294,7 @@ class ResourceDetailScreen extends View {
             <TextView
             width="wrap_content"
             height="wrap_content"
-            text="1,870"
+            text="0"
             style={window.__TextStyle.textStyle.HINT.DULL}/>
 
           </LinearLayout>
@@ -299,7 +311,7 @@ class ResourceDetailScreen extends View {
                id = {this.idSet.ratingBar}
                width="wrap_content"
                height="wrap_content"/>
-            </LinearLayout>     
+            </LinearLayout>
             <ViewWidget
               width="0"
               weight="1"
@@ -318,14 +330,20 @@ class ResourceDetailScreen extends View {
 
   }
 
-  handleMenuItemClick = (url) =>{
-    if(url == "ic_action_overflow"){
 
-    }
-  }
 
-  menuCallback = (params) => {
+  overFlowCallback = (params) => {
     console.log("ITEM CLICKED",params);
+    if(params == 0){
+      var callback = callbackMapper.map(function(response){
+        console.log("repsonse for delete",response)
+        if(response[0] == "successful"){
+          console.log("back to resource");
+          _this.onBackPressed();
+        }
+      });
+      JBridge.deleteContent(this.details.identifier,callback);
+    }
   }
 
 
@@ -334,6 +352,21 @@ class ResourceDetailScreen extends View {
     window.__runDuiCallback(eventAction);
   }
 
+  changeOverFlow = () =>{
+    var toolbar = (
+      <SimpleToolbar
+          width="match_parent"
+          menuData={this.menuData1}
+          popupMenu={this.popupMenu}
+          onBackPress={onBackPressed}
+          overFlowCallback = {this.overFlowCallback}
+          showMenu="true"
+          invert="true"
+
+          />)
+
+    this.replaceChild(this.idSet.simpleToolBarOverFlow, toolbar.render(), 0);
+  }
 
 
 
@@ -346,15 +379,23 @@ class ResourceDetailScreen extends View {
         orientation="vertical"
         width="match_parent"
         height="match_parent">
+        <LinearLayout
+        root = "true"
+        width="match_parent"
+        height="wrap_content"
+        id = {this.idSet.simpleToolBarOverFlow}
+        >
         <SimpleToolbar
           width="match_parent"
           menuData={this.menuData}
-          menuCallback={this.menuCallback}
-          popupMenu={"Delete"}
-          onMenuItemClick={this.handleMenuItemClick}
+          popupMenu={this.popupMenu}
           onBackPress={onBackPressed}
+          overFlowCallback = {this.overFlowCallback}
           showMenu="true"
-          invert="true"/>
+          invert="true"
+
+          />
+        </LinearLayout>
 
               <ScrollView
                 height="0"
@@ -376,7 +417,7 @@ class ResourceDetailScreen extends View {
 
                   {this.getBody()}
 
-                  
+
 
                 </LinearLayout>
 
@@ -388,8 +429,8 @@ class ResourceDetailScreen extends View {
                 id={this.idSet.progressButtonContainer}
                 root="true"/>
 
-                
-       
+
+
       </LinearLayout>
     );
 

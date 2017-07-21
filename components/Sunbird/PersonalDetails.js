@@ -37,7 +37,7 @@ class PersonalDetails extends View {
               <TextView
               width="wrap_content"
               height="wrap_content"
-              text="Profile detials"
+              text="Profile details"
               style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
               <ViewWidget

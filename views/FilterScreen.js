@@ -15,9 +15,6 @@ var PageOption = require('../components/Sunbird/core/PageOption');
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 var _this;
 
-const filterParams = require('../FilterParams');
-
-
 class FilterScreen extends View {
   constructor(props, children,state) {
     super(props, children,state);

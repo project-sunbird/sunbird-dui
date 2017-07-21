@@ -24,7 +24,7 @@ startFilterFlow state = do
   liftEff $ log $ "Search FLow started"
   event <- ui $ FilterScreen {filterDetails : state}
   case event of
-    SearchScreenFromFilter {filterData: details} -> startFilterSearchFlow details	
+    SearchScreenFromFilter {filterData: details} -> startFilterSearchFlow details
     _ -> pure $ "aborted"
 
 
@@ -34,8 +34,8 @@ startFilterSearchFlow state = do
   state <- ui $ SearchScreen {filterDetails : state}
   case state of
     ResourceDetailFlow {resourceDetails : details} -> resourceDetailFlow details
-    StartFilterFlow{filterDetails : details} -> startFilterFlow details 
-    SearchResourceFlow {course : details} -> do 
+    StartFilterFlow{filterDetails : details} -> startFilterFlow details
+    SearchResourceFlow {course : details} -> do
       liftEff $ log $ "for courses in filter"
       startCourseDetailFlow details
     _ -> pure $ "aborted"
@@ -68,4 +68,4 @@ startFilterSearchFlow state = do
 --     DummyAlternateModuleDetailAction -> pure $ "handled"
 --     ShowModuleAgainScreen {moduleName:mName,moduleDetails:mDetails}-> resourceModuleDetailsFlow mName mDetails parentCourse
 --     BackToHome -> startCourseDetailFlow parentCourse
---     _ -> pure $ "default"     
+--     _ -> pure $ "default"

@@ -27,6 +27,7 @@ class CourseInProgressContainer extends View {
     window.__UpdateUserCourses = this.renderContent;
 
     this.appendAtPosition=0;
+
   }
 
 
@@ -37,13 +38,20 @@ class CourseInProgressContainer extends View {
 
 
   renderContent = (data) => {
+
     var emptyBody =(<LinearLayout
-        height="match_parent"
-        width="match_parent"/>)
-    this.replaceChild(this.idSet.parentContainer, emptyBody.render(), 0) 
+                      height="match_parent"
+                      width="match_parent"/>)
+
+    this.replaceChild(this.idSet.parentContainer, emptyBody.render(), 0)
+
+    this.data = data;
+
     //this.removeAllChildren(this.idSet.parentContainer);
+
     console.log("GOT DATA-->", data);
-     var rows=data.map((item, index) => {
+
+     var rows=this.data.map((item, index) => {
       //this.appendChild(this.idSet.parentContainer,this.getCardLayouy(item).render(),index)
       return this.getCardLayout(item);
     });
@@ -59,7 +67,7 @@ class CourseInProgressContainer extends View {
 
     //this.appendChild(this.idSet.parentContainer,this.getHeader().render(),0);
     this.replaceChild(this.idSet.parentContainer,layout.render(),0)
-    
+
 
   }
 
@@ -80,7 +88,7 @@ class CourseInProgressContainer extends View {
         isProgress : "true"
       };
 
-      return (<CardComponent 
+      return (<CardComponent
                  data={temp}
                  content={item}
                  onCardClick={this.handleCardClick}/>)
@@ -110,8 +118,9 @@ class CourseInProgressContainer extends View {
             height="wrap_content"
             visibility={this.props.isViewAllExist?"visible":"gone"}
             text="VIEW ALL"
+            onClick={this.handleViewAllClick}
             style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
-            
+
 
             </LinearLayout>)
   }
@@ -120,6 +129,16 @@ class CourseInProgressContainer extends View {
 
   handleCardClick = (content, type) => {
     this.props.onCourseClick(content, type);
+  }
+
+  handleViewAllClick = () =>{
+
+      var courseListDetails = {
+                               "title" : "Courses In Progress",
+                               "courseListDetails" : this.data
+                              }
+
+      window.__runDuiCallback({ tag: "StartCourseViewAllFlow", contents: {"courseListDetails": JSON.stringify(courseListDetails)}});
 
   }
 
@@ -151,8 +170,6 @@ class CourseInProgressContainer extends View {
                     height="match_parent">
 
          </LinearLayout>
-
-
 
           </HorizontalScrollView>
 

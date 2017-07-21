@@ -18,33 +18,43 @@ import Prelude
 import UI
 --A.JSON import argonaut for json and try
 
-data UserScreen = UserScreen 
+data UserScreen = UserScreen
 data UserScreenAction = LoginAction | LoginApiAction {userName::String, userPass::String} | SignUpApiAction{userName::String,email::String,firstName::String,password::String,mobileNumber::String,language::String,api_token::String}
 -- data UserScreenAction = LoginAction | LoginApiAction {|a}, userPass::String} | SignUpApiAction{userName::String,email::String,firstName::String,password::String,mobileNumber::String,language::String}
 
 
 data HomeScreen = HomeScreen
-data HomeScreenAction = ShowHome {name::String} | StartCourseFlow | 
- StartResourceFlow | StartCommunityFlow | StartProfileFlow | 
- StartCommunityInfoFlow {community::String} | StartCommunityViewAllFlow | 
+data HomeScreenAction = ShowHome {name::String} | StartCourseFlow |
+ StartResourceFlow | StartCommunityFlow | StartProfileFlow |
+ StartCommunityInfoFlow {community::String} | StartCommunityViewAllFlow |
  StartCourseInfoFlow {course::String} | StartEnrolledCourseFlow {course::String} |
- GetCoursePage | GetResourcePage | StartNotificationFlow | StartResourceDetailFlow {resourceDetails::String} | 
- StartResourceViewAllFlow {resourceDetails::String} | StartSearchFlow {filterDetails::String}| StartResourcePageApi {user_token::String, api_token::String}| StartCoursePageApi{user_token::String, api_token::String} | GetEnrolledCourseApi{user_token::String, api_token::String} | StartProfileApi {user_token::String, api_token::String}| ResourceCourseInfoFlow {course ::String} | StartFilterPageApi{user_token::String, api_token::String,filter_to_send::String} 
+ GetCoursePage | GetResourcePage | StartNotificationFlow | StartResourceDetailFlow {resourceDetails::String} |
+ StartResourceViewAllFlow {resourceDetails::String} |
+ StartSearchFlow {filterDetails::String}| StartResourcePageApi {user_token::String, api_token::String}|
+ StartCoursePageApi{user_token::String, api_token::String} |
+ GetEnrolledCourseApi{user_token::String, api_token::String} |
+ StartProfileApi {user_token::String, api_token::String}|
+ ResourceCourseInfoFlow {course ::String} |
+ StartFilterPageApi{user_token::String, api_token::String,filter_to_send::String}|
+ StartCourseViewAllFlow {courseListDetails :: String}
 
-data InitScreen = InitScreen 
+data InitScreen = InitScreen
 data InitScreenAction = ShowInit  | StartInit
 
-data ResourceScreen = ResourceScreen 
+data ResourceScreen = ResourceScreen
 data ResourceScreenAction = DummyResourceAction
 
 data CommunityInfoScreen = CommunityInfoScreen {name::String}
 data CommunityInfoScreenAction = DummyInfoAction | ExAction
 
 data CourseInfoScreen = CourseInfoScreen {courseDetails::String}
-data CourseInfoScreenAction = DummyCourseInfoAction | ShowEnrolledCourse {course::String} | EnrollCourseApi {user_token::String,reqParams :: String, api_token::String} | ShowModuleDetails {moduleName::String,moduleDetails::String}
+data CourseInfoScreenAction = DummyCourseInfoAction | ShowEnrolledCourse {course::String} | 
+  EnrollCourseApi {user_token::String,reqParams :: String, api_token::String} | 
+  ShowModuleDetails {moduleName::String,moduleDetails::String} | CourseInfoBackpress 
 
 data CourseEnrolledScreen = CourseEnrolledScreen {courseDetails::String}
-data CourseEnrolledScreenAction = DummyCourseEnrolledAction | ShowModuleScreen {moduleName::String,moduleDetails::String}
+data CourseEnrolledScreenAction = DummyCourseEnrolledAction | ShowModuleScreen {moduleName::String,moduleDetails::String} |
+ GetContentStateApi {courseId::String,user_token::String,api_token::String} | CourseEnrolledBackpress 
 
 data ModuleDetailScreen = ModuleDetailScreen {moduleName::String,moduleDetails::String}
 data ModuleDetailScreenAction = DummyModuleDetailsAction | BackToParent | ShowSubModuleScreen {moduleName::String,moduleDetails::String}
@@ -66,6 +76,10 @@ data ResourceDetailAction = DummyResourceDetailAction | ResourceDetailBack
 
 data ResourceViewAllScreen = ResourceViewAllScreen {resourceDetails::String}
 data ResourceViewAllAction = DummyResourceViewAllAction | StartResourceInfoFlow {resourceDetails::String} | StartResourceViewAllDetailFlow {resourceDetails::String}
+
+
+data CourseViewAllScreen = CourseViewAllScreen {courseViewAllDetails::String}
+data CourseViewAllAction = DummyCourseViewAllAction | StartEnrolledCourseFlowFromCourseViewAll {course::String}
 
 
 data SearchScreen = SearchScreen {filterDetails::String}
@@ -184,6 +198,17 @@ instance resourceViewAllScreen :: UIScreen ResourceViewAllScreen ResourceViewAll
 derive instance genericResourceViewAllAction  :: Generic ResourceViewAllAction _
 instance decodeResourceViewAllAction :: Decode ResourceViewAllAction where decode = defaultDecode
 instance encodeResourceViewAllAction :: Encode ResourceViewAllAction where encode = defaultEncode
+
+
+instance courseViewAllScreen :: UIScreen CourseViewAllScreen CourseViewAllAction where
+  generateMockEvents _ = [DummyCourseViewAllAction]
+  ui x = genericUI x (generateMockEvents x :: Array CourseViewAllAction)
+
+derive instance genericCourseViewAllAction  :: Generic CourseViewAllAction _
+instance decodeCourseViewAllAction :: Decode CourseViewAllAction where decode = defaultDecode
+instance encodeCourseViewAllAction :: Encode CourseViewAllAction where encode = defaultEncode
+
+
 
 instance searchScreen :: UIScreen SearchScreen SearchScreenAction where
   generateMockEvents _ = []

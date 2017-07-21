@@ -31,14 +31,23 @@ getMenu = () =>{
         return <Space width="0"/>
 
       var lenthOfMenu = Object.keys(this.props.menuData.url).length;
-      
+
       var menuItems = this.props.menuData.url.map((item, index) => {
-           return  <ImageView  
-                      style = {IconStyle}
-                      onClick = {() => {this.handleMenuClick(item.imageUrl)}}
-                      imageUrl = {item.imageUrl}/> 
+
+        if(this.props.popupMenu&&this.props.overFlowCallback&&item.imageUrl=="ic_action_overflow"){
+          return  <ImageView
+                   style = {IconStyle}
+                   popupMenu = {this.props.popupMenu}
+                   onMenuItemClick = {this.props.overFlowCallback}
+                   imageUrl = {item.imageUrl}/>
+        }
+
+         return  <ImageView
+                    style = {IconStyle}
+                    onClick = {() => {this.handleMenuClick(item.imageUrl)}}
+                    imageUrl = {item.imageUrl}/>
         })
-     
+
     return menuItems;
   }
 
@@ -62,8 +71,8 @@ getMenu = () =>{
     if (!this.props.showBack && !this.props.logo)
       margin = "12,0,0,0";
 
-    return (<TextView margin={margin} 
-          style={window.__TextStyle.textStyle.TOOLBAR.HEADING} 
+    return (<TextView margin={margin}
+          style={window.__TextStyle.textStyle.TOOLBAR.HEADING}
           text={this.props.title}/>)
 
   }
@@ -87,7 +96,7 @@ getMenu = () =>{
       return <Space width="0"/>
 
     return this.props.icons.map((icon, index) => {
-      return (<ImageView  
+      return (<ImageView
         onClick={() => {this.props.onIconClick(icon)}}
         style = {IconStyle}
         imageUrl = {icon}/>)
@@ -102,12 +111,12 @@ getMenu = () =>{
     let icons = this.getIcons();
 
     this.layout = (
-      <LinearLayout 
+      <LinearLayout
         height="56"
         width="match_parent"
         padding="0,0,0,2"
         gravity="center_vertical"
-        root="true" 
+        root="true"
         clickable="true"
         background={window.__Colors.PRIMARY_BLACK_22}
         >
@@ -118,11 +127,11 @@ getMenu = () =>{
           gravity="center_vertical"
           background={this.props.invert?window.__Colors.WHITE:window.__Colors.LIGHT_VIOLET}
           >
-         
+
           {back}
           {logo}
           {title}
-           
+
           <Space width="0" weight="1"/>
           {icons}
           {menu}

@@ -31,8 +31,8 @@ startHomeSearchFlow values = do
   event <- ui $ SearchScreen {filterDetails:values}
   case event of
     ResourceDetailFlow {resourceDetails : details} -> startResourceDetailFlow details "HomeSearch" values
-    CourseInfoFlow {course : details} -> startCourseInfoFlow details 
-    SearchResourceFlow {course : details} -> startEnrolledCourseFlow details
+    CourseInfoFlow {course : details} -> startCourseInfoFlow details "HomeSearch" values
+    SearchResourceFlow {course : details} -> startEnrolledCourseFlow details "Home" values
     StartFilterFlow{filterDetails : details} -> startFilterFlow details 
     _ -> pure $ "aborted"
 

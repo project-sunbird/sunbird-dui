@@ -13,7 +13,7 @@ window.R = require("ramda");
 var SimpleToolbar = require('../../components/Sunbird/core/SimpleToolbar');
 var CropParagraph = require('../../components/Sunbird/CropParagraph');
 var ProgressButton = require('../../components/Sunbird/core/ProgressButton');
-var ResourceViewAllCard = require('../../components/Sunbird/ResourceViewAllCard');
+var LargeCardComponent = require('../../components/Sunbird/core/LargeCardComponent');
 var utils = require('../../utils/GenericFunctions');
 
 
@@ -52,7 +52,7 @@ class ResourceViewAllScreen extends View {
       Android.runInUI(
         _this.animateView(),
         null
-      );  
+      );
     },100)
   }
 
@@ -61,16 +61,16 @@ getRows = () =>{
     var rows = this.details.map((item,i) => {
 
       if(item.contentType != "course"){
-              
+
                 if(item.hasOwnProperty("contentData")){
-                  this.size = " [" + utils.formatBytes(item.contentData.size) + "]";
+                  this.size = item.hasOwnProperty("size") ? " ["+ utils.formatBytes(item.size)+"]" : "";
                   this.fileImageUrl = "file://"+item.basePath + "/" +(item.contentData.appIcon?item.contentData.appIcon:"ic_action_resource");
                   this.cType = item.contentData.contentType
                   this.name = item.contentData.name;
                   this.time = utils.prettifyDate(item.lastUpdatedTime);
                 }
                 else{
-                   this.size = " [" + utils.formatBytes(item.size) + "]"; 
+                   this.size = " [" + utils.formatBytes(item.size) + "]";
                    this.fileImageUrl = item.appIcon?item.appIcon:"ic_action_resource";
                    this.cType = item.contentType
                    this.name = item.name;
@@ -88,7 +88,7 @@ getRows = () =>{
                 temp['actionText'] = "OPEN";
                 temp["footerSubTitle"] = this.cType + this.size;
 
-         return (<ResourceViewAllCard 
+         return (<LargeCardComponent
                  data={temp}
                  content={item}
                  onResourceClick = {this.handleResourceClick}/>)
@@ -112,20 +112,20 @@ getRows = () =>{
 
                   </LinearLayout>);
     return layout;
-                    
+
   }
 
 
     handleResourceClick = (item)=>{
 
-      
+
        if(item.contentType.toLowerCase() == "course" || item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook"){
-        
+
         window.__runDuiCallback({tag:"StartResourceViewAllDetailFlow",contents:{resourceDetails:JSON.stringify(item)}});
       }
       else
       {
-        var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");      
+        var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");
         var resDetails = {};
         resDetails['imageUrl'] = item.appIcon;
         resDetails['title'] = item.name;
@@ -133,13 +133,13 @@ getRows = () =>{
         resDetails['headFooterTitle'] = headFooterTitle;
         resDetails['identifier'] = item.identifier;
         resDetails['content'] = item;
-        window.__runDuiCallback({tag:"StartResourceInfoFlow",contents:{resourceDetails:JSON.stringify(resDetails)}}); 
+        window.__runDuiCallback({tag:"StartResourceInfoFlow",contents:{resourceDetails:JSON.stringify(resDetails)}});
       }
     }
 
-  
 
-  
+
+
   onPop = () => {
     Android.runInUI(
       this.animateView(),
@@ -148,7 +148,7 @@ getRows = () =>{
   }
 
   afterRender = () => {
-   
+
   }
 
 
@@ -181,7 +181,7 @@ getRows = () =>{
           showMenu="true"
           invert="true"
           title= {this.appbarTitle}/>
-          
+
 
               <ScrollView
                 height="0"
@@ -202,8 +202,8 @@ getRows = () =>{
 
                 </ScrollView>
 
-               
-       
+
+
       </LinearLayout>
     );
 

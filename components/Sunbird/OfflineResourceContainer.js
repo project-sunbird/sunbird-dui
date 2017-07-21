@@ -31,7 +31,7 @@ class OfflineResourceContainer extends View {
         id: this.idSet.viewAllContainer,
         visibility : (this.offlineCount==0?"gone":"visible")
       })
-    
+
     Android.runInUI(cmd, 0);
 
   }
@@ -42,7 +42,7 @@ class OfflineResourceContainer extends View {
     console.log("OFFLINE CONTENT", this.props.data);
     if (this.props.data == undefined || this.props.data.length == 0){
       this.jsData = []
-    
+
     }else {
       this.jsData = this.props.data;
     }
@@ -67,7 +67,7 @@ class OfflineResourceContainer extends View {
         temp['actionText'] = "OPEN";
         temp['content'] = item;
 
-        return (<CardComponent 
+        return (<CardComponent
                      data={temp}
                      content={item}
                      onCardClick = {this.handleCardClick}/>)
@@ -139,30 +139,30 @@ class OfflineResourceContainer extends View {
   }
 
   handleCardClick = (item, type) => {
-     
+
      if(item.contentType.toLowerCase() == "course" || item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook"){
-      
+
       window.__runDuiCallback({tag:"ResourceCourseInfoFlow",contents:{course:JSON.stringify(item)}});
     }
     else
     {
-      var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");      
+      var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");
       var resDetails = {};
-      console.log("ITEM NAME IN OFFLINE",item.name)
-      console.log("ITEM IN OFFLINE",item)
-      resDetails['imageUrl'] = item.appIcon;
+      console.log("ITEM NAME IN OFFLINE",item)
+      console.log("ITEM IN OFFLINE",item.appIcon)
+      resDetails['imageUrl'] = "file://"+item.basePath+"/"+item.contentData.appIcon;
       resDetails['title'] = item.contentData.name;
       resDetails['description'] = item.contentData.description;
       resDetails['headFooterTitle'] = headFooterTitle;
       resDetails['identifier'] = item.identifier;
       resDetails['content'] = item;
-      window.__runDuiCallback({tag:"StartResourceDetailFlow",contents:{resourceDetails:JSON.stringify(resDetails)}}); 
+      window.__runDuiCallback({tag:"StartResourceDetailFlow",contents:{resourceDetails:JSON.stringify(resDetails)}});
     }
 
   }
 
   handleViewAllClick() {
-    
+
     console.log("OFFLINE RESOURCE CONTAINER",_this.props.data)
     _this.props.onViewAllClick(_this.props.data,_this.props.title);
   }

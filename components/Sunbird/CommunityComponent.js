@@ -1,5 +1,3 @@
-
-
 var dom = require("@juspay/mystique-backend").doms.android;
 var Connector = require("@juspay/mystique-backend").connector;
 var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
@@ -168,17 +166,24 @@ class CommunityComponent extends View {
         height="match_parent">
 
         {this.parentBody()}
-        
+
 
         </LinearLayout>
+
+
 
         <LinearLayout
         gravity="center"
         centerInParent="true,-1"
-        clickable="false"
-        alpha = "0.9"
-        background={window.__Colors.WHITE}
+        clickable="true"
         width="match_parent"
+        height="match_parent">
+
+        <LinearLayout
+        width="match_parent"
+        background={window.__Colors.WHITE}
+        alpha = "0.9"
+        gravity="center"
         height="match_parent">
 
           <TextView
@@ -187,7 +192,9 @@ class CommunityComponent extends View {
           height="match_parent"
           style ={window.__TextStyle.textStyle.NOTHING}
           text="Coming Soon.."/>
-        
+
+       </LinearLayout>
+
 
 
         </LinearLayout>

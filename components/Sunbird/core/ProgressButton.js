@@ -84,7 +84,7 @@ class ProgressButton extends View {
     data.downloadProgress = data.downloadProgress < 0 ? 0 : data.downloadProgress;
 
     if (parseInt(data.downloadProgress) == 100) {
-
+      _this.props.changeOverFlowMenu();
       _this.isDownloaded = true;
       textToShow = "PLAY";
       var cmd = this.set({

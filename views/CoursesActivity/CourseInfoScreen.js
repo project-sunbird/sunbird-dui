@@ -37,7 +37,7 @@ class CourseInfoScreen extends View {
       // window.__RootScreen.snackBar("Hellllllo")
     this.menuData = {
       url: [
-        
+
       ]
     }
 
@@ -55,10 +55,9 @@ class CourseInfoScreen extends View {
 
 
 
-
     this.data = {
       courseName: this.details ? this.details.name : "",
-      courseDesc: this.details ? this.details.courseDesc : "This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced",
+      courseDesc: this.details ? this.details.description : "This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced",
       competedCount: this.details && this.details.footerTitle ? this.details.footerTitle.split('%')[0] : "10",
       totalCount: "150",
       courseBrief: [{
@@ -311,14 +310,15 @@ class CourseInfoScreen extends View {
   }
 
   onBackPressed = () => {
-    window.__changePureScriptFlow();
+    var eventAction = { tag: 'CourseInfoBackpress', contents: [] }
+   window.__runDuiCallback(eventAction);
   }
 
   getCurriculumnBrief = () => {
 
     var items = this.data.courseBrief.map((item, i) => {
       return (<TextView
-                style={window.__TextStyle.textStyle.HINT.REGULAR} 
+                style={window.__TextStyle.textStyle.HINT.REGULAR}
                 text ={(i==0?"":" | ") +item.count + " "+item.type}/>)
     })
 
@@ -344,7 +344,7 @@ class CourseInfoScreen extends View {
         height="match_parent">
 
         <SimpleToolbar
-          title={this.data.courseName}
+          title={""}
           menuData={this.menuData}
           onBackPress={this.onBackPressed}
           width="match_parent"
@@ -373,28 +373,23 @@ class CourseInfoScreen extends View {
                   margin="0,0,0,7"
                   text={this.data.courseName}
                   style={window.__TextStyle.textStyle.HEADING.DARK} />
-                 
+
 
                 <TextView
                   height="wrap_content"
                   margin="0,0,0,12"
                   width="match_parent"
-                  text="lorem ipsum, quia dolor sit
-                  dolore magnam aliquam quaerat voluptatem.
-                  Ut enim ad minima veniam, quis nostrum 
-                  qui in ea voluptate velit esse,
-                  quam nihil molestiae consequatur,
-                  vel illum, qui dolorem eum fugiat, quo voluptas nulla pariatur" />
-                 
+                  text={this.data.courseDesc}/>
+
 
                 <TextView
                   margin="0,0,0,4"
-                  text="Curriculum" 
+                  text="Curriculum"
                   style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
-                  {this.getCurriculumnBrief()}  
+                  {this.getCurriculumnBrief()}
 
-                 
+
 
                 <LinearLayout
                   height="wrap_content"
@@ -413,7 +408,7 @@ class CourseInfoScreen extends View {
                         height="wrap_content"
                         gravity="center"
                         width="match_parent"/>
-                </LinearLayout>    
+                </LinearLayout>
 
                 </LinearLayout>
 

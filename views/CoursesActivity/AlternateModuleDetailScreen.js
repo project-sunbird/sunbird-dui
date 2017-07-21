@@ -36,6 +36,18 @@ class AlternateModuleDetailScreen extends View {
 
             ]
         }
+            this.menuData = {
+              url: [
+                
+              ]
+            }
+            this.menuData1 = {
+              url: [
+                {imageUrl:'ic_action_overflow'}
+              ]
+            }
+            this.popupMenu = "Delete"
+
 
         this.shouldCacheScreen = false;
 
@@ -67,6 +79,19 @@ class AlternateModuleDetailScreen extends View {
         else return (bytes / 1073741824).toFixed(3) + " GB";
     };
 
+overFlowCallback = (params) => {
+    console.log("ITEM CLICKED",params);
+    if(params == 0){
+      var callback = callbackMapper.map(function(response){
+        console.log("repsonse for delete",response)
+        if(response[0] == "successful"){
+          console.log("back to resource");
+          _this.onBackPressed();
+        }
+      }); 
+      JBridge.deleteContent(this.module.identifier,callback);
+    }
+  }
 
 
 
@@ -265,12 +290,23 @@ class AlternateModuleDetailScreen extends View {
                                 background = { window.__Colors.WHITE } orientation = "vertical"
                                 width = "match_parent"
                                 height = "match_parent" >
-                                <
-                                SimpleToolbar
-
-                                width = "match_parent"
-                                menuData = { this.menuData } onBackPress = { onBackPressed } showMenu = "true"
-                                invert = "true" / >
+                                 <LinearLayout
+                                    root = "true"
+                                    width="match_parent"
+                                    height="wrap_content"
+                                    id = {this.idSet.simpleToolBarOverFlow}
+                                    >
+                                    <SimpleToolbar
+                                      width="match_parent"
+                                      menuData={this.menuData}
+                                      popupMenu={this.popupMenu}
+                                      onBackPress={onBackPressed}
+                                      overFlowCallback = {this.overFlowCallback}
+                                      showMenu="true"
+                                      invert="true"
+                                      
+                                      />
+                                    </LinearLayout>
 
                                 <
                                 ScrollView height = "0"
