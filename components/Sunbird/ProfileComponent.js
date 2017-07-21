@@ -113,7 +113,7 @@ class ProfileComponent extends View {
             popupMenu={this.popupMenu}
             overFlowCallback = {this.overFlowCallback}
             showMenu="true"
-            hideBack="true" 
+            hideBack="true"
             invert="true"/>
 
 
@@ -135,12 +135,6 @@ class ProfileComponent extends View {
 
                 <PersonalDetails
                 data={this.details}/>
-
-
-
-                <ComingSoonComponent
-                text="More details coming soon.."/>
-
 
 
               </LinearLayout>

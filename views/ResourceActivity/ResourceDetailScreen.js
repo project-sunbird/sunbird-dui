@@ -294,7 +294,7 @@ class ResourceDetailScreen extends View {
             <TextView
             width="wrap_content"
             height="wrap_content"
-            text="1,870"
+            text="0"
             style={window.__TextStyle.textStyle.HINT.DULL}/>
 
           </LinearLayout>

@@ -34,7 +34,7 @@ class CourseEnrolledScreen extends View {
 
     this.menuData = {
       url: [
-        
+
       ]
     }
     _this = this;
@@ -49,9 +49,6 @@ class CourseEnrolledScreen extends View {
     window.__getDownloadStatus = this.getSpineStatus;
 
     this.baseIdentifier = this.details.identifier ? this.details.identifier : this.details.contentId;
-
-
-
 
     this.data = {
       courseName: this.details ? this.details.courseName : "",
@@ -278,12 +275,12 @@ class CourseEnrolledScreen extends View {
           invert="true"
           showMenu="true"/>
 
-        <HorizontalProgressBar  
+        <HorizontalProgressBar
           currentProgress={this.data.completedProgress}
           totalProgress={this.data.totalProgress}
           width="match_parent"
           height="wrap_content"
-          
+
           />
 
         <LinearLayout
@@ -291,7 +288,7 @@ class CourseEnrolledScreen extends View {
           orientation="vertical"
           id={this.idSet.parentContainer}
           width="match_parent">
-           
+
           <ScrollView
               height="0"
               weight="1"
@@ -326,7 +323,7 @@ class CourseEnrolledScreen extends View {
                           height="300"
                           gravity="center"
                           width="match_parent"/>
-                  </LinearLayout>   
+                  </LinearLayout>
 
 
 
