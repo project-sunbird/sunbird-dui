@@ -105,6 +105,17 @@ class HomeScreen extends View {
 
 
   onBackPressed = () => {
+
+    
+    if(window.__PageFilterChooser.getVisibility()){
+      window.__PageFilterChooser.hide();
+      return; 
+    }
+    if(window.__PageFilterPopup.getVisibility()){
+      window.__PageFilterPopup.hide();
+      return; 
+    }
+
     this.backPressCount++;
     if (this.backPressCount == 1) {
       JBridge.showSnackBar("Press back again to exit app")
@@ -451,13 +462,3 @@ class HomeScreen extends View {
 
 module.exports = Connector(HomeScreen);
 
-// <HomeComponent
-// response = {data} 
-// recommendedData={this.recommendedData}
-// recommendedimageUrls={this.recommendedimageUrls}
-// menuData={this.menuData}
-// todoData = {this.todoData}
-// feedData = {this.feedData}
-// height="match_parent"
-// root="true"
-// width="match_parent"/>
