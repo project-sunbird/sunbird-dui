@@ -46,4 +46,4 @@ resourceSubModuleDetailsFlow mName mDetails parentCourse= do
     DummyAlternateModuleDetailAction -> pure $ "handled"
     ShowModuleAgainScreen {moduleName:mName,moduleDetails:mDetails}-> startModuleDetailsFlow mName mDetails parentCourse
     BackToHome -> startCourseDetailFlow parentCourse
-    _ -> pure $ "default"     
+    _ -> pure $ "default"

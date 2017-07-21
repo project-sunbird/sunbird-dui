@@ -13,7 +13,7 @@ window.R = require("ramda");
 var SimpleToolbar = require('../../components/Sunbird/core/SimpleToolbar');
 var CropParagraph = require('../../components/Sunbird/CropParagraph');
 var ProgressButton = require('../../components/Sunbird/core/ProgressButton');
-var ResourceViewAllCard = require('../../components/Sunbird/ResourceViewAllCard');
+var LargeCardComponent = require('../../components/Sunbird/core/LargeCardComponent');
 var utils = require('../../utils/GenericFunctions');
 
 
@@ -62,7 +62,7 @@ getRows = () =>{
 
       if(item.contentType != "course"){
 
-                if(item.hasOwnProperty("contentData")){                  
+                if(item.hasOwnProperty("contentData")){
                   this.size = item.hasOwnProperty("size") ? " ["+ utils.formatBytes(item.size)+"]" : "";
                   this.fileImageUrl = "file://"+item.basePath + "/" +(item.contentData.appIcon?item.contentData.appIcon:"ic_action_resource");
                   this.cType = item.contentData.contentType
@@ -88,7 +88,7 @@ getRows = () =>{
                 temp['actionText'] = "OPEN";
                 temp["footerSubTitle"] = this.cType + this.size;
 
-         return (<ResourceViewAllCard
+         return (<LargeCardComponent
                  data={temp}
                  content={item}
                  onResourceClick = {this.handleResourceClick}/>)

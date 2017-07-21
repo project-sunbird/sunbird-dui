@@ -30,13 +30,21 @@ startCourseFlow state = do
 		StartEnrolledCourseFlow {course:courseDetail} -> startEnrolledCourseFlow courseDetail
 		StartNotificationFlow -> startNotificationFlow state
 		StartSearchFlow {filterDetails : details} -> startCourseSearchFlow details
+		StartCourseViewAllFlow {courseListDetails : details} -> startCourseViewAllFlow details
 		GetEnrolledCourseApi {user_token:x,api_token:y}-> do
 			responseData <- getUserEnrolledCourses x y
-	 		_ <- sendUpdatedState {response : responseData, responseFor : "GetEnrolledCourseApi", screen:"asas"} 
+	 		_ <- sendUpdatedState {response : responseData, responseFor : "GetEnrolledCourseApi", screen:"asas"}
 	  		pure $ "Aborted 3"
 		_ -> pure $ "default"
 
-    
+
+startCourseViewAllFlow state = do
+	event <- ui $ CourseViewAllScreen {courseViewAllDetails : state}
+	case event of
+		StartEnrolledCourseFlowFromCourseViewAll {course:details} -> startEnrolledCourseFlow details
+		DummyCourseViewAllAction -> pure $ "handled"
+		_ -> pure $ "handled"
+
 startCourseInfoFlow cDetail= do
 	event <- ui $ CourseInfoScreen {courseDetails:cDetail}
 	case event of
@@ -44,7 +52,7 @@ startCourseInfoFlow cDetail= do
 		ShowEnrolledCourse {course:courseDetail} -> startEnrolledCourseFlow courseDetail
 		EnrollCourseApi {user_token:x,reqParams:details,api_token:token} -> do
 			output <- enrollCourse x details token
-  			_ <- sendUpdatedState {response : output, responseFor : "EnrollCourseApi", screen:"asas"} 
+  			_ <- sendUpdatedState {response : output, responseFor : "EnrollCourseApi", screen:"asas"}
 			pure $ "handled"
 
 		ShowModuleDetails {moduleName:mName,moduleDetails:mDetails}-> startModuleDetailsFlow mName mDetails cDetail
@@ -71,20 +79,13 @@ startSubModuleDetailsFlow mName mDetails parentCourse= do
 		DummyAlternateModuleDetailAction -> pure $ "handled"
 		ShowModuleAgainScreen {moduleName:mName,moduleDetails:mDetails}-> startModuleDetailsFlow mName mDetails parentCourse
 		BackToHome -> startEnrolledCourseFlow parentCourse
-  		_ -> pure $ "default"  		
+  		_ -> pure $ "default"
 
 startCourseSearchFlow state = do
   liftEff $ log $ "Search FLow started"
   state <- ui $ SearchScreen {filterDetails:state}
   case state of
     CourseInfoFlow {course : details} -> startCourseInfoFlow details
-    StartFilterFlow{filterDetails : details} -> startFilterFlow details 
+    StartFilterFlow{filterDetails : details} -> startFilterFlow details
     SearchResourceFlow {course : details} -> startCourseInfoFlow details
     _ -> pure $ "aborted"
-
-
-
-
-
-
-

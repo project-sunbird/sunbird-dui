@@ -21,7 +21,7 @@ import Types.APITypes
 import UI
 import Flows.Commons
 import Partial.Unsafe
- 
+
 startResourceFlow values = do
 	event <- ui $ HomeScreen
 	case event of
@@ -32,8 +32,8 @@ startResourceFlow values = do
 		ResourceCourseInfoFlow {course : details} -> startCourseDetailFlow details
 		StartFilterPageApi{user_token:user_token, api_token:api_key,filter_to_send:delta}  ->	do
 																									responseData <- getResourcePageFilterApi user_token api_key delta
-																									_ <- sendUpdatedState {response : responseData, responseFor : "StartResourcePageApi", screen:"asas"} 
-																									pure $ "handled" 
+																									_ <- sendUpdatedState {response : responseData, responseFor : "StartResourcePageApi", screen:"asas"}
+																									pure $ "handled"
 		_ -> pure $ "default"
 
 
@@ -42,7 +42,7 @@ startResourceSearchFlow values = do
   event <- ui $ SearchScreen {filterDetails:values}
   case event of
     ResourceDetailFlow {resourceDetails : details} -> startResourceDetailFlow details "ResourceSearch" values
-    StartFilterFlow{filterDetails : details} -> startFilterFlow details 
+    StartFilterFlow{filterDetails : details} -> startFilterFlow details
     SearchResourceFlow {course : details} -> startCourseDetailFlow details
     _ -> pure $ "aborted"
 
@@ -90,5 +90,4 @@ startResourceDetailFlow values fromWhere sendBack= do
 -- 		DummyAlternateModuleDetailAction -> pure $ "handled"
 -- 		ShowModuleAgainScreen {moduleName:mName,moduleDetails:mDetails}-> resourceModuleDetailsFlow mName mDetails parentCourse
 -- 		BackToHome -> resourceEnrolledCourseFlow parentCourse
---   		_ -> pure $ "default"  		
-
+--   		_ -> pure $ "default"

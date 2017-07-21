@@ -74,7 +74,7 @@ class CourseComponent extends View {
 
   handleResponse = () => {
       console.log("handleResponse");
-      console.log("SERVER GAVE RESPONSE", this.props.response)     
+      console.log("SERVER GAVE RESPONSE", this.props.response)
       if(this.props.response===undefined) {
         return;
       }
@@ -88,7 +88,7 @@ class CourseComponent extends View {
       if(this.details.sections==undefined && this.details.sections.length==0){
           JBridge.showSnackBar("Error Fetching Data");
           return;
-      } 
+      }
 
       Android.runInUI(this.set({
         id :this.idSet.fetchingHolder,
@@ -98,7 +98,7 @@ class CourseComponent extends View {
                           layoutTransition="true"
                           height="match_parent"
                           width="match_parent"/>)
-      this.replaceChild(this.idSet.parentContainer, emptyBody.render(), 0) 
+      this.replaceChild(this.idSet.parentContainer, emptyBody.render(), 0)
 
       var rows=this.details.sections.map((item,index) => {
           return this.getCourseCardLayout(item);
@@ -116,10 +116,10 @@ class CourseComponent extends View {
 
         </LinearLayout>)
 
-      return layout;  
+      return layout;
     //this.replaceChild(this.idSet.parentContainer,layout.render(),0)
 
-  
+
   }
 
 
@@ -168,6 +168,8 @@ class CourseComponent extends View {
   }
 
   handleUserCoursesClick = (content, type) => {
+    console.log("DATA IN COURSE PROGRESS COMPONENT CARD CLICK",content)
+
     var tmp = JSON.stringify(content)
     var eventAction = { tag: 'StartEnrolledCourseFlow', contents: { "course": tmp } }
     window.__runDuiCallback(eventAction);
@@ -186,8 +188,8 @@ class CourseComponent extends View {
             title="Courses"
             width="match_parent"
             showMenu="true"
-            invert="true" 
-            hideBack="true" 
+            invert="true"
+            hideBack="true"
             menuData={this.menuData}
             onMenuItemClick={this.handleMenuClick}/>
 
@@ -203,12 +205,13 @@ class CourseComponent extends View {
                   background={window.__Colors.WHITE}
                   orientation="vertical">
 
-                  
+
                   <CourseInProgressContainer
                     transparent="true"
                     title="Courses In Progress"
+                    isViewAllExist="true"
                     onCourseClick={this.handleUserCoursesClick}/>
-                   
+
 
                   {this.handleResponse()}
 
@@ -232,6 +235,8 @@ class CourseComponent extends View {
     }
   }
 
+
+
   handleSearch = (data) => {
     console.log("searched", data);
   }
@@ -248,13 +253,8 @@ class CourseComponent extends View {
   }
 
 
-
-
   render() {
     this.layout = (
-
-   
-
         <LinearLayout
           root="true"
           orientation="vertical"
@@ -263,10 +263,10 @@ class CourseComponent extends View {
           height="match_parent">
 
           {this.getBody()}
-          
+
         </LinearLayout>
-       
-       
+
+
 
     )
 
