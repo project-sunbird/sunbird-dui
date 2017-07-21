@@ -40,11 +40,17 @@ class PageFilterPopup extends View {
 
 
   show = () => {
+    this.visible=true;
     this.setVisibility("visible");
   }
 
   hide = () => {
+    this.visible=false;
     this.setVisibility("gone");
+  }
+
+  getVisibility = () => {
+    return this.visible;
   }
 
   setVisibility = (data) => {

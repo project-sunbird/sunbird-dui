@@ -32,10 +32,16 @@ class PageFilterChooser extends View {
 
 
   show = () => {
+    this.visible=true;
     this.setVisibility("visible");
   }
 
+  getVisibility = () => {
+    return this.visible;
+  }
+
   hide = () => {
+    this.visible=false;
     this.setVisibility("gone");
   }
 
