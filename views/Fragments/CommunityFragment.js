@@ -10,12 +10,12 @@ var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 
-var SearchToolbar = require('../Sunbird/core/SearchToolbar');
-var MyCommunities = require('../Sunbird/MyCommunities');
-var PopularCommunities = require('../Sunbird/PopularCommunities');
-var RecommendedCommunities = require('../Sunbird/RecommendedCommunities');
+var SearchToolbar = require('../../components/Sunbird/core/SearchToolbar');
+var MyCommunities = require('../../components/Sunbird/MyCommunities');
+var PopularCommunities = require('../../components/Sunbird/PopularCommunities');
+var RecommendedCommunities = require('../../components/Sunbird/RecommendedCommunities');
 
-class CommunityComponent extends View {
+class CommunityFragment extends View {
   constructor(props, children) {
     super(props, children);
 
@@ -117,24 +117,30 @@ class CommunityComponent extends View {
   }
 
   handleMyCommunityClick = (communityName) => {
-
-    this.state = { tag: 'StartCommunityInfoFlow',contents: {"community":communityName}}
-    window.__runDuiCallback(this.state);
+    var whatToSend = {"community":communityName}
+    var event = { tag: 'OPEN_CommunityInfoActivity',contents: whatToSend}
+    window.__runDuiCallback(event);
   }
 
   handlePopularCommunityClick = (communityName) => {
-    this.state = R.merge(this.state, { action: 'showCommunityInfo', community: communityName })
-    window.__runDuiCallback(this.state);
+    var whatToSend = {"community":communityName}
+    var event = { tag: 'OPEN_CommunityActivity',contents: whatToSend}
+    
+    window.__runDuiCallback(event);
   }
 
   handleRecommendedCommunityClick = (communityName) => {
-    this.state = R.merge(this.state, { action: 'showCommunityInfo', community: communityName })
-    window.__runDuiCallback(this.state);
+
+    var whatToSend = {"community":communityName}
+    var event = { tag: 'OPEN_CommunityInfo',contents: whatToSend}
+    
+    window.__runDuiCallback(tEvent);
   }
 
   handleMyViewAllClick = () => {
-    this.state = {tag : "StartCommunityViewAllFlow", contents:[]}
-    window.__runDuiCallback(this.state);
+    var whatToSend = []
+    var event = {tag : "StartCommunityViewAllFlow", contents:whatToSend}
+    window.__runDuiCallback(event);
   }
 
   getLineSeperator() {
@@ -145,7 +151,9 @@ class CommunityComponent extends View {
              background={window.__Colors.PRIMARY_BLACK_22}/>)
   }
 
-  afterRender() {}
+  afterRender() {
+    
+  }
 
 
   render() {
@@ -210,4 +218,4 @@ class CommunityComponent extends View {
 
 
 
-module.exports = CommunityComponent;
+module.exports = CommunityFragment;

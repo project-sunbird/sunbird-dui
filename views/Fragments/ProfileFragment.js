@@ -9,19 +9,20 @@ var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
-var SimpleToolbar = require('../Sunbird/core/SimpleToolbar');
-var ProfileHeader = require('../Sunbird/ProfileHeader');
-var ComingSoonComponent = require('../Sunbird/ComingSoonComponent');
-var PersonalDetails = require('../Sunbird/PersonalDetails');
-var ProfileExperiences = require('../Sunbird/ProfileExperiences');
-var ProfileSkillTags = require('../Sunbird/ProfileSkillTags');
-var ProfileAccomplishments = require('../Sunbird/ProfileAccomplishments');
-var ProfileCreations = require('../Sunbird/ProfileCreations');
-var ProfileBadges = require('../Sunbird/ProfileBadges');
-var ProfileAdditionalInfo = require('../Sunbird/ProfileAdditionalInfo');
+
+var SimpleToolbar = require('../../components/Sunbird/core/SimpleToolbar');
+var ProfileHeader = require('../../components/Sunbird/ProfileHeader');
+var ComingSoonComponent = require('../../components/Sunbird/ComingSoonComponent');
+var PersonalDetails = require('../../components/Sunbird/PersonalDetails');
+var ProfileExperiences = require('../../components/Sunbird/ProfileExperiences');
+var ProfileSkillTags = require('../../components/Sunbird/ProfileSkillTags');
+var ProfileAccomplishments = require('../../components/Sunbird/ProfileAccomplishments');
+var ProfileCreations = require('../../components/Sunbird/ProfileCreations');
+var ProfileBadges = require('../../components/Sunbird/ProfileBadges');
+var ProfileAdditionalInfo = require('../../components/Sunbird/ProfileAdditionalInfo');
 
 var _this;
-class ProfileComponent extends View {
+class ProfileFragment extends View {
   constructor(props, children) {
     super(props, children);
 
@@ -150,22 +151,5 @@ class ProfileComponent extends View {
     return this.layout.render();
   }
 }
-/*
-add these later
- <ProfileExperiences/>
-<ProfileSkillTags/>
 
-
-                <ProfileAccomplishments/>
-
-
-                <ProfileCreations/>
-
-                <ProfileBadges/>
-
-                <ProfileAdditionalInfo/>
-
-*/
-
-
-module.exports = ProfileComponent;
+module.exports = ProfileFragment;

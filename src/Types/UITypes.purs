@@ -239,7 +239,9 @@ instance decodeSearchActivityAction :: Decode SearchActivityAction where decode 
 instance encodeSearchActivityAction :: Encode SearchActivityAction where encode = defaultEncode
 
 data FilterActivity = FilterActivity {filterDetails::String}
-data FilterActivityAction = DummyFilterActivity | BACK_FilterActivity | OPEN_SearchActivity_FILTER {filterData::String}  
+data FilterActivityAction = DummyFilterActivity | 
+  BACK_FilterActivity | 
+  OPEN_SearchActivity_FILTER {filterData::String}  
 
 instance filterActivity :: UIScreen FilterActivity FilterActivityAction where
   generateMockEvents _ = [ DummyFilterActivity , BACK_FilterActivity ]

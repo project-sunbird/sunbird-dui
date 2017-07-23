@@ -7,17 +7,20 @@ var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
-var SearchToolbar = require('../../components/Sunbird/core/SearchToolbar');
-var ChooseItem = require('../../components/Sunbird/ChooseItem');
+
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 
-class CommunityViewAllListScreen extends View {
+var SearchToolbar = require('../components/Sunbird/core/SearchToolbar');
+
+
+class CommunityViewAllActivity extends View {
   constructor(props, children) {
     super(props, children);
     this.setIds([
       'filterCount'
     ]);
+    this.screenName="CommunityViewAllActivity"
 
     this.menuData = {
       url: [
@@ -137,10 +140,10 @@ class CommunityViewAllListScreen extends View {
   }
 
 
-  handleBackPress = () => {
-    console.log("BACK PRESS TO Course Home");
-    window.__changePureScriptFlow();
-    window.__runDuiCallback({ action: "showMainFlow" });
+  onBackPressed = () => {
+    var whatToSend = []
+    var event = { tag: 'BACK_CommunityViewAllActivity', contents: whatToSend };
+    window.__runDuiCallback(ecent);
   }
 
 
@@ -168,7 +171,7 @@ class CommunityViewAllListScreen extends View {
             invert="true"
             title="Communities"
             onMenuItemClick={this.handleMenuClick}
-            onBackPress={this.handleBackPress}
+            onBackPress={this.onBackPressed}
             menuData={this.menuData}
             onSearch={this.handleSearch}/>
 
@@ -197,4 +200,4 @@ class CommunityViewAllListScreen extends View {
   }
 }
 
-module.exports = Connector(CommunityViewAllListScreen);
+module.exports = Connector(CommunityViewAllActivity);

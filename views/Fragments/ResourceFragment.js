@@ -9,14 +9,15 @@ var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
-window.R = require("ramda");
-var SearchToolbar = require('../Sunbird/core/SearchToolbar');
-var SimpleToolbar = require('../Sunbird/core/SimpleToolbar');
-var CourseContainer = require('../Sunbird/CourseContainer');
-var HomeRecommendedContainer = require('../Sunbird/HomeRecommendedContainer');
-var ResourceContainer = require('../Sunbird/ResourceContainer');
-var OfflineResourceContainer = require('../Sunbird/OfflineResourceContainer');
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
+window.R = require("ramda");
+var SearchToolbar = require('../../components/Sunbird/core/SearchToolbar');
+var SimpleToolbar = require('../../components/Sunbird/core/SimpleToolbar');
+var CourseContainer = require('../../components/Sunbird/CourseContainer');
+var HomeRecommendedContainer = require('../../components/Sunbird/HomeRecommendedContainer');
+var ResourceContainer = require('../../components/Sunbird/ResourceContainer');
+var OfflineResourceContainer = require('../../components/Sunbird/OfflineResourceContainer');
+
 var utils = require('../../utils/GenericFunctions');
 
 

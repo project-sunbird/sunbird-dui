@@ -8,15 +8,17 @@ var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 var ScrollView = require('@juspay/mystique-backend').androidViews.ScrollView;
+
+var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
+var CropParagraph = require('../components/Sunbird/CropParagraph');
+var ProgressButton = require('../components/Sunbird/core/ProgressButton');
+var LargeCardComponent = require('../components/Sunbird/core/LargeCardComponent');
+
+var utils = require('../utils/GenericFunctions');
 var objectAssign = require('object-assign');
 window.R = require("ramda");
-var SimpleToolbar = require('../../components/Sunbird/core/SimpleToolbar');
-var CropParagraph = require('../../components/Sunbird/CropParagraph');
-var ProgressButton = require('../../components/Sunbird/core/ProgressButton');
-var LargeCardComponent = require('../../components/Sunbird/core/LargeCardComponent');
-var utils = require('../../utils/GenericFunctions');
 
-class CourseViewAllScreen extends View {
+class CourseViewAllActivity extends View {
   constructor(props, children, state) {
     super(props, children, state);
 
@@ -24,7 +26,7 @@ class CourseViewAllScreen extends View {
     ]);
     this.state = state;
 
-    this.screenName = "CourseViewAllScreen";
+    this.screenName = "CourseViewAllActivity";
 
     this.shouldCacheScreen = false;
 
@@ -100,8 +102,12 @@ class CourseViewAllScreen extends View {
     console.log("DATA IN COURSE PROGRESS COMPONENT VIEW ALL CLICK",content)
 
     var tmp = JSON.stringify(content)
-    var eventAction = { tag: 'StartEnrolledCourseFlowFromCourseViewAll', contents: { "course": tmp } }
-    window.__runDuiCallback(eventAction);
+    
+    var whatToSend = {
+        "course": tmp 
+      };
+     var event = { tag: 'OPEN_EnrolledCourseFlowFromCourseViewAll', contents: whatToSend };
+    window.__runDuiCallback(ecent);
   }
 
 
@@ -114,7 +120,9 @@ class CourseViewAllScreen extends View {
   }
 
   onBackPressed = () => {
-    window.__changePureScriptFlow();
+    var whatToSend = []
+    var event = { tag: 'BACK_CourseViewAllActivity', contents: whatToSend }
+    window.__runDuiCallback(event);
   }
 
   render() {
@@ -164,4 +172,4 @@ class CourseViewAllScreen extends View {
   }
 }
 
-module.exports = Connector(CourseViewAllScreen);
+module.exports = Connector(CourseViewAllActivity);

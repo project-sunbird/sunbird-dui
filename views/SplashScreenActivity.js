@@ -12,12 +12,11 @@ var objectAssign = require('object-assign');
 
 window.R = require("ramda");
 
-class SplashScreen extends View {
+class SplashScreenActivity extends View {
   constructor(props, children, state) {
     super(props, children, state);
     this.state = state;
-    this.screenName = "SplashScreen"
-    console.log("Im in SplashScreen")
+    this.screenName = "SplashScreenActivity"
     this.getUserToken()
     window.__pressedLoggedOut=false;
   }
@@ -48,7 +47,7 @@ class SplashScreen extends View {
     }
 
     setTimeout(() => {
-      window.__runDuiCallback({ tag: "StartInit" });
+      window.__runDuiCallback({ tag: "OPEN_UserScreenActivity" });
     }, 1000);
   }
 
@@ -97,4 +96,4 @@ class SplashScreen extends View {
   }
 }
 
-module.exports = Connector(SplashScreen);
+module.exports = Connector(SplashScreenActivity);

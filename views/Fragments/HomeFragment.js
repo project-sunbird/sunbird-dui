@@ -9,22 +9,22 @@ var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 var objectAssign = require('object-assign');
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
-var FeedComponent = require('./FeedComponent');
+
 
 
 window.R = require("ramda");
 
 
-var SearchToolbar = require('../Sunbird/core/SearchToolbar');
-var SimpleToolbar = require('../Sunbird/core/SimpleToolbar');
+var SearchToolbar = require('../../components/Sunbird/core/SearchToolbar');
+var SimpleToolbar = require('../../components/Sunbird/core/SimpleToolbar');
 
 
 
-var HomeRecommendedContainer = require('../Sunbird/HomeRecommendedContainer');
-var HomeTodoContainer = require('../Sunbird/HomeTodoContainer');
+var HomeRecommendedContainer = require('../../components/Sunbird/HomeRecommendedContainer');
+var HomeTodoContainer = require('../../components/Sunbird/HomeTodoContainer');
 
 
-class HomeComponent extends View {
+class HomeFragment extends View {
   constructor(props, children) {
     super(props, children);
 
@@ -144,11 +144,13 @@ class HomeComponent extends View {
   handleMenuClick = (url) => {
     console.log("url clicked", url);
     if (url == "ic_notification_red") {
-      window.__runDuiCallback({ tag: "StartNotificationFlow", contents: [] });
+
     }
     if (url == "ic_action_search") {
       var searchDetails = { filterDetails: "", searchType: "Combined" }
-      window.__runDuiCallback({ tag: "StartSearchFlow", contents: { filterDetails: JSON.stringify(searchDetails) } });
+      var whatToSend = { filterDetails: JSON.stringify(searchDetails) }
+      var event = { tag: "OPEN_SearchActivity", contents: whatToSend }
+      window.__runDuiCallback(event);
     }
   }
 
@@ -183,18 +185,19 @@ class HomeComponent extends View {
 
   handleResourceOpen = (data) => {
     console.log("resourceDetails");
-    window.__runDuiCallback({ tag: "StartResourceDetailFlow", contents: { "resourceDetails": "nothing" } });
+    var whatToSend={ "resourceDetails": "nothing" }
+    var event ={ tag: "OPEN_ResourceDetailActivity", contents: whatToSend }
+    window.__runDuiCallback(event);
   }
 
   handleCourseOpen = (data) => {
-    window.__runDuiCallback({ tag: "StartCourseInfoFlow", contents: { "course": "something" } });
+    var whatToSend = { "course": "something" }
+    var event = { tag: "OPEN_CourseInfoActivity", contents: whatToSend }
+    window.__runDuiCallback(event);
   }
 
   handleRecommendedClick = (content) => {
     console.log("Recommended clicked :", content.downloadUrl)
-      // JBridge.downloadFile("https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/ecar_files/do_11218758465395097616/verbs_1487744032502_do_11218758465395097616_1.0.ecar")
-      //JBridge.downloadFile(content.downloadUrl)
-
 
     var callback = callbackMapper.map((params) => {
       this.getLocalData([params[0]])
@@ -283,7 +286,7 @@ class HomeComponent extends View {
 }
 
 
-module.exports = HomeComponent;
+module.exports = HomeFragment;
 
 //To be added
 //  <LinearLayout

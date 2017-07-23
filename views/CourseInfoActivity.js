@@ -14,14 +14,14 @@ var objectAssign = require('object-assign');
 
 window.R = require("ramda");
 
-var SimpleToolbar = require('../../components/Sunbird/core/SimpleToolbar');
-var CropParagraph = require('../../components/Sunbird/CropParagraph');
-var CourseCurriculum = require('../../components/Sunbird/CourseCurriculum');
-var PageOption = require('../../components/Sunbird/core/PageOption');
-var CourseProgress = require('../../components/Sunbird/CourseProgress');
-var ProgressButton = require('../../components/Sunbird/core/ProgressButton');
+var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
+var CropParagraph = require('../components/Sunbird/CropParagraph');
+var CourseCurriculum = require('../components/Sunbird/CourseCurriculum');
+var PageOption = require('../components/Sunbird/core/PageOption');
+var CourseProgress = require('../components/Sunbird/CourseProgress');
+var ProgressButton = require('../components/Sunbird/core/ProgressButton');
 var _this;
-class CourseInfoScreen extends View {
+class CourseInfoActivity extends View {
   constructor(props, children, state) {
     super(props, children, state);
 
@@ -32,7 +32,7 @@ class CourseInfoScreen extends View {
       "downloadProgressText"
     ]);
     this.state = state;
-    this.screenName = "CourseEnrolledScreen"
+    this.screenName = "CourseInfoActivity"
       // console.log("GOT STATE", JSON.stringify(state))
       // window.__RootScreen.snackBar("Hellllllo")
     this.menuData = {
@@ -230,9 +230,9 @@ class CourseInfoScreen extends View {
 
   afterRender = () => {
     if (this.details.isProgress == "true") {
-      console.log("Already enrolled")
-      var eventAction = { tag: 'ShowEnrolledCourse', contents: { "course": this.state.data.value0.courseDetails } }
-      window.__runDuiCallback(eventAction);
+      var whatToSend = { "course": this.state.data.value0.courseDetails }
+      var event = { tag: 'OPEN_EnrolledActivity', contents: whatToSend }
+      window.__runDuiCallback(event);
 
     }
 
@@ -274,15 +274,15 @@ class CourseInfoScreen extends View {
           console.log("WELCOME -->>", result.response.firstName);
           JBridge.showSnackBar("Course enrolled")
 
-          //"{"id":null,"ver":"v1","ts":"2017-06-28 02:09:30:032+0000","params":{"resmsgid":null,"msgid":null,"err":"INVALID_CREDENTIAL","status":"SERVER_ERROR","errmsg":"Invalid credential."},"responseCode":"CLIENT_ERROR","result":{}}"
-          var eventAction = { tag: 'ShowEnrolledCourse', contents: { "course": this.state.data.value0.courseDetails } }
-          window.__runDuiCallback(eventAction);
+          var whatToSend = { "course": this.state.data.value0.courseDetails }
+          var event = { tag: 'ShowEnrolledCourse', contents: whatToSend }
+          window.__runDuiCallback(event);
         } else {
           JBridge.showSnackBar("Please retry")
         }
         break;
 
-        break;
+        
       default:
         console.log("default SWITCH")
         break;
@@ -297,21 +297,23 @@ class CourseInfoScreen extends View {
 
   handleEnrollClick = (data) => {
     console.log("---->\t", "handleEnrollClick");
-
-    var eventAction = {
-      "tag": "EnrollCourseApi",
-      "contents": { "user_token":window.__userToken,"reqParams": this.details.identifier,"api_token": window.__apiToken }
-    }
-    console.log("IN ENROLLNOW")
     window.__LoaderDialog.show();
-    window.__runDuiCallback(eventAction);
 
-
+    var whatToSend = { "user_token":window.__userToken,
+    "reqParams": this.details.identifier,
+    "api_token": window.__apiToken }
+    var event = {
+      "tag": "API_EnrollCourse",
+      "contents": whatToSend
+    }
+    
+    window.__runDuiCallback(event);
   }
 
   onBackPressed = () => {
-    var eventAction = { tag: 'CourseInfoBackpress', contents: [] }
-   window.__runDuiCallback(eventAction);
+   var whatToSend = []
+   var event = { tag: 'BACK_CourseInfoActivity', contents: whatToSend }  
+   window.__runDuiCallback(event);
   }
 
   getCurriculumnBrief = () => {
@@ -429,4 +431,4 @@ class CourseInfoScreen extends View {
   }
 }
 
-module.exports = Connector(CourseInfoScreen);
+module.exports = Connector(CourseInfoActivity);

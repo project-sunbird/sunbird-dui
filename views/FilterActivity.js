@@ -6,23 +6,27 @@ var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
+
+var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
+
+var Space = require('@juspay/mystique-backend').androidViews.Space;
+
 var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
 var FilterCard = require('../components/Sunbird/FilterCard');
 var DoubleRadioList = require('../components/Sunbird/DoubleRadioList');
 var FilterPopup = require('../components/Sunbird/FilterPopup');
-var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 var PageOption = require('../components/Sunbird/core/PageOption');
-var Space = require('@juspay/mystique-backend').androidViews.Space;
+
 var _this;
 
-class FilterScreen extends View {
+class FilterActivity extends View {
   constructor(props, children,state) {
     super(props, children,state);
 
     this.tempData = JSON.parse(state.data.value0.filterDetails);
     this.data = JSON.parse(this.tempData.filterDetails);
     this.facetData = this.data.facetFilters;
-    this.screenName = "FilterScreen";
+    this.screenName = "FilterActivity";
     this.shouldCacheScreen = false;
     this.filterData  = [];
 
@@ -110,13 +114,15 @@ class FilterScreen extends View {
 
 
   onBackPressed = () => {
-    var searchDetails = {filterDetails: JSON.stringify(this.data),searchType: this.tempData.filterType}
-    window.__runDuiCallback( {filterData:JSON.stringify(searchDetails)} );
-
+    var whatToSend = [] ;
+    window.__runDuiCallback({ "tag": "BACK_FilterActivity", contents: whatToSend });
   }
   handleFilterClick = () =>{
-    var searchDetails = {filterDetails: JSON.stringify(this.data),searchType: this.tempData.filterType}
-    window.__runDuiCallback( {filterData:JSON.stringify(searchDetails)} );    
+    var whatToSend = {
+        "filterData" : JSON.stringify(searchDetails)
+      };
+
+    window.__runDuiCallback({ "tag": "OPEN_SearchActivity_FILTER", contents: whatToSend });   
   }
 
 
@@ -218,4 +224,4 @@ class FilterScreen extends View {
   }
 }
 
-module.exports = Connector(FilterScreen);
+module.exports = Connector(FilterActivity);

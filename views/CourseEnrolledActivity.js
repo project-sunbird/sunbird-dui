@@ -12,14 +12,14 @@ var objectAssign = require('object-assign');
 
 window.R = require("ramda");
 
-var SimpleToolbar = require('../../components/Sunbird/core/SimpleToolbar');
-var CropParagraph = require('../../components/Sunbird/CropParagraph');
-var CourseCurriculum = require('../../components/Sunbird/CourseCurriculum');
-var HorizontalProgressBar = require('../../components/Sunbird/HorizontalProgressBar');
-var CourseProgress = require('../../components/Sunbird/CourseProgress');
+var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
+var CropParagraph = require('../components/Sunbird/CropParagraph');
+var CourseCurriculum = require('../components/Sunbird/CourseCurriculum');
+var HorizontalProgressBar = require('../components/Sunbird/HorizontalProgressBar');
+var CourseProgress = require('../components/Sunbird/CourseProgress');
 
 var _this;
-class CourseEnrolledScreen extends View {
+class CourseEnrolledActivity extends View {
   constructor(props, children, state) {
     super(props, children, state);
 
@@ -30,7 +30,7 @@ class CourseEnrolledScreen extends View {
       "downloadProgressText"
     ]);
     this.state = state;
-    this.screenName = "CourseEnrolledScreen"
+    this.screenName = "CourseEnrolledActivity"
 
     this.menuData = {
       url: [
@@ -154,8 +154,13 @@ class CourseEnrolledScreen extends View {
   }
 
   getContentState = (courseId,userToken) =>{
-    var eventAction = { "tag": "GetContentStateApi", contents: { "courseId": courseId, "user_token": userToken, "api_token": window.__apiToken } };
-    window.__runDuiCallback(eventAction);
+    var whatToSend = { 
+      "courseId": courseId, 
+      "user_token": userToken, 
+      "api_token": window.__apiToken 
+    }
+    var event = { "tag": "API_GetContentState", contents: whatToSend };
+    window.__runDuiCallback(event);
 
   }
 
@@ -222,8 +227,12 @@ class CourseEnrolledScreen extends View {
 
 
   handleModuleClick = (moduleName, module) => {
-    var eventAction = { "tag": "ShowModuleScreen", contents: { "moduleName": moduleName, "moduleDetails": JSON.stringify(module) } };
-    window.__runDuiCallback(eventAction);
+    var whatToSend = { 
+      "moduleName": moduleName,
+      "moduleDetails": JSON.stringify(module) 
+     } 
+    var event = { "tag": "OPEN_ModuleDetailsActivity", contents: whatToSend};
+    window.__runDuiCallback(event);
 
   }
   handleStateChange(state){
@@ -252,8 +261,9 @@ class CourseEnrolledScreen extends View {
 
 
   onBackPressed = () => {
-   var eventAction = { tag: 'CourseEnrolledBackpress', contents: [] }
-   window.__runDuiCallback(eventAction);
+   var whatToSend = []
+   var event = { tag: 'BACK_CourseEnrolledActivity', contents: whatToSend }
+   window.__runDuiCallback(event);
   }
 
 
@@ -340,4 +350,4 @@ class CourseEnrolledScreen extends View {
   }
 }
 
-module.exports = Connector(CourseEnrolledScreen);
+module.exports = Connector(CourseEnrolledActivity);

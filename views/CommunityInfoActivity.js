@@ -12,11 +12,11 @@ var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 
-var CommunityDescription = require('../../components/Sunbird/CommunityDescription');
-var CommunityDefault = require('../../components/Sunbird/CommunityDefault');
-var SearchToolbar = require('../../components/Sunbird/core/SearchToolbar');
+var CommunityDescription = require('../components/Sunbird/CommunityDescription');
+var CommunityDefault = require('../components/Sunbird/CommunityDefault');
+var SearchToolbar = require('../components/Sunbird/core/SearchToolbar');
 
-class CommunityInfoScreen extends View {
+class CommunityInfoActivity extends View {
   constructor(props, children,state) {
     super(props, children, state);
     this.state = state;
@@ -24,7 +24,7 @@ class CommunityInfoScreen extends View {
     this.communityName = this.state.data.value0.name;
     
 
-
+    this.screenName="CommunityInfoActivity";
     // this.props.appendText = this.props.appendText || "";
     this.setIds([
       'defaultContainer',
@@ -44,10 +44,10 @@ class CommunityInfoScreen extends View {
     }
   }
 
-  handleBackPress = () => {
-    console.log("BACK PRESS TO Course Home");
-    window.__changePureScriptFlow();
-    window.__runDuiCallback({ action: "showMainFlow" });
+  onBackPressed = () => {
+    var whatToSend = []
+    var event = { tag: 'BACK_CommunityViewAllActivity', contents: whatToSend };
+    window.__runDuiCallback(ecent);
   }
 
 
@@ -250,7 +250,7 @@ class CommunityInfoScreen extends View {
             hint="Enter your search"
             invert="true"
             title={this.communityName}
-            onBackPress={this.handleBackPress}
+            onBackPress={this.onBackPress}
             onMenuItemClick={this.handleMenuClick}
             menuData={this.menuData}
             onSearch={this.handleSearch}/>
@@ -303,4 +303,4 @@ class CommunityInfoScreen extends View {
 
 
 
-module.exports = Connector(CommunityInfoScreen);
+module.exports = Connector(CommunityInfoActivity);

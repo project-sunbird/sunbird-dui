@@ -10,13 +10,13 @@ var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 
-var SearchToolbar = require('../Sunbird/core/SearchToolbar');
-var SimpleToolbar = require('../Sunbird/core/SimpleToolbar');
+var SearchToolbar = require('../../components/Sunbird/core/SearchToolbar');
+var SimpleToolbar = require('../../components/Sunbird/core/SimpleToolbar');
 
-var CourseInProgressContainer = require('../Sunbird/CourseInProgressContainer');
-var CourseContainer = require('../Sunbird/CourseContainer');
+var CourseInProgressContainer = require('../../components/Sunbird/CourseInProgressContainer');
+var CourseContainer = require('../../components/Sunbird/CourseContainer');
 var _this;
-class CourseComponent extends View {
+class CourseFragment extends View {
   constructor(props, children) {
     super(props, children);
 
@@ -144,36 +144,27 @@ class CourseComponent extends View {
 
 
   handleCourseClick = (content, type) => {
-    //console.log("content is", content);
-    //console.log("type is", type);
-    //console.log("data is", tmp);
-
+    
     var tmp = JSON.stringify(content)
-    var eventAction;
+    var whatToSend = []
+    var event = {};
     console.log("CHECKING ->", content.identifier);
     if (this.checkIfEnrolled(content.identifier)) {
-      console.log("\n\n\nENROLLED")
-      eventAction = { tag: 'StartEnrolledCourseFlow', contents: { "course": tmp } }
+      whatToSend = { "course": tmp }
+      event = { tag: 'StartEnrolledCourseFlow', contents: whatToSend }
     } else {
-      console.log("\n\n\nNOT ENROLLED")
-      eventAction = { tag: 'StartCourseInfoFlow', contents: { "course": tmp } }
+      whatToSend = { "course": tmp }
+      event = { tag: 'StartCourseInfoFlow', contents: whatToSend }
     }
-
-
-    //var eventAction = { tag: 'StartEnrolledCourseFlow', contents: { "course": tmp } }
-
-
-    window.__runDuiCallback(eventAction);
+    window.__runDuiCallback(event);
 
 
   }
 
   handleUserCoursesClick = (content, type) => {
-    console.log("DATA IN COURSE PROGRESS COMPONENT CARD CLICK",content)
-
-    var tmp = JSON.stringify(content)
-    var eventAction = { tag: 'StartEnrolledCourseFlow', contents: { "course": tmp } }
-    window.__runDuiCallback(eventAction);
+    var whatToSend = { "course": JSON.stringify(content) }
+    var event = { tag: 'StartEnrolledCourseFlow', contents: whatToSend }
+    window.__runDuiCallback(event);
   }
 
 
@@ -227,11 +218,12 @@ class CourseComponent extends View {
     console.log("url clicked", url);
     if (url == "ic_notification_red") {
       JBridge.showSnackBar("Comming Soon")
-        // window.__runDuiCallback({ tag: "StartNotificationFlow", contents: [] });
     }
     else if (url == "ic_action_search") {
       var searchDetails = { filterDetails: "", searchType: "Course" }
-      window.__runDuiCallback({ tag: "StartSearchFlow", contents: { filterDetails: JSON.stringify(searchDetails) } });
+      var whatToSend = { filterDetails: JSON.stringify(searchDetails) } 
+      var event = { tag: "StartSearchFlow", contents: whatToSend}
+      window.__runDuiCallback(event);
 
     }
      else if (url == "ic_action_filter") {
@@ -281,4 +273,4 @@ class CourseComponent extends View {
 
 
 
-module.exports = CourseComponent;
+module.exports = CourseFragment;

@@ -10,14 +10,14 @@ var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callba
 var ScrollView = require('@juspay/mystique-backend').androidViews.ScrollView;
 var RatingBar = require('@juspay/mystique-backend').androidViews.RatingBar;
 var objectAssign = require('object-assign');
-window.R = require("ramda");
-var SimpleToolbar = require('../../components/Sunbird/core/SimpleToolbar');
-var CropParagraph = require('../../components/Sunbird/CropParagraph');
-var ProgressButton = require('../../components/Sunbird/core/ProgressButton');
 
+var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
+var ProgressButton = require('../components/Sunbird/core/ProgressButton');
+
+window.R = require("ramda");
 
 var _this;
-class ResourceDetailScreen extends View {
+class ResourceDetailActivity extends View {
   constructor(props, children, state) {
     super(props, children, state);
 
@@ -28,7 +28,7 @@ class ResourceDetailScreen extends View {
       "simpleToolBarOverFlow"
     ]);
     this.state = state;
-    this.screenName = "ResourceDetailScreen"
+    this.screenName = "ResourceDetailActivity"
     this.menuData = {
       url: [
 
@@ -49,9 +49,6 @@ class ResourceDetailScreen extends View {
     console.log("Got Title", this.details)
     this.localStatus = false;
 
-    // if(this.details.hasOwnProperty("content") && this.details.content.hasOwnProperty("isAvailableLocally")){
-    //   this.localStatus = true;
-    // }
     _this = this;
     console.log("true", this.localStatus)
 
@@ -348,22 +345,20 @@ class ResourceDetailScreen extends View {
 
 
   onBackPressed = () => {
-    var eventAction = { "tag": "ResourceDetailBack", contents: [] };
-    window.__runDuiCallback(eventAction);
+    var whatToSend = []
+    var event= { "tag": "BACK_ResourceDetailActivity", contents: whatToSend };
+    window.__runDuiCallback(event);
   }
 
   changeOverFlow = () =>{
-    var toolbar = (
-      <SimpleToolbar
+    var toolbar =  (<SimpleToolbar
           width="match_parent"
           menuData={this.menuData1}
           popupMenu={this.popupMenu}
           onBackPress={onBackPressed}
           overFlowCallback = {this.overFlowCallback}
           showMenu="true"
-          invert="true"
-
-          />)
+          invert="true"/>)
 
     this.replaceChild(this.idSet.simpleToolBarOverFlow, toolbar.render(), 0);
   }
@@ -438,4 +433,4 @@ class ResourceDetailScreen extends View {
   }
 }
 
-module.exports = Connector(ResourceDetailScreen);
+module.exports = Connector(ResourceDetailActivity);

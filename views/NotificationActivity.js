@@ -14,14 +14,14 @@ window.R = require("ramda");
 var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
 
 
-class NotificationScreen extends View {
+class NotificationActivity extends View {
   constructor(props, children, state) {
     super(props, children, state);
 
     this.setIds([
     ]);
     this.state = state;
-    this.screenName = "NotificationScreen"
+    this.screenName = "NotificationActivity"
      this.menuData = {
       url: []
     }
@@ -206,4 +206,4 @@ class NotificationScreen extends View {
   }
 }
 
-module.exports = Connector(NotificationScreen);
+module.exports = Connector(NotificationActivity);

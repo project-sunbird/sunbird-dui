@@ -10,22 +10,22 @@ var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callba
 var ScrollView = require('@juspay/mystique-backend').androidViews.ScrollView;
 var objectAssign = require('object-assign');
 window.R = require("ramda");
-var SimpleToolbar = require('../../components/Sunbird/core/SimpleToolbar');
-var CropParagraph = require('../../components/Sunbird/CropParagraph');
-var ProgressButton = require('../../components/Sunbird/core/ProgressButton');
-var LargeCardComponent = require('../../components/Sunbird/core/LargeCardComponent');
-var utils = require('../../utils/GenericFunctions');
+var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
+var CropParagraph = require('../components/Sunbird/CropParagraph');
+var ProgressButton = require('../components/Sunbird/core/ProgressButton');
+var LargeCardComponent = require('../components/Sunbird/core/LargeCardComponent');
+var utils = require('../utils/GenericFunctions'); 
 
 
 
-class ResourceViewAllScreen extends View {
+class ResourceViewAllActivity extends View {
   constructor(props, children, state) {
     super(props, children, state);
 
     this.setIds([
     ]);
     this.state = state;
-    this.screenName = "ResourceViewAllScreen";
+    this.screenName = "ResourceViewAllActivity";
       this.menuData = {
       url: [
       ]
@@ -38,7 +38,7 @@ class ResourceViewAllScreen extends View {
     this.details = this.totalDetails.resourceDetails;
     this.appbarTitle = this.totalDetails.title;
 
-    console.log("DETAILS IN ResourceViewAllScreen",this.details)
+    console.log("DETAILS IN ResourceViewAllActivity",this.details)
 
     this.size;
     this.fileImageUrl;
@@ -120,8 +120,9 @@ getRows = () =>{
 
 
        if(item.contentType.toLowerCase() == "course" || item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook"){
-
-        window.__runDuiCallback({tag:"StartResourceViewAllDetailFlow",contents:{resourceDetails:JSON.stringify(item)}});
+        var whatToSend = {resourceDetails:JSON.stringify(item)}
+        var event = {tag:"OPEN_ResourceViewAllDetail",contents:whatToSend}
+        window.__runDuiCallback(event);
       }
       else
       {
@@ -133,7 +134,10 @@ getRows = () =>{
         resDetails['headFooterTitle'] = headFooterTitle;
         resDetails['identifier'] = item.identifier;
         resDetails['content'] = item;
-        window.__runDuiCallback({tag:"StartResourceInfoFlow",contents:{resourceDetails:JSON.stringify(resDetails)}});
+
+        var whatToSend = {resourceDetails:JSON.stringify(resDetails)}
+        var event = {tag:"OPEN_ResourceInfo",contents:whatToSend}
+        window.__runDuiCallback(event);
       }
     }
 
@@ -161,7 +165,9 @@ getRows = () =>{
   }
 
   onBackPressed = () => {
-    window.__changePureScriptFlow();
+    var whatToSend = []
+    var event = {tag:"BACK_ResourceViewAllActivity",contents: whatToSend}
+    window.__runDuiCallback(event);
   }
 
   render() {
@@ -211,4 +217,4 @@ getRows = () =>{
   }
 }
 
-module.exports = Connector(ResourceViewAllScreen);
+module.exports = Connector(ResourceViewAllActivity);

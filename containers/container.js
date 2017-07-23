@@ -12,29 +12,29 @@ const reducer = require("@juspay/mystique-backend").stateManagers.reducer({
 
 // Screens
 const RootScreen = require("../views/RootScreen");
-const SplashScreen = require("../views/SplashScreen");
+const SplashScreenActivity = require("../views/SplashScreenActivity");
 
 //Home
-const HomeScreen = require("../views/HomeScreen");
-const UserScreen = require("../views/UserScreen");
+const MainActivity = require("../views/MainActivity");
+const UserActivity = require("../views/UserActivity");
 //Course or Learn
-const CourseInfoScreen = require("../views/CoursesActivity/CourseInfoScreen");
-const CourseEnrolledScreen = require("../views/CoursesActivity/CourseEnrolledScreen");
-const ModuleDetailScreen = require("../views/CoursesActivity/ModuleDetailScreen");
-const AlternateModuleDetailScreen = require("../views/CoursesActivity/AlternateModuleDetailScreen");
+const CourseInfoActivity = require("../views/CourseInfoActivity");
+const CourseEnrolledActivity = require("../views/CourseEnrolledActivity");
+const ModuleDetailActivity = require("../views/ModuleDetailActivity");
+const AlternateModuleDetailActivity = require("../views/AlternateModuleDetailActivity");
 
 //Resource
 
 //Comunity
-const CommunityInfoScreen = require("../views/CommunityActivity/CommunityInfoScreen");
-const CommunityViewAllListScreen = require("../views/CommunityActivity/CommunityViewAllListScreen");
+const CommunityInfoActivity = require("../views/CommunityInfoActivity");
+const CommunityViewAllActivity = require("../views/CommunityViewAllActivity");
 //Profile
-const NotificationScreen = require("../views/NotificationScreen");
-const ResourceDetailScreen = require("../views/ResourceActivity/ResourceDetailScreen");
-const ResourceViewAllScreen = require("../views/ResourceActivity/ResourceViewAllScreen");
-const CourseViewAllScreen = require("../views/CoursesActivity/CourseViewAllScreen");
-const SearchScreen = require("../views/SearchScreen");
-const FilterScreen = require("../views/FilterScreen");
+const NotificationActivity = require("../views/NotificationActivity");
+const ResourceDetailActivity = require("../views/ResourceDetailActivity");
+const ResourceViewAllActivity = require("../views/ResourceViewAllActivity");
+const CourseViewAllActivity = require("../views/CourseViewAllActivity");
+const SearchActivity = require("../views/SearchActivity");
+const FilterActivity = require("../views/FilterActivity");
 
 // ScreenActions
 const RootScreenActions = require("../actions/RootScreenActions");
@@ -46,55 +46,58 @@ var determineScreen = (screenName, state) => {
   // Space has been added for dir strucuture
   // add accordingly
   switch (state.currScreen) {
-    case "SplashScreen":
-      screen = new(SplashScreen(dispatcher, RootScreenActions))(null, null, state);
-      break;
-    case "HomeScreen":
-      screen = new(HomeScreen(dispatcher, RootScreenActions))(null, null, state);
-      break;
-    case "UserScreen":
-      screen = new(UserScreen(dispatcher, RootScreenActions))(null, null, state);
-      break;
-
-    case "CourseInfoScreen":
-      screen = new(CourseInfoScreen(dispatcher, RootScreenActions))(null, null, state);
-      break;
-    case "CourseEnrolledScreen":
-      screen = new(CourseEnrolledScreen(dispatcher, RootScreenActions))(null, null, state);
-      break;
-    case "ModuleDetailScreen":
-      screen = new(ModuleDetailScreen(dispatcher, RootScreenActions))(null, null, state);
-      break;
-    case "AlternateModuleDetailScreen":
+     case "AlternateModuleDetailActivity":
       screen = new(AlternateModuleDetailScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
 
-    case "CommunityInfoScreen":
-      screen = new(CommunityInfoScreen(dispatcher, RootScreenActions))(null, null, state);
+      case "CourseInfoActivty":
+      screen = new(CourseInfoActivty(dispatcher, RootScreenActions))(null, null, state);
       break;
-    case "CommunityViewAllScreen":
-      screen = new(CommunityViewAllListScreen(dispatcher, RootScreenActions))(null, null, state);
+    case "CourseEnrolledActivity":
+      screen = new(CourseEnrolledActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
-    case "NotificationScreen":
-      screen = new(NotificationScreen(dispatcher, RootScreenActions))(null, null, state);
+    case "SplashScreenActivity":
+      screen = new(SplashScreenActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
-
-    case "ResourceDetailScreen":
-      screen = new(ResourceDetailScreen(dispatcher, RootScreenActions))(null, null, state);
+    case "MainActivity":
+      screen = new(MainActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
-    case "ResourceViewAllScreen":
-      screen = new(ResourceViewAllScreen(dispatcher, RootScreenActions))(null, null, state);
-      break;
-
-    case "CourseViewAllScreen":
-      screen = new(CourseViewAllScreen(dispatcher, RootScreenActions))(null, null, state);
+    case "UserActivity":
+      screen = new(UserActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
 
-    case "SearchScreen":
-      screen = new(SearchScreen(dispatcher, RootScreenActions))(null, null, state);
+    
+    case "ModuleDetailActivity":
+      screen = new(ModuleDetailActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
-    case "FilterScreen":
-      screen = new(FilterScreen(dispatcher, RootScreenActions))(null, null, state);
+   
+
+    case "CourseInfoActivty":
+      screen = new(CourseInfoActivty(dispatcher, RootScreenActions))(null, null, state);
+      break;
+    case "CourseViewAllActivity":
+      screen = new(CourseViewAllActivity(dispatcher, RootScreenActions))(null, null, state);
+      break;
+    case "NotificationActivity":
+      screen = new(NotificationActivity(dispatcher, RootScreenActions))(null, null, state);
+      break;
+
+    case "ResourceDetailActivity":
+      screen = new(ResourceDetailActivity(dispatcher, RootScreenActions))(null, null, state);
+      break;
+    case "ResourceViewAllActivity":
+      screen = new(ResourceViewAllActivity(dispatcher, RootScreenActions))(null, null, state);
+      break;
+
+    case "CourseViewAllActivity":
+      screen = new(CourseViewAllActivity(dispatcher, RootScreenActions))(null, null, state);
+      break;
+
+    case "SearchActivity":
+      screen = new(SearchActivity(dispatcher, RootScreenActions))(null, null, state);
+      break;
+    case "FilterActivity":
+      screen = new(FilterActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
   }
 

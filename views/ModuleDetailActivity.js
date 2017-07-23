@@ -12,13 +12,13 @@ var ScrollView = require('@juspay/mystique-backend').androidViews.ScrollView;
 var RatingBar = require('@juspay/mystique-backend').androidViews.RatingBar;
 var objectAssign = require('object-assign');
 window.R = require("ramda");
-var SimpleToolbar = require('../../components/Sunbird/core/SimpleToolbar');
-var CropParagraph = require('../../components/Sunbird/CropParagraph');
-var ProgressButton = require('../../components/Sunbird/core/ProgressButton');
-var CourseCurriculum = require('../../components/Sunbird/CourseCurriculum');
+var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
+var CropParagraph = require('../components/Sunbird/CropParagraph');
+var ProgressButton = require('../components/Sunbird/core/ProgressButton');
+var CourseCurriculum = require('../components/Sunbird/CourseCurriculum');
 
 
-class ModuleDetailScreen extends View {
+class ModuleDetailActivity extends View {
   constructor(props, children, state) {
     super(props, children, state);
 
@@ -30,7 +30,9 @@ class ModuleDetailScreen extends View {
       "simpleToolBarOverFlow"
     ]);
     this.state = state;
-    this.screenName = "ModuleDetailScreen"
+    this.screenName = "ModuleDetailActivity"
+    this.shouldCacheScreen = false;
+
     this.menuData = {
       url: [
         
@@ -43,7 +45,7 @@ class ModuleDetailScreen extends View {
     }
     this.popupMenu = "Delete"
 
-    this.shouldCacheScreen = false;
+    
 
 
     //to get geneie callback for download of spine
@@ -159,7 +161,7 @@ class ModuleDetailScreen extends View {
   }
 
   handleModuleClick = (moduleName, module) => {
-    var eventAction = { "tag": "ShowSubModuleScreen", contents: { "moduleName": moduleName, "moduleDetails": JSON.stringify(module) } };
+    var eventAction = { "tag": "OPEN_SubModuleActivity", contents: { "moduleName": moduleName, "moduleDetails": JSON.stringify(module) } };
     window.__runDuiCallback(eventAction);
 
   }
@@ -305,7 +307,7 @@ overFlowCallback = (params) => {
 
 
   onBackPressed = () => {
-    var eventAction = { "tag": "BackToParent", contents: [] };
+    var eventAction = { "tag": "BACK_ModuleDetailActivity", contents: [] };
     window.__runDuiCallback(eventAction);
   }
 
@@ -380,4 +382,4 @@ overFlowCallback = (params) => {
   }
 }
 
-module.exports = Connector(ModuleDetailScreen);
+module.exports = Connector(ModuleDetailActivity);

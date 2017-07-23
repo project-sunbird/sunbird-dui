@@ -30,7 +30,7 @@ splashScreenActivity input whereFrom whatToSendBack= do
     event <- ui $ SplashScreenActivity
     case event of
         OPEN_UserScreenActivity -> userScreenActivity "{}" "SplashScreen" input
-        _ -> pure $ "SplashScreen"
+        _ -> pure $ "SplashScreenActivity"
 
 
 userScreenActivity input whereFrom whatToSendBack = do

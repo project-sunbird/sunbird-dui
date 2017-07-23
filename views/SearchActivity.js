@@ -20,7 +20,7 @@ var Styles = require("../res/Styles");
 let IconStyle = Styles.Params.IconStyle;
 var _this;
 
-class SearchScreen extends View {
+class SearchActivity extends View {
   constructor(props, children, state) {
     super(props, children, state);
 
@@ -33,7 +33,7 @@ class SearchScreen extends View {
     ]);
     this.state = state;
     this.shouldCacheScreen = false;
-    this.screenName = "SearchScreen"
+    this.screenName = "SearchActivity"
     this.tempData = JSON.parse(state.data.value0.filterDetails);
     this.filterData = this.tempData.filterDetails;
     console.log("filter in search ^^^^^^^^^^^^^^^^^^", state.data);
@@ -254,7 +254,9 @@ class SearchScreen extends View {
 
   onBackPressed = () => {
      JBridge.hideKeyboard();
-     window.__changePureScriptFlow();
+     var whatToSendBack = [];
+     var event = { tag: "BACK_SearchActivity", contents: [] }
+     window.__runDuiCallback(event);
   }
 
   showFilter = () =>{
@@ -301,9 +303,10 @@ class SearchScreen extends View {
     JBridge.hideKeyboard();
     console.log("fdata!!!!!!!!!!!!!!!!!!", _this.filterData);
 
-    // window.__runDuiCallback({ tag: "StartFilterFlow",contents:{filterDetails:JSON.stringify(this.filterData)} });
     var filteredData = { filterDetails: _this.filterData, filterType: _this.searchType }
-    window.__runDuiCallback({ tag: "StartFilterFlow", contents: { filterDetails: JSON.stringify(filteredData) } });
+    var whatToSendBack = { filterDetails: JSON.stringify(filteredData) } 
+    var event = { tag: "OPEN_FilterActivity", contents: whatToSendBack}
+    window.__runDuiCallback(event);
   }
 
   onItemClick = (params) => {
@@ -409,4 +412,4 @@ class SearchScreen extends View {
   }
 }
 
-module.exports = Connector(SearchScreen);
+module.exports = Connector(SearchActivity);

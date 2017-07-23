@@ -11,88 +11,87 @@ module.exports = function(action, payload, state) {
   switch (action) {
     case "InitScreen":
       localState.isInit = true;
-      localState.currScreen = "SplashScreen";
+      localState.currScreen = "SplashScreenActivity";
       break;
 
-    case "SplashScreen":
+     case "AlternateModuleDetailActivity":
+      localState.isInit = false;
+      localState.currScreen = "AlternateModuleDetailActivity";
+      break;
+
+     case "CommunityInfoActivity":
+      localState.isInit = false;
+      localState.currScreen = "CommunityInfoActivity";
+      break;
+
+    case "CommunityViewAllActivity":
+      localState.isInit = false;
+      localState.currScreen = "CommunityViewAllActivity";
+      break;
+
+    
+    case "CourseEnrolledActivity":
+      localState.isInit = false;
+      localState.currScreen = "CourseEnrolledActivity";
+      break;
+    
+    case "CourseInfoActivity":
+      localState.isInit = false;
+      localState.currScreen = "CourseInfoActivity";
+      break;
+
+     case "CourseViewAllActivity":
+      localState.isInit = false;
+      localState.currScreen = "CourseViewAllActivity";
+      break;
+
+      case "FilterActivity":
+      localState.isInit = false;
+      localState.currScreen = "FilterActivity";
+      break;   
+
+    case "Mainctivity":
       localState.isInit = false
-      localState.currScreen = "SplashScreen";
+      localState.currScreen = "MainActivity";
       break;
-    case "UserScreen":
+     
+    case "ModuleDetailActivity":
+      localState.isInit = false;
+      localState.currScreen = "ModuleDetailActivity";
+      break;
+
+
+     case "NotificationActivity":
+      localState.isInit = false;
+      localState.currScreen = "NotificationActivity";
+      break; 
+
+    case "ResourceDetailActivity":
+      localState.isInit = false;
+      localState.currScreen = "ResourceDetailActivity";
+      break;
+    case "ResourceViewAllActivity":
+      localState.isInit = false;
+      localState.currScreen = "ResourceViewAllActivity";
+      break;
+
+    case "SearchActivity":
+      localState.isInit = false;
+      localState.currScreen = "SearchActivity";
+      break;  
+    
+    
+
+    case "SplashScreenActivity":
       localState.isInit = false
-      localState.currScreen = "UserScreen";
+      localState.currScreen = "SplashScreenActivity";
       break;
-    case "HomeScreen":
+
+    case "UserActivity":
       localState.isInit = false
-      localState.currScreen = "HomeScreen";
+      localState.currScreen = "UserActivity";
       break;
-
-    case "ResourceScreen":
-      localState.isInit = false
-      localState.currScreen = "ResourceScreen";
-      break;
-
-    case "CommunityInfoScreen":
-      localState.isInit = false;
-      localState.currScreen = "CommunityInfoScreen";
-      break;
-    case "CourseEnrolledScreen":
-      localState.isInit = false;
-      localState.currScreen = "CourseEnrolledScreen";
-      break;
-    case "ModuleDetailScreen":
-      localState.isInit = false;
-      localState.currScreen = "ModuleDetailScreen";
-      break;
-    case "AlternateModuleDetailScreen":
-      localState.isInit = false;
-      localState.currScreen = "AlternateModuleDetailScreen";
-      break;
-
-    case "CommunityViewAllScreen":
-      localState.isInit = false;
-      localState.currScreen = "CommunityViewAllScreen";
-      break;
-
-    case "CourseDetailScreen":
-      localState.isInit = false;
-      localState.currScreen = "CourseDetailScreen";
-      break;
-
-    case "CourseViewAllScreen":
-      localState.isInit = false;
-      localState.currScreen = "CourseViewAllScreen";
-      break;
-
-    case "NotificationScreen":
-      localState.isInit = false;
-      localState.currScreen = "NotificationScreen";
-      break;
-
-    case "ResourceDetailScreen":
-      localState.isInit = false;
-      localState.currScreen = "ResourceDetailScreen";
-      break;
-    case "ResourceViewAllScreen":
-      localState.isInit = false;
-      localState.currScreen = "ResourceViewAllScreen";
-      break;
-
-    case "CourseInfoScreen":
-      localState.isInit = false;
-      localState.currScreen = "CourseInfoScreen";
-      break;
-
-    case "SearchScreen":
-      localState.isInit = false;
-      localState.currScreen = "SearchScreen";
-      break;
-
-    case "FilterScreen":
-      localState.isInit = false;
-      localState.currScreen = "FilterScreen";
-      break;
-
+    
     case "GO_BACK":
       break;
 

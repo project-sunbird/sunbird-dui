@@ -1,5 +1,9 @@
 var dom = require("@juspay/mystique-backend").doms.android;
 var Connector = require("@juspay/mystique-backend").connector;
+var debounce = require("debounce");
+var objectAssign = require('object-assign');
+
+
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
 var RelativeLayout = require("@juspay/mystique-backend").androidViews.RelativeLayout;
@@ -8,21 +12,19 @@ var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
-
-var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
-var objectAssign = require('object-assign');
-
 var TextInputView = require('../components/Sunbird/core/TextInputView');
-
+var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 
 var _this;
-var debounce = require("debounce");
+
 window.R = require("ramda");
 
-class UserScreen extends View {
+class UserActivity extends View {
   constructor(props, children, state) {
     super(props, children, state);
     this.state = state;
+
+    this.screenName = "UserActivity"
 
     this.setIds([
       "userForumContainer",
@@ -41,12 +43,13 @@ class UserScreen extends View {
 
     ]);
     this.backPressCount = 0;
-    this.screenName = "UserScreen"
+    this.shouldCacheScreen=false;
+    
     this.isLoginMode = true;
     this.language = "English";
     this.userName = this.userPass = this.firstName = "";
     _this = this;
-    this.shouldCacheScreen=false;
+    
 
     window.__loginCallback=this.getLoginCallback;
 
@@ -111,7 +114,7 @@ class UserScreen extends View {
 
     JBridge.setInSharedPrefs("logged_in","YES");
     window.__userToken=JBridge.getFromSharedPrefs("user_token");
-    var eventAction = { tag: "LogInEvent", contents: {} };
+    var eventAction = { tag: "OPEN_MainActivity", contents: {} };
     window.__runDuiCallback(eventAction);
   }
 
@@ -388,8 +391,8 @@ class UserScreen extends View {
       };
       console.log("START SignUpApiAction ", dummyBody)
       window.__LoaderDialog.show()
-      var eventAction = { tag: "SignUpApiAction", contents: dummyBody };
-      console.log("Triger---SignUpApiAction\t>", eventAction)
+      
+      var eventAction = { tag: "API_SignUp", contents: dummyBody };
       window.__runDuiCallback(eventAction);
 
     } else {
@@ -717,4 +720,4 @@ class UserScreen extends View {
   }
 }
 
-module.exports = Connector(UserScreen);
+module.exports = Connector(UserActivity);

@@ -7,23 +7,23 @@ var ViewPager = require("@juspay/mystique-backend").androidViews.ViewPager;
 var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 
-var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
-var objectAssign = require('object-assign');
+
 
 var BottomNavBar = require("../components/Sunbird/core/BottomNavBar")
 
-var ResourceComponent = require("../components/Sunbird/ResourceComponent")
-var HomeComponent = require('../components/Sunbird/HomeComponent');
-var CommunityViewallList = require('../components/Sunbird/CommunityViewallList');
-var CommunityInfoComponent = require('../components/Sunbird/CommunityInfoComponent');
-var CommunityComponent = require('../components/Sunbird/CommunityComponent');
-var ProfileComponent = require('../components/Sunbird/ProfileComponent');
+
+var HomeFragment = require('./Fragments/HomeFragment');
+var CourseFragment = require('./Fragments/CourseFragment');
+var ResourceFragment = require("./Fragments/ResourceFragment")
+var CommunityFragment = require('./Fragments/CommunityFragment');
+var ProfileFragment = require('./Fragments/ProfileFragment');
 
 var ContentLoadingComponent = require('../components/Sunbird/ContentLoadingComponent');
 
-var FilterComponent = require('../components/Sunbird/FilterComponent');
-var CourseComponent = require('../components/Sunbird/CourseComponent');
+
 var FeedParams = require('../FeedParams');
+var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
+var objectAssign = require('object-assign');
 var debounce = require("debounce");
 var utils = require('../utils/GenericFunctions');
 
@@ -32,11 +32,12 @@ window.R = require("ramda");
 
 const mockResponse = require('../mockResponse.js');
 
-class HomeScreen extends View {
+class MainActivity extends View {
   constructor(props, children, state) {
     super(props, children, state);
     this.state = state;
 
+    //Assigning feedback duration of BottomNavbar
     this.handleBottomNavBarAction = debounce(this.handleBottomNavBarAction, 50);
     //TODO : REVERT THIS LOGIC
 
@@ -45,16 +46,18 @@ class HomeScreen extends View {
       "tabLayoutContainer",
     ]);
 
-    
+    //CurrentIndexOfViewPager
     this.currentPageIndex = 0;
     console.log("CURRENT INDEX", this.currentPageIndex);
 
+    //BackPressCount of MainActivity
     this.backPressCount = 0;
 
+    //needed for FeedData for HomeFragment
     this.feedData = FeedParams.feedParams;
-    this.s = "";
-    this.screenName = "HOME_SCREEN"
-    this.data = ["HOME", "COURSES", "RESOURCES", "COMMUNITY", "PROFILE"];
+
+    this.deipalayName = "MainActivity"
+    
     this.tabValues = [{
         name: "HOME",
         select: "1",
@@ -207,7 +210,7 @@ class HomeScreen extends View {
         // }
         // responseData = state.response.status[1];
         shouldBeModified = true;
-        window.__runDuiCallback({ "tag": "CourseFragment", contents: [] });
+        window.__runDuiCallback({ "tag": "OPEN_CourseFragment", contents: [] });
 
         break;
       case 2:
@@ -216,7 +219,7 @@ class HomeScreen extends View {
         // if (shouldBeModified) {
         //   JBridge.setInSharedPrefs("userResource", JSON.stringify(state.response.status[1].result.response))
         // }
-        window.__runDuiCallback({ "tag": "ResourceFragment", contents: [] });
+        window.__runDuiCallback({ "tag": "OPEN_ResourceFragment", contents: [] });
 
         //shouldBeModified = true;
         break;
@@ -228,7 +231,7 @@ class HomeScreen extends View {
 
       case 4:
         shouldBeModified = true;
-        window.__runDuiCallback({ "tag": "StartProfileFlow", contents: [] });
+        window.__runDuiCallback({ "tag": "OPEN_StartProfileFlow", contents: [] });
 
         break;
 
@@ -353,26 +356,26 @@ class HomeScreen extends View {
 
     switch (this.currentPageIndex) {
       case 0:
-        eventAction = { "tag": "HomeFragmentApi", contents: { "name": "Kiran" } };
+        eventAction = { "tag": "OPEN_HomeFragment", contents: { "name": "Kiran" } };
         break;
       case 1:
         // window.__LoaderDialog.show();
-        eventAction = { "tag": "CourseFragmentApi", contents: {"user_token":window.__userToken,"api_token": window.__apiToken} };
+        eventAction = { "tag": "API_CourseFragment", contents: {"user_token":window.__userToken,"api_token": window.__apiToken} };
         break;
       case 2:
         // window.__LoaderDialog.show();
-        eventAction = { "tag": "StartResourcePageApi", contents: {"user_token":window.__userToken,"api_token": window.__apiToken} };
+        eventAction = { "tag": "API_ResourceFragment", contents: {"user_token":window.__userToken,"api_token": window.__apiToken} };
        
         break;
       case 3:
-        eventAction = { "tag": "CompunityFragmentApi", contents: [] };
+        eventAction = { "tag": "OPEN_CompunityFragment", contents: [] };
         break;
       case 4:
         // window.__LoaderDialog.show();
-        eventAction = { "tag": "ProfileFragmentApi", contents: {"user_token":window.__userToken,"api_token": window.__apiToken} };
+        eventAction = { "tag": "API_ProfileFragment", contents: {"user_token":window.__userToken,"api_token": window.__apiToken} };
         break;
       default:
-        eventAction = { "tag": "HomeFragmentAPI", contents: { "name": "Kiran" } };
+        eventAction = { "tag": "OPEN_HomeFragment", contents: { "name": "Kiran" } };
         break;
     }
 
@@ -460,5 +463,5 @@ class HomeScreen extends View {
   }
 }
 
-module.exports = Connector(HomeScreen);
+module.exports = Connector(MainActivity);
 
