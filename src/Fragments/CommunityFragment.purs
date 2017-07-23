@@ -2,18 +2,18 @@
 
 module Fragments.CommunityFragment where
 
-import Prelude (bind, ($), (<>), pure, discard)
+import Prelude
 import Utils
 import Types.UITypes
 import Types.APITypes
 import UI
 
 communityFragment input whereFrom whatToSendBack = do
-    event <- ui $ HomeActivity
+    event <- ui $ MainActivity
     case event of
         OPEN_CommunityInfoActivity {community : output} -> communityInfoActivity output "CommunityFragment" input
         OPEN_CommunityViewAllActivity -> communityViewAllActivity input "CommunityFragment" input
-        _ -> pure $ "HomeActivity"
+        _ -> pure $ "MainActivity"
 
 
 communityInfoActivity input whereFrom whatToSendBack = do
@@ -25,9 +25,9 @@ communityInfoActivity input whereFrom whatToSendBack = do
         _ -> pure $ "CommunityInfoActivity"
 
 communityViewAllActivity input whereFrom whatToSendBack = do
-    event <- ui $ CommunityViewAlActivity
+    event <- ui $ CommunityViewAllActivity
     case event of
-        BACK_CommunityViewAlActivity -> case whatNext of
+        BACK_CommunityViewAllActivity -> case whereFrom of
             "CommunityFragment" -> communityFragment whatToSendBack "Terminate" input
             _ -> communityFragment whatToSendBack "Terminate" input
         _ -> pure $ "CommunityViewAlActivity"

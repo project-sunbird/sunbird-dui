@@ -12,7 +12,7 @@ import UI
 
 
 homeFragment input whereFrom whatToSendBack = do
-	event <- ui $ HomeActivity 
+	event <- ui $ MainActivity 
 	case event of
 		OPEN_EnrolledCourseActivity {course:output} -> enrolledCourseActivity output "HomeFragment" input
 		OPEN_SearchActivity {filterDetails : output} -> homeSearchActivity output "HomeFragment" input
@@ -21,7 +21,7 @@ homeFragment input whereFrom whatToSendBack = do
 			responseData <- getUserEnrolledCourses x y
 	 		_ <- sendUpdatedState {response : responseData, responseFor : "API_UserEnrolledCourse", screen:"asas"}
 	  		pure $ "apiDefault"
-		_ -> pure $ "HomeActivity"
+		_ -> pure $ "MainActivity"
 
 homeSearchActivity input whereFrom whatToSendBack = do
 	event <- ui $ SearchActivity {filterDetails:input}

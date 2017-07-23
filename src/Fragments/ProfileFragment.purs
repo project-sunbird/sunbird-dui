@@ -11,7 +11,7 @@ import UI
 
 
 profileFragment input whereFrom whatToSendBack = do
-	event <- ui $ HomeActivity
+	event <- ui $ MainActivity
 	case event of
 		OPEN_NotificationActivity -> notificationActivity "{}" "ProfileFragment"  input
 		_ -> profileFragment input whereFrom whatToSendBack
