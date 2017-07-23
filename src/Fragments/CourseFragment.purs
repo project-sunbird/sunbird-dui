@@ -9,7 +9,7 @@ import Types.APITypes
 import UI
 
 
-
+courseFragment::String-> String -> String -> Unit 
 courseFragment input whereFrom whatToSendBack = do
 	event <- ui $ HomeActivity 
 	case event of
@@ -24,19 +24,21 @@ courseFragment input whereFrom whatToSendBack = do
 		_ -> courseFragment input whereFrom whatToSendBack
 
 
+courseViewAllActivity::String-> String -> String -> Unit 
 courseViewAllActivity input whereFrom whatToSendBack = do
 	event <- ui $ CourseViewAllActivity {courseViewAllDetails : input}
 	case event of
-		OPEN_EnrolledCourseFlowFromCourseView {course:output} -> startEnrolledCourseFlow output "CourseViewAll" input
+		OPEN_EnrolledCourseFlowFromCourseViewAll {course:output} -> enrolledCourseActivity output "CourseViewAll" input
 		BACK_CourseViewAllActivity -> case whereFrom of
 			"CourseFragment" -> courseFragment whatToSendBack "Terminate" 
 			_ -> courseFragment whatToSendBack
 		_ -> courseViewAllActivity input whereFrom whatToSendBack
 
-courseInfoActivity input whereFrom whatToSendBack= do
+courseInfoActivity::String-> String -> String -> Unit 
+courseInfoActivity input whereFrom whatToSendBack = do
 	event <- ui $ CourseInfoActivity {courseDetails:input}
 	case event of
-		OPEN_EnrolledActivity {course:output} -> enrolledCoursActivity output "CourseFlow" input
+		OPEN_EnrolledActivity {course:output} -> enrolledCourseActivity output "CourseFlow" input
 		API_EnrollCourse {user_token:x,reqParams:details,api_token:token} -> do
 			output <- enrollCourse x details token
   			_ <- sendUpdatedState {response : output, responseFor : "EnrollCourseApi", screen:"asas"}
@@ -44,34 +46,36 @@ courseInfoActivity input whereFrom whatToSendBack= do
 		BACK_CourseInfoActivity -> do
 			case whereFrom of
 				"CourseFlow" -> courseFragment whatToSendBack "Terminate" input
-				"CourseViewAll" -> courseViewAllActivity whatToSendBack "Terminate" input
-				"CourseSearch" -> courseSearchActivity whatToSendBack "Terminate" input
+				"CourseViewAllActivity" -> courseViewAllActivity whatToSendBack "Terminate" input
+				"SearchActivity" -> searchCourseActivity whatToSendBack "Terminate" input
 				_ -> courseFragment whatToSendBack input
 		_ -> courseInfoActivity input whereFrom whatToSendBack 
 
-enrolledCourseActivity input whereFrom whatToSendBack= do
+enrolledCourseActivity::String-> String -> String -> Unit 
+enrolledCourseActivity input whereFrom whatToSendBack = do
 	event <- ui $ CourseEnrolledActivity {courseDetails:input}
 	case event of
   		OPEN_ModuleActivity {moduleName:output1,moduleDetails:output2}-> subModuleDetailActivity output1 output2 "EnrolledCourseActivity" input
   		BACK_CourseEnrolledActivity -> do
 			case whereFrom of
-				"CourseFlow" -> courseFragment whatToSendBack "Terminate" input
-				"CourseViewAll" -> courseViewAllActivity whatToSendBack "Terminate" input
+				"CourseFragment" -> courseFragment whatToSendBack "Terminate" input
+				"CourseViewAllActivity" -> courseViewAllActivity whatToSendBack "Terminate" input
 				_ -> courseFragment whatToSendBack "Terminate" input
 		_ -> enrolledCourseActivity input whereFrom whatToSendBack
 
-moduleDetailActivity mName input whereFrom whatToSendBack= do
+moduleDetailActivity::String-> String -> String -> String -> Unit
+moduleDetailActivity mName input whereFrom whatToSendBack = do
 	event <- ui $ ModuleDetailActivity {moduleName:mName,moduleDetails:input}
 	case event of
-		OPEN_SubModuleDetailActivity {moduleName:output1,moduleDetails:output2}-> subModuleDetailActivity output1 output2  "Terminate" input
+		AlternateModuleDetailActivity {moduleName:output1,moduleDetails:output2}-> subModuleDetailActivity output1 output2  "Terminate" input
 		BACK_ModuleDetailActivity-> case whereFrom of
 			"EnrolledCourseActivity" -> enrolledCourseActivity whatToSendBack "Terminate" input
 			"Terminate" -> enrolledCourseActivity whatToSendBack "Terminate" input
-			_ ->  courseFragment event
+			_ ->  courseFragment whatToSendBack "Terminate" input
   		_ -> moduleDetailActivity mName input whereFrom whatToSendBack
 
-
-subModuleDetailActivity mName input whereFrom whatToSendBack= do
+subModuleDetailActivity::String-> String-> String -> String -> Unit
+subModuleDetailActivity mName input whereFrom whatToSendBack = do
 	event <- ui $ AlternateModuleDetailActivity {moduleName:mName,moduleDetails:input}
 	case event of
 		OPEN_ModuleActivity {moduleName:output1,moduleDetails:output2}-> moduleDetailActivity output1 output2 "Terminate" input
@@ -81,23 +85,25 @@ subModuleDetailActivity mName input whereFrom whatToSendBack= do
 			_ ->  enrolledCourseActivity whatToSendBack "Terminate" input
   		_ -> subModuleDetailActivity mName input whereFrom whatToSendBack
 
+searchCourseActivity::String-> String -> String  -> Unit
 searchCourseActivity input whereFrom whatToSendBack = do
   event <- ui $ SearchActivity {filterDetails:input}
   case event of
     OPEN_CourseInfoActivity_SEARCH {course : output} -> courseInfoActivity output "CourseSearch" input
-    OPEN_FilterActivity {filterDetails : output} -> searchCourseFilterActivity output "SearchCourseActivity" input
+    OPEN_FilterActivity {filterDetails : output} -> courseFilterActivity output "SearchCourseActivity" input
     BACK_SearchActivity -> case whereFrom of
 		"CourseFragment" -> courseFragment whatToSendBack "Terminate" input
 		_ -> courseFragment whatToSendBack "Terminate" input
     _ -> searchCourseActivity input whereFrom whatToSendBack
 
-searchCourseFilterActivity input whereFrom whatToSendBack = do
+courseFilterActivity::String-> String -> String  -> Unit
+courseFilterActivity input whereFrom whatToSendBack = do
   event <- ui $ FilterActivity {filterDetails : input}
   case event of
     OPEN_SearchActivity_FILTER {filterData: output} -> searchCourseActivity output "Terminate" input
     BACK_FilterActivity -> case whereFrom of
-    	"SearchCourseActivity" -> searchCourseActivity input "Terminate" input
+    	"SearchActivity" -> searchCourseActivity input "Terminate" input
     	_ -> searchCourseActivity input "Terminate" input
-    _ -> searchCourseFilterActivity input whereFrom whatToSendBack
+    _ -> courseFilterActivity input whereFrom whatToSendBack
 
 
