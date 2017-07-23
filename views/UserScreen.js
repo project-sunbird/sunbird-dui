@@ -111,7 +111,7 @@ class UserScreen extends View {
 
     JBridge.setInSharedPrefs("logged_in","YES");
     window.__userToken=JBridge.getFromSharedPrefs("user_token");
-    var eventAction = { tag: "LoginAction", contents: {} };
+    var eventAction = { tag: "LogInEvent", contents: {} };
     window.__runDuiCallback(eventAction);
   }
 
@@ -143,7 +143,7 @@ class UserScreen extends View {
       var callback  = callbackMapper.map(function(token){
         window.__apiToken = token;
         console.log("in key rotation user screen")
-        if(state.responseFor == "SignUpApiAction"){
+        if(state.responseFor == "SignUpApiEvent"){
           _this.handleSignUpClick();
         }
          
@@ -182,7 +182,7 @@ class UserScreen extends View {
 
     console.log("BEFOR SWITCH", state.responseFor)
     switch (state.responseFor + "") {
-      case "SignUpApiAction":
+      case "SignUpApiEvent":
         console.log("--->", result.response)
         console.log("--->", result.userId)
         if (result.response == "SUCCESS") {
@@ -209,8 +209,6 @@ class UserScreen extends View {
 
 
     }
-
-    console.log("AFTER SWITCH")
 
 
   }

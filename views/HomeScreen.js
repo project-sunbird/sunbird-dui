@@ -188,7 +188,7 @@ class HomeScreen extends View {
       return;
     }
 
-    if (state.responseFor == "GetEnrolledCourseApi") {
+    if (state.responseFor == "EnrolledCourseApi") {
       //CourseInProgressContainer of CourseScreen gets upated
    //   console.log("GOT USER COURSES ->", responseData.result.courses)
       window.setEnrolledCourses(responseData.result.courses);
@@ -207,7 +207,7 @@ class HomeScreen extends View {
         // }
         // responseData = state.response.status[1];
         shouldBeModified = true;
-        window.__runDuiCallback({ "tag": "StartCourseFlow", contents: [] });
+        window.__runDuiCallback({ "tag": "CourseFragment", contents: [] });
 
         break;
       case 2:
@@ -216,7 +216,7 @@ class HomeScreen extends View {
         // if (shouldBeModified) {
         //   JBridge.setInSharedPrefs("userResource", JSON.stringify(state.response.status[1].result.response))
         // }
-        window.__runDuiCallback({ "tag": "StartResourceFlow", contents: [] });
+        window.__runDuiCallback({ "tag": "ResourceFragment", contents: [] });
 
         //shouldBeModified = true;
         break;
@@ -353,11 +353,11 @@ class HomeScreen extends View {
 
     switch (this.currentPageIndex) {
       case 0:
-        eventAction = { "tag": "ShowHome", contents: { "name": "Kiran" } };
+        eventAction = { "tag": "HomeFragmentApi", contents: { "name": "Kiran" } };
         break;
       case 1:
         // window.__LoaderDialog.show();
-        eventAction = { "tag": "StartCoursePageApi", contents: {"user_token":window.__userToken,"api_token": window.__apiToken} };
+        eventAction = { "tag": "CourseFragmentApi", contents: {"user_token":window.__userToken,"api_token": window.__apiToken} };
         break;
       case 2:
         // window.__LoaderDialog.show();
@@ -365,14 +365,14 @@ class HomeScreen extends View {
        
         break;
       case 3:
-        eventAction = { "tag": "StartCommunityFlow", contents: [] };
+        eventAction = { "tag": "CompunityFragmentApi", contents: [] };
         break;
       case 4:
         // window.__LoaderDialog.show();
-        eventAction = { "tag": "StartProfileApi", contents: {"user_token":window.__userToken,"api_token": window.__apiToken} };
+        eventAction = { "tag": "ProfileFragmentApi", contents: {"user_token":window.__userToken,"api_token": window.__apiToken} };
         break;
       default:
-        eventAction = { "tag": "ShowHome", contents: { "name": "Kiran" } };
+        eventAction = { "tag": "HomeFragmentAPI", contents: { "name": "Kiran" } };
         break;
     }
 

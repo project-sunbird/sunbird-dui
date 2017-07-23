@@ -11,13 +11,12 @@ import Control.Monad.Eff.Console
 import Control.Monad.Eff.Class(liftEff)
 import Data.Foreign.Class (class Decode, class Encode, encode)
 import Data.Maybe
-import Flows.CommunityFlow
-import Flows.CourseFlow
-import Flows.ProfileFlow
-import Flows.ResourceFlow
-import Flows.HomeFlow
-import Flows.FilterFlow
-import Flows.NotificationFlow
+import Fragments.CommunityFragment
+import Fragments.CourseFragment
+import Fragments.ProfileFragment
+import Fragments.ResourceFragment
+import Fragments.HomeFragment
+
 import Data.Generic.Rep (class Generic)
 import Data.Foreign.Generic (encodeJSON)
 import Control.Monad.Eff.Exception (EXCEPTION)
@@ -28,67 +27,45 @@ import UI
 
 
 main :: Eff (exception::EXCEPTION, ui::UI, console::CONSOLE) Unit
-main = void $ launchAff $ begin
-
-
-begin :: Aff(ui::UI,console::CONSOLE) String
-begin = do
-  action <- ui $ InitScreen
-  case action of
-    StartInit -> userScreenFlow
-    _ -> pure $ "aborted"
-
-
-userScreenFlow = do
-  action <- ui UserScreen
-  case action of
- --   LoginApiAction{userName:x,userPass:y} -> do
- --     responseData <- userLogin x y
- --     --userScreenFlow {state:"tab3"}
- --     _ <- sendUpdatedState {response : responseData, responseFor : "LoginApiAction", screen:"asas"} 
- --     pure $ "Aborted 3"
-    SignUpApiAction{userName:x1,email:x2,firstName:x3,password:x4,mobileNumber:x5,language:x6,api_token:x7} -> do
-      --liftEff $ log "FOR UN :" <> x <> " PASS :" <> y
-      responseData <- userSignup x1 x2 x3 x4 x5 x6 x7
-      --userScreenFlow {state:"tab3"}
-      _ <- sendUpdatedState {response : responseData, responseFor : "SignUpApiAction", screen:"asas"} 
-      pure $ "Aborted 3"
-    LoginAction -> do
-      liftEff $ log $ "LoginAction"
-      cFlow
-    _ -> pure $ "Aborted"
-
-cFlow = do
-  liftEff $ log $ "Its in cFlow"
-  event <- ui $ HomeScreen
+main = void $ launchAff $ splashScreenActivity "{}" "Main" "{}"
+ 
+splashScreenActivity input whereFrom whatToSendBack= do
+  event <- ui $ SplashScreen
   case event of
-    ShowHome {name:x} -> do
-      liftEff $ log $ "Action handled Show HomeScreen"
-      pure $ "event handled"
-    StartCourseFlow -> startCourseFlow "Dummy" 
-    StartResourceFlow -> startResourceFlow "Dummy"
-    StartCommunityFlow -> startCommunityFlow event
-    StartProfileFlow -> startProfileFlow event
-    StartNotificationFlow -> startNotificationFlow event
-    StartCoursePageApi {user_token:x,api_token:y}-> do
-                  liftEff $ log $ "START COURSE PAGE API"
+    OPEN_UserScreenActivity -> userScreenActivity "{}" "SplashScreen" input
+    _ -> splashScreenActivity input pId memory
+
+userScreenActivity input whereFrom whatToSendBack = do
+  event <- ui UserActivity
+    case event of
+      API_SignUp{userName:x1,email:x2,firstName:x3,password:x4,mobileNumber:x5,language:x6,api_token:x7} -> do
+        responseData <- userSignup x1 x2 x3 x4 x5 x6 x7
+        _ <- sendUpdatedState {response : responseData, responseFor : "SignUpApiAction", screen:"asas"} 
+        pure $ "Aborted 3"
+      OPEN_MainActivity -> mainActivity "{}" "UserActivity" input 
+      _ -> userScreenActivity input whereFrom whatToSendBack
+
+mainActivity input whereFrom whatToSendBack = do
+  event <- ui $ MainActivity
+  case event of
+    OPEN_HomeFragment {name:output} -> homeFragment "MainActivity" output
+    OPEN_CourseFragment -> courseFragment input 
+    OPEN_ResourceFragment -> resourceFragment "{}" "MainActivity" input
+    OPEN_CommunityFragment -> communityFragment "{}" "MainActivity" input
+    OPEN_ProfileFragment -> profileFragment "{}" "MainActivity" input
+    
+    API_CourseFragment {user_token:x,api_token:y}-> do
                   responseData <- getCoursesPageApi x y
-                  _ <- sendUpdatedState {response : responseData, responseFor : "StartCoursePageApi", screen:"asas"} 
+                  _ <- sendUpdatedState {response : responseData, responseFor : "API_CourseFragment", screen:"asas"} 
                   pure $ "handled"
-    StartResourcePageApi {user_token:x,api_token:y}-> do
-                  liftEff $ log $ "START RESOURCE PAGE API"
+    API_ResourceFragment {user_token:x,api_token:y}-> do
                   responseData <- getResourcePageApi x y
-                  _ <- sendUpdatedState {response : responseData, responseFor : "StartResourcePageApi", screen:"asas"}
+                  _ <- sendUpdatedState {response : responseData, responseFor : "API_ResourceFragment", screen:"asas"}
                   pure $ "handled"
-    StartProfileApi {user_token:x,api_token:y}-> do
-                  liftEff $ log $ "START RESOURCE PAGE API"
+    API_ProfileFragment{user_token:x,api_token:y}-> do
                   responseData <- getProfileDetail x y
-                  _ <- sendUpdatedState {response : responseData, responseFor : "StartProfileApi", screen:"asas"}
-                  pure $ "handled" 
-                    
-    StartSearchFlow {filterDetails : details} -> startHomeSearchFlow details 
+                  _ <- sendUpdatedState {response : responseData, responseFor : "API_ProfileFragment", screen:"asas"}
+                  pure $ "handled"        
+    _ -> mainActivity input whereFrom whatToSendBack
 
-    _ -> pure $ "aborted"
-
-changeFlow = void $ launchAff $ cFlow
-
+changeFlow = void $ launchAff $ mainActivity "{}" "LogInScreen" "Nothing"

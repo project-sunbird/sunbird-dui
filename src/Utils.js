@@ -25,6 +25,12 @@ var callbackMapper = {
   }
 }
 
+exports["log'"] = function(tag,dataToPrint) {
+  var printThis=tag+"===\t==="+dataToPrint
+  console.log(printThis)
+  return printThis
+}
+
 exports["ui'"] = function(err) {
   return function(callback) {
     return function(state) {

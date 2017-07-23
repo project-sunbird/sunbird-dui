@@ -82,6 +82,10 @@ foreign import callAPI' :: forall e. (AffSuccess ApiResponse e) -> (AffError e) 
 
 
 
+foreign import log' :: String -> String -> String
+duiLog :: String ->String -> String
+duiLog tag value = log' tag value
+
 foreign import sendUpdatedState' :: forall a b.(State a)-> b
 foreign import saveToMemory :: String -> String -> Unit                           
 foreign import readFromMemory :: String -> String                           
