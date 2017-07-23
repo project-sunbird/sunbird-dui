@@ -47,7 +47,7 @@ var determineScreen = (screenName, state) => {
   // add accordingly
   switch (state.currScreen) {
      case "AlternateModuleDetailActivity":
-      screen = new(AlternateModuleDetailScreen(dispatcher, RootScreenActions))(null, null, state);
+      screen = new(AlternateModuleDetailActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
 
       case "CourseInfoActivty":

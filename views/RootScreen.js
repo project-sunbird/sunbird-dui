@@ -3,9 +3,7 @@ var Connector = require("@juspay/mystique-backend").connector;
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
 var RelativeLayout = require("@juspay/mystique-backend").androidViews.RelativeLayout;
-var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 
-var SnackBar = require("../components/Sunbird/SnackBar")
 
 var TextStyle = require("../res/TextStyle");
 var Symbols = require("../res/Symbols").symbol;
@@ -37,10 +35,12 @@ class RootScreen extends View {
     window.__Font = Font;
     window.__ObjectAssign = objectAssign;
 
+    
     window.__userOrgImg=JBridge.getFromSharedPrefs("org_img");
     if(window.__userOrgImg==="__failed"){
       window.__userOrgImg="ic_launcher";
     }
+
 
     this.setStatusBarColor(window.__Colors.BLACK);
 

@@ -20,12 +20,12 @@ import UI
 
 
 data SplashScreenActivity = SplashScreenActivity
-data SplashScreenActivityAction = OPEN_UserScreenActivity  | 
-  BACK_SplashScreenctivity
+data SplashScreenActivityAction = OPEN_UserActivity  | 
+  BACK_SplashScreenActivity
 
 
 instance splashScreen :: UIScreen SplashScreenActivity SplashScreenActivityAction where
-  generateMockEvents _ = [OPEN_UserScreenActivity , BACK_SplashScreenctivity]
+  generateMockEvents _ = [OPEN_UserActivity , BACK_SplashScreenActivity]
   ui x = genericUI x (generateMockEvents x :: Array SplashScreenActivityAction)
 
 derive instance genericSplashScreenActivityAction  :: Generic SplashScreenActivityAction _

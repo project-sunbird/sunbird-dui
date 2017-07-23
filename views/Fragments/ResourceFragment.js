@@ -124,8 +124,10 @@ handleResourceViewAllClick= (data,title) =>{
                             "title" : title,
                             "resourceDetails" : data
                          }
+   var whatToSend ={ "resourceDetails": JSON.stringify(resourceDetails)}
+   var event ={ tag: "StartResourceViewAllFlow", contents:  whatToSend}
 
-   window.__runDuiCallback({ tag: "StartResourceViewAllFlow", contents: { "resourceDetails": JSON.stringify(resourceDetails)} });
+   window.__runDuiCallback(event);
 }
 
 
@@ -216,8 +218,10 @@ handleResourceViewAllClick= (data,title) =>{
 
 
   handleViewAllClick = () => {
-    console.log("dasdasdasdasd", this.data);
-    window.__runDuiCallback({ tag: "StartResourceViewAllFlow", contents: { "resourceDetails": JSON.stringify(this.data) } });
+
+    var whatToSend = { "resourceDetails": JSON.stringify(this.data) }
+    var event ={ tag: "StartResourceViewAllFlow", contents: whatToSend }
+    window.__runDuiCallback(event);
 
   }
 
@@ -227,11 +231,16 @@ handleResourceViewAllClick= (data,title) =>{
       window.__PageFilterPopup.resetPopup("Resource");
       window.__PageFilterPopup.show();
     }else if (url == "ic_notification_red") {
-      window.__runDuiCallback({ tag: "StartNotificationFlow", contents: [] });
+      var whatToSend = []
+      var event = { tag: "StartNotificationFlow", contents: [] }
+      window.__runDuiCallback(event);
     }else if (url == "ic_action_search") {
       var searchDetails = { filterDetails: "", searchType: "Resource" }
-      window.__runDuiCallback({ tag: "StartSearchFlow", contents: { filterDetails: JSON.stringify(searchDetails) } });
-      // window.__runDuiCallback({tag:"StartSearchFlow",contents:{filterDetails:""}});
+      var whatToSend = { filterDetails: JSON.stringify(searchDetails) }
+      var event = { tag: "StartNotificationFlow", contents: [] }
+      
+      window.__runDuiCallback({ tag: "StartSearchFlow", contents: whatToSend });
+
 
     }
   }
@@ -241,8 +250,9 @@ handleResourceViewAllClick= (data,title) =>{
   }
 
   handleResourceOpen = (data) => {
-    console.log("data",data);
-    window.__runDuiCallback({ tag: "StartResourceDetailFlow", contents: { resourceDetails: "nothing" } });
+    var whatToSend = { resourceDetails: "nothing" } 
+    var event = { tag: "StartResourceDetailFlow", contents: whatToSend}
+    window.whatToSend(event);
   }
 
 

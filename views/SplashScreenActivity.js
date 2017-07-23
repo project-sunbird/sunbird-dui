@@ -47,7 +47,9 @@ class SplashScreenActivity extends View {
     }
 
     setTimeout(() => {
-      window.__runDuiCallback({ tag: "OPEN_UserScreenActivity" });
+      var whatToSend = [] 
+      var event = { tag: "OPEN_UserActivity", contents: whatToSend}
+     // window.__runDuiCallback(event);
     }, 1000);
   }
 

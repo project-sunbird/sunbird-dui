@@ -5,12 +5,12 @@ import ext from './ext';
 import { main } from './output/Main/index.js';
 import { changeFlow } from './output/Main/index.js';
 import { typeFlow } from './output/Main/index.js';
-import { userScreenFlow } from './output/Main/index.js';
+import { userActivity } from './output/Main/index.js';
 
 const purescriptMain = main;
 const purescriptChangeFlow = changeFlow;
 const purescriptTypeFlow = typeFlow;
-const purescriptUserScreenFlow = userScreenFlow;
+const purescriptUserActivityFlow = userActivity;
 
 // import lock from './lock';
 // require('es6-promise').polyfill();
@@ -149,7 +149,7 @@ let purescriptInit = () => {
   window.__runDuiCallback = runDuiCallback;
   window.__setCallback = setCallback
   window.__changePureScriptFlow = purescriptChangeFlow;
-  window.__Logout = purescriptUserScreenFlow
+  window.__Logout = purescriptUserActivityFlow
   window.__typeFlow = purescriptTypeFlow;
   
   purescriptMain();

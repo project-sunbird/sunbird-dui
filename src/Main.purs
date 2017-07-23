@@ -29,12 +29,12 @@ main = void $ launchAff $ splashScreenActivity "{}" "Main" "{}"
 splashScreenActivity input whereFrom whatToSendBack= do
     event <- ui $ SplashScreenActivity
     case event of
-        OPEN_UserScreenActivity -> userScreenActivity "{}" "SplashScreen" input
+        OPEN_UserActivity -> userActivity "{}" "SplashScreen" input
         _ -> pure $ "SplashScreenActivity"
 
 
-userScreenActivity input whereFrom whatToSendBack = do
-    event <- ui UserActivity
+userActivity input whereFrom whatToSendBack = do
+    event <- ui $ UserActivity
     case event of
         API_SignUp{userName:x1,email:x2,firstName:x3,password:x4,mobileNumber:x5,language:x6,api_token:x7} -> do
             responseData <- userSignup x1 x2 x3 x4 x5 x6 x7

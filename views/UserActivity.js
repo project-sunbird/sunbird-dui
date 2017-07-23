@@ -185,7 +185,7 @@ class UserActivity extends View {
 
     console.log("BEFOR SWITCH", state.responseFor)
     switch (state.responseFor + "") {
-      case "SignUpApiEvent":
+      case "API_SignUp":
         console.log("--->", result.response)
         console.log("--->", result.userId)
         if (result.response == "SUCCESS") {
