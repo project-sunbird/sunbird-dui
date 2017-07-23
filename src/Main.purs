@@ -43,11 +43,11 @@ mainActivity::String-> String -> String -> Unit
 mainActivity input whereFrom whatToSendBack = do
   event <- ui $ MainActivity
   case event of
-    OPEN_HomeFragment {name:output} -> homeFragment "MainActivity" output
-    OPEN_CourseFragment -> courseFragment input $ "{}" "MainActivity" input
-    OPEN_ResourceFragment -> resourceFragment $ "{}" "MainActivity" input
-    OPEN_CommunityFragment -> communityFragment $ "{}" "MainActivity" input
-    OPEN_ProfileFragment -> profileFragment $ "{}" "MainActivity" input
+    OPEN_HomeFragment {name:output} -> homeFragment $ input "MainActivity" output
+    OPEN_CourseFragment -> courseFragment input $ input "MainActivity" input
+    OPEN_ResourceFragment -> resourceFragment $ input "MainActivity" input
+    OPEN_CommunityFragment -> communityFragment $ input "MainActivity" input
+    OPEN_ProfileFragment -> profileFragment $ input "MainActivity" input
     
     API_CourseFragment {user_token:x,api_token:y}-> do
                   responseData <- getCoursesPageApi x y
