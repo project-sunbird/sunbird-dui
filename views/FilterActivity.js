@@ -121,9 +121,11 @@ class FilterActivity extends View {
   }
   handleFilterClick = () =>{
     var data= {
-      filterData : this.filterData,
-      filterFor : this.filterFor
+      filterDetails : this.data,
+      filterFor : this.searchedFor,
+      searcheType : this.searchedType
     }
+    console.log("data in filter to search",data)
     var whatToSend = {
         "filterData" : JSON.stringify(data)
       };

@@ -36,15 +36,16 @@ class SearchActivity extends View {
     this.shouldCacheScreen = false;
 
     this.screenName = "SearchActivity"
+    console.log("state in search activity",state)
     this.tempData = JSON.parse(state.data.value0.filterDetails);
     console.log("tempData in search ^^^^^^^^^^^^^^^^^^", this.tempData);
     
     this.filter=[]
-    if(this.tempData.length>0){
+    // if(this.tempData.length>0){
       this.filterData = this.tempData.filterDetails;
-      this.searchText = this.tempData.filterFor
+      this.searchText = this.tempData.filterDetails.query
       this.searchType = this.tempData.filterType
-    }
+    // }
     console.log("filter in search ^^^^^^^^^^^^^^^^^^", this.filterData);
     this.temp = state.data;
     console.log("temp in search ^^^^^^^^^^^^^^^^^^", this.temp);
@@ -86,7 +87,7 @@ class SearchActivity extends View {
         searchData=JSON.parse(this.filter)
       }
       console.log("Loading detials for ")
-      this.getSearchList(this.searchType);
+      this.getSearchList(this.searchText);
     }
 
     var callback = callbackMapper.map(function(data) {
@@ -247,24 +248,25 @@ class SearchActivity extends View {
         status = "false";
       } else {
         status = "true";
-        this.filterData = this.temp;
+        // this.filterData = this.temp;
       }
-      console.log("searchtext", searchText);
+      console.log("this.filterData in search",this.filterData)
+      // console.log("searchtext", searchText);
+      // console.log("this.filterData", this.filterData);
+
+      // var s = "";
+      // if (typeof this.filterData == 'object') {
+      //   this.filterData = this.filterData.value0.filterDetails;
+      //   console.log("this.filterData", this.filterData);
+      //   var s = JSON.parse(this.filterData);
+      //   console.log("filterHolder", s.filterDetails);
+      //   this.filterData = s.filterDetails;
+      // }
+
+      console.log("this.filterData", this.filterData);
       console.log("this.filterData", this.filterData);
 
-      var s = "";
-      if (typeof this.filterData == 'object') {
-        this.filterData = this.filterData.value0.filterDetails;
-        console.log("this.filterData", this.filterData);
-        var s = JSON.parse(this.filterData);
-        console.log("filterHolder", s.filterDetails);
-        this.filterData = s.filterDetails;
-      }
-
-      console.log("this.filterData", this.filterData.length);
-      console.log("this.filterData", this.filterData);
-
-      JBridge.searchContent(callback, this.filterData, searchText, this.searchType, status);
+      JBridge.searchContent(callback, JSON.stringify(this.filterData), searchText, this.searchType, status);
     }
     this.showFilter();
   }
