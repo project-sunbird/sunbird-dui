@@ -26,9 +26,9 @@ resourceFragment input whereFrom whatToSendBack = do
 resourceSearchActivity input whereFrom whatToSendBack = do
 	event <- ui $ SearchActivity {filterDetails:input}
 	case event of
-	    OPEN_ResourceDetailActivity_SEARCH {resourceDetails : output} -> resourceDetailActivity output "ResourceSearch" input
+	    OPEN_ResourceDetailActivity_SEARCH {resourceDetails : output} -> resourceDetailActivity output "SearchActivity" input
 	    OPEN_FilterActivity {filterDetails : output} -> filterActivity output "Terminate" input
-	    OPEN_CourseEnrolledActivity_SEARCH {course : output} -> courseDetailActivity output "ResourceActivity" input
+	    OPEN_CourseEnrolledActivity_SEARCH {course : output} -> courseDetailActivity output "SearchActivity" input
 	    _ -> resourceSearchActivity input whereFrom whatToSendBack
 
 
@@ -47,7 +47,7 @@ resourceDetailActivity input whereFrom whatToSendBack = do
 	case event of
 		BACK_ResourceDetailActivity -> case whereFrom of
 			"ResourceViewAllAcitivity" -> resourceViewAllActivity whatToSendBack "Terminate" input
-			"ResourceSearchActivity" -> resourceSearchActivity whatToSendBack "Terminate" input
+			"SearchActivity" -> resourceSearchActivity whatToSendBack "Terminate" input
 			"ResourceFragment" -> resourceFragment whatToSendBack "Terminate" input
 			_ -> resourceFragment whatToSendBack "Terminate" input
 		_ -> resourceDetailActivity input whereFrom whatToSendBack
@@ -59,6 +59,8 @@ courseDetailActivity input whereFrom whatToSendBack = do
 		OPEN_ModuleDetailsActivity {moduleName : output1 , moduleDetails : output2} -> moduleResourceDetailActivity output1 output2 "CourseEnrolledActivity" input
 		BACK_CourseEnrolledActivity -> case whereFrom of
 			"ResourceActivity" -> resourceSearchActivity whatToSendBack "Terminate" input
+			"SearchActivity" -> resourceSearchActivity whatToSendBack "Terminate" input
+			"ResourceViewAllAcitivity" -> resourceViewAllActivity whatToSendBack "Terminate" input
 			_ -> resourceFragment whatToSendBack whereFrom input
 		_ -> courseDetailActivity input whereFrom whatToSendBack
 
