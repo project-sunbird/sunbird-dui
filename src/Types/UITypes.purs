@@ -29,10 +29,10 @@ derive instance genericInitScreenAction  :: Generic InitScreenAction _
 instance decodeInitScreenAction :: Decode InitScreenAction where decode = defaultDecode
 instance encodeInitScreenAction :: Encode InitScreenAction where encode = defaultEncode
 
+
 data SplashScreenActivity = SplashScreenActivity
 data SplashScreenActivityAction = DummyUserActivityAction  | 
   BACK_SplashScreenActivity
-
 
 instance splashScreenActivity :: UIScreen SplashScreenActivity SplashScreenActivityAction where
   generateMockEvents _ = [DummyUserActivityAction , BACK_SplashScreenActivity]

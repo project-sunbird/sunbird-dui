@@ -348,38 +348,40 @@ class MainActivity extends View {
 
   setupDuiCallback = () => {
     window.__changePureScriptFlow();
-    var eventAction;
-
+    var event;
+    var whatToSend;
 
     switch (this.currentPageIndex) {
       case 0:
-        eventAction = { "tag": "OPEN_HomeFragment", contents: { "name": "Kiran" } };
+        whatToSend= { "name": "Kiran" };
+        event = { "tag": "OPEN_HomeFragment", contents: whatToSend };
         break;
       case 1:
         // window.__LoaderDialog.show();
-        eventAction = { "tag": "API_CourseFragment", contents: {"user_token":window.__userToken,"api_token": window.__apiToken} };
+        whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken} 
+        event = { "tag": "API_CourseFragment", contents: whatToSend};
         break;
       case 2:
         // window.__LoaderDialog.show();
-        eventAction = { "tag": "API_ResourceFragment", contents: {"user_token":window.__userToken,"api_token": window.__apiToken} };
+        whatToSend =  {"user_token":window.__userToken,"api_token": window.__apiToken} 
+        event = { "tag": "API_ResourceFragment", contents:whatToSend};
        
         break;
       case 3:
-        eventAction = { "tag": "OPEN_CommunityFragment", contents: [] };
+        whatToSend = []
+        event = { "tag": "OPEN_CommunityFragment", contents: whatToSend };
         break;
       case 4:
         // window.__LoaderDialog.show();
-        eventAction = { "tag": "API_ProfileFragment", contents: {"user_token":window.__userToken,"api_token": window.__apiToken} };
+        whatToSend= {"user_token":window.__userToken,"api_token": window.__apiToken}
+        event = { "tag": "API_ProfileFragment", contents:whatToSend };
         break;
       default:
-        eventAction = { "tag": "OPEN_HomeFragment", contents: { "name": "Kiran" } };
+        whatToSend ={ "name": "Kiran" }
+        event = { "tag": "OPEN_HomeFragment",  contents: whatToSend };
         break;
     }
-
-
-    
-    console.log("--------->VIEWPAGER TRIGGERS ", JSON.stringify(eventAction), "ON INDEX", this.currentPageIndex);
-    window.__runDuiCallback(eventAction);
+    window.__runDuiCallback(event);
   }
 
 

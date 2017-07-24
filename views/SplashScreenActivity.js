@@ -17,8 +17,10 @@ class SplashScreenActivity extends View {
     super(props, children, state);
     this.state = state;
     this.screenName = "SplashScreenActivity"
+    window.__apiToken = JBridge.get
     this.getUserToken()
     window.__pressedLoggedOut=false;
+
   }
 
   onPop = () => {
@@ -28,7 +30,7 @@ class SplashScreenActivity extends View {
     );
   }
 
-  getUserToken= ()=>{
+  getUserToken = ()=>{
     console.log("in user token")
     var callback = callbackMapper.map(function(token){
       console.log("user token",token[0]);

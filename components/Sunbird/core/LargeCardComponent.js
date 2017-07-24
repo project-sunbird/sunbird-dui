@@ -101,7 +101,7 @@ class ResourceViewAllCard extends View {
                 multiCorners={"10,10,10,10,"+window.__Colors.WHITE}>
 
               <LinearLayout
-                onClick={()=>this.handleCardClick()}>
+                onClick={this.handleCardClick}>
 
 
                 <RelativeLayout
@@ -156,6 +156,7 @@ class ResourceViewAllCard extends View {
                     height="wrap_content"
                     text={this.props.data.name}
                     enableEllipse="true"
+                    maxLines="1"
                     margin = "12,9,12,0"
                     style={window.__TextStyle.textStyle.CARD.HEADING}/>
 
