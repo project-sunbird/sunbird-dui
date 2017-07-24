@@ -54,13 +54,13 @@ resourceDetailActivity input whereFrom whatToSendBack = do
 
 
 courseDetailActivity input whereFrom whatToSendBack = do
-	event <- ui $ CourseEnrolledActivity {courseDetails:input}
+	event <- ui $ CourseEnrolledActivity {courseDetails: input}
 	case event of
 		OPEN_ModuleDetailsActivity {moduleName : output1 , moduleDetails : output2} -> moduleResourceDetailActivity output1 output2 "CourseEnrolledActivity" input
 		BACK_CourseEnrolledActivity -> case whereFrom of
 			"ResourceActivity" -> resourceSearchActivity whatToSendBack "Terminate" input
 			"SearchActivity" -> resourceSearchActivity whatToSendBack "Terminate" input
-			"ResourceViewAllAcitivity" -> resourceViewAllActivity whatToSendBack "Terminate" input
+			
 			_ -> resourceFragment whatToSendBack whereFrom input
 		_ -> courseDetailActivity input whereFrom whatToSendBack
 
@@ -90,8 +90,8 @@ subModuleResourceDetailActivity mName input whereFrom whatToSendBack = do
 resourceViewAllActivity input whereFrom whatToSendBack = do
 	event <- ui $ ResourceViewAllActivity {resourceDetails : input}
 	case event of
-		OPEN_ResourceInfo { resourceDetails : output} -> resourceDetailActivity output "ResourceViewAll" input
-		OPEN_CourseEnrolled { course : output2 } -> courseDetailActivity output2 "ResourceViewAll" input
+		OPEN_ResourceInfo { resourceDetails : output} -> resourceDetailActivity output "ResourceViewAllAcitivity" input
+		OPEN_CourseEnrolled { course : output2 } -> courseDetailActivity output2 "ResourceViewAllAcitivity" input
 		BACK_ResourceViewAllActivity -> case whereFrom of
 			"ResourceFragmnet" -> resourceFragment whatToSendBack "Terminate" input
 			_ -> resourceFragment whatToSendBack "Terminate" input
