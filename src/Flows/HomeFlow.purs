@@ -33,7 +33,7 @@ startHomeSearchFlow values = do
     ResourceDetailFlow {resourceDetails : details} -> startResourceDetailFlow details "HomeSearch" values
     CourseInfoFlow {course : details} -> startCourseInfoFlow details "HomeSearch" values
     SearchResourceFlow {course : details} -> startEnrolledCourseFlow details "Home" values
-    StartFilterFlow{filterDetails : details} -> startFilterFlow details 
+    StartFilterFlow{filterDetails : details} -> startFilterFlowRes details 
     _ -> pure $ "aborted"
 
 
