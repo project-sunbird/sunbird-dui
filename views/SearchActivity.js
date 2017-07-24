@@ -58,7 +58,7 @@ class SearchActivity extends View {
   }
 
   afterRender = () => {
-
+    console.log(this.filterData)
     if(this.filterData.length != 0){
     JBridge.showSnackBar("Loading Search Results Please Wait......")      
        var cmd = "";

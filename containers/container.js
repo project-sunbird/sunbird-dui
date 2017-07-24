@@ -128,7 +128,6 @@ window.__CLEAR_STACK = function(screenName) {
 }
 
 var addToStack = function(screenName, screenData) {
-  console.log(screenData)
   if (typeof screenData.screen.shouldStackScreen !== "undefined" && !screenData.screen.shouldStackScreen)
     return;
 
