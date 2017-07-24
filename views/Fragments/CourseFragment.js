@@ -151,10 +151,10 @@ class CourseFragment extends View {
     console.log("CHECKING ->", content.identifier);
     if (this.checkIfEnrolled(content.identifier)) {
       whatToSend = { "course": tmp }
-      event = { tag: 'StartEnrolledCourseFlow', contents: whatToSend }
+      event = { tag: 'OPEN_EnrolledCourseActivity', contents: whatToSend }
     } else {
       whatToSend = { "course": tmp }
-      event = { tag: 'StartCourseInfoFlow', contents: whatToSend }
+      event = { tag: 'OPEN_CourseInfoActivity', contents: whatToSend }
     }
     window.__runDuiCallback(event);
 
@@ -163,7 +163,7 @@ class CourseFragment extends View {
 
   handleUserCoursesClick = (content, type) => {
     var whatToSend = { "course": JSON.stringify(content) }
-    var event = { tag: 'StartEnrolledCourseFlow', contents: whatToSend }
+    var event = { tag: 'OPEN_EnrolledCourseActivity', contents: whatToSend }
     window.__runDuiCallback(event);
   }
 
@@ -222,7 +222,7 @@ class CourseFragment extends View {
     else if (url == "ic_action_search") {
       var searchDetails = { filterDetails: "", searchType: "Course" }
       var whatToSend = { filterDetails: JSON.stringify(searchDetails) } 
-      var event = { tag: "StartSearchFlow", contents: whatToSend}
+      var event = { tag: "OPEN_SearchActivity", contents: whatToSend}
       window.__runDuiCallback(event);
 
     }
@@ -256,7 +256,6 @@ class CourseFragment extends View {
           root="true"
           orientation="vertical"
           width="match_parent"
-          afterRender={this.afterRender}
           height="match_parent">
 
           {this.getBody()}

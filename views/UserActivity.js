@@ -82,7 +82,8 @@ class UserActivity extends View {
       return;
     }
 
-    try{
+//    try{
+    console.log("callback",response)  
     var arr=response.split('.');
     var contentBody=atob(arr[1]);
 
@@ -97,10 +98,10 @@ class UserActivity extends View {
     this.setDataInStorage();
 
     this.performLogin();
-    }catch(e){
-     console.log(e.message)
-     JBridge.showSnackBar("Invalid Email-ID")
-   }
+   //  }catch(e){
+   //   console.log(e.message)
+   //   JBridge.showSnackBar("Invalid Email-ID")
+   // }
 
   }
 
@@ -111,11 +112,11 @@ class UserActivity extends View {
   }
 
   performLogin = () => {
-
     JBridge.setInSharedPrefs("logged_in","YES");
     window.__userToken=JBridge.getFromSharedPrefs("user_token");
-    var eventAction = { tag: "OPEN_MainActivity", contents: {} };
-    window.__runDuiCallback(eventAction);
+    var whatToSend = []
+    var event = { tag: "OPEN_MainActivity", contents: whatToSend };
+    window.__runDuiCallback(event);
   }
 
   onBackPressed = () => {
@@ -392,7 +393,7 @@ class UserActivity extends View {
       console.log("START SignUpApiAction ", dummyBody)
       window.__LoaderDialog.show()
       
-      var eventAction = { tag: "API_SignUp", contents: dummyBody };
+      var eventAction = { "tag": "API_SignUp", "contents": dummyBody };
       window.__runDuiCallback(eventAction);
 
     } else {

@@ -41,6 +41,7 @@ class RootScreen extends View {
       window.__userOrgImg="ic_launcher";
     }
 
+    console.log("RootScreen")
 
     this.setStatusBarColor(window.__Colors.BLACK);
 

@@ -14,6 +14,11 @@ module.exports = function(action, payload, state) {
       localState.currScreen = "SplashScreenActivity";
       break;
 
+     case "SplashScreenActivity":
+      localState.isInit = false
+      localState.currScreen = "SplashScreenActivity";
+      break; 
+
      case "AlternateModuleDetailActivity":
       localState.isInit = false;
       localState.currScreen = "AlternateModuleDetailActivity";
@@ -50,7 +55,7 @@ module.exports = function(action, payload, state) {
       localState.currScreen = "FilterActivity";
       break;   
 
-    case "Mainctivity":
+    case "MainActivity":
       localState.isInit = false
       localState.currScreen = "MainActivity";
       break;
@@ -79,13 +84,8 @@ module.exports = function(action, payload, state) {
       localState.isInit = false;
       localState.currScreen = "SearchActivity";
       break;  
+      
     
-    
-
-    case "SplashScreenActivity":
-      localState.isInit = false
-      localState.currScreen = "SplashScreenActivity";
-      break;
 
     case "UserActivity":
       localState.isInit = false

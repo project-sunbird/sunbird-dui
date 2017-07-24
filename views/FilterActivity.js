@@ -119,7 +119,7 @@ class FilterActivity extends View {
   }
   handleFilterClick = () =>{
     var whatToSend = {
-        "filterData" : JSON.stringify(searchDetails)
+        "filterData" : JSON.stringify(this.filterData)
       };
 
     window.__runDuiCallback({ "tag": "OPEN_SearchActivity_FILTER", contents: whatToSend });   

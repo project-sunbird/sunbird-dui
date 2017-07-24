@@ -139,7 +139,7 @@ class CommunityFragment extends View {
 
   handleMyViewAllClick = () => {
     var whatToSend = []
-    var event = {tag : "StartCommunityViewAllFlow", contents:whatToSend}
+    var event = {tag : "OPEN_CommunityViewAllActivity", contents:whatToSend}
     window.__runDuiCallback(event);
   }
 

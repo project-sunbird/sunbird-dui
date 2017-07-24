@@ -18,14 +18,24 @@ import Control.Monad.Eff.Exception (EXCEPTION)
 import UI
 --A.JSON import argonaut for json and try
 
+data InitScreen = InitScreen
+data InitScreenAction = ShowInit  | OPEN_UserActivity
+
+instance initScreen :: UIScreen InitScreen InitScreenAction where
+  generateMockEvents _ = [ShowInit ,OPEN_UserActivity]
+  ui x = genericUI x (generateMockEvents x :: Array InitScreenAction)
+
+derive instance genericInitScreenAction  :: Generic InitScreenAction _
+instance decodeInitScreenAction :: Decode InitScreenAction where decode = defaultDecode
+instance encodeInitScreenAction :: Encode InitScreenAction where encode = defaultEncode
 
 data SplashScreenActivity = SplashScreenActivity
-data SplashScreenActivityAction = OPEN_UserActivity  | 
+data SplashScreenActivityAction = DummyUserActivityAction  | 
   BACK_SplashScreenActivity
 
 
-instance splashScreen :: UIScreen SplashScreenActivity SplashScreenActivityAction where
-  generateMockEvents _ = [OPEN_UserActivity , BACK_SplashScreenActivity]
+instance splashScreenActivity :: UIScreen SplashScreenActivity SplashScreenActivityAction where
+  generateMockEvents _ = [DummyUserActivityAction , BACK_SplashScreenActivity]
   ui x = genericUI x (generateMockEvents x :: Array SplashScreenActivityAction)
 
 derive instance genericSplashScreenActivityAction  :: Generic SplashScreenActivityAction _
@@ -36,11 +46,10 @@ instance encodeSplashScreenActivityAction :: Encode SplashScreenActivityAction w
 data UserActivity = UserActivity
 data UserActivityAction = OPEN_MainActivity | 
   API_LogIn {userName::String, userPass::String} | 
-  API_SignUp {userName::String,email::String,firstName::String,password::String,mobileNumber::String,language::String,api_token::String}
+  API_SignUp {userName::String, email::String, firstName::String, password::String, mobileNumber::String, language::String, api_token::String}
 
 instance userActivity :: UIScreen UserActivity UserActivityAction where
-  generateMockEvents _ = [OPEN_MainActivity , API_LogIn {userName:"String",userPass:"String"} , API_SignUp {userName:"amit.rohan",email:"amit@rohan.com",firstName:"Amit Rohan",password:"beta",mobileNumber:"6756756743",language:"English",api_token:"__failed"}
-]
+  generateMockEvents _ = [OPEN_MainActivity , API_LogIn {userName:"String",userPass:"String"}]
   ui x = genericUI x (generateMockEvents x :: Array UserActivityAction)
 
 derive instance genericUserActivityAction  :: Generic UserActivityAction _

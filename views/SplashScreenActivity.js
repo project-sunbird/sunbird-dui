@@ -42,6 +42,7 @@ class SplashScreenActivity extends View {
 
   afterRender = () => {
     JBridge.syncTelemetry();
+    console.log("in after bmvjjkfjf")
     if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "false") {
       this.setPermissions();
     }
@@ -49,8 +50,13 @@ class SplashScreenActivity extends View {
     setTimeout(() => {
       var whatToSend = [] 
       var event = { tag: "OPEN_UserActivity", contents: whatToSend}
-     // window.__runDuiCallback(event);
+      window.__runDuiCallback(event);
     }, 1000);
+  }
+
+  
+  handleStateChange = () => {
+    return true;
   }
 
 
@@ -74,23 +80,23 @@ class SplashScreenActivity extends View {
         root="true"
         width="match_parent"
         height="match_parent">
-        <LinearLayout
-          height="match_parent"
-          width="match_parent"
-          gravity="center"
-          orientation="vertical">
+          <LinearLayout
+            height="match_parent"
+            width="match_parent"
+            gravity="center"
+            orientation="vertical">
 
-            <ImageView
-              height="300"
-              width="300"
-              layout_gravity="center"
-              imageUrl="ic_launcher"/>
-            <TextView
-              text="Project Sunbird"
-              margin="20,120,20,20"
-              layout_gravity="center"
-              height="wrap_content"/>
-         </LinearLayout>
+              <ImageView
+                height="300"
+                width="300"
+                layout_gravity="center"
+                imageUrl="ic_launcher"/>
+              <TextView
+                text="Project Sunbird"
+                margin="20,120,20,20"
+                layout_gravity="center"
+                height="wrap_content"/>
+           </LinearLayout>
       </LinearLayout>
     );
 

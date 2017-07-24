@@ -23,6 +23,7 @@ class CommunityInfoActivity extends View {
     
     this.communityName = this.state.data.value0.name;
     
+    
 
     this.screenName="CommunityInfoActivity";
     // this.props.appendText = this.props.appendText || "";

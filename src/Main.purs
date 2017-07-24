@@ -24,23 +24,24 @@ import UI
 
 
 main :: Eff (exception::EXCEPTION, ui::UI, console::CONSOLE) Unit
-main = void $ launchAff $ splashScreenActivity "{}" "Main" "{}"
+main = void $ launchAff $ splashScreenActivity
 
-splashScreenActivity input whereFrom whatToSendBack= do
-    event <- ui $ SplashScreenActivity
+splashScreenActivity :: Aff(ui::UI,console::CONSOLE) String
+splashScreenActivity = do
+    event <- ui $ InitScreen
     case event of
-        OPEN_UserActivity -> userActivity "{}" "SplashScreen" input
+        OPEN_UserActivity -> userActivity
         _ -> pure $ "SplashScreenActivity"
 
 
-userActivity input whereFrom whatToSendBack = do
+userActivity = do
     event <- ui $ UserActivity
     case event of
-        API_SignUp{userName:x1,email:x2,firstName:x3,password:x4,mobileNumber:x5,language:x6,api_token:x7} -> do
+        API_SignUp {userName:x1,email:x2,firstName:x3,password:x4,mobileNumber:x5,language:x6,api_token:x7} -> do
             responseData <- userSignup x1 x2 x3 x4 x5 x6 x7
-            _ <- sendUpdatedState {response : responseData, responseFor : "SignUpApiAction", screen:"asas"} 
+            _ <- sendUpdatedState {response : responseData, responseFor : "API_SignUp", screen:"asas"} 
             pure $ "Aborted 3"
-        OPEN_MainActivity -> mainActivity "{}" "UserActivity" input 
+        OPEN_MainActivity -> mainActivity "{}" "UserActivity" "{}" 
         _ -> pure $ "UserActivity"
 
 mainActivity input whereFrom whatToSendBack = do

@@ -92,8 +92,9 @@ class SearchResult extends View {
     var itemDetails = JSON.stringify(item);
 
     if(item.contentType.toLowerCase() == "course" || item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "TextBook"){
-      
-      window.__runDuiCallback({tag:"SearchResourceFlow",contents:{course:itemDetails}});
+      var whatToSend={course:itemDetails};
+      var event={tag:"OPEN_CourseInfoActivity_SEARCH",contents:whatToSend}
+      window.__runDuiCallback(event);
     }
     else
     {
@@ -105,7 +106,10 @@ class SearchResult extends View {
       resDetails['headFooterTitle'] = headFooterTitle;
       resDetails['identifier'] = item.identifier;
       resDetails['content'] = item;
-      window.__runDuiCallback({tag:"ResourceDetailFlow",contents:{resourceDetails:JSON.stringify(resDetails)}}); 
+
+      var whatToSend = {resourceDetails:JSON.stringify(resDetails)}
+      var event= {tag:"OPEN_ResourceDetailActivity_SEARCH",contents:whatToSend}
+      window.__runDuiCallback(event); 
     }
 
   }

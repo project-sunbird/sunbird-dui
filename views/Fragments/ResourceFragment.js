@@ -125,7 +125,7 @@ handleResourceViewAllClick= (data,title) =>{
                             "resourceDetails" : data
                          }
    var whatToSend ={ "resourceDetails": JSON.stringify(resourceDetails)}
-   var event ={ tag: "StartResourceViewAllFlow", contents:  whatToSend}
+   var event ={ tag: "OPEN_ResourceViewAllActivity", contents:  whatToSend}
 
    window.__runDuiCallback(event);
 }
@@ -220,7 +220,7 @@ handleResourceViewAllClick= (data,title) =>{
   handleViewAllClick = () => {
 
     var whatToSend = { "resourceDetails": JSON.stringify(this.data) }
-    var event ={ tag: "StartResourceViewAllFlow", contents: whatToSend }
+    var event ={ tag: "OPEN_ResourceViewAllActivity", contents: whatToSend }
     window.__runDuiCallback(event);
 
   }
@@ -232,14 +232,13 @@ handleResourceViewAllClick= (data,title) =>{
       window.__PageFilterPopup.show();
     }else if (url == "ic_notification_red") {
       var whatToSend = []
-      var event = { tag: "StartNotificationFlow", contents: [] }
+      var event = { tag: "OPEN_NotificationActivity", contents: [] }
       window.__runDuiCallback(event);
     }else if (url == "ic_action_search") {
       var searchDetails = { filterDetails: "", searchType: "Resource" }
       var whatToSend = { filterDetails: JSON.stringify(searchDetails) }
-      var event = { tag: "StartNotificationFlow", contents: [] }
-      
-      window.__runDuiCallback({ tag: "StartSearchFlow", contents: whatToSend });
+      var event = { tag: "OPEN_SearchActivity", contents: whatToSend }
+      window.__runDuiCallback(event);
 
 
     }

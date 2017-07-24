@@ -191,7 +191,7 @@ class MainActivity extends View {
       return;
     }
 
-    if (state.responseFor == "EnrolledCourseApi") {
+    if (state.responseFor == "API_UserEnrolledCourse") {
       //CourseInProgressContainer of CourseScreen gets upated
    //   console.log("GOT USER COURSES ->", responseData.result.courses)
       window.setEnrolledCourses(responseData.result.courses);
@@ -201,7 +201,7 @@ class MainActivity extends View {
 
     switch (this.currentPageIndex) {
       case 0:
-
+        window.__runDuiCallback({ "tag": "OPEN_HomeFragment", contents: [] });
         break;
       case 1:
         //shouldBeModified = (JBridge.getFromSharedPrefs("chooseCourse") != JSON.stringify(state.response.status[1].result.response))
@@ -225,13 +225,13 @@ class MainActivity extends View {
         break;
       case 3:
         //shouldBeModified = true;
-        //window.__runDuiCallback({ "tag": "StartProfileFlow", contents: [] });
+        window.__runDuiCallback({ "tag": "OPEN_CommunityFragment", contents: [] });
 
         break;
 
       case 4:
         shouldBeModified = true;
-        window.__runDuiCallback({ "tag": "OPEN_StartProfileFlow", contents: [] });
+        window.__runDuiCallback({ "tag": "OPEN_ProfileFragment", contents: [] });
 
         break;
 
@@ -261,7 +261,7 @@ class MainActivity extends View {
     switch (index) {
       case 0:
         contentLayout = (
-          <HomeComponent
+          <HomeFragment
                 response = {data} 
                 recommendedData={this.recommendedData}
                 recommendedimageUrls={this.recommendedimageUrls}
@@ -277,7 +277,7 @@ class MainActivity extends View {
         break;
       case 1:
         contentLayout = (
-          <CourseComponent
+          <CourseFragment
               height="match_parent"
               root="true"
               width="match_parent"
@@ -286,7 +286,7 @@ class MainActivity extends View {
 
         break;
       case 2:
-        contentLayout = (<ResourceComponent
+        contentLayout = (<ResourceFragment
                   root="true"
                   response={data}
                   height="match_parent"
@@ -295,7 +295,7 @@ class MainActivity extends View {
         break;
       case 3:
         contentLayout = (
-          <CommunityComponent
+          <CommunityFragment
             height="match_parent"
             root="true"
             width="match_parent"
@@ -305,7 +305,7 @@ class MainActivity extends View {
         break;
       case 4:
         contentLayout = (
-          <ProfileComponent
+          <ProfileFragment
             height="match_parent"
             root="true"
             width="match_parent"
@@ -368,7 +368,7 @@ class MainActivity extends View {
        
         break;
       case 3:
-        eventAction = { "tag": "OPEN_CompunityFragment", contents: [] };
+        eventAction = { "tag": "OPEN_CommunityFragment", contents: [] };
         break;
       case 4:
         // window.__LoaderDialog.show();

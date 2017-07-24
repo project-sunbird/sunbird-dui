@@ -38,10 +38,10 @@ courseViewAllActivity input whereFrom whatToSendBack = do
 courseInfoActivity input whereFrom whatToSendBack = do
 	event <- ui $ CourseInfoActivity {courseDetails : input}
 	case event of
-		OPEN_EnrolledActivity {course: output} -> enrolledCourseActivity output "CourseFlow" input
+		OPEN_EnrolledActivity {course: output} -> enrolledCourseActivity output "CourseFragment" input
 		API_EnrollCourse {user_token : x, reqParams : details , api_token: token} -> do
 				responseData <- enrollCourse x details token
-	  			_ <- sendUpdatedState {response : responseData, responseFor : "EnrollCourseApi", screen:"asas"}
+	  			_ <- sendUpdatedState {response : responseData, responseFor : "API_EnrollCourse", screen:"asas"}
 				pure $ "apiDefault"
 		BACK_CourseInfoActivity -> case whereFrom of
 			"CourseFlow" -> courseFragment whatToSendBack "Terminate" input

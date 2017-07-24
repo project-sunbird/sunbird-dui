@@ -72,8 +72,8 @@ var determineScreen = (screenName, state) => {
       break;
    
 
-    case "CourseInfoActivty":
-      screen = new(CourseInfoActivty(dispatcher, RootScreenActions))(null, null, state);
+    case "CourseInfoActivity":
+      screen = new(CourseInfoActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
     case "CourseViewAllActivity":
       screen = new(CourseViewAllActivity(dispatcher, RootScreenActions))(null, null, state);
@@ -98,6 +98,9 @@ var determineScreen = (screenName, state) => {
       break;
     case "FilterActivity":
       screen = new(FilterActivity(dispatcher, RootScreenActions))(null, null, state);
+      break;
+    case "RootScreen":
+      screen = new(RootScreen(dispatcher,RootScreenActions))(null, null,state) ; 
       break;
   }
 
@@ -125,6 +128,7 @@ window.__CLEAR_STACK = function(screenName) {
 }
 
 var addToStack = function(screenName, screenData) {
+  console.log(screenData)
   if (typeof screenData.screen.shouldStackScreen !== "undefined" && !screenData.screen.shouldStackScreen)
     return;
 

@@ -165,7 +165,7 @@ overFlowCallback = (params) => {
 
     handleModuleClick = (moduleName, module) => {
         var whatToSend = { "moduleName": moduleName, "moduleDetails": JSON.stringify(module) }
-        var event = { "tag": "ShowModuleAgainScreen", contents: whatToSend };
+        var event = { "tag": "OPEN_ModuleActivity", contents: whatToSend };
         window.__runDuiCallback(event);
 
     }
@@ -276,7 +276,7 @@ overFlowCallback = (params) => {
 
     onBackPressed = () => {
         var whatToSend = []
-        var event = { "tag": "BackToHome", contents: whatToSend };
+        var event = { "tag": "BACK_AlternateModuleDetailActivity", contents: whatToSend };
         window.__runDuiCallback(event);
     }
 

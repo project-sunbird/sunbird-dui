@@ -42,6 +42,7 @@ class CourseInfoActivity extends View {
     }
 
     this.shouldCacheScreen = false;
+    
     //to get geneie callback for download of spine
     window.__getDownloadStatus = this.getSpineStatus;
 

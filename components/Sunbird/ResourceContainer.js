@@ -101,8 +101,9 @@ class ResourceContainer extends View {
 
       
        if(item.contentType.toLowerCase() == "course" || item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "TextBook"){
-        
-        window.__runDuiCallback({tag:"ResourceCourseInfoFlow",contents:{course:JSON.stringify(item)}});
+        var whatToSend={course:JSON.stringify(item)}
+        var event ={tag:"OPEN_EnrolledCourseActivity",contents:whatToSend}
+        window.__runDuiCallback(event);
       }
       else
       {
@@ -115,7 +116,10 @@ class ResourceContainer extends View {
         resDetails['headFooterTitle'] = headFooterTitle;
         resDetails['identifier'] = item.identifier;
         resDetails['content'] = item;
-        window.__runDuiCallback({tag:"StartResourceDetailFlow",contents:{resourceDetails:JSON.stringify(resDetails)}}); 
+        
+        var whatToSend = {resourceDetails:JSON.stringify(resDetails)}
+        var event = {tag:"OPEN_ResourceDetailActivity",contents:whatToSend}
+        window.__runDuiCallback(event); 
       }
   }
 
