@@ -81,7 +81,7 @@ moduleDetailActivity mName input whereFrom whatToSendBack = do
 subModuleDetailActivity mName input whereFrom whatToSendBack = do
 	event <- ui $ AlternateModuleDetailActivity {moduleName:mName,moduleDetails:input}
 	case event of
-		OPEN_ModuleActivity {moduleName:output1,moduleDetails:output2} -> moduleDetailActivity output1 output2 "Terminate" input
+		OPEN_ModuleActivity {moduleName: output1,moduleDetails: output2} -> moduleDetailActivity output1 output2 "Terminate" input
 		BACK_AlternateModuleDetailActivity -> case whereFrom of
 			"Misc" ->  moduleDetailActivity mName input whereFrom input
 			"EnrolledCourseActivity" -> enrolledCourseActivity whatToSendBack "Terminate" input
