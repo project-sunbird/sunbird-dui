@@ -207,7 +207,7 @@ class CourseInfoActivity extends View {
 
 
   renderCourseChildren = () => {
-    console.log("RENDRING BREKAUP", this.courseContent.children)
+    console.log("RENDRING BREKAUP", this.courseContent)
     var layout = (<CourseCurriculum
                   height="match_parent"
                   root="true"

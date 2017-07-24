@@ -29,6 +29,10 @@ resourceSearchActivity input whereFrom whatToSendBack = do
 	    OPEN_ResourceDetailActivity_SEARCH {resourceDetails : output} -> resourceDetailActivity output "SearchActivity" input
 	    OPEN_FilterActivity {filterDetails : output} -> filterActivity output "Terminate" input
 	    OPEN_CourseEnrolledActivity_SEARCH {course : output} -> courseDetailActivity output "SearchActivity" input
+
+	    BACK_SearchActivity -> case whereFrom of
+	    	"ResourceFragmnet" -> resourceFragment whatToSendBack whereFrom input
+	    	_ -> resourceFragment whatToSendBack whereFrom input
 	    _ -> resourceSearchActivity input whereFrom whatToSendBack
 
 
