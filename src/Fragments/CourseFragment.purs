@@ -21,6 +21,10 @@ courseFragment input whereFrom whatToSendBack = do
 			responseData <- getUserEnrolledCourses x y
 	 		_ <- sendUpdatedState {response : responseData, responseFor : "API_UserEnrolledCourse", screen:"asas"}
 	  		pure $ "apiDefault"
+	  	API_FilterPage{user_token:user_token, api_token:api_key,filter_to_send:delta}  ->	do
+			responseData <- getCourcePageFilterApi user_token api_key delta
+			_ <- sendUpdatedState {response : responseData, responseFor : "API_FilterPage", screen:"asas"}
+			pure $ "handled"	
 		_ -> courseFragment input whereFrom whatToSendBack
 
 

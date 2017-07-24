@@ -228,11 +228,12 @@ class PageFilterPopup extends View {
       return;
     }
     this.hide();
+    
     var sendFilter=JSON.stringify(this.filter);
 
-    var eventAction = { "tag": "StartFilterPageApi", contents: {"user_token":window.__userToken,"api_token": window.__apiToken,"filter_to_send":sendFilter} };
-    console.log("--------->VIEWPAGER TRIGGERS ", JSON.stringify(eventAction), "ON INDEX", this.currentPageIndex);
-    window.__runDuiCallback(eventAction);
+    var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken,"filter_to_send":sendFilter} 
+    var event = { "tag": "API_FilterPage", contents: whatToSend};
+    window.__runDuiCallback(event);
     
   }
 
