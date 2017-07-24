@@ -13,7 +13,7 @@ communityFragment input whereFrom whatToSendBack = do
     case event of
         OPEN_CommunityInfoActivity {community : output} -> communityInfoActivity output "CommunityFragment" input
         OPEN_CommunityViewAllActivity -> communityViewAllActivity input "CommunityFragment" input
-        _ -> pure $ "MainActivity"
+        _ -> communityFragment input whereFrom whatToSendBack
 
 
 communityInfoActivity input whereFrom whatToSendBack = do
@@ -22,7 +22,7 @@ communityInfoActivity input whereFrom whatToSendBack = do
         BACK_CommunityInfoActivity -> case whereFrom of
             "CommunityFragment" -> communityFragment whatToSendBack "Terminate" input
             _ -> communityFragment input whereFrom whatToSendBack
-        _ -> pure $ "CommunityInfoActivity"
+        _ -> communityInfoActivity input whereFrom whatToSendBack
 
 communityViewAllActivity input whereFrom whatToSendBack = do
     event <- ui $ CommunityViewAllActivity
@@ -30,7 +30,7 @@ communityViewAllActivity input whereFrom whatToSendBack = do
         BACK_CommunityViewAllActivity -> case whereFrom of
             "CommunityFragment" -> communityFragment whatToSendBack "Terminate" input
             _ -> communityFragment whatToSendBack "Terminate" input
-        _ -> pure $ "CommunityViewAlActivity"
+        _ -> communityViewAllActivity input whereFrom whatToSendBack
 
 
 

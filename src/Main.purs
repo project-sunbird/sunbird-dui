@@ -65,7 +65,7 @@ mainActivity input whereFrom whatToSendBack = do
             responseData <- getProfileDetail x y
             _ <- sendUpdatedState {response : responseData, responseFor : "API_ProfileFragment", screen:"asas"}
             pure $ "handled"        
-        _ -> pure $ "MainActivity"
+        _ -> mainActivity input whereFrom whatToSendBack
 
 
 changeFlow = void $ launchAff $ mainActivity "{}" "LogInScreen" "Nothing"

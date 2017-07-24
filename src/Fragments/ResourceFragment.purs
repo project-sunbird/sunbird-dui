@@ -20,7 +20,7 @@ resourceFragment input whereFrom whatToSendBack = do
 			responseData <- getResourcePageFilterApi user_token api_key delta
 			_ <- sendUpdatedState {response : responseData, responseFor : "StartResourcePageApi", screen:"asas"}
 			pure $ "handled"
-		_ -> pure $ "resourceFragmentEvent"
+		_ -> resourceFragment input whereFrom whatToSendBack
 
 
 resourceSearchActivity input whereFrom whatToSendBack = do
@@ -29,7 +29,7 @@ resourceSearchActivity input whereFrom whatToSendBack = do
 	    OPEN_ResourceDetailActivity_SEARCH {resourceDetails : output} -> resourceDetailActivity output "ResourceSearch" input
 	    OPEN_FilterActivity {filterDetails : output} -> filterActivity output "Terminate" input
 	    OPEN_CourseEnrolledActivity_SEARCH {course : output} -> courseDetailActivity output "ResourceActivity" input
-	    _ -> pure $ "resourceSearchActivity"
+	    _ -> resourceSearchActivity input whereFrom whatToSendBack
 
 
 filterActivity input whereFrom whatToSendBack = do
@@ -39,7 +39,7 @@ filterActivity input whereFrom whatToSendBack = do
 		BACK_FilterActivity -> case whereFrom of
 			"SearchScreen" -> resourceSearchActivity whatToSendBack "Terminate" input
 			_ -> resourceSearchActivity whatToSendBack "FilterActivity" input 
-		_ -> pure $ "filterActivity"
+		_ -> filterActivity input whereFrom whatToSendBack
 
 
 resourceDetailActivity input whereFrom whatToSendBack = do
@@ -50,7 +50,7 @@ resourceDetailActivity input whereFrom whatToSendBack = do
 			"ResourceSearchActivity" -> resourceSearchActivity whatToSendBack "Terminate" input
 			"ResourceFragment" -> resourceFragment whatToSendBack "Terminate" input
 			_ -> resourceFragment whatToSendBack "Terminate" input
-		_ -> pure $ "resourceDetailActivity"
+		_ -> resourceDetailActivity input whereFrom whatToSendBack
 
 
 courseDetailActivity input whereFrom whatToSendBack = do
@@ -60,7 +60,7 @@ courseDetailActivity input whereFrom whatToSendBack = do
 		BACK_CourseEnrolledActivity -> case whereFrom of
 			"ResourceActivity" -> resourceSearchActivity whatToSendBack "Terminate" input
 			_ -> resourceFragment whatToSendBack whereFrom input
-		_ -> pure $ "CourseDetailActivity"
+		_ -> courseDetailActivity input whereFrom whatToSendBack
 
 
 moduleResourceDetailActivity mName input whereFrom whatToSendBack = do
@@ -71,7 +71,7 @@ moduleResourceDetailActivity mName input whereFrom whatToSendBack = do
 			"CourseEnrolledActivity" -> courseDetailActivity whatToSendBack "Terminate" input
 			"Terminate" -> courseDetailActivity whatToSendBack "Terminate" input
 			_ ->  courseDetailActivity whatToSendBack "Terminate" input
-  		_ -> pure $ "moduleResourceDetailActivity"
+  		_ -> moduleResourceDetailActivity mName input whereFrom whatToSendBack
 
 
 subModuleResourceDetailActivity mName input whereFrom whatToSendBack = do
@@ -82,7 +82,7 @@ subModuleResourceDetailActivity mName input whereFrom whatToSendBack = do
 			"Terminate"->  courseDetailActivity whatToSendBack "Terminate" input
 			"CourseEnrolledActivity" -> courseDetailActivity whatToSendBack "Terminate" input
 			_ ->  courseDetailActivity whatToSendBack "Terminate" input
-  		_ -> pure "subModuleResourceDetailActivity"
+  		_ -> subModuleResourceDetailActivity mName input whereFrom whatToSendBack
 
 
 resourceViewAllActivity input whereFrom whatToSendBack = do
@@ -93,4 +93,4 @@ resourceViewAllActivity input whereFrom whatToSendBack = do
 		BACK_ResourceViewAllActivity -> case whereFrom of
 			"ResourceFragmnet" -> resourceFragment whatToSendBack "Terminate" input
 			_ -> resourceFragment whatToSendBack "Terminate" input
-		_ -> pure $ "resourceViewAllActivity"
+		_ -> resourceViewAllActivity input whereFrom whatToSendBack

@@ -13,7 +13,7 @@ import UI
 courseFragment input whereFrom whatToSendBack = do
 	event <- ui $ MainActivity 
 	case event of
-		OPEN_CourseInfoActivity {course:output} -> courseInfoActivity output "CourseFlow" input
+		OPEN_CourseInfoActivity {course:output} -> courseInfoActivity output "CourseFragment" input
 		OPEN_EnrolledCourseActivity {course:output} -> enrolledCourseActivity output "CourseFragment" input
 		OPEN_SearchActivity {filterDetails : output} -> searchCourseActivity output "CourseFragment" input
 		OPEN_CourseViewAllActivity {courseListDetails : output} -> courseViewAllActivity output "CourseFragment" input
@@ -21,7 +21,7 @@ courseFragment input whereFrom whatToSendBack = do
 			responseData <- getUserEnrolledCourses x y
 	 		_ <- sendUpdatedState {response : responseData, responseFor : "API_UserEnrolledCourse", screen:"asas"}
 	  		pure $ "apiDefault"
-		_ -> pure $ "MainActivity"
+		_ -> courseFragment input whereFrom whatToSendBack
 
 
 
@@ -32,7 +32,7 @@ courseViewAllActivity input whereFrom whatToSendBack = do
 		BACK_CourseViewAllActivity -> case whereFrom of
 			"CourseFragment" -> courseFragment whatToSendBack "Terminate"  input
 			_ -> courseFragment whatToSendBack "Terminate" input
-		_ -> pure $ "CourseViewAllActivity"
+		_ -> courseViewAllActivity input whereFrom whatToSendBack
 
 
 courseInfoActivity input whereFrom whatToSendBack = do
@@ -44,11 +44,11 @@ courseInfoActivity input whereFrom whatToSendBack = do
 	  			_ <- sendUpdatedState {response : responseData, responseFor : "API_EnrollCourse", screen:"asas"}
 				pure $ "apiDefault"
 		BACK_CourseInfoActivity -> case whereFrom of
-			"CourseFlow" -> courseFragment whatToSendBack "Terminate" input
+			"CourseFragment" -> courseFragment whatToSendBack "Terminate" input
 			"CourseViewAllActivity" -> courseViewAllActivity whatToSendBack "Terminate" input
 			"SearchActivity" -> searchCourseActivity whatToSendBack "Terminate" input
 			_ -> courseFragment whatToSendBack "Terminate" input
-		_ -> pure $ "CourseInfoActivity"
+		_ -> courseInfoActivity input whereFrom whatToSendBack
 
 
 enrolledCourseActivity input whereFrom whatToSendBack = do

@@ -21,7 +21,7 @@ homeFragment input whereFrom whatToSendBack = do
 			responseData <- getUserEnrolledCourses x y
 	 		_ <- sendUpdatedState {response : responseData, responseFor : "API_UserEnrolledCourse", screen:"asas"}
 	  		pure $ "apiDefault"
-		_ -> pure $ "MainActivity"
+		_ -> homeFragment input whereFrom whatToSendBack
 
 homeSearchActivity input whereFrom whatToSendBack = do
 	event <- ui $ SearchActivity {filterDetails:input}
@@ -32,14 +32,14 @@ homeSearchActivity input whereFrom whatToSendBack = do
 	    BACK_SearchActivity -> case whereFrom of
 	    	"HomeFragment" -> homeFragment whatToSendBack "Terminate" input
 	    	_ -> homeFragment whatToSendBack "Terminate" input
-	    _ -> pure "SearchActivity"
+	    _ -> homeSearchActivity input whereFrom whatToSendBack
 
 filterActivity input whereFrom whatToSendBack = do
 	event <- ui $ FilterActivity {filterDetails : input}
 	case event of
 		OPEN_SearchActivity_FILTER {filterData: output} -> homeSearchActivity output "FilterActivity" input
 		BACK_FilterActivity -> homeSearchActivity whatToSendBack "HomeFragment" input 
-		_ -> pure "FilterActivity"
+		_ -> filterActivity input whereFrom whatToSendBack
 
 resourceDetailActivity input whereFrom whatToSendBack= do
 	event <- ui $ ResourceDetailActivity {resourceDetails : input}
@@ -48,7 +48,7 @@ resourceDetailActivity input whereFrom whatToSendBack= do
 			"SearchActivity" -> homeSearchActivity whatToSendBack "Terminate" input
 			"HomeFragment" -> homeFragment whatToSendBack "Terminate" input
 			_ -> homeFragment whatToSendBack "Terminate" input
-		_ -> pure $ "ResourceDetailActivity"
+		_ -> resourceDetailActivity input whereFrom whatToSendBack
 
 courseViewAllActivity input whereFrom whatToSendBack = do
 	event <- ui $ CourseViewAllActivity {courseViewAllDetails : input}
@@ -58,7 +58,7 @@ courseViewAllActivity input whereFrom whatToSendBack = do
 			"HomeFragment" -> homeFragment whatToSendBack "Terminate" input
 			"SearchActivity" -> homeSearchActivity whatToSendBack "Terminate" input
 			_ -> homeFragment whatToSendBack "Terminate" input
-		_ -> pure $ "CourseViewAllActivity"		
+		_ -> courseViewAllActivity input whereFrom whatToSendBack	
 
 courseInfoActivity input whereFrom whatToSendBack= do
 	event <- ui $ CourseInfoActivity {courseDetails:input}
@@ -74,7 +74,7 @@ courseInfoActivity input whereFrom whatToSendBack= do
 				"CourseViewAllActivity" -> courseViewAllActivity whatToSendBack "Terminate" input
 				"SearchActivity" -> homeSearchActivity whatToSendBack "Terminate" input
 				_ -> homeFragment whatToSendBack "Terminate" input
-		_ -> pure $ "CourseInfoActivity"
+		_ -> courseInfoActivity input whereFrom whatToSendBack
 
 enrolledCourseActivity input whereFrom whatToSendBack= do
 	event <- ui $ CourseEnrolledActivity {courseDetails:input}
@@ -84,7 +84,7 @@ enrolledCourseActivity input whereFrom whatToSendBack= do
 			case whereFrom of
 				"CourseViewAllActivity" -> courseViewAllActivity whatToSendBack "Terminate" input
 				_ -> homeFragment whatToSendBack "Terminate" input
-		_ -> pure $ "CourseEnrolledActivity"
+		_ -> enrolledCourseActivity input whereFrom whatToSendBack
 
 moduleDetailActivity mName input whereFrom whatToSendBack= do
 	event <- ui $ ModuleDetailActivity {moduleName:mName,moduleDetails:input}
@@ -94,7 +94,7 @@ moduleDetailActivity mName input whereFrom whatToSendBack= do
 			"EnrolledCourseActivity" -> enrolledCourseActivity whatToSendBack "Terminate" input
 			"Terminate" -> enrolledCourseActivity whatToSendBack "Terminate" input
 			_ ->  enrolledCourseActivity whatToSendBack "Terminate" input
-  		_ -> pure $ "ModuleDetailActivity"
+  		_ -> moduleDetailActivity mName input whereFrom whatToSendBack
 
 
 subModuleDetailActivity mName input whereFrom whatToSendBack= do
@@ -105,7 +105,7 @@ subModuleDetailActivity mName input whereFrom whatToSendBack= do
 			"Terminate"->  enrolledCourseActivity whatToSendBack "Terminate" input
 			"EnrolledCourseActivity" -> enrolledCourseActivity whatToSendBack "Terminate" input
 			_ ->  enrolledCourseActivity whatToSendBack "Terminate" input
-  		_ -> pure $ "AlternateModuleDetailActivity"
+  		_ -> subModuleDetailActivity mName input whereFrom whatToSendBack
 
 
 
