@@ -32,12 +32,22 @@ class SearchActivity extends View {
       "spinner"
     ]);
     this.state = state;
+
     this.shouldCacheScreen = false;
+
     this.screenName = "SearchActivity"
     this.tempData = JSON.parse(state.data.value0.filterDetails);
-    this.filterData = this.tempData.filterDetails;
-    console.log("filter in search ^^^^^^^^^^^^^^^^^^", state.data);
+    console.log("tempData in search ^^^^^^^^^^^^^^^^^^", this.tempData);
+    
+    this.filter=[]
+    if(this.tempData.length>0){
+      this.filterData = this.tempData.filterDetails;
+      this.searchText = this.tempData.filterFor
+      this.searchType = this.tempData.filterType
+    }
+    console.log("filter in search ^^^^^^^^^^^^^^^^^^", this.filterData);
     this.temp = state.data;
+    console.log("temp in search ^^^^^^^^^^^^^^^^^^", this.temp);
     this.searchType = this.tempData.searchType;
     console.log("type", this.searchType);
 
@@ -59,7 +69,8 @@ class SearchActivity extends View {
 
   afterRender = () => {
     console.log(this.filterData)
-    if(this.filterData.length != 0){
+    
+    if(this.filterData!=undefined && this.filterData.length != 0){
     JBridge.showSnackBar("Loading Search Results Please Wait......")      
        var cmd = "";
         cmd += _this.set({
@@ -68,8 +79,14 @@ class SearchActivity extends View {
         })
         Android.runInUI(cmd, 0);
 
-      var searchData = JSON.parse(this.filterData)
-      this.getSearchList(searchData.query);
+      var searchData 
+      if (typeof this.filterData == 'object'){
+        searchData=this.filterData
+      }else{
+        searchData=JSON.parse(this.filter)
+      }
+      console.log("Loading detials for ")
+      this.getSearchList(this.searchType);
     }
 
     var callback = callbackMapper.map(function(data) {
@@ -201,7 +218,8 @@ class SearchActivity extends View {
   }
 
 
-  getSearchList(searchText) {
+  getSearchList=(searchText)=> {
+
     console.log("oin get search List",searchText);
     var callback = callbackMapper.map(function(data) {
       console.log("search results", JSON.parse(data[1]));
@@ -225,7 +243,7 @@ class SearchActivity extends View {
     });
     console.log("searchText",searchText)
     if (searchText.length > 2) {
-      if (this.filterData.length == 0) {
+      if (this.filterData!=undefined && this.filterData.length == 0) {
         status = "false";
       } else {
         status = "true";
@@ -237,6 +255,7 @@ class SearchActivity extends View {
       var s = "";
       if (typeof this.filterData == 'object') {
         this.filterData = this.filterData.value0.filterDetails;
+        console.log("this.filterData", this.filterData);
         var s = JSON.parse(this.filterData);
         console.log("filterHolder", s.filterDetails);
         this.filterData = s.filterDetails;
@@ -254,8 +273,8 @@ class SearchActivity extends View {
 
   onBackPressed = () => {
      JBridge.hideKeyboard();
-     var whatToSendBack = [];
-     var event = { tag: "BACK_SearchActivity", contents: [] }
+     var whatToSend = [];
+     var event = { tag: "BACK_SearchActivity", contents: whatToSend }
      window.__runDuiCallback(event);
   }
 
@@ -272,12 +291,12 @@ class SearchActivity extends View {
 
 
   handleSearchClick = (searchText) => {
+    JBridge.hideKeyboard();
+
     JBridge.showSnackBar("Loading Search Results Please Wait......")
     this.getSearchList(searchText[0]);
     
-    if (searchText != "") {
-      JBridge.hideKeyboard();
-    }
+    
 
   }
 
@@ -301,11 +320,12 @@ class SearchActivity extends View {
 
   handleFilterClick = () => {
     JBridge.hideKeyboard();
-    console.log("fdata!!!!!!!!!!!!!!!!!!", _this.filterData);
 
-    var filteredData = { filterDetails: _this.filterData, filterType: _this.searchType }
-    var whatToSendBack = { filterDetails: JSON.stringify(filteredData) } 
-    var event = { tag: "OPEN_FilterActivity", contents: whatToSendBack}
+    var filteredData = { filterDetails: this.filterData,
+       filterType: this.searchType ,
+       filterFor : this.searchTextValue}
+    var whatToSend = { filterDetails: JSON.stringify(filteredData) } 
+    var event = { tag: "OPEN_FilterActivity", contents: whatToSend}
     window.__runDuiCallback(event);
   }
 
@@ -353,55 +373,55 @@ class SearchActivity extends View {
         width="match_parent"
         height="match_parent">
 
-      <LinearLayout
-        orientation="vertical"
-        background={window.__Colors.WHITE}
-        width="match_parent"
-        height="match_parent">
-
-         
-            {this.getToolbar()}
-        
-
-              <ScrollView
-                height="match_parent"
-                width="match_parent"
-                fillViewport="true">
-
-
-                <LinearLayout
-                   width="match_parent"
-                   height="wrap_content"
-                   background="#ffffff"
-                   id = {this.idSet.searchListContainer}
-                   orientation="vertical"/>
-
-
-                </ScrollView>
-       
-      </LinearLayout>
-
-      <LinearLayout
-        orientation="vertical"
-        visibility="gone"
-        background={window.__Colors.PRIMARY_BLACK_66}
-        centerInParent = "true,-1"
-        width="match_parent"
-        height="match_parent">
-
         <LinearLayout
-        width="match_parent"
-        height="match_parent"
-        gravity="center">
+          orientation="vertical"
+          background={window.__Colors.WHITE}
+          width="match_parent"
+          height="match_parent">
 
-        <FilterDialog/>
+           
+              {this.getToolbar()}
+          
+
+                <ScrollView
+                  height="match_parent"
+                  width="match_parent"
+                  fillViewport="true">
 
 
+                  <LinearLayout
+                     width="match_parent"
+                     height="wrap_content"
+                     background="#ffffff"
+                     id = {this.idSet.searchListContainer}
+                     orientation="vertical"/>
+
+
+                  </ScrollView>
+         
         </LinearLayout>
 
-        
+        <LinearLayout
+          orientation="vertical"
+          visibility="gone"
+          background={window.__Colors.PRIMARY_BLACK_66}
+          centerInParent = "true,-1"
+          width="match_parent"
+          height="match_parent">
 
-      </LinearLayout>
+          <LinearLayout
+          width="match_parent"
+          height="match_parent"
+          gravity="center">
+
+            <FilterDialog/>
+
+
+          </LinearLayout>
+
+          
+
+        </LinearLayout>
 
       </RelativeLayout>
 

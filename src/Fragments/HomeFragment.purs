@@ -38,21 +38,25 @@ filterActivity input whereFrom whatToSendBack = do
 	event <- ui $ FilterActivity {filterDetails : input}
 	case event of
 		OPEN_SearchActivity_FILTER {filterData: output} -> homeSearchActivity output "FilterActivity" input
+		BACK_FilterActivity -> homeSearchActivity whatToSendBack "HomeFragment" input 
 		_ -> pure "FilterActivity"
 
 resourceDetailActivity input whereFrom whatToSendBack= do
 	event <- ui $ ResourceDetailActivity {resourceDetails : input}
 	case event of
 		BACK_ResourceDetailActivity -> case whereFrom of
-			"SearchActivity" -> homeSearchActivity whereFrom "Terminate" input
+			"SearchActivity" -> homeSearchActivity whatToSendBack "Terminate" input
+			"HomeFragment" -> homeFragment whatToSendBack "Terminate" input
 			_ -> homeFragment whatToSendBack "Terminate" input
 		_ -> pure $ "ResourceDetailActivity"
+
 courseViewAllActivity input whereFrom whatToSendBack = do
 	event <- ui $ CourseViewAllActivity {courseViewAllDetails : input}
 	case event of
 		OPEN_EnrolledCourseFlowFromCourseViewAll {course:output} -> enrolledCourseActivity output "CourseViewAllActivity" input
 		BACK_CourseViewAllActivity -> case whereFrom of
 			"HomeFragment" -> homeFragment whatToSendBack "Terminate" input
+			"SearchActivity" -> homeSearchActivity whatToSendBack "Terminate" input
 			_ -> homeFragment whatToSendBack "Terminate" input
 		_ -> pure $ "CourseViewAllActivity"		
 

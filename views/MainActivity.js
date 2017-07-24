@@ -134,8 +134,6 @@ class MainActivity extends View {
   }
 
   handleStateChange = (state) => {
-    console.log("HANDLE STATE CHANGE HOME SCREEN", state.response.status)
-    
     window.__LoaderDialog.hide();
 
     this.currentPageIndex = isNaN(this.currentPageIndex) ? 0 : this.currentPageIndex;
@@ -171,7 +169,6 @@ class MainActivity extends View {
       
        responseData=tmp; 
     } else {
-      console.log("responseData",responseData);
       responseData = utils.jsonifyData(responseData);
       responseData = JSON.parse(responseData);
 

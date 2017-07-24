@@ -24,6 +24,8 @@ class FilterActivity extends View {
     super(props, children,state);
 
     this.tempData = JSON.parse(state.data.value0.filterDetails);
+    this.searchedFor = this.tempData.filterFor;
+    this.searchedType = this.tempData.filterType;
     this.data = JSON.parse(this.tempData.filterDetails);
     this.facetData = this.data.facetFilters;
     this.screenName = "FilterActivity";
@@ -118,8 +120,12 @@ class FilterActivity extends View {
     window.__runDuiCallback({ "tag": "BACK_FilterActivity", contents: whatToSend });
   }
   handleFilterClick = () =>{
+    var data= {
+      filterData : this.filterData,
+      filterFor : this.filterFor
+    }
     var whatToSend = {
-        "filterData" : JSON.stringify(this.filterData)
+        "filterData" : JSON.stringify(data)
       };
 
     window.__runDuiCallback({ "tag": "OPEN_SearchActivity_FILTER", contents: whatToSend });   

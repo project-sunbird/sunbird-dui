@@ -57,6 +57,7 @@ enrolledCourseActivity input whereFrom whatToSendBack = do
   		OPEN_ModuleDetailsActivity {moduleName:output1,moduleDetails:output2} -> subModuleDetailActivity output1 output2 "EnrolledCourseActivity" input
   		BACK_CourseEnrolledActivity -> case whereFrom of
 			"CourseFragment" -> courseFragment whatToSendBack "Terminate" input
+			"SearchActivity" -> courseFragment whatToSendBack "Terminate" input
 			"CourseViewAllActivity" -> courseViewAllActivity whatToSendBack "Terminate" input
 			_ -> courseFragment whatToSendBack "Terminate" input
 		_ -> enrolledCourseActivity input whereFrom whatToSendBack
