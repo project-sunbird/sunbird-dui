@@ -208,7 +208,6 @@ class CourseEnrolledActivity extends View {
       if (status == "true") {
         console.log("Spine Found")
         var callback1 = callbackMapper.map(function(data) {
-          console.log("course details;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;", JSON.parse(data));
           _this.courseContent = JSON.parse(data);
           _this.renderCourseChildren()
         });
@@ -241,6 +240,10 @@ class CourseEnrolledActivity extends View {
 
 
   renderCourseChildren = () => {
+    if(this.courseContent.children==undefined || this.courseContent.children.length == 0){
+      var tempName=this.data.courseName || this.details.name || this.details.contentData.name;
+      this.handleModuleClick(tempName,this.details)
+    }
     console.log("RENDRING BREKAUP", this.courseContent.children)
     var layout = (
                   <CourseCurriculum
