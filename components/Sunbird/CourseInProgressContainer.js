@@ -21,7 +21,8 @@ class CourseInProgressContainer extends View {
 
     this.setIds([
       "parentContainer",
-      "progressContainer"
+      "progressContainer",
+      "viewAllContainer"
     ]);
     this.displayName = "course_in_progress_container";
     window.__UpdateUserCourses = this.renderContent;
@@ -39,6 +40,20 @@ class CourseInProgressContainer extends View {
 
 
   renderContent = (data) => {
+
+    var cmd = this.set({
+      id: this.idSet.viewAllContainer,
+      visibility: "gone",
+      text:"no content"
+    })
+    
+    console.log("DATA IN COURSE PROGRESSS CONTAINER",this.data);
+
+
+    if(data == ""){
+      console.log("INSIDE","");
+      Android.runInUI(cmd, 0);
+    }
 
     var emptyBody =(<LinearLayout
                       height="match_parent"
@@ -68,6 +83,7 @@ class CourseInProgressContainer extends View {
 
     //this.appendChild(this.idSet.parentContainer,this.getHeader().render(),0);
     this.replaceChild(this.idSet.parentContainer,layout.render(),0)
+
 
 
   }
@@ -119,6 +135,7 @@ class CourseInProgressContainer extends View {
             height="wrap_content"
             visibility={this.props.isViewAllExist?"visible":"gone"}
             text="VIEW ALL"
+            idSet={this.idSet.viewAllContainer}
             onClick={this.handleViewAllClick}
             style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
 
