@@ -22,7 +22,7 @@ class CourseInProgressContainer extends View {
     this.setIds([
       "parentContainer",
       "progressContainer",
-      "viewAllContainer"
+      "viewAllContainer",
     ]);
     this.displayName = "course_in_progress_container";
     window.__UpdateUserCourses = this.renderContent;
@@ -41,6 +41,7 @@ class CourseInProgressContainer extends View {
 
   renderContent = (data) => {
 
+
     var emptyBody =(<LinearLayout
                       height="match_parent"
                       width="match_parent"/>)
@@ -53,19 +54,32 @@ class CourseInProgressContainer extends View {
 
     console.log("GOT DATA-->", data);
 
-     var rows=this.data.map((item, index) => {
-      //this.appendChild(this.idSet.parentContainer,this.getCardLayouy(item).render(),index)
-      return this.getCardLayout(item);
-    });
+     var rows="";
 
+    if(this.data == "" || this.data == undefined){
+      rows= (<TextView
+              width="match_parent"
+              height="50"
+              gravity="center"
+              text={"No offline resource yet"}
+              style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>)
+
+    }else{
+       rows = this.data.map((item, index) => {
+      //this.appendChild(this.idSet.parentContainer,this.getCardLayouy(item).render(),index)
+       return this.getCardLayout(item);
+      });
+
+    }
+   
 
        var layout=(<LinearLayout
-        height="wrap_content"
-        width="match_parent">
+                    height="wrap_content"
+                    width="match_parent">
 
-          {rows}
+                    {rows}
 
-        </LinearLayout>)
+                  </LinearLayout>)
 
     //this.appendChild(this.idSet.parentContainer,this.getHeader().render(),0);
     this.replaceChild(this.idSet.parentContainer,layout.render(),0)
@@ -73,6 +87,10 @@ class CourseInProgressContainer extends View {
       var cmd = this.set({
         id: this.idSet.viewAllContainer,
         visibility : "gone"
+      })
+      cmd += this.set({
+        id: this.idSet.parentContainer,
+        gravity : "center"
       })
 
       if(this.data == "" || this.data == undefined){
@@ -180,6 +198,7 @@ class CourseInProgressContainer extends View {
                     id={this.idSet.parentContainer}
                     width="match_parent"
                     root="true"
+                    gravity="center"
                     height="match_parent">
 
          </LinearLayout>
