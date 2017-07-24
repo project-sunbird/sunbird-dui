@@ -141,7 +141,7 @@ class CourseViewAllActivity extends View {
           onBackPress={this.onBackPressed}
           showMenu="true"
           invert="true"
-          title= {"this.appbarTitle"}/>
+          title= {this.appbarTitle}/>
 
 
               <ScrollView
