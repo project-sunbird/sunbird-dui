@@ -19,7 +19,7 @@ import UI
 --A.JSON import argonaut for json and try
 
 data InitScreen = InitScreen
-data InitScreenAction = ShowInit  | OPEN_UserActivity
+data InitScreenAction = ShowInit | OPEN_UserActivity
 
 instance initScreen :: UIScreen InitScreen InitScreenAction where
   generateMockEvents _ = [ShowInit ,OPEN_UserActivity]
