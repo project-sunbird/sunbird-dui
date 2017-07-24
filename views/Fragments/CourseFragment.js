@@ -201,7 +201,6 @@ class CourseFragment extends View {
                   <CourseInProgressContainer
                     transparent="true"
                     title="Courses In Progress"
-                    isViewAllExist="true"
                     onCourseClick={this.handleUserCoursesClick}/>
 
 
