@@ -32,7 +32,7 @@ courseFragment input whereFrom whatToSendBack = do
 courseViewAllActivity input whereFrom whatToSendBack = do
 	event <- ui $ CourseViewAllActivity {courseViewAllDetails : input}
 	case event of
-		OPEN_EnrolledCourseFlowFromCourseViewAll {course:output} -> enrolledCourseActivity output "CourseViewAll" input
+		OPEN_EnrolledCourseFlowFromCourseViewAll {course:output} -> enrolledCourseActivity output "CourseViewAllActivity" input
 		BACK_CourseViewAllActivity -> case whereFrom of
 			"CourseFragment" -> courseFragment whatToSendBack "Terminate"  input
 			_ -> courseFragment whatToSendBack "Terminate" input
@@ -61,7 +61,7 @@ enrolledCourseActivity input whereFrom whatToSendBack = do
   		OPEN_ModuleDetailsActivity {moduleName:output1,moduleDetails:output2} -> subModuleDetailActivity output1 output2 "EnrolledCourseActivity" input
   		BACK_CourseEnrolledActivity -> case whereFrom of
 			"CourseFragment" -> courseFragment whatToSendBack "Terminate" input
-			"SearchActivity" -> courseFragment whatToSendBack "Terminate" input
+			"SearchActivity" -> searchCourseActivity whatToSendBack "Terminate" input
 			"CourseViewAllActivity" -> courseViewAllActivity whatToSendBack "Terminate" input
 			_ -> courseFragment whatToSendBack "Terminate" input
 		_ -> enrolledCourseActivity input whereFrom whatToSendBack
@@ -92,8 +92,8 @@ subModuleDetailActivity mName input whereFrom whatToSendBack = do
 searchCourseActivity input whereFrom whatToSendBack = do
   event <- ui $ SearchActivity {filterDetails:input}
   case event of
-    OPEN_CourseInfoActivity_SEARCH {course : output} -> courseInfoActivity output "CourseSearch" input
-    OPEN_FilterActivity {filterDetails : output} -> courseFilterActivity output "SearchCourseActivity" input
+    OPEN_CourseInfoActivity_SEARCH {course : output} -> courseInfoActivity output "SearchActivity" input
+    OPEN_FilterActivity {filterDetails : output} -> courseFilterActivity output "SearchActivity" input
     BACK_SearchActivity -> case whereFrom of
 		"CourseFragment" -> courseFragment whatToSendBack "Terminate" input
 		_ -> courseFragment whatToSendBack "Terminate" input

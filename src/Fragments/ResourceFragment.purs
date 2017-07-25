@@ -27,7 +27,7 @@ resourceSearchActivity input whereFrom whatToSendBack = do
 	event <- ui $ SearchActivity {filterDetails:input}
 	case event of
 	    OPEN_ResourceDetailActivity_SEARCH {resourceDetails : output} -> resourceDetailActivity output "SearchActivity" input
-	    OPEN_FilterActivity {filterDetails : output} -> filterActivity output "Terminate" input
+	    OPEN_FilterActivity {filterDetails : output} -> filterActivity output "SearchActivity" input
 	    OPEN_CourseEnrolledActivity_SEARCH {course : output} -> courseDetailActivity output "SearchActivity" input
 
 	    BACK_SearchActivity -> case whereFrom of
