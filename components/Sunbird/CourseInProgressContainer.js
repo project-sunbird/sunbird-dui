@@ -61,8 +61,16 @@ class CourseInProgressContainer extends View {
               width="match_parent"
               height="50"
               gravity="center"
-              text={"No offline resource yet"}
+              text={"No Courses enrolled yet"}
               style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>)
+
+     var cmd = this.set({
+        id: this.idSet.viewAllContainer,
+        visibility : (this.offlineCount==0?"gone":"visible")
+      })
+
+    Android.runInUI(cmd, 0);
+
 
     }else{
        rows = this.data.map((item, index) => {
@@ -83,19 +91,6 @@ class CourseInProgressContainer extends View {
 
     //this.appendChild(this.idSet.parentContainer,this.getHeader().render(),0);
     this.replaceChild(this.idSet.parentContainer,layout.render(),0)
-
-      var cmd = this.set({
-        id: this.idSet.viewAllContainer,
-        visibility : "gone"
-      })
-      cmd += this.set({
-        id: this.idSet.parentContainer,
-        gravity : "center"
-      })
-
-      if(this.data == "" || this.data == undefined){
-        Android.runInUI(cmd, 0);
-      }
       
 
 
