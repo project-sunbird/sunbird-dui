@@ -109,8 +109,8 @@ class CourseInProgressContainer extends View {
   };
 
   getCardLayout =(item) => {
-     var pDone= item.progress == undefined ? 0 : item.progress;
-     var pTotal = item.leafNodesCount == undefined ? 0 : item.leafNodesCount;
+     var pDone= item.progress == undefined || isNaN(item.progress)? 0 : item.progress;
+     var pTotal = item.leafNodesCount == undefined || isNaN(item.leafNodesCount)? 0 : item.leafNodesCount;
      
      var temp = {
         imageUrl: (item.courseLogoUrl ? item.courseLogoUrl : "file://storage/emulated/0/SunbirdTest/content/domain_8808-64dd60d5-94cd-4896-a60e-11897bf69fd6/domain_8808/1461668536884adb212cfde_1465896981928.jpg"),
