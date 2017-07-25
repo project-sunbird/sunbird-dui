@@ -208,7 +208,17 @@ class CourseInfoActivity extends View {
 
   renderCourseChildren = () => {
     console.log("RENDRING BREKAUP", this.courseContent)
-    var layout = (<CourseCurriculum
+    var layout;
+    if(this.courseContent.children==undefined){
+      layout = <TextView
+                  height="300"
+                  width="match_parent"
+                  gravity="center"
+                  root="true"
+                  text="Contents not added yet" />
+    }
+    else{
+       layout = (<CourseCurriculum
                   height="match_parent"
                   root="true"
                   margin="0,0,0,12"
@@ -216,7 +226,7 @@ class CourseInfoActivity extends View {
                   shouldGoForward={"gone"}
                   content= {this.courseContent.children}
                   width="match_parent"/>)
-
+      }
     this.replaceChild(this.idSet.descriptionContainer, layout.render(), 0)
   }
 

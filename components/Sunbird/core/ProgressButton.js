@@ -29,6 +29,7 @@ class ProgressButton extends View {
 
 
     _this = this;
+    this.isCancelVisible=false;
     console.log("progress button data", this.props)
 
     console.log("local status content", this.props.localStatus)
@@ -40,13 +41,19 @@ class ProgressButton extends View {
     this.checkContentLocalStatus(this.props.localStatus);
   }
 
-  handleCancelDownload = () => {
-    JBridge.cancelDownload(this.props.identifier)
+  setCancelButtonVisibility = (value) =>{
     var cmd = this.set({
       id: this.idSet.cancelDownloadHolder,
-      visibility: "gone"
+      visibility: value
     })
     Android.runInUI(cmd, 0);
+  }
+
+  handleCancelDownload = () => {
+     JBridge.cancelDownload(this.props.identifier)
+      
+     this.isCancelVisible=false; 
+     this.setCancelButtonVisibility("gone");
 
      this.startedDownloading=false;
      this.isDownloaded=false;
@@ -77,28 +84,38 @@ class ProgressButton extends View {
 
     var data = JSON.parse(pValue);
 
-    if (data.identifier != this.props.identifier)
+    if (data.identifier != this.props.identifier){
+    console.log("NOT mine")
       return;
-
+    
+  }
     var textToShow = ""
-    data.downloadProgress = data.downloadProgress < 0 ? 0 : data.downloadProgress;
 
+    data.downloadProgress = ( data.downloadProgress == undefined || data.downloadProgress < 0 )? 0 : data.downloadProgress;
+    console.log("--->\t\t\t\n\n\n", data);
+     console.log(data.downloadProgress)
+   
     if (parseInt(data.downloadProgress) == 100) {
+    console.log(data.downloadProgress ,"DONE")
       _this.props.changeOverFlowMenu();
       _this.isDownloaded = true;
       textToShow = "PLAY";
-      var cmd = this.set({
-        id: this.idSet.cancelDownloadHolder,
-        visibility: "gone"
-      })
-      Android.runInUI(cmd, 0);
+      _this.isCancelVisible=false;
+      _this.setCancelButtonVisibility("gone");
 
 
     } else {
+      console.log(data.downloadProgress , "UPDATING")
       _this.isDownloaded = false;
       textToShow = "DOWNLOADING " + data.downloadProgress + "%"
 
     }
+    if(!this.isCancelVisible){
+        this.setCancelButtonVisibility("visible");
+        this.isCancelVisible=true;
+
+    }
+    
     _this.replaceChild(_this.idSet.downloadBarContainer, _this.getButtons(data.downloadProgress, textToShow).render(), 0);
 
   }
@@ -136,12 +153,6 @@ class ProgressButton extends View {
           if (!this.startedDownloading) {
             this.startedDownloading = true;
             JBridge.importCourse(this.props.identifier, this.props.isCourse);
-
-            var cmd = this.set({
-              id: this.idSet.cancelDownloadHolder,
-              visibility: "visible"
-            })
-            Android.runInUI(cmd, 0);
 
           }
 

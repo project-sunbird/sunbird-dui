@@ -43,7 +43,7 @@ class SplashScreenActivity extends View {
   }
 
   afterRender = () => {
-    JBridge.syncTelemetry();
+    
     console.log("in after bmvjjkfjf")
     if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "false") {
       this.setPermissions();

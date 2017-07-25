@@ -240,12 +240,16 @@ class CourseEnrolledActivity extends View {
 
 
   renderCourseChildren = () => {
-    if(this.courseContent.children==undefined || this.courseContent.children.length == 0){
-      var tempName=this.data.courseName || this.details.name || this.details.contentData.name;
-      this.handleModuleClick(tempName,this.details)
-    }
-    console.log("RENDRING BREKAUP", this.courseContent.children)
-    var layout = (
+    var layout;
+    if(this.courseContent.children==undefined){
+      layout = <TextView
+                  height="300"
+                  width="match_parent"
+                  gravity="center"
+                  root="true"
+                  text="Contents not added yet" />
+    }else{
+     layout = (
                   <CourseCurriculum
                   height="match_parent"
                   root="true"
@@ -256,7 +260,7 @@ class CourseEnrolledActivity extends View {
                   content= {this.courseContent.children}
                   width="match_parent"/>
                   )
-
+   }
     this.replaceChild(this.idSet.descriptionContainer, layout.render(), 0)
   }
 
