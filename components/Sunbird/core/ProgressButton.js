@@ -29,6 +29,7 @@ class ProgressButton extends View {
 
 
     _this = this;
+    this.isCancelVisible=false;
     console.log("progress button data", this.props)
 
     console.log("local status content", this.props.localStatus)
@@ -83,18 +84,19 @@ class ProgressButton extends View {
 
     var data = JSON.parse(pValue);
 
-    if(data.status != 1){
-      console.log("Didn't got status 1")
+    if (data.identifier != this.props.identifier){
+    console.log("NOT mine")
       return;
-    }
-
-    if (data.identifier != this.props.identifier)
-      return;
-
+    
+  }
     var textToShow = ""
-    data.downloadProgress = data.downloadProgress < 0 ? 0 : data.downloadProgress;
 
+    data.downloadProgress = ( data.downloadProgress == undefined || data.downloadProgress < 0 )? 0 : data.downloadProgress;
+    console.log("--->\t\t\t\n\n\n", data);
+     console.log(data.downloadProgress)
+   
     if (parseInt(data.downloadProgress) == 100) {
+    console.log(data.downloadProgress ,"DONE")
       _this.props.changeOverFlowMenu();
       _this.isDownloaded = true;
       textToShow = "PLAY";
@@ -103,6 +105,7 @@ class ProgressButton extends View {
 
 
     } else {
+      console.log(data.downloadProgress , "UPDATING")
       _this.isDownloaded = false;
       textToShow = "DOWNLOADING " + data.downloadProgress + "%"
 

@@ -115,8 +115,8 @@ class ModuleDetailActivity extends View {
     console.log("DATA -> ", data)
 
     var downloadedPercent = parseInt(data.downloadProgress);
-    downloadedPercent = downloadedPercent < 0 ? 0 : downloadedPercent;
-
+    downloadedPercent = (downloadedPercent == undefined ||  downloadedPercent < 0 )? 0 : downloadedPercent;
+    
     if (downloadedPercent == 100) {
 
       console.log("SPINE IMPORTED -> ")
