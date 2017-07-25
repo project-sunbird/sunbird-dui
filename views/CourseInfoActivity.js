@@ -165,7 +165,7 @@ class CourseInfoActivity extends View {
 
     var textToShow = ""
     console.log("DATA -> ", data)
-
+    data.downloadProgress = data.downloadProgress == undefined ? 0 : data.downloadProgress;
     var downloadedPercent = parseInt(data.downloadProgress);
     downloadedPercent = downloadedPercent < 0 ? 0 : downloadedPercent;
 
@@ -286,7 +286,7 @@ class CourseInfoActivity extends View {
           JBridge.showSnackBar("Course enrolled")
 
           var whatToSend = { "course": this.state.data.value0.courseDetails }
-          var event = { tag: 'ShowEnrolledCourse', contents: whatToSend }
+          var event = { tag: 'OPEN_EnrolledActivity', contents: whatToSend }
           window.__runDuiCallback(event);
         } else {
           JBridge.showSnackBar("Please retry")
