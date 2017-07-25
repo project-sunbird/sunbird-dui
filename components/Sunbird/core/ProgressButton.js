@@ -40,13 +40,19 @@ class ProgressButton extends View {
     this.checkContentLocalStatus(this.props.localStatus);
   }
 
-  handleCancelDownload = () => {
-    JBridge.cancelDownload(this.props.identifier)
+  setCancelButtonVisibility = (value) =>{
     var cmd = this.set({
       id: this.idSet.cancelDownloadHolder,
-      visibility: "gone"
+      visibility: value
     })
     Android.runInUI(cmd, 0);
+  }
+
+  handleCancelDownload = () => {
+     JBridge.cancelDownload(this.props.identifier)
+      
+     this.isCancelVisible=false; 
+     this.setCancelButtonVisibility("gone");
 
      this.startedDownloading=false;
      this.isDownloaded=false;
@@ -77,6 +83,11 @@ class ProgressButton extends View {
 
     var data = JSON.parse(pValue);
 
+    if(data.status != 1){
+      console.log("Didn't got status 1")
+      return;
+    }
+
     if (data.identifier != this.props.identifier)
       return;
 
@@ -87,11 +98,8 @@ class ProgressButton extends View {
       _this.props.changeOverFlowMenu();
       _this.isDownloaded = true;
       textToShow = "PLAY";
-      var cmd = this.set({
-        id: this.idSet.cancelDownloadHolder,
-        visibility: "gone"
-      })
-      Android.runInUI(cmd, 0);
+      _this.isCancelVisible=false;
+      _this.setCancelButtonVisibility("gone");
 
 
     } else {
@@ -99,6 +107,12 @@ class ProgressButton extends View {
       textToShow = "DOWNLOADING " + data.downloadProgress + "%"
 
     }
+    if(!this.isCancelVisible){
+        this.setCancelButtonVisibility("visible");
+        this.isCancelVisible=true;
+
+    }
+    
     _this.replaceChild(_this.idSet.downloadBarContainer, _this.getButtons(data.downloadProgress, textToShow).render(), 0);
 
   }
@@ -136,12 +150,6 @@ class ProgressButton extends View {
           if (!this.startedDownloading) {
             this.startedDownloading = true;
             JBridge.importCourse(this.props.identifier, this.props.isCourse);
-
-            var cmd = this.set({
-              id: this.idSet.cancelDownloadHolder,
-              visibility: "visible"
-            })
-            Android.runInUI(cmd, 0);
 
           }
 
