@@ -58,7 +58,7 @@ class OfflineResourceContainer extends View {
         var footerTitle = item.contentType + size;
         var temp = {};
         var fileSavedTime = utils.prettifyDate(item.lastUpdatedTime);
-        var fileImageUrl = "file://" + item.basePath + "/" + item.contentData.appIcon;
+        var fileImageUrl = item.hasOwnProperty("appIcon")?item.appIcon:"ic_action_resource";
 
         temp['imageUrl'] = fileImageUrl;
         temp['title'] = item.contentData.name;
