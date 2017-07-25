@@ -163,8 +163,9 @@ class NotificationActivity extends View {
 
 
   onBackPressed = () => {
-    window.__changePureScriptFlow();
-    window.__runDuiCallback({ action: "showMainFlow" });
+    var whatToSend = []
+    var event = { tag: "BACK_NotificationActivity", contents: whatToSend};
+    window.__runDuiCallback(event);
   }
 
   render() {
