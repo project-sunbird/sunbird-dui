@@ -31,7 +31,7 @@ class CardComponent extends View {
 
 
   getRemainingProgress = (progress) => {
-    var remainingProgress = 100 - parseInt(progress);
+    var remainingProgress = 100 - progress;
     return remainingProgress;
   }
 

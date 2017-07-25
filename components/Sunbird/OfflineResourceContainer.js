@@ -67,6 +67,8 @@ class OfflineResourceContainer extends View {
         temp['actionText'] = "OPEN";
         temp['content'] = item;
 
+
+
         return (<CardComponent
                      data={temp}
                      content={item}

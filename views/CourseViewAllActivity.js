@@ -107,7 +107,7 @@ class CourseViewAllActivity extends View {
         "course": tmp 
       };
      var event = { tag: 'OPEN_EnrolledCourseFlowFromCourseViewAll', contents: whatToSend };
-    window.__runDuiCallback(ecent);
+    window.__runDuiCallback(event);
   }
 
 
