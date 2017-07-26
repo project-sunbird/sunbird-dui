@@ -82,8 +82,7 @@ class UserActivity extends View {
       return;
     }
 
-//    try{
-    console.log("callback",response)  
+    try{
     var arr=response.split('.');
     var contentBody=atob(arr[1]);
 
@@ -93,15 +92,15 @@ class UserActivity extends View {
     this.userName=contentBody.given_name;
 
     window.__userToken=contentBody.sub;
-    JBridge.showSnackBar("Welcome Back "+ contentBody.given_name)
+    JBridge.showSnackBar(window.__S.WELCOME_ON_BOARD.format(contentBody.given_name))
 
     this.setDataInStorage();
 
     this.performLogin();
-   //  }catch(e){
-   //   console.log(e.message)
-   //   JBridge.showSnackBar("Invalid Email-ID")
-   // }
+    }catch(e){
+     console.log(e.message)
+     JBridge.showSnackBar(S.ERROR_INVALID_EMAIL)
+   }
 
   }
 
@@ -122,14 +121,12 @@ class UserActivity extends View {
   onBackPressed = () => {
     this.backPressCount++;
     if (this.backPressCount == 1) {
-      JBridge.showSnackBar("Press back again to exit app")
+      JBridge.showSnackBar(window.__S.BACK_TO_EXIT)
     }
     if (this.backPressCount > 1) {
       JBridge.closeApp();
     }
-    console.log("BACK COUNT ", this.backPressCount)
     setTimeout(() => {
-      console.log("RESET BACK COUNT ", this.backPressCount)
       this.backPressCount = 0
     }, 1500)
   }
@@ -146,7 +143,6 @@ class UserActivity extends View {
     if(responseCode == 401){
       var callback  = callbackMapper.map(function(token){
         window.__apiToken = token;
-        console.log("in key rotation user screen")
         if(state.responseFor == "SignUpApiEvent"){
           _this.handleSignUpClick();
         }
@@ -157,40 +153,31 @@ class UserActivity extends View {
         }
     
     
+    if (responseCode == 501) {
+      JBridge.showSnackBar(window.__S.EROR_SERVER_CONNECTION)
+      return;
+    }
+    
 
     if (status === "failure" || status=="f") {
-      JBridge.showSnackBar("INTERNET CONNECTION ISSUE")
+      JBridge.showSnackBar(window.__S.EROR_SERVER_CONNECTION)
       return;
     }
 
-    if (parseInt(responseCode) != 200) {
-      console.log("INVALID FORMAT")
-      return;
-    }
+   
 
     var result = response.result;
 
     if (response.params.err) {
-      console.log("EROR MESSAGE :", response.params.errmsg)
-      JBridge.showSnackBar("E MSG ->" + response.params.errmsg)
+      console.log("\n\nEROR  :", response.params)
+      JBridge.showSnackBar(response.params.errmsg)
       return;
     }
 
-    console.log("GOT RESULT FORM RESPONSE ->>", result)
-
-    if (response.params.err == "INVALID_CREDENTIAL") {
-      console.log("EROR MESSAGE :", response.params.errmsg)
-      JBridge.showSnackBar("E MSG ->" + response.params.errmsg)
-      return;
-    }
-
-    console.log("BEFOR SWITCH", state.responseFor)
     switch (state.responseFor + "") {
       case "API_SignUp":
-        console.log("--->", result.response)
-        console.log("--->", result.userId)
         if (result.response == "SUCCESS") {
-          JBridge.showSnackBar("Welcome On Board "+this.userName)
+          JBridge.showSnackBar(window.__S.WELCOME_ON_BOARD.format(this.userName))
           JBridge.setInSharedPrefs("user_name", this.userFirstName);
           JBridge.setInSharedPrefs("user_token", result.userId);
 
@@ -202,7 +189,7 @@ class UserActivity extends View {
           this.performLogin()
 
         } else {
-          JBridge.showSnackBar("Please retry")
+          JBridge.showSnackBar(window.__S.RETRY_ACTION)
         }
 
 
@@ -220,40 +207,32 @@ class UserActivity extends View {
 
   updateFirstName = (data) => {
     this.firstName = data;
-    console.log("--->", data);
   }
 
   updateLanguage = (data) => {
     this.language = data;
-    console.log("--->", data);
   }
 
   updateMobileNumber = (data) => {
     this.mobileNumber = data;
-    console.log("--->", data);
   }
 
   updateEmail = (data) => {
     this.email = data;
-    console.log("--->", data);
   }
 
   updateUserPassword = (data) => {
     this.userPass = data;
-    console.log("--->", data);
   }
   updateUserName = (data) => {
     this.userName = data;
-    console.log("USER NAME :", this.userName);
   }
 
   updateLanguage = (data) => {
     this.language = data;
-    console.log("--->", data);
   }
 
   handleAlreadyHaveAccClick = () => {
-    console.log("handleAlreadyHaveAccClick");
     this.isLoginMode = true;
     var cmd = this.set({
       id: this.idSet.firstNameHolder,
@@ -296,7 +275,6 @@ class UserActivity extends View {
   }
 
   handleCreateAccountClick = () => {
-    console.log("handleCreateAccountClick");
     this.isLoginMode = false;
     var cmd = this.set({
       id: this.idSet.firstNameHolder,
@@ -339,7 +317,7 @@ class UserActivity extends View {
 
   handleSignUpClick = () => {
      if (!JBridge.isNetworkAvailable()) {
-        JBridge.showSnackBar("NO INTERNET CONNECTION")
+        JBridge.showSnackBar(window.__S.NO_INTERNET)
         return;
       }
 
@@ -352,36 +330,37 @@ class UserActivity extends View {
 
 
     if (this.firstName.length <= 0) {
-      JBridge.showSnackBar("First Name can't be empty");
+      JBridge.showSnackBar(window.__S.ERROR_EMPTY_FIRSTNAME);
       return;
     }  else if (this.userName.length <= 0) {
-      JBridge.showSnackBar("User Name can't be empty");
+      JBridge.showSnackBar(window.__S.ERROR_EMPTY_USERNAME);
       return;
     } else if (this.email.length <= 0) {
-      JBridge.showSnackBar("Email can't be empty");
+      JBridge.showSnackBar(window.__S.ERROR_EMPTY_EMAIL);
+      return;
+    } else if (!this.email.contains("@") || !this.email.contains(".")) {
+      JBridge.showSnackBar(window.__S.ERROR_EMAIL_FORMAT);
       return;
     }else if (this.userPass.length <= 0) {
-      JBridge.showSnackBar("Password can't be empty");
+      JBridge.showSnackBar(window.__S.ERROR_EMPTY_PASSWORD);
       return;
     } else if (this.userPass.length < 8) {
-      JBridge.showSnackBar("Please enter password more than 8 digits");
+      JBridge.showSnackBar(window.__S.ERROR_SHORT_PASSWORD);
       return;
     } else if (this.mobileNumber.length <= 0) {
-      JBridge.showSnackBar("Mobile Number can't be empty");
+      JBridge.showSnackBar(window.__S.ERROR_EMPTY_MOBILE);
       return;
-    } else if (this.mobileNumber.length < 10) {
-      JBridge.showSnackBar("Mobile number should contain 10 digits");
-      return;
-    }else if (this.mobileNumber.length > 10) {
-      JBridge.showSnackBar("Mobile number should not exceed 10 digits");
+    } else if (this.mobileNumber.length < 10 || this.mobileNumber > 10) {
+      JBridge.showSnackBar(window.__S.ERROR_SHORT_MOBILE);
       return;
     } else if (this.language.length <= 0) {
-      JBridge.showSnackBar("Language can't be empty");
+      JBridge.showSnackBar(window.__S.ERROR_EMPTY_LANGUAGE);
       return;
     }
 
     if (this.userName.length > 0 && this.userPass.length > 0 && this.firstName.length > 0 && this.language.length > 0 && this.email.length > 0 && this.mobileNumber.length > 0) {
-      var dummyBody = {
+      window.__LoaderDialog.show() 
+      var whatToSend = {
         "userName": this.userName,
         "firstName": this.firstName,
         "password": this.userPass,
@@ -390,14 +369,11 @@ class UserActivity extends View {
         "email": this.email,
         "api_token": window.__apiToken
       };
-      console.log("START SignUpApiAction ", dummyBody)
-      window.__LoaderDialog.show()
-      
-      var eventAction = { "tag": "API_SignUp", "contents": dummyBody };
-      window.__runDuiCallback(eventAction);
+      var event = { "tag": "API_SignUp", "contents": whatToSend };
+      window.__runDuiCallback(event);
 
     } else {
-      JBridge.showSnackBar("Please Fill ALl Details");
+      JBridge.showSnackBar(window.__S.ERROR_INPUT_FORM);
     }
 
   }
@@ -413,14 +389,14 @@ class UserActivity extends View {
     this.email=this.email.trim();
 
     if (!JBridge.isNetworkAvailable()) {
-        JBridge.showSnackBar("NO INTERNET CONNECTION")
+        JBridge.showSnackBar(window.__S.NO_INTERNET)
         return;
       }
     if (this.email.length <= 0) {
-      JBridge.showSnackBar("Email can't be empty");
+      JBridge.showSnackBar(window.__S.ERROR_EMPTY_EMAIL);
       return;
     } else if (this.userPass.length <= 0) {
-      JBridge.showSnackBar("Password can't be empty");
+      JBridge.showSnackBar(window.__S.ERROR_EMPTY_PASSWORD);
       return;
     }
     window.__LoaderDialog.show()
@@ -435,7 +411,7 @@ class UserActivity extends View {
   }
 
   handleForgotPasscode = ()=>{
-      JBridge.showSnackBar("Yet to be implemented.");
+      JBridge.showSnackBar(window.__S.COMING_SOON);
   }
 
 
