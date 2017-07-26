@@ -20,6 +20,14 @@ function getCurrTime() {
   return (new Date()).getTime();
 }
 
+
+String.prototype.format = function() {
+    var newStr = this, i = 0;
+    while (/%s/.test(newStr))
+        newStr = newStr.replace("%s", arguments[i++]);
+    return newStr;
+};
+
 if (typeof window !== "undefined") {
   window.callJSCallback = require("@juspay/mystique-backend/").helpers.android.callbackMapper.callJSCallback;
   window.__WIDTH = window.__DEVICE_DETAILS.screen_width;

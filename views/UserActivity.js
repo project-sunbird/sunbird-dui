@@ -487,7 +487,7 @@ class UserActivity extends View {
                   height="wrap_content"
                   width="0"
                   weight="1"
-                  text="FORGOT PASSWORD?"
+                  text={window.__S.FORGOT_PASSWORD}
                   id={this.idSet.forgotPasswordHolder}
                   style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
             </LinearLayout>
@@ -520,7 +520,7 @@ class UserActivity extends View {
                       onClick={this.handleSignUpClick}>
 
                     <TextView
-                      text="SIGN UP"
+                      text={window.__S.SIGN_UP}
                       style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}/>
                   </LinearLayout>
 
@@ -560,8 +560,8 @@ class UserActivity extends View {
                 <TextInputView
                   height="wrap_content"
                   width="match_parent"
-                  hintText="Enter your name"
-                  labelText="NAME"
+                  hintText={window.__S.FIRST_NAME_HINT}
+                  labelText={window.__S.FIRST_NAME}
                   margin="20,0,24,12"
                   _onChange={this.updateFirstName}/>
 
@@ -576,8 +576,8 @@ class UserActivity extends View {
               <TextInputView
                 height="wrap_content"
                 width="match_parent"
-                hintText="Enter user name"
-                labelText="USER NAME"
+                hintText={window.__S.HINT_USER_NAME}
+                labelText={window.__S.USER_NAME}
                 margin="20,0,24,12"
                 _onChange={this.updateUserName}/>
 
@@ -587,8 +587,8 @@ class UserActivity extends View {
               <TextInputView
                 height="wrap_content"
                 width="match_parent"
-                hintText="sample@test.com"
-                labelText="E-MAIL ID"
+                hintText={window.__S.HINT_EMAIL_ID}
+                labelText={window.__S.EMAIL_ID}
                 margin="20,0,24,12"
                 _onChange={this.updateEmail}/>
 
@@ -597,8 +597,8 @@ class UserActivity extends View {
             <TextInputView
                 height="wrap_content"
                 width="match_parent"
-                hintText="Enter a 8-digit password"
-                labelText="PASSWORD"
+                hintText={window.__S.HINT_PASSWORD}
+                labelText={window.__S.PASSWORD}
                 inputType="password"
                 margin="20,0,24,12"
                 _onChange={this.updateUserPassword}/>
@@ -610,8 +610,8 @@ class UserActivity extends View {
               visibility={this.isLoginMode?"gone":"visible"}>
 
               <TextInputView
-                hintText="Enter mobile number"
-                labelText="MOBILE NUMBER"
+                hintText={window.__S.HINT_MOBILE_NUMBER}
+                labelText={window.__S.MOBILE_NUMBER}
                 margin="20,0,24,12"
                 inputType="numeric"
                 _onChange={this.updateMobileNumber}/>
@@ -625,8 +625,8 @@ class UserActivity extends View {
               visibility={this.isLoginMode?"gone":"visible"}>
 
               <TextInputView
-                hintText="Enter preffered language"
-                labelText="LANGUAGE"
+                hintText={window.__S.HINT_LANGUAGE}
+                labelText={window.__S.LANGUAGE}
                 margin="20,0,24,12"
                 text="English"
                 _onChange={this.updateLanguage}/>
@@ -656,7 +656,7 @@ class UserActivity extends View {
             id={this.idSet.alreadyHaveAccHolder}
             onClick={this.handleAlreadyHaveAccClick}
             visibility={this.isLoginMode?"gone":"visible"}
-            textFromHtml= {"<font color='#007AFF'><a href=''>"+"Already have an Account? Sign in now"+"</a></font>"}
+            textFromHtml= {"<font color='#007AFF'><a href=''>"+window.__S.ALREADY_HAVE_ACC+"</a></font>"}
             style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
 
           <TextView
@@ -667,7 +667,7 @@ class UserActivity extends View {
             id={this.idSet.needAccHolder}
             onClick={this.handleCreateAccountClick}
             visibility={this.isLoginMode?"visible":"gone"}
-            textFromHtml= {"<font color='#007AFF'><a href=''>"+"No account yet? Sign up now"+"</a></font>"}
+            textFromHtml= {"<font color='#007AFF'><a href=''>"+window.__S.NO_ACC_YET+"</a></font>"}
             style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
 
         </LinearLayout>)

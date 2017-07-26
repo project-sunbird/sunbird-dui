@@ -94,7 +94,7 @@ class SplashScreenActivity extends View {
                 layout_gravity="center"
                 imageUrl="ic_launcher"/>
               <TextView
-                text="Project Sunbird"
+                text={window.__S.SPLASH_MESSAGE}
                 margin="20,120,20,20"
                 layout_gravity="center"
                 height="wrap_content"/>
