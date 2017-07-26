@@ -369,7 +369,7 @@ class MainActivity extends View {
 
 
 
-  
+
   handleBottomNavBarAction = (index) => {
 
         if(index==undefined){

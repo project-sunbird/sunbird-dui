@@ -92,7 +92,7 @@ class UserActivity extends View {
     this.userName=contentBody.given_name;
 
     window.__userToken=contentBody.sub;
-    //JBridge.showSnackBar(window.__S.WELCOME_ON_BOARD.format(contentBody.given_name))
+    JBridge.showSnackBar(window.__S.WELCOME_ON_BOARD.format(contentBody.given_name))
 
     this.setDataInStorage();
 
