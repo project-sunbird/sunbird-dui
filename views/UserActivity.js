@@ -92,14 +92,14 @@ class UserActivity extends View {
     this.userName=contentBody.given_name;
 
     window.__userToken=contentBody.sub;
-    JBridge.showSnackBar(window.__S.WELCOME_ON_BOARD.format(contentBody.given_name))
+    //JBridge.showSnackBar(window.__S.WELCOME_ON_BOARD.format(contentBody.given_name))
 
     this.setDataInStorage();
 
     this.performLogin();
     }catch(e){
-     console.log(e.message)
-     JBridge.showSnackBar(S.ERROR_INVALID_EMAIL)
+     //console.log(e.message)
+     JBridge.showSnackBar(window.__S.ERROR_INVALID_EMAIL)
    }
 
   }
@@ -154,13 +154,13 @@ class UserActivity extends View {
     
     
     if (responseCode == 501) {
-      JBridge.showSnackBar(window.__S.EROR_SERVER_CONNECTION)
+      JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION)
       return;
     }
     
 
     if (status === "failure" || status=="f") {
-      JBridge.showSnackBar(window.__S.EROR_SERVER_CONNECTION)
+      JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION)
       return;
     }
 

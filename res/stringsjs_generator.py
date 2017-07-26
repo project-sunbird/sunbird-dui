@@ -15,19 +15,25 @@ blacklist = ['\n','"']
 f1=open("strings.js", 'w+')
 print >> f1, "const objectAssign = require('object-assign');"
 print >> f1, "const stringsRes = {"
-for k in range(2 , 11):
+for k in range(2 , 15):
 	print >> f1, '\t"'+sheet.cell(row=2, column=k).value+'"'+" : {"
-	for l in range(3, 1000):
+	for l in range(3, 2000):
 		all_filled = True
-		for x in range(2,11):
+		for x in range(2,14):
 			if not sheet.cell(row=l, column=x).value:
 				all_filled = False
-		if(all_filled):
+		if(True):
 			key = sheet.cell(row=l, column=1).value
 			val = sheet.cell(row=l, column=k).value
-			for bl in blacklist:
-				val=val.replace(bl,"")
-			print >> f1, "\t\t"+key+' : "'+val+'",'
+			if key is not None  and val is not None :
+				for bl in blacklist:
+					val=val.replace(bl,"")
+				print >> f1, "\t\t"+key+' : "'+val+'",'
+			else :
+				if key is None and val is not None:
+					print "Key not found for value : " + val;
+				if(key is not None and val is None):
+					print "Value not found for Key : " + key + " for language " + sheet.cell(row=2, column=k).value;
 	print >> f1, "\t},"  
 print >> f1, "}\n"
 print >> f1, "var decideString = function(){"
@@ -43,3 +49,4 @@ print >> f1, "}\n\n"
 
 print >> f1, "exports.setLanguage = setLanguage;"
 print >> f1, "exports.strings = decideString;"
+print >> f1, "exports.stringsRes = stringsRes;"

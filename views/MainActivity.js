@@ -59,36 +59,35 @@ class MainActivity extends View {
     this.deipalayName = "MainActivity"
     
     this.tabValues = [{
-        name: "HOME",
+        name: window.__S.HOME_BNAV,
         select: "1",
         icon: "ic_home"
       }, {
-        name: "COURSES",
+        name: window.__S.COURSE_BNAV,
         select: "0",
         icon: "ic_courses"
       }, {
-        name: "RESOURCES",
+        name: window.__S.RESOURCES_BNAV,
         select: "0",
         icon: "ic_notebook"
       }, {
-        name: "GROUPS",
+        name: window.__S.GROUPS_BNAV,
         select: "0",
         icon: "ic_chat"
       }, {
-        name: "PROFILE",
+        name: window.__S.PROFIL_BNAV,
         select: "0",
         icon: "ic_profile"
       }
 
     ]
     this.apiToken = window.__apiToken;
-    console.log("api token",window.__apiToken)
+
   }
 
   onPop = () => {
-    console.log("IN POP ",window.__pressedLoggedOut)
+
     if(window.__pressedLoggedOut){
-      console.log("IN POP ")
       this.currentPageIndex=0
       window.__pressedLoggedOut=false;
     }
@@ -121,14 +120,12 @@ class MainActivity extends View {
 
     this.backPressCount++;
     if (this.backPressCount == 1) {
-      JBridge.showSnackBar("Press back again to exit app")
+      JBridge.showSnackBar(window.__S.BACK_TO_EXIT)
     }
     if (this.backPressCount > 1) {
       JBridge.closeApp();
     }
-    console.log("BACK COUNT ", this.backPressCount)
     setTimeout(() => {
-      console.log("RESET BACK COUNT ", this.backPressCount)
       this.backPressCount = 0
     }, 1500)
   }
@@ -139,7 +136,6 @@ class MainActivity extends View {
     this.currentPageIndex = isNaN(this.currentPageIndex) ? 0 : this.currentPageIndex;
     var shouldBeModified = false;
     var status = state.response.status[0];
-    console.log("HANDLE STATE CHANGE HOME SCREEN",status)
     var responseData = state.response.status[1];
     var responseCode = state.response.status[2];
     var responseUrl = state.response.status[3];
@@ -154,33 +150,26 @@ class MainActivity extends View {
         }
       }
 
+
     if(responseCode == 401){
       var callback  = callbackMapper.map(function(token){
         window.__apiToken = token;
-         eventAction = { "tag": state.responseFor, contents: {"user_token":window.__userToken,"api_token": window.__apiToken} };
-         window.__runDuiCallback(eventAction);
+        var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken}
+        var event = { "tag": state.responseFor, contents: whatToSend };
+        window.__runDuiCallback(event);
       });
       JBridge.getApiToken();
       return;
-    }
-      
-    if (status === "failure" || status=="f") {
-      JBridge.showSnackBar("INTERNET CONNECTION ISSUE")
-      
-       responseData=tmp; 
+    }else if(responseCode == 501 || status === "failure" || status=="f") {
+      JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION)
+      responseData=tmp; 
     } else {
       responseData = utils.jsonifyData(responseData);
       responseData = JSON.parse(responseData);
 
     }
 
-   // console.log("RESPONSE :", responseData)
 
-    if (parseInt(responseCode) != 200) {
-      JBridge.showSnackBar("Connection error")
-      console.log("DIDN't GOT 200")
-        //return;
-    }
 
     if (responseData.params.err) {
       console.log("EROR MESSAGE :", response.params.errmsg)
@@ -189,12 +178,9 @@ class MainActivity extends View {
     }
 
     if (state.responseFor == "API_UserEnrolledCourse") {
-      //CourseInProgressContainer of CourseScreen gets upated
-   //   console.log("GOT USER COURSES ->", responseData.result.courses)
       window.setEnrolledCourses(responseData.result.courses);
       return;
     }
-
 
     switch (this.currentPageIndex) {
       case 0:
@@ -238,14 +224,13 @@ class MainActivity extends View {
 
         break;
     }
+
     if (shouldBeModified) {
-
-      console.log("[REPLACING ui at index ]\t\t", this.currentPageIndex)
       this.switchContent(this.currentPageIndex, responseData);
-
     } else {
       console.log("GOT SAME DATA, not modifying")
     }
+
   }
 
 
@@ -348,21 +333,20 @@ class MainActivity extends View {
 
   setupDuiCallback = () => {
     window.__changePureScriptFlow();
+    window.__LoaderDialog.show();
     var event;
     var whatToSend;
-
     switch (this.currentPageIndex) {
       case 0:
         whatToSend= { "name": "Kiran" };
         event = { "tag": "OPEN_HomeFragment", contents: whatToSend };
         break;
       case 1:
-        // window.__LoaderDialog.show();
+        
         whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken} 
         event = { "tag": "API_CourseFragment", contents: whatToSend};
         break;
       case 2:
-        // window.__LoaderDialog.show();
         whatToSend =  {"user_token":window.__userToken,"api_token": window.__apiToken} 
         event = { "tag": "API_ResourceFragment", contents:whatToSend};
        
@@ -372,7 +356,6 @@ class MainActivity extends View {
         event = { "tag": "OPEN_CommunityFragment", contents: whatToSend };
         break;
       case 4:
-        // window.__LoaderDialog.show();
         whatToSend= {"user_token":window.__userToken,"api_token": window.__apiToken}
         event = { "tag": "API_ProfileFragment", contents:whatToSend };
         break;

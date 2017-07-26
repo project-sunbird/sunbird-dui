@@ -40,10 +40,7 @@ class ContentLoadingComponent extends View {
   }
 
   hideLoader = () => {
-    Android.runInUI(this.set({
-      id : this.idSet.loaderComponent,
-      visibility : "gone"
-    }),0);
+    window.__LoaderDialog.hide();
   }
 
   startRendering = () => {
@@ -85,9 +82,7 @@ class ContentLoadingComponent extends View {
             gravity="center"
             id={this.idSet.loaderComponent}
             background={window.__Colors.WHITE}>
-                  <ProgressBar
-                      height="70"
-                      width="70"/>
+                 
           </LinearLayout>  
           <LinearLayout 
             height="match_parent"
