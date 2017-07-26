@@ -71,18 +71,15 @@ class CommunityFragment extends View {
 
                   <MyCommunities
                   onMyCommunityClick={this.handleMyCommunityClick}
-                  onViewAllClick={this.handleMyViewAllClick}
-                  />
+                  onViewAllClick={this.handleMyViewAllClick}/>
 
                   <PopularCommunities
-                  onPopularCommunityClick={this.handlePopularCommunityClick}
-                  />
+                  onPopularCommunityClick={this.handlePopularCommunityClick}/>
 
                   {this.getLineSeperator()}
 
                   <RecommendedCommunities
-                  onRecommendedCommunityClick={this.handleRecommendedCommunityClick}
-                  />
+                  onRecommendedCommunityClick={this.handleRecommendedCommunityClick}/>
 
                 </LinearLayout>
 

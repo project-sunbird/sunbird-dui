@@ -2,6 +2,9 @@ const objectAssign = require('object-assign');
 const stringsRes = {
   "en_US" : {
     SIGN_IN : "SIGN IN",
+    WELCOME_M1 : "Welcome to Sunbird",
+    WELCOME_M2 : "Structured education for the educators"
+
     
   }
 }

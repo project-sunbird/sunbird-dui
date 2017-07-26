@@ -15,6 +15,8 @@ var objectAssign = require('object-assign');
 var LoaderDialog = require('../components/Sunbird/core/LoaderDialog');
 var PageFilterPopup = require('../components/Sunbird/PageFilterPopup');
 
+const Str = require("../res/strings") ;
+
 
 class RootScreen extends View {
   constructor(props, children) {
@@ -27,7 +29,7 @@ class RootScreen extends View {
     ]);
 
     window.__RootScreen = this;
-
+    window.__S = Str.strings();
     window.__TextStyle = TextStyle;
     window.__Symbols = Symbols;
     window.__Colors = Colors;

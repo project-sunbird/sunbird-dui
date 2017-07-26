@@ -456,7 +456,7 @@ class UserActivity extends View {
 
         <TextView
           width="match_parent"
-          text="Welcome to Sunbird"
+          text={window.__S.WELCOME_M1}
           gravity="center"
           margin="0,12,0,6"
           style={window.__TextStyle.textStyle.HEADING.DARK}/>
@@ -464,7 +464,7 @@ class UserActivity extends View {
         <TextView
           width="match_parent"
           gravity="center"
-          text="Structured education for the educators"
+          text={window.__S.WELCOME_M2}
           style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
       </LinearLayout>)
@@ -508,7 +508,7 @@ class UserActivity extends View {
 
                     <TextView
                       style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
-                      text="SIGN IN"/>
+                      text={window.__S.SIGN_IN}/>
                   </LinearLayout>
                   <LinearLayout
                       height="match_parent"
