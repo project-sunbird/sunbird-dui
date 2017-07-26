@@ -41,6 +41,11 @@ class ContentLoadingComponent extends View {
 
   hideLoader = () => {
     window.__LoaderDialog.hide();
+    
+    Android.runInUI(this.set({
+      id: this.idSet.loaderComponent,
+      visibility : "gone"
+    }),0);
   }
 
   startRendering = () => {

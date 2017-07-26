@@ -63,7 +63,7 @@ class MainActivity extends View {
         select: "1",
         icon: "ic_home"
       }, {
-        name: window.__S.COURSE_BNAV,
+        name: window.__S.COURSES_BNAV,
         select: "0",
         icon: "ic_courses"
       }, {
@@ -75,7 +75,7 @@ class MainActivity extends View {
         select: "0",
         icon: "ic_chat"
       }, {
-        name: window.__S.PROFIL_BNAV,
+        name: window.__S.PROFILE_BNAV,
         select: "0",
         icon: "ic_profile"
       }
