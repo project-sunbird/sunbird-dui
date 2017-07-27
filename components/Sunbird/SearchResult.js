@@ -93,7 +93,7 @@ class SearchResult extends View {
 
     if(item.contentType.toLowerCase() == "course" || item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "TextBook"){
       var whatToSend={course:itemDetails};
-      var event={tag:"OPEN_CourseEnrolledActivity_SEARCH",contents:whatToSend}
+      var event={tag:"OPEN_CourseInfoActivity_SEARCH",contents:whatToSend}
       window.__runDuiCallback(event);
     }
     else

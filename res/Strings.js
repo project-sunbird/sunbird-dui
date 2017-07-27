@@ -41,6 +41,7 @@ const stringsRes = {
 		ERROR_SHORT_MOBILE : "Please check the mobile number format",
 		ERROR_EMPTY_LANGUAGE : "Please choose atleast one language",
 		ERROR_INPUT_FORM : "Please check your inputs",
+		ERROR_INVALID_EMAIL : "Invalid email id",
 		FORGOT_PASSWORD : "FORGOT PASSWORD?",
 		SIGN_UP_SUCCESS : "Sign Up Completed",
 		WELCOME : "Welcome",

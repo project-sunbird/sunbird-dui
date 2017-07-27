@@ -114,8 +114,8 @@ class ModuleDetailActivity extends View {
     var textToShow = ""
     console.log("DATA -> ", data)
 
-    var downloadedPercent = parseInt(data.downloadProgress);
-    downloadedPercent = (downloadedPercent == undefined ||  downloadedPercent < 0 )? 0 : downloadedPercent;
+    var downloadedPercent = data.downloadProgress;
+    downloadedPercent = (downloadedPercent == undefined || isNaN(downloadedPercent)|| downloadedPercent < 0 )? 0 : downloadedPercent;
     
     if (downloadedPercent == 100) {
 
@@ -247,7 +247,7 @@ class ModuleDetailActivity extends View {
             height="wrap_content"
             margin="0,0,0,12"
             width="match_parent"
-            text={"Module Size "+this.formatBytes(this.module.contentData.size)}/>
+            text={this.module.contentData.hasOwnProperty("size")? "Module Size "+this.formatBytes(this.module.contentData.size) : "Module Size Not available"}/>
 
 
            <CropParagraph

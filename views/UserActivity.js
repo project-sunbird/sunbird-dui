@@ -143,7 +143,7 @@ class UserActivity extends View {
     if(responseCode == 401){
       var callback  = callbackMapper.map(function(token){
         window.__apiToken = token;
-        if(state.responseFor == "SignUpApiEvent"){
+        if(state.responseFor == "API_SignUp"){
           _this.handleSignUpClick();
         }
          
@@ -367,7 +367,7 @@ class UserActivity extends View {
         "firstName": this.firstName,
         "password": this.userPass,
         "language": [this.language],
-        "mobileNumber": this.mobileNumber,
+        "phone": this.mobileNumber,
         "email": this.email,
         "provider" : "ntp"
         

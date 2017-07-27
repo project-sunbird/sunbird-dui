@@ -280,7 +280,7 @@ class CourseInfoActivity extends View {
 
     console.log("BEFOR SWITCH", state.responseFor)
     switch (state.responseFor + "") {
-      case "EnrollCourseApi":
+      case "API_EnrollCourse":
         if (result.response == "SUCCESS") {
           console.log("WELCOME -->>", result.response.firstName);
           JBridge.showSnackBar("Course enrolled")
