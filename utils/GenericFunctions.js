@@ -30,6 +30,13 @@ exports.jsonifyData = (data) =>{
 
      return data;
 }
+exports.formatDate = (d) =>{
+  var temp = d.toString();
+  var res = d.getFullYear() + "-" + d.getMonth() + "-" + d.getDay() + " " + d.getHours () + ":" + d.getMinutes() + ":" + d.getSeconds() + ":" + d.getMilliseconds() + "+" + temp.substring(29,33);
+  console.log("result",res)
+  return res;
+}
+
 
 
 

@@ -4,6 +4,7 @@ var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout
 var RelativeLayout = require("@juspay/mystique-backend").androidViews.RelativeLayout;
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
+var utils = require('../../../utils/GenericFunctions');
 
 
 var Button = require('../../Sunbird/Button');
@@ -173,19 +174,33 @@ class ProgressButton extends View {
     console.log("telemetryData", telemetryData);
     telemetryData = JSON.parse(telemetryData);
     console.log(telemetryData)
+
     if (telemetryData.eid == "OE_END") {
       console.log("reached end of content");
+      var time = new Date();
+      var date = utils.formatDate(time);
       var contentProgress = {};
       console.log("hierarchy info", this.props.contentDetails.hierarchyInfo)
+      
       contentProgress['contentId'] = this.props.identifier;
       contentProgress['courseId'] = this.props.contentDetails.hierarchyInfo[0].identifier;
-      contentProgress['status'] = 1;
-      var d = new Date();
-      contentProgress['lastAccessTime'] = d.toISOString();
+      contentProgress['status'] = telemetryData.edata.eks.progress == 100 ? 2 : 1;
+      contentProgress['progress'] = telemetryData.edata.eks.progress;
+      contentProgress['lastAccessTime'] = date;
+      if(telemetryData.edata.eks.progress == 100){
+        contentProgress['lastCompletedTime'] = date;
+      }
+      contentProgress['result'] = "pass";
+      contentProgress['grade'] = "B";
+      contentProgress['score'] = 10;
+
       console.log("progress status", contentProgress)
         // JBridge.setInSharedPrefs(this.props.identifier, JSON.stringify(contentProgress));
       var url = "https://staging.open-sunbird.org/api/course/v1/content/state/update"
-      var time = new Date();
+      
+      console.log("date",date)
+
+      // if(telemetryData.edata.eks.length)
       var body = {
                 "id":"unique API ID",
                 "ts":"response timestamp YYYY-MM-DDThh:mm:ss+/-nn:nn (timezone defaulted to +5.30)",
@@ -195,20 +210,11 @@ class ProgressButton extends View {
                 "request":{
                     "userId": window.__userToken,
                   "contents":[
-                          {
-                          "contentId":this.props.identifier,
-                          "status":1,
-                          "lastAccessTime": "2017-05-15 10:58:07:509+0530",
-                           "courseId":this.props.contentDetails.hierarchyInfo[0].identifier,
-                           "result":"pass",
-                           "score":"",
-                           "grade":""
-                       
-                          }
+                          contentProgress
                    ]
                   }
                 }
-      console.log("calling patch request")
+      console.log("calling patch request",body)
       JBridge.patchApi(url,JSON.stringify(body),window.__userToken,window.__apiToken);
       // var sharedData = JBridge.getFromSharedPrefs(this.props.identifier)
     }
