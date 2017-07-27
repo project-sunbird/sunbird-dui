@@ -108,6 +108,8 @@ class CourseInProgressContainer extends View {
      var pDone= item.progress == undefined || isNaN(item.progress)? 0 : item.progress;
      var pTotal = item.leafNodesCount == undefined || isNaN(item.leafNodesCount)? 0 : item.leafNodesCount;
      var progressCount = item.leafNodesCount == null ? 0 : (item.progress/item.leafNodesCount)*100;
+     progressCount = parseInt(progressCount)
+
      console.log("GET CARD LAYOUT",item)
 
      var temp = {

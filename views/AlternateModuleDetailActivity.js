@@ -93,6 +93,10 @@ overFlowCallback = (params) => {
     }
   }
 
+  handleOverFlowClick = () => {
+  
+}
+
 
 
 
@@ -134,9 +138,10 @@ overFlowCallback = (params) => {
     }
 
     checkContentLocalStatus = (identifier) => {
+        console.log("in checkContentLocalStatus")
         var _this = this;
         var callback = callbackMapper.map(function(status) {
-
+             console.log("in callback localStatus")
             if (status == "true") {
                 console.log("Spine Found")
                 var callback1 = callbackMapper.map(function(data) {
@@ -146,9 +151,15 @@ overFlowCallback = (params) => {
                 });
                 JBridge.getChildContent(identifier, callback1)
             } else {
+                console.log("else for status")
                  var callback22= callbackMapper.map(function(data){
+                        console.log("data",data)
+                        data = JSON.parse(data)
                       if(data.status==="NOT_FOUND")
-                      JBridge.importCourse(identifier,"false")
+                       JBridge.importCourse(identifier,"false")
+                      else{
+                        _this.renderModuleChildren()
+                      }
                     })
             JBridge.getContentImportStatus(identifier,callback22)
             }
@@ -157,6 +168,7 @@ overFlowCallback = (params) => {
 
         });
         if (!this.module.isAvailableLocally || this.module.isUpdateAvailable) {
+            console.log("local")
             window.__getDownloadStatus = this.getSpineStatus;
             JBridge.getLocalContentStatus(identifier, callback);
         } else {
@@ -200,6 +212,7 @@ overFlowCallback = (params) => {
     }
 
     afterRender = () => {
+        console.log("in after render")
         this.checkContentLocalStatus(this.module.identifier);
     }
 
@@ -334,6 +347,7 @@ overFlowCallback = (params) => {
                     visibility = "gone"
                     isCourse = "true"
                     contentDetails = { this.module } 
+                    changeOverFlowMenu = {this.handleOverFlowClick}
                     buttonText = "DOWNLOAD"
                     localStatus = { this.localStatus }
                     identifier = { this.module.identifier }/>

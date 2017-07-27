@@ -137,6 +137,7 @@ class ModuleDetailActivity extends View {
 
       if (status == "true") {
         console.log("Spine Found")
+        _this.localStatus = true;
         var callback1 = callbackMapper.map(function(data) {
           console.log("module details;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;", JSON.parse(data));
           _this.module = JSON.parse(data);
@@ -145,8 +146,12 @@ class ModuleDetailActivity extends View {
         JBridge.getChildContent(identifier, callback1)
       } else {
          var callback22= callbackMapper.map(function(data){
+          data = JSON.parse(data)
           if(data.status==="NOT_FOUND")
           JBridge.importCourse(identifier,"false")
+          else{
+                _this.renderModuleChildren()
+              }
         })
 
 
@@ -154,10 +159,10 @@ class ModuleDetailActivity extends View {
         JBridge.getContentImportStatus(identifier,callback22)
       }
 
-
-
     });
+
     if (!this.module.isAvailableLocally || this.module.isUpdateAvailable) {
+      console.log("local")
       window.__getDownloadStatus = this.getSpineStatus;
       JBridge.getLocalContentStatus(identifier, callback);
     } else {
@@ -198,7 +203,7 @@ class ModuleDetailActivity extends View {
         visibility: "gone"
       });
       Android.runInUI(cmd, 0);
-
+      console.log("button visible")
       window.__ProgressButton.setVisibility("visible")
 
     }
@@ -317,6 +322,9 @@ overFlowCallback = (params) => {
     window.__runDuiCallback(eventAction);
   }
 
+handleOverFlowClick = () => {
+  
+}
 
   render() {
 
@@ -376,6 +384,7 @@ overFlowCallback = (params) => {
                  visibility="gone"
                  isCourse = "true"
                  buttonText="DOWNLOAD"
+                 changeOverFlowMenu = {this.handleOverFlowClick}
                  localStatus = {this.localStatus}
                  identifier = {this.module.identifier}
                  contentDetails = {this.module}

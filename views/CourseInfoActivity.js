@@ -196,16 +196,13 @@ class CourseInfoActivity extends View {
         JBridge.getChildContent(identifier, callback1)
       } else {
          var callback22= callbackMapper.map(function(data){
+          data = JSON.parse(data)
           if(data.status==="NOT_FOUND")
           JBridge.importCourse(identifier,"false")
         })
 
-
-
         JBridge.getContentImportStatus(identifier,callback22)
       }
-
-
 
     });
     JBridge.getLocalContentStatus(identifier, callback);

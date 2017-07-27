@@ -47,6 +47,7 @@ class CourseEnrolledActivity extends View {
     this.details = JSON.parse(state.data.value0.courseDetails);
     console.log("GOT VALUES CES", this.details)
     this.downloadProgress = this.details.leafNodesCount == null? 10 : (this.details.progress/this.details.leafNodesCount)*100;
+    this.downloadProgress = parseInt(this.downloadProgress)
     console.log("this.downloadProgress",this.downloadProgress)
     //to get geneie callback for download of spine
     window.__getDownloadStatus = this.getSpineStatus;
@@ -187,7 +188,7 @@ class CourseEnrolledActivity extends View {
 
     var textToShow = ""
     console.log("DATA -> ", data)
-    data.downloadProgress = this.downloadProgress;
+
     var downloadedPercent = parseInt(data.downloadProgress);
     downloadedPercent = downloadedPercent < 0 ? 0 : downloadedPercent;
 
@@ -217,24 +218,25 @@ class CourseEnrolledActivity extends View {
           _this.renderCourseChildren()
         });
         JBridge.getChildContent(identifier, callback1)
+
+
       } else {
         console.log("Spine Not Found, IMPORTING ")
-        
-
+      
         var callback22= callbackMapper.map(function(data){
           console.log(data)
-          if(data.status==="NOT_FOUND")
-          JBridge.importCourse(identifier,"false")
+          data = JSON.parse(data)
+          if(data.status==="NOT_FOUND"){
+            console.log("Import")
+            JBridge.importCourse(identifier,"false")
+          }
+          else{
+            this.checkContentLocalStatus(identifier)
+          }
         })
 
-
-
-        JBridge.getContentImportStatus(identifier,callback22)
-
-        
+        JBridge.getContentImportStatus(identifier,callback22) 
       }
-
-
 
     });
     window.__getDownloadStatus = this.getSpineStatus;

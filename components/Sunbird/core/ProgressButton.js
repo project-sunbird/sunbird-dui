@@ -52,6 +52,7 @@ class ProgressButton extends View {
   }
 
   handleCancelDownload = () => {
+     
      JBridge.cancelDownload(this.props.identifier)
       
      this.isCancelVisible=false; 
@@ -104,7 +105,6 @@ class ProgressButton extends View {
       textToShow = "PLAY";
       _this.isCancelVisible=true;
       _this.setCancelButtonVisibility("gone");
-
 
     } else {
       console.log(data.downloadProgress , "UPDATING")
