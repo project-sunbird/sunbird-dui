@@ -42,6 +42,7 @@ class ProgressButton extends View {
   }
 
   setCancelButtonVisibility = (value) =>{
+    console.log("visible for cancel")
     var cmd = this.set({
       id: this.idSet.cancelDownloadHolder,
       visibility: value
@@ -100,7 +101,7 @@ class ProgressButton extends View {
       _this.props.changeOverFlowMenu();
       _this.isDownloaded = true;
       textToShow = "PLAY";
-      _this.isCancelVisible=false;
+      _this.isCancelVisible=true;
       _this.setCancelButtonVisibility("gone");
 
 
@@ -183,7 +184,32 @@ class ProgressButton extends View {
       contentProgress['lastAccessTime'] = d.toISOString();
       console.log("progress status", contentProgress)
         // JBridge.setInSharedPrefs(this.props.identifier, JSON.stringify(contentProgress));
-
+      var url = "https://staging.open-sunbird.org/api/course/v1/content/state/update"
+      var time = new Date();
+      var body = {
+                "id":"unique API ID",
+                "ts":"response timestamp YYYY-MM-DDThh:mm:ss+/-nn:nn (timezone defaulted to +5.30)",
+                  "params": {
+                       
+                    },
+                "request":{
+                    "userId": window.__userToken,
+                  "contents":[
+                          {
+                          "contentId":this.props.identifier,
+                          "status":1,
+                          "lastAccessTime": "2017-05-15 10:58:07:509+0530",
+                           "courseId":this.props.contentDetails.hierarchyInfo[0].identifier,
+                           "result":"pass",
+                           "score":"",
+                           "grade":""
+                       
+                          }
+                   ]
+                  }
+                }
+      console.log("calling patch request")
+      JBridge.patchApi(url,JSON.stringify(body),window.__userToken,window.__apiToken);
       // var sharedData = JBridge.getFromSharedPrefs(this.props.identifier)
     }
     // JBridge.syncTelemetry();
