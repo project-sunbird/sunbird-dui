@@ -41,64 +41,64 @@ class CourseInProgressContainer extends View {
 
   renderContent = (data) => {
 
-    var isDataEmpty = !data;
-
-
-    var emptyBody =(<LinearLayout
-                      height="match_parent"
-                      width="match_parent"/>)
-
-    this.replaceChild(this.idSet.parentContainer, emptyBody.render(), 0)
+    var isDataEmpty = (data === "" || data === undefined || data.length == 0);
 
     this.data = data;
 
-    //this.removeAllChildren(this.idSet.parentContainer);
 
-    console.log("GOT DATA-->", data);
+    console.log("GODATA-->", data);
 
+    console.log("IS DATA EMPTY",isDataEmpty)
+
+     var layout="";
      var rows="";
 
     if(isDataEmpty){
-      rows= (<TextView
+      layout= (
+      <LinearLayout
+        root="true"
+        gravity="center"
+        height="wrap_content"
+        width="match_parent">
+
+        <TextView
               width="match_parent"
               height="50"
               gravity="center"
               text={"No Courses enrolled yet"}
-              style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>)
+              style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>
 
-     var cmd = this.set({
+      </LinearLayout>);
+
+
+       var cmd = this.set({
         id: this.idSet.viewAllContainer,
         visibility : isDataEmpty?"gone":"visible"
       })
 
     Android.runInUI(cmd, 0);
 
-
+  
     }else{
        rows = this.data.map((item, index) => {
        return this.getCardLayout(item);
       });
 
+       layout = (
+      <LinearLayout
+        root="true"
+        height="wrap_content"
+        width="match_parent">
+
+        {rows}
+
+      </LinearLayout>);
+
     }
-   
 
-       var layout=(<LinearLayout
-                    height="wrap_content"
-                    width="match_parent">
-
-                    {rows}
-
-                  </LinearLayout>)
-
+    
+  
     this.replaceChild(this.idSet.parentContainer,layout.render(),0)
-
-
-    var cmd = this.set({
-        id: this.idSet.parentContainer,
-        gravity : isDataEmpty?"center":""
-      })
-
-    Android.runInUI(cmd, 0);
     
 
   }
@@ -206,10 +206,8 @@ class CourseInProgressContainer extends View {
 
            <LinearLayout
                     padding="0,0,20,0"
-                    gravity="center"
                     id={this.idSet.parentContainer}
                     width="match_parent"
-                    root="true"
                     height="match_parent">
 
          </LinearLayout>
