@@ -146,8 +146,11 @@ overFlowCallback = (params) => {
                 });
                 JBridge.getChildContent(identifier, callback1)
             } else {
-                console.log("Spine Not Found, IMPORTING ")
-                JBridge.importCourse(identifier, "true")
+                 var callback22= callbackMapper.map(function(data){
+                      if(data.status==="NOT_FOUND")
+                      JBridge.importCourse(identifier,"false")
+                    })
+            JBridge.getContentImportStatus(identifier,callback22)
             }
 
 

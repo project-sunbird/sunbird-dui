@@ -195,8 +195,14 @@ class CourseInfoActivity extends View {
         });
         JBridge.getChildContent(identifier, callback1)
       } else {
-        console.log("Spine Not Found, IMPORTING ")
-        JBridge.importCourse(identifier, "false")
+         var callback22= callbackMapper.map(function(data){
+          if(data.status==="NOT_FOUND")
+          JBridge.importCourse(identifier,"false")
+        })
+
+
+
+        JBridge.getContentImportStatus(identifier,callback22)
       }
 
 

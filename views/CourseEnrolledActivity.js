@@ -42,6 +42,7 @@ class CourseEnrolledActivity extends View {
     this.courseContent = "";
 
 
+
     //this.checkContentLocalStatus(this.details.identifier);
     this.details = JSON.parse(state.data.value0.courseDetails);
     console.log("GOT VALUES CES", this.details)
@@ -205,6 +206,8 @@ class CourseEnrolledActivity extends View {
   }
 
   checkContentLocalStatus = (identifier) => {
+    
+
     var callback = callbackMapper.map(function(status) {
 
       if (status == "true") {
@@ -216,7 +219,19 @@ class CourseEnrolledActivity extends View {
         JBridge.getChildContent(identifier, callback1)
       } else {
         console.log("Spine Not Found, IMPORTING ")
-        JBridge.importCourse(identifier,"false")
+        
+
+        var callback22= callbackMapper.map(function(data){
+          console.log(data)
+          if(data.status==="NOT_FOUND")
+          JBridge.importCourse(identifier,"false")
+        })
+
+
+
+        JBridge.getContentImportStatus(identifier,callback22)
+
+        
       }
 
 
@@ -224,6 +239,8 @@ class CourseEnrolledActivity extends View {
     });
     window.__getDownloadStatus = this.getSpineStatus;
     JBridge.getLocalContentStatus(identifier, callback);
+
+
   }
 
 
