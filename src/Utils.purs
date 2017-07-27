@@ -237,17 +237,10 @@ getProfileDetail user_token api_token =
 
 
 
-userSignup userName email firstName password mobileNumber language api_token =
+userSignup request api_token =
   let requestUrl = "/user/v1/create" 
       headers = (getDummyHeader api_token)
-      payload = A.fromObject (StrMap.fromFoldable [(Tuple "request" (A.fromObject (StrMap.fromFoldable  [ (Tuple "userName" (A.fromString userName))
-                                                                                                          , (Tuple "firstName" (A.fromString firstName))
-                                                                                                          , (Tuple "password" (A.fromString password))
-                                                                                                          , (Tuple "email" (A.fromString email))
-                                                                                                          , (Tuple "provider" (A.fromString "ntp"))
-                                                                                                          , (Tuple "language" (A.fromArray [(A.fromString language)]))
-                                                                                                          , (Tuple "phone" (A.fromString mobileNumber))
-                                                                                                          ])))
+      payload = A.fromObject (StrMap.fromFoldable [(Tuple "request" (getJsonFromString request))
                                                    ]) in
   (post requestUrl headers payload)
 

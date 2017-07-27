@@ -46,7 +46,7 @@ instance encodeSplashScreenActivityAction :: Encode SplashScreenActivityAction w
 data UserActivity = UserActivity
 data UserActivityAction = OPEN_MainActivity | 
   API_LogIn {userName::String, userPass::String} | 
-  API_SignUp {userName::String, email::String, firstName::String, password::String, mobileNumber::String, language::String, api_token::String}
+  API_SignUp {request::String, api_token::String}
 
 instance userActivity :: UIScreen UserActivity UserActivityAction where
   generateMockEvents _ = [OPEN_MainActivity , API_LogIn {userName:"String",userPass:"String"}]

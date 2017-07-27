@@ -362,15 +362,21 @@ class UserActivity extends View {
 
     if (this.userName.length > 0 && this.userPass.length > 0 && this.firstName.length > 0 && this.language.length > 0 && this.email.length > 0 && this.mobileNumber.length > 0) {
       window.__LoaderDialog.show() 
-      var whatToSend = {
+      var requestBody = {
         "userName": this.userName,
         "firstName": this.firstName,
         "password": this.userPass,
-        "language": this.language,
+        "language": [this.language],
         "mobileNumber": this.mobileNumber,
         "email": this.email,
-        "api_token": window.__apiToken
+        "provider" : "ntp"
+        
       };
+      requestBody=JSON.stringify(requestBody);
+      var whatToSend = {
+        "request" : requestBody,
+        "api_token": window.__apiToken
+      }
       var event = { "tag": "API_SignUp", "contents": whatToSend };
       window.__runDuiCallback(event);
 
