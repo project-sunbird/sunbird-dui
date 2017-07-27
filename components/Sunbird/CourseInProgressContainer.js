@@ -41,6 +41,8 @@ class CourseInProgressContainer extends View {
 
   renderContent = (data) => {
 
+    var isDataEmpty = !data;
+
 
     var emptyBody =(<LinearLayout
                       height="match_parent"
@@ -56,7 +58,7 @@ class CourseInProgressContainer extends View {
 
      var rows="";
 
-    if(this.data == "" || this.data == undefined){
+    if(isDataEmpty){
       rows= (<TextView
               width="match_parent"
               height="50"
@@ -66,7 +68,7 @@ class CourseInProgressContainer extends View {
 
      var cmd = this.set({
         id: this.idSet.viewAllContainer,
-        visibility : (this.offlineCount==0?"gone":"visible")
+        visibility : isDataEmpty?"gone":"visible"
       })
 
     Android.runInUI(cmd, 0);
@@ -74,7 +76,6 @@ class CourseInProgressContainer extends View {
 
     }else{
        rows = this.data.map((item, index) => {
-      //this.appendChild(this.idSet.parentContainer,this.getCardLayouy(item).render(),index)
        return this.getCardLayout(item);
       });
 
@@ -89,10 +90,16 @@ class CourseInProgressContainer extends View {
 
                   </LinearLayout>)
 
-    //this.appendChild(this.idSet.parentContainer,this.getHeader().render(),0);
     this.replaceChild(this.idSet.parentContainer,layout.render(),0)
-      
 
+
+    var cmd = this.set({
+        id: this.idSet.parentContainer,
+        gravity : isDataEmpty?"center":""
+      })
+
+    Android.runInUI(cmd, 0);
+    
 
   }
 
@@ -197,6 +204,7 @@ class CourseInProgressContainer extends View {
 
            <LinearLayout
                     padding="0,0,20,0"
+                    gravity="center"
                     id={this.idSet.parentContainer}
                     width="match_parent"
                     root="true"
