@@ -532,6 +532,7 @@ class UserActivity extends View {
           orientation="vertical"
           layoutTransition="true"
           padding="0,40,0,50"
+          clickable="true"
           gravity="center"
           root="true">
 
