@@ -37,8 +37,8 @@ splashScreenActivity = do
 userActivity = do
     event <- ui $ UserActivity
     case event of
-        API_SignUp {userName:x1,email:x2,firstName:x3,password:x4,mobileNumber:x5,language:x6,api_token:x7} -> do
-            responseData <- userSignup x1 x2 x3 x4 x5 x6 x7
+        API_SignUp { request: requestBody , api_token :token} -> do
+            responseData <- userSignup requestBody token
             _ <- sendUpdatedState {response : responseData, responseFor : "API_SignUp", screen:"asas"} 
             pure $ "Aborted 3"
         OPEN_MainActivity -> mainActivity "{}" "UserActivity" "{}" 
