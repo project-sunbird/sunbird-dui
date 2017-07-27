@@ -106,13 +106,14 @@ class CourseInProgressContainer extends View {
   getCardLayout =(item) => {
      var pDone= item.progress == undefined || isNaN(item.progress)? 0 : item.progress;
      var pTotal = item.leafNodesCount == undefined || isNaN(item.leafNodesCount)? 0 : item.leafNodesCount;
-     
+     console.log("GET CARD LAYOUT",item)
+
      var temp = {
-        imageUrl: (item.courseLogoUrl ? item.courseLogoUrl : "file://storage/emulated/0/SunbirdTest/content/domain_8808-64dd60d5-94cd-4896-a60e-11897bf69fd6/domain_8808/1461668536884adb212cfde_1465896981928.jpg"),
+        imageUrl: (item.courseLogoUrl ? item.courseLogoUrl : "ic_action_course"),
         title: item.courseName,
         actionText: "RESUME",
-        footerTitle: (pDone/pTotal) +"% done",
-        footerSubTitle: "20 hrs remaining",
+        footerTitle: (isNaN(pDone/pTotal)?"0":(pDone/pTotal)) +"% done",
+        footerSubTitle: "Duration unavailable",
         isProgress : "true"
       };
 

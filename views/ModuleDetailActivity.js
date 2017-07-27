@@ -145,7 +145,7 @@ class ModuleDetailActivity extends View {
         JBridge.getChildContent(identifier, callback1)
       } else {
         console.log("Spine Not Found, IMPORTING ")
-        JBridge.importCourse(identifier, "false")
+        JBridge.importCourse(identifier, "true")
       }
 
 

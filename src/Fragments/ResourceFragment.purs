@@ -7,6 +7,9 @@ import Prelude
 import Types.UITypes
 import Types.APITypes
 import UI
+import Control.Monad.Eff.Class(liftEff)
+import Control.Monad.Aff.Console
+
 
 
 resourceFragment input whereFrom whatToSendBack = do

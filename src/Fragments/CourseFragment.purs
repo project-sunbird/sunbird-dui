@@ -92,6 +92,7 @@ subModuleDetailActivity mName input whereFrom whatToSendBack = do
 searchCourseActivity input whereFrom whatToSendBack = do
   event <- ui $ SearchActivity {filterDetails:input}
   case event of
+    OPEN_CourseEnrolledActivity_SEARCH {course : output} -> enrolledCourseActivity output "SearchActivity" input
     OPEN_CourseInfoActivity_SEARCH {course : output} -> courseInfoActivity output "SearchActivity" input
     OPEN_FilterActivity {filterDetails : output} -> courseFilterActivity output "SearchActivity" input
     BACK_SearchActivity -> case whereFrom of

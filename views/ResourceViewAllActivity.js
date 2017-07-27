@@ -63,9 +63,12 @@ getRows = () =>{
       if(item.contentType != "course"){
 
                 if(item.hasOwnProperty("contentData")){
+
+                  var appIconExist = item.contentData.hasOwnProperty("appIcon");
+
+                  this.fileImageUrl = appIconExist?("file://"+item.basePath + "/" +item.contentData.appIcon):"ic_action_resource";
                   this.size = item.hasOwnProperty("size") ? " ["+ utils.formatBytes(item.size)+"]" : "";
-                  this.fileImageUrl = "file://"+item.basePath + "/" +(item.contentData.appIcon?item.contentData.appIcon:"ic_action_resource");
-                  this.cType = item.contentData.contentType
+                  this.cType = item.contentData.contentType;
                   this.name = item.contentData.name;
                   this.time = utils.prettifyDate(item.lastUpdatedTime);
                 }

@@ -53,7 +53,7 @@ class CourseEnrolledActivity extends View {
     this.data = {
       courseName: this.details ? this.details.courseName : "",
       courseDesc: this.details ? this.details.courseDesc : "This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced",
-      completedProgress: "60",
+      completedProgress: this.details.progress,
       totalCount: "150",
       courseBrief: [{
         count: "50",
@@ -297,6 +297,7 @@ class CourseEnrolledActivity extends View {
           totalProgress={this.data.totalProgress}
           width="match_parent"
           height="wrap_content"
+
 
           />
 

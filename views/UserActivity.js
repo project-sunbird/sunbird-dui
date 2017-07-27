@@ -328,6 +328,8 @@ class UserActivity extends View {
     this.userPass=this.userPass.trim();
     this.mobileNumber=this.mobileNumber.trim();
 
+    console.log("THIS EMAIL",this.mobileNumber.length);
+
 
     if (this.firstName.length <= 0) {
       JBridge.showSnackBar(window.__S.ERROR_EMPTY_FIRSTNAME);
@@ -338,7 +340,7 @@ class UserActivity extends View {
     } else if (this.email.length <= 0) {
       JBridge.showSnackBar(window.__S.ERROR_EMPTY_EMAIL);
       return;
-    } else if (!this.email.contains("@") || !this.email.contains(".")) {
+    } else if (!(this.email.indexOf("@") !== -1) || !(this.email.indexOf(".") !== -1)) {
       JBridge.showSnackBar(window.__S.ERROR_EMAIL_FORMAT);
       return;
     }else if (this.userPass.length <= 0) {
@@ -350,7 +352,7 @@ class UserActivity extends View {
     } else if (this.mobileNumber.length <= 0) {
       JBridge.showSnackBar(window.__S.ERROR_EMPTY_MOBILE);
       return;
-    } else if (this.mobileNumber.length < 10 || this.mobileNumber > 10) {
+    } else if (this.mobileNumber.length < 10 || this.mobileNumber.length > 10) {
       JBridge.showSnackBar(window.__S.ERROR_SHORT_MOBILE);
       return;
     } else if (this.language.length <= 0) {

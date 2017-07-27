@@ -224,8 +224,6 @@ class HomeFragment extends View {
   render() {
     this.layout = (
 
-     
-
       <LinearLayout
         orientation="vertical"
         width="match_parent"

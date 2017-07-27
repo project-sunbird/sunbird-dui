@@ -53,12 +53,14 @@ class OfflineResourceContainer extends View {
 
       console.log("item content type", item.contentType);
       if (item.contentType != "course") {
+
+
         this.offlineCount++;
         var size = item.hasOwnProperty("size") ? " [" + utils.formatBytes(item.size) + "]" : "";
         var footerTitle = item.contentType + size;
         var temp = {};
         var fileSavedTime = utils.prettifyDate(item.lastUpdatedTime);
-        var fileImageUrl = item.hasOwnProperty("appIcon")?item.appIcon:"ic_action_resource";
+        var fileImageUrl = item.contentData.hasOwnProperty("appIcon")?("file://"+item.basePath+"/"+item.contentData.appIcon):"ic_action_resource";
 
         temp['imageUrl'] = fileImageUrl;
         temp['title'] = item.contentData.name;
@@ -66,6 +68,8 @@ class OfflineResourceContainer extends View {
         temp['footerSubTitle'] = "Saved on " + fileSavedTime;
         temp['actionText'] = "OPEN";
         temp['content'] = item;
+
+        console.log("FILE IMAGE URL \n\n\n\n\n\n\n\n\n\n\n\n",fileImageUrl)
 
 
 
@@ -75,8 +79,8 @@ class OfflineResourceContainer extends View {
                      onCardClick = {this.handleCardClick}/>)
       } else {
         return (<LinearLayout
-              width="match_parent"
-              height="wrap_content">
+              width="0"
+              height="0">
 
 
               </LinearLayout>)

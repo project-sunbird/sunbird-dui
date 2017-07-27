@@ -345,7 +345,8 @@ class ResourceDetailActivity extends View {
 
 
   onBackPressed = () => {
-    var whatToSend = []
+    console.log("RESOURCE DETAIL BACK CLICKED")
+    var whatToSend = [];
     var event= { "tag": "BACK_ResourceDetailActivity", contents: whatToSend };
     window.__runDuiCallback(event);
   }
