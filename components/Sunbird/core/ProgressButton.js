@@ -192,7 +192,7 @@ class ProgressButton extends View {
       }
       contentProgress['result'] = "pass";
       contentProgress['grade'] = "B";
-      contentProgress['score'] = 10;
+      contentProgress['score'] = "10";
 
       console.log("progress status", contentProgress)
         // JBridge.setInSharedPrefs(this.props.identifier, JSON.stringify(contentProgress));
@@ -201,6 +201,33 @@ class ProgressButton extends View {
       console.log("date",date)
 
       // if(telemetryData.edata.eks.length)
+      var requestObject = {};
+
+
+      // var body = {
+      //           "id":"unique API ID",
+      //           "ts":"response timestamp YYYY-MM-DDThh:mm:ss+/-nn:nn (timezone defaulted to +5.30)",
+      //             "params": {
+                       
+      //               },
+      //           "request":{
+      //               "userId": window.__userToken,
+      //             "contents":[
+      //                     {
+      //                     "contentId":this.props.identifier,
+      //                     "status": telemetryData.edata.eks.progress == 100 ? 2 : 1,
+      //                     "lastAccessTime": date,
+      //                     "lastCompletedTime": telemetryData.edata.eks.progress == 100 ? date : "",
+      //                      "courseId":this.props.contentDetails.hierarchyInfo[0].identifier,
+      //                      "result":"pass",
+      //                      "score":"",
+      //                      "grade":"",
+      //                      progress: telemetryData.edata.eks.progress
+                       
+      //                     }
+      //              ]
+      //             }
+      //           }
       var body = {
                 "id":"unique API ID",
                 "ts":"response timestamp YYYY-MM-DDThh:mm:ss+/-nn:nn (timezone defaulted to +5.30)",

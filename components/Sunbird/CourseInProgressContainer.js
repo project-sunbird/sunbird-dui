@@ -104,15 +104,18 @@ class CourseInProgressContainer extends View {
   };
 
   getCardLayout =(item) => {
+    console.log("item in progress container",item)
      var pDone= item.progress == undefined || isNaN(item.progress)? 0 : item.progress;
      var pTotal = item.leafNodesCount == undefined || isNaN(item.leafNodesCount)? 0 : item.leafNodesCount;
+     var progressCount = item.leafNodesCount == null ? 0 : (item.progress/item.leafNodesCount)*100;
      console.log("GET CARD LAYOUT",item)
 
      var temp = {
         imageUrl: (item.courseLogoUrl ? item.courseLogoUrl : "ic_action_course"),
         title: item.courseName,
         actionText: "RESUME",
-        footerTitle: (isNaN(pDone/pTotal)?"0":(pDone/pTotal)) +"% done",
+        // footerTitle: (isNaN(pDone/pTotal)?"0":(pDone/pTotal)) +"% done",
+        footerTitle: progressCount +"% done",
         footerSubTitle: "Duration unavailable",
         isProgress : "true"
       };

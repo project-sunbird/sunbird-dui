@@ -20,10 +20,10 @@ class CourseProgress extends View {
       "completedTextView"
     ]);
     this.displayName = "course_progress"
-
+    console.log("data to progress",this.props.content)
     var curValue = this.props.content.competedCount;
     var totalValue = this.props.content.totalCount;
-
+    this.progressBar = this.props.content.completedProgress;
     this.percentVal = parseFloat(curValue / totalValue);
     this.percentVal *= 100;
 
@@ -39,7 +39,7 @@ class CourseProgress extends View {
                 <TextView
                   style={window.__TextStyle.textStyle.HINT.REGULAR}
                   id ={this.idSet.completedTextView}
-                  text={isNaN(this.percentVal)?"0":this.percentVal}/>
+                  text={this.progressBar}/>
                 <TextView
                   style={window.__TextStyle.textStyle.HINT.REGULAR}
                   text={" %"}/> 

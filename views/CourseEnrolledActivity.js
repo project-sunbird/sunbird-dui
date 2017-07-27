@@ -41,10 +41,12 @@ class CourseEnrolledActivity extends View {
     this.shouldCacheScreen = false;
     this.courseContent = "";
 
+
     //this.checkContentLocalStatus(this.details.identifier);
     this.details = JSON.parse(state.data.value0.courseDetails);
     console.log("GOT VALUES CES", this.details)
-
+    this.downloadProgress = this.details.leafNodesCount == null? 10 : (this.details.progress/this.details.leafNodesCount)*100;
+    console.log("this.downloadProgress",this.downloadProgress)
     //to get geneie callback for download of spine
     window.__getDownloadStatus = this.getSpineStatus;
 
@@ -53,7 +55,7 @@ class CourseEnrolledActivity extends View {
     this.data = {
       courseName: this.details ? this.details.courseName : "",
       courseDesc: this.details ? this.details.courseDesc : "This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced",
-      completedProgress: this.details.progress,
+      completedProgress: this.downloadProgress,
       totalCount: "150",
       courseBrief: [{
         count: "50",
@@ -184,7 +186,7 @@ class CourseEnrolledActivity extends View {
 
     var textToShow = ""
     console.log("DATA -> ", data)
-    data.downloadProgress = data.downloadProgress == undefined ? 0 : data.downloadProgress;
+    data.downloadProgress = this.downloadProgress;
     var downloadedPercent = parseInt(data.downloadProgress);
     downloadedPercent = downloadedPercent < 0 ? 0 : downloadedPercent;
 
