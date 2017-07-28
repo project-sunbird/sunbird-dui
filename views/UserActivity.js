@@ -532,7 +532,6 @@ class UserActivity extends View {
           orientation="vertical"
           layoutTransition="true"
           padding="0,40,0,50"
-          clickable="true"
           gravity="center"
           root="true">
 
@@ -629,13 +628,14 @@ class UserActivity extends View {
   getSignUpSection = () => {
     return (<LinearLayout
         height="wrap_content"
-        width="wrap_content"
+        width="match_parent"
         orientation="vertical"
+        clickable="true"
         gravity="center_horizontal"
         root="true">
            <TextView
             height="wrap_content"
-            width="wrap_content"
+            width="match_parent"
             padding="0,10,0,10"
             gravity="center"
             id={this.idSet.alreadyHaveAccHolder}
@@ -646,7 +646,7 @@ class UserActivity extends View {
 
           <TextView
             height="wrap_content"
-            width="wrap_content"
+            width="match_parent"
             padding="0,10,0,10"
             gravity="center"
             id={this.idSet.needAccHolder}

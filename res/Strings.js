@@ -1,11 +1,11 @@
 const objectAssign = require('object-assign');
 const stringsRes = {
 	"en_US" : {
-		SPLASH_MESSAGE : "Project Sunbird",
-		WELCOME_M1 : "Welcome to Sunbird",
+		SPLASH_MESSAGE : "",
+		WELCOME_M1 : "Welcome to NTP",
 		WELCOME_M2 : "Structured education for the educators",
 		WELCOME_BACK : "WELCOME BACK %s",
-		WELCOME_ON_BOARD : "Welcome to Sunbird, %s ",
+		WELCOME_ON_BOARD : "Welcome %s ",
 		FIRST_NAME : "NAME",
 		FIRST_NAME_HINT : "Enter your name",
 		EMAIL_ID : "EMAIL ID",
