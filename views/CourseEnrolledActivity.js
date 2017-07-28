@@ -45,10 +45,10 @@ class CourseEnrolledActivity extends View {
 
     //this.checkContentLocalStatus(this.details.identifier);
     this.details = JSON.parse(state.data.value0.courseDetails);
-    console.log("GOT VALUES CES", this.details)
+
     this.downloadProgress = this.details.leafNodesCount == null? 0 : (this.details.progress/this.details.leafNodesCount)*100;
-    this.downloadProgress = parseInt(this.downloadProgress)
-    console.log("this.downloadProgress",this.downloadProgress)
+    this.downloadProgress = parseInt(isNaN(this.downloadProgress)?0:this.downloadProgress)
+
     //to get geneie callback for download of spine
     window.__getDownloadStatus = this.getSpineStatus;
 
