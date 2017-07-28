@@ -31,6 +31,7 @@ class CourseProgress extends View {
 
   getProgressStatus = () => {
     return (<LinearLayout
+            visibility = {this.props.visibility}
             width="match_parent"
             margin="0,0,0,0">
                 <TextView
