@@ -9,6 +9,7 @@ var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 var objectAssign = require('object-assign');
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
+var CourseInProgressContainer = require('../../components/Sunbird/CourseInProgressContainer');
 
 
 
@@ -128,7 +129,17 @@ class HomeFragment extends View {
       pen_classes: "3"
     }]
 
+    window.setEnrolledCourses = this.setEnrolledCourses;
+
   }
+
+
+  setEnrolledCourses = (list) => {
+    this.enrolledCourses = list;
+
+    window.__UpdateUserCourses(this.enrolledCourses);
+  }
+
 
 
 
@@ -139,6 +150,13 @@ class HomeFragment extends View {
   handleViewAllTodoClick = () => {
     console.log("View All todos in home");
   }
+  handleUserCoursesClick = (content, type) => {
+    var whatToSend = { "course": JSON.stringify(content) }
+    var event = { tag: 'OPEN_EnrolledCourseActivity', contents: whatToSend }
+    window.__runDuiCallback(event);
+  }
+
+
 
 
   handleMenuClick = (url) => {
@@ -253,10 +271,12 @@ class HomeFragment extends View {
                   width="match_parent"
                   orientation="vertical">
 
-                    
-                   <HomeTodoContainer
-                   onCourseOpenClick = {this.handleCourseOpen}/>
-                   
+                  
+                   <CourseInProgressContainer
+                    transparent="true"
+                    title="To-Do"
+                    onCourseClick={this.handleUserCoursesClick}/>
+
 
                    {this.getSpaceSeparator()}
 

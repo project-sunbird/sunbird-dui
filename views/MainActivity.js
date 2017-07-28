@@ -164,7 +164,7 @@ class MainActivity extends View {
       JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION)
       responseData=tmp; 
     } else {
-      responseData = utils.jsonifyData(responseData);
+    responseData = utils.jsonifyData(responseData);
       responseData = JSON.parse(responseData);
 
     }
@@ -179,6 +179,7 @@ class MainActivity extends View {
 
     if (state.responseFor == "API_UserEnrolledCourse") {
       window.setEnrolledCourses(responseData.result.courses);
+      
       return;
     }
 
