@@ -134,7 +134,8 @@ class ProgressButton extends View {
 
   handleButtonClick = () => {
 
-    if(JBridge.isNetworkAvailable()){
+
+
 
       window.__getDownloadStatus = this.updateProgress;
       console.log("dp", this.isDownloaded);
@@ -150,23 +151,23 @@ class ProgressButton extends View {
             JBridge.playContent(this.props.identifier);
           }
 
-        } else {
+        } else if(JBridge.isNetworkAvailable()){
           console.log("download");
           if (!this.startedDownloading) {
             this.startedDownloading = true;
             JBridge.importCourse(this.props.identifier, this.props.isCourse);
-
           }
-
         }
+        else{
+            JBridge.showSnackBar("No internet connection");
+        }
+
       } else {
         console.log("handleButtonClick PERMISSION");
         this.setPermissions();
       }
-  }
-  else{
-      JBridge.showSnackBar("No internet connection");
-  }
+  
+  
 
 
   }

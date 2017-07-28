@@ -116,8 +116,16 @@ class FilterActivity extends View {
 
 
   onBackPressed = () => {
-    var whatToSend = [] ;
-    window.__runDuiCallback({ "tag": "BACK_FilterActivity", contents: whatToSend });
+    var data= {
+      filterDetails : this.data,
+      filterFor : this.searchedFor,
+      searcheType : this.searchedType
+    }
+    console.log("data in filter to search",data)
+    var whatToSend = {
+        "filterData" : JSON.stringify(data)
+      };
+    window.__runDuiCallback({ "tag": "OPEN_SearchActivity_FILTER", contents: whatToSend });
   }
   handleFilterClick = () =>{
     var data= {
