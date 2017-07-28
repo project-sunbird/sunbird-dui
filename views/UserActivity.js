@@ -61,6 +61,8 @@ class UserActivity extends View {
 
   onPop = () => {
     this.backPressCount = 0;
+    this.language = "English";
+    this.userName = this.userPass = this.firstName = "";
     Android.runInUI(
       this.animateView(),
       null
@@ -76,6 +78,8 @@ class UserActivity extends View {
   }
 
   getLoginCallback = (response) => {
+    console.log("GOT LOGIN RESPONSE ",response)
+    
     window.__LoaderDialog.hide()
 
     if(!this.enableLoginCallback){
@@ -328,7 +332,6 @@ class UserActivity extends View {
     this.userPass=this.userPass.trim();
     this.mobileNumber=this.mobileNumber.trim();
 
-    console.log("THIS EMAIL",this.mobileNumber.length);
 
 
     if (this.firstName.length <= 0) {
@@ -366,10 +369,9 @@ class UserActivity extends View {
         "userName": this.userName,
         "firstName": this.firstName,
         "password": this.userPass,
-        "language": [this.language],
+        "language": ["English"],
         "phone": this.mobileNumber,
-        "email": this.email,
-        "provider" : "ntp"
+        "email": this.email
         
       };
       requestBody=JSON.stringify(requestBody);
@@ -608,13 +610,6 @@ class UserActivity extends View {
               id={this.idSet.languageHolder}
               visibility={this.isLoginMode?"gone":"visible"}>
 
-              <TextInputView
-                hintText={window.__S.HINT_LANGUAGE}
-                labelText={window.__S.LANGUAGE}
-                margin="20,0,24,12"
-                text="English"
-                _onChange={this.updateLanguage}/>
-
             </LinearLayout>
 
             {this.getOptions()}
@@ -665,6 +660,7 @@ class UserActivity extends View {
         root="true"
         orientation="vertical"
         width="match_parent"
+        clickable="true"
         padding="0,12,0,0"
         background={window.__Colors.WHITE}
         afterRender = {this.afterRender}
@@ -705,5 +701,13 @@ class UserActivity extends View {
     return this.layout.render();
   }
 }
+
+              // <TextInputView
+              //   hintText={window.__S.HINT_LANGUAGE}
+              //   labelText={window.__S.LANGUAGE}
+              //   margin="20,0,24,12"
+              //   text="English"
+              //   _onChange={this.updateLanguage}/>
+
 
 module.exports = Connector(UserActivity);

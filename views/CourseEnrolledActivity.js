@@ -191,8 +191,9 @@ class CourseEnrolledActivity extends View {
     var textToShow = ""
     console.log("DATA -> ", data)
 
-    var downloadedPercent = parseInt(data.downloadProgress);
-    downloadedPercent = downloadedPercent < 0 ? 0 : downloadedPercent;
+    data.downloadProgress= data.downloadProgress == undefined || isNaN(data.downloadProgress) ? 0 : data.downloadProgress;
+    var downloadedPercent = data.downloadProgress;
+    downloadedPercent =  downloadedPercent < 0 ? 0 : downloadedPercent;
 
     if (downloadedPercent == 100) {
 

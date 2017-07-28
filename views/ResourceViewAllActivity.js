@@ -122,11 +122,16 @@ getRows = () =>{
     handleResourceClick = (item)=>{
 
 
-       if(item.contentType.toLowerCase() == "course" || item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook"){
+       if(item.contentType.toLowerCase() == "course"){
         var whatToSend = {resourceDetails:JSON.stringify(item)}
         var event = {tag:"OPEN_ResourceViewAllDetail",contents:whatToSend}
         window.__runDuiCallback(event);
       }
+      else if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "TextBook"){
+      var whatToSend={course:JSON.stringify(item)};
+      var event={tag:"OPEN_CourseEnrolled",contents:whatToSend}
+      window.__runDuiCallback(event);
+    }
       else
       {
         var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");
@@ -143,9 +148,6 @@ getRows = () =>{
         window.__runDuiCallback(event);
       }
     }
-
-
-
 
   onPop = () => {
     Android.runInUI(
