@@ -52,6 +52,7 @@ class CourseEnrolledActivity extends View {
     //to get geneie callback for download of spine
     window.__getDownloadStatus = this.getSpineStatus;
 
+    this.showProgress = (this.details.hasOwnProperty("contentType") && (this.details.contentType == "collection" || this.details.contentType == "TextBook" )) ? "gone" : "visible";
     this.baseIdentifier = this.details.identifier ? this.details.identifier : this.details.contentId;
 
     this.data = {
@@ -318,7 +319,7 @@ class CourseEnrolledActivity extends View {
           totalProgress={this.data.totalProgress}
           width="match_parent"
           height="wrap_content"
-
+          visibility = {this.showProgress}
 
           />
 
@@ -345,7 +346,9 @@ class CourseEnrolledActivity extends View {
                       width="wrap_content"
                       content={this.data}
                       title={this.data.courseName || this.details.name || this.details.contentData.name}
-                      onResumeClick={this.handleCourseResume}/>
+                      onResumeClick={this.handleCourseResume}
+                      visibility = {this.showProgress}
+                      />
 
 
                   <LinearLayout

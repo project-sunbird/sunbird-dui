@@ -64,13 +64,14 @@ class CourseViewAllActivity extends View {
       var rows = this.totalDetails.map((item,i) => {
 
         console.log("PROGRESS IN COURSES VIEW ALL SCREEN",item);
-
+                var progressCount = item.leafNodesCount == null ? 0 : (item.progress/item.leafNodesCount)*100;
+                progressCount = parseInt(progressCount)
 
                   var temp = {};
                   temp['imageUrl'] = item.courseLogoUrl?item.courseLogoUrl:"ic_action_course";
                   temp['name'] = item.courseName;
                   temp['isProgress'] = "true";
-                  temp['footerTitle'] = (item.progress?item.progress:"0")+"% done";
+                  temp['footerTitle'] = progressCount +"% done";
                   temp['actionText'] = "RESUME";
                   temp["footerSubTitle"] = "Duration unavailable";
 
