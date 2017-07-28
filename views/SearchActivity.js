@@ -56,17 +56,17 @@ class SearchActivity extends View {
     // this.checkSearchList(this.filterData.length, this.filterData);
   }
 
-  checkSearchList = (length, data) => {
-    if (length != 0) {
+  // checkSearchList = (length, data) => {
+  //   if (length != 0) {
 
-      data = JSON.parse(data)
-      console.log("query!", data.query)
-      this.getSearchList(data.query);
+  //     data = JSON.parse(data)
+  //     console.log("query!", data.query)
+  //     this.getSearchList(data.query,"true");
 
       
 
-    }
-  }
+  //   }
+  // }
 
   afterRender = () => {
     console.log(this.filterData)
@@ -87,7 +87,7 @@ class SearchActivity extends View {
         searchData=JSON.parse(this.filter)
       }
       console.log("Loading detials for ")
-      this.getSearchList(this.searchText);
+      this.getSearchList(this.searchText,"true");
     }
 
     var callback = callbackMapper.map(function(data) {
@@ -219,7 +219,7 @@ class SearchActivity extends View {
   }
 
 
-  getSearchList=(searchText)=> {
+  getSearchList=(searchText,flag)=> {
 
     console.log("oin get search List",searchText);
     var callback = callbackMapper.map(function(data) {
@@ -254,7 +254,7 @@ class SearchActivity extends View {
       // console.log("searchtext", searchText);
       // console.log("this.filterData", this.filterData);
 
-      // var s = "";
+      var s = "";
       // if (typeof this.filterData == 'object') {
       //   this.filterData = this.filterData.value0.filterDetails;
       //   console.log("this.filterData", this.filterData);
@@ -262,11 +262,15 @@ class SearchActivity extends View {
       //   console.log("filterHolder", s.filterDetails);
       //   this.filterData = s.filterDetails;
       // }
+      // if(typeof this.filterData == "string" && this.filterData.length >10){
+      //   this.filterData = JSON.parse(this.filterData)
+      // }
+
 
       console.log("this.filterData", this.filterData);
-      console.log("this.filterData", this.filterData);
+      console.log("this.filterData", typeof(this.filterData));
 
-      JBridge.searchContent(callback, JSON.stringify(this.filterData), searchText, this.searchType, status);
+      JBridge.searchContent(callback, JSON.stringify(this.filterData), searchText, this.searchType, flag);
     }
     this.showFilter();
   }
@@ -296,7 +300,7 @@ class SearchActivity extends View {
     JBridge.hideKeyboard();
 
     JBridge.showSnackBar("Loading Search Results Please Wait......")
-    this.getSearchList(searchText[0]);
+    this.getSearchList(searchText[0],"false");
     
     
 
