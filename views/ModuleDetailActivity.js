@@ -173,7 +173,7 @@ class ModuleDetailActivity extends View {
   }
 
   handleModuleClick = (moduleName, module) => {
-    var eventAction = { "tag": "OPEN_SubModuleActivity", contents: { "moduleName": moduleName, "moduleDetails": JSON.stringify(module) } };
+    var eventAction = { "tag": "OPEN_AlternateModuleDetailActivity", contents: { "moduleName": moduleName, "moduleDetails": JSON.stringify(module) } };
     window.__runDuiCallback(eventAction);
 
   }
