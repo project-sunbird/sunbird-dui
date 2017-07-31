@@ -97,7 +97,7 @@ class UserActivity extends View {
 
     window.__userToken=contentBody.sub;
     JBridge.showSnackBar(window.__S.WELCOME_ON_BOARD.format(contentBody.given_name))
-    JBridge.setProfile(this.userToken);
+    // JBridge.setProfile(this.userToken);
     this.setDataInStorage();
 
     this.performLogin();
@@ -186,7 +186,7 @@ class UserActivity extends View {
           JBridge.setInSharedPrefs("user_token", result.userId);
           this.userToken=result.userId;
           this.setDataInStorage();
-          JBridge.setProfile(this.userToken);
+          // JBridge.setProfile(this.userToken);
           this.performLogin()
 
         } else {
