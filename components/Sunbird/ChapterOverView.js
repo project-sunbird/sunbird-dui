@@ -50,6 +50,7 @@ class ChapterOverView extends View {
          height="wrap_content"
          gravity="center_vertical"
          text={this.chapterName}
+         enableEllipse = "true"
          style={window.__TextStyle.textStyle.CARD.HEADING}/>
 
          <ViewWidget

@@ -9,6 +9,7 @@ var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 var ScrollView = require('@juspay/mystique-backend').androidViews.ScrollView;
 var ProgressBar = require("@juspay/mystique-backend").androidViews.ProgressBar;
+var utils = require('../utils/GenericFunctions');
 
 var objectAssign = require('object-assign');
 
@@ -189,8 +190,8 @@ class CourseInfoActivity extends View {
       if (status == "true") {
         console.log("Spine Found")
         var callback1 = callbackMapper.map(function(data) {
-          console.log("course details;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;", JSON.parse(data));
-          _this.courseContent = JSON.parse(data);
+          data[0] = utils.jsonifyData(data[0])
+          _this.courseContent = JSON.parse(data[0]);
           _this.renderCourseChildren()
         });
         JBridge.getChildContent(identifier, callback1)
