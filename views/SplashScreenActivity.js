@@ -44,10 +44,11 @@ class SplashScreenActivity extends View {
 
   afterRender = () => {
     JBridge.syncTelemetry();
-    console.log("in after bmvjjkfjf")
-    if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "false") {
-      this.setPermissions();
-    }
+
+    
+    // if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "false") {
+    //   this.setPermissions();
+    // }
 
     setTimeout(() => {
       var whatToSend = [] 
@@ -63,18 +64,19 @@ class SplashScreenActivity extends View {
 
 
 
-  setPermissions = () => {
+  // setPermissions = () => {
 
-    var callback = callbackMapper.map(function(data) {
+  //   var callback = callbackMapper.map(function(data) {
+  //     console.log("GOT PERMISSION\n\n\n\n\n\n\n",data);
 
-      if (data == "SUCCESS") {
-        JBridge.setKey("isPermissionSetWriteExternalStorage", "true");
-      }
+  //     if (data == "STORAGE") {
+  //       JBridge.setKey("isPermissionSetWriteExternalStorage", "true");
+  //     }
 
-    });
+  //   });
 
-    JBridge.setPermissions(callback);
-  }
+  //   JBridge.setPermissions(callback,"android.permission.CAMERA");
+  // }
 
 
   render() {

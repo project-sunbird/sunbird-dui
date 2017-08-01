@@ -252,15 +252,17 @@ class ProgressButton extends View {
 
   setPermissions = () => {
 
-    var callback = callbackMapper.map(function(data) {
+   var callback = callbackMapper.map(function(data) {
+      console.log("GOT PERMISSION\n\n\n\n\n\n\n",data);
 
-      if (data == "SUCCESS") {
+      if (data == "android.permission.WRITE_EXTERNAL_STORAGE") {
         JBridge.setKey("isPermissionSetWriteExternalStorage", "true");
       }
 
     });
 
-    JBridge.setPermissions(callback);
+    JBridge.setPermissions(callback,"android.permission.WRITE_EXTERNAL_STORAGE");
+  
   }
 
 
