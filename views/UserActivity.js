@@ -233,87 +233,33 @@ class UserActivity extends View {
     this.language = data;
   }
 
-  handleAlreadyHaveAccClick = () => {
-    this.isLoginMode = true;
+  toggleSignUpForm = () => {
+    this.isLoginMode = !this.isLoginMode;
+    var visibilityVal= this.isLoginMode?"gone":"visible"
+    var oppVisibilityValue = !this.isLoginMode?"gone":"visible"
     var cmd = this.set({
-      id: this.idSet.firstNameHolder,
-      visibility: "gone"
+      id: this.idSet.userForumContainer,
+      visibility: visibilityVal
     });
-    cmd += this.set({
-      id: this.idSet.userNameHolder,
-      visibility: "gone"
-    });
-    cmd += this.set({
-      id: this.idSet.mobileNumberHolder,
-      visibility: "gone"
-    });
-    cmd += this.set({
-      id: this.idSet.languageHolder,
-      visibility: "gone"
-    })
-    cmd += this.set({
-      id: this.idSet.forgotPasswordHolder,
-      visibility: "visible"
-    });
+   
     cmd += this.set({
       id: this.idSet.signUpHolder,
-      visibility: "gone"
+      visibility: visibilityVal
     });
     cmd += this.set({
       id: this.idSet.signInHolder,
-      visibility: "visible"
+      visibility: oppVisibilityValue
     });
     cmd += this.set({
       id: this.idSet.needAccHolder,
-      visibility: "visible"
+      visibility: oppVisibilityValue
     });
     cmd += this.set({
       id: this.idSet.alreadyHaveAccHolder,
-      visibility: "gone"
+      visibility: visibilityVal
     });
     Android.runInUI(cmd, 0);
 
-  }
-
-  handleCreateAccountClick = () => {
-    this.isLoginMode = false;
-    var cmd = this.set({
-      id: this.idSet.firstNameHolder,
-      visibility: "visible"
-    });
-    cmd += this.set({
-      id: this.idSet.userNameHolder,
-      visibility: "visible"
-    });
-    cmd += this.set({
-      id: this.idSet.mobileNumberHolder,
-      visibility: "visible"
-    });
-    cmd += this.set({
-      id: this.idSet.languageHolder,
-      visibility: "visible"
-    });
-    cmd += this.set({
-      id: this.idSet.forgotPasswordHolder,
-      visibility: "gone"
-    });
-    cmd += this.set({
-      id: this.idSet.signUpHolder,
-      visibility: "visible"
-    });
-    cmd += this.set({
-      id: this.idSet.signInHolder,
-      visibility: "gone"
-    });
-    cmd += this.set({
-      id: this.idSet.needAccHolder,
-      visibility: "gone"
-    });
-    cmd += this.set({
-      id: this.idSet.alreadyHaveAccHolder,
-      visibility: "visible"
-    });
-    Android.runInUI(cmd, 0);
   }
 
   handleSignUpClick = () => {
@@ -386,35 +332,7 @@ class UserActivity extends View {
   }
 
   handleLoginClick = () => {
-
-    this.enableLoginCallback=true;
-
-    // this.email="abcd@test.com"
-    // this.userPass="abcd"
-
-    this.userPass=this.userPass.trim();
-    this.email=this.email.trim();
-
-    if (!JBridge.isNetworkAvailable()) {
-        JBridge.showSnackBar(window.__S.NO_INTERNET)
-        return;
-      }
-    if (this.email.length <= 0) {
-      JBridge.showSnackBar(window.__S.ERROR_EMPTY_EMAIL);
-      return;
-    } else if (this.userPass.length <= 0) {
-      JBridge.showSnackBar(window.__S.ERROR_EMPTY_PASSWORD);
-      return;
-    }
-    window.__LoaderDialog.show()
-    JBridge.hideKeyboard();
-    JBridge.keyCloakLogin("android","sunbird",this.email,this.userPass);
-
-    setTimeout(()=>{
-      window.__LoaderDialog.hide();
-      this.enableLoginCallback=false
-    },window.__API_TIMEOUT);
-
+    JBridge.keyCloakLogin("https://dev.open-sunbird.org/auth/realms/sunbird/protocol/openid-connect/auth","android");
   }
 
   handleForgotPasscode = ()=>{
@@ -458,22 +376,11 @@ class UserActivity extends View {
       <LinearLayout
             height="wrap_content"
             width="match_parent"
-            gravity="center_vertical"
+            gravity="center"
             margin="24,0,24,0"
             >
-            <LinearLayout
-              height="wrap_content"
-              width="0"
-              onClick={this.handleForgotPasscode}
-              weight="1">
-                <TextView
-                  height="wrap_content"
-                  width="0"
-                  weight="1"
-                  text={window.__S.FORGOT_PASSWORD}
-                  id={this.idSet.forgotPasswordHolder}
-                  style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
-            </LinearLayout>
+            
+                
               <LinearLayout
                 height="wrap_content"
                 width="wrap_content"
@@ -519,17 +426,25 @@ class UserActivity extends View {
     //TextInputView be carefull with the margin, internal EditText position might break
 
     return (
+      <LinearLayout
+          height="match_parent"
+          width="match_parent"
+          orientation="vertical"
+          id={this.idSet.userForumContainer}
+          gravity="center"
+          visibility={this.isLoginMode?"gone":"visible"}
+          root="true">
       <ScrollView
         height="match_parent"
         width="match_parent"
         fillViewPort="true"
+        
         gravity="center"
         >
         <LinearLayout
           height="match_parent"
           width="match_parent"
           orientation="vertical"
-          layoutTransition="true"
           padding="0,40,0,50"
           gravity="center"
           root="true">
@@ -537,8 +452,7 @@ class UserActivity extends View {
             <LinearLayout
               height="wrap_content"
               width="match_parent"
-              id={this.idSet.firstNameHolder}
-              visibility={this.isLoginMode?"gone":"visible"}>
+              id={this.idSet.firstNameHolder}>
 
                 <TextInputView
                   height="wrap_content"
@@ -553,8 +467,7 @@ class UserActivity extends View {
             <LinearLayout
               height="wrap_content"
               width="match_parent"
-              id={this.idSet.userNameHolder}
-              visibility={this.isLoginMode?"gone":"visible"}>
+              id={this.idSet.userNameHolder}>
 
               <TextInputView
                 height="wrap_content"
@@ -566,31 +479,44 @@ class UserActivity extends View {
 
             </LinearLayout>
 
-
-              <TextInputView
-                height="wrap_content"
-                width="match_parent"
-                hintText={window.__S.HINT_EMAIL_ID}
-                labelText={window.__S.EMAIL_ID}
-                margin="20,0,24,12"
-                _onChange={this.updateEmail}/>
+             <LinearLayout
+              height="wrap_content"
+              width="match_parent"
+              id={this.idSet.emailHolder}
+              >
 
 
+                <TextInputView
+                  height="wrap_content"
+                  width="match_parent"
+                  hintText={window.__S.HINT_EMAIL_ID}
+                  labelText={window.__S.EMAIL_ID}
+                  margin="20,0,24,12"
+                  _onChange={this.updateEmail}/>
 
-            <TextInputView
-                height="wrap_content"
-                width="match_parent"
-                hintText={window.__S.HINT_PASSWORD}
-                labelText={window.__S.PASSWORD}
-                inputType="password"
-                margin="20,0,24,12"
-                _onChange={this.updateUserPassword}/>
+            </LinearLayout>
+
+             <LinearLayout
+              height="wrap_content"
+              width="match_parent"
+              id={this.idSet.passwordHolder}>
+
+
+                <TextInputView
+                    height="wrap_content"
+                    width="match_parent"
+                    hintText={window.__S.HINT_PASSWORD}
+                    labelText={window.__S.PASSWORD}
+                    inputType="password"
+                    margin="20,0,24,12"
+                    _onChange={this.updateUserPassword}/>
+
+              </LinearLayout>      
 
             <LinearLayout
               height="wrap_content"
               width="match_parent"
-              id={this.idSet.mobileNumberHolder}
-              visibility={this.isLoginMode?"gone":"visible"}>
+              id={this.idSet.mobileNumberHolder}>
 
               <TextInputView
                 hintText={window.__S.HINT_MOBILE_NUMBER}
@@ -604,16 +530,16 @@ class UserActivity extends View {
             <LinearLayout
               height="wrap_content"
               width="match_parent"
-              id={this.idSet.languageHolder}
-              visibility={this.isLoginMode?"gone":"visible"}>
+              id={this.idSet.languageHolder}>
 
             </LinearLayout>
 
-            {this.getOptions()}
+            
 
          </LinearLayout>
 
-       </ScrollView>)
+       </ScrollView>
+       </LinearLayout>)
   }
 
 
@@ -631,7 +557,7 @@ class UserActivity extends View {
             padding="0,10,0,10"
             gravity="center"
             id={this.idSet.alreadyHaveAccHolder}
-            onClick={this.handleAlreadyHaveAccClick}
+            onClick={this.toggleSignUpForm}
             visibility={this.isLoginMode?"gone":"visible"}
             textFromHtml= {"<font color='#007AFF'><a href=''>"+window.__S.ALREADY_HAVE_ACC+"</a></font>"}
             style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
@@ -642,7 +568,7 @@ class UserActivity extends View {
             padding="0,10,0,10"
             gravity="center"
             id={this.idSet.needAccHolder}
-            onClick={this.handleCreateAccountClick}
+            onClick={this.toggleSignUpForm}
             visibility={this.isLoginMode?"visible":"gone"}
             textFromHtml= {"<font color='#007AFF'><a href=''>"+window.__S.NO_ACC_YET+"</a></font>"}
             style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
@@ -660,24 +586,27 @@ class UserActivity extends View {
         clickable="true"
         padding="0,12,0,0"
         background={window.__Colors.WHITE}
-        afterRender = {this.afterRender}
         height="match_parent">
 
-
-         {this.getTopLayout()}
-
-        <LinearLayout
+         <LinearLayout
           height="0"
           weight="1"
           root="true"
-          id={this.idSet.userForumContainer}
+          layoutTransition="true"
           width="match_parent"
           gravity="center"
           orientation="vertical">
 
+         {this.getTopLayout()}
+
+       
+
          {this.getForum()}
 
+
         </LinearLayout>
+
+        {this.getOptions()}
 
         <LinearLayout
           height="wrap_content"
