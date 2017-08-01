@@ -195,7 +195,7 @@ class ProgressButton extends View {
 
         console.log("progress status", contentProgress)
           // JBridge.setInSharedPrefs(this.props.identifier, JSON.stringify(contentProgress));
-        var url = "https://staging.ntp.net.in/api/course/v1/content/state/update"
+        var url = "https://ntp.net.in/api/course/v1/content/state/update"
         
         console.log("date",date)
 
