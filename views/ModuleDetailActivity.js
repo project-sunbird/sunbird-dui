@@ -113,10 +113,11 @@ class ModuleDetailActivity extends View {
 
     var textToShow = ""
     console.log("DATA -> ", data)
-
+    data.downloadProgress= data.downloadProgress == undefined || isNaN(data.downloadProgress) ? 0 : data.downloadProgress;
     var downloadedPercent = data.downloadProgress;
-    downloadedPercent = (downloadedPercent == undefined || isNaN(downloadedPercent)|| downloadedPercent < 0 )? 0 : downloadedPercent;
+    downloadedPercent =  downloadedPercent < 0 ? 0 : downloadedPercent;
     
+
     if (downloadedPercent == 100) {
 
       console.log("SPINE IMPORTED -> ")
@@ -172,7 +173,7 @@ class ModuleDetailActivity extends View {
   }
 
   handleModuleClick = (moduleName, module) => {
-    var eventAction = { "tag": "OPEN_SubModuleActivity", contents: { "moduleName": moduleName, "moduleDetails": JSON.stringify(module) } };
+    var eventAction = { "tag": "OPEN_AlternateModuleDetailActivity", contents: { "moduleName": moduleName, "moduleDetails": JSON.stringify(module) } };
     window.__runDuiCallback(eventAction);
 
   }

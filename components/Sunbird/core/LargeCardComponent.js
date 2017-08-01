@@ -85,6 +85,8 @@ class ResourceViewAllCard extends View {
 
 
   getBody = () =>{
+    var myProgress = this.props.data.isProgress?this.props.data.footerTitle.split('%')[0]:"0" ;
+    var myProgressColor = myProgress==100 ? window.__Colors.SUCCESS_GREEN : window.__Colors.SAFFRON 
     console.log("data in card content",this.props.data);
     return(
             <LinearLayout
@@ -135,10 +137,10 @@ class ResourceViewAllCard extends View {
 
                   <LinearLayout
                   width="0"
-                  weight={this.props.data.isProgress?this.props.data.footerTitle.split('%')[0]:"0"}
+                  weight={myProgress}
                   height="3"
                   id={this.idSet.leftProgress}
-                  multiCorners={"0,0,0,0,"+window.__Colors.SAFFRON}/>
+                  multiCorners={"6,0,0,0,"+ myProgressColor} />
 
                   <LinearLayout
                   width="0"

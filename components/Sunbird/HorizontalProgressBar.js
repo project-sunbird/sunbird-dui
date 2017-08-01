@@ -31,6 +31,9 @@ class HorizontalProgressBar extends View {
   getProgressBar = () => {
     var percentL = parseFloat(this.currentProgress) / parseFloat(this.totalProgress);
     var percentR = (1 - percentL);
+
+    var myProgressColor = percentL==1 ? window.__Colors.SUCCESS_GREEN : (this.props.progressBarColor===undefined?window.__Colors.ORANGE:this.props.progressBarColor) 
+    
     return (
       <LinearLayout
       height="2"
@@ -39,7 +42,7 @@ class HorizontalProgressBar extends View {
         <ViewWidget
           width="0"
           weight={percentL}
-          background={this.props.progressBarColor===undefined?window.__Colors.ORANGE:this.props.progressBarColor}
+          background={myProgressColor}
           height="2"/>
         <ViewWidget
           width="0"

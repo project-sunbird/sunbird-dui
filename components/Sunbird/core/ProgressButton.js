@@ -33,8 +33,8 @@ class ProgressButton extends View {
     this.isCancelVisible=false;
     console.log("progress button data", this.props)
 
-    console.log("local status content", this.props.localStatus)
-
+    
+    console.log("telemetry info contenttype",this.props.contentDetails)
 
   }
 
@@ -172,78 +172,63 @@ class ProgressButton extends View {
 
   }
   checkTelemetry = (telemetryData) => {
-    console.log("telemetryData", telemetryData);
     telemetryData = JSON.parse(telemetryData);
-    console.log(telemetryData)
-
     if (telemetryData.eid == "OE_END") {
-      console.log("reached end of content");
-      var time = new Date();
-      var date = utils.formatDate(time);
-      var contentProgress = {};
-      console.log("hierarchy info", this.props.contentDetails.hierarchyInfo)
-      
-      contentProgress['contentId'] = this.props.identifier;
-      contentProgress['courseId'] = this.props.contentDetails.hierarchyInfo[0].identifier;
-      contentProgress['status'] = telemetryData.edata.eks.progress == 100 ? 2 : 1;
-      contentProgress['progress'] = telemetryData.edata.eks.progress;
-      contentProgress['lastAccessTime'] = date;
-      if(telemetryData.edata.eks.progress == 100){
-        contentProgress['lastCompletedTime'] = date;
-      }
-      contentProgress['result'] = "pass";
-      contentProgress['grade'] = "B";
-      contentProgress['score'] = "10";
+        console.log("reached end of content");
+        var time = new Date();
+        var date = utils.formatDate(time);
+        var contentProgress = {};
 
-      console.log("progress status", contentProgress)
-        // JBridge.setInSharedPrefs(this.props.identifier, JSON.stringify(contentProgress));
-      var url = "https://staging.ntp.net.in/api/course/v1/content/state/update"
-      
-      console.log("date",date)
+        console.log("hierarchy info", this.props.contentDetails.hierarchyInfo)
+        
+        contentProgress['contentId'] = this.props.identifier;
+        contentProgress['courseId'] = this.props.contentDetails.hierarchyInfo[0].identifier;
+        contentProgress['status'] = telemetryData.edata.eks.progress == 100 ? 2 : 1;
+        contentProgress['progress'] = telemetryData.edata.eks.progress;
+        contentProgress['lastAccessTime'] = date;
+        if(telemetryData.edata.eks.progress == 100){
+          contentProgress['lastCompletedTime'] = date;
+        }
+        contentProgress['result'] = "pass";
+        contentProgress['grade'] = "B";
+        contentProgress['score'] = "10";
 
-      // if(telemetryData.edata.eks.length)
-      var requestObject = {};
+        console.log("progress status", contentProgress)
+          // JBridge.setInSharedPrefs(this.props.identifier, JSON.stringify(contentProgress));
+        var url = "https://ntp.net.in/api/course/v1/content/state/update"
+        
+        console.log("date",date)
 
+        // if(telemetryData.edata.eks.length)
+        var requestObject = {};
 
-      // var body = {
-      //           "id":"unique API ID",
-      //           "ts":"response timestamp YYYY-MM-DDThh:mm:ss+/-nn:nn (timezone defaulted to +5.30)",
-      //             "params": {
-                       
-      //               },
-      //           "request":{
-      //               "userId": window.__userToken,
-      //             "contents":[
-      //                     {
-      //                     "contentId":this.props.identifier,
-      //                     "status": telemetryData.edata.eks.progress == 100 ? 2 : 1,
-      //                     "lastAccessTime": date,
-      //                     "lastCompletedTime": telemetryData.edata.eks.progress == 100 ? date : "",
-      //                      "courseId":this.props.contentDetails.hierarchyInfo[0].identifier,
-      //                      "result":"pass",
-      //                      "score":"",
-      //                      "grade":"",
-      //                      progress: telemetryData.edata.eks.progress
-                       
-      //                     }
-      //              ]
-      //             }
-      //           }
-      var body = {
-                "id":"unique API ID",
-                "ts":"response timestamp YYYY-MM-DDThh:mm:ss+/-nn:nn (timezone defaulted to +5.30)",
-                  "params": {
-                       
-                    },
-                "request":{
-                    "userId": window.__userToken,
-                  "contents":[
-                          contentProgress
-                   ]
+        var body = {
+                  "id":"unique API ID",
+                  "ts":"response timestamp YYYY-MM-DDThh:mm:ss+/-nn:nn (timezone defaulted to +5.30)",
+                    "params": {
+                         
+                      },
+                  "request":{
+                      "userId": window.__userToken,
+                    "contents":[
+                            contentProgress
+                     ]
+                    }
                   }
-                }
-      console.log("calling patch request",body)
-      JBridge.patchApi(url,JSON.stringify(body),window.__userToken,window.__apiToken);
+        
+          
+    var callback = callbackMapper.map(function(data){
+        console.log(data)
+        if(data[0] == "true"){
+            console.log("calling patch request",body)
+            JBridge.patchApi(url,JSON.stringify(body),window.__userToken,window.__apiToken);
+          }
+          JBridge.stopEventBus();
+      })
+      JBridge.getContentType(this.props.contentDetails.hierarchyInfo[0].identifier,callback)
+
+
+      
       // var sharedData = JBridge.getFromSharedPrefs(this.props.identifier)
     }
     // JBridge.syncTelemetry();

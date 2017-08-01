@@ -17,7 +17,7 @@ var CropParagraph = require('../components/Sunbird/CropParagraph');
 var CourseCurriculum = require('../components/Sunbird/CourseCurriculum');
 var HorizontalProgressBar = require('../components/Sunbird/HorizontalProgressBar');
 var CourseProgress = require('../components/Sunbird/CourseProgress');
-
+var utils = require('../utils/GenericFunctions');
 var _this;
 class CourseEnrolledActivity extends View {
   constructor(props, children, state) {
@@ -45,10 +45,10 @@ class CourseEnrolledActivity extends View {
 
     //this.checkContentLocalStatus(this.details.identifier);
     this.details = JSON.parse(state.data.value0.courseDetails);
-    console.log("GOT VALUES CES", this.details)
+    console.log("detials in CES",this.details)
     this.downloadProgress = this.details.leafNodesCount == null? 0 : (this.details.progress/this.details.leafNodesCount)*100;
-    this.downloadProgress = parseInt(this.downloadProgress)
-    console.log("this.downloadProgress",this.downloadProgress)
+    this.downloadProgress = parseInt(isNaN(this.downloadProgress)?0:this.downloadProgress)
+
     //to get geneie callback for download of spine
     window.__getDownloadStatus = this.getSpineStatus;
 
@@ -191,8 +191,9 @@ class CourseEnrolledActivity extends View {
     var textToShow = ""
     console.log("DATA -> ", data)
 
-    var downloadedPercent = parseInt(data.downloadProgress);
-    downloadedPercent = downloadedPercent < 0 ? 0 : downloadedPercent;
+    data.downloadProgress= data.downloadProgress == undefined || isNaN(data.downloadProgress) ? 0 : data.downloadProgress;
+    var downloadedPercent = data.downloadProgress;
+    downloadedPercent =  downloadedPercent < 0 ? 0 : downloadedPercent;
 
     if (downloadedPercent == 100) {
 
@@ -216,7 +217,9 @@ class CourseEnrolledActivity extends View {
       if (status == "true") {
         console.log("Spine Found")
         var callback1 = callbackMapper.map(function(data) {
-          _this.courseContent = JSON.parse(data);
+          console.log(data)
+          data[0] = data [0].replace(/\t/g, ' ');
+          _this.courseContent = JSON.parse(data[0]);
           _this.renderCourseChildren()
         });
         JBridge.getChildContent(identifier, callback1)

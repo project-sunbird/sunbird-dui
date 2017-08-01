@@ -121,8 +121,9 @@ overFlowCallback = (params) => {
         var textToShow = ""
         console.log("DATA -> ", data)
 
+         data.downloadProgress= data.downloadProgress == undefined || isNaN(data.downloadProgress) ? 0 : data.downloadProgress;
         var downloadedPercent = data.downloadProgress;
-        downloadedPercent = (downloadedPercent == undefined ||isNaN(downloadedPercent)||  downloadedPercent < 0 )? 0 : downloadedPercent;
+        downloadedPercent =  downloadedPercent < 0 ? 0 : downloadedPercent;
         if (downloadedPercent == 100) {
 
             console.log("SPINE IMPORTED -> ")
