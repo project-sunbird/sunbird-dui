@@ -17,7 +17,7 @@ var CropParagraph = require('../components/Sunbird/CropParagraph');
 var CourseCurriculum = require('../components/Sunbird/CourseCurriculum');
 var HorizontalProgressBar = require('../components/Sunbird/HorizontalProgressBar');
 var CourseProgress = require('../components/Sunbird/CourseProgress');
-
+var utils = require('../utils/GenericFunctions');
 var _this;
 class CourseEnrolledActivity extends View {
   constructor(props, children, state) {
@@ -217,7 +217,9 @@ class CourseEnrolledActivity extends View {
       if (status == "true") {
         console.log("Spine Found")
         var callback1 = callbackMapper.map(function(data) {
-          _this.courseContent = JSON.parse(data);
+          console.log(data)
+          data[0] = data [0].replace(/\t/g, ' ');
+          _this.courseContent = JSON.parse(data[0]);
           _this.renderCourseChildren()
         });
         JBridge.getChildContent(identifier, callback1)
