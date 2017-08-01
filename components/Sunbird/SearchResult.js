@@ -92,17 +92,20 @@ class SearchResult extends View {
     var itemDetails = JSON.stringify(item);
 
     if(item.contentType.toLowerCase() == "course"){
+      
       var whatToSend={course:itemDetails};
       var event={tag:"OPEN_CourseInfoActivity_SEARCH",contents:whatToSend}
       window.__runDuiCallback(event);
     }
     else if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "TextBook"){
+      
       var whatToSend={course:itemDetails};
       var event={tag:"OPEN_CourseEnrolledActivity_SEARCH",contents:whatToSend}
       window.__runDuiCallback(event);
     }
     else
     {
+
       var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");      
       var resDetails = {};
       resDetails['imageUrl'] = item.appIcon;

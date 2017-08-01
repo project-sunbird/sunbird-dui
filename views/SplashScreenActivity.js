@@ -20,7 +20,7 @@ class SplashScreenActivity extends View {
     window.__apiToken = JBridge.get
     this.getUserToken()
     window.__pressedLoggedOut=false;
-
+    
   }
 
   onPop = () => {
@@ -43,7 +43,7 @@ class SplashScreenActivity extends View {
   }
 
   afterRender = () => {
-    // JBridge.syncTelemetry();
+    JBridge.syncTelemetry();
     console.log("in after bmvjjkfjf")
     if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "false") {
       this.setPermissions();
