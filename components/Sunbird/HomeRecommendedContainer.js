@@ -124,33 +124,57 @@ class HomeRecommendedContainer extends View {
 
   render() {
       this.layout = (
-        <LinearLayout
-          height="match_parent"
-          width="match_parent"
-          orientation="vertical">
+        <RelativeLayout
+      root="true"
+      clickable="false"
+      width="match_parent"
+      height="250">
 
-          {this.getHeader()}
+            <LinearLayout
+              height="match_parent"
+              width="match_parent"
+              orientation="vertical">
 
-          <HorizontalScrollView
-           width = "wrap_content"
-           height = "wrap_content"
-           scrollBarX="false"
-           fillViewport="true">
+              {this.getHeader()}
 
-           <LinearLayout
-                    padding="0,0,16,0"
-                    width="match_parent"
-                    height="wrap_content">
+              <HorizontalScrollView
+               width = "wrap_content"
+               height = "wrap_content"
+               scrollBarX="false"
+               fillViewport="true">
 
-           {this.getRows()}
+               <LinearLayout
+                        padding="0,0,16,0"
+                        width="match_parent"
+                        height="wrap_content">
 
-         </LinearLayout>
+               {this.getRows()}
+
+             </LinearLayout>
 
 
 
-          </HorizontalScrollView>
+              </HorizontalScrollView>
 
-         </LinearLayout>
+             </LinearLayout>
+
+             <LinearLayout
+                width="match_parent"
+                background={window.__Colors.WHITE}
+                alpha = "0.9"
+                gravity="center"
+                height="match_parent">
+
+                  <TextView
+                  gravity="center"
+                  width="match_parent"
+                  height="match_parent"
+                  style ={window.__TextStyle.textStyle.NOTHING}
+                  text="Coming Soon.."/>
+
+               </LinearLayout>
+
+        </RelativeLayout>
     )
 
     return this.layout.render();

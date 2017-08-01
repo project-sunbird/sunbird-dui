@@ -279,12 +279,12 @@ class HomeFragment extends View {
 
 
                    {this.getSpaceSeparator()}
-
-                   <HomeRecommendedContainer
-                   title= "Recommended"
-                   onCourseOpenClick = {this.handleCourseOpen}
-                   onResourceOpenClick = {this.handleResourceOpen}/>
-                   
+                  
+                    <HomeRecommendedContainer
+                         title= "Recommended"
+                         onCourseOpenClick = {this.handleCourseOpen}
+                         onResourceOpenClick = {this.handleResourceOpen}/>
+                  
 
                </LinearLayout>
 
