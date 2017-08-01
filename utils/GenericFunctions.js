@@ -25,6 +25,8 @@ exports.jsonifyData = (data) =>{
                .replace(/\\r/g, "\\r")
                .replace(/\\t/g, "\\t")
                .replace(/\\b/g, "\\b")
+               .replace(/\t/g, ' ')
+               .replace(/\n/g, ' ')
                .replace(/\\f/g, "\\f");
       data = data.replace(/[\u0000-\u0019]+/g,"");
 
