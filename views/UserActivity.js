@@ -333,7 +333,7 @@ class UserActivity extends View {
   }
 
   handleLoginClick = () => {
-    JBridge.keyCloakLogin("https://dev.open-sunbird.org/auth/realms/sunbird/protocol/openid-connect/auth","android");
+    JBridge.keyCloakLogin("https://ntp.net.in/auth/realms/sunbird/protocol/openid-connect/auth","android");
   }
 
   handleForgotPasscode = ()=>{
