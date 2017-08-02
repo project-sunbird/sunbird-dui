@@ -178,6 +178,12 @@ class MainActivity extends View {
     }
 
     if (state.responseFor == "API_UserEnrolledCourse") {
+      var enrolled = [];
+      responseData.result.courses.map((item)=>{
+        enrolled.push(item.courseId);
+      });
+      console.log("enrolled ids",enrolled)
+      window.__enrolledCourseIds = enrolled;
       window.setEnrolledCourses(responseData.result.courses);
       
       return;

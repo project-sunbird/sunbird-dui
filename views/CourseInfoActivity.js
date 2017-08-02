@@ -245,12 +245,23 @@ class CourseInfoActivity extends View {
 
   afterRender = () => {
     console.log("progress CIA",this.details)
-    if (this.details.isProgress == "true") {
-      var whatToSend = { "course": this.state.data.value0.courseDetails }
-      var event = { tag: 'OPEN_EnrolledActivity', contents: whatToSend }
-      window.__runDuiCallback(event);
+    
+    var enrolledIds = window.__enrolledCourseIds;
+    enrolledIds.map((item)=>{
+      if(item == this.details.identifier){
+          var whatToSend = { "course": this.state.data.value0.courseDetails }
+          var event = { tag: 'OPEN_EnrolledActivity', contents: whatToSend }
+          window.__runDuiCallback(event);
 
-    }
+      }
+    })
+
+    // if (this.details.isProgress == "true") {
+      // var whatToSend = { "course": this.state.data.value0.courseDetails }
+      // var event = { tag: 'OPEN_EnrolledActivity', contents: whatToSend }
+      // window.__runDuiCallback(event);
+
+    // }
 
   }
 
