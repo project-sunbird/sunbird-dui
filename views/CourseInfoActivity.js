@@ -244,6 +244,7 @@ class CourseInfoActivity extends View {
   }
 
   afterRender = () => {
+    console.log("progress CIA",this.details)
     if (this.details.isProgress == "true") {
       var whatToSend = { "course": this.state.data.value0.courseDetails }
       var event = { tag: 'OPEN_EnrolledActivity', contents: whatToSend }

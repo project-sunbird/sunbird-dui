@@ -47,7 +47,7 @@ class ProfileHeader extends View {
               <TextView
               width="wrap_content"
               height="wrap_content"
-              text="Jawahar Vidya Mandir, Pune"
+              text=""
               padding="0,0,0,8"
               style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>
 
