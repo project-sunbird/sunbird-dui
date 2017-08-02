@@ -31,6 +31,7 @@ const stringsRes = {
 		EMPTY_SEARCH_RESULTS : "No Search Results Found",
 		SIGN_UP_SUCCESS : "Sign Up Completed",
 		RETRY_ACTION : "Please retry",
+		ERROR_EMPTY_FIELDS : "Please fill all the details",
 		ERROR_EMPTY_FIRSTNAME : "Please enter the first name",
 		ERROR_EMPTY_USERNAME : "Please enter the user name",
 		ERROR_EMPTY_EMAIL : "Please enter the email",
