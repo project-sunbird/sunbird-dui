@@ -243,7 +243,7 @@ class SearchActivity extends View {
 
     });
     console.log("searchText",searchText)
-    if (searchText.length > 2) {
+    // if (searchText.length > 2) {
       if (this.filterData!=undefined && this.filterData.length == 0) {
         status = "false";
       } else {
@@ -271,7 +271,7 @@ class SearchActivity extends View {
       console.log("this.filterData", typeof(this.filterData));
 
       JBridge.searchContent(callback, JSON.stringify(this.filterData), searchText, this.searchType, flag);
-    }
+    // }
     this.showFilter();
   }
 

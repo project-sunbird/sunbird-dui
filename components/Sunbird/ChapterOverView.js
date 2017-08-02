@@ -46,17 +46,14 @@ class ChapterOverView extends View {
        gravity="center_vertical">
 
          <TextView
-         width="wrap_content"
+         width="0"
+         weight="1"
          height="wrap_content"
          gravity="center_vertical"
          text={this.chapterName}
          enableEllipse = "true"
          style={window.__TextStyle.textStyle.CARD.HEADING}/>
 
-         <ViewWidget
-         width="0"
-         height="0"
-         weight="1"/>
 
          <ImageView
          width="32"
