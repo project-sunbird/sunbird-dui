@@ -30,7 +30,7 @@ class ResourceContainer extends View {
       if(this.data==undefined)
           this.data=[];
       var rows = this.data.map((item, i) => {
-
+      console.log("item in RC",item)
       var size = item.hasOwnProperty("size") ? " ["+ utils.formatBytes(item.size)+"]" : "";
       var footerTitle = item.contentType + size;
 
@@ -38,8 +38,9 @@ class ResourceContainer extends View {
       var temp = {};
       temp['imageUrl'] = item.hasOwnProperty("appIcon")?item.appIcon:"ic_action_resource";
       temp['title'] = item.name;
-      temp['footerTitle'] = footerTitle;
       temp['footerSubTitle'] = item.contentType;
+      temp['footerTitle'] = "";
+      temp['stars'] = item.hasOwnProperty("me_averageRating")? item.me_averageRating+ "" : "0";
       temp['actionText'] = "OPEN";
 
       return (<CardComponent 

@@ -113,9 +113,10 @@ class ResourceDetailActivity extends View {
 
   afterRender = () => {
     this.checkLocalStatus(this.details);
+    console.log("this.details in RDA",this.details)
 
-    if(this.details && this.details.contentData && this.details.contentData.rating){
-    JBridge.setRating(this.idSet.ratingBar, this.details.contentData.rating);
+    if(this.details && this.details.content && this.details.content.me_averageRating){
+    JBridge.setRating(this.idSet.ratingBar, this.details.content.me_averageRating);
     }else{
       var layout=(<TextView
           text="Unrated"
@@ -136,6 +137,7 @@ class ResourceDetailActivity extends View {
 
 
   getBody = () => {
+
     return (
       <LinearLayout
       width="match_parent"
@@ -155,6 +157,7 @@ class ResourceDetailActivity extends View {
         height="wrap_content"
         text={this.details.description||this.details.content.contentData.description}
         style={window.__TextStyle.textStyle.CARD.TITLE.REGULAR_BLACK}/>
+
 
         <TextView
         margin="0,16,0,0"
@@ -291,7 +294,7 @@ class ResourceDetailActivity extends View {
             <TextView
             width="wrap_content"
             height="wrap_content"
-            text="0"
+            text={this.details.hasOwnProperty("content")&& this.details.content.hasOwnProperty("me_totalDownloads") ? this.details.content.me_totalDownloads : "0"}
             style={window.__TextStyle.textStyle.HINT.DULL}/>
 
           </LinearLayout>

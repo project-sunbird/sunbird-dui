@@ -210,6 +210,7 @@ class CourseInfoActivity extends View {
   }
 
 
+
   renderCourseChildren = () => {
     console.log("RENDRING BREKAUP", this.courseContent)
     var layout;

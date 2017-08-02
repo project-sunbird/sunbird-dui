@@ -10,7 +10,9 @@ var Button = require('../Sunbird/Button');
 var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 var _this;
+var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 var CardComponent = require('../Sunbird/core/CardComponent');
+var utils = require('../../utils/GenericFunctions');
 
 
 class CourseContainer extends View {
@@ -53,13 +55,17 @@ class CourseContainer extends View {
   }
 
   geCardLayout = (item) => {
+    var size = item.hasOwnProperty("size") ? "  Size ["+ utils.formatBytes(item.size)+"]" : "";
+
     var temp = {
         imageUrl: (item.appIcon ? item.appIcon : "ic_action_course"),
         title: item.name,
         actionText: "OPEN",
-        footerTitle : "Unrated",
-        footerSubTitle: "No votes yet",
+        footerTitle : "",
+        stars : item.hasOwnProperty("me_averageRating")? item.me_averageRating+ "" : "0",
+        footerSubTitle: size,
     };
+
 
       return (<CardComponent 
                  data={temp}
@@ -102,10 +108,24 @@ class CourseContainer extends View {
 
 
   handleCardClick = (content, type) => {
-    this.props.onCourseClick(content, type);
 
+
+    var callback = callbackMapper.map(function(data) {
+
+      if (data == "android.permission.WRITE_EXTERNAL_STORAGE") {
+        JBridge.setKey("isPermissionSetWriteExternalStorage", "true");
+        _this.props.onCourseClick(content, type);
+
+      }
+
+    });
+
+    JBridge.setPermissions(callback,"android.permission.WRITE_EXTERNAL_STORAGE");
+    
   }
 
+
+  
 
 
 
