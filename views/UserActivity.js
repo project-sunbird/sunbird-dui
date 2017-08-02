@@ -164,6 +164,11 @@ class UserActivity extends View {
     
 
     if (status === "failure" || status=="f") {
+      if (response.params.err) {
+        console.log("\n\nEROR  :", response.params)
+        JBridge.showSnackBar(response.params.errmsg)
+        return;
+      }
       JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION)
       return;
     }
@@ -172,11 +177,7 @@ class UserActivity extends View {
 
     var result = response.result;
 
-    if (response.params.err) {
-      console.log("\n\nEROR  :", response.params)
-      JBridge.showSnackBar(response.params.errmsg)
-      return;
-    }
+    
 
     switch (state.responseFor + "") {
       case "API_SignUp":
