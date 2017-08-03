@@ -198,8 +198,9 @@ class CourseInfoActivity extends View {
       } else {
          var callback22= callbackMapper.map(function(data){
           data = JSON.parse(data)
-          if(data.status==="NOT_FOUND")
-          JBridge.importCourse(identifier,"false")
+          if(data.status==="NOT_FOUND"){
+            JBridge.importCourse(identifier,"false")
+          }
         })
 
         JBridge.getContentImportStatus(identifier,callback22)
@@ -318,18 +319,24 @@ class CourseInfoActivity extends View {
   }
 
   handleEnrollClick = (data) => {
-    console.log("---->\t", "handleEnrollClick");
-    window.__LoaderDialog.show();
+    if(JBridge.isNetworkAvailable()){
 
-    var whatToSend = { "user_token":window.__userToken,
-    "reqParams": this.details.identifier,
-    "api_token": window.__apiToken }
-    var event = {
-      "tag": "API_EnrollCourse",
-      "contents": whatToSend
+        console.log("---->\t", "handleEnrollClick");
+        window.__LoaderDialog.show();
+
+        var whatToSend = { "user_token":window.__userToken,
+        "reqParams": this.details.identifier,
+        "api_token": window.__apiToken }
+        var event = {
+          "tag": "API_EnrollCourse",
+          "contents": whatToSend
+        }
+        
+        window.__runDuiCallback(event);
     }
-    
-    window.__runDuiCallback(event);
+    else{
+      JBridge.showSnackBar(window.__S.NO_INTERNET)
+    }
   }
 
   onBackPressed = () => {

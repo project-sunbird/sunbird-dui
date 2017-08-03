@@ -156,8 +156,12 @@ overFlowCallback = (params) => {
                  var callback22= callbackMapper.map(function(data){
                         console.log("data",data)
                         data = JSON.parse(data)
-                      if(data.status==="NOT_FOUND")
-                       JBridge.importCourse(identifier,"false")
+                      if(data.status==="NOT_FOUND"){
+                           if(JBridge.isNetworkAvailable())
+                            JBridge.importCourse(identifier,"false")
+                          else
+                            JBridge.showSnackBar(window.__S.NO_INTERNET)
+                      }
                       else{
                         _this.renderModuleChildren()
                       }

@@ -36,7 +36,11 @@ class HomeFragment extends View {
       ]
     }
     console.log("home component api token",window.__apiToken)
-    
+    var callbackk = callbackMapper.map(function(data){
+      console.log("response for ecar\n\n\n\n\n\n\n\n",data)
+    })
+
+    JBridge.exportEcar("do_3122981820378316802102",callbackk);
     this.recommendedServerData = {
       "display": {
         "title": {

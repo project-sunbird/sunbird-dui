@@ -244,19 +244,22 @@ class CourseEnrolledActivity extends View {
       } else {
         console.log("Spine Not Found, IMPORTING ")
       
-        var callback22= callbackMapper.map(function(data){
-          console.log(data)
-          data = JSON.parse(data)
-          if(data.status==="NOT_FOUND"){
-            console.log("Import")
-            JBridge.importCourse(identifier,"false")
-          }
-          else{
-            this.checkContentLocalStatus(identifier)
-          }
-        })
+          var callback22= callbackMapper.map(function(data){
+            console.log(data)
+                data = JSON.parse(data)
+                if(data.status==="NOT_FOUND"){
+                      console.log("Import")
+                      if(JBridge.isNetworkAvailable())
+                        JBridge.importCourse(identifier,"false")
+                      else
+                        JBridge.showSnackBar(window.__S.NO_INTERNET)
+                }
+                else{
+                  this.checkContentLocalStatus(identifier)
+                }
+          })
 
-        JBridge.getContentImportStatus(identifier,callback22) 
+          JBridge.getContentImportStatus(identifier,callback22) 
       }
 
     });
