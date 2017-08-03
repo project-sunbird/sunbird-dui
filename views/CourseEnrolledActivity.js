@@ -43,18 +43,32 @@ class CourseEnrolledActivity extends View {
 
 
 
-    //this.checkContentLocalStatus(this.details.identifier);
-    this.details = JSON.parse(state.data.value0.courseDetails);
-    console.log("detials in CES",this.details)
-    this.downloadProgress = this.details.leafNodesCount == null? 0 : (this.details.progress/this.details.leafNodesCount)*100;
-    this.downloadProgress = parseInt(isNaN(this.downloadProgress)?0:this.downloadProgress)
 
+    this.enrolledCourses = window.__enrolledCourses;
+    //this.checkContentLocalStatus(this.details.identifier);
+    
+    this.details = JSON.parse(state.data.value0.courseDetails);
+    
+    console.log("detials in CES",this.details)
+    
     //to get geneie callback for download of spine
     window.__getDownloadStatus = this.getSpineStatus;
 
     this.showProgress = this.details.hasOwnProperty("contentType") && this.details.contentType == "collection" || this.details.contentType == "TextBook" ? "gone" : "visible";
     console.log("\n\n\n\n progress",this.showProgress)
     this.baseIdentifier = this.details.identifier ? this.details.identifier : this.details.contentId;
+
+
+    console.log("enrolled courses details",window.__enrolledCourses)
+    window.__enrolledCourses.map((item)=>{
+      if(this.baseIdentifier == item.courseId){
+        this.enrolledCourses = item;
+      }
+    })
+
+
+    this.downloadProgress = this.details.leafNodesCount == null? 0 : (this.enrolledCourses.progress/this.enrolledCourses.leafNodesCount)*100;
+    this.downloadProgress = parseInt(isNaN(this.downloadProgress)?0:this.downloadProgress)
 
     this.data = {
       courseName: this.details ? this.details.courseName : "",
@@ -159,22 +173,22 @@ class CourseEnrolledActivity extends View {
     );
   }
 
-  getContentState = (courseId,userToken) =>{
-    var whatToSend = { 
-      "courseId": courseId, 
-      "user_token": userToken, 
-      "api_token": window.__apiToken 
-    }
-    var event = { "tag": "API_GetContentState", contents: whatToSend };
-    window.__runDuiCallback(event);
+  // getContentState = (courseId,userToken) =>{
+  //   var whatToSend = { 
+  //     "courseId": courseId, 
+  //     "user_token": userToken, 
+  //     "api_token": window.__apiToken 
+  //   }
+  //   var event = { "tag": "API_GetContentState", contents: whatToSend };
+  //   window.__runDuiCallback(event);
 
-  }
+  // }
 
 
 
   afterRender = () => {
     this.checkContentLocalStatus(this.baseIdentifier);
-    this.getContentState(this.baseIdentifier,window.__userToken);
+    // this.getContentState(this.baseIdentifier,window.__userToken);
 
   }
 

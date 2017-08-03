@@ -247,9 +247,9 @@ class CourseInfoActivity extends View {
   afterRender = () => {
     console.log("progress CIA",this.details)
     
-    var enrolledIds = window.__enrolledCourseIds;
+    var enrolledIds = window.__enrolledCourses;
     enrolledIds.map((item)=>{
-      if(item == this.details.identifier){
+      if(item.courseId == this.details.identifier){
           var whatToSend = { "course": this.state.data.value0.courseDetails }
           var event = { tag: 'OPEN_EnrolledActivity', contents: whatToSend }
           window.__runDuiCallback(event);
@@ -257,12 +257,6 @@ class CourseInfoActivity extends View {
       }
     })
 
-    // if (this.details.isProgress == "true") {
-      // var whatToSend = { "course": this.state.data.value0.courseDetails }
-      // var event = { tag: 'OPEN_EnrolledActivity', contents: whatToSend }
-      // window.__runDuiCallback(event);
-
-    // }
 
   }
 
