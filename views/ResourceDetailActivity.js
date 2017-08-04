@@ -117,7 +117,10 @@ class ResourceDetailActivity extends View {
 
     if(this.details && this.details.content && this.details.content.me_averageRating){
     JBridge.setRating(this.idSet.ratingBar, this.details.content.me_averageRating);
-    }else{
+    }else if(this.details.content.hasOwnProperty("contentData") && this.details.content.contentData.hasOwnProperty("me_averageRating")){
+      JBridge.setRating(this.idSet.ratingBar, this.details.content.contentData.me_averageRating);
+    }
+    else{
       var layout=(<TextView
           text="Unrated"
           style={window.__TextStyle.textStyle.HINT.TINY}/>)
