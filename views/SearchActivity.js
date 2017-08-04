@@ -52,6 +52,8 @@ class SearchActivity extends View {
     this.searchType = this.tempData.searchType;
     console.log("type", this.searchType);
 
+    window.searchData = this.logSearch;
+
     _this = this;
     // this.checkSearchList(this.filterData.length, this.filterData);
   }
@@ -218,11 +220,15 @@ class SearchActivity extends View {
     this.searchTextValue = data;
   }
 
+  logSearch = (data) =>{
+    console.log("data from search",data)
+  }
 
   getSearchList=(searchText,flag)=> {
 
     console.log("oin get search List",searchText);
     var callback = callbackMapper.map(function(data) {
+      console.log("search data from api",data)
       console.log("search results", JSON.parse(data[1]));
       _this.filterData = data[1];
       if (searchText == "" || data[0] == "[]") {

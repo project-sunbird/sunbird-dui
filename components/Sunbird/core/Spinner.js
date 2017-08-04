@@ -15,7 +15,7 @@ class Spinner extends View{
     return (<spinner
               id = {this.props.id}
               width={this.props.width}
-              fontStyle={this.props.fontStyle || "clearsans_regular" }
+              fontStyle={this.props.fontStyle}
               height={this.props.height}
               values={this.props.values||this.props.missingText}
               onItemClick = {this.props.onItemClick}/>)
