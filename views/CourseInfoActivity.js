@@ -36,9 +36,9 @@ class CourseInfoActivity extends View {
     this.screenName = "CourseInfoActivity"
       // console.log("GOT STATE", JSON.stringify(state))
       // window.__RootScreen.snackBar("Hellllllo")
+    
     this.menuData = {
       url: [
-
       ]
     }
 
@@ -217,9 +217,9 @@ class CourseInfoActivity extends View {
 
   renderCourseChildren = () => {
     console.log("RENDRING BREKAUP", this.courseContent)
-    var layout;
+    var child;
     if(this.courseContent.children==undefined){
-      layout = <TextView
+      child = <TextView
                   height="300"
                   width="match_parent"
                   gravity="center"
@@ -227,7 +227,7 @@ class CourseInfoActivity extends View {
                   text="Contents not added yet" />
     }
     else{
-       layout = (<CourseCurriculum
+       child = (<CourseCurriculum
                   height="match_parent"
                   root="true"
                   margin="0,0,0,12"
@@ -236,6 +236,24 @@ class CourseInfoActivity extends View {
                   content= {this.courseContent.children}
                   width="match_parent"/>)
       }
+
+      var layout = (
+        <LinearLayout
+        orientation="vertical"
+        width="match_parent"
+        height="wrap_content">
+
+        <TextView
+        width="wrap_content"
+        height="wrap_content"
+        margin="0,16,0,0"
+        style={window.__TextStyle.textStyle.CARD.TITLE.DARK}
+        text="Structure"/>
+
+        {child}
+
+        </LinearLayout>
+        )
     this.replaceChild(this.idSet.descriptionContainer, layout.render(), 0)
   }
 
@@ -366,9 +384,29 @@ class CourseInfoActivity extends View {
   }
 
 
+
+
+
+  logout = () =>{
+    JBridge.showSnackBar("Logged out")
+    JBridge.setInSharedPrefs("logged_in","NO");
+    JBridge.setInSharedPrefs("user_id", "__failed");
+    JBridge.setInSharedPrefs("user_name",  "__failed");
+    JBridge.setInSharedPrefs("user_token",  "__failed");
+
+    console.log("IN P1 ",window.__pressedLoggedOut)
+    window.__pressedLoggedOut=true;
+    console.log("IN P2 ",window.__pressedLoggedOut)
+    JBridge.keyCloakLogout("https://dev.open-sunbird.org/auth/realms/sunbird/protocol/openid-connect/logout");
+    
+    window.__Logout();
+  }
+
+
   render() {
     var buttonList = ["ENROLL FOR THIS COURSE"];
     this.layout = (
+
       <LinearLayout
         root="true"
         afterRender={this.afterRender()}
@@ -378,12 +416,13 @@ class CourseInfoActivity extends View {
         height="match_parent">
 
         <SimpleToolbar
-          title={""}
-          menuData={this.menuData}
-          onBackPress={this.onBackPressed}
-          width="match_parent"
-          invert="true"
-          showMenu="true"/>
+            title=""
+            width="match_parent"
+            menuData={this.menuData}
+            showMenu="true"
+            onBackPress={this.onBackPressed}
+            invert="true"/>
+
         <LinearLayout
           height="match_parent"
           orientation="vertical"
@@ -457,6 +496,8 @@ class CourseInfoActivity extends View {
             </LinearLayout>
 
       </LinearLayout>
+
+       
     );
 
     return this.layout.render();

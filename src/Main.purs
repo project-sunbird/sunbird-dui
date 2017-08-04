@@ -42,7 +42,19 @@ userActivity = do
             _ <- sendUpdatedState {response : responseData, responseFor : "API_SignUp", screen:"asas"} 
             pure $ "Aborted 3"
         OPEN_MainActivity -> mainActivity "{}" "UserActivity" "{}" 
+        OPEN_Deeplink {intentData:details} -> resourceDetailActivity details "Deeplink" details
         _ -> pure $ "UserActivity"
+
+
+resourceDetailActivity input whereFrom whatToSendBack = do
+    event <- ui $ ResourceDetailActivity {resourceDetails : input}
+    case event of
+        BACK_ResourceDetailActivity -> case whereFrom of
+            "Deeplink" -> mainActivity "{}" "UserActivity" "{}" 
+            _ -> resourceFragment whatToSendBack "Terminate" input
+        _ -> resourceDetailActivity input whereFrom whatToSendBack
+
+
 
 mainActivity input whereFrom whatToSendBack = do
     event <- ui $ MainActivity

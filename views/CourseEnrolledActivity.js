@@ -17,6 +17,8 @@ var CropParagraph = require('../components/Sunbird/CropParagraph');
 var CourseCurriculum = require('../components/Sunbird/CourseCurriculum');
 var HorizontalProgressBar = require('../components/Sunbird/HorizontalProgressBar');
 var CourseProgress = require('../components/Sunbird/CourseProgress');
+var FlagPopup = require('../components/Sunbird/FlagPopup');
+var SharePopup = require('../components/Sunbird/SharePopup');
 var utils = require('../utils/GenericFunctions');
 var _this;
 class CourseEnrolledActivity extends View {
@@ -34,9 +36,15 @@ class CourseEnrolledActivity extends View {
 
     this.menuData = {
       url: [
-
+        { imageUrl: "ic_action_share_black" },
+        { imageUrl: "ic_action_bookmark" },
+        { imageUrl: "ic_action_overflow" },
       ]
     }
+
+    this.popupMenu="Flag/Report content,Logout";
+
+
     _this = this;
     this.shouldCacheScreen = false;
     this.courseContent = "";
@@ -295,7 +303,7 @@ class CourseEnrolledActivity extends View {
                   text="Contents not added yet" />
     }else{
      layout = (
-                  <CourseCurriculum
+                <CourseCurriculum
                   height="match_parent"
                   root="true"
                   margin="0,0,0,12"
@@ -318,10 +326,37 @@ class CourseEnrolledActivity extends View {
    window.__runDuiCallback(event);
   }
 
+  afterRender=()=>{
+  
+  }
+
+
+  overFlowCallback = (params) => {
+    if(params == 0){
+      window.__FlagPopup.show();
+    }else if(params == 1){
+      this.logout();
+    }
+  }
+
+  handleMenuClick = (url) =>{
+    console.log("menu item clicked",url);
+    if(url=="ic_action_share_black"){
+      window.__SharePopup.show();
+    }
+  }
+
 
   render() {
     var buttonList = ["ENROLL FOR THIS COURSE"];
     this.layout = (
+
+      <RelativeLayout
+      width="match_parent"
+      height="match_parent"
+      afterRender={this.afterRender}
+      root="true">
+
       <LinearLayout
         root="true"
         background={window.__Colors.WHITE}
@@ -330,65 +365,69 @@ class CourseEnrolledActivity extends View {
         height="match_parent">
 
         <SimpleToolbar
-          title={""}
-          menuData={this.menuData}
-          onBackPress={this.onBackPressed}
-          width="match_parent"
-          invert="true"
-          showMenu="true"/>
-
-        <HorizontalProgressBar
-          currentProgress={this.data.completedProgress}
-          totalProgress={this.data.totalProgress}
-          width="match_parent"
-          height="wrap_content"
-          visibility = {this.showProgress}
-
-          />
-
-        <LinearLayout
-          height="match_parent"
-          orientation="vertical"
-          id={this.idSet.parentContainer}
-          width="match_parent">
-
-          <ScrollView
-              height="0"
-              weight="1"
-              width="match_parent"
-              fillViewPort="true">
-              <LinearLayout
-                height="match_parent"
-                width="match_parent"
-                root="true"
-                padding="16,24,16,16"
-                orientation="vertical">
-
-                  <CourseProgress
-                      height="wrap_content"
-                      width="wrap_content"
-                      content={this.data}
-                      title={this.data.courseName || this.details.name || this.details.contentData.name}
-                      onResumeClick={this.handleCourseResume}
-                      visibility = {this.showProgress}
-                      />
+            title=""
+            width="match_parent"
+            menuData={this.menuData}
+            popupMenu={this.popupMenu}
+            onMenuItemClick={this.handleMenuClick}
+            overFlowCallback = {this.overFlowCallback}
+            showMenu="true"
+            onBackPress={this.onBackPressed}
+            invert="true"/>
 
 
+          <HorizontalProgressBar
+            currentProgress={this.data.completedProgress}
+            totalProgress={this.data.totalProgress}
+            width="match_parent"
+            height="wrap_content"
+            visibility = {this.showProgress}
+
+            />
+
+            <LinearLayout
+              height="match_parent"
+              orientation="vertical"
+              id={this.idSet.parentContainer}
+              width="match_parent">
+
+              <ScrollView
+                  height="0"
+                  weight="1"
+                  width="match_parent"
+                  fillViewPort="true">
                   <LinearLayout
                     height="match_parent"
                     width="match_parent"
-                    gravity="center"
                     root="true"
-                    afterRender={this.afterRender}
-                    orientation="vertical"
-                    id={this.idSet.descriptionContainer}>
-                       <TextView
-                          id={this.idSet.downloadProgressText}
-                          text="Fetching spine"
-                          height="300"
-                          gravity="center"
-                          width="match_parent"/>
-                  </LinearLayout>
+                    padding="16,24,16,16"
+                    orientation="vertical">
+
+                      <CourseProgress
+                        height="wrap_content"
+                        width="wrap_content"
+                        content={this.data}
+                        title={this.data.courseName || this.details.name || this.details.contentData.name}
+                        onResumeClick={this.handleCourseResume}
+                        visibility = {this.showProgress}
+                        />
+
+
+                          <LinearLayout
+                            height="match_parent"
+                            width="match_parent"
+                            gravity="center"
+                            root="true"
+                            afterRender={this.afterRender}
+                            orientation="vertical"
+                            id={this.idSet.descriptionContainer}>
+                               <TextView
+                                  id={this.idSet.downloadProgressText}
+                                  text="Fetching spine"
+                                  height="300"
+                                  gravity="center"
+                                  width="match_parent"/>
+                          </LinearLayout>
 
 
 
@@ -399,9 +438,16 @@ class CourseEnrolledActivity extends View {
           </LinearLayout>
 
       </LinearLayout>
+
+       <FlagPopup/>
+
+       <SharePopup/>
+
+      </RelativeLayout>
     );
 
     return this.layout.render();
+
   }
 }
 

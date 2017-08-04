@@ -44,7 +44,7 @@ instance encodeSplashScreenActivityAction :: Encode SplashScreenActivityAction w
 
 
 data UserActivity = UserActivity
-data UserActivityAction = OPEN_MainActivity | 
+data UserActivityAction = OPEN_MainActivity | OPEN_Deeplink {intentData :: String} |
   API_LogIn {userName::String, userPass::String} | 
   API_SignUp {request::String, api_token::String}
 
