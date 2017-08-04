@@ -102,7 +102,7 @@ class ResourceComponent extends View {
 
 
   getResourceCardLayout = (content) => {
-
+    console.log("content in resource card layout\n\n\n\n\n\n\n\n",content)
     return (<LinearLayout
         height="wrap_content"
         width="match_parent"
@@ -112,17 +112,19 @@ class ResourceComponent extends View {
             <ResourceContainer
              data = {content.contents}
              title={content.name}
+             searchQuery = {content.searchQuery}
              onViewAllClick = {this.handleResourceViewAllClick}/>
 
         </LinearLayout>)
   }
 
 
-handleResourceViewAllClick= (data,title) =>{
+handleResourceViewAllClick= (data,title,searchQuery) =>{
 
    var resourceDetails = {
                             "title" : title,
-                            "resourceDetails" : data
+                            "resourceDetails" : data,
+                            "searchQuery": searchQuery
                          }
    var whatToSend ={ "resourceDetails": JSON.stringify(resourceDetails)}
    var event ={ tag: "OPEN_ResourceViewAllActivity", contents:  whatToSend}

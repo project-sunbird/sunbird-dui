@@ -232,7 +232,7 @@ class CourseEnrolledActivity extends View {
         console.log("Spine Found")
         var callback1 = callbackMapper.map(function(data) {
           console.log(data)
-          window.__testJSON = data[0];
+          // window.__testJSON = data[0];
           // data[0] = data [0].replace(/\t/g, ' ');
           data[0] = utils.jsonifyData(data[0])
           _this.courseContent = JSON.parse(data[0]);

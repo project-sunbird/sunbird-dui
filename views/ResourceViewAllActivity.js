@@ -34,7 +34,7 @@ class ResourceViewAllActivity extends View {
     this.totalDetails = JSON.parse(state.data.value0.resourceDetails);
 
     console.log(this.totalDetails,"TOTAL")
-
+    
     this.details = this.totalDetails.resourceDetails;
     this.appbarTitle = this.totalDetails.title;
 
@@ -137,7 +137,7 @@ getRows = () =>{
         var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");
         var resDetails = {};
 
-        resDetails['imageUrl'] = "file://"+item.basePath+"/"+item.contentData.appIcon;
+        resDetails['imageUrl'] = item.hasOwnProperty("contentData") ?"file://"+item.basePath+"/"+item.contentData.appIcon : item.appIcon;
         resDetails['title'] = item.name;
         resDetails['description'] = item.description;
         resDetails['headFooterTitle'] = headFooterTitle;
