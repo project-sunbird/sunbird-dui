@@ -9,6 +9,7 @@ var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
+var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 
 var SearchToolbar = require('../../components/Sunbird/core/SearchToolbar');
 var SimpleToolbar = require('../../components/Sunbird/core/SimpleToolbar');
@@ -25,7 +26,8 @@ class CourseFragment extends View {
       "parentContainer",
       "infoContainer",
       "viewallContainer",
-      "fetchingHolder"
+      "fetchingHolder",
+      "scrollViewContainerCourse"
     ]);
     _this = this;
 
@@ -58,7 +60,7 @@ class CourseFragment extends View {
     var enrolled = false;
 
     this.enrolledCourses.map((item) => {
-      console.log("CHECKING", item)
+
       if (item.identifier === identifier) {
         enrolled = true;
       } else if (item.contentId === identifier) {
@@ -74,12 +76,12 @@ class CourseFragment extends View {
 
 
   handleResponse = () => {
-      console.log("handleResponse");
+
       console.log("SERVER GAVE RESPONSE", this.props.response)
       if(this.props.response===undefined) {
         return;
       }
-      console.log("SERVER GAVE RESPONSE", this.props.response)
+
       this.details = this.props.response.result.response;
       if (!this.details.hasOwnProperty("name")) {
         JBridge.showSnackBar("Error Fetching Data");
@@ -148,7 +150,7 @@ class CourseFragment extends View {
     var tmp = JSON.stringify(content)
     var whatToSend = []
     var event = {};
-    console.log("CHECKING ->", content.identifier);
+
     if (this.checkIfEnrolled(content.identifier)) {
       whatToSend = { "course": tmp }
       event = { tag: 'OPEN_EnrolledCourseActivity', contents: whatToSend }
@@ -167,6 +169,15 @@ class CourseFragment extends View {
     window.__runDuiCallback(event);
   }
 
+  addSwipeFunction = () => {
+
+      var callbackRefresh = callbackMapper.map(function(params) {
+        window.__BNavFlowRestart();         
+    });
+
+      JBridge.addSwipeRefreshScrollView(this.idSet.scrollViewContainerCourse,callbackRefresh);
+  }
+
 
   getBody = () => {
 
@@ -174,6 +185,7 @@ class CourseFragment extends View {
       <LinearLayout
         orientation="vertical"
         width="match_parent"
+        afterRender={this.addSwipeFunction}
         height="match_parent">
 
           <SimpleToolbar
@@ -189,6 +201,7 @@ class CourseFragment extends View {
             <ScrollView
               height="0"
               weight="1"
+              id={this.idSet.scrollViewContainerCourse}
               width="match_parent">
 
                 <LinearLayout
@@ -214,7 +227,7 @@ class CourseFragment extends View {
   }
 
   handleMenuClick = (url) => {
-    console.log("url clicked", url);
+
     if (url == "ic_notification_red") {
       JBridge.showSnackBar("Comming Soon")
     }
@@ -230,14 +243,6 @@ class CourseFragment extends View {
       window.__PageFilterPopup.show();
     }
   }
-
-
-
-  handleSearch = (data) => {
-    console.log("searched", data);
-  }
-
-
 
 
   getSpaceSeparator = () => {

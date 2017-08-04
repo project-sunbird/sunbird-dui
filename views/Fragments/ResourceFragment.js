@@ -31,7 +31,8 @@ class ResourceComponent extends View {
       "parentContainer",
       "infoContainer",
       "viewallContainer",
-      "offlineContainer"
+      "offlineContainer",
+      "scrollViewContainer"
     ]);
     _this = this;
 
@@ -49,7 +50,7 @@ class ResourceComponent extends View {
     }
 
 
-
+    window.__UpdateOfflineContent =this.renderOfflineCard;
     this.handleResponse();
 
   }
@@ -89,7 +90,7 @@ class ResourceComponent extends View {
           </LinearLayout>)
       }
     } else {
-      console.log("SERVER TOLD NULL")
+
       this.cards = (<LinearLayout
           height="wrap_content"
           width="match_parent"
@@ -193,6 +194,7 @@ handleResourceViewAllClick= (data,title,searchQuery) =>{
 
             <ScrollView
               height="0"
+              id={this.idSet.scrollViewContainer}
               weight="1"
               width="match_parent">
 
@@ -246,9 +248,6 @@ handleResourceViewAllClick= (data,title,searchQuery) =>{
     }
   }
 
-  handleSearch = (data) => {
-    console.log("searched", data);
-  }
 
   handleResourceOpen = (data) => {
     var whatToSend = { resourceDetails: "nothing" } 
@@ -268,8 +267,19 @@ handleResourceViewAllClick= (data,title,searchQuery) =>{
   }
 
   afterRender = () => {
-  
-     var callback = callbackMapper.map(function(params) {
+      
+     this.renderOfflineCard();
+
+
+     var callbackRefresh = callbackMapper.map(function(params) {
+        window.__BNavFlowRestart();         
+    });
+
+      JBridge.addSwipeRefreshScrollView(this.idSet.scrollViewContainer,callbackRefresh);
+  }
+
+  renderOfflineCard =()=>{
+    var callback = callbackMapper.map(function(params) {
       params = params.toString();
       params = utils.jsonifyData(params);
       _this.data = JSON.parse(params);
@@ -287,7 +297,6 @@ handleResourceViewAllClick= (data,title,searchQuery) =>{
     });
 
     JBridge.getAllLocalContent(callback);
-
   }
 
 
