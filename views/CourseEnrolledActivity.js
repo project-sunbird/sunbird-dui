@@ -29,7 +29,8 @@ class CourseEnrolledActivity extends View {
       "parentContainer",
       "pageOption",
       "descriptionContainer",
-      "downloadProgressText"
+      "downloadProgressText",
+      "sharePopupContainer"
     ]);
     this.state = state;
     this.screenName = "CourseEnrolledActivity"
@@ -44,13 +45,9 @@ class CourseEnrolledActivity extends View {
 
     this.popupMenu="Flag/Report content,Logout";
 
-
     _this = this;
     this.shouldCacheScreen = false;
     this.courseContent = "";
-
-
-
 
     this.enrolledCourses = window.__enrolledCourses;
     //this.checkContentLocalStatus(this.details.identifier);
@@ -327,7 +324,30 @@ class CourseEnrolledActivity extends View {
   }
 
   afterRender=()=>{
-  
+
+    var callback = callbackMapper.map(function(data) {
+
+      var input = [{
+                    type : "text",
+                    data : "www.google.com"
+
+                  },{
+                    type : "file",
+                    data : "file://"+data[0]
+
+                  }];
+
+      var sharePopUp = (
+        <SharePopup
+        data = {input}/>
+        )
+
+    _this.replaceChild(_this.idSet.sharePopupContainer,sharePopUp.render(),0);
+
+    
+    });
+
+    JBridge.exportEcar("do_3122981867074519041100", callback);
   }
 
 
@@ -441,7 +461,12 @@ class CourseEnrolledActivity extends View {
 
        <FlagPopup/>
 
-       <SharePopup/>
+       <LinearLayout
+       width="match_parent"
+       height="match_parent"
+       id={this.idSet.sharePopupContainer}/>
+
+       
 
       </RelativeLayout>
     );

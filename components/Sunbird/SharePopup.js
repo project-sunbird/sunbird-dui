@@ -189,16 +189,16 @@ class SharePopup extends View {
 
   shareContent = () =>{
 
+    _this.props.data.map((item, index) => {
 
-    var callback = callbackMapper.map(function(data) {
-
-      JBridge.shareContentThroughIntent("file://"+data[0],"file",_this.idSet.fileShareIntents);
-      JBridge.shareContentThroughIntent("Learning should never stop. Learn a new course at www.sunbird.in/c/do_3122981867074519041100  \n\n --Team Sunbird","text",_this.idSet.linkShareIntents);
-
+      if(item.type == "file"){
+        JBridge.shareContentThroughIntent(item.data,"file",_this.idSet.fileShareIntents);
+      }else if(item.type == "text"){
+        JBridge.shareContentThroughIntent(item.data,"text",_this.idSet.linkShareIntents);
+      }
 
     });
 
-    JBridge.exportEcar("do_3122981867074519041100", callback);
   }
 
   afterRender = () => {

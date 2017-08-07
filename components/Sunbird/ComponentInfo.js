@@ -148,6 +148,29 @@
               }]
 
 
+6.SharePopup
+
+/******************Input data to send.****************/
+                  var input = [{
+                    type : "text",
+                    data : "www.google.com"
+
+                  },{
+                    type : "file",
+                    data : "file://"+data[0]
+
+                  }];
+
+
+                  <SharePopup
+                  data = {input}/>
+
+/**************Show Popup like this*********************/
+                  window.__SharePopup.show();
+
+
+
+
 
 
 
