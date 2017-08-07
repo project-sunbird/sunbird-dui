@@ -151,6 +151,7 @@ class SharePopup extends View {
            <ImageView
            width="18"
            height="18"
+           onClick={this.handleDismissClick}
            gravity="center_vertical"
            imageUrl="ic_action_close"/>
 
