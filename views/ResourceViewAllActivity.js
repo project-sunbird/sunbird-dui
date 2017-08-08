@@ -23,7 +23,8 @@ class ResourceViewAllActivity extends View {
     super(props, children, state);
 
     this.setIds([
-      "listItems"
+      "listItems",
+      "viewMoreButton"
     ]);
     this.state = state;
     this.screenName = "ResourceViewAllActivity";
@@ -48,7 +49,7 @@ class ResourceViewAllActivity extends View {
     this.cType;
     this.name;
     this.time;
-    
+    this.displayContent = [];
 
     setTimeout(function() {
       Android.runInUI(
@@ -80,9 +81,14 @@ getRows = (data) =>{
                    this.fileImageUrl = item.appIcon?item.appIcon:"ic_action_resource";
                    this.cType = item.contentType
                    this.name = item.name;
-
-                   var d =  new Date(item.createdOn);
-                   this.time = d.getDay() + "-" + d.getMonth()+ "-" + d.getUTCFullYear();
+                    if(item.hasOwnProperty("createdOn")){
+                     var d =  new Date(item.createdOn);
+              
+                   }
+                   else{
+                    var d = new Date();
+                   }
+                  this.time = d.getDay() + "-" + d.getMonth()+ "-" + d.getUTCFullYear();
                 }
 
                 console.log("FILE IMAGE URL ",this.fileImageUrl)
@@ -184,14 +190,47 @@ getRows = (data) =>{
 
   handleViewMoreClick = () =>{
     console.log("handle more")
-    this.start_index++;
-    var callback = callbackMapper.map(function(data){
-      data[0] = utils.decodeBase64(data[0]);
-      _this.appendChild(_this.idSet.listItems,_this.getRows(JSON.parse(data[0])).render(),_this.start_index)
+    var listContent = [];
+    window.__LoaderDialog.show();
+    if(this.displayContent == "[]" || this.displayContent.length == 0){
+        var callback = callbackMapper.map(function(data){
+          data[0] = JSON.parse(utils.decodeBase64(data[0]));
+          _this.displayContent=data[0];
+          _this.displayContent.map(function(item,index){
+            if(index > _this.start_index*10 && index<(_this.start_index+1)*10)
+              listContent.push(item)
+          })
+          _this.start_index++;
+          _this.appendChild(_this.idSet.listItems,_this.getRows(listContent).render(),_this.start_index)
+          window.__LoaderDialog.hide();
+
+          });
+          JBridge.searchContent(callback, JSON.stringify(this.details.searchQuery), "", "Resource", false,100);
+    }
+    else{
+          this.displayContent.map(function(item,index){
+            if(index > _this.start_index*10 && index<(_this.start_index+1)*10)
+              listContent.push(item)
+          })
+          _this.start_index++;
+          _this.appendChild(_this.idSet.listItems,_this.getRows(listContent).render(),_this.start_index)
+          window.__LoaderDialog.hide();
+
+    }
+
+
+
+     if(this.start_index >= 9){
+      var cmd = this.set({
+        id: this.idSet.viewMoreButton,
+        visibility: "gone"
       });
-      JBridge.searchContent(callback, JSON.stringify(this.details.searchQuery), "", "Resource", false);
+      Android.runInUI(cmd, 0);
+     }
 
   }
+
+
 
   render() {
     var buttonList = ["ENROLL FOR THIS COURSE"];
@@ -223,11 +262,13 @@ getRows = (data) =>{
                   height = "match_parent"
                   width = "match_parent"
                   orientation = "vertical"
+                  layouTransition="true"
                   >
                       <LinearLayout
                         height="match_parent"
                         width="match_parent"
                         orientation="vertical"
+                        layouTransition="true"
                         id = {this.idSet.listItems}
                         orientation = "vertical"
                         >
@@ -237,8 +278,11 @@ getRows = (data) =>{
                         width = "match_parent"
                         height = "50"
                         margin = "16,16,16,16"
+                        layouTransition="true"
+                        id = {this.idSet.viewMoreButton}
                         background = {window.__Colors.PRIMARY_DARK}
                         gravity = "center"
+
                         >
                         <TextView
                           height = "match_parent"

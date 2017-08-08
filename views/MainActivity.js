@@ -157,7 +157,6 @@ class MainActivity extends View {
           }
         }
       }
-      window.__apiResponse = responseData;
       responseData = utils.decodeBase64(responseData)
     if(responseCode == 401){
       var callback  = callbackMapper.map(function(token){
