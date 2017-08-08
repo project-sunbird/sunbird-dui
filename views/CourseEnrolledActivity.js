@@ -18,7 +18,7 @@ var CourseCurriculum = require('../components/Sunbird/CourseCurriculum');
 var HorizontalProgressBar = require('../components/Sunbird/HorizontalProgressBar');
 var CourseProgress = require('../components/Sunbird/CourseProgress');
 var FlagPopup = require('../components/Sunbird/FlagPopup');
-var SharePopup = require('../components/Sunbird/SharePopup');
+var SharePopup = require('../components/Sunbird/core/SharePopup');
 var utils = require('../utils/GenericFunctions');
 var _this;
 class CourseEnrolledActivity extends View {
@@ -330,7 +330,7 @@ class CourseEnrolledActivity extends View {
 
       var input = [{
                     type : "text",
-                    data : "www.google.com"
+                    data : "ntp.net.in/c/"+_this.details.contentId
 
                   },{
                     type : "file",
@@ -349,6 +349,7 @@ class CourseEnrolledActivity extends View {
     });
 
     // JBridge.exportEcar("do_3122981867074519041100", callback);
+
   }
 
 

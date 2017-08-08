@@ -12,7 +12,7 @@ var HorizontalScrollView = require("@juspay/mystique-backend").androidViews.Hori
 var Space = require("@juspay/mystique-backend").androidViews.Space;
 var ViewWidget = require('@juspay/mystique-backend').androidViews.ViewWidget;
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
-var Styles = require("../../res/Styles");
+var Styles = require("../../../res/Styles");
 let IconStyle = Styles.Params.IconStyle;
 var _this;
 
@@ -63,6 +63,19 @@ class SharePopup extends View {
 
 
   getContent = () =>{
+    var fileLinkAvailable;
+    var textLinkAvailable;
+
+    this.props.data.map((item, index) => {
+
+      if(item.type == "file"){
+        fileLinkAvailable = true;
+      }else(item.type == "text")
+        textLinkAvailable = true;
+
+    });
+    
+
     return (
 
       <ScrollView
@@ -73,6 +86,12 @@ class SharePopup extends View {
       orientation="vertical"
       width="match_parent"
       height="wrap_content">
+
+      <LinearLayout
+      width="wrap_content"
+      height="wrap_content"
+      orientation="vertical"
+      visibility={textLinkAvailable?"visibile":"gone"}>
 
         <TextView
         margin="0,25,0,12"
@@ -97,7 +116,14 @@ class SharePopup extends View {
 
         </HorizontalScrollView>
 
+      </LinearLayout>
 
+
+      <LinearLayout
+      width="wrap_content"
+      height="wrap_content"
+      orientation="vertical"
+      visibility={fileLinkAvailable?"visibile":"gone"}>
 
        <TextView
           margin="0,25,0,12"
@@ -119,6 +145,8 @@ class SharePopup extends View {
               height="wrap_content"/>
 
         </HorizontalScrollView>
+
+        </LinearLayout>
 
       
      </LinearLayout>
@@ -190,7 +218,6 @@ class SharePopup extends View {
   shareContent = () =>{
 
     _this.props.data.map((item, index) => {
-
       if(item.type == "file"){
         JBridge.shareContentThroughIntent(item.data,"file",_this.idSet.fileShareIntents);
       }else if(item.type == "text"){
