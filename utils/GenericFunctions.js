@@ -39,6 +39,10 @@ exports.formatDate = (d) =>{
   return res;
 }
 
+exports.decodeBase64 = (data) =>{
+  return decodeURIComponent(escape(atob(data)))
+}
+
 
 
 

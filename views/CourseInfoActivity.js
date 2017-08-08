@@ -286,10 +286,10 @@ class CourseInfoActivity extends View {
   handleStateChange = (state) => {
     window.__LoaderDialog.hide();
     var status = state.response.status[0];
-    var response = JSON.parse(state.response.status[1]);
+    var response = JSON.parse(utils.decodeBase64(state.response.status[1]));
     var responseCode = state.response.status[2];
     var responseUrl = state.response.status[3];
-
+    
     if (parseInt(responseCode) != 200) {
       console.log("INVALID FORMAT")
       return;

@@ -192,7 +192,6 @@ class CourseEnrolledActivity extends View {
   // }
 
 
-
   getSpineStatus = (pValue) => {
     var cmd;
     console.log("--->\t\t\t\n\n\n", pValue);
@@ -256,7 +255,9 @@ class CourseEnrolledActivity extends View {
   }
 
   checkContentLocalStatus = (identifier) => {
-    
+
+    console.log("in check local status")
+
     var callback = callbackMapper.map(function(status) {
 
       if (status == "true") {
@@ -374,7 +375,8 @@ class CourseEnrolledActivity extends View {
     
     });
 
-    JBridge.exportEcar(_this.details.contentId, callback);
+    // JBridge.exportEcar("do_3122981867074519041100", callback);
+
   }
 
 
