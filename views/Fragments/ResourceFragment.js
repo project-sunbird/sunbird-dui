@@ -276,9 +276,10 @@ handleResourceViewAllClick= (data,title,searchQuery) =>{
 
   renderOfflineCard =()=>{
     var callback = callbackMapper.map(function(params) {
-      params = params.toString();
-      params = utils.jsonifyData(params);
-      _this.data = JSON.parse(params);
+      console.log("data from offline",params);
+      params[0] = utils.decodeBase64(params[0])
+      params[0] = utils.jsonifyData(params[0]);
+      _this.data = JSON.parse(params[0]);
       console.log("OFFLINE RESOURCE CONTENT ",_this.data);
 
          var layout = (<OfflineResourceContainer

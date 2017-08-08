@@ -237,20 +237,22 @@ class SearchActivity extends View {
           console.log("search results", JSON.parse(data[1]));
           data[0] = utils.decodeBase64(data[0])
           _this.filterData = data[1];
-          if (searchText == "" || data[0] == "[]") {
-            _this.renderNoResult();
-          } else {
-            var s = data[0];
-            s = s.replace(/\\n/g, "\\n")
-              .replace(/\\'/g, "\\'")
-              .replace(/\\"/g, '\\"')
-              .replace(/\\&/g, "\\&")
-              .replace(/\\r/g, "\\r")
-              .replace(/\\t/g, "\\t")
-              .replace(/\\b/g, "\\b")
-              .replace(/\\f/g, "\\f");
-            s = s.replace(/[\u0000-\u0019]+/g, "");
-            _this.renderResult(JSON.parse(s));
+          
+                if (searchText == "" || data[0] == "[]") {
+                  _this.renderNoResult();
+                } else {
+                  var s = data[0];
+                  s = s.replace(/\\n/g, "\\n")
+                    .replace(/\\'/g, "\\'")
+                    .replace(/\\"/g, '\\"')
+                    .replace(/\\&/g, "\\&")
+                    .replace(/\\r/g, "\\r")
+                    .replace(/\\t/g, "\\t")
+                    .replace(/\\b/g, "\\b")
+                    .replace(/\\f/g, "\\f");
+                  s = s.replace(/[\u0000-\u0019]+/g, "");
+                  _this.renderResult(JSON.parse(s));
+                }
           }
 
         });
@@ -281,8 +283,13 @@ class SearchActivity extends View {
 
           console.log("this.filterData", this.filterData);
           console.log("this.filterData", typeof(this.filterData));
-          JBridge.showSnackBar("Loading Search Results Please Wait......")
-          JBridge.searchContent(callback, JSON.stringify(this.filterData), searchText, this.searchType, flag);
+          if(JBridge.isNetworkAvailable()){
+              JBridge.showSnackBar("Loading Search Results Please Wait......")
+              JBridge.searchContent(callback, JSON.stringify(this.filterData), searchText, this.searchType, flag);
+          }
+          else{
+            JBridge.showSnackBar("No internet connection");
+          }
         // }
         this.showFilter();
     }

@@ -229,6 +229,7 @@ getRows = (data) =>{
                         width="match_parent"
                         orientation="vertical"
                         id = {this.idSet.listItems}
+                        orientation = "vertical"
                         >
                       </LinearLayout>
 

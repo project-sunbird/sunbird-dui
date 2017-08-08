@@ -162,6 +162,7 @@ class UserActivity extends View {
   performLogin = () => {
     JBridge.setInSharedPrefs("logged_in","YES");
     window.__userToken=JBridge.getFromSharedPrefs("user_token");
+    JBridge.setProfile(window.__userToken);
     var whatToSend = []
     var event = { tag: "OPEN_MainActivity", contents: whatToSend };
     window.__runDuiCallback(event);

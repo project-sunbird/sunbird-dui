@@ -221,12 +221,7 @@ class HomeFragment extends View {
   handleRecommendedClick = (content) => {
     console.log("Recommended clicked :", content.downloadUrl)
 
-    var callback = callbackMapper.map((params) => {
-      this.getLocalData([params[0]])
-      console.log("darta from android", params);
-    });
-
-    JBridge.getAllLocalContent(callback);
+    
 
   }
   getLocalData = (data) => {
