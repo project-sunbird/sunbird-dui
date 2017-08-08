@@ -8,6 +8,7 @@ var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var ScrollView = require('@juspay/mystique-backend').androidViews.ScrollView;
 var ProgressBar = require("@juspay/mystique-backend").androidViews.ProgressBar;
+var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 
 
 class ContentLoaderDialog extends View {
@@ -15,10 +16,14 @@ class ContentLoaderDialog extends View {
     super(props, children, state);
 
     this.setIds([
-      'parentContainer'
+      'progressContainer',
+      "parentContainer"
     ]);
+
     this.state = state;
     window.__ContentLoaderDialog = this;
+
+    this.isVisible=false;
 
 }
 
@@ -26,48 +31,97 @@ class ContentLoaderDialog extends View {
    
   }
 
+    show = () => {
+      if(!this.isVisible){
+            Android.runInUI(
+                  this.set({
+                    id : this.idSet.parentContainer,
+                    visibility :"visible"}),
+                  null
+                );
+          }
+        this.updateProgressBar(0);
+        this.isVisible=true;
+    }
 
-  render() {
+    hide = () => {
+      if(!this.isVisible){
+      Android.runInUI(
+            this.set({
+              id : this.idSet.parentContainer,
+              visibility :"gone"}),
+            null
+          );
+    }
+        this.isVisible=false;
+      
+    }
 
-    console.log("PROGRESS",this.props.progress);
-    var completedProgress = this.props.progress;
-    var remainingProgress = (100 - parseInt(this.props.progress))+"";
+   updateProgressBar = (pStatus) => {
+    console.log("UPDATING PROGREESS BAR",pStatus)
+    this.replaceChild(this.idSet.progressContainer, this.getProgressBar(pStatus).render(), 0)
+  }
 
-    this.layout = (
-      <LinearLayout
-        root = "true"
-        orientation="vertical"
-        id={this.idSet.parentContainer}
-        visibility={this.props.visibility?this.props.visibility:"gone"}
-        clickable="true"
-        margin="0,100,0,0"
-        gravity="center_horizontal"
-        width="match_parent"
-        height="match_parent">
 
-           <TextView
-           width="wrap_content"
-           height="wrap_content"
-           margin="0,0,0,32"
-           text="Loading your course.."/>
+  getProgressBar = (pStatus) => {
+    console.log("PROGRESS",pStatus);
+    var completedProgress = pStatus;
+    var remainingProgress = (100 - parseInt(pStatus))+"";
+    console.log("PROGRESS REMAINING ",remainingProgress);
 
-             <LinearLayout
+    return(<LinearLayout
              width="250"
-             height="wrap_content">
+             root="true"
+             height="20">
 
-               <LinearLayout
+               <ViewWidget
                width="0"
                height="10"
-               background={window.__Colors.PRIMARY_DARK}
+               background={window.__Colors.LIGHT_BLUE}
                weight={completedProgress}/>
 
-               <LinearLayout
+               <ViewWidget
                width="0"
                background={window.__Colors.PRIMARY_BLACK_22}
                height="10"
                weight={remainingProgress}/>
 
-             </LinearLayout>
+             </LinearLayout>)
+  }
+
+
+  render() {
+    this.layout = (
+      <LinearLayout
+        width="match_parent"
+        height="match_parent"
+        root = "true"
+        orientation="vertical"
+        visibility="gone"
+        clickable="true"
+        id={this.idSet.parentContainer}
+        margin="0,0,0,0"
+        background={window.__Colors.WHITE}
+        gravity="center">
+
+          <TextView
+           width="wrap_content"
+           height="wrap_content"
+           margin="0,0,0,32"
+           text="Loading your course.."/>
+
+          <LinearLayout
+            height="wrap_content"
+            width="match_parent"
+            gravity="center"
+            orientation="vertical"
+            id={this.idSet.progressContainer}>
+
+           
+             {this.getProgressBar(0)}
+
+
+          </LinearLayout>   
 
                   
       </LinearLayout>

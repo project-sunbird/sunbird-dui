@@ -14,6 +14,7 @@ var objectAssign = require('object-assign');
 
 var LoaderDialog = require('../components/Sunbird/core/LoaderDialog');
 var PageFilterPopup = require('../components/Sunbird/PageFilterPopup');
+var ContentLoaderDialog = require('../components/Sunbird/core/ContentLoaderDialog');
 
 const Str = require("../res/strings") ;
 
@@ -84,6 +85,7 @@ class RootScreen extends View {
         </LinearLayout>
         <LoaderDialog/>
         <PageFilterPopup/>
+        <ContentLoaderDialog/>
       </RelativeLayout>
     );
 
