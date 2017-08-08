@@ -325,11 +325,12 @@ class CourseEnrolledActivity extends View {
 
   afterRender=()=>{
 
+
     var callback = callbackMapper.map(function(data) {
 
       var input = [{
                     type : "text",
-                    data : "www.google.com"
+                    data : "ntp.net.in/c/"+_this.details.contentId
 
                   },{
                     type : "file",
@@ -347,7 +348,7 @@ class CourseEnrolledActivity extends View {
     
     });
 
-    JBridge.exportEcar("do_3122981867074519041100", callback);
+    JBridge.exportEcar(_this.details.contentId, callback);
   }
 
 
