@@ -111,6 +111,7 @@ getRows = (data) =>{
 
     var layout = (<LinearLayout
                     width="match_parent"
+                    root="true"
                     height="wrap_content"
                     orientation = "vertical"
                     >
@@ -226,10 +227,12 @@ getRows = (data) =>{
                       <LinearLayout
                         height="match_parent"
                         width="match_parent"
+                        orientation="vertical"
                         id = {this.idSet.listItems}
                         orientation = "vertical"
                         >
                       </LinearLayout>
+
                       <LinearLayout
                         width = "match_parent"
                         height = "50"
@@ -238,8 +241,9 @@ getRows = (data) =>{
                         gravity = "center"
                         >
                         <TextView
-                          height = "wrap_content"
+                          height = "match_parent"
                           width = "match_parent"
+                          gravity="center"
                           onClick = {this.handleViewMoreClick}
                           text = "VIEW MORE"
                           style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
