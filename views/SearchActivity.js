@@ -253,7 +253,7 @@ class SearchActivity extends View {
                   s = s.replace(/[\u0000-\u0019]+/g, "");
                   _this.renderResult(JSON.parse(s));
                 }
-          }
+          
 
         });
         console.log("searchText",searchText)
