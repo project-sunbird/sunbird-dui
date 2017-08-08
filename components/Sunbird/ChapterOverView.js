@@ -41,7 +41,7 @@ class ChapterOverView extends View {
       <LinearLayout
        width="match_parent"
        height="60"
-       padding="0,8,0,8"
+       padding="0,6,0,6"
        onClick={this.handleClick}
        gravity="center_vertical">
 
