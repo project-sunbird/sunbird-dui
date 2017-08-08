@@ -19,6 +19,7 @@ var HorizontalProgressBar = require('../components/Sunbird/HorizontalProgressBar
 var CourseProgress = require('../components/Sunbird/CourseProgress');
 var FlagPopup = require('../components/Sunbird/FlagPopup');
 var SharePopup = require('../components/Sunbird/core/SharePopup');
+var ContentLoaderDialog = require('../components/Sunbird/core/ContentLoaderDialog');
 var utils = require('../utils/GenericFunctions');
 var _this;
 class CourseEnrolledActivity extends View {
@@ -30,7 +31,8 @@ class CourseEnrolledActivity extends View {
       "pageOption",
       "descriptionContainer",
       "downloadProgressText",
-      "sharePopupContainer"
+      "sharePopupContainer",
+      "contentLoaderContainer"
     ]);
     this.state = state;
     this.screenName = "CourseEnrolledActivity"
@@ -191,13 +193,6 @@ class CourseEnrolledActivity extends View {
 
 
 
-  afterRender = () => {
-    this.checkContentLocalStatus(this.baseIdentifier);
-    // this.getContentState(this.baseIdentifier,window.__userToken);
-
-  }
-
-
   getSpineStatus = (pValue) => {
     var cmd;
     console.log("--->\t\t\t\n\n\n", pValue);
@@ -214,23 +209,54 @@ class CourseEnrolledActivity extends View {
     var downloadedPercent = data.downloadProgress;
     downloadedPercent =  downloadedPercent < 0 ? 0 : downloadedPercent;
 
-    if (downloadedPercent == 100) {
+    // if (downloadedPercent == 100) {
+
+    //   console.log("SPINE IMPORTED -> ")
+    //   this.checkContentLocalStatus(this.baseIdentifier);
+
+    // } else {
+    //   var cmd = this.set({
+    //     id: this.idSet.downloadProgressText,
+    //     text: "Fetching content: " + downloadedPercent + "%"
+    //   })
+    //   Android.runInUI(cmd, 0);
+    // }
+
+
+      console.log("COURSE ENROLLLED PROGRESS",downloadedPercent)
+
+      this.showHideLoader("visible");
+
+
+      var contentLoader = (
+        <ContentLoaderDialog
+        visibility={downloadedPercent!=100?"visible":"gone"}
+        progress={downloadedPercent+""}/>
+        );
+
+      this.replaceChild(this.idSet.contentLoaderContainer,contentLoader.render(),0);
+
+      if (downloadedPercent == 100) {
 
       console.log("SPINE IMPORTED -> ")
       this.checkContentLocalStatus(this.baseIdentifier);
 
-    } else {
+      this.showHideLoader("gone");
+
+    }
+  }
+
+
+  showHideLoader = (visibility) =>{
       var cmd = this.set({
-        id: this.idSet.downloadProgressText,
-        text: "Fetching content: " + downloadedPercent + "%"
+        id: this.idSet.contentLoaderContainer,
+        visibility : {visibility}
       })
       Android.runInUI(cmd, 0);
-    }
   }
 
   checkContentLocalStatus = (identifier) => {
     
-
     var callback = callbackMapper.map(function(status) {
 
       if (status == "true") {
@@ -324,7 +350,7 @@ class CourseEnrolledActivity extends View {
   }
 
   afterRender=()=>{
-
+    this.checkContentLocalStatus(this.baseIdentifier);
 
     var callback = callbackMapper.map(function(data) {
 
@@ -441,15 +467,7 @@ class CourseEnrolledActivity extends View {
                             root="true"
                             afterRender={this.afterRender}
                             orientation="vertical"
-                            id={this.idSet.descriptionContainer}>
-                               <TextView
-                                  id={this.idSet.downloadProgressText}
-                                  text="Fetching spine"
-                                  height="300"
-                                  gravity="center"
-                                  width="match_parent"/>
-                          </LinearLayout>
-
+                            id={this.idSet.descriptionContainer}/>
 
 
                 </LinearLayout>
@@ -467,7 +485,12 @@ class CourseEnrolledActivity extends View {
        height="match_parent"
        id={this.idSet.sharePopupContainer}/>
 
-       
+       <LinearLayout
+       width="match_parent"
+       height="match_parent"
+       visibility="gone"
+       background={window.__Colors.WHITE}
+       id={this.idSet.contentLoaderContainer}/>
 
       </RelativeLayout>
     );
