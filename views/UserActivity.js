@@ -14,6 +14,7 @@ var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 var TextInputView = require('../components/Sunbird/core/TextInputView');
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
+var utils = require('../utils/GenericFunctions');
 
 var _this;
 
@@ -56,7 +57,34 @@ class UserActivity extends View {
 
     this.checkAlreadyLoggedIn();
 
+    window.__onContentImportResponse = this.getImportStatus;
+  }
 
+  getImportStatus = (response) => {
+
+
+    console.log("response for import",response);
+
+    var jsonResponse = JSON.parse(response);
+    var identifier;
+
+    if(jsonResponse.identifier != undefined){
+       identifier = jsonResponse.identifier;
+    }
+   
+    var callback = callbackMapper.map(function(data) {
+
+        var resourceDetails = JSON.parse(data[0]);
+
+        var whatToSend = {intentData:JSON.stringify(resourceDetails)}
+        var event = {tag:"OPEN_Deeplink",contents:whatToSend}
+        window.__runDuiCallback(event); 
+
+    });
+
+    JBridge.getContentDetails(identifier,callback)
+
+    
   }
 
   onPop = () => {
@@ -72,8 +100,25 @@ class UserActivity extends View {
 
   checkAlreadyLoggedIn = () =>{
 
-    if("YES"==JBridge.getFromSharedPrefs("logged_in"))
+
+    if("__failed" != JBridge.getFromSharedPrefs("intentFilePath")&&("YES"==JBridge.getFromSharedPrefs("logged_in"))){
+     
+        JBridge.showToast("CAME AFTER"+JBridge.getFromSharedPrefs("intentFilePath"),"short");
+        var filePath = JBridge.getFromSharedPrefs("intentFilePath");
+        JBridge.importEcar(filePath);
+
+        JBridge.setInSharedPrefs("intentFilePath", "__failed");
+        JBridge.setInSharedPrefs("logged_in","YES");
+        window.__userToken=JBridge.getFromSharedPrefs("user_token");
+
+
+      
+    }else if(("YES"==JBridge.getFromSharedPrefs("logged_in"))){
         this.performLogin();
+
+    }
+
+
 
   }
 
@@ -139,7 +184,7 @@ class UserActivity extends View {
   handleStateChange = (state) => {
     window.__LoaderDialog.hide();
     var status = state.response.status[0];
-    var response = JSON.parse(state.response.status[1]);
+    var response = JSON.parse(utils.decodeBase64(state.response.status[1]));
     var responseCode = state.response.status[2];
     var responseUrl = state.response.status[3];
 
@@ -235,6 +280,21 @@ class UserActivity extends View {
   }
 
   toggleSignUpForm = () => {
+
+    // JBridge.showSnackBar("Logged out")
+    // JBridge.setInSharedPrefs("logged_in","NO");
+    // JBridge.setInSharedPrefs("user_id", "__failed");
+    // JBridge.setInSharedPrefs("user_name",  "__failed");
+    // JBridge.setInSharedPrefs("user_token",  "__failed");
+
+    // console.log("IN P1 ",window.__pressedLoggedOut)
+    // window.__pressedLoggedOut=true;
+    // console.log("IN P2 ",window.__pressedLoggedOut)
+    // JBridge.keyCloakLogout("https://ntp.net.in/auth/realms/sunbird/protocol/openid-connect/logout");
+    
+    // window.__Logout();
+
+    // return
     this.isLoginMode = !this.isLoginMode;
     var visibilityVal= this.isLoginMode?"gone":"visible"
     var oppVisibilityValue = !this.isLoginMode?"gone":"visible"

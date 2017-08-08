@@ -161,6 +161,11 @@ exports.textStyle = {
       textSize: Font.fontSize.FONT_12,
       fontStyle: Font.fontStyle.BOLD
     },
+    SMALL: {
+      color: Colors.DARK_GRAY,
+      textSize: Font.fontSize.FONT_10,
+      fontStyle: Font.fontStyle.BOLD
+    },
     DULL: {
       color: Colors.DARK_GRAY,
       textSize: Font.fontSize.FONT_14,

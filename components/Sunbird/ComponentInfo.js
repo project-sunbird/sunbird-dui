@@ -127,6 +127,7 @@
                 imageUrl : "https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg",
                 type : "COURSE",
                 title : "Organic Chemistry for Std VII",
+                footerTitle : ""
                 footerSubTitle : "(2350) votes",
                 stars:"4",
                 actionText : "OPEN",
@@ -145,6 +146,29 @@
                 isProgress : "true",
                 actionText : "OPEN",
               }]
+
+
+6.SharePopup
+
+/******************Input data to send.****************/
+                  var input = [{
+                    type : "text",
+                    data : "www.google.com"
+
+                  },{
+                    type : "file",
+                    data : "file://"+data[0]
+
+                  }];
+
+
+                  <SharePopup
+                  data = {input}/>
+
+/**************Show Popup like this*********************/
+                  window.__SharePopup.show();
+
+
 
 
 

@@ -57,9 +57,6 @@ class CourseCurriculum extends View {
             shouldGoForward={this.props.shouldGoForward?this.props.shouldGoForward:"visible"}
             index={index}/>
 
-
-         
-
           {this.getLineSeperator()}
 
          
@@ -104,7 +101,7 @@ class CourseCurriculum extends View {
     this.layout = (
 
       <LinearLayout
-       padding="0,16,0,0"
+       padding="0,0,0,0"
        height="match_parent"
        orientation="vertical"
        width="match_parent">

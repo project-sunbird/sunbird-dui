@@ -117,6 +117,8 @@ class ResourceContainer extends View {
         resDetails['headFooterTitle'] = headFooterTitle;
         resDetails['identifier'] = item.identifier;
         resDetails['content'] = item;
+
+        console.log("RESOURCE DETAILS SENDING",resDetails)
         
         var whatToSend = {resourceDetails:JSON.stringify(resDetails)}
         var event = {tag:"OPEN_ResourceDetailActivity",contents:whatToSend}
