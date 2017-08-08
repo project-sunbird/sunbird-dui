@@ -18,7 +18,7 @@ var CourseCurriculum = require('../components/Sunbird/CourseCurriculum');
 var HorizontalProgressBar = require('../components/Sunbird/HorizontalProgressBar');
 var CourseProgress = require('../components/Sunbird/CourseProgress');
 var FlagPopup = require('../components/Sunbird/FlagPopup');
-var SharePopup = require('../components/Sunbird/SharePopup');
+var SharePopup = require('../components/Sunbird/core/SharePopup');
 var utils = require('../utils/GenericFunctions');
 var _this;
 class CourseEnrolledActivity extends View {

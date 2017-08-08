@@ -12,7 +12,7 @@ var HorizontalScrollView = require("@juspay/mystique-backend").androidViews.Hori
 var Space = require("@juspay/mystique-backend").androidViews.Space;
 var ViewWidget = require('@juspay/mystique-backend').androidViews.ViewWidget;
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
-var Styles = require("../../res/Styles");
+var Styles = require("../../../res/Styles");
 let IconStyle = Styles.Params.IconStyle;
 var _this;
 
@@ -63,6 +63,8 @@ class SharePopup extends View {
 
 
   getContent = () =>{
+    var fileLinkAvailable = this;
+
     return (
 
       <ScrollView

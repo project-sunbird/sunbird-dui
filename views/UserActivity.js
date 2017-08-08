@@ -56,7 +56,34 @@ class UserActivity extends View {
 
     this.checkAlreadyLoggedIn();
 
+    window.__onContentImportResponse = this.getImportStatus;
+  }
 
+  getImportStatus = (response) => {
+
+
+    console.log("response for import",response);
+
+    var jsonResponse = JSON.parse(response);
+    var identifier;
+
+    if(jsonResponse.identifier != undefined){
+       identifier = jsonResponse.identifier;
+    }
+   
+    var callback = callbackMapper.map(function(data) {
+
+        var resourceDetails = JSON.parse(data[0]);
+
+        var whatToSend = {intentData:JSON.stringify(resourceDetails)}
+        var event = {tag:"OPEN_Deeplink",contents:whatToSend}
+        window.__runDuiCallback(event); 
+
+    });
+
+    JBridge.getContentDetails(identifier,callback)
+
+    
   }
 
   onPop = () => {
@@ -76,56 +103,14 @@ class UserActivity extends View {
     if("__failed" != JBridge.getFromSharedPrefs("intentFilePath")&&("YES"==JBridge.getFromSharedPrefs("logged_in"))){
      
         JBridge.showToast("CAME AFTER"+JBridge.getFromSharedPrefs("intentFilePath"),"short");
-
-        var data = {
-              "imageUrl": "file:///storage/emulated/0/.SunbirdTest/content/do_3122900659612712962186/do_3122900659612712962186/assets1501155948024_1333_1501157261_1501157079617.jpg",
-              "title": "Maths - G  3",
-              "description": "Grade 3 maths lesson",
-              "headFooterTitle": "worksheet",
-              "identifier": "do_3122900659612712962186",
-              "content": {
-                "basePath": "/storage/emulated/0/.SunbirdTest/content/do_3122900659612712962186",
-                "contentData": {
-                  "appIcon": "do_3122900659612712962186/assets1501155948024_1333_1501157261_1501157079617.jpg",
-                  "contentType": "Worksheet",
-                  "contentVariantList": [],
-                  "description": "Grade 3 maths lesson",
-                  "downloadUrl": "do_3122900659612712962186/1500367178795_do_3122900659612712962186.zip",
-                  "gradeLevel": [
-                    "Grade 3"
-                  ],
-                  "identifier": "do_3122900659612712962186",
-                  "language": [
-                    "English"
-                  ],
-                  "me_averageRating": "0.0",
-                  "me_totalRatings": "0.0",
-                  "name": "Maths - G  3",
-                  "osId": "org.ekstep.quiz.app",
-                  "owner": "Madhi foundation",
-                  "pkgVersion": "4.0",
-                  "publisher": "",
-                  "size": "523305.0",
-                  "status": "Live",
-                  "subject": "domain"
-                },
-                "contentType": "worksheet",
-                "identifier": "do_3122900659612712962186",
-                "isAvailableLocally": true,
-                "isUpdateAvailable": false,
-                "lastUpdatedTime": 1501874878000,
-                "mimeType": "application/vnd.ekstep.ecml-archive",
-                "referenceCount": 1
-              }
-            }
-
-        var whatToSend = {intentData:JSON.stringify(data)}
-        var event = {tag:"OPEN_Deeplink",contents:whatToSend}
-        window.__runDuiCallback(event); 
+        var filePath = JBridge.getFromSharedPrefs("intentFilePath");
+        JBridge.importEcar(filePath);
 
         JBridge.setInSharedPrefs("intentFilePath", "__failed");
         JBridge.setInSharedPrefs("logged_in","YES");
         window.__userToken=JBridge.getFromSharedPrefs("user_token");
+
+
       
     }else if(("YES"==JBridge.getFromSharedPrefs("logged_in"))){
         this.performLogin();

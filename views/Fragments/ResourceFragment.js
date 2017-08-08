@@ -36,10 +36,6 @@ class ResourceComponent extends View {
     ]);
     _this = this;
 
-    this.myCommunitySelected = "";
-    this.popularCommunitySelected = "";
-    this.recommendedCommunitySelected = "";
-
     this.data = [];
 
     this.menuData = {

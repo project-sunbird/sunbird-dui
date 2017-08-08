@@ -10,6 +10,7 @@ var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callba
 var ScrollView = require('@juspay/mystique-backend').androidViews.ScrollView;
 var RatingBar = require('@juspay/mystique-backend').androidViews.RatingBar;
 var objectAssign = require('object-assign');
+var SharePopup = require('../components/Sunbird/core/SharePopup');
 
 var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
 var ProgressButton = require('../components/Sunbird/core/ProgressButton');
@@ -25,17 +26,19 @@ class ResourceDetailActivity extends View {
       'ratingBar',
       "progressButtonContainer",
       "ratingContainer",
-      "simpleToolBarOverFlow"
+      "simpleToolBarOverFlow",
+      "sharePopupContainer"
     ]);
     this.state = state;
     this.screenName = "ResourceDetailActivity"
     this.menuData = {
       url: [
-
+        {imageUrl: "ic_action_share_black" },
       ]
     }
     this.menuData1 = {
       url: [
+        {imageUrl: "ic_action_share_black" },
         {imageUrl:'ic_action_overflow'}
       ]
     }
@@ -81,6 +84,7 @@ class ResourceDetailActivity extends View {
                  />
         _this.replaceChild(_this.idSet.progressButtonContainer, pButonLayout.render(), 0);
         _this.changeOverFlow();
+        _this.shareContent(true);
 
       } else {
         var pButonLayout = <ProgressButton
@@ -94,6 +98,7 @@ class ResourceDetailActivity extends View {
                  />
         _this.replaceChild(_this.idSet.progressButtonContainer, pButonLayout.render(), 0);
 
+        _this.shareContent(false);
 
       }
 
@@ -109,6 +114,43 @@ class ResourceDetailActivity extends View {
       this.animateView(),
       null
     );
+  }
+
+
+
+  shareContent = (isContentLocallyAvailable) =>{
+
+    var shareCallback = callbackMapper.map(function(data) {
+    var input;
+    if(isContentLocallyAvailable){
+                  input = [{
+                    type : "text",
+                    data : "ntp.net.in/c/"+_this.details.identifier
+
+                  },{
+                    type : "file",
+                    data : "file://"+data[0]
+
+                  }];
+
+    }else{
+                  input = [{
+                              type : "text",
+                              data : "ntp.net.in/c/"+_this.details.identifier
+                          }];
+
+    }
+                  
+      var sharePopUp = (
+        <SharePopup
+        data = {input}/>
+        )
+
+    _this.replaceChild(_this.idSet.sharePopupContainer,sharePopUp.render(),0);
+
+    });
+
+    JBridge.exportEcar(this.details.identifier, shareCallback);
   }
 
   afterRender = () => {
@@ -127,6 +169,7 @@ class ResourceDetailActivity extends View {
 
         this.replaceChild(this.idSet.ratingContainer,layout.render(),0)
     }
+
   }
 
 
@@ -363,11 +406,19 @@ class ResourceDetailActivity extends View {
           menuData={this.menuData1}
           popupMenu={this.popupMenu}
           onBackPress={onBackPressed}
+          onMenuItemClick={this.handleMenuClick}
           overFlowCallback = {this.overFlowCallback}
           showMenu="true"
           invert="true"/>)
 
     this.replaceChild(this.idSet.simpleToolBarOverFlow, toolbar.render(), 0);
+    this.shareContent(true);
+  }
+
+  handleMenuClick = (url) =>{
+    if(url == "ic_action_share_black"){
+      window.__SharePopup.show();
+    }
   }
 
 
@@ -375,6 +426,11 @@ class ResourceDetailActivity extends View {
   render() {
 
     this.layout = (
+      <RelativeLayout
+      width="match_parent"
+      height="match_parent"
+      afterRender={this.afterRender}
+      root="true">
       <LinearLayout
         root = "true"
         background={window.__Colors.WHITE}
@@ -391,6 +447,7 @@ class ResourceDetailActivity extends View {
           width="match_parent"
           menuData={this.menuData}
           popupMenu={this.popupMenu}
+          onMenuItemClick={this.handleMenuClick}
           onBackPress={onBackPressed}
           overFlowCallback = {this.overFlowCallback}
           showMenu="true"
@@ -434,6 +491,14 @@ class ResourceDetailActivity extends View {
 
 
       </LinearLayout>
+      <LinearLayout
+       width="match_parent"
+       height="match_parent"
+       id={this.idSet.sharePopupContainer}/>
+
+       
+
+      </RelativeLayout>
     );
 
     return this.layout.render();
