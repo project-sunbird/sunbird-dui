@@ -20,7 +20,7 @@ var CourseProgress = require('../components/Sunbird/CourseProgress');
 var FlagPopup = require('../components/Sunbird/FlagPopup');
 var SharePopup = require('../components/Sunbird/core/SharePopup');
 var PageOption = require('../components/Sunbird/core/PageOption');
-var ContentLoaderDialog = require('../components/Sunbird/core/ContentLoaderDialog');
+
 var utils = require('../utils/GenericFunctions');
 var _this;
 class CourseEnrolledActivity extends View {
@@ -81,96 +81,12 @@ class CourseEnrolledActivity extends View {
     this.data = {
       courseName: this.details ? this.details.courseName : "",
       courseDesc: this.details ? this.details.courseDesc : "This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced",
-      completedProgress: this.downloadProgress,
-      totalCount: "150",
-      courseBrief: [{
-        count: "50",
-        type: "Modules"
-      }, {
-        count: "25",
-        type: "Videos"
-      }, {
-        count: "5",
-        type: "Quizes"
-      }],
-      chapterList: [{
-        chapterName: "Progression",
-        chapterDuration: "30",
-        chapterFinished: "3",
-        chapterContent: [{
-          name: "Arithemetic Progression",
-          type: "PLAY",
-          status: "DONE"
-        }, {
-          name: "Geometric Progeressions",
-          type: "PLAY",
-          status: "DONE"
-        }, {
-          name: "Quiz 1: 10 questions",
-          type: "QUIZ",
-          status: "DONE"
-        }]
-      }, {
-        chapterName: "Scientific Notations",
-        chapterFinished: "2",
-        chapterDuration: "50",
-        chapterContent: [{
-          name: "Arithemetic Progression",
-          type: "PLAY",
-          status: "DONE"
-        }, {
-          name: "Geometric Progeressions",
-          type: "PLAY",
-          status: "DONE"
-        }, {
-          name: "Significant figures",
-          type: "ASSIGNMENT",
-          status: "PROGRESS"
-        }, {
-          name: "Quiz 2: 5 questions",
-          type: "QUIZ",
-          status: "PENDING"
-        }]
-      }, {
-        chapterName: "Scientific Notations",
-        chapterFinished: "2",
-        chapterDuration: "50",
-        chapterContent: [{
-          name: "Arithemetic Progression",
-          type: "PLAY",
-          status: "DONE"
-        }, {
-          name: "Geometric Progeressions",
-          type: "PLAY",
-          status: "DONE"
-        }, {
-          name: "Significant figures",
-          type: "ASSIGNMENT",
-          status: "PROGRESS"
-        }, {
-          name: "Quiz 2: 5 questions",
-          type: "QUIZ",
-          status: "PENDING"
-        }]
-      }, {
-        chapterName: "Progression",
-        chapterFinished: "0",
-        chapterDuration: "10",
-        chapterContent: [{
-          name: "Arithemetic Progression",
-          type: "Chapter",
-          status: "PENDING"
-        }, {
-          name: "Geometric Progeressions",
-          type: "Chapter",
-          status: "PENDING"
-        }, {
-          name: "Quiz 1: 10 questions",
-          type: "Quiz",
-          status: "PENDING"
-        }]
-      }]
+      completedProgress: this.downloadProgress
+      
     };
+
+    window.__ContentLoaderDialog.show();
+
   }
 
   onPop = () => {
@@ -209,51 +125,21 @@ class CourseEnrolledActivity extends View {
     var downloadedPercent = data.downloadProgress;
     downloadedPercent =  downloadedPercent < 0 ? 0 : downloadedPercent;
 
-    // if (downloadedPercent == 100) {
-
-    //   console.log("SPINE IMPORTED -> ")
-    //   this.checkContentLocalStatus(this.baseIdentifier);
-
-    // } else {
-    //   var cmd = this.set({
-    //     id: this.idSet.downloadProgressText,
-    //     text: "Fetching content: " + downloadedPercent + "%"
-    //   })
-    //   Android.runInUI(cmd, 0);
-    // }
-
-
-      console.log("COURSE ENROLLLED PROGRESS",downloadedPercent)
-
-      this.showHideLoader("visible");
-
-
-      var contentLoader = (
-        <ContentLoaderDialog
-        visibility={downloadedPercent!=100?"visible":"gone"}
-        progress={downloadedPercent+""}/>
-        );
-
-      this.replaceChild(this.idSet.contentLoaderContainer,contentLoader.render(),0);
-
-      if (downloadedPercent == 100) {
-
+    if (downloadedPercent == 100) {
+      window.__ContentLoaderDialog.updateProgressBar(100);
+      window.__ContentLoaderDialog.hide();
       console.log("SPINE IMPORTED -> ")
       this.checkContentLocalStatus(this.baseIdentifier);
 
-      this.showHideLoader("gone");
-
+    } else {
+      window.__ContentLoaderDialog.show();
+      window.__ContentLoaderDialog.updateProgressBar(downloadedPercent);
+      
     }
+
+    
   }
 
-
-  showHideLoader = (visibility) =>{
-      var cmd = this.set({
-        id: this.idSet.contentLoaderContainer,
-        visibility : {visibility}
-      })
-      Android.runInUI(cmd, 0);
-  }
 
   checkContentLocalStatus = (identifier) => {
 
@@ -262,6 +148,7 @@ class CourseEnrolledActivity extends View {
     var callback = callbackMapper.map(function(status) {
 
       if (status == "true") {
+        window.__ContentLoaderDialog.hide()
         console.log("Spine Found")
         var callback1 = callbackMapper.map(function(data) {
           console.log(data)
@@ -269,6 +156,7 @@ class CourseEnrolledActivity extends View {
           // data[0] = data [0].replace(/\t/g, ' ');
           data[0] = utils.jsonifyData(data[0])
           _this.courseContent = JSON.parse(data[0]);
+          window.__ContentLoaderDialog.hide();
           _this.renderCourseChildren()
         });
         JBridge.getChildContent(identifier, callback1)
@@ -276,7 +164,9 @@ class CourseEnrolledActivity extends View {
 
       } else {
         console.log("Spine Not Found, IMPORTING ")
-      
+          
+          
+
           var callback22= callbackMapper.map(function(data){
             console.log(data)
                 data = JSON.parse(data)
@@ -410,7 +300,6 @@ class CourseEnrolledActivity extends View {
       <RelativeLayout
       width="match_parent"
       height="match_parent"
-      afterRender={this.afterRender}
       root="true">
 
       <LinearLayout
@@ -473,7 +362,6 @@ class CourseEnrolledActivity extends View {
                             width="match_parent"
                             gravity="center"
                             root="true"
-                            afterRender={this.afterRender}
                             orientation="vertical"
                             id={this.idSet.descriptionContainer}>
 
@@ -504,13 +392,6 @@ class CourseEnrolledActivity extends View {
        width="match_parent"
        height="match_parent"
        id={this.idSet.sharePopupContainer}/>
-
-       <LinearLayout
-       width="match_parent"
-       height="match_parent"
-       visibility="gone"
-       background={window.__Colors.WHITE}
-       id={this.idSet.contentLoaderContainer}/>
 
       </RelativeLayout>
     );
