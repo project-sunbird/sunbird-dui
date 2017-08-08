@@ -191,11 +191,12 @@ class CourseEnrolledActivity extends View {
 
 
 
-  afterRender = () => {
-    this.checkContentLocalStatus(this.baseIdentifier);
-    // this.getContentState(this.baseIdentifier,window.__userToken);
+  // afterRender = () => {
+  //   console.log("after render in CES")
+    
+  //   // this.getContentState(this.baseIdentifier,window.__userToken);
 
-  }
+  // }
 
 
   getSpineStatus = (pValue) => {
@@ -230,7 +231,7 @@ class CourseEnrolledActivity extends View {
 
   checkContentLocalStatus = (identifier) => {
     
-
+    console.log("in check local status")
     var callback = callbackMapper.map(function(status) {
 
       if (status == "true") {
@@ -324,7 +325,7 @@ class CourseEnrolledActivity extends View {
   }
 
   afterRender=()=>{
-
+    this.checkContentLocalStatus(this.baseIdentifier);
     var callback = callbackMapper.map(function(data) {
 
       var input = [{
@@ -347,7 +348,7 @@ class CourseEnrolledActivity extends View {
     
     });
 
-    JBridge.exportEcar("do_3122981867074519041100", callback);
+    // JBridge.exportEcar("do_3122981867074519041100", callback);
   }
 
 

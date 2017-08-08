@@ -19,6 +19,7 @@ var SearchResult = require('../components/Sunbird/SearchResult');
 var Styles = require("../res/Styles");
 let IconStyle = Styles.Params.IconStyle;
 var _this;
+var utils = require('../utils/GenericFunctions'); 
 
 class SearchActivity extends View {
   constructor(props, children, state) {
@@ -225,60 +226,66 @@ class SearchActivity extends View {
   }
 
   getSearchList=(searchText,flag)=> {
+    if(searchText == ""){
+      this.renderNoResult();
+    }
+    else
+    {
+        console.log("oin get search List",searchText);
+        var callback = callbackMapper.map(function(data) {
+          console.log("search data from api",data)
+          console.log("search results", JSON.parse(data[1]));
+          data[0] = utils.decodeBase64(data[0])
+          _this.filterData = data[1];
+          if (searchText == "" || data[0] == "[]") {
+            _this.renderNoResult();
+          } else {
+            var s = data[0];
+            s = s.replace(/\\n/g, "\\n")
+              .replace(/\\'/g, "\\'")
+              .replace(/\\"/g, '\\"')
+              .replace(/\\&/g, "\\&")
+              .replace(/\\r/g, "\\r")
+              .replace(/\\t/g, "\\t")
+              .replace(/\\b/g, "\\b")
+              .replace(/\\f/g, "\\f");
+            s = s.replace(/[\u0000-\u0019]+/g, "");
+            _this.renderResult(JSON.parse(s));
+          }
 
-    console.log("oin get search List",searchText);
-    var callback = callbackMapper.map(function(data) {
-      console.log("search data from api",data)
-      console.log("search results", JSON.parse(data[1]));
-      _this.filterData = data[1];
-      if (searchText == "" || data[0] == "[]") {
-        _this.renderNoResult();
-      } else {
-        var s = data[0];
-        s = s.replace(/\\n/g, "\\n")
-          .replace(/\\'/g, "\\'")
-          .replace(/\\"/g, '\\"')
-          .replace(/\\&/g, "\\&")
-          .replace(/\\r/g, "\\r")
-          .replace(/\\t/g, "\\t")
-          .replace(/\\b/g, "\\b")
-          .replace(/\\f/g, "\\f");
-        s = s.replace(/[\u0000-\u0019]+/g, "");
-        _this.renderResult(JSON.parse(s));
-      }
+        });
+        console.log("searchText",searchText)
+        // if (searchText.length > 2) {
+          if (this.filterData!=undefined && this.filterData.length == 0) {
+            status = "false";
+          } else {
+            status = "true";
+            // this.filterData = this.temp;
+          }
+          console.log("this.filterData in search",this.filterData)
+          // console.log("searchtext", searchText);
+          // console.log("this.filterData", this.filterData);
 
-    });
-    console.log("searchText",searchText)
-    // if (searchText.length > 2) {
-      if (this.filterData!=undefined && this.filterData.length == 0) {
-        status = "false";
-      } else {
-        status = "true";
-        // this.filterData = this.temp;
-      }
-      console.log("this.filterData in search",this.filterData)
-      // console.log("searchtext", searchText);
-      // console.log("this.filterData", this.filterData);
-
-      var s = "";
-      // if (typeof this.filterData == 'object') {
-      //   this.filterData = this.filterData.value0.filterDetails;
-      //   console.log("this.filterData", this.filterData);
-      //   var s = JSON.parse(this.filterData);
-      //   console.log("filterHolder", s.filterDetails);
-      //   this.filterData = s.filterDetails;
-      // }
-      // if(typeof this.filterData == "string" && this.filterData.length >10){
-      //   this.filterData = JSON.parse(this.filterData)
-      // }
+          var s = "";
+          // if (typeof this.filterData == 'object') {
+          //   this.filterData = this.filterData.value0.filterDetails;
+          //   console.log("this.filterData", this.filterData);
+          //   var s = JSON.parse(this.filterData);
+          //   console.log("filterHolder", s.filterDetails);
+          //   this.filterData = s.filterDetails;
+          // }
+          // if(typeof this.filterData == "string" && this.filterData.length >10){
+          //   this.filterData = JSON.parse(this.filterData)
+          // }
 
 
-      console.log("this.filterData", this.filterData);
-      console.log("this.filterData", typeof(this.filterData));
-
-      JBridge.searchContent(callback, JSON.stringify(this.filterData), searchText, this.searchType, flag);
-    // }
-    this.showFilter();
+          console.log("this.filterData", this.filterData);
+          console.log("this.filterData", typeof(this.filterData));
+          JBridge.showSnackBar("Loading Search Results Please Wait......")
+          JBridge.searchContent(callback, JSON.stringify(this.filterData), searchText, this.searchType, flag);
+        // }
+        this.showFilter();
+    }
   }
 
 
@@ -305,7 +312,7 @@ class SearchActivity extends View {
   handleSearchClick = (searchText) => {
     JBridge.hideKeyboard();
 
-    JBridge.showSnackBar("Loading Search Results Please Wait......")
+    
     this.getSearchList(searchText[0],"false");
     
     

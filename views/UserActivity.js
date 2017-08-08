@@ -14,6 +14,7 @@ var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 var TextInputView = require('../components/Sunbird/core/TextInputView');
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
+var utils = require('../utils/GenericFunctions');
 
 var _this;
 
@@ -198,7 +199,7 @@ class UserActivity extends View {
   handleStateChange = (state) => {
     window.__LoaderDialog.hide();
     var status = state.response.status[0];
-    var response = JSON.parse(state.response.status[1]);
+    var response = JSON.parse(utils.decodeBase64(state.response.status[1]));
     var responseCode = state.response.status[2];
     var responseUrl = state.response.status[3];
 
@@ -295,20 +296,20 @@ class UserActivity extends View {
 
   toggleSignUpForm = () => {
 
-    JBridge.showSnackBar("Logged out")
-    JBridge.setInSharedPrefs("logged_in","NO");
-    JBridge.setInSharedPrefs("user_id", "__failed");
-    JBridge.setInSharedPrefs("user_name",  "__failed");
-    JBridge.setInSharedPrefs("user_token",  "__failed");
+    // JBridge.showSnackBar("Logged out")
+    // JBridge.setInSharedPrefs("logged_in","NO");
+    // JBridge.setInSharedPrefs("user_id", "__failed");
+    // JBridge.setInSharedPrefs("user_name",  "__failed");
+    // JBridge.setInSharedPrefs("user_token",  "__failed");
 
-    console.log("IN P1 ",window.__pressedLoggedOut)
-    window.__pressedLoggedOut=true;
-    console.log("IN P2 ",window.__pressedLoggedOut)
-    JBridge.keyCloakLogout("https://ntp.net.in/auth/realms/sunbird/protocol/openid-connect/logout");
+    // console.log("IN P1 ",window.__pressedLoggedOut)
+    // window.__pressedLoggedOut=true;
+    // console.log("IN P2 ",window.__pressedLoggedOut)
+    // JBridge.keyCloakLogout("https://ntp.net.in/auth/realms/sunbird/protocol/openid-connect/logout");
     
-    window.__Logout();
+    // window.__Logout();
 
-    return
+    // return
     this.isLoginMode = !this.isLoginMode;
     var visibilityVal= this.isLoginMode?"gone":"visible"
     var oppVisibilityValue = !this.isLoginMode?"gone":"visible"

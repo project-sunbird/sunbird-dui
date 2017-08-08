@@ -157,8 +157,8 @@ class MainActivity extends View {
           }
         }
       }
-
-
+      window.__apiResponse = responseData;
+      responseData = utils.decodeBase64(responseData)
     if(responseCode == 401){
       var callback  = callbackMapper.map(function(token){
         window.__apiToken = token;
@@ -172,7 +172,7 @@ class MainActivity extends View {
       JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION)
       responseData=tmp; 
     } else {
-    responseData = utils.jsonifyData(responseData);
+     responseData = utils.jsonifyData(responseData);
       responseData = JSON.parse(responseData);
 
     }

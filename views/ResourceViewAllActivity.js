@@ -35,6 +35,8 @@ class ResourceViewAllActivity extends View {
 
     console.log(this.totalDetails,"TOTAL")
     
+
+
     this.details = this.totalDetails.resourceDetails;
     this.appbarTitle = this.totalDetails.title;
 
@@ -45,7 +47,7 @@ class ResourceViewAllActivity extends View {
     this.cType;
     this.name;
     this.time;
-
+    this.getSearchData();
 
     var _this = this;
     setTimeout(function() {
@@ -54,6 +56,14 @@ class ResourceViewAllActivity extends View {
         null
       );
     },100)
+  }
+
+  getSearchData = () =>{
+    var callback = callbackMapper.map(function(data){
+      data[0] = utils.decodeBase64(data[0]);
+    });
+    JBridge.searchContent(callback, JSON.stringify(this.details.searchQuery), "", "Resource", false);
+
   }
 
 getRows = () =>{
