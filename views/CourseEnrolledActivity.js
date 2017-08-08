@@ -475,17 +475,22 @@ class CourseEnrolledActivity extends View {
                             root="true"
                             afterRender={this.afterRender}
                             orientation="vertical"
-                            id={this.idSet.descriptionContainer}/>
+                            id={this.idSet.descriptionContainer}>
+
+                            <TextView
+                            width="wrap_content"
+                            height="wrap_content"
+                            gravity="center"
+                            text="Loading content"/>
+
+                            </LinearLayout>
 
 
                 </LinearLayout>
 
                 </ScrollView>
 
-                <PageOption
-                buttonItems={buttonList}
-                onButtonClick={this.handlePageOptionClick}
-                />
+                
 
           </LinearLayout>
 
