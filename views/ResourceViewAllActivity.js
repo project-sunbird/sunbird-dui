@@ -16,13 +16,14 @@ var ProgressButton = require('../components/Sunbird/core/ProgressButton');
 var LargeCardComponent = require('../components/Sunbird/core/LargeCardComponent');
 var utils = require('../utils/GenericFunctions'); 
 
-
+var _this;
 
 class ResourceViewAllActivity extends View {
   constructor(props, children, state) {
     super(props, children, state);
 
     this.setIds([
+      "listItems"
     ]);
     this.state = state;
     this.screenName = "ResourceViewAllActivity";
@@ -35,8 +36,8 @@ class ResourceViewAllActivity extends View {
 
     console.log(this.totalDetails,"TOTAL")
     
-
-
+    _this = this;
+    this.start_index = 0;
     this.details = this.totalDetails.resourceDetails;
     this.appbarTitle = this.totalDetails.title;
 
@@ -47,9 +48,8 @@ class ResourceViewAllActivity extends View {
     this.cType;
     this.name;
     this.time;
-    this.getSearchData();
+    
 
-    var _this = this;
     setTimeout(function() {
       Android.runInUI(
         _this.animateView(),
@@ -58,17 +58,10 @@ class ResourceViewAllActivity extends View {
     },100)
   }
 
-  getSearchData = () =>{
-    var callback = callbackMapper.map(function(data){
-      data[0] = utils.decodeBase64(data[0]);
-    });
-    JBridge.searchContent(callback, JSON.stringify(this.details.searchQuery), "", "Resource", false);
 
-  }
+getRows = (data) =>{
 
-getRows = () =>{
-
-    var rows = this.details.map((item,i) => {
+    var rows = data.map((item,i) => {
 
       if(item.contentType != "course"){
 
@@ -87,6 +80,7 @@ getRows = () =>{
                    this.fileImageUrl = item.appIcon?item.appIcon:"ic_action_resource";
                    this.cType = item.contentType
                    this.name = item.name;
+
                    var d =  new Date(item.createdOn);
                    this.time = d.getDay() + "-" + d.getMonth()+ "-" + d.getUTCFullYear();
                 }
@@ -167,8 +161,9 @@ getRows = () =>{
     );
   }
 
-  afterRender = () => {
-
+  afterRender= () => {
+      
+      this.appendChild(this.idSet.listItems,this.getRows(this.details).render(),this.start_index)
   }
 
 
@@ -186,6 +181,17 @@ getRows = () =>{
     window.__runDuiCallback(event);
   }
 
+  handleViewMoreClick = () =>{
+    console.log("handle more")
+    this.start_index++;
+    var callback = callbackMapper.map(function(data){
+      data[0] = utils.decodeBase64(data[0]);
+      _this.appendChild(_this.idSet.listItems,_this.getRows(JSON.parse(data[0])).render(),_this.start_index)
+      });
+      JBridge.searchContent(callback, JSON.stringify(this.details.searchQuery), "", "Resource", false);
+
+  }
+
   render() {
     var buttonList = ["ENROLL FOR THIS COURSE"];
     this.layout = (
@@ -194,7 +200,8 @@ getRows = () =>{
         background={window.__Colors.WHITE}
         orientation="vertical"
         width="match_parent"
-        height="match_parent">
+        height="match_parent"
+        >
         <SimpleToolbar
           afterRender={this.afterRender}
           width="match_parent"
@@ -206,22 +213,39 @@ getRows = () =>{
 
 
               <ScrollView
-                height="0"
+                height="match_parent"
                 weight="1"
                 width="match_parent"
                 fillViewport="true"
                 >
-
-                <LinearLayout
-                  height="match_parent"
-                  width="match_parent"
-                  orientation="vertical">
-
-                    {this.getRows()}
-
-
-                </LinearLayout>
-
+                  <LinearLayout
+                  height = "match_parent"
+                  width = "match_parent"
+                  orientation = "vertical"
+                  >
+                      <LinearLayout
+                        height="match_parent"
+                        width="match_parent"
+                        id = {this.idSet.listItems}
+                        >
+                      </LinearLayout>
+                      <LinearLayout
+                        width = "match_parent"
+                        height = "50"
+                        margin = "16,16,16,16"
+                        background = {window.__Colors.PRIMARY_DARK}
+                        gravity = "center"
+                        >
+                        <TextView
+                          height = "wrap_content"
+                          width = "match_parent"
+                          onClick = {this.handleViewMoreClick}
+                          text = "VIEW MORE"
+                          style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
+                          />
+                      </LinearLayout>     
+                  
+                  </LinearLayout>
                 </ScrollView>
 
 
