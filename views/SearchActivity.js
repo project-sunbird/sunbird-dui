@@ -237,7 +237,7 @@ class SearchActivity extends View {
           console.log("search results", JSON.parse(data[1]));
           data[0] = utils.decodeBase64(data[0])
           _this.filterData = data[1];
-          if(JBridge.isNetworkAvailable()){
+          
                 if (searchText == "" || data[0] == "[]") {
                   _this.renderNoResult();
                 } else {
@@ -253,9 +253,6 @@ class SearchActivity extends View {
                   s = s.replace(/[\u0000-\u0019]+/g, "");
                   _this.renderResult(JSON.parse(s));
                 }
-          }
-          else{
-            JBridge.showSnackBar("No internet connection");
           }
 
         });
