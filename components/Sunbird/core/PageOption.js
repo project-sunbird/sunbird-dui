@@ -18,7 +18,9 @@ class PageOption extends View {
   }
 
   getButtons = () => {
-    var buttons
+    console.log("GET BUTTONS",this.props)
+
+    var buttons;
     if (this.props.buttonItems.length > 1) {
       buttons = this.props.buttonItems.map((item, i) => {
         var type = "BigButton_Primary_WB";

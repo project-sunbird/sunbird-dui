@@ -32,6 +32,7 @@ class SharePopup extends View {
     this.selectedList = [];
     _this=this;
     window.__SharePopup = this;
+    console.log("SHARE POPUP CME")
   }
 
 

@@ -19,6 +19,7 @@ var HorizontalProgressBar = require('../components/Sunbird/HorizontalProgressBar
 var CourseProgress = require('../components/Sunbird/CourseProgress');
 var FlagPopup = require('../components/Sunbird/FlagPopup');
 var SharePopup = require('../components/Sunbird/core/SharePopup');
+var PageOption = require('../components/Sunbird/core/PageOption');
 var ContentLoaderDialog = require('../components/Sunbird/core/ContentLoaderDialog');
 var utils = require('../utils/GenericFunctions');
 var _this;
@@ -351,13 +352,15 @@ class CourseEnrolledActivity extends View {
   }
 
   afterRender=()=>{
+
+    console.log("AFTER RENDER CAME IN COURSE ENROLLED")
     this.checkContentLocalStatus(this.baseIdentifier);
 
     var callback = callbackMapper.map(function(data) {
 
       var input = [{
                     type : "text",
-                    data : "ntp.net.in/c/"+_this.details.contentId
+                    data : "ntp.net.in/c/"+_this.baseIdentifier
 
                   },{
                     type : "file",
@@ -375,7 +378,7 @@ class CourseEnrolledActivity extends View {
     
     });
 
-    // JBridge.exportEcar("do_3122981867074519041100", callback);
+    JBridge.exportEcar(this.baseIdentifier, callback);
 
   }
 
@@ -395,9 +398,13 @@ class CourseEnrolledActivity extends View {
     }
   }
 
+  handlePageOptionClick = (data) =>{
+
+  }
+
 
   render() {
-    var buttonList = ["ENROLL FOR THIS COURSE"];
+    var buttonList = ["RESUME THE COURSE"];
     this.layout = (
 
       <RelativeLayout
@@ -458,8 +465,7 @@ class CourseEnrolledActivity extends View {
                         content={this.data}
                         title={this.data.courseName || this.details.name || this.details.contentData.name}
                         onResumeClick={this.handleCourseResume}
-                        visibility = {this.showProgress}
-                        />
+                        visibility = {this.showProgress}/>
 
 
                           <LinearLayout
@@ -476,7 +482,14 @@ class CourseEnrolledActivity extends View {
 
                 </ScrollView>
 
+                <PageOption
+                buttonItems={buttonList}
+                onButtonClick={this.handlePageOptionClick}
+                />
+
           </LinearLayout>
+
+          
 
       </LinearLayout>
 
