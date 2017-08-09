@@ -44,9 +44,12 @@ instance encodeSplashScreenActivityAction :: Encode SplashScreenActivityAction w
 
 
 data UserActivity = UserActivity
-data UserActivityAction = OPEN_MainActivity | OPEN_Deeplink {intentData :: String} |
+data UserActivityAction = OPEN_MainActivity |
+  OPEN_Deeplink_ResourceDetail {resource :: String} |
+  OPEN_Deeplink_CourseEnrolled {course::String}|
   API_LogIn {userName::String, userPass::String} | 
-  API_SignUp {request::String, api_token::String}
+  API_SignUp {request::String, api_token::String} |
+  API_EnrolledCourses {user_token::String, api_token::String}
 
 instance userActivity :: UIScreen UserActivity UserActivityAction where
   generateMockEvents _ = [OPEN_MainActivity , API_LogIn {userName:"String",userPass:"String"}]

@@ -41,8 +41,13 @@ userActivity = do
             responseData <- userSignup requestBody token
             _ <- sendUpdatedState {response : responseData, responseFor : "API_SignUp", screen:"asas"} 
             pure $ "Aborted 3"
+        API_EnrolledCourses {user_token:x,api_token:y}-> do
+            responseData <- getUserEnrolledCourses x y
+            _ <- sendUpdatedState {response : responseData, responseFor : "API_EnrolledCourses", screen:"asas"}
+            pure $ "apiDefault"
         OPEN_MainActivity -> mainActivity "{}" "UserActivity" "{}" 
-        OPEN_Deeplink {intentData:details} -> resourceDetailActivity details "Deeplink" details
+        OPEN_Deeplink_ResourceDetail {resource:details} ->  resourceDetailActivity details "Deeplink" details
+        OPEN_Deeplink_CourseEnrolled {course:details} -> enrolledCourseActivity details "Deeplink" details 
         _ -> pure $ "UserActivity"
 
 
@@ -53,6 +58,35 @@ resourceDetailActivity input whereFrom whatToSendBack = do
             "Deeplink" -> mainActivity "{}" "UserActivity" "{}" 
             _ -> resourceFragment whatToSendBack "Terminate" input
         _ -> resourceDetailActivity input whereFrom whatToSendBack
+
+enrolledCourseActivity input whereFrom whatToSendBack = do
+    event <- ui $ CourseEnrolledActivity {courseDetails : input}
+    case event of
+        OPEN_ModuleDetailsActivity {moduleName:output1,moduleDetails:output2} -> subModuleDetailActivity output1 output2 "DeepLinkCourseEnrolled" input
+        BACK_CourseEnrolledActivity -> case whereFrom of
+            "Deeplink" -> mainActivity "{}" "UserActivity" "{}" 
+            _ -> pure $ "default"
+        _ -> enrolledCourseActivity input whereFrom whatToSendBack
+
+
+subModuleDetailActivity mName input whereFrom whatToSendBack = do
+    event <- ui $ AlternateModuleDetailActivity {moduleName:mName,moduleDetails:input}
+    case event of
+        OPEN_ModuleActivity {moduleName: output1,moduleDetails: output2} -> moduleDetailActivity output1 output2 "Terminate" input
+        BACK_AlternateModuleDetailActivity -> case whereFrom of
+            "DeepLinkCourseEnrolled" -> enrolledCourseActivity whatToSendBack "Terminate" input
+            _ ->  enrolledCourseActivity whatToSendBack "Terminate" input
+        _ -> subModuleDetailActivity mName input whereFrom whatToSendBack
+
+moduleDetailActivity mName input whereFrom whatToSendBack = do
+    event <- ui $ ModuleDetailActivity {moduleName : mName,moduleDetails :input}
+    case event of
+        OPEN_AlternateModuleDetailActivity {moduleName:output1,moduleDetails:output2} -> subModuleDetailActivity output1 output2  "Terminate" input
+        BACK_ModuleDetailActivity-> case whereFrom of
+            "DeepLinkCourseEnrolled" -> enrolledCourseActivity whatToSendBack "Terminate" input
+            "Terminate" -> enrolledCourseActivity whatToSendBack "Terminate" input
+            _ ->  pure $ "default"
+        _ -> moduleDetailActivity mName input whereFrom whatToSendBack
 
 
 
