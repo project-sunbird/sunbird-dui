@@ -14,6 +14,7 @@ var SharePopup = require('../components/Sunbird/core/SharePopup');
 
 var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
 var ProgressButton = require('../components/Sunbird/core/ProgressButton');
+var utils = require('../utils/GenericFunctions');
 
 window.R = require("ramda");
 
@@ -42,7 +43,7 @@ class ResourceDetailActivity extends View {
         {imageUrl:'ic_action_overflow'}
       ]
     }
-    this.popupMenu = "Flag/Report content/Delete"
+    this.popupMenu = "Flag/Report content,Delete"
 
     this.shouldCacheScreen = false;
 
@@ -375,6 +376,11 @@ class ResourceDetailActivity extends View {
     )
 
   }
+  handleStateChange = (state) =>{
+    console.log("response from flag api",state)
+    var response = utils.decodeBase64(state.response.status[1])
+    console.log("response from server",JSON.parse(response))
+  }
 
 
 
@@ -382,6 +388,8 @@ class ResourceDetailActivity extends View {
     console.log("ITEM CLICKED",params);
     if(params == 0){
       console.log("flag content")
+      var event= { "tag": "API_FlagContent", contents: {"user_token":window.__userToken,"api_token":window.__apiToken,"contentId":"12345","flagReason":"wfdsf","flags":"dsf"} };
+      window.__runDuiCallback(event);
     }
     else if(params == 1){
       var callback = callbackMapper.map(function(response){
