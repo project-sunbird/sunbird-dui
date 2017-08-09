@@ -6,21 +6,13 @@ var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var ViewPager = require("@juspay/mystique-backend").androidViews.ViewPager;
 var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
-
-
-
 var BottomNavBar = require("../components/Sunbird/core/BottomNavBar")
-
-
 var HomeFragment = require('./Fragments/HomeFragment');
 var CourseFragment = require('./Fragments/CourseFragment');
 var ResourceFragment = require("./Fragments/ResourceFragment")
 var CommunityFragment = require('./Fragments/CommunityFragment');
 var ProfileFragment = require('./Fragments/ProfileFragment');
-
 var ContentLoadingComponent = require('../components/Sunbird/ContentLoadingComponent');
-
-
 var FeedParams = require('../FeedParams');
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 var objectAssign = require('object-assign');
