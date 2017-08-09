@@ -124,10 +124,10 @@ class CourseEnrolledActivity extends View {
 
     if (data.identifier != this.baseIdentifier)
       return;
-
+    
     var textToShow = ""
     console.log("DATA -> ", data)
-
+    
     data.downloadProgress= data.downloadProgress == undefined || isNaN(data.downloadProgress) ? 0 : data.downloadProgress;
     var downloadedPercent = data.downloadProgress;
     downloadedPercent =  downloadedPercent < 0 ? 0 : downloadedPercent;
@@ -151,7 +151,7 @@ class CourseEnrolledActivity extends View {
   checkContentLocalStatus = (identifier) => {
 
     console.log("in check local status")
-
+    
     var callback = callbackMapper.map(function(status) {
 
       if (status == "true") {

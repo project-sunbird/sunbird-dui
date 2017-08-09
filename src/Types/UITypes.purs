@@ -92,8 +92,6 @@ instance decodeMainActivityAction :: Decode MainActivityAction where decode = de
 instance encodeMainActivityAction :: Encode MainActivityAction where encode = defaultEncode
 
 
-
-
 data ResourceDetailActivity = ResourceDetailActivity {resourceDetails::String}
 data ResourceDetailActivityAction =  DummyResourceDetailActivityAction | 
   BACK_ResourceDetailActivity | API_FlagContent{user_token::String,api_token::String,contentId::String,flagReason::String,flags::String}

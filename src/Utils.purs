@@ -65,8 +65,6 @@ keyCLoakGrantType = "password"
 
 keyCloakAuthUrl = "https://keycloakidp-coacher.rhcloud.com/auth/realms/"<> keyCloakRealm <>"/protocol/openid-connect/token"
 
-
- 
 type State a = {screen :: String |a}
 
 type AffError e = (Error -> Eff e Unit)

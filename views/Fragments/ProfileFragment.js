@@ -137,6 +137,7 @@ class ProfileFragment extends View {
 
                 <PersonalDetails
                 data={this.details}/>
+                
 
 
               </LinearLayout>

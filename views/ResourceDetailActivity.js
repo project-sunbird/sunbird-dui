@@ -85,7 +85,7 @@ class ResourceDetailActivity extends View {
                  />
         _this.replaceChild(_this.idSet.progressButtonContainer, pButonLayout.render(), 0);
         _this.changeOverFlow();
-        _this.shareContent(true);
+        // _this.shareContent(true);
 
       } else {
         var pButonLayout = <ProgressButton
@@ -99,7 +99,7 @@ class ResourceDetailActivity extends View {
                  />
         _this.replaceChild(_this.idSet.progressButtonContainer, pButonLayout.render(), 0);
 
-        _this.shareContent(false);
+        // _this.shareContent(false);
 
       }
 
@@ -385,14 +385,17 @@ class ResourceDetailActivity extends View {
 
 
   overFlowCallback = (params) => {
+    window.__LoaderDialog.show();
     console.log("ITEM CLICKED",params);
     if(params == 0){
       console.log("flag content")
       var event= { "tag": "API_FlagContent", contents: {"user_token":window.__userToken,"api_token":window.__apiToken,"contentId":"12345","flagReason":"wfdsf","flags":"dsf"} };
       window.__runDuiCallback(event);
+      window.__LoaderDialog.hide();
     }
     else if(params == 1){
       var callback = callbackMapper.map(function(response){
+        window.__LoaderDialog.hide();
         console.log("repsonse for delete",response)
         if(response[0] == "successful"){
           console.log("back to resource");

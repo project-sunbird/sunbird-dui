@@ -41,10 +41,7 @@ class CourseFragment extends View {
         { imageUrl: "ic_action_filter" }
       ]
     }
-
-
     this.enrolledCourses = []
-
     window.setEnrolledCourses = this.setEnrolledCourses;
   }
 
