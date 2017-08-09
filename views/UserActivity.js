@@ -63,15 +63,21 @@ class UserActivity extends View {
 
     console.log("response for import",response);
 
-    var jsonResponse = JSON.parse(response);
-    var identifier;
-
-    if(jsonResponse.identifier != undefined){
-       identifier = jsonResponse.identifier;
+    if(response != "ALREADY_EXIST"){
+      var jsonResponse = JSON.parse(response);
+      var identifier;
+      if(jsonResponse.identifier != undefined){
+         identifier = jsonResponse.identifier;
+         _this.handleDeepLinkAction(identifier);
+      }
+    }else{
+        JBridge.showToast("Imported Successfully","short");
+        console.log("Successfully IMPORTED CONTENT")
+        var whatToSend = []
+        var event = { tag: "OPEN_MainActivity", contents: whatToSend };
+        window.__runDuiCallback(event);
     }
-
-    _this.handleDeepLinkAction(identifier);
-    
+  
   }
 
 
@@ -82,7 +88,8 @@ class UserActivity extends View {
 
         if(item.contentType.toLowerCase() == "course"){
 
-          console.log("Content type is course");
+          console.log("Content type is course",item);
+
       
           // var whatToSend={course:itemDetails};
           // var event={tag:"OPEN_CourseInfoActivity_SEARCH",contents:whatToSend}
@@ -732,8 +739,9 @@ class UserActivity extends View {
     if(("YES"==JBridge.getFromSharedPrefs("logged_in"))){
 
       if("__failed" != JBridge.getFromSharedPrefs("intentFilePath")){
+
+          console.log("INSIDE FILE PATH INTENT");
        
-          JBridge.showToast("Intent from file"+JBridge.getFromSharedPrefs("intentFilePath"),"short");
           var filePath = JBridge.getFromSharedPrefs("intentFilePath");
           JBridge.importEcar(filePath);
 
@@ -742,10 +750,13 @@ class UserActivity extends View {
           _this.setLoginPreferences();
 
 
+
       }else if("__failed" != JBridge.getFromSharedPrefs("intentLinkPath")){
+
+          console.log("INSIDE LINK INTENT");
+
           var output = JBridge.getFromSharedPrefs("intentLinkPath");
 
-          JBridge.showToast("Intent from link"+JBridge.getFromSharedPrefs("intentLinkPath"),"short");
           console.log("Intent from link",output)
           JBridge.setInSharedPrefs("intentLinkPath", "__failed");
           
@@ -756,11 +767,13 @@ class UserActivity extends View {
 
       }
       else {
+          console.log("ALREADY LOGGED IN");
           this.performLogin();
       }
 
 
     }else{
+      console.log("NOT LOGGED IN");
       this.replaceChild(this.idSet.parentContainer,this.getBody().render(),0);
     }
 

@@ -7,6 +7,7 @@ var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 var ScrollView = require('@juspay/mystique-backend').androidViews.ScrollView;
+var ProgressBar = require("@juspay/mystique-backend").androidViews.ProgressBar;
 
 var objectAssign = require('object-assign');
 
@@ -20,6 +21,7 @@ var CourseProgress = require('../components/Sunbird/CourseProgress');
 var FlagPopup = require('../components/Sunbird/FlagPopup');
 var SharePopup = require('../components/Sunbird/core/SharePopup');
 var PageOption = require('../components/Sunbird/core/PageOption');
+
 
 var utils = require('../utils/GenericFunctions');
 var _this;
@@ -85,7 +87,7 @@ class CourseEnrolledActivity extends View {
       
     };
 
-    window.__ContentLoaderDialog.show();
+    // window.__ContentLoaderDialog.show();
 
   }
 
@@ -366,10 +368,17 @@ class CourseEnrolledActivity extends View {
                             id={this.idSet.descriptionContainer}>
 
                             <TextView
+                            margin="0,50,0,0"
                             width="wrap_content"
                             height="wrap_content"
                             gravity="center"
                             text="Loading content"/>
+
+                            <ProgressBar
+                            margin="0,10,0,0"
+                            gravity="center"
+                            width="20"
+                            height="20"/>
 
                             </LinearLayout>
 
