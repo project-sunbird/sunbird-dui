@@ -172,7 +172,7 @@ class ProgressButton extends View {
 
   }
   checkTelemetry = (telemetryData) => {
-    telemetryData = JSON.parse(telemetryData);
+    telemetryData = JSON.parse(utils.decodeBase64(telemetryData));
     if (telemetryData.eid == "OE_END") {
         console.log("reached end of content");
         var time = new Date();
