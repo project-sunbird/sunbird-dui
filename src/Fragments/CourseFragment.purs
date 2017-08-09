@@ -10,6 +10,7 @@ import UI
 
 
 
+
 courseFragment input whereFrom whatToSendBack = do
 	event <- ui $ MainActivity 
 	case event of
@@ -47,12 +48,18 @@ courseInfoActivity input whereFrom whatToSendBack = do
 				responseData <- enrollCourse x details token
 	  			_ <- sendUpdatedState {response : responseData, responseFor : "API_EnrollCourse", screen:"asas"}
 				pure $ "apiDefault"
+		API_EnrolledCoursesList {user_token:x,api_token:y} -> do
+	            responseData <- getUserEnrolledCourses x y
+	            _ <- sendUpdatedState {response : responseData, responseFor : "API_EnrolledCoursesList", screen:"asas"}
+	            pure $ "apiDefault"
 		BACK_CourseInfoActivity -> case whereFrom of
 			"CourseFragment" -> courseFragment whatToSendBack "Terminate" input
 			"CourseViewAllActivity" -> courseViewAllActivity whatToSendBack "Terminate" input
 			"SearchActivity" -> searchCourseActivity whatToSendBack "Terminate" input
 			_ -> courseFragment whatToSendBack "Terminate" input
 		_ -> courseInfoActivity input whereFrom whatToSendBack
+
+
 
 
 enrolledCourseActivity input whereFrom whatToSendBack = do

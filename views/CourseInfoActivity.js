@@ -55,7 +55,7 @@ class CourseInfoActivity extends View {
 
     this.checkContentLocalStatus(this.details.identifier);
 
-
+    
 
     this.data = {
       courseName: this.details ? this.details.name : "",
@@ -266,19 +266,28 @@ class CourseInfoActivity extends View {
     );
   }
 
+
+
+
   afterRender = () => {
     console.log("progress CIA",this.details)
     
-    var enrolledIds = window.__enrolledCourses;
-    enrolledIds.map((item)=>{
+    if(window.__enrolledCourses == undefined){
+      var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken} 
+      var event ={ "tag": "API_EnrolledCoursesList", contents: whatToSend};
+      window.__runDuiCallback(event);
+      window.__LoaderDialog.show();
+    }else{
+      var enrolledIds = window.__enrolledCourses;
+      enrolledIds.map((item)=>{
       if(item.courseId == this.details.identifier){
           var whatToSend = { "course": this.state.data.value0.courseDetails }
           var event = { tag: 'OPEN_EnrolledActivity', contents: whatToSend }
           window.__runDuiCallback(event);
 
-      }
-    })
-
+        }
+      })
+    }
 
   }
 
@@ -289,6 +298,7 @@ class CourseInfoActivity extends View {
     var response = JSON.parse(utils.decodeBase64(state.response.status[1]));
     var responseCode = state.response.status[2];
     var responseUrl = state.response.status[3];
+    console.log("STATE IN HANDLE STATE CHANGE",state);
     
     if (parseInt(responseCode) != 200) {
       console.log("INVALID FORMAT")
@@ -326,6 +336,23 @@ class CourseInfoActivity extends View {
         }
         break;
 
+
+      case "API_EnrolledCoursesList":
+        console.log("API_EnrolledCourses in courseInfoActivity")
+        window.__enrolledCourses = response.result.courses;
+        window.__LoaderDialog.hide();
+
+        var enrolledIds = window.__enrolledCourses;
+        enrolledIds.map((item)=>{
+        if(item.courseId == this.details.identifier){
+            var whatToSend = { "course": this.state.data.value0.courseDetails }
+            var event = { tag: 'OPEN_EnrolledActivity', contents: whatToSend }
+            window.__runDuiCallback(event);
+
+          }
+        })
+
+        break;
         
       default:
         console.log("default SWITCH")
@@ -384,9 +411,6 @@ class CourseInfoActivity extends View {
   }
 
 
-
-
-
   logout = () =>{
     JBridge.showSnackBar("Logged out")
     JBridge.setInSharedPrefs("logged_in","NO");
@@ -409,7 +433,6 @@ class CourseInfoActivity extends View {
 
       <LinearLayout
         root="true"
-        afterRender={this.afterRender()}
         background={window.__Colors.WHITE}
         orientation="vertical"
         width="match_parent"
