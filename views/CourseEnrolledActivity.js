@@ -42,13 +42,11 @@ class CourseEnrolledActivity extends View {
 
     this.menuData = {
       url: [
-        { imageUrl: "ic_action_share_black" },
-        { imageUrl: "ic_action_bookmark" },
-        { imageUrl: "ic_action_overflow" },
+        { imageUrl: "ic_action_share_black" }
       ]
     }
 
-    this.popupMenu="Flag/Report content,Logout";
+    // this.popupMenu="Flag/Report content,Logout";
 
     _this = this;
     this.shouldCacheScreen = false;
