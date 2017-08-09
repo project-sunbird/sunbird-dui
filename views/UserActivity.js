@@ -74,9 +74,20 @@ class UserActivity extends View {
    
     var callback = callbackMapper.map(function(data) {
 
-        var resourceDetails = JSON.parse(data[0]);
+        var item = JSON.parse(data[0]);
+        var resDetails ={};
+        var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");
+        
+        resDetails['imageUrl'] = item.hasOwnProperty("contentData") ?"file://"+item.basePath+"/"+item.contentData.appIcon : item.appIcon;
+        resDetails['title'] = item.name;
+        resDetails['description'] = item.description;
+        resDetails['headFooterTitle'] = headFooterTitle;
+        resDetails['identifier'] = item.identifier;
+        resDetails['content'] = item;
 
-        var whatToSend = {intentData:JSON.stringify(resourceDetails)}
+        console.log("resourceDetails IN UserActivity",resDetails);
+
+        var whatToSend = {intentData:JSON.stringify(resDetails)}
         var event = {tag:"OPEN_Deeplink",contents:whatToSend}
         window.__runDuiCallback(event); 
 
