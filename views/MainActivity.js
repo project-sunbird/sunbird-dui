@@ -191,6 +191,7 @@ class MainActivity extends View {
       // });
       // console.log("enrolled ids",enrolled)
       window.__enrolledCourses = responseData.result.courses;
+      console.log("TOTAL ENROLLED COURSES",window.__enrolledCourses);
       window.setEnrolledCourses(responseData.result.courses);
       
       return;

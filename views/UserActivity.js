@@ -41,6 +41,7 @@ class UserActivity extends View {
       "signUpHolder",
       "mobileNumberHolder",
       "emailHolder",
+      "parentContainer"
 
     ]);
     this.backPressCount = 0;
@@ -50,18 +51,15 @@ class UserActivity extends View {
     this.language = "English";
     this.userName = this.userPass = this.firstName = "";
     _this = this;
-    
+
+    this.deepLinkCollectionDetails;
 
     window.__loginCallback=this.getLoginCallback;
-
-
-    this.checkAlreadyLoggedIn();
 
     window.__onContentImportResponse = this.getImportStatus;
   }
 
   getImportStatus = (response) => {
-
 
     console.log("response for import",response);
 
@@ -71,13 +69,43 @@ class UserActivity extends View {
     if(jsonResponse.identifier != undefined){
        identifier = jsonResponse.identifier;
     }
-   
-    var callback = callbackMapper.map(function(data) {
 
+    _this.handleDeepLinkAction(identifier);
+    
+  }
+
+
+  handleDeepLinkAction = (identifier) =>{
+    var callback = callbackMapper.map(function(data) {
         var item = JSON.parse(data[0]);
+        console.log("Callback data in userActivity",item);
+
+        if(item.contentType.toLowerCase() == "course"){
+
+          console.log("Content type is course");
+      
+          // var whatToSend={course:itemDetails};
+          // var event={tag:"OPEN_CourseInfoActivity_SEARCH",contents:whatToSend}
+          // window.__runDuiCallback(event);
+        }
+        else if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "TextBook"){
+
+          var itemDetails = JSON.stringify(item.contentData);
+          _this.deepLinkCollectionDetails = itemDetails;
+
+          console.log("Content type is course",_this.deepLinkCollectionDetails);
+
+          var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken} 
+          var event ={ "tag": "API_EnrolledCourses", contents: whatToSend};
+          window.__runDuiCallback(event);
+
+          
+        }
+        else
+        {
         var resDetails ={};
         var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");
-        
+
         resDetails['imageUrl'] = item.hasOwnProperty("contentData") ?"file://"+item.basePath+"/"+item.contentData.appIcon : item.appIcon;
         resDetails['title'] = item.name;
         resDetails['description'] = item.description;
@@ -87,15 +115,15 @@ class UserActivity extends View {
 
         console.log("resourceDetails IN UserActivity",resDetails);
 
-        var whatToSend = {intentData:JSON.stringify(resDetails)}
-        var event = {tag:"OPEN_Deeplink",contents:whatToSend}
+        var whatToSend = {resource:JSON.stringify(resDetails)}
+        var event = {tag:"OPEN_Deeplink_ResourceDetail",contents:whatToSend}
         window.__runDuiCallback(event); 
+        }
+
 
     });
 
     JBridge.getContentDetails(identifier,callback)
-
-    
   }
 
   onPop = () => {
@@ -109,29 +137,7 @@ class UserActivity extends View {
 
   }
 
-  checkAlreadyLoggedIn = () =>{
 
-
-    if("__failed" != JBridge.getFromSharedPrefs("intentFilePath")&&("YES"==JBridge.getFromSharedPrefs("logged_in"))){
-     
-        JBridge.showToast("CAME AFTER"+JBridge.getFromSharedPrefs("intentFilePath"),"short");
-        var filePath = JBridge.getFromSharedPrefs("intentFilePath");
-        JBridge.importEcar(filePath);
-
-        JBridge.setInSharedPrefs("intentFilePath", "__failed");
-        JBridge.setInSharedPrefs("logged_in","YES");
-        window.__userToken=JBridge.getFromSharedPrefs("user_token");
-
-
-      
-    }else if(("YES"==JBridge.getFromSharedPrefs("logged_in"))){
-        this.performLogin();
-
-    }
-
-
-
-  }
 
   getLoginCallback = (response) => {
     console.log("GOT LOGIN RESPONSE ",response)
@@ -171,13 +177,21 @@ class UserActivity extends View {
   }
 
   performLogin = () => {
-    JBridge.setInSharedPrefs("logged_in","YES");
-    window.__userToken=JBridge.getFromSharedPrefs("user_token");
-    JBridge.setProfile(window.__userToken);
+    this.setLoginPreferences();
     var whatToSend = []
     var event = { tag: "OPEN_MainActivity", contents: whatToSend };
     window.__runDuiCallback(event);
   }
+
+
+  setLoginPreferences = () =>{
+    JBridge.setInSharedPrefs("logged_in","YES");
+    window.__userToken=JBridge.getFromSharedPrefs("user_token");
+    JBridge.setProfile(window.__userToken);
+  }
+
+
+
 
   onBackPressed = () => {
     this.backPressCount++;
@@ -252,6 +266,19 @@ class UserActivity extends View {
         }
 
 
+        break;
+      case "API_EnrolledCourses":
+        console.log("API_EnrolledCourses in userActivity")
+        window.__enrolledCourses = response.result.courses;
+
+        console.log("DEEPLINK COURSE DETAILS",this.deepLinkCollectionDetails);
+
+        if(this.deepLinkCollectionDetails != undefined){
+          var whatToSend={course:this.deepLinkCollectionDetails};
+          var event={tag:"OPEN_Deeplink_CourseEnrolled",contents:whatToSend}
+          window.__runDuiCallback(event);
+        }
+        
         break;
       default:
         console.log("default SWITCH")
@@ -411,6 +438,8 @@ class UserActivity extends View {
   handleForgotPasscode = ()=>{
       JBridge.showSnackBar(window.__S.COMING_SOON);
   }
+
+
 
 
 
@@ -650,8 +679,8 @@ class UserActivity extends View {
   }
 
 
-  render() {
-    this.layout = (
+  getBody = () =>{
+    return (
       <LinearLayout
         root="true"
         orientation="vertical"
@@ -694,7 +723,76 @@ class UserActivity extends View {
 
 
 
+      </LinearLayout>);
+  }
+
+
+  afterRender = () =>{
+
+    if(("YES"==JBridge.getFromSharedPrefs("logged_in"))){
+
+      if("__failed" != JBridge.getFromSharedPrefs("intentFilePath")){
+       
+          JBridge.showToast("Intent from file"+JBridge.getFromSharedPrefs("intentFilePath"),"short");
+          var filePath = JBridge.getFromSharedPrefs("intentFilePath");
+          JBridge.importEcar(filePath);
+
+          JBridge.setInSharedPrefs("intentFilePath", "__failed");
+
+          _this.setLoginPreferences();
+
+
+      }else if("__failed" != JBridge.getFromSharedPrefs("intentLinkPath")){
+          var output = JBridge.getFromSharedPrefs("intentLinkPath");
+
+          JBridge.showToast("Intent from link"+JBridge.getFromSharedPrefs("intentLinkPath"),"short");
+          console.log("Intent from link",output)
+          JBridge.setInSharedPrefs("intentLinkPath", "__failed");
+          
+          var identifier = output.substr(output.indexOf('do'),output.length);
+          _this.setLoginPreferences();
+          _this.handleDeepLinkAction(identifier);
+
+
+      }
+      else {
+          this.performLogin();
+      }
+
+
+    }else{
+      this.replaceChild(this.idSet.parentContainer,this.getBody().render(),0);
+    }
+
+  }
+
+  render() {
+    this.layout = (
+
+        <LinearLayout
+        root="true"
+        id={this.idSet.parentContainer}
+        width="match_parent"
+        height="match_parent">
+          <LinearLayout
+            height="match_parent"
+            width="match_parent"
+            gravity="center"
+            orientation="vertical">
+
+              <ImageView
+                height="300"
+                width="300"
+                layout_gravity="center"
+                imageUrl="ic_launcher"/>
+              <TextView
+                text={window.__S.SPLASH_MESSAGE}
+                margin="20,120,20,20"
+                layout_gravity="center"
+                height="wrap_content"/>
+           </LinearLayout>
       </LinearLayout>
+
     );
 
     return this.layout.render();
