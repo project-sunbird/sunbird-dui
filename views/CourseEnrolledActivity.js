@@ -70,16 +70,21 @@ class CourseEnrolledActivity extends View {
 
 
     console.log("enrolled courses details",window.__enrolledCourses)
-    window.__enrolledCourses.map((item)=>{
+
+    if(window.__enrolledCourses != undefined){
+      window.__enrolledCourses.map((item)=>{
       if(this.baseIdentifier == item.courseId){
         this.enrolledCourses = item;
       }
     })
+      this.downloadProgress = this.details.leafNodesCount == null? 0 : (this.enrolledCourses.progress/this.enrolledCourses.leafNodesCount)*100;
+      this.downloadProgress = parseInt(isNaN(this.downloadProgress)?0:this.downloadProgress)
+    }
+    else{
 
-
-    this.downloadProgress = this.details.leafNodesCount == null? 0 : (this.enrolledCourses.progress/this.enrolledCourses.leafNodesCount)*100;
-    this.downloadProgress = parseInt(isNaN(this.downloadProgress)?0:this.downloadProgress)
-
+      this.downloadProgress = 0;
+    }
+    
     this.data = {
       courseName: this.details ? this.details.courseName : "",
       courseDesc: this.details ? this.details.courseDesc : "This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced",

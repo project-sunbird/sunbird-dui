@@ -69,6 +69,10 @@ courseInfoActivity input whereFrom whatToSendBack= do
 			output <- enrollCourse x details token
   			_ <- sendUpdatedState {response : output, responseFor : "EnrollCourseApi", screen:"asas"}
 			pure $ "apiDefault"
+		API_EnrolledCoursesList {user_token:x,api_token:y} -> do
+	            responseData <- getUserEnrolledCourses x y
+	            _ <- sendUpdatedState {response : responseData, responseFor : "API_EnrolledCoursesList", screen:"asas"}
+	            pure $ "apiDefault"
 		BACK_CourseInfoActivity -> do
 			case whereFrom of
 				"HomeFragment" -> homeFragment whatToSendBack "Terminate" input

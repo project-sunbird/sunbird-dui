@@ -47,6 +47,7 @@ data UserActivity = UserActivity
 data UserActivityAction = OPEN_MainActivity |
   OPEN_Deeplink_ResourceDetail {resource :: String} |
   OPEN_Deeplink_CourseEnrolled {course::String}|
+  OPEN_DeepLink_CourseInfo {course::String}|
   API_LogIn {userName::String, userPass::String} | 
   API_SignUp {request::String, api_token::String} |
   API_EnrolledCourses {user_token::String, api_token::String}
@@ -107,7 +108,8 @@ data CourseInfoActivity = CourseInfoActivity {courseDetails::String}
 data CourseInfoActivityAction = BACK_CourseInfoActivity |
   OPEN_EnrolledActivity {course::String} |
   API_EnrollCourse {user_token::String,reqParams ::String, api_token::String} | 
-  ShowModuleDetails {moduleName::String,moduleDetails::String} 
+  ShowModuleDetails {moduleName::String,moduleDetails::String} |
+  API_EnrolledCoursesList {user_token::String,api_token::String}
 
 instance courseInfoScreen :: UIScreen CourseInfoActivity CourseInfoActivityAction where
   generateMockEvents _ = [BACK_CourseInfoActivity , OPEN_EnrolledActivity {course:"Dummy"} ]

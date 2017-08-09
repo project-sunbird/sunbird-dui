@@ -88,25 +88,27 @@ class UserActivity extends View {
 
         if(item.contentType.toLowerCase() == "course"){
 
-          console.log("Content type is course",item);
+          console.log("Content type is course",item.contentData);
 
-      
-          // var whatToSend={course:itemDetails};
-          // var event={tag:"OPEN_CourseInfoActivity_SEARCH",contents:whatToSend}
-          // window.__runDuiCallback(event);
+          var whatToSend={course:JSON.stringify(item.contentData)};
+          var event={tag:"OPEN_DeepLink_CourseInfo",contents:whatToSend}
+          window.__runDuiCallback(event);
         }
         else if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "TextBook"){
 
           var itemDetails = JSON.stringify(item.contentData);
           _this.deepLinkCollectionDetails = itemDetails;
 
-          console.log("Content type is course",_this.deepLinkCollectionDetails);
+          console.log("Content type is collecion or TextBook",_this.deepLinkCollectionDetails);
 
-          var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken} 
-          var event ={ "tag": "API_EnrolledCourses", contents: whatToSend};
+          var whatToSend={course:_this.deepLinkCollectionDetails};
+          var event={tag:"OPEN_Deeplink_CourseEnrolled",contents:whatToSend}
           window.__runDuiCallback(event);
 
-          
+          // var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken} 
+          // var event ={ "tag": "API_EnrolledCourses", contents: whatToSend};
+          // window.__runDuiCallback(event);
+
         }
         else
         {
@@ -274,19 +276,19 @@ class UserActivity extends View {
 
 
         break;
-      case "API_EnrolledCourses":
-        console.log("API_EnrolledCourses in userActivity")
-        window.__enrolledCourses = response.result.courses;
+      // case "API_EnrolledCourses":
+      //   console.log("API_EnrolledCourses in userActivity")
+      //   window.__enrolledCourses = response.result.courses;
 
-        console.log("DEEPLINK COURSE DETAILS",this.deepLinkCollectionDetails);
+      //   console.log("DEEPLINK COURSE DETAILS",this.deepLinkCollectionDetails);
 
-        if(this.deepLinkCollectionDetails != undefined){
-          var whatToSend={course:this.deepLinkCollectionDetails};
-          var event={tag:"OPEN_Deeplink_CourseEnrolled",contents:whatToSend}
-          window.__runDuiCallback(event);
-        }
+      //   if(this.deepLinkCollectionDetails != undefined){
+      //     var whatToSend={course:this.deepLinkCollectionDetails};
+      //     var event={tag:"OPEN_Deeplink_CourseEnrolled",contents:whatToSend}
+      //     window.__runDuiCallback(event);
+      //   }
         
-        break;
+      //   break;
       default:
         console.log("default SWITCH")
         break;
