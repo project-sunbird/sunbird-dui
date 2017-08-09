@@ -43,14 +43,14 @@ class ResourceViewAllActivity extends View {
     this.appbarTitle = this.totalDetails.title;
 
     console.log("DETAILS IN ResourceViewAllActivity",this.details)
-
+    
     this.size;
     this.fileImageUrl;
     this.cType;
     this.name;
     this.time;
     this.displayContent = [];
-
+    
     setTimeout(function() {
       Android.runInUI(
         _this.animateView(),
@@ -169,7 +169,7 @@ getRows = (data) =>{
   }
 
   afterRender= () => {
-      
+      this.changeViewMoreButtonStatus(this.totalDetails.showViewMore)
       this.appendChild(this.idSet.listItems,this.getRows(this.details).render(),this.start_index)
   }
 
@@ -221,16 +221,22 @@ getRows = (data) =>{
 
 
      if(this.start_index >= 9){
-      var cmd = this.set({
-        id: this.idSet.viewMoreButton,
-        visibility: "gone"
-      });
-      Android.runInUI(cmd, 0);
+      _this.changeViewMoreButtonStatus("gone")
+      
      }
 
   }
 
-
+  changeViewMoreButtonStatus(status){
+    
+      var cmd = this.set({
+        id: this.idSet.viewMoreButton,
+        visibility: status
+      });
+      Android.runInUI(cmd, 0);
+    
+  }
+  
 
   render() {
     var buttonList = ["ENROLL FOR THIS COURSE"];

@@ -116,12 +116,13 @@ class ResourceComponent extends View {
   }
 
 
-handleResourceViewAllClick= (data,title,searchQuery) =>{
+handleResourceViewAllClick= (data,title,searchQuery,visibility) =>{
 
    var resourceDetails = {
                             "title" : title,
                             "resourceDetails" : data,
-                            "searchQuery": searchQuery
+                            "searchQuery": searchQuery,
+                            "showViewMore": visibility
                          }
    var whatToSend ={ "resourceDetails": JSON.stringify(resourceDetails)}
    var event ={ tag: "OPEN_ResourceViewAllActivity", contents:  whatToSend}

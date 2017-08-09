@@ -42,7 +42,7 @@ class ResourceDetailActivity extends View {
         {imageUrl:'ic_action_overflow'}
       ]
     }
-    this.popupMenu = "Delete"
+    this.popupMenu = "Flag/Report content/Delete"
 
     this.shouldCacheScreen = false;
 
@@ -381,6 +381,9 @@ class ResourceDetailActivity extends View {
   overFlowCallback = (params) => {
     console.log("ITEM CLICKED",params);
     if(params == 0){
+      console.log("flag content")
+    }
+    else if(params == 1){
       var callback = callbackMapper.map(function(response){
         console.log("repsonse for delete",response)
         if(response[0] == "successful"){

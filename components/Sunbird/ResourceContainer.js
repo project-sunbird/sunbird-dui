@@ -128,7 +128,7 @@ class ResourceContainer extends View {
 
   handleViewAllClick() {
     console.log("\n\n\n\n\n\nview all click",this.props)
-    this.props.onViewAllClick(this.data,this.props.title,this.props.searchQuery);
+    this.props.onViewAllClick(this.data,this.props.title,this.props.searchQuery,"visible");
   }
 
   render() {

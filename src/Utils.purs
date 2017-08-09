@@ -211,6 +211,16 @@ getContentStatus courseId user_token api_token =
                                                    ]) in
   (post requestUrl headers payload)
 
+flagContent user_token api_token contentId flagReason flags =
+  let requestUrl = "/content/v1/flag" 
+      headers = (generateRequestHeaders user_token api_token)
+      payload = A.fromObject (StrMap.fromFoldable [(Tuple "request" (A.fromObject (StrMap.fromFoldable  [ (Tuple "flaggedBy" (A.fromString user_token))
+                                                                                                          , (Tuple "flagReasons" (A.fromArray [(A.fromString flagReason)]))
+                                                                                                          , (Tuple "flags" (A.fromArray [(A.fromString flags)]))
+                                                                                                          ])))
+                                                   ]) in
+  (post requestUrl headers payload)
+
 
 getResourcePageFilterApi user_token api_token filter_to_use=
   let requestUrl = "/data/v1/page/assemble"
