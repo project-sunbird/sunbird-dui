@@ -30,7 +30,8 @@ class CourseInfoActivity extends View {
       "parentContainer",
       "pageOption",
       "descriptionContainer",
-      "downloadProgressText"
+      "downloadProgressText",
+      "totalContainer"
     ]);
     this.state = state;
     this.screenName = "CourseInfoActivity"
@@ -268,16 +269,17 @@ class CourseInfoActivity extends View {
 
 
 
-
   afterRender = () => {
-    console.log("progress CIA",this.details)
+    console.log("progress CIA",this.details);
     
     if(window.__enrolledCourses == undefined){
+      window.__LoaderDialog.show();
       var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken} 
       var event ={ "tag": "API_EnrolledCoursesList", contents: whatToSend};
       window.__runDuiCallback(event);
-      window.__LoaderDialog.show();
     }else{
+
+      this.replaceChild(this.idSet.totalContainer,this.getBody.render(),0);
       var enrolledIds = window.__enrolledCourses;
       enrolledIds.map((item)=>{
       if(item.courseId == this.details.identifier){
@@ -411,26 +413,9 @@ class CourseInfoActivity extends View {
   }
 
 
-  logout = () =>{
-    JBridge.showSnackBar("Logged out")
-    JBridge.setInSharedPrefs("logged_in","NO");
-    JBridge.setInSharedPrefs("user_id", "__failed");
-    JBridge.setInSharedPrefs("user_name",  "__failed");
-    JBridge.setInSharedPrefs("user_token",  "__failed");
+  getBody = () =>{
 
-    console.log("IN P1 ",window.__pressedLoggedOut)
-    window.__pressedLoggedOut=true;
-    console.log("IN P2 ",window.__pressedLoggedOut)
-    JBridge.keyCloakLogout("https://dev.open-sunbird.org/auth/realms/sunbird/protocol/openid-connect/logout");
-    
-    window.__Logout();
-  }
-
-
-  render() {
-    var buttonList = ["ENROLL FOR THIS COURSE"];
-    this.layout = (
-
+    return (
       <LinearLayout
         root="true"
         background={window.__Colors.WHITE}
@@ -518,9 +503,41 @@ class CourseInfoActivity extends View {
 
             </LinearLayout>
 
-      </LinearLayout>
+      </LinearLayout>);
 
-       
+  }
+
+
+
+
+  logout = () =>{
+    JBridge.showSnackBar("Logged out")
+    JBridge.setInSharedPrefs("logged_in","NO");
+    JBridge.setInSharedPrefs("user_id", "__failed");
+    JBridge.setInSharedPrefs("user_name",  "__failed");
+    JBridge.setInSharedPrefs("user_token",  "__failed");
+
+    console.log("IN P1 ",window.__pressedLoggedOut)
+    window.__pressedLoggedOut=true;
+    console.log("IN P2 ",window.__pressedLoggedOut)
+    JBridge.keyCloakLogout("https://dev.open-sunbird.org/auth/realms/sunbird/protocol/openid-connect/logout");
+    
+    window.__Logout();
+  }
+
+
+  render() {
+    var buttonList = ["ENROLL FOR THIS COURSE"];
+    this.layout = (
+
+      <LinearLayout
+        root="true"
+        background={window.__Colors.WHITE}
+        orientation="vertical"
+        id={this.idSet.totalContainer}
+        width="match_parent"
+        height="match_parent"/>
+
     );
 
     return this.layout.render();

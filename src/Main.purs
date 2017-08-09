@@ -85,7 +85,7 @@ enrolledCourseActivity input whereFrom whatToSendBack = do
         OPEN_ModuleDetailsActivity {moduleName:output1,moduleDetails:output2} -> subModuleDetailActivity output1 output2 "DeepLinkCourseEnrolled" input
         BACK_CourseEnrolledActivity -> case whereFrom of
             "Deeplink" -> mainActivity "{}" "UserActivity" "{}" 
-            _ -> pure $ "default"
+            _ -> mainActivity "{}" "UserActivity" "{}"
         _ -> enrolledCourseActivity input whereFrom whatToSendBack
 
 
