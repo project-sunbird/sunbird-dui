@@ -46,7 +46,7 @@ class SplashScreenActivity extends View {
 
   afterRender = () => {
     JBridge.syncTelemetry();
-    window.__apiUrl = "https://ntp.net.in";
+    window.__apiUrl = "https://staging.open-sunbird.org";
     
     // if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "false") {
     //   this.setPermissions();
