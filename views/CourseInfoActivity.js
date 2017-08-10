@@ -106,6 +106,7 @@ class CourseInfoActivity extends View {
         console.log("Spine Found")
         var callback1 = callbackMapper.map(function(data) {
           data[0] = utils.jsonifyData(data[0])
+          console.log("data from children",data[0])
           _this.courseContent = JSON.parse(data[0]);
           _this.renderCourseChildren()
         });
@@ -308,7 +309,7 @@ class CourseInfoActivity extends View {
     console.log("back pressed in courseInfoActivity")
    var whatToSend = []
    var event = { tag: 'BACK_CourseInfoActivity', contents: whatToSend }  
-   Android.runInUI(this.removeView(), null);
+   
    window.__runDuiCallback(event);
   }
 
@@ -457,7 +458,7 @@ class CourseInfoActivity extends View {
     console.log("IN P1 ",window.__pressedLoggedOut)
     window.__pressedLoggedOut=true;
     console.log("IN P2 ",window.__pressedLoggedOut)
-    JBridge.keyCloakLogout(window.__apiUrl  + "/auth/realms/sunbird/protocol/openid-connect/logout");
+    JBridge.keyCloakLogout(window.__loginUrl  + "/auth/realms/sunbird/protocol/openid-connect/logout");
     
     window.__Logout();
   }

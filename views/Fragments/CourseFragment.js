@@ -143,7 +143,8 @@ class CourseFragment extends View {
 
 
   handleCourseClick = (content, type) => {
-    
+    console.log("content in handle course click1",content)
+    console.log("content in handle course click1",type)
     var tmp = JSON.stringify(content)
     var whatToSend = []
     var event = {};
@@ -161,6 +162,8 @@ class CourseFragment extends View {
   }
 
   handleUserCoursesClick = (content, type) => {
+    console.log("content in handle course click",content)
+    console.log("content in handle course click",type)
     var whatToSend = { "course": JSON.stringify(content) }
     var event = { tag: 'OPEN_EnrolledCourseActivity', contents: whatToSend }
     window.__runDuiCallback(event);

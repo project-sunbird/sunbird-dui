@@ -126,7 +126,7 @@ class ResourceDetailActivity extends View {
     if(isContentLocallyAvailable){
                   input = [{
                     type : "text",
-                    data : "ntp.net.in/c/"+_this.details.identifier
+                    data : "staging.open-sunbird.org/c/"+_this.details.identifier
 
                   },{
                     type : "file",
@@ -137,7 +137,7 @@ class ResourceDetailActivity extends View {
     }else{
                   input = [{
                               type : "text",
-                              data : "ntp.net.in/c/"+_this.details.identifier
+                              data : "staging.open-sunbird.org/c/"+_this.details.identifier
                           }];
 
     }

@@ -429,7 +429,7 @@ class UserActivity extends View {
       requestBody=JSON.stringify(requestBody);
       var whatToSend = {
         "request" : requestBody,
-        "api_token": window.__apiToken
+        "api_token": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI1MjMwZGU5YjA1Mzg5MWFjZDdkOTg2NGExOWNlNTRjMjE5MTUzM2VlIn0.NKkAMGNz9CNYXqSjUyDAzpedXhbL8mEXUyMMiONX2Ls"
       }
       var event = { "tag": "API_SignUp", "contents": whatToSend };
       window.__runDuiCallback(event);
@@ -441,7 +441,7 @@ class UserActivity extends View {
   }
 
   handleLoginClick = () => {
-    JBridge.keyCloakLogin(window.__apiUrl + "/auth/realms/sunbird/protocol/openid-connect/auth","android");
+    JBridge.keyCloakLogin(window.__loginUrl + "/auth/realms/sunbird/protocol/openid-connect/auth","android");
   }
 
   handleForgotPasscode = ()=>{

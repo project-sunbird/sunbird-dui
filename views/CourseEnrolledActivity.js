@@ -64,8 +64,17 @@ class CourseEnrolledActivity extends View {
 
     this.showProgress = this.details.hasOwnProperty("contentType") && this.details.contentType == "collection" || this.details.contentType == "TextBook" ? "gone" : "visible";
     console.log("\n\n\n\n progress",this.showProgress)
-    this.baseIdentifier = this.details.identifier ? this.details.identifier : this.details.contentId;
-
+    if(this.details.hasOwnProperty("courseId")){
+      this.baseIdentifier = this.details.courseId
+    }
+    else if(this.details.hasOwnProperty("contentId")){
+      this.baseIdentifier = this.details.contentId
+    }
+    else if(this.details.hasOwnProperty("identifier")){
+      this.baseIdentifier = this.details.identifier
+    }
+    // this.baseIdentifier = this.details.identifier ? this.details.identifier : this.details.contentId;
+    console.log("baseIdentifier",this.baseIdentifier)
 
     console.log("enrolled courses details",window.__enrolledCourses)
 
@@ -125,6 +134,13 @@ class CourseEnrolledActivity extends View {
     
     var textToShow = ""
     console.log("DATA -> ", data)
+
+    if(data.status == "NOT_FOUND"){
+      window.__ContentLoaderDialog.hide();
+      JBridge.showSnackBar("Content not available");
+      this.onBackPressed();
+      return;
+    }
     
     data.downloadProgress= data.downloadProgress == undefined || isNaN(data.downloadProgress) ? 0 : data.downloadProgress;
     var downloadedPercent = data.downloadProgress;
@@ -148,7 +164,7 @@ class CourseEnrolledActivity extends View {
 
   checkContentLocalStatus = (identifier) => {
 
-    console.log("in check local status")
+    console.log("in check local status",identifier)
     
     var callback = callbackMapper.map(function(status) {
 
@@ -170,8 +186,6 @@ class CourseEnrolledActivity extends View {
       } else {
         console.log("Spine Not Found, IMPORTING ")
           
-          
-
           var callback22= callbackMapper.map(function(data){
             console.log(data)
                 data = JSON.parse(data)
@@ -255,7 +269,7 @@ class CourseEnrolledActivity extends View {
 
       var input = [{
                     type : "text",
-                    data : "ntp.net.in/c/"+_this.baseIdentifier
+                    data : "staging.open-sunbird.org/c/"+_this.baseIdentifier
 
                   },{
                     type : "file",

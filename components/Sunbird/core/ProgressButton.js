@@ -192,7 +192,7 @@ class ProgressButton extends View {
         contentProgress['result'] = "pass";
         contentProgress['grade'] = "B";
         contentProgress['score'] = "10";
-
+        
         console.log("progress status", contentProgress)
           // JBridge.setInSharedPrefs(this.props.identifier, JSON.stringify(contentProgress));
         var url = window.__apiUrl + "/api/course/v1/content/state/update"

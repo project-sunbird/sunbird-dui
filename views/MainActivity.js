@@ -97,13 +97,13 @@ class MainActivity extends View {
 
     this.backPressCount = 0;
 
-    // if(this.currentPageIndex==2 || this.currentPageIndex==0){
-    //   var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken} 
-    //   var event ={ "tag": "API_UserEnrolledCourse", contents: whatToSend};
-    //   window.__runDuiCallback(event);
-    // }else if(this.currentPageIndex==2){
-    //   window.__UpdateOfflineContent();
-    // }
+    if(this.currentPageIndex==1 || this.currentPageIndex==0){
+      var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken} 
+      var event ={ "tag": "API_UserEnrolledCourse", contents: whatToSend};
+      window.__runDuiCallback(event);
+    }else if(this.currentPageIndex==2){
+      window.__UpdateOfflineContent();
+    }
     
   }
 
