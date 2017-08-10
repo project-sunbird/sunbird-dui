@@ -35,7 +35,7 @@ class ProfileAdditionalInfo extends View {
       date: "Pune, Maharashtra"
     }
   ]
-
+  this.hobbies = "Books, cycling, music, sports, browsing, teaching"
   }
 
   getRows = (input)=> {
@@ -75,6 +75,7 @@ class ProfileAdditionalInfo extends View {
             orientation="vertical">
 
             {this.getRows()}
+            {this.getHobbies()}
 
             </LinearLayout>)
   }
@@ -110,6 +111,38 @@ class ProfileAdditionalInfo extends View {
             height="1"
             margin="0,0,0,24"
             background={window.__Colors.PRIMARY_BLACK_22}/>)
+  }
+
+  getHobbies = () => {
+    return (
+      <LinearLayout
+        orientation = "horizontal"
+        width = "match_parent"
+        margin="0,16,0,0">
+        <TextView
+        width="wrap_content"
+        height="wrap_content"
+        text="HOBBIES"
+        style={window.__TextStyle.textStyle.HINT.SEMI}/>
+
+        <ViewWidget
+        height="0"
+        weight="2"/>
+
+        <LinearLayout
+          orientation = "vertical"
+          width = "wrap_content"
+          height = "wrap_content"
+          weight = "1">
+          <TextView
+          width="wrap_content"
+          height="wrap_content"
+          text={this.hobbies}
+          gravity = "right"
+          style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
+        </LinearLayout>
+      </LinearLayout>
+    )
   }
 
   render() {

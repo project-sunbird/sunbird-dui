@@ -18,6 +18,9 @@ class CropParagraph extends View {
       "paraContainerCroped",
       "showMoreButton",
     ]);
+    this.str = this.props.contentText;
+    var len = 50;
+    if(this.str.length > len) this.str = this.str.substring(0,len) + "...";
   }
 
   handleMoreClick = (data) => {
@@ -27,35 +30,32 @@ class CropParagraph extends View {
     })
     cmd += this.set({
       id: this.idSet.paraContainerCroped,
-      maxLines: "100"
+      text: this.props.contentText
     })
 
     Android.runInUI(cmd, 0);
   }
 
 
-  getMoreButton = () => {
-    return (
-      <LinearLayout
-            height="wrap_content"
-            layoutTransition="true"
-            id={this.idSet.showMoreButton}
-            width="match_parent">
-              <ViewWidget 
-                height="1"
-                width="0"
-                weight="1"/>
-               <TextView
-                margin="0,0,8,0"
-                visibility="gone"
-                text="more"
-                layoutTransition="true"
-                onClick={this.handleMoreClick}
-                style = {window.__TextStyle.textStyle.CARD.BODY.BLUE_R}
-                color={window.__Colors.PRIMARY_ACCENT} />
-           
-          </LinearLayout>);
-  }
+  // getMoreButton = () => {
+  //   return (
+  //     <LinearLayout
+  //           height="wrap_content"
+  //           layoutTransition="true"
+  //           id={this.idSet.showMoreButton}
+  //           width="wrap_content">
+  //              <TextView
+  //               margin="0,0,8,0"
+  //               visibility="visible"
+  //               text="Read more"
+  //               width = "match_parent"
+  //               layoutTransition="true"
+  //               onClick={this.handleMoreClick}
+  //               style = {window.__TextStyle.textStyle.CARD.BODY.BLUE_R}
+  //               color={window.__Colors.PRIMARY_ACCENT} />
+  //
+  //         </LinearLayout>);
+  // }
 
 
   render() {
@@ -65,7 +65,7 @@ class CropParagraph extends View {
       <LinearLayout
       background={window.__Colors.WHITE}
       width="match_parent"
-      height="match_parent"
+      height="wrap_content"
       visibility = {(this.props.headText==undefined || this.props.headText.length == 0) ? "gone":"visible"}
       layoutTransition="true"
       orientation="vertical">
@@ -75,19 +75,32 @@ class CropParagraph extends View {
           style= {window.__TextStyle.textStyle.CARD.TITLE.DARK}
           margin="0,0,0,8"/>
 
-       
+          <LinearLayout
+            orientation = "vertical"
+            width = "match_parent"
+            height = "wrap_content">
 
           <TextView
               id={this.idSet.paraContainerCroped}
-              text = {this.props.contentText}
-              width="match_parent"
-              height="match_parent"
-              maxLines="2"
-               layoutTransition="true"
+              text = {this.str}
+              width="wrap_content"
+              height="wrap_content"
+              layoutTransition="true"
               style= {window.__TextStyle.textStyle.CARD.BODY.REGULAR}/>
-          
-          {this.getMoreButton()}
 
+              <TextView
+               margin="0,0,8,0"
+               id={this.idSet.showMoreButton}
+               visibility="visible"
+               text="Read more"
+               gravity = "right"
+               width = "wrap_content"
+               height = "wrap_content"
+               layoutTransition="true"
+               onClick={this.handleMoreClick}
+               style = {window.__TextStyle.textStyle.CARD.BODY.BLUE_R}
+               color={window.__Colors.PRIMARY_ACCENT} />
+          </LinearLayout>
 
       </LinearLayout>
     )

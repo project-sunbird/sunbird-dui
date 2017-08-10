@@ -19,7 +19,10 @@ var ProfileSkillTags = require('../../components/Sunbird/ProfileSkillTags');
 var ProfileAccomplishments = require('../../components/Sunbird/ProfileAccomplishments');
 var ProfileCreations = require('../../components/Sunbird/ProfileCreations');
 var ProfileBadges = require('../../components/Sunbird/ProfileBadges');
+var ProfileProgress = require('../../components/Sunbird/ProfileProgress');
 var ProfileAdditionalInfo = require('../../components/Sunbird/ProfileAdditionalInfo');
+var ProfilAffiliations = require('../../components/Sunbird/ProfileAffiliations');
+var CropParagraph = require('../../components/Sunbird/CropParagraph');
 
 var _this;
 class ProfileFragment extends View {
@@ -56,7 +59,7 @@ class ProfileFragment extends View {
     window.__pressedLoggedOut=true;
     console.log("IN P2 ",window.__pressedLoggedOut)
     JBridge.keyCloakLogout("https://ntp.net.in/auth/realms/sunbird/protocol/openid-connect/logout");
-    
+
     window.__Logout();
   }
 
@@ -93,6 +96,27 @@ class ProfileFragment extends View {
 
   afterRender() {}
 
+  getLineSeperator = () => {
+    return (<LinearLayout
+            width="match_parent"
+            height="1"
+            margin = "0, 10, 0, 10"
+            background={window.__Colors.PRIMARY_BLACK_22}/>)
+  }
+
+  getDescription = () => {
+    return(
+      <LinearLayout
+        orientation = "vertical"
+        height = "wrap_content"
+        width = "match_parent">
+        <TextView
+          text = "Description"
+          style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
+
+      </LinearLayout>
+    )
+  }
 
   render() {
     this.layout = (
@@ -135,10 +159,28 @@ class ProfileFragment extends View {
                 <ProfileHeader
                 data={this.details}/>
 
-                <PersonalDetails
-                data={this.details}/>
-                
+                <ProfileProgress />
 
+                {this.getLineSeperator()}
+
+                <CropParagraph
+                  headText = "Description"
+                  contentText = "Lorem Ipsum is simply dummy text of the printing and typesetting industry bla bla bla bla bla bla bla bla bla... adding some more lines"/>
+
+                <ProfileExperiences />
+
+                <ProfileSkillTags />
+
+                <ProfileAccomplishments />
+
+                <ProfileCreations />
+
+                <ProfileBadges />
+
+                <ProfilAffiliations />
+
+                <ProfileAdditionalInfo
+                data={this.details}/>
 
               </LinearLayout>
 

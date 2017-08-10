@@ -17,7 +17,7 @@ class ProfileHeader extends View {
 
 
     this.userName = (this.props.data.userName == undefined) ? "Mock User" : this.props.data.userName;
-
+    this.imageUrl = this.props.data.imageUrl ? this.props.data.imageUrl : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR1X3cm5xzR4D1W9oPb2QWioKlrfLVd0DvXFUNqSjZfg-M0bpc";
 
 
   }
@@ -28,14 +28,14 @@ class ProfileHeader extends View {
   render() {
     this.layout = (<LinearLayout
               width="match_parent"
-              height="160"
+              height="wrap_content"
               gravity="center_horizontal"
               orientation="vertical">
 
               <ImageView
               width="80"
               height="80"
-              circularImageUrl={"0,"+"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR1X3cm5xzR4D1W9oPb2QWioKlrfLVd0DvXFUNqSjZfg-M0bpc"}/>
+              circularImageUrl={"0,"+this.imageUrl}/>
 
               <TextView
               width="wrap_content"
@@ -47,18 +47,20 @@ class ProfileHeader extends View {
               <TextView
               width="wrap_content"
               height="wrap_content"
-              text=""
+              text="<address details>"
               padding="0,0,0,8"
               style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>
 
-              <TextView
-              padding="40,0,40,0"
-              height="wrap_content"
-              visibility="gone"
-              text="Lorem Ipsum is simply dummy text of the printing and typesetting industry…"
-              style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
-
-
+              <LinearLayout
+                orientation = "vertical"
+                height = "wrap_content"
+                width = "wrap_content"
+                background = "#FFD8D8D8"
+                cornerRadius = "4">
+                <TextView
+                  padding = "10, 2, 10, 2"
+                  text = {"Username: @" + this.userName} />
+              </LinearLayout>
               </LinearLayout>)
     return this.layout.render();
   }
