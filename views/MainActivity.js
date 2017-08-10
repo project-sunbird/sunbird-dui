@@ -27,7 +27,9 @@ const mockResponse = require('../mockResponse.js');
 class MainActivity extends View {
   constructor(props, children, state) {
     super(props, children, state);
-    this.state = state;
+
+    this.state = utils.cloneObj(state);
+
 
     //Assigning feedback duration of BottomNavbar
     this.handleBottomNavBarAction = debounce(this.handleBottomNavBarAction, 50);
@@ -49,7 +51,7 @@ class MainActivity extends View {
     this.feedData = FeedParams.feedParams;
 
     this.deipalayName = "MainActivity"
-    
+
     this.tabValues = [{
         name: window.__S.HOME_BNAV,
         select: "1",
@@ -96,26 +98,26 @@ class MainActivity extends View {
     this.backPressCount = 0;
 
     if(this.currentPageIndex==1 || this.currentPageIndex==0){
-      var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken} 
+      var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken}
       var event ={ "tag": "API_UserEnrolledCourse", contents: whatToSend};
       window.__runDuiCallback(event);
     }else if(this.currentPageIndex==2){
       window.__UpdateOfflineContent();
     }
-    
+
   }
 
 
   onBackPressed = () => {
 
-    
+
     if(window.__PageFilterChooser.getVisibility()){
       window.__PageFilterChooser.hide();
-      return; 
+      return;
     }
     if(window.__PageFilterPopup.getVisibility()){
       window.__PageFilterPopup.hide();
-      return; 
+      return;
     }
 
     this.backPressCount++;
@@ -161,7 +163,7 @@ class MainActivity extends View {
       return;
     }else if(responseCode == 501 || status === "failure" || status=="f") {
       JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION)
-      responseData=tmp; 
+      responseData=tmp;
     } else {
      // responseData = utils.jsonifyData(responseData);
       responseData = JSON.parse(responseData);
@@ -185,7 +187,7 @@ class MainActivity extends View {
       window.__enrolledCourses = responseData.result.courses;
       console.log("TOTAL ENROLLED COURSES",window.__enrolledCourses);
       window.setEnrolledCourses(responseData.result.courses);
-      
+
       return;
     }
 
@@ -251,7 +253,7 @@ class MainActivity extends View {
       case 0:
         contentLayout = (
           <HomeFragment
-                response = {data} 
+                response = {data}
                 recommendedData={this.recommendedData}
                 recommendedimageUrls={this.recommendedimageUrls}
                 menuData={this.menuData}
@@ -349,14 +351,14 @@ class MainActivity extends View {
         event = { "tag": "OPEN_HomeFragment", contents: whatToSend };
         break;
       case 1:
-        
-        whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken} 
+
+        whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken}
         event = { "tag": "API_CourseFragment", contents: whatToSend};
         break;
       case 2:
-        whatToSend =  {"user_token":window.__userToken,"api_token": window.__apiToken} 
+        whatToSend =  {"user_token":window.__userToken,"api_token": window.__apiToken}
         event = { "tag": "API_ResourceFragment", contents:whatToSend};
-       
+
         break;
       case 3:
         whatToSend = []
@@ -395,7 +397,7 @@ class MainActivity extends View {
         window.__BottomNavBar.handleNavigationChange(this.currentPageIndex);
         this.setupDuiCallback();
 
-  
+
 
   }
 
@@ -453,4 +455,3 @@ class MainActivity extends View {
 }
 
 module.exports = Connector(MainActivity);
-
