@@ -69,15 +69,6 @@ class CourseInfoActivity extends View {
     };
   }
 
-  onPop = () =>{
-    setTimeout(() => {
-      Android.runInUI(
-        this.animateView(),
-        null
-      );
-    }, 0);
-  }
-
 
   getSpineStatus = (pValue) => {
     var cmd;
@@ -183,6 +174,7 @@ class CourseInfoActivity extends View {
 
 
   onPop = () => {
+    console.log("came here in courseInfo");
     Android.runInUI(
       this.animateView(),
       null
@@ -311,10 +303,12 @@ class CourseInfoActivity extends View {
     }
   }
 
+
   onBackPressed = () => {
     console.log("back pressed in courseInfoActivity")
    var whatToSend = []
    var event = { tag: 'BACK_CourseInfoActivity', contents: whatToSend }  
+   Android.runInUI(this.removeView(), null);
    window.__runDuiCallback(event);
   }
 
@@ -472,15 +466,17 @@ class CourseInfoActivity extends View {
   render() {
     var buttonList = ["ENROLL FOR THIS COURSE"];
     this.layout = (
-
       <LinearLayout
-        root="true"
-        background={window.__Colors.WHITE}
-        orientation="vertical"
-        id={this.idSet.totalContainer}
         width="match_parent"
-        height="match_parent"/>
-
+        height="match_parent"
+        root="true">
+        <LinearLayout
+          background={window.__Colors.WHITE}
+          orientation="vertical"
+          id={this.idSet.totalContainer}
+          width="match_parent"
+          height="match_parent"/>
+      </LinearLayout>
     );
 
     return this.layout.render();

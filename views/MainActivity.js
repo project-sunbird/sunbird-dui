@@ -21,14 +21,12 @@ var utils = require('../utils/GenericFunctions');
 
 window.R = require("ramda");
 
-
 const mockResponse = require('../mockResponse.js');
 
 class MainActivity extends View {
   constructor(props, children, state) {
     super(props, children, state);
     this.state = state;
-
     //Assigning feedback duration of BottomNavbar
     this.handleBottomNavBarAction = debounce(this.handleBottomNavBarAction, 50);
     //TODO : REVERT THIS LOGIC
@@ -88,24 +86,24 @@ class MainActivity extends View {
     if(this.currentPageIndex==undefined){
       this.currentPageIndex=0;
     }
-     console.log("on pop in mani activity")
+    console.log("on pop in main activity")
      
-    setTimeout(() => {
+
       Android.runInUI(
         this.animateView(),
         null
       );
-    }, 0);
+
 
     this.backPressCount = 0;
 
-    if(this.currentPageIndex==1 || this.currentPageIndex==0){
-      var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken} 
-      var event ={ "tag": "API_UserEnrolledCourse", contents: whatToSend};
-      window.__runDuiCallback(event);
-    }else if(this.currentPageIndex==2){
-      window.__UpdateOfflineContent();
-    }
+    // if(this.currentPageIndex==2 || this.currentPageIndex==0){
+    //   var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken} 
+    //   var event ={ "tag": "API_UserEnrolledCourse", contents: whatToSend};
+    //   window.__runDuiCallback(event);
+    // }else if(this.currentPageIndex==2){
+    //   window.__UpdateOfflineContent();
+    // }
     
   }
 
