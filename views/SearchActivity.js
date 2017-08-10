@@ -285,7 +285,7 @@ class SearchActivity extends View {
           console.log("this.filterData", typeof(this.filterData));
           if(JBridge.isNetworkAvailable()){
               JBridge.showSnackBar("Loading Search Results Please Wait......")
-              JBridge.searchContent(callback, JSON.stringify(this.filterData), searchText, this.searchType, flag);
+              JBridge.searchContent(callback, JSON.stringify(this.filterData), searchText, this.searchType, flag, 30);
           }
           else{
             JBridge.showSnackBar("No internet connection");
