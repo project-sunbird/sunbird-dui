@@ -19,7 +19,7 @@ var SearchResult = require('../components/Sunbird/SearchResult');
 var Styles = require("../res/Styles");
 let IconStyle = Styles.Params.IconStyle;
 var _this;
-var utils = require('../utils/GenericFunctions'); 
+var utils = require('../utils/GenericFunctions');
 
 class SearchActivity extends View {
   constructor(props, children, state) {
@@ -40,7 +40,7 @@ class SearchActivity extends View {
     console.log("state in search activity",state)
     this.tempData = JSON.parse(state.data.value0.filterDetails);
     console.log("tempData in search ^^^^^^^^^^^^^^^^^^", this.tempData);
-    
+
     this.filter=[]
     // if(this.tempData.length>0){
       this.filterData = this.tempData.filterDetails;
@@ -66,16 +66,16 @@ class SearchActivity extends View {
   //     console.log("query!", data.query)
   //     this.getSearchList(data.query,"true");
 
-      
+
 
   //   }
   // }
 
   afterRender = () => {
     console.log(this.filterData)
-    
+
     if(this.filterData!=undefined && this.filterData.length != 0){
-    JBridge.showSnackBar("Loading Search Results Please Wait......")      
+    JBridge.showSnackBar("Loading Search Results Please Wait......")
        var cmd = "";
         cmd += _this.set({
           id: _this.idSet.filterHolder,
@@ -83,7 +83,7 @@ class SearchActivity extends View {
         })
         Android.runInUI(cmd, 0);
 
-      var searchData 
+      var searchData
       if (typeof this.filterData == 'object'){
         searchData=this.filterData
       }else{
@@ -164,7 +164,7 @@ class SearchActivity extends View {
                     style = {IconStyle}
                     visibility="gone"
                     imageUrl = "ic_action_filter"/>
-                   
+
                    </LinearLayout>)
     return layout;
 
@@ -210,7 +210,7 @@ class SearchActivity extends View {
                    root="true"
                    background="#ffffff"
                    orientation="vertical">
-                    <SearchResult 
+                    <SearchResult
                       data={data} />
                   </LinearLayout>)
 
@@ -237,7 +237,7 @@ class SearchActivity extends View {
           console.log("search results", JSON.parse(data[1]));
           data[0] = utils.decodeBase64(data[0])
           _this.filterData = data[1];
-          
+
                 if (searchText == "" || data[0] == "[]") {
                   _this.renderNoResult();
                 } else {
@@ -253,7 +253,7 @@ class SearchActivity extends View {
                   s = s.replace(/[\u0000-\u0019]+/g, "");
                   _this.renderResult(JSON.parse(s));
                 }
-          
+
 
         });
         console.log("searchText",searchText)
@@ -285,7 +285,7 @@ class SearchActivity extends View {
           console.log("this.filterData", typeof(this.filterData));
           if(JBridge.isNetworkAvailable()){
               JBridge.showSnackBar("Loading Search Results Please Wait......")
-              JBridge.searchContent(callback, JSON.stringify(this.filterData), searchText, this.searchType, flag,30);
+              JBridge.searchContent(callback, JSON.stringify(this.filterData), searchText, this.searchType, flag, 30);
           }
           else{
             JBridge.showSnackBar("No internet connection");
@@ -319,10 +319,10 @@ class SearchActivity extends View {
   handleSearchClick = (searchText) => {
     JBridge.hideKeyboard();
 
-    
+
     this.getSearchList(searchText[0],"false");
-    
-    
+
+
 
   }
 
@@ -350,7 +350,7 @@ class SearchActivity extends View {
     var filteredData = { filterDetails: this.filterData,
        filterType: this.searchType ,
        filterFor : this.searchTextValue}
-    var whatToSend = { filterDetails: JSON.stringify(filteredData) } 
+    var whatToSend = { filterDetails: JSON.stringify(filteredData) }
     var event = { tag: "OPEN_FilterActivity", contents: whatToSend}
     window.__runDuiCallback(event);
   }
@@ -361,7 +361,7 @@ class SearchActivity extends View {
 
 
 
-  
+
   getToolbar = () => {
     return (<LinearLayout
             height="56"
@@ -380,7 +380,7 @@ class SearchActivity extends View {
                     {this.getBack()}
                     {this.getTitle()}
 
-                    
+
                     {this.getMenu()}
 
                  </LinearLayout>
@@ -405,9 +405,9 @@ class SearchActivity extends View {
           width="match_parent"
           height="match_parent">
 
-           
+
               {this.getToolbar()}
-          
+
 
                 <ScrollView
                   height="match_parent"
@@ -424,7 +424,7 @@ class SearchActivity extends View {
 
 
                   </ScrollView>
-         
+
         </LinearLayout>
 
         <LinearLayout
@@ -445,7 +445,7 @@ class SearchActivity extends View {
 
           </LinearLayout>
 
-          
+
 
         </LinearLayout>
 
