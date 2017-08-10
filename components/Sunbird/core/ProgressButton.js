@@ -83,21 +83,21 @@ class ProgressButton extends View {
 
   updateProgress = (pValue) => {
     var cmd;
-    console.log("--->\t\t\t\n\n\n", pValue);
+
 
     var data = JSON.parse(pValue);
 
-    if (data.identifier != this.props.identifier){
-    console.log("NOT mine")
+    if (data.identifier != _this.props.identifier){
+      console.log("NOT mine")
       return;
+    }
     
-  }
     var textToShow = ""
 
     data.downloadProgress = ( data.downloadProgress == undefined || data.downloadProgress < 0 )? 0 : data.downloadProgress;
     console.log("--->\t\t\t\n\n\n", data);
      console.log(data.downloadProgress)
-   
+
     if (parseInt(data.downloadProgress) == 100) {
     console.log(data.downloadProgress ,"DONE")
       _this.props.changeOverFlowMenu();
@@ -117,7 +117,7 @@ class ProgressButton extends View {
         this.isCancelVisible=true;
 
     }
-    
+
     _this.replaceChild(_this.idSet.downloadBarContainer, _this.getButtons(data.downloadProgress, textToShow).render(), 0);
 
   }
@@ -166,8 +166,8 @@ class ProgressButton extends View {
         console.log("handleButtonClick PERMISSION");
         this.setPermissions();
       }
-  
-  
+
+
 
 
   }
@@ -180,7 +180,7 @@ class ProgressButton extends View {
         var contentProgress = {};
 
         console.log("hierarchy info", this.props.contentDetails.hierarchyInfo)
-        
+
         contentProgress['contentId'] = this.props.identifier;
         contentProgress['courseId'] = this.props.contentDetails.hierarchyInfo[0].identifier;
         contentProgress['status'] = telemetryData.edata.eks.progress == 100 ? 2 : 1;
@@ -196,7 +196,7 @@ class ProgressButton extends View {
         console.log("progress status", contentProgress)
           // JBridge.setInSharedPrefs(this.props.identifier, JSON.stringify(contentProgress));
         var url = "https://ntp.net.in/api/course/v1/content/state/update"
-        
+
         console.log("date",date)
 
         // if(telemetryData.edata.eks.length)
@@ -206,7 +206,7 @@ class ProgressButton extends View {
                   "id":"unique API ID",
                   "ts":"response timestamp YYYY-MM-DDThh:mm:ss+/-nn:nn (timezone defaulted to +5.30)",
                     "params": {
-                         
+
                       },
                   "request":{
                       "userId": window.__userToken,
@@ -215,8 +215,8 @@ class ProgressButton extends View {
                      ]
                     }
                   }
-        
-          
+
+
     var callback = callbackMapper.map(function(data){
         console.log(data)
         if(data[0] == "true"){
@@ -228,7 +228,7 @@ class ProgressButton extends View {
       JBridge.getContentType(this.props.contentDetails.hierarchyInfo[0].identifier,callback)
 
 
-      
+
       // var sharedData = JBridge.getFromSharedPrefs(this.props.identifier)
     }
     // JBridge.syncTelemetry();
@@ -247,7 +247,7 @@ class ProgressButton extends View {
     });
 
     JBridge.setPermissions(callback,"android.permission.WRITE_EXTERNAL_STORAGE");
-  
+
   }
 
 
@@ -290,9 +290,9 @@ class ProgressButton extends View {
         height="48"
         root="true">
 
-        
+
       { this.getDownloadBackground(value)}
-        
+
 
         <TextView
         width="wrap_content"
@@ -361,9 +361,9 @@ class ProgressButton extends View {
           visibility={this.props.hideDivider?"gone":"visible"}
           width="match_parent"
           background={window.__Colors.PRIMARY_BLACK_22}/>
-        
-        {this.getCancelButton()}  
-        
+
+        {this.getCancelButton()}
+
         <LinearLayout
           height="match_parent"
           width="match_parent"
@@ -372,10 +372,10 @@ class ProgressButton extends View {
           id={this.idSet.downloadBarContainer}>
 
 
-       
+
             {this.getButtons(0,this.props.buttonText)}
-       
-         </LinearLayout>     
+
+         </LinearLayout>
 
       </LinearLayout>
 
