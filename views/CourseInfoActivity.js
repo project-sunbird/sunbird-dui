@@ -51,12 +51,30 @@ class CourseInfoActivity extends View {
 
     _this = this;
 
+    // setTimeout(() => {
+    //   Android.runInUI(
+    //     this.animateView(),
+    //     null
+    //   );
+    // }, 0);
+
     this.details = JSON.parse(state.data.value0.courseDetails);
     console.log("GOT VALUES CIS ", this.details)
 
     this.checkContentLocalStatus(this.details.identifier);
+    this.setData();
+  }
 
-    
+  onPop = () =>{
+    setTimeout(() => {
+      Android.runInUI(
+        this.animateView(),
+        null
+      );
+    }, 0);
+  }
+
+  setData = () =>{
 
     this.data = {
       courseName: this.details ? this.details.name : "",
@@ -151,10 +169,7 @@ class CourseInfoActivity extends View {
         }]
       }]
     };
-
   }
-
-
 
   getSpineStatus = (pValue) => {
     var cmd;
@@ -257,7 +272,6 @@ class CourseInfoActivity extends View {
         )
     this.replaceChild(this.idSet.descriptionContainer, layout.render(), 0)
   }
-
 
 
   onPop = () => {
@@ -521,7 +535,7 @@ class CourseInfoActivity extends View {
     console.log("IN P1 ",window.__pressedLoggedOut)
     window.__pressedLoggedOut=true;
     console.log("IN P2 ",window.__pressedLoggedOut)
-    JBridge.keyCloakLogout("https://dev.open-sunbird.org/auth/realms/sunbird/protocol/openid-connect/logout");
+    JBridge.keyCloakLogout(window.__apiUrl  + "/auth/realms/sunbird/protocol/openid-connect/logout");
     
     window.__Logout();
   }

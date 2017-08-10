@@ -88,11 +88,15 @@ class MainActivity extends View {
     if(this.currentPageIndex==undefined){
       this.currentPageIndex=0;
     }
+     console.log("on pop in mani activity")
+     
+    setTimeout(() => {
+      Android.runInUI(
+        this.animateView(),
+        null
+      );
+    }, 0);
 
-    Android.runInUI(
-      this.animateView(),
-      null
-    );
     this.backPressCount = 0;
 
     if(this.currentPageIndex==1 || this.currentPageIndex==0){

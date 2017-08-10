@@ -338,7 +338,7 @@ class UserActivity extends View {
     // console.log("IN P1 ",window.__pressedLoggedOut)
     // window.__pressedLoggedOut=true;
     // console.log("IN P2 ",window.__pressedLoggedOut)
-    // JBridge.keyCloakLogout("https://ntp.net.in/auth/realms/sunbird/protocol/openid-connect/logout");
+    // JBridge.keyCloakLogout(window.__apiUrl + "/auth/realms/sunbird/protocol/openid-connect/logout");
     
     // window.__Logout();
 
@@ -441,7 +441,7 @@ class UserActivity extends View {
   }
 
   handleLoginClick = () => {
-    JBridge.keyCloakLogin("https://ntp.net.in/auth/realms/sunbird/protocol/openid-connect/auth","android");
+    JBridge.keyCloakLogin(window.__apiUrl + "/auth/realms/sunbird/protocol/openid-connect/auth","android");
   }
 
   handleForgotPasscode = ()=>{
