@@ -279,7 +279,7 @@ class CourseInfoActivity extends View {
       window.__runDuiCallback(event);
     }else{
 
-      this.replaceChild(this.idSet.totalContainer,this.getBody.render(),0);
+      this.replaceChild(this.idSet.totalContainer,this.getBody().render(),0);
       var enrolledIds = window.__enrolledCourses;
       enrolledIds.map((item)=>{
       if(item.courseId == this.details.identifier){
@@ -390,6 +390,7 @@ class CourseInfoActivity extends View {
   }
 
   onBackPressed = () => {
+    console.log("back pressed in courseInfoActivity")
    var whatToSend = []
    var event = { tag: 'BACK_CourseInfoActivity', contents: whatToSend }  
    window.__runDuiCallback(event);
@@ -414,7 +415,7 @@ class CourseInfoActivity extends View {
 
 
   getBody = () =>{
-
+    var buttonList = ["ENROLL THIS COURSE"]
     return (
       <LinearLayout
         root="true"
