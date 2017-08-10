@@ -62,7 +62,11 @@ class CourseInfoActivity extends View {
     console.log("GOT VALUES CIS ", this.details)
 
     this.checkContentLocalStatus(this.details.identifier);
-    this.setData();
+   this.data = {
+      courseName: this.details ? this.details.name : "",
+      courseDesc: this.details ? this.details.description : "This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced",
+      competedCount: this.details && this.details.footerTitle ? this.details.footerTitle.split('%')[0] : "10",
+    };
   }
 
   onPop = () =>{
@@ -74,102 +78,6 @@ class CourseInfoActivity extends View {
     }, 0);
   }
 
-  setData = () =>{
-
-    this.data = {
-      courseName: this.details ? this.details.name : "",
-      courseDesc: this.details ? this.details.description : "This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced",
-      competedCount: this.details && this.details.footerTitle ? this.details.footerTitle.split('%')[0] : "10",
-      totalCount: "150",
-      courseBrief: [{
-        count: "50",
-        type: "Modules"
-      }, {
-        count: "25",
-        type: "Videos"
-      }, {
-        count: "5",
-        type: "Quizes"
-      }],
-      chapterList: [{
-        chapterName: "Progression",
-        chapterDuration: "30",
-        chapterFinished: "3",
-        chapterContent: [{
-          name: "Arithemetic Progression",
-          type: "PLAY",
-          status: "DONE"
-        }, {
-          name: "Geometric Progeressions",
-          type: "PLAY",
-          status: "DONE"
-        }, {
-          name: "Quiz 1: 10 questions",
-          type: "QUIZ",
-          status: "DONE"
-        }]
-      }, {
-        chapterName: "Scientific Notations",
-        chapterFinished: "2",
-        chapterDuration: "50",
-        chapterContent: [{
-          name: "Arithemetic Progression",
-          type: "PLAY",
-          status: "DONE"
-        }, {
-          name: "Geometric Progeressions",
-          type: "PLAY",
-          status: "DONE"
-        }, {
-          name: "Significant figures",
-          type: "ASSIGNMENT",
-          status: "PROGRESS"
-        }, {
-          name: "Quiz 2: 5 questions",
-          type: "QUIZ",
-          status: "PENDING"
-        }]
-      }, {
-        chapterName: "Scientific Notations",
-        chapterFinished: "2",
-        chapterDuration: "50",
-        chapterContent: [{
-          name: "Arithemetic Progression",
-          type: "PLAY",
-          status: "DONE"
-        }, {
-          name: "Geometric Progeressions",
-          type: "PLAY",
-          status: "DONE"
-        }, {
-          name: "Significant figures",
-          type: "ASSIGNMENT",
-          status: "PROGRESS"
-        }, {
-          name: "Quiz 2: 5 questions",
-          type: "QUIZ",
-          status: "PENDING"
-        }]
-      }, {
-        chapterName: "Progression",
-        chapterFinished: "0",
-        chapterDuration: "10",
-        chapterContent: [{
-          name: "Arithemetic Progression",
-          type: "Chapter",
-          status: "PENDING"
-        }, {
-          name: "Geometric Progeressions",
-          type: "Chapter",
-          status: "PENDING"
-        }, {
-          name: "Quiz 1: 10 questions",
-          type: "Quiz",
-          status: "PENDING"
-        }]
-      }]
-    };
-  }
 
   getSpineStatus = (pValue) => {
     var cmd;
@@ -411,8 +319,28 @@ class CourseInfoActivity extends View {
   }
 
   getCurriculumnBrief = () => {
+    var json = [];
+    if(this.details.hasOwnProperty("contentTypesCount")){
+        var Curriculum = JSON.parse(this.details.contentTypesCount);
+        console.log("Curriculum ",Curriculum)
 
-    var items = this.data.courseBrief.map((item, i) => {
+        var index = 0;
+        var json = [];
+        for(var item in Curriculum){
+          json.push({
+            "count" : Curriculum[item],
+            "type" : item
+          })
+        }
+    }
+    else{
+      json.push({
+        "count" : "Not",
+        "type" : "Available"
+      })
+    }
+
+    var items = json.map((item, i) => {
       return (<TextView
                 style={window.__TextStyle.textStyle.HINT.REGULAR}
                 text ={(i==0?"":" | ") +item.count + " "+item.type}/>)
