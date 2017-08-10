@@ -108,7 +108,7 @@ class ContentLoaderDialog extends View {
            width="wrap_content"
            height="wrap_content"
            margin="0,0,0,32"
-           text="Loading your course.."/>
+           text="Loading your Content.."/>
 
           <LinearLayout
             height="wrap_content"
