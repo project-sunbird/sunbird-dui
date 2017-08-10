@@ -18,6 +18,7 @@ class ProfileCreations extends View {
 
     ]);
     _this=this;
+    this.isEditable = this.props.editable;
     this.data=[
       {
         "name":"VYASA",
@@ -60,6 +61,7 @@ class ProfileCreations extends View {
               width="wrap_content"
               height="wrap_content"
               text="Add"
+              visibility = {(this.isEditable == "true") ? "visible" : "gone"}
               style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
 
               </LinearLayout>)

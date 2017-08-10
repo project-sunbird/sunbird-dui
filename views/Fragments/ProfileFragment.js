@@ -36,7 +36,7 @@ class ProfileFragment extends View {
     ]);
     console.log("profile api response", this.props);
     _this = this;
-
+    this.isEditable = this.props.editable;
     this.menuData = {
       url: [
         { imageUrl: "ic_action_overflow" }
@@ -70,7 +70,7 @@ class ProfileFragment extends View {
     if (this.props.response) {
       console.log("SERVER GAVE RESPONSE", this.props.response)
       this.details = this.props.response.result.response;
-
+      this.description = this.details.profileSummary ? this.details.profileSummary : ""
     } else {
       console.log("SERVER TOLD NULL")
       this.details = {};
@@ -159,28 +159,42 @@ class ProfileFragment extends View {
                 <ProfileHeader
                 data={this.details}/>
 
-                <ProfileProgress />
+                <ProfileProgress
+                  editable = {this.isEditable}/>
 
-                {this.getLineSeperator()}
+                <LinearLayout
+                  width = "match_parent"
+                  height = "wrap_content"
+                  orientation = "vertical"
+                  visibility = {(this.description && this.description != "") ? "visible" : "gone"}>
 
-                <CropParagraph
-                  headText = "Description"
-                  contentText = "Lorem Ipsum is simply dummy text of the printing and typesetting industry bla bla bla bla bla bla bla bla bla... adding some more lines"/>
+                  {this.getLineSeperator()}
+                  <CropParagraph
+                    headText = "Description"
+                    contentText = {(this.description && this.description != "") ? this.description : ""}/>
+                </LinearLayout>
 
-                <ProfileExperiences />
+                <ProfileExperiences
+                  editable = {this.isEditable}/>
 
-                <ProfileSkillTags />
+                <ProfileSkillTags
+                  editable = {this.isEditable}/>
 
-                <ProfileAccomplishments />
+                <ProfileAccomplishments
+                  editable = {this.isEditable}/>
 
-                <ProfileCreations />
+                <ProfileCreations
+                  editable = {this.isEditable}/>
 
-                <ProfileBadges />
+                <ProfileBadges
+                  editable = {this.isEditable}/>
 
-                <ProfilAffiliations />
+                <ProfilAffiliations
+                  editable = {this.isEditable}/>
 
                 <ProfileAdditionalInfo
-                data={this.details}/>
+                  data={this.details}
+                  editable = {this.isEditable}/>
 
               </LinearLayout>
 

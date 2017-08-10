@@ -18,32 +18,58 @@ class ProfileAdditionalInfo extends View {
     ]);
     _this = this;
 
-    this.data = [{
+    this.data = this.props.data;
+    this.languages = "";
+    this.data.language.map((item, i) => {
+      var append = ",";
+      if (i == this.data.language.length - 1) append = "";
+      this.languages += item + append;
+    })
+    this.address = (this.data.address.length > 0) ? this.data.address : ""
+    this.info = [{
       name: "LANGUAGES",
-      date: "English, Hindi, Marathi"
+      value : this.languages
     },
     {
-      name: "E-MAIL",
-      date: "harish.bookwala@gmail.com"
+      name: "LANGUAGES",
+      value : this.data.email
     },
     {
       name: "PHONE",
-      date: "+91 80808 88888"
+      value : this.data.phone
     },
     {
       name: "CURRENT LOCATION",
-      date: "Pune, Maharashtra"
-    }
-  ]
+      value : this.address
+    }]
+
+  //   this.data = [{
+  //     name: "LANGUAGES",
+  //     date: "English, Hindi, Marathi"
+  //   },
+  //   {
+  //     name: "E-MAIL",
+  //     date: "harish.bookwala@gmail.com"
+  //   },
+  //   {
+  //     name: "PHONE",
+  //     date: "+91 80808 88888"
+  //   },
+  //   {
+  //     name: "CURRENT LOCATION",
+  //     date: "Pune, Maharashtra"
+  //   }
+  // ]
   this.hobbies = "Books, cycling, music, sports, browsing, teaching"
   }
 
   getRows = (input)=> {
-    var rows = this.data.map((item, i) => {
+    var rows = this.info.map((item, i) => {
       return (<LinearLayout
               width="wrap_content"
               height="wrap_content"
-              margin="0,16,0,0">
+              margin="0,16,0,0"
+              visibility = {(item.value && item.value != "") ? "visible" : "gone"}>
 
               <TextView
               width="wrap_content"
@@ -58,7 +84,7 @@ class ProfileAdditionalInfo extends View {
               <TextView
               width="wrap_content"
               height="wrap_content"
-              text={item.date}
+              text={item.value}
               style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
 
               </LinearLayout>)
@@ -100,6 +126,7 @@ class ProfileAdditionalInfo extends View {
               width="wrap_content"
               height="wrap_content"
               text="View all"
+              visibility = "gone"
               style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
 
               </LinearLayout>)

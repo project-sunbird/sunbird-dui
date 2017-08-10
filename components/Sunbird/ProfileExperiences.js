@@ -16,7 +16,7 @@ class ProfileExperiences extends View {
 
     ]);
     _this = this;
-
+    this.isEditable = this.props.editable;
     this.data = [{
       "position": "All subjects class teacher",
       "place": "Balamandir, Vadgaon",
@@ -49,11 +49,12 @@ class ProfileExperiences extends View {
               width="wrap_content"
               height="wrap_content"
               text="Edit"
+              visibility = {(this.isEditable == "true") ? "visible" : "gone"}
               style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
 
               </LinearLayout>)
   }
-  
+
   getLineSeperator = () => {
     return (<LinearLayout
             width="match_parent"
@@ -127,7 +128,7 @@ class ProfileExperiences extends View {
 
   render() {
     this.layout = (
-    
+
       <LinearLayout
                 width="wrap_content"
                 height="match_parent"
@@ -142,8 +143,8 @@ class ProfileExperiences extends View {
 
               </LinearLayout>
 
-               
-     
+
+
     )
     return this.layout.render();
   }

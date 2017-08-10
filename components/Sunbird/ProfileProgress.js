@@ -22,6 +22,7 @@ class ProfileCreations extends View {
     this.followingPpl = "180";
     this.followedBy = "60";
     this.followingGrp = "05";
+    this.isEditable = this.props.editable;
 
   }
 
@@ -86,12 +87,37 @@ class ProfileCreations extends View {
             background={window.__Colors.PRIMARY_BLACK_22}/>)
   }
 
+  getFollowBtn = () => {
+    return (
+      <LinearLayout
+        width = "wrap_content"
+        height = "wrap_content"
+        cornerRadius = "3"
+        orientation = "horizontal"
+        gravity = "center"
+        margin = "0, 0, 0, 10"
+        padding = "10, 3, 10, 3"
+        stroke ={ "2," + window.__Colors.PRIMARY_ACCENT}>
+        <ImageView
+          imageFromUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR1X3cm5xzR4D1W9oPb2QWioKlrfLVd0DvXFUNqSjZfg-M0bpc"
+          height = "10"
+          width = "10" />
+        <ViewWidget
+          width = "10" />
+        <TextView
+          text = "Follow"
+          style={window.__TextStyle.textStyle.CARD.BODY.DARK.BLUE_R} />
+      </LinearLayout>
+    )
+  }
+
   getFollowing = () => {
     return (
       <LinearLayout
         width = "match_parent"
         height = "wrap_content"
-        orientation = "horizontal">
+        orientation = "horizontal"
+        gravity = "center">
 
         <LinearLayout
           width = "0"
@@ -168,19 +194,32 @@ class ProfileCreations extends View {
     this.layout= (
               <LinearLayout
                 margin="0,24,0,0"
+                width = "match_parent"
+                height = "wrap_content"
                 orientation="vertical">
 
                 <LinearLayout
                   orientation = "vertical"
                   width = "match_parent"
-                  height = "match_parent">
+                  height = "match_parent"
+                  visibility = {(this.isEditable == "true") ? "visible" : "gone"}>
                     {this.getHeader()}
+                </LinearLayout>
+
+                <LinearLayout
+                  orientation = "vertical"
+                  width = "match_parent"
+                  height = "match_parent"
+                  gravity = "center"
+                  visibility = {(this.isEditable != "true") ? "visible" : "gone"}>
+                    {this.getFollowBtn()}
                 </LinearLayout>
 
                 <LinearLayout
                   orientation = "horizontal"
                   width = "match_parent"
-                  height = "match_parent">
+                  height = "match_parent"
+                  gravity = "center">
                     {this.getFollowing()}
                 </LinearLayout>
               </LinearLayout>

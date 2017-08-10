@@ -16,7 +16,7 @@ class ProfileAccomplishments extends View {
 
     ]);
     _this = this;
-
+    this.isEditable = this.props.editable;
     this.data = [{
       name: "Teacher of the year",
       date: "June 2016"
@@ -87,6 +87,7 @@ class ProfileAccomplishments extends View {
               width="wrap_content"
               height="wrap_content"
               text="Add"
+              visibility = {(this.isEditable == "true") ? "visible" : "gone"}
               style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
 
               </LinearLayout>)
