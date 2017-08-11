@@ -51,109 +51,23 @@ class CourseInfoActivity extends View {
 
     _this = this;
 
+    // setTimeout(() => {
+    //   Android.runInUI(
+    //     this.animateView(),
+    //     null
+    //   );
+    // }, 0);
+
     this.details = JSON.parse(state.data.value0.courseDetails);
     console.log("GOT VALUES CIS ", this.details)
 
     this.checkContentLocalStatus(this.details.identifier);
-
-    
-
-    this.data = {
+   this.data = {
       courseName: this.details ? this.details.name : "",
       courseDesc: this.details ? this.details.description : "This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced",
       competedCount: this.details && this.details.footerTitle ? this.details.footerTitle.split('%')[0] : "10",
-      totalCount: "150",
-      courseBrief: [{
-        count: "50",
-        type: "Modules"
-      }, {
-        count: "25",
-        type: "Videos"
-      }, {
-        count: "5",
-        type: "Quizes"
-      }],
-      chapterList: [{
-        chapterName: "Progression",
-        chapterDuration: "30",
-        chapterFinished: "3",
-        chapterContent: [{
-          name: "Arithemetic Progression",
-          type: "PLAY",
-          status: "DONE"
-        }, {
-          name: "Geometric Progeressions",
-          type: "PLAY",
-          status: "DONE"
-        }, {
-          name: "Quiz 1: 10 questions",
-          type: "QUIZ",
-          status: "DONE"
-        }]
-      }, {
-        chapterName: "Scientific Notations",
-        chapterFinished: "2",
-        chapterDuration: "50",
-        chapterContent: [{
-          name: "Arithemetic Progression",
-          type: "PLAY",
-          status: "DONE"
-        }, {
-          name: "Geometric Progeressions",
-          type: "PLAY",
-          status: "DONE"
-        }, {
-          name: "Significant figures",
-          type: "ASSIGNMENT",
-          status: "PROGRESS"
-        }, {
-          name: "Quiz 2: 5 questions",
-          type: "QUIZ",
-          status: "PENDING"
-        }]
-      }, {
-        chapterName: "Scientific Notations",
-        chapterFinished: "2",
-        chapterDuration: "50",
-        chapterContent: [{
-          name: "Arithemetic Progression",
-          type: "PLAY",
-          status: "DONE"
-        }, {
-          name: "Geometric Progeressions",
-          type: "PLAY",
-          status: "DONE"
-        }, {
-          name: "Significant figures",
-          type: "ASSIGNMENT",
-          status: "PROGRESS"
-        }, {
-          name: "Quiz 2: 5 questions",
-          type: "QUIZ",
-          status: "PENDING"
-        }]
-      }, {
-        chapterName: "Progression",
-        chapterFinished: "0",
-        chapterDuration: "10",
-        chapterContent: [{
-          name: "Arithemetic Progression",
-          type: "Chapter",
-          status: "PENDING"
-        }, {
-          name: "Geometric Progeressions",
-          type: "Chapter",
-          status: "PENDING"
-        }, {
-          name: "Quiz 1: 10 questions",
-          type: "Quiz",
-          status: "PENDING"
-        }]
-      }]
     };
-
   }
-
 
 
   getSpineStatus = (pValue) => {
@@ -259,8 +173,8 @@ class CourseInfoActivity extends View {
   }
 
 
-
   onPop = () => {
+    console.log("came here in courseInfo");
     Android.runInUI(
       this.animateView(),
       null
@@ -279,7 +193,7 @@ class CourseInfoActivity extends View {
       window.__runDuiCallback(event);
     }else{
 
-      this.replaceChild(this.idSet.totalContainer,this.getBody.render(),0);
+      this.replaceChild(this.idSet.totalContainer,this.getBody().render(),0);
       var enrolledIds = window.__enrolledCourses;
       enrolledIds.map((item)=>{
       if(item.courseId == this.details.identifier){
@@ -389,15 +303,38 @@ class CourseInfoActivity extends View {
     }
   }
 
+
   onBackPressed = () => {
+    console.log("back pressed in courseInfoActivity")
    var whatToSend = []
    var event = { tag: 'BACK_CourseInfoActivity', contents: whatToSend }  
+   Android.runInUI(this.removeView(), null);
    window.__runDuiCallback(event);
   }
 
   getCurriculumnBrief = () => {
+    var json = [];
+    if(this.details.hasOwnProperty("contentTypesCount")){
+        var Curriculum = JSON.parse(this.details.contentTypesCount);
+        console.log("Curriculum ",Curriculum)
 
-    var items = this.data.courseBrief.map((item, i) => {
+        var index = 0;
+        var json = [];
+        for(var item in Curriculum){
+          json.push({
+            "count" : Curriculum[item],
+            "type" : item
+          })
+        }
+    }
+    else{
+      json.push({
+        "count" : "Not",
+        "type" : "Available"
+      })
+    }
+
+    var items = json.map((item, i) => {
       return (<TextView
                 style={window.__TextStyle.textStyle.HINT.REGULAR}
                 text ={(i==0?"":" | ") +item.count + " "+item.type}/>)
@@ -414,7 +351,7 @@ class CourseInfoActivity extends View {
 
 
   getBody = () =>{
-
+    var buttonList = ["ENROLL THIS COURSE"]
     return (
       <LinearLayout
         root="true"
@@ -520,7 +457,7 @@ class CourseInfoActivity extends View {
     console.log("IN P1 ",window.__pressedLoggedOut)
     window.__pressedLoggedOut=true;
     console.log("IN P2 ",window.__pressedLoggedOut)
-    JBridge.keyCloakLogout("https://dev.open-sunbird.org/auth/realms/sunbird/protocol/openid-connect/logout");
+    JBridge.keyCloakLogout(window.__apiUrl  + "/auth/realms/sunbird/protocol/openid-connect/logout");
     
     window.__Logout();
   }
@@ -529,15 +466,17 @@ class CourseInfoActivity extends View {
   render() {
     var buttonList = ["ENROLL FOR THIS COURSE"];
     this.layout = (
-
       <LinearLayout
-        root="true"
-        background={window.__Colors.WHITE}
-        orientation="vertical"
-        id={this.idSet.totalContainer}
         width="match_parent"
-        height="match_parent"/>
-
+        height="match_parent"
+        root="true">
+        <LinearLayout
+          background={window.__Colors.WHITE}
+          orientation="vertical"
+          id={this.idSet.totalContainer}
+          width="match_parent"
+          height="match_parent"/>
+      </LinearLayout>
     );
 
     return this.layout.render();

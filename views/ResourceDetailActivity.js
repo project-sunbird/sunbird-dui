@@ -57,12 +57,12 @@ class ResourceDetailActivity extends View {
     console.log("true", this.localStatus)
 
 
-    setTimeout(function() {
-      Android.runInUI(
-        _this.animateView(),
-        null
-      );
-    }, 100)
+    // setTimeout(function() {
+    //   Android.runInUI(
+    //     _this.animateView(),
+    //     null
+    //   );
+    // }, 100)
 
   }
 

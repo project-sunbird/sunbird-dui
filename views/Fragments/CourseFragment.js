@@ -147,7 +147,7 @@ class CourseFragment extends View {
     var tmp = JSON.stringify(content)
     var whatToSend = []
     var event = {};
-
+    console.log("content   ",content)
     if (this.checkIfEnrolled(content.identifier)) {
       whatToSend = { "course": tmp }
       event = { tag: 'OPEN_EnrolledCourseActivity', contents: whatToSend }
