@@ -21,7 +21,8 @@ class ResourceContainer extends View {
     super(props, children);
 
     this.setIds([]);
-
+    console.log(this.props.data, "data");
+    this.count = (this.props.data != undefined) ? this.props.data.length : 0;
   }
 
 
@@ -43,7 +44,7 @@ class ResourceContainer extends View {
       temp['stars'] = item.hasOwnProperty("me_averageRating")? item.me_averageRating+ "" : "0";
       temp['actionText'] = "OPEN";
 
-      return (<CardComponent 
+      return (<CardComponent
                  data={temp}
                  content={item}
                  onCardClick = {this.handleCardClick}/>)
@@ -85,6 +86,7 @@ class ResourceContainer extends View {
             width="wrap_content"
             height="wrap_content"
             text="VIEW ALL"
+            visibility = {(this.count <= 0)? "gone" : "visible"}
             padding="8,8,8,8"
             onClick={()=>{this.handleViewAllClick()}}
             style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
@@ -100,7 +102,7 @@ class ResourceContainer extends View {
 
   handleCardClick = (item, type) => {
 
-      
+
        if(item.contentType.toLowerCase() == "course" || item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "TextBook"){
         var whatToSend={course:JSON.stringify(item)}
         var event ={tag:"OPEN_EnrolledCourseActivity",contents:whatToSend}
@@ -108,7 +110,7 @@ class ResourceContainer extends View {
       }
       else
       {
-        var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");      
+        var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");
         var resDetails = {};
         console.log("ITEM NAME",item.name)
         resDetails['imageUrl'] = item.appIcon;
@@ -119,10 +121,10 @@ class ResourceContainer extends View {
         resDetails['content'] = item;
 
         console.log("RESOURCE DETAILS SENDING",resDetails)
-        
+
         var whatToSend = {resourceDetails:JSON.stringify(resDetails)}
         var event = {tag:"OPEN_ResourceDetailActivity",contents:whatToSend}
-        window.__runDuiCallback(event); 
+        window.__runDuiCallback(event);
       }
   }
 
