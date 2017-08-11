@@ -89,9 +89,10 @@ class PageFilterPopup extends View {
 
   }
 
- 
+
 
   setValues = (item,values) => {
+    console.log("hereeee");
     console.log("SELECTED ",values);
     console.log("FOR ->",item);
 
@@ -99,7 +100,7 @@ class PageFilterPopup extends View {
     console.log("MODIFIED ",this.filter)
   }
 
-  
+
 
 
   getFilterList = () => {
@@ -110,6 +111,13 @@ class PageFilterPopup extends View {
     }else{
       listToUse = this.filterListCource
     }
+    
+    listToUse.map((item)=>{
+
+      item.selected=this.filter[item.name];
+    });
+
+    console.log(listToUse,"listToUse" );
 
     var listItem=listToUse.map((item,index)=>{
       return (
@@ -118,6 +126,7 @@ class PageFilterPopup extends View {
                     height="match_parent"
                     width="match_parent"
                     gravity="center_vertical"
+                    background="#000000"
                     data={item}
                     onUpdate={this.setValues}
                     forPage={true}/>
@@ -126,7 +135,7 @@ class PageFilterPopup extends View {
               )
     });
 
-    
+
 
      return (
       <ScrollView
@@ -148,7 +157,7 @@ class PageFilterPopup extends View {
   }
 
 
-  
+
 
   getHeader = () => {
     return (
@@ -181,7 +190,7 @@ class PageFilterPopup extends View {
           </LinearLayout>)
   }
 
-  
+
   getBody = () => {
     return (<LinearLayout
               cornerRadius = "2"
@@ -192,7 +201,7 @@ class PageFilterPopup extends View {
               clickable = "true"
               padding="0,18,0,6"
               background="#ffffff">
-              
+
              {this.getHeader()}
 
              {this.getFilterList()}
@@ -202,7 +211,7 @@ class PageFilterPopup extends View {
             </LinearLayout>)
   }
 
-  resetPopup = (isFor) => {
+  resetPopup = (isFor,response) => {
     if(isFor=="Cource"){
       this.isForResouce=false;
     }else{
@@ -210,7 +219,18 @@ class PageFilterPopup extends View {
     }
 
     this.filter={};
+    if(response!=undefined && response.hasOwnProperty("filter_to_send") && response.filter_to_send!=null)
+      {
+        this.filter=JSON.parse(response.filter_to_send);
+        console.log("fiter to send reached",this.filter);
+
+      }
+
+    //     window.__PageFilterChooser.handleItemClick(item,false);
+
     this.replaceChild(this.idSet.contentContainer, this.getBody().render(), 0)
+
+
   }
 
   isEmpty = (obj) => {
@@ -228,13 +248,13 @@ class PageFilterPopup extends View {
       return;
     }
     this.hide();
-    
+
     var sendFilter=JSON.stringify(this.filter);
 
-    var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken,"filter_to_send":sendFilter} 
+    var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken,"filter_to_send":sendFilter}
     var event = { "tag": "API_FilterPage", contents: whatToSend};
     window.__runDuiCallback(event);
-    
+
   }
 
   handleDismissClick = () => {
@@ -252,7 +272,7 @@ class PageFilterPopup extends View {
         visibility="gone"
         root="true"
         background = { window.__Colors.PRIMARY_BLACK_44}>
-          <LinearLayout 
+          <LinearLayout
             height = "match_parent"
             width = "match_parent"
             background = { window.__Colors.PRIMARY_BLACK_44}

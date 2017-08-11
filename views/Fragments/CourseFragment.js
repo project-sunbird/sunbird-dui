@@ -31,15 +31,29 @@ class CourseFragment extends View {
     ]);
     _this = this;
 
+    this.props=props;
     this.myCommunitySelected = "";
     this.popularCommunitySelected = "";
     this.recommendedCommunitySelected = "";
 
-    this.menuData = {
-      url: [
-        { imageUrl: "ic_action_search" },
-        { imageUrl: "ic_action_filter" }
-      ]
+    console.log("course constructor");
+    if(this.props.response != undefined && this.props.response.hasOwnProperty("filter_to_send") && this.props.response.filter_to_send!=null)
+    { console.log(props.response.filter_to_send, "fiter applied");
+      this.menuData = {
+           url: [
+             { imageUrl: "ic_action_search" },
+             { imageUrl: "ic_action_filter_applied" }
+           ]
+         }
+    }
+    else{
+      console.log("no filter applied");
+     this.menuData = {
+          url: [
+            { imageUrl: "ic_action_search" },
+            { imageUrl: "ic_action_filter" }
+          ]
+        }
     }
     this.enrolledCourses = []
     window.setEnrolledCourses = this.setEnrolledCourses;
@@ -74,7 +88,7 @@ class CourseFragment extends View {
 
   handleResponse = () => {
 
-      console.log("SERVER GAVE RESPONSE", this.props.response)
+      console.log("SERVER GAVE RESPONSE", this.props)
       if(this.props.response===undefined) {
         return;
       }
@@ -143,7 +157,7 @@ class CourseFragment extends View {
 
 
   handleCourseClick = (content, type) => {
-    
+
     var tmp = JSON.stringify(content)
     var whatToSend = []
     var event = {};
@@ -169,7 +183,7 @@ class CourseFragment extends View {
   addSwipeFunction = () => {
 
       var callbackRefresh = callbackMapper.map(function(params) {
-        window.__BNavFlowRestart();         
+        window.__BNavFlowRestart();
     });
 
       JBridge.addSwipeRefreshScrollView(this.idSet.scrollViewContainerCourse,callbackRefresh);
@@ -230,13 +244,13 @@ class CourseFragment extends View {
     }
     else if (url == "ic_action_search") {
       var searchDetails = { filterDetails: "", searchType: "Course" }
-      var whatToSend = { filterDetails: JSON.stringify(searchDetails) } 
+      var whatToSend = { filterDetails: JSON.stringify(searchDetails) }
       var event = { tag: "OPEN_SearchActivity", contents: whatToSend}
       window.__runDuiCallback(event);
 
     }
-     else if (url == "ic_action_filter") {
-      window.__PageFilterPopup.resetPopup("Cource");
+     else if (url == "ic_action_filter" || url == "ic_action_filter_applied") {
+      window.__PageFilterPopup.resetPopup("Cource",this.props.response);
       window.__PageFilterPopup.show();
     }
   }
@@ -248,7 +262,8 @@ class CourseFragment extends View {
              orientation="vertical"
              width="match_parent"
              background={window.__Colors.WHITE_F2}/>)
-  }
+           }
+
 
 
   render() {

@@ -1,4 +1,4 @@
- 
+
 module Fragments.CourseFragment where
 
 import Prelude (bind, ($), (<>), pure, discard)
@@ -12,7 +12,7 @@ import UI
 
 
 courseFragment input whereFrom whatToSendBack = do
-	event <- ui $ MainActivity 
+	event <- ui $ MainActivity
 	case event of
 		OPEN_CourseInfoActivity {course:output} -> courseInfoActivity output "CourseFragment" input
 		OPEN_EnrolledCourseActivity {course:output} -> enrolledCourseActivity output "CourseFragment" input
@@ -24,8 +24,8 @@ courseFragment input whereFrom whatToSendBack = do
 	  		pure $ "apiDefault"
 	  	API_FilterPage{user_token:user_token, api_token:api_key,filter_to_send:delta}  ->	do
 			responseData <- getCourcePageFilterApi user_token api_key delta
-			_ <- sendUpdatedState {response : responseData, responseFor : "API_FilterPage", screen:"asas"}
-			pure $ "handled"	
+			_ <- sendUpdatedState {response : responseData, responseFor : "API_FilterPage", screen:"asas" , filter_to_send:delta }
+			pure $ "handled"
 		_ -> courseFragment input whereFrom whatToSendBack
 
 
@@ -116,5 +116,3 @@ courseFilterActivity input whereFrom whatToSendBack = do
     	"SearchActivity" -> searchCourseActivity input "Terminate" input
     	_ -> searchCourseActivity input "Terminate" input
     _ -> courseFilterActivity input whereFrom whatToSendBack
-
-

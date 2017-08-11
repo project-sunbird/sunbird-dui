@@ -28,7 +28,7 @@ class MainActivity extends View {
   constructor(props, children, state) {
     super(props, children, state);
 
-    this.state = utils.cloneObj(state);
+    this.state = state;
 
 
     //Assigning feedback duration of BottomNavbar
@@ -235,9 +235,14 @@ class MainActivity extends View {
     }
 
     if (shouldBeModified) {
+      if(state.hasOwnProperty("filter_to_send"))
+         responseData.filter_to_send=state.filter_to_send;
+      else
+         responseData.filter_to_send=null;
+
       this.switchContent(this.currentPageIndex, responseData);
     } else {
-      console.log("GOT SAME DATA, not modifying")
+      console.log("GOT SAME DATA, not modifying");
     }
 
   }

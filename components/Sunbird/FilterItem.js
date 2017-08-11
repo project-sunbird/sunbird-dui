@@ -22,18 +22,17 @@ class FilterItem extends View {
     super(props, children);
     this.setIds([
       "filterCount",
-
     ]);
     this.content = this.props.data;
     console.log(this.content)
 
-    this.selectedList=[];
+    this.selectedList=this.content.selected==undefined ? [] : this.content.selected;
     this.filterList = this.content.values;
     this.filterLable = this.content.name;
 
     this.isForPageApi= this.props.forPage ? this.props.forPage:false;
     console.log("FITLER ITEM PARAMA", this.content);
-  
+    console.log("count",this.getSelectedCount(this.filterList));
   }
 
 
@@ -47,7 +46,7 @@ class FilterItem extends View {
     }else{
     window.__FilterPopup.setContent(this.filterList, this.handleSelection)
     window.__FilterPopup.show()
-      
+
     }
   }
 
@@ -78,25 +77,25 @@ class FilterItem extends View {
     }else{
       console.log("seected Length", this.getSelectedCount(newList))
       window.__FilterPopup.hide()
-      this.filterList = newList;
+      this.filterList=newList;
       this.content.values = this.filterList;
       this.props.onUpdate(this.content)
       var cmd = this.set({
           id: this.idSet.filterCount,
-          text: (this.getSelectedCount(newList)!=0?this.getSelectedCount(newList) + " added":"")
+          text: (this.getSelectedCount(this.filterList)!=0?this.getSelectedCount(this.filterList) + " added":"")
         });
 
       Android.runInUI(cmd, null);
-    }  
-   
-    
+    }
+
+
 
   }
 
   render() {
 
       var label = this.filterLable.charAt(0).toUpperCase() + this.filterLable.substring(1,this.filterLable.length);
-      
+
 
     this.layout = (
 
@@ -106,7 +105,7 @@ class FilterItem extends View {
               margin="16,16,16,0"
               gravity="center_vertical"
               onClick={this.handleClick}>
-            
+
              <LinearLayout
               width="match_parent"
               height="match_parent"
@@ -120,7 +119,7 @@ class FilterItem extends View {
                 text={label}
                 style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>
 
-                <ViewWidget 
+                <ViewWidget
                 height = "1"
                 width = "0"
                 weight = "1"/>
@@ -129,7 +128,7 @@ class FilterItem extends View {
                 width="wrap_content"
                 height="wrap_content"
                 id={this.idSet.filterCount}
-                text={!this.isForPageApi && this.getSelectedCount(this.filterList)!=0 ? this.getSelectedCount(this.filterList) + " added":""}
+                text={this.selectedList.length!=0 ? this.selectedList.length + " added":""}
                 style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>
 
                 <ImageView
