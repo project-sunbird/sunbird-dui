@@ -42,19 +42,17 @@ class StarComponent extends View {
           width="match_parent"
           orientation="vertical">
 
-          <LinearLayout
-          width="wrap_content"
-          height="wrap_content">
+            <LinearLayout
+              width="wrap_content"
+              height="wrap_content">
 
-          <ImageView
-          width="10"
-          height="10"
-          imageUrl="ic_blue_star"/>
+              <ImageView
+                width="10"
+                height="10"
+                imageUrl="ic_blue_star"/>
 
-          </LinearLayout>
+            </LinearLayout>
           
-         
-
          </LinearLayout>
     )
 

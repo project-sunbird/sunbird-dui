@@ -26,37 +26,38 @@ class ProfileHeader extends View {
 
 
   render() {
-    this.layout = (<LinearLayout
+    this.layout = (
+            <LinearLayout
               width="match_parent"
               height="160"
               gravity="center_horizontal"
               orientation="vertical">
 
-              <ImageView
-              width="80"
-              height="80"
-              circularImageUrl={"0,"+"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR1X3cm5xzR4D1W9oPb2QWioKlrfLVd0DvXFUNqSjZfg-M0bpc"}/>
+                <ImageView
+                  width="80"
+                  height="80"
+                  circularImageUrl={"0,"+"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR1X3cm5xzR4D1W9oPb2QWioKlrfLVd0DvXFUNqSjZfg-M0bpc"}/>
 
-              <TextView
-              width="wrap_content"
-              height="wrap_content"
-              text={this.userName}
-              padding="0,10,0,2"
-              style={window.__TextStyle.textStyle.HEADING.DARK}/>
+                <TextView
+                  width="wrap_content"
+                  height="wrap_content"
+                  text={this.userName}
+                  padding="0,10,0,2"
+                  style={window.__TextStyle.textStyle.HEADING.DARK}/>
 
-              <TextView
-              width="wrap_content"
-              height="wrap_content"
-              text=""
-              padding="0,0,0,8"
-              style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>
+                <TextView
+                  width="wrap_content"
+                  height="wrap_content"
+                  text=""
+                  padding="0,0,0,8"
+                  style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>
 
-              <TextView
-              padding="40,0,40,0"
-              height="wrap_content"
-              visibility="gone"
-              text="Lorem Ipsum is simply dummy text of the printing and typesetting industry…"
-              style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
+                <TextView
+                  padding="40,0,40,0"
+                  height="wrap_content"
+                  visibility="gone"
+                  text="Lorem Ipsum is simply dummy text of the printing and typesetting industry…"
+                  style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
 
 
               </LinearLayout>)

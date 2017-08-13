@@ -38,47 +38,43 @@ class CourseProgressCard extends View {
   getBody = () =>{
     return(
             <LinearLayout
-            width="wrap_content"
-            height="wrap_content"
-            margin="16,0,0,22"
-            onClick={()=>{this.handleCardClick(this.props.data.moduleText)}}
-            orientation="vertical">
-
-            
+              width="wrap_content"
+              height="wrap_content"
+              margin="16,0,0,22"
+              onClick={()=>{this.handleCardClick(this.props.data.moduleText)}}
+              orientation="vertical">
 
               <RelativeLayout
                width="200"
                height="wrap_content">
 
-              <ImageView
-                width="200"
-                height="110"
-                scaleType="fixXY"
-                gravity="center"
-                circularImageUrl={"10,"+this.props.data.imageUrl}/>
-
-              <LinearLayout
-                width="200"
-                height="110"
-                gravity="center"
-                cornerRadius="4"
-                background={window.__Colors.BLACK}
-                alpha="0.50"/>
-
-              <LinearLayout
-                width="200"
-                cornerRadius="4"
-                height="4">
-
+                <ImageView
+                  width="200"
+                  height="110"
+                  scaleType="fixXY"
+                  gravity="center"
+                  circularImageUrl={"10,"+this.props.data.imageUrl}/>
 
                 <LinearLayout
-                  width="0"
-                  weight={this.props.data.progress}
-                  id={this.idSet.leftProgress}
-                  height="match_parent"
-                  multiCorners={"6,0,0,0,"+window.__Colors.SAFFRON} />
-                 
+                  width="200"
+                  height="110"
+                  gravity="center"
+                  cornerRadius="4"
+                  background={window.__Colors.BLACK}
+                  alpha="0.50"/>
 
+                <LinearLayout
+                  width="200"
+                  cornerRadius="4"
+                  height="4">
+
+                  <LinearLayout
+                    width="0"
+                    weight={this.props.data.progress}
+                    id={this.idSet.leftProgress}
+                    height="match_parent"
+                    multiCorners={"6,0,0,0,"+window.__Colors.SAFFRON} />
+                 
                 <LinearLayout
                   width="0"
                   id={this.idSet.rightProgress}
@@ -128,34 +124,34 @@ class CourseProgressCard extends View {
             height="wrap_content">
 
             <LinearLayout
-            width="wrap_content"
-            height="wrap_content"
-            orientation="vertical">
+              width="wrap_content"
+              height="wrap_content"
+              orientation="vertical">
 
             <TextView
-            width="wrap_content"
-            height="wrap_content"
-            text={this.props.data.progress+"% done"}
-            style={window.__TextStyle.textStyle.CARD.SEMI_DARK}/>
+              width="wrap_content"
+              height="wrap_content"
+              text={window.__S.COURSE_PROGRESS_COMPLETED.format(this.props.data.progress)}
+              style={window.__TextStyle.textStyle.CARD.SEMI_DARK}/>
 
             <TextView
-            width="wrap_content"
-            height="wrap_content"
-            text={this.props.data.timeLeft}
-            style={window.__TextStyle.textStyle.HINT.REGULAR}/>
+              width="wrap_content"
+              height="wrap_content"
+              text={this.props.data.timeLeft}
+              style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
             </LinearLayout>
 
             <ViewWidget
-            height="0"
-            weight="1"/>
+              height="0"
+              weight="1"/>
 
             <Button
-            type="SmallButton_Secondary_BT"
-            width="wrap_content"
-            height="wrap_content"
-            onClick={()=>{this.handleCardClick(this.props.data.moduleText)}}
-            text="RESUME"/>
+              type="SmallButton_Secondary_BT"
+              width="wrap_content"
+              height="wrap_content"
+              onClick={()=>{this.handleCardClick(this.props.data.moduleText)}}
+              text={window.__S.RESUME}/>
 
 
             </LinearLayout>

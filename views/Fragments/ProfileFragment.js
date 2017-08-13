@@ -31,7 +31,7 @@ class ProfileFragment extends View {
     this.setIds([
 
     ]);
-    console.log("profile api response", this.props);
+
     _this = this;
 
     this.menuData = {
@@ -46,15 +46,15 @@ class ProfileFragment extends View {
 
 
   logout = () =>{
-    JBridge.showSnackBar("Logged out")
+    JBridge.showSnackBar(window.__S.LOGGED_OUT)
     JBridge.setInSharedPrefs("logged_in","NO");
     JBridge.setInSharedPrefs("user_id", "__failed");
     JBridge.setInSharedPrefs("user_name",  "__failed");
     JBridge.setInSharedPrefs("user_token",  "__failed");
 
-    console.log("IN P1 ",window.__pressedLoggedOut)
+
     window.__pressedLoggedOut=true;
-    console.log("IN P2 ",window.__pressedLoggedOut)
+
     JBridge.keyCloakLogout(window.__loginUrl + "/auth/realms/sunbird/protocol/openid-connect/logout");
     
     window.__Logout();
@@ -62,14 +62,14 @@ class ProfileFragment extends View {
 
   handleResponse = () => {
 
-    console.log("response in CC", this.props.response)
+
 
     if (this.props.response) {
-      console.log("SERVER GAVE RESPONSE", this.props.response)
+
       this.details = this.props.response.result.response;
 
     } else {
-      console.log("SERVER TOLD NULL")
+
       this.details = {};
     }
   }
@@ -109,7 +109,7 @@ class ProfileFragment extends View {
 
 
           <SimpleToolbar
-            title="Profile"
+            title={window.__S.PROFILE_LW}
             width="match_parent"
             menuData={this.menuData}
             popupMenu={this.popupMenu}
@@ -122,7 +122,6 @@ class ProfileFragment extends View {
           <ScrollView
             height="0"
             weight="1"
-
             width="match_parent">
 
               <LinearLayout
@@ -133,13 +132,11 @@ class ProfileFragment extends View {
                 orientation="vertical">
 
                 <ProfileHeader
-                data={this.details}/>
+                  data={this.details}/>
 
                 <PersonalDetails
-                data={this.details}/>
+                  data={this.details}/>
                 
-
-
               </LinearLayout>
 
          </ScrollView>

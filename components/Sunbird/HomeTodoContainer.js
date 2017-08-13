@@ -78,28 +78,28 @@ class HomeTodoContainer extends View {
   
   getHeader(){
     return (<LinearLayout
-            width="match_parent"
-            height="wrap_content"
-            margin="16,16,16,16"
-            orientation="horizontal">
+              width="match_parent"
+              height="wrap_content"
+              margin="16,16,16,16"
+              orientation="horizontal">
 
-            <TextView
-            width="wrap_content"
-            height="wrap_content"
-            text="To-Do"
-            style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
+              <TextView
+                width="wrap_content"
+                height="wrap_content"
+                text={window.__S.TO_DO}
+                style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
-            <ViewWidget
-            weight="1"
-            height="0"/>
+              <ViewWidget
+                weight="1"
+                height="0"/>
 
-            <TextView
-            width="wrap_content"
-            height="wrap_content"
-            text="VIEW ALL"
-            visibility="gone"
-            onClick={()=>{this.handleViewAllClick()}}
-            style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
+              <TextView
+                width="wrap_content"
+                height="wrap_content"
+                text={window.__S.VIEW_ALL}
+                visibility="gone"
+                onClick={()=>{this.handleViewAllClick()}}
+                style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
 
             </LinearLayout>)
   }

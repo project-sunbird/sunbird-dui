@@ -55,9 +55,9 @@ class ResourceComponent extends View {
   handleResponse = () => {
 
 
-    console.log("response in RC",this.props.response)
+
     if (this.props.response) {
-      console.log("SERVER GAVE RESPONSE")
+
       this.details = this.props.response.result.response;
       if(this.details.hasOwnProperty("name")){
 
@@ -76,7 +76,7 @@ class ResourceComponent extends View {
       }
       else
       {
-        JBridge.showSnackBar("No internet. Offline Mode.")
+        JBridge.showSnackBar(window.__S.ERROR_OFFLINE_MODE)
         this.cards = (<LinearLayout
           height="wrap_content"
           width="match_parent"
@@ -99,20 +99,23 @@ class ResourceComponent extends View {
 
 
   getResourceCardLayout = (content) => {
-    console.log("content in resource card layout\n\n\n\n\n\n\n\n",content)
-    return (<LinearLayout
+
+    return (
+      <LinearLayout
         height="wrap_content"
         width="match_parent"
         root="true"
         orientation="vertical">
+          
           {this.getSpaceSeparator()}
-            <ResourceContainer
-             data = {content.contents}
-             title={content.name}
-             searchQuery = {content.searchQuery}
-             onViewAllClick = {this.handleResourceViewAllClick}/>
+          
+          <ResourceContainer
+           data = {content.contents}
+           title={content.name}
+           searchQuery = {content.searchQuery}
+           onViewAllClick = {this.handleResourceViewAllClick}/>
 
-        </LinearLayout>)
+      </LinearLayout>)
   }
 
 
@@ -138,29 +141,29 @@ handleResourceViewAllClick= (data,title,searchQuery,visibility) =>{
 
       <LinearLayout
           background={window.__Colors.WHITE}
+          height="400"
           width="match_parent"
           alpha="0.9"
           weight="1"
           orientation="vertical"
           gravity="center_horizontal"
           clickable="true"
-          visibility={JBridge.isNetworkAvailable()==false?"visible":"gone"}
-          height="400">
+          visibility={JBridge.isNetworkAvailable()==false?"visible":"gone"}>
 
             <ImageView
-            width="100"
-            height="100"
-            margin="0,58,0,0"
-            gravity="center_horizontal"
-            imageUrl="ic_no_internet"/>
+              width="100"
+              height="100"
+              margin="0,58,0,0"
+              gravity="center_horizontal"
+              imageUrl="ic_no_internet"/>
 
             <TextView
-            width="wrap_content"
-            height="wrap_content"
-            gravity="center_horizontal"
-            padding="0,16,0,0"
-            style={window.__TextStyle.textStyle.CARD.HEADING}
-            text="You’re not connected to the internet."/>
+              width="wrap_content"
+              height="wrap_content"
+              gravity="center_horizontal"
+              padding="0,16,0,0"
+              style={window.__TextStyle.textStyle.CARD.HEADING}
+              text={window.__S.ERROR_NO_INTERNET_MESSAGE}/>
 
 
           </LinearLayout>
@@ -180,7 +183,7 @@ handleResourceViewAllClick= (data,title,searchQuery,visibility) =>{
         height="match_parent">
 
           <SimpleToolbar
-            title="Resources"
+            title={window.__S.RESOURCES_LW}
             width="match_parent"
             showMenu="true"
             invert="true" 
@@ -203,16 +206,16 @@ handleResourceViewAllClick= (data,title,searchQuery,visibility) =>{
 
 
                   <LinearLayout
-                  width="match_parent"
-                  height="wrap_content"
-                  orientation="vertical"
-                  id={this.idSet.offlineContainer}/>
+                    id={this.idSet.offlineContainer}
+                    width="match_parent"
+                    height="wrap_content"
+                    orientation="vertical"/>
 
-                  {this.cards}
+                    {this.cards}
 
                 </LinearLayout>
 
-           </ScrollView>
+             </ScrollView>
            </LinearLayout>
     )
   }
@@ -227,7 +230,6 @@ handleResourceViewAllClick= (data,title,searchQuery,visibility) =>{
   }
 
   handleMenuClick = (url) => {
-    console.log("url clicked", url);
     if (url == "ic_action_filter") {
       window.__PageFilterPopup.resetPopup("Resource");
       window.__PageFilterPopup.show();
@@ -277,17 +279,17 @@ handleResourceViewAllClick= (data,title,searchQuery,visibility) =>{
 
   renderOfflineCard =()=>{
     var callback = callbackMapper.map(function(params) {
-      console.log("data from offline",params);
+
       params[0] = utils.decodeBase64(params[0])
       params[0] = utils.jsonifyData(params[0]);
       _this.data = JSON.parse(params[0]);
-      console.log("OFFLINE RESOURCE CONTENT ",_this.data);
+
 
          var layout = (<OfflineResourceContainer
-                       onResourceOpenClick = {_this.handleResourceOpen}
-                       data = {_this.data}
-                       title="Saved Resources"
-                       onViewAllClick = {_this.handleResourceViewAllClick}/>)
+                         onResourceOpenClick = {_this.handleResourceOpen}
+                         data = {_this.data}
+                         title="Saved Resources"
+                         onViewAllClick = {_this.handleResourceViewAllClick}/>)
 
         _this.replaceChild(_this.idSet.offlineContainer,layout.render(),0);            
 

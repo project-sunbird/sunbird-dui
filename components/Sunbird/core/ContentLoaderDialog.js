@@ -58,33 +58,33 @@ class ContentLoaderDialog extends View {
     }
 
    updateProgressBar = (pStatus) => {
-    console.log("UPDATING PROGREESS BAR",pStatus)
+
     this.replaceChild(this.idSet.progressContainer, this.getProgressBar(pStatus).render(), 0)
   }
 
 
   getProgressBar = (pStatus) => {
-    console.log("PROGRESS",pStatus);
+
     var completedProgress = pStatus;
     var remainingProgress = (100 - parseInt(pStatus))+"";
-    console.log("PROGRESS REMAINING ",remainingProgress);
+
 
     return(<LinearLayout
              width="250"
              root="true"
              height="20">
 
-               <ViewWidget
-               width="0"
-               height="10"
-               background={window.__Colors.LIGHT_BLUE}
-               weight={completedProgress}/>
+              <ViewWidget
+                width="0"
+                height="10"
+                background={window.__Colors.LIGHT_BLUE}
+                weight={completedProgress}/>
 
                <ViewWidget
-               width="0"
-               background={window.__Colors.PRIMARY_BLACK_22}
-               height="10"
-               weight={remainingProgress}/>
+                 width="0"
+                 background={window.__Colors.PRIMARY_BLACK_22}
+                 height="10"
+                 weight={remainingProgress}/>
 
              </LinearLayout>)
   }

@@ -18,6 +18,8 @@ var utils = require('../utils/GenericFunctions');
 var objectAssign = require('object-assign');
 window.R = require("ramda");
 
+var _this;
+
 class CourseViewAllActivity extends View {
   constructor(props, children, state) {
     super(props, children, state);
@@ -32,15 +34,13 @@ class CourseViewAllActivity extends View {
 
     this.totalDetails = JSON.parse(state.data.value0.courseViewAllDetails);
     this.totalDetails = this.totalDetails.courseListDetails;
-    console.log("COURSE VIEW ALL SCREEN DETAILS",this.totalDetails);
-
 
     this.menuData = {
     url: [
     ]
     }
 
-    var _this = this;
+    _this = this;
     setTimeout(function() {
       Android.runInUI(
         _this.animateView(),
@@ -62,8 +62,6 @@ class CourseViewAllActivity extends View {
 
 
       var rows = this.totalDetails.map((item,i) => {
-
-        console.log("PROGRESS IN COURSES VIEW ALL SCREEN",item);
                 var progressCount = item.leafNodesCount == null ? 0 : (item.progress/item.leafNodesCount)*100;
                 progressCount = parseInt(progressCount)
 
@@ -71,9 +69,9 @@ class CourseViewAllActivity extends View {
                   temp['imageUrl'] = item.courseLogoUrl?item.courseLogoUrl:"ic_action_course";
                   temp['name'] = item.courseName;
                   temp['isProgress'] = "true";
-                  temp['footerTitle'] = progressCount +"% done";
-                  temp['actionText'] = "RESUME";
-                  temp["footerSubTitle"] = "Duration unavailable";
+                  temp['footerTitle'] = window.__S.COURSE_PROGRESS_COMPLETED.format(progressCoun);
+                  temp['actionText'] = window.__S.RESUME;
+                  temp["footerSubTitle"] = window.__S.ERROR_DURATION_NOT_AVAILABLE;
 
            return (<LargeCardComponent
                    data={temp}
@@ -102,9 +100,6 @@ class CourseViewAllActivity extends View {
   }
 
   handleCourseClick = (content)=>{
-
-    console.log("DATA IN COURSE PROGRESS COMPONENT VIEW ALL CLICK",content)
-
     var tmp = JSON.stringify(content)
     
     var whatToSend = {
@@ -130,14 +125,14 @@ class CourseViewAllActivity extends View {
   }
 
   render() {
-    var buttonList = ["ENROLL FOR THIS COURSE"];
     this.layout = (
       <LinearLayout
-        root = "true"
-        background={window.__Colors.WHITE}
-        orientation="vertical"
         width="match_parent"
-        height="match_parent">
+        height="match_parent"
+        root = "true"
+        clickable="true"
+        background={window.__Colors.WHITE}
+        orientation="vertical">
         <SimpleToolbar
           afterRender={this.afterRender}
           width="match_parent"

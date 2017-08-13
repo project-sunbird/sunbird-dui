@@ -17,12 +17,11 @@ class RecommendedCard extends View {
     this.setIds([
       "ratingBar",
     ]);
-    console.log(this.props.item.hideRating, "rating hidden");
+
   }
 
 
   handleClick = () => {
-    console.log("in card", this.props.item.content)
     this.props.onClick(this.props.item.content);
   }
 
@@ -34,20 +33,17 @@ class RecommendedCard extends View {
   getCardIcon = () => {
     return (
       <RelativeLayout
-              width="wrap_content"
-              height="wrap_content"
-            >
+        width="wrap_content"
+        height="wrap_content">
             <LinearLayout
-            width="170"
-            height="110"
-            gravity="center"
-            >
+              width="170"
+              height="110"
+              gravity="center">
                   <ImageView
                     height="match_parent"
                     width="match_parent"
                     scaleType="fixXY"
-                    imageFromUrl={this.props.item.moduleImage ? this.props.item.moduleImage : "ic_account"}
-                  />
+                    imageFromUrl={this.props.item.moduleImage ? this.props.item.moduleImage : "ic_account"}/>
             </LinearLayout>
 
           <LinearLayout
@@ -55,55 +51,48 @@ class RecommendedCard extends View {
             height="110"
             gravity="center"
             background={window.__Colors.BLACK}
-            alpha="0.50"
-            >
+            alpha="0.50"/>
 
-            </LinearLayout>
           <LinearLayout
             width="150"
             height="wrap_content"
             gravity="center"
             alignParentBottom="true,-1"
-            padding = "10,10,10,10"
-
-            >
+            padding = "10,10,10,10">
                 <TextView
                 text= {this.props.item.moduleName ? this.props.item.moduleName : "Module Name"}
-                style={window.__TextStyle.textStyle.HINT.WBOLD}
-
-
-                />
+                style={window.__TextStyle.textStyle.HINT.WBOLD}/>
            </LinearLayout>
           </RelativeLayout>)
   }
 
   getRatingSection = () => {
     return (<LinearLayout
-            gravity="center"
-            visibility = {this.props.item.hideRating}
-            padding="6,0,6,0">
-            <RatingBar
-              id = {this.idSet.ratingBar}
-              width="0"
-              weight="1"
-              height="50"
-              setStars = "6"
-              setRating = {this.props.item.moduleRating}
-              scaleX="0.3"
-              scaleY="0.3"
-              onRatingChange = {this.ratingChange}
-              fixedRating = {"true"}/>
+              gravity="center"
+              visibility = {this.props.item.hideRating}
+              padding="6,0,6,0">
+              <RatingBar
+                id = {this.idSet.ratingBar}
+                width="0"
+                weight="1"
+                height="50"
+                setStars = "6"
+                setRating = {this.props.item.moduleRating}
+                scaleX="0.3"
+                scaleY="0.3"
+                onRatingChange = {this.ratingChange}
+                fixedRating = {"true"}/>
 
 
-            <TextView
-                  text= {"("}
-                  style={window.__TextStyle.textStyle.HINT.REGULAR}/>
-            <TextView
-                  text= {this.props.item.moduleUserCount ? this.props.item.moduleUserCount : "NIL"}
-                  style={window.__TextStyle.textStyle.HINT.REGULAR}/>
-            <TextView
-                  text= {")"}
-                  style={window.__TextStyle.textStyle.HINT.REGULAR}/>
+              <TextView
+                    text= {"("}
+                    style={window.__TextStyle.textStyle.HINT.REGULAR}/>
+              <TextView
+                    text= {this.props.item.moduleUserCount ? this.props.item.moduleUserCount : "NIL"}
+                    style={window.__TextStyle.textStyle.HINT.REGULAR}/>
+              <TextView
+                    text= {")"}
+                    style={window.__TextStyle.textStyle.HINT.REGULAR}/>
           </LinearLayout>)
   }
 
@@ -117,12 +106,10 @@ class RecommendedCard extends View {
         height="wrap_content"
         orientation = "vertical"
         padding="16,0,16,0"
-        onClick={this.handleClick}
-        >
+        onClick={this.handleClick}>
             <LinearLayout
               width="170"
-              height="110"
-              >
+              height="110">
 
               {
                 this.getCardIcon()
@@ -132,13 +119,13 @@ class RecommendedCard extends View {
 
           <LinearLayout
             height="wrap_content"
-            width="match_parent"
-          >
-          {this.getRatingSection()}
+            width="match_parent">
+          
+            {this.getRatingSection()}
 
           </LinearLayout>
 
-    </LinearLayout>
+      </LinearLayout>
 
 
     )

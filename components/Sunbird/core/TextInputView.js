@@ -24,12 +24,12 @@ class TextInputView extends View {
   }
 
   handleOnChange = (data) => {
-    console.log("TEXT CHANGE ", data)
+
     this.props._onChange(data);
   }
 
   afterRender = () =>{
-    console.log("IN AFTER RENDER \n\n\n\n\n")
+
 
   }
 
@@ -39,12 +39,12 @@ class TextInputView extends View {
 
     this.layout = (
       <LinearLayout
-      id={this.idSet.parentContainer}
-      width="match_parent"
-      height="wrap_content"
-      afterRender={this.afterRender}
-      margin={this.props.margin}
-      orientation="vertical">
+        id={this.idSet.parentContainer}
+        width="match_parent"
+        height="wrap_content"
+        afterRender={this.afterRender}
+        margin={this.props.margin}
+        orientation="vertical">
 
         <TextView
           text={this.props.labelText}

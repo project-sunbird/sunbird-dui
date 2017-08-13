@@ -54,15 +54,17 @@ getMenu = () =>{
 
 
   getBack = () => {
-    if (this.props.hideBack != undefined && this.props.hideBack)
-      return <Space width="0"/>
+    if (this.props.hideBack != undefined && this.props.hideBack){
+      return( <Space 
+                width="0"/>)
+    }
 
     return (
       <ImageView
-      margin="0,0,10,0"
-      style={IconStyle}
-      onClick={this.props.onBackPress}
-      imageUrl = {"ic_action_arrow_left"}/>)
+        margin="0,0,10,0"
+        style={IconStyle}
+        onClick={this.props.onBackPress}
+        imageUrl = {"ic_action_arrow_left"}/>)
   }
 
   getTitle = () => {
@@ -71,17 +73,21 @@ getMenu = () =>{
     if (!this.props.showBack && !this.props.logo)
       margin = "12,0,0,0";
 
-    return (<TextView margin={margin}
-          style={window.__TextStyle.textStyle.TOOLBAR.HEADING}
-          text={this.props.title}/>)
+    return (<TextView 
+              margin={margin}
+              style={window.__TextStyle.textStyle.TOOLBAR.HEADING}
+              text={this.props.title}/>)
 
   }
 
   getLogo = () => {
-    if (!this.props.logo)
-      return <Space width="0"/>
+    if (!this.props.logo){
+      return (<Space 
+                width="0"/>)
+    }
 
-    return ( < ImageView margin = "15,0,10,0"
+    return ( <ImageView 
+      margin = "15,0,10,0"
       style = {
         {
           width: '32',
@@ -92,8 +98,10 @@ getMenu = () =>{
   }
 
   getIcons = () => {
-    if (!this.props.icons)
-      return <Space width="0"/>
+    if (!this.props.icons){
+      return (<Space 
+                width="0"/>)
+    }
 
     return this.props.icons.map((icon, index) => {
       return (<ImageView
@@ -118,24 +126,30 @@ getMenu = () =>{
         gravity="center_vertical"
         root="true"
         clickable="true"
-        background={window.__Colors.PRIMARY_BLACK_22}
-        >
+        background={window.__Colors.PRIMARY_BLACK_22}>
 
         <LinearLayout
           width="match_parent"
           height="match_parent"
           gravity="center_vertical"
-          background={this.props.invert?window.__Colors.WHITE:window.__Colors.LIGHT_VIOLET}
-          >
+          background={this.props.invert?window.__Colors.WHITE:window.__Colors.LIGHT_VIOLET}>
 
           {back}
+          
           {logo}
+
           {title}
 
-          <Space width="0" weight="1"/>
+          <Space 
+            width="0" 
+            weight="1"/>
+          
           {icons}
+          
           {menu}
+         
          </LinearLayout>
+       
        </LinearLayout>
     )
 

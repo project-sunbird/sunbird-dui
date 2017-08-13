@@ -90,15 +90,15 @@ class BottomNavBarItem extends View {
           id = {this.idSet.imageSelected} 
           margin="0,0,0,4"
           imageUrl={this.props.item.icon +"_blue"}
-          visibility={this.props.item.select=="1"?"visible":"gone"} 
-          />
+          visibility={this.props.item.select=="1"?"visible":"gone"} />
+
         <ImageView
           height="18"
           width="18"
           id = {this.idSet.imageUnSelected} 
           imageUrl={this.props.item.icon}
-          visibility={this.props.item.select=="0"?"visible":"gone"} 
-          />  
+          visibility={this.props.item.select=="0"?"visible":"gone"} />  
+          
         <TextView 
           margin="0,2,0,0"
           id={this.idSet.title}
@@ -166,7 +166,10 @@ class BottomNavBar extends View {
   renderBottonNavBarItems = () => {
     var cards = this.bottomNavItemList.map((item, i) => {
       return (
-        <BottomNavBarItem _onClick={this.handleNavigationChange} index = {i} item = {item}/>
+        <BottomNavBarItem 
+          _onClick={this.handleNavigationChange} 
+          index = {i} 
+          item = {item}/>
       )
     });
 
@@ -177,13 +180,19 @@ class BottomNavBar extends View {
           orientation="vertical" 
           width="match_parent"  
           root="true">
+          
           {cards}
+
         </LinearLayout>
       )
     } else {
       this.cardList = (
-        <LinearLayout width="match_parent" root="true">
+        <LinearLayout 
+          width="match_parent" 
+          root="true">
+          
           {cards}
+
         </LinearLayout>
       )
     }

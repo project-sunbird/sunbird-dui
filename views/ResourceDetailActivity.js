@@ -43,67 +43,52 @@ class ResourceDetailActivity extends View {
         {imageUrl:'ic_action_overflow'}
       ]
     }
-    this.popupMenu = "Delete"
+    this.popupMenu = window.__S.DELETE
 
     this.shouldCacheScreen = false;
 
     this.details = state.data.value0.resourceDetails;
     this.details = JSON.parse(this.details);
 
-    console.log("Got Title", this.details)
+
     this.localStatus = false;
 
     _this = this;
-    console.log("true", this.localStatus)
 
-
-    // setTimeout(function() {
-    //   Android.runInUI(
-    //     _this.animateView(),
-    //     null
-    //   );
-    // }, 100)
 
   }
 
   checkLocalStatus = (data) => {
-    console.log("hewllo in lc RC");
-    var callback = callbackMapper.map(function(params) {
-      console.log("params in RC", params);
 
+    var callback = callbackMapper.map(function(params) {
       if (params[0] == "true") {
         _this.localStatus = true;
-        console.log("true", _this.localStatus)
-        var pButonLayout = <ProgressButton
+        var pButonLayout = (
+              <ProgressButton
                  width="match_parent"
                  isCourse = "false"
                  contentDetail = {_this.details.content}
                  buttonText="PLAY"
                  localStatus = {_this.localStatus}
                  identifier = {_this.details.identifier}
-                 changeOverFlowMenu = {_this.changeOverFlow}
-                 />
+                 changeOverFlowMenu = {_this.changeOverFlow}/>)
         _this.replaceChild(_this.idSet.progressButtonContainer, pButonLayout.render(), 0);
         _this.changeOverFlow();
         _this.shareContent(true);
 
       } else {
-        var pButonLayout = <ProgressButton
+        var pButonLayout = (<ProgressButton
                  width="match_parent"
                  isCourse = "false"
                  contentDetail = {_this.details.content}
                  buttonText="DOWNLOAD"
                  localStatus = {_this.localStatus}
                  identifier = {_this.details.identifier}
-                 changeOverFlowMenu = {_this.changeOverFlow}
-                 />
+                 changeOverFlowMenu = {_this.changeOverFlow} />);
         _this.replaceChild(_this.idSet.progressButtonContainer, pButonLayout.render(), 0);
-
         _this.shareContent(false);
 
       }
-
-
     });
     JBridge.getLocalContentStatus(data.content.identifier, callback);
 
@@ -112,7 +97,7 @@ class ResourceDetailActivity extends View {
 
   onPop = () => {
     Android.runInUI(
-      this.animateView(),
+      _this.animateView(),
       null
     );
   }
@@ -156,7 +141,7 @@ class ResourceDetailActivity extends View {
 
   afterRender = () => {
     this.checkLocalStatus(this.details);
-    console.log("this.details in RDA",this.details)
+
 
     if(this.details && this.details.content && this.details.content.me_averageRating){
     JBridge.setRating(this.idSet.ratingBar, this.details.content.me_averageRating);
@@ -165,7 +150,7 @@ class ResourceDetailActivity extends View {
     }
     else{
       var layout=(<TextView
-          text="Unrated"
+          text={window.__s.NO_RATINGs}
           style={window.__TextStyle.textStyle.HINT.TINY}/>)
 
         this.replaceChild(this.idSet.ratingContainer,layout.render(),0)
@@ -187,97 +172,97 @@ class ResourceDetailActivity extends View {
 
     return (
       <LinearLayout
-      width="match_parent"
-      height="wrap_content"
-      orientation="vertical">
-
-        <TextView
-        margin="0,13,0,0"
-        width="wrap_content"
-        height="wrap_content"
-        text="ABOUT THIS MODULE"
-        style={window.__TextStyle.textStyle.HINT.BOLD}/>
-
-       <TextView
-        margin="0,4,0,0"
-        width="wrap_content"
-        height="wrap_content"
-        text={this.details.description||this.details.content.contentData.description}
-        style={window.__TextStyle.textStyle.CARD.TITLE.REGULAR_BLACK}/>
-
-
-        <TextView
-        margin="0,16,0,0"
-        width="wrap_content"
-        height="wrap_content"
-        text="PREVIEWS"
-        style={window.__TextStyle.textStyle.HINT.BOLD}/>
-
-
-       <LinearLayout
         width="match_parent"
         height="wrap_content"
-        visibility="gone"
-        margin="0,8,0,0">
-
-
-          <ImageView
-          width="156"
-          height="200"
-          stroke ={"3," + window.__Colors.PRIMARY_BLACK}
-          imageFromUrl = "https://pbs.twimg.com/media/CRafzhtWIAEQ2c9.png"/>
-
-          <ImageView
-          width="156"
-          height="200"
-          margin="16,0,0,0"
-          stroke ={"3," + window.__Colors.PRIMARY_BLACK}
-          imageFromUrl = "https://pbs.twimg.com/media/CRafzhtWIAEQ2c9.png"/>
-
-        </LinearLayout>
-
-
+        orientation="vertical">
 
         <TextView
-        margin="0,4,0,0"
-        width="wrap_content"
-        height="wrap_content"
-        text="No preview available"
-        style={window.__TextStyle.textStyle.HINT.REGULAR}/>
+          margin="0,13,0,0"
+          width="wrap_content"
+          height="wrap_content"
+          text={window.__S.ABOUT_MODULE}
+          style={window.__TextStyle.textStyle.HINT.BOLD}/>
+
+         <TextView
+          margin="0,4,0,0"
+          width="wrap_content"
+          height="wrap_content"
+          text={this.details.description || this.details.content.contentData.description}
+          style={window.__TextStyle.textStyle.CARD.TITLE.REGULAR_BLACK}/>
 
 
-        <TextView
-        margin="0,16,0,0"
-        width="wrap_content"
-        height="wrap_content"
-        text="CREATED BY"
-        style={window.__TextStyle.textStyle.HINT.BOLD}/>
+          <TextView
+            margin="0,16,0,0"
+            width="wrap_content"
+            height="wrap_content"
+            text={window.__S.PREVIEWS}
+            style={window.__TextStyle.textStyle.HINT.BOLD}/>
 
 
-        <LinearLayout
-        width="match_parent"
-        height="wrap_content">
-
-        <TextView
-        margin="0,4,0,10"
-        width="wrap_content"
-        height="wrap_content"
-        text={this.details.content.creator}
-        style={window.__TextStyle.textStyle.CARD.TITLE.REGULAR_BLACK}/>
+         <LinearLayout
+          width="match_parent"
+          height="wrap_content"
+          visibility="gone"
+          margin="0,8,0,0">
 
 
-        <ViewWidget
-        width="0"
-        height="0"
-        weight="1"/>
+            <ImageView
+              width="156"
+              height="200"
+              stroke ={"3," + window.__Colors.PRIMARY_BLACK}
+              imageFromUrl = "https://pbs.twimg.com/media/CRafzhtWIAEQ2c9.png"/>
+
+            <ImageView
+              width="156"
+              height="200"
+              margin="16,0,0,0"
+              stroke ={"3," + window.__Colors.PRIMARY_BLACK}
+              imageFromUrl = "https://pbs.twimg.com/media/CRafzhtWIAEQ2c9.png"/>
+
+          </LinearLayout>
 
 
-        <ImageView
-        width="20"
-        height="12"
-        imageUrl="ic_chat"/>
 
-      </LinearLayout>
+          <TextView
+            margin="0,4,0,0"
+            width="wrap_content"
+            height="wrap_content"
+            text={window.__S.NO_PREVIEW}
+            style={window.__TextStyle.textStyle.HINT.REGULAR}/>
+
+
+          <TextView
+            margin="0,16,0,0"
+            width="wrap_content"
+            height="wrap_content"
+            text="CREATED BY"
+            style={window.__TextStyle.textStyle.HINT.BOLD}/>
+
+
+          <LinearLayout
+            width="match_parent"
+            height="wrap_content">
+
+            <TextView
+              margin="0,4,0,10"
+              width="wrap_content"
+              height="wrap_content"
+              text={this.details.content.creator}
+              style={window.__TextStyle.textStyle.CARD.TITLE.REGULAR_BLACK}/>
+
+
+            <ViewWidget
+              width="0"
+              height="0"
+              weight="1"/>
+
+
+            <ImageView
+              width="20"
+              height="12"
+              imageUrl="ic_chat"/>
+
+          </LinearLayout>
       </LinearLayout>
 
     )
@@ -285,7 +270,6 @@ class ResourceDetailActivity extends View {
 
 
   getHeader = () => {
-    console.log("DETAIL IMAGE",this.details.imageUrl)
 
     return (
 
@@ -367,7 +351,7 @@ class ResourceDetailActivity extends View {
             <TextView
               width="wrap_content"
               height="wrap_content"
-              text="downloads"
+              text={window.__S.DOWNLOADS}
               style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
         </LinearLayout>
@@ -377,29 +361,21 @@ class ResourceDetailActivity extends View {
 
   }
   handleStateChange = (state) =>{
-    console.log("response from flag api",state)
+
     var response = utils.decodeBase64(state.response.status[1])
-    console.log("response from server",JSON.parse(response))
+
   }
 
 
 
   overFlowCallback = (params) => {
     window.__LoaderDialog.show();
-    console.log("ITEM CLICKED",params);
-    // if(params == 0){
-    //   console.log("flag content")
-    //   var event= { "tag": "API_FlagContent", contents: {"user_token":window.__userToken,"api_token":window.__apiToken,"contentId":"12345","flagReason":"wfdsf","flags":"dsf"} };
-    //   window.__runDuiCallback(event);
-    //   window.__LoaderDialog.hide();
-    // }
-    // else
      if(params == 0){
       var callback = callbackMapper.map(function(response){
         window.__LoaderDialog.hide();
-        console.log("repsonse for delete",response)
+
         if(response[0] == "successful"){
-          console.log("back to resource");
+
           _this.onBackPressed();
         }
       });
@@ -409,7 +385,7 @@ class ResourceDetailActivity extends View {
 
 
   onBackPressed = () => {
-    console.log("RESOURCE DETAIL BACK CLICKED")
+
     var whatToSend = [];
     var event= { "tag": "BACK_ResourceDetailActivity", contents: whatToSend };
     window.__runDuiCallback(event);
@@ -445,6 +421,7 @@ class ResourceDetailActivity extends View {
       width="match_parent"
       height="match_parent"
       afterRender={this.afterRender}
+      clickable="true"
       root="true">
       <LinearLayout
         root = "true"
@@ -453,30 +430,26 @@ class ResourceDetailActivity extends View {
         width="match_parent"
         height="match_parent">
         <LinearLayout
-        root = "true"
-        width="match_parent"
-        height="wrap_content"
-        id = {this.idSet.simpleToolBarOverFlow}
-        >
-        <SimpleToolbar
+          root = "true"
           width="match_parent"
-          menuData={this.menuData}
-          popupMenu={this.popupMenu}
-          onMenuItemClick={this.handleMenuClick}
-          onBackPress={onBackPressed}
-          overFlowCallback = {this.overFlowCallback}
-          showMenu="true"
-          invert="true"
-
-          />
+          height="wrap_content"
+          id = {this.idSet.simpleToolBarOverFlow}>
+          <SimpleToolbar
+            width="match_parent"
+            menuData={this.menuData}
+            popupMenu={this.popupMenu}
+            onMenuItemClick={this.handleMenuClick}
+            onBackPress={onBackPressed}
+            overFlowCallback = {this.overFlowCallback}
+            showMenu="true"
+            invert="true"/>
         </LinearLayout>
 
               <ScrollView
                 height="0"
                 weight="1"
                 width="match_parent"
-                fillViewport="true"
-                >
+                fillViewport="true">
 
                 <LinearLayout
                   height="match_parent"

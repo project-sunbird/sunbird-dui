@@ -24,17 +24,16 @@ class ChapterOverView extends View {
 
   getLineSeperator = () => {
     return (<LinearLayout
-            width="match_parent"
-            height="1"
-            margin="0,16,0,16"
-            background={window.__Colors.PRIMARY_BLACK_22}/>)
+              width="match_parent"
+              height="1"
+              margin="0,16,0,16"
+              background={window.__Colors.PRIMARY_BLACK_22}/>)
   }
 
   render() {
 
-    this.chapterName = "Module " + (this.props.index + 1) + ": " + this.props.item.contentData.name;
-    //var chapterDuration = "[ " + this.props.item.chapterDuration + " minutes ]";
-    var chapterDuration = "[ " + "N/A" + " min ]";
+    this.chapterName = window.__S.MODULE_LABEL.format( (this.props.index + 1) , this.props.item.contentData.name);
+    
 
     this.layout = (
 
@@ -46,22 +45,22 @@ class ChapterOverView extends View {
        gravity="center_vertical">
 
          <TextView
-         width="0"
-         weight="1"
-         height="wrap_content"
-         gravity="center_vertical"
-         text={this.chapterName}
-         enableEllipse = "true"
-         style={window.__TextStyle.textStyle.CARD.HEADING}/>
+           width="0"
+           weight="1"
+           height="wrap_content"
+           gravity="center_vertical"
+           text={this.chapterName}
+           enableEllipse = "true"
+           style={window.__TextStyle.textStyle.CARD.HEADING}/>
 
 
          <ImageView
-         width="32"
-         height="32"
-         gravity="center_vertical"
-         padding="8,8,8,8"
-         visibility={this.props.shouldGoForward?this.props.shouldGoForward:"visible"}
-         imageUrl="ic_action_right"/>
+           width="32"
+           height="32"
+           gravity="center_vertical"
+           padding="8,8,8,8"
+           visibility={this.props.shouldGoForward?this.props.shouldGoForward:"visible"}
+           imageUrl="ic_action_right"/>
 
        </LinearLayout>
 

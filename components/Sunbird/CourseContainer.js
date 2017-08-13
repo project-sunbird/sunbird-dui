@@ -33,7 +33,7 @@ class CourseContainer extends View {
         
     var rows = this.data.map((item, i) => {
       return this.geCardLayout(item);
-      //this.appendChild(this.idSet.courseContainer,this.geCardLayout(item).render(),i)
+
     });
 
     var layout=(<LinearLayout
@@ -55,12 +55,12 @@ class CourseContainer extends View {
   }
 
   geCardLayout = (item) => {
-    var size = item.hasOwnProperty("size") ? "  Size ["+ utils.formatBytes(item.size)+"]" : "";
+    var size = item.hasOwnProperty("size") ? window.__S.FILE_SIZE.format(utils.formatBytes(item.size)) : "";
 
     var temp = {
         imageUrl: (item.appIcon ? item.appIcon : "ic_action_course"),
         title: item.name,
-        actionText: "OPEN",
+        actionText: window.__S.OPEN,
         footerTitle : "",
         stars : item.hasOwnProperty("me_averageRating")? item.me_averageRating+ "" : "0",
         footerSubTitle: size,
@@ -78,28 +78,28 @@ class CourseContainer extends View {
 
   getHeader() {
     return (<LinearLayout
-            width="match_parent"
-            height="wrap_content"
-            padding="16,16,16,16"
-            orientation="horizontal">
+              width="match_parent"
+              height="wrap_content"
+              padding="16,16,16,16"
+              orientation="horizontal">
 
-            <TextView
-            width="wrap_content"
-            height="wrap_content"
-            text={this.props.title}
-            style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
+              <TextView
+                width="wrap_content"
+                height="wrap_content"
+                text={this.props.title}
+                style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
-            <ViewWidget
-            width="0"
-            height="0"
-            weight="1"/>
+              <ViewWidget
+                width="0"
+                height="0"
+                weight="1"/>
 
-            <TextView
-            width="wrap_content"
-            height="wrap_content"
-            visibility={this.props.isViewAllExist?"visible":"gone"}
-            text="VIEW ALL"
-            style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
+              <TextView
+                width="wrap_content"
+                height="wrap_content"
+                visibility={this.props.isViewAllExist?"visible":"gone"}
+                text={window.__S.VIEW_ALL}
+                style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
             
 
             </LinearLayout>)
@@ -132,12 +132,12 @@ class CourseContainer extends View {
   render() {
     this.layout = (
       <LinearLayout
-      height="match_parent"
-      width="match_parent"
-      background={this.props.transparent?window.__Colors.WHITE_F2:window.__Colors.WHITE}
-      id={this.idSet.parentContainer}
-      root="true"
-      orientation="vertical">
+        id={this.idSet.parentContainer}
+        height="match_parent"
+        width="match_parent"
+        background={this.props.transparent?window.__Colors.WHITE_F2:window.__Colors.WHITE}
+        root="true"
+        orientation="vertical">
 
       
 
@@ -148,18 +148,12 @@ class CourseContainer extends View {
            fillViewport="true">
 
            <LinearLayout
-                    padding="0,0,16,0"
-                    width="match_parent"
-                    id={this.idSet.courseContainer}
-                    afterRender={this.afterRender}
-                    height="wrap_content">
-
-
-
-         </LinearLayout>
-
-
-
+            id={this.idSet.courseContainer}
+            padding="0,0,16,0"
+            height="wrap_content"
+            width="match_parent"
+            afterRender={this.afterRender}/>
+      
           </HorizontalScrollView>
 
          </LinearLayout>

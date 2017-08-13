@@ -103,14 +103,14 @@ class FlagPopup extends View {
 
   getFeatureButton = () => {
     return (<LinearLayout
-                  width = "match_parent"
-                  orientation="vertical"
-                  height="0"
-                  id={this.idSet.featureContainer}
-                  padding = "3,3,3,3"
-                  cornerRadius="5"
-                  weight="1"
-                  gravity = "center">
+              width = "match_parent"
+              orientation="vertical"
+              height="0"
+              id={this.idSet.featureContainer}
+              padding = "3,3,3,3"
+              cornerRadius="5"
+              weight="1"
+              gravity = "center">
                   <FeatureButton
                     typeface = "bold"
                     clickable="true"
@@ -118,11 +118,11 @@ class FlagPopup extends View {
                     height = "56"
                     stroke = {"3," + window.__Colors.WHITE}
                     background = {window.__Colors.PRIMARY_ACCENT}
-                    text = {"Confirm"}
+                    text = {window.__S.CONFIRM}
                     buttonClick = {this.onConfirm}
                     textColor = {window.__Colors.WHITE}
                     textSize = "18"/>
-                </LinearLayout>)
+            </LinearLayout>)
 
 
   }
@@ -154,38 +154,38 @@ class FlagPopup extends View {
       height="wrap_content">
 
         <TextView
-        margin="0,25,0,0"
-        width="match_parent"
-        style={window.__TextStyle.textStyle.HINT.BOLD}
-        height="wrap_content"
-        text="CONTENT NAME"/>
+          margin="0,25,0,0"
+          width="match_parent"
+          style={window.__TextStyle.textStyle.HINT.BOLD}
+          height="wrap_content"
+          text={window.__S.CONTENT_NAME}/>
 
         <LinearLayout
-        width="match_parent"
-        height="wrap_content"
-        margin="0,8,0,0">
-
-
-         <Spinner
-          id={this.idSet.spinnerContainer}
           width="match_parent"
-          height="30"
-          onItemClick = {this.handleSpinnerClick}
-          values={spinnerArray}/>
+          height="wrap_content"
+          margin="0,8,0,0">
+
+
+           <Spinner
+            id={this.idSet.spinnerContainer}
+            width="match_parent"
+            height="30"
+            onItemClick = {this.handleSpinnerClick}
+            values={spinnerArray}/>
 
         </LinearLayout>
 
-      {this.getLineSeperator()}
+        {this.getLineSeperator()}
 
 
         <TextView
-        margin="0,16,0,0"
-        width="match_parent"
-        style={window.__TextStyle.textStyle.HINT.BOLD}
-        height="wrap_content"
-        text="SELECT A REASON"/>
+          margin="0,16,0,0"
+          width="match_parent"
+          style={window.__TextStyle.textStyle.HINT.BOLD}
+          height="wrap_content"
+          text={window.__S.SELECT_A_REASON}/>
 
-      {this.getRadioList()}
+          {this.getRadioList()}
 
 
      </LinearLayout>);
@@ -211,10 +211,10 @@ class FlagPopup extends View {
 
 
         <CheckBox
-        gravity="center_vertical"
-        onCheckChange={(value)=>{this.handleRadioButtonClick(item,value)}}
-        checked= {false}
-        text={item}/> 
+          gravity="center_vertical"
+          onCheckChange={(value)=>{this.handleRadioButtonClick(item,value)}}
+          checked= {false}
+          text={item}/> 
 
         <ImageView
          margin="8,0,0,0"
@@ -229,12 +229,12 @@ class FlagPopup extends View {
 
         return (
           <LinearLayout
-          width="match_parent"
-          height="wrap_content"
-          margin="0,12,0,0"
-          orientation="vertical">
+            width="match_parent"
+            height="wrap_content"
+            margin="0,12,0,0"
+            orientation="vertical">
 
-          {rows}
+            {rows}
 
           </LinearLayout>
           )
@@ -244,28 +244,28 @@ class FlagPopup extends View {
   getHeader = () => {
     return (
       <LinearLayout
-      width="match_parent"
-      height="wrap_content"
-      gravity="center_vertical"
-      margin="0,0,16,0">
+        width="match_parent"
+        height="wrap_content"
+        gravity="center_vertical"
+        margin="0,0,16,0">
 
           <TextView
            width = "wrap_content"
            height = "wrap_content"
            gravity="center_vertical"
-           text = "What went wrong?"
+           text = {window.__S.WHAT_WENT_WRONG}
            style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
            <ViewWidget
-           width="0"
-           weight="1"
-           height="0"/>
+             width="0"
+             weight="1"
+             height="0"/>
 
            <ImageView
-           width="14"
-           height="14"
-           gravity="center_vertical"
-           imageUrl="ic_info_grey"/>
+             width="14"
+             height="14"
+             gravity="center_vertical"
+             imageUrl="ic_info_grey"/>
 
       </LinearLayout>
     )
@@ -287,40 +287,38 @@ class FlagPopup extends View {
               background="#ffffff">
 
               <ImageView
-              width="87"
-              height="78"
-              margin="0,100,0,0"
-              gravity="center_horizontal"
-              imageUrl="ic_flag_warning"/>
+                width="87"
+                height="78"
+                margin="0,100,0,0"
+                gravity="center_horizontal"
+                imageUrl="ic_flag_warning"/>
 
                <TextView
-              width="wrap_content"
-              height="wrap_content"
-              text="FLAGGED CONTENT"
-              margin="0,9,0,0"
-              gravity="center_horizontal"
-              style={window.__TextStyle.textStyle.HINT.REGULAR}/>
+                width="wrap_content"
+                height="wrap_content"
+                text={window.__S.FLAGGED_CONTENT﻿}
+                margin="0,9,0,0"
+                gravity="center_horizontal"
+                style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
 
               <TextView
-              width="260"
-              height="wrap_content"
-              margin="0,90,0,0"
-              gravity="center_horizontal"
-              text="Content flagged successfully. 
-              The creator and the admin will be 
-              notified to review the content. "
-              style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
+                width="260"
+                height="wrap_content"
+                margin="0,90,0,0"
+                gravity="center_horizontal"
+                text={window.__S.FLAGGED_CONTENT_MESSAGE}
+                style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
 
 
               <TextView
-              width="wrap_content"
-              height="wrap_content"
-              margin="0,30,0,0"
-              gravity="center_horizontal"
-              onClick={this.handleDismissClick}
-              textFromHtml="<font color='#007AFF'><a href=''>GO BACK</a></font>"
-              style={window.__TextStyle.textStyle.CARD.BODY.DARK.BLUE_R}/>
+                width="wrap_content"
+                height="wrap_content"
+                margin="0,30,0,0"
+                gravity="center_horizontal"
+                onClick={this.handleDismissClick}
+                textFromHtml={"<font color='#007AFF'><a href=''>"+ window.__S.GO_BACK﻿ + "</a></font>"}
+                style={window.__TextStyle.textStyle.CARD.BODY.DARK.BLUE_R}/>
 
 
 
@@ -343,16 +341,16 @@ class FlagPopup extends View {
               padding="16,18,16,16"
               background="#ffffff">
               
-             {this.getHeader()}
+               {this.getHeader()}
 
-             {this.getContent()}
+               {this.getContent()}
 
-             <ViewWidget
-             width="match_parent"
-             height="0"
-             weight="1"/>
+               <ViewWidget
+                 width="match_parent"
+                 height="0"
+                 weight="1"/>
 
-             {this.getFeatureButton()}
+              {this.getFeatureButton()}
 
             </LinearLayout>)
   }
@@ -376,6 +374,7 @@ class FlagPopup extends View {
         root="true"
         background = { window.__Colors.PRIMARY_BLACK_44}
         orientation="vertical">
+          
           <LinearLayout
             height="0"
             width="match_parent"
@@ -383,8 +382,8 @@ class FlagPopup extends View {
             weight="1"/>
 
           {this.getBodyWithOptions()}
+          
           {this.getBodyWithMessage()}
-
 
       </LinearLayout>
 

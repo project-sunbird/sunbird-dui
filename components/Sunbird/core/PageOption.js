@@ -18,7 +18,6 @@ class PageOption extends View {
   }
 
   getButtons = () => {
-    console.log("GET BUTTONS",this.props)
 
     var buttons;
     if (this.props.buttonItems.length > 1) {
@@ -28,15 +27,16 @@ class PageOption extends View {
           type = "BigButton_Primary_DB";
         }
         return (<Button 
-                      type={type}
-                      text={item}
-                      margin="10,0,10,0"
-                      weight="1"
-                      onClick={this.handleClick}/>)
+                  type={type}
+                  text={item}
+                  margin="10,0,10,0"
+                  weight="1"
+                  onClick={this.handleClick}/>)
 
       });
     } else {
-      return (<Button type="BigButton_Primary_WB"
+      return (<Button 
+            type="BigButton_Primary_WB"
             weight="1"
             margin="10,0,10,0"
             text={this.props.buttonItems[0]}
@@ -58,11 +58,13 @@ class PageOption extends View {
         orientation="vertical"
         width="match_parent"
         background={window.__Colors.WHITE}>
+        
         <LinearLayout
           height="2"
           visibility={this.props.hideDivider?"gone":"visible"}
           width="match_parent"
           background={window.__Colors.PRIMARY_BLACK_22}/>
+        
         <LinearLayout
           height="match_parent"
           width="match_parent"

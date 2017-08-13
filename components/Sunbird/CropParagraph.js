@@ -37,24 +37,26 @@ class CropParagraph extends View {
   getMoreButton = () => {
     return (
       <LinearLayout
-            height="wrap_content"
+        height="wrap_content"
+        layoutTransition="true"
+        id={this.idSet.showMoreButton}
+        width="match_parent">
+          
+          <ViewWidget 
+            height="1"
+            width="0"
+            weight="1"/>
+          
+           <TextView
+            margin="0,0,8,0"
+            visibility="gone"
+            text="more"
             layoutTransition="true"
-            id={this.idSet.showMoreButton}
-            width="match_parent">
-              <ViewWidget 
-                height="1"
-                width="0"
-                weight="1"/>
-               <TextView
-                margin="0,0,8,0"
-                visibility="gone"
-                text="more"
-                layoutTransition="true"
-                onClick={this.handleMoreClick}
-                style = {window.__TextStyle.textStyle.CARD.BODY.BLUE_R}
-                color={window.__Colors.PRIMARY_ACCENT} />
-           
-          </LinearLayout>);
+            onClick={this.handleMoreClick}
+            style = {window.__TextStyle.textStyle.CARD.BODY.BLUE_R}
+            color={window.__Colors.PRIMARY_ACCENT} />
+       
+      </LinearLayout>);
   }
 
 

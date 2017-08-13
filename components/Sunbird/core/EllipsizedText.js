@@ -30,9 +30,6 @@ class EllipsizedText extends View {
 
    var text=this.props.text;
    var shortenedText = text.substring(0,parseInt(this.props.numChar)) + "...";
-
-   console.log("SHORTENED TEXT",shortenedText);
-
       var cmd = this.set({
         id: this.idSet.textContainer,
         text : shortenedText
@@ -53,13 +50,13 @@ class EllipsizedText extends View {
           orientation="vertical">
 
           <TextView
-          id={this.idSet.textContainer}
-          padding={this.props.padding?this.props.padding:"0,0,0,0"}
-          margin={this.props.margin?this.props.margin:"0,0,0,0"}
-          style={this.props.style?this.props.style:""}
-          width={this.props.width?this.props.width:"wrap_content"}
-          height={this.props.height?this.props.height:"wrap_content"}
-          letterSpacing={this.props.letterSpacing?this.props.letterSpacing:""}/>
+            id={this.idSet.textContainer}
+            padding={this.props.padding?this.props.padding:"0,0,0,0"}
+            margin={this.props.margin?this.props.margin:"0,0,0,0"}
+            style={this.props.style?this.props.style:""}
+            width={this.props.width?this.props.width:"wrap_content"}
+            height={this.props.height?this.props.height:"wrap_content"}
+            letterSpacing={this.props.letterSpacing?this.props.letterSpacing:""}/>
 
 
          </LinearLayout>
