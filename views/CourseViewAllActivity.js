@@ -69,7 +69,7 @@ class CourseViewAllActivity extends View {
                   temp['imageUrl'] = item.courseLogoUrl?item.courseLogoUrl:"ic_action_course";
                   temp['name'] = item.courseName;
                   temp['isProgress'] = "true";
-                  temp['footerTitle'] = window.__S.COURSE_PROGRESS_COMPLETED.format(progressCoun);
+                  temp['footerTitle'] = window.__S.COURSE_PROGRESS_COMPLETED.format(progressCount);
                   temp['actionText'] = window.__S.RESUME;
                   temp["footerSubTitle"] = window.__S.ERROR_DURATION_NOT_AVAILABLE;
 
