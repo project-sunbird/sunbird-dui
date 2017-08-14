@@ -30,6 +30,7 @@ const stringsRes = {
 		NO_INTERNET : "No internet connectivity",
 		SEARCH_LOADING_MESSAGE : "Loading Search Results Please Wait...",
 		EMPTY_SEARCH_RESULTS : "No Search Results Found",
+		ERROR_EMPTY_RESULT : "No result available",
 		SIGN_UP_SUCCESS : "Sign Up Completed",
 		RETRY_ACTION : "Please retry",
 		ERROR_EMPTY_FIRSTNAME : "Please enter the first name",

@@ -383,7 +383,10 @@ class MainActivity extends View {
 
         if(JBridge.isNetworkAvailable()||(index!=1&&index!=4)){
               this.currentPageIndex = index;
-              this.switchContent(index);
+              
+              if(index!=1 && index!=2 && index!=4){
+                this.switchContent(index);
+              }
         }
         else{
             JBridge.showSnackBar(window.__S.NO_INTERNET)

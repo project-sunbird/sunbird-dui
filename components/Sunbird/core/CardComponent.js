@@ -35,6 +35,10 @@ class CardComponent extends View {
     return remainingProgress;
   }
 
+  capitalizeFirstLetter=(string) =>{
+      return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
   getBody = () => {
     var myProgress = this.props.data.isProgress?this.props.data.footerTitle.split('%')[0]:"0" ;
     var myProgressColor = myProgress==100 ? window.__Colors.SUCCESS_GREEN : window.__Colors.SAFFRON 
@@ -94,7 +98,7 @@ class CardComponent extends View {
                   height="wrap_content"
                   padding = "10,10,10,10"
                   alignParentBottom="true,-1"
-                  text= {this.props.data.title}
+                  text= {this.capitalizeFirstLetter(this.props.data.title)}
                   enableEllipse="true"
                   letterSpacing="0.05"
                   style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}/>
