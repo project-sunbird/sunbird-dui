@@ -68,7 +68,7 @@ class OfflineResourceContainer extends View {
         temp['footerSubTitle'] = "Saved on " + fileSavedTime;
         temp['actionText'] = "OPEN";
         temp['content'] = item;
-
+        
 
 
 

@@ -14,7 +14,7 @@ var ViewWidget = require('@juspay/mystique-backend').androidViews.ViewWidget;
 var FeatureButton = require('../../components/Sunbird/FeatureButton');
 var RadioListItem = require('../Sunbird/RadioListItem');
 var Spinner = require('../Sunbird/core/Spinner');
-
+var TextInputView = require('../Sunbird/core/TextInputView');
 var Styles = require("../../res/Styles");
 
 let IconStyle = Styles.Params.IconStyle;
@@ -29,15 +29,18 @@ class FlagPopup extends View {
       "contentContainer",
       "spinnerContainer",
       "bodyWithOptionsContainer",
-      "bodyWithMessageContainer"
+      "bodyWithMessageContainer",
+      "bodyContainer"
     ]);
     this.chosenItem;
     this.selectedList = [];
     window.__FlagPopup = this;
+    this.comment = "";
   }
 
 
   show = () => {
+    this.resetPopup()
     this.showBodyWithOptions();
     this.hideBodyWithMessage();
     this.setVisibility("visible");
@@ -97,6 +100,13 @@ class FlagPopup extends View {
   onConfirm = () =>{
     this.hideBodyWithOptions();
     this.showBodyWithMessage();
+    console.log(this.comment,this.selectedList)
+    this.props.onConfirm(this.comment,this.selectedList)
+  }
+
+  resetPopup = () => {
+    console.log("reset flag popup")
+    this.replaceChild(this.idSet.bodyContainer,this.getBody().render(),0)
   }
 
 
@@ -131,8 +141,10 @@ class FlagPopup extends View {
 
 
   handleSpinnerClick = (...params) => {
+
     
-    console.log("SPINNER CLICKED");
+    console.log("SPINNER CLICKED",params);
+
   }
 
    getLineSeperator = () => {
@@ -152,32 +164,7 @@ class FlagPopup extends View {
       orientation="vertical"
       width="match_parent"
       height="wrap_content">
-
-        <TextView
-          margin="0,25,0,0"
-          width="match_parent"
-          style={window.__TextStyle.textStyle.HINT.BOLD}
-          height="wrap_content"
-          text={window.__S.CONTENT_NAME}/>
-
-        <LinearLayout
-          width="match_parent"
-          height="wrap_content"
-          margin="0,8,0,0">
-
-
-           <Spinner
-            id={this.idSet.spinnerContainer}
-            width="match_parent"
-            height="30"
-            onItemClick = {this.handleSpinnerClick}
-            values={spinnerArray}/>
-
-        </LinearLayout>
-
-        {this.getLineSeperator()}
-
-
+        
         <TextView
           margin="0,16,0,0"
           width="match_parent"
@@ -187,14 +174,45 @@ class FlagPopup extends View {
 
           {this.getRadioList()}
 
+      <TextView
+          margin="0,16,0,0"
+          width="match_parent"
+          style={window.__TextStyle.textStyle.HINT.BOLD}
+          height="wrap_content"
+          text={window.__S.ADD_COMMENT}/>
+
+      <EditText
+        width = "match_parent"
+        height = "wrap_content"
+        onChange  = {this.updateComment}
+        maxLine = "2"
+        singleLine="true"
+         />
+        
+
+
 
      </LinearLayout>);
 
   }
 
+  updateComment = (data) => {
+    console.log(data)
+    this.comment = data;
+  }
+
   handleRadioButtonClick = (title,checked) =>{
     console.log("TITLE",title);
     console.log("CHECKED RADIO",checked);
+    if(checked && this.selectedList.indexOf(title) == -1){
+      this.selectedList.push(title)
+    }
+    else if(checked == "false" && this.selectedList.indexOf(title)!=-1){
+      console.log(checked)
+      var temp = this.selectedList.splice(this.selectedList.indexOf(title),1)
+    }
+
+    console.log("selectedList",this.selectedList)
   }
 
   getRadioList = () =>{
@@ -362,6 +380,19 @@ class FlagPopup extends View {
     this.hide();
   }
 
+  getBody = () => {
+    return (<LinearLayout
+            height="wrap_content"
+            width="match_parent"
+            root="true"
+            orientation="vertical">  
+
+            {this.getBodyWithOptions()}
+            
+            {this.getBodyWithMessage()}
+
+          </LinearLayout>)
+  }
 
   render() {
 
@@ -381,9 +412,16 @@ class FlagPopup extends View {
             onClick={this.handleDismissClick}
             weight="1"/>
 
-          {this.getBodyWithOptions()}
-          
-          {this.getBodyWithMessage()}
+          <LinearLayout
+            height="wrap_content"
+            width="match_parent"
+            id={this.idSet.bodyContainer}>  
+
+            {this.getBody()}
+            
+           
+
+          </LinearLayout>
 
       </LinearLayout>
 

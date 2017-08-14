@@ -283,7 +283,7 @@ handleResourceViewAllClick= (data,title,searchQuery,visibility) =>{
       params[0] = utils.decodeBase64(params[0])
       params[0] = utils.jsonifyData(params[0]);
       _this.data = JSON.parse(params[0]);
-
+      console.log("local data",_this.data)
 
          var layout = (<OfflineResourceContainer
                          onResourceOpenClick = {_this.handleResourceOpen}

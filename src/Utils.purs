@@ -205,14 +205,10 @@ getContentStatus courseId user_token api_token =
                                                    ]) in
   (post requestUrl headers payload)
 
-flagContent user_token api_token contentId flagReason flags version_key=
-  let requestUrl = "/content/v1/flag" 
+flagContent user_token api_token request identifier=
+  let requestUrl = "/content/v1/flag/" <> identifier
       headers = (generateRequestHeaders user_token api_token)
-      payload = A.fromObject (StrMap.fromFoldable [(Tuple "request" (A.fromObject (StrMap.fromFoldable  [ (Tuple "flaggedBy" (A.fromString user_token))
-                                                                                                          ,(Tuple "versionKey" (A.fromString version_key))
-                                                                                                          , (Tuple "flagReasons" (A.fromArray [(A.fromString flagReason)]))
-                                                                                                          , (Tuple "flags" (A.fromArray [(A.fromString flags)]))
-                                                                                                          ])))
+      payload = A.fromObject (StrMap.fromFoldable [(Tuple "request" (getJsonFromString request))
                                                    ]) in
   (post requestUrl headers payload)
 

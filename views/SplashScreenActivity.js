@@ -76,11 +76,12 @@ class SplashScreenActivity extends View {
         clickable="true"
         width="match_parent"
         height="match_parent"
+        gravity="center"
         orientation="vertical">
 
           <ImageView
-            height="300"
-            width="300"
+            height="250"
+            width="250"
             layout_gravity="center"
             imageUrl="ic_launcher"/>
           <TextView
