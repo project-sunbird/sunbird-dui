@@ -51,7 +51,7 @@ class SplashScreenActivity extends View {
     // JBridge.setInSharedPrefs("user_name", "vinay");
     // JBridge.setInSharedPrefs("user_token", "029c72b5-4691-4bf2-a6de-72b18df0b748");
     
-    window.__loginUrl = "https://staging.ntp.net.in";
+    window.__loginUrl = "https://staging.open-sunbird.org";
     window.__apiUrl = "https://staging.open-sunbird.org";
     
     // if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "false") {

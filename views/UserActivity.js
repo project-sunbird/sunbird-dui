@@ -429,7 +429,7 @@ class UserActivity extends View {
       requestBody=JSON.stringify(requestBody);
       var whatToSend = {
         "request" : requestBody,
-        "api_token": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI1MjMwZGU5YjA1Mzg5MWFjZDdkOTg2NGExOWNlNTRjMjE5MTUzM2VlIn0.NKkAMGNz9CNYXqSjUyDAzpedXhbL8mEXUyMMiONX2Ls"
+        "api_token": window.__apiToken
       }
       var event = { "tag": "API_SignUp", "contents": whatToSend };
       window.__runDuiCallback(event);
