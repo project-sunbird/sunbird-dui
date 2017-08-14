@@ -47,8 +47,6 @@ class SearchActivity extends View {
     this.searchType = this.tempData.filterType
     this.temp = state.data;
     this.searchType = this.tempData.searchType;
-
-
     window.searchData = this.logSearch;
 
     _this = this;
@@ -77,9 +75,12 @@ class SearchActivity extends View {
       }
       this.getSearchList(this.searchText,"true");
     }
+    else if(window.searchText!=undefined && window.searchText!=""){
+        this.getSearchList(window.searchText[0],"false");
+    }
 
     var callback = callbackMapper.map(function(data) {
-
+      window.searchText=data;
       _this.handleSearchClick(data);
 
     });
@@ -93,6 +94,7 @@ class SearchActivity extends View {
       _this.animateView(),
       null
     );
+    
   }
 
 
@@ -263,6 +265,7 @@ class SearchActivity extends View {
   onBackPressed = () => {
      JBridge.hideKeyboard();
      var whatToSend = [];
+     window.searchText[0]="";
      var event = { tag: "BACK_SearchActivity", contents: whatToSend }
      window.__runDuiCallback(event);
   }
