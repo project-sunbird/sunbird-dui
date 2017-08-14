@@ -232,6 +232,13 @@ class ProgressButton extends View {
     var pLeft = parseFloat(value) / parseFloat(100);
     var pRight = (1 - pLeft);
 
+    var mCornerLeft = "8,0,0,8,";
+    var mCornerRight = "0,8,8,0,";
+    if(pLeft==1){
+      mCornerLeft = "8,8,8,8,";
+    }else if(pLeft <= 0){
+      mCornerRight = "8,8,8,8,";
+    }
     return (<LinearLayout
         width="match_parent"
         onClick={this.handleButtonClick}
@@ -242,13 +249,13 @@ class ProgressButton extends View {
               width="0"
               height="match_parent"
               weight={pLeft}
-              multiCorners={"8,0,0,8,"+window.__Colors.THICK_BLUE}/>
+              multiCorners={mCornerLeft+window.__Colors.THICK_BLUE}/>
 
             <LinearLayout
               width="0"
               height="match_parent"
               weight={pRight}
-              multiCorners={"0,8,8,0,"+window.__Colors.PRIMARY_DARK}/>
+              multiCorners={mCornerRight+window.__Colors.PRIMARY_DARK}/>
 
         </LinearLayout>)
 
