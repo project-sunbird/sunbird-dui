@@ -32,6 +32,12 @@ class AlternateModuleDetailActivity extends View {
         this.state = state;
         this.screenName = "AlternateModuleDetailActivity"
 
+        this.menuData = {
+          url: [
+            {}
+          ]
+        }
+        
         this.menuData1 = {
             url: [
                 { imageUrl: 'ic_action_overflow' }

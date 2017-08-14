@@ -18,6 +18,7 @@ class SimpleToolbar extends View {
     constructor(props, children) {
     super(props, children);
     this.displayName = "SimpleToolbar";
+    console.log("simple tool bar",this.props)
   }
 
   handleMenuClick = (url) => {
