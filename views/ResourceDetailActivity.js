@@ -11,7 +11,7 @@ var ScrollView = require('@juspay/mystique-backend').androidViews.ScrollView;
 var RatingBar = require('@juspay/mystique-backend').androidViews.RatingBar;
 var objectAssign = require('object-assign');
 var SharePopup = require('../components/Sunbird/core/SharePopup');
-
+var FlagPopup = require('../components/Sunbird/FlagPopup');
 var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
 var ProgressButton = require('../components/Sunbird/core/ProgressButton');
 var utils = require('../utils/GenericFunctions');
@@ -381,6 +381,11 @@ class ResourceDetailActivity extends View {
       });
       JBridge.deleteContent(this.details.identifier,callback);
     }
+    else if(params == 1){
+      console.log("in flag rda")
+      window.__LoaderDialog.hide();
+      window.__FlagPopup.show();
+    }
   }
 
 
@@ -479,6 +484,7 @@ class ResourceDetailActivity extends View {
 
 
       </LinearLayout>
+      <FlagPopup/>
       <LinearLayout
        width="match_parent"
        height="match_parent"
