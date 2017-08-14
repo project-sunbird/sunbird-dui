@@ -107,6 +107,10 @@ class CourseEnrolledActivity extends View {
     );
   }
 
+   onStop = () =>{
+    window.__SharePopup.hide();
+    console.log("ON STOP IN ResourceDetailActivity")
+  }
 
 
   getSpineStatus = (pValue) => {
@@ -238,7 +242,7 @@ class CourseEnrolledActivity extends View {
 
       var input = [{
                     type : "text",
-                    data : "staging.open-sunbird.org/c/"+_this.baseIdentifier
+                    data : "staging.open-sunbird.org/public/"+_this.baseIdentifier
 
                   },{
                     type : "file",

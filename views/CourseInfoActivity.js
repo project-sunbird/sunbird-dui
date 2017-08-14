@@ -21,6 +21,8 @@ var CourseCurriculum = require('../components/Sunbird/CourseCurriculum');
 var PageOption = require('../components/Sunbird/core/PageOption');
 var CourseProgress = require('../components/Sunbird/CourseProgress');
 var ProgressButton = require('../components/Sunbird/core/ProgressButton');
+var SharePopup = require('../components/Sunbird/core/SharePopup');
+
 var _this;
 class CourseInfoActivity extends View {
   constructor(props, children, state) {
@@ -31,13 +33,15 @@ class CourseInfoActivity extends View {
       "pageOption",
       "descriptionContainer",
       "downloadProgressText",
-      "totalContainer"
+      "totalContainer",
+      "sharePopupContainer"
     ]);
     this.state = state;
     this.screenName = "CourseInfoActivity"
     
     this.menuData = {
       url: [
+        {imageUrl: "ic_action_share_black" },
       ]
     }
 
@@ -171,7 +175,8 @@ class CourseInfoActivity extends View {
 
   afterRender = () => {
 
-    
+    this.shareContent();
+
     if(window.__enrolledCourses == undefined){
       window.__LoaderDialog.show();
       var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken} 
@@ -250,10 +255,35 @@ class CourseInfoActivity extends View {
 
     }
 
-
-
-
   }
+
+
+
+  shareContent = () =>{
+
+    console.log("SHARE POP UP CALLED")
+
+    var shareCallback = callbackMapper.map(function(data) {
+    var input = [
+                 {
+                    type : "text",
+                    data : "staging.open-sunbird.org/public/"+_this.details.identifier
+                 }
+                ];
+
+            
+      var sharePopUp = (
+        <SharePopup
+        data = {input}/>
+        )
+
+    _this.replaceChild(_this.idSet.sharePopupContainer,sharePopUp.render(),0);
+
+    });
+
+    JBridge.exportEcar(this.details.identifier, shareCallback);
+  }
+
 
   handleEnrollClick = (data) => {
     if(JBridge.isNetworkAvailable()){
@@ -320,10 +350,17 @@ class CourseInfoActivity extends View {
       </LinearLayout>);
   }
 
+  handleMenuClick = (url) =>{
+    if(url == "ic_action_share_black"){
+      window.__SharePopup.show();
+    }
+  }
+
 
   getBody = () =>{
     var buttonList = [window.__S.ENROLL_COURSE];
     return (
+
       <LinearLayout
         root="true"
         width="match_parent"
@@ -336,6 +373,7 @@ class CourseInfoActivity extends View {
             width="match_parent"
             height="wrap_content"
             menuData={this.menuData}
+            onMenuItemClick={this.handleMenuClick}
             showMenu="true"
             onBackPress={this.onBackPressed}
             invert="true"/>
@@ -411,8 +449,7 @@ class CourseInfoActivity extends View {
              onButtonClick={this.handleEnrollClick}/>
 
             </LinearLayout>
-
-      </LinearLayout>);
+            </LinearLayout>);
 
   }
 
@@ -437,17 +474,29 @@ class CourseInfoActivity extends View {
 
   render() {
     this.layout = (
-      <LinearLayout
-        width="match_parent"
-        height="match_parent"
-        root="true">
+
+     <RelativeLayout
+      width="match_parent"
+      height="match_parent"
+      clickable="true"
+      root="true">
+
         <LinearLayout
           background={window.__Colors.WHITE}
           orientation="vertical"
           id={this.idSet.totalContainer}
           width="match_parent"
           height="match_parent"/>
-      </LinearLayout>
+      
+
+        <LinearLayout
+         width="match_parent"
+         height="match_parent"
+         id={this.idSet.sharePopupContainer}/>
+
+       
+
+      </RelativeLayout> 
     );
 
     return this.layout.render();

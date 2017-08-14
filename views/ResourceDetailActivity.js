@@ -127,7 +127,7 @@ class ResourceDetailActivity extends View {
     }else{
                   input = [{
                               type : "text",
-                              data : "staging.open-sunbird.org/c/"+_this.details.identifier
+                              data : "staging.open-sunbird.org/public/"+_this.details.identifier
                           }];
 
     }
