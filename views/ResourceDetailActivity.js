@@ -43,7 +43,7 @@ class ResourceDetailActivity extends View {
         {imageUrl:'ic_action_overflow'}
       ]
     }
-    this.popupMenu = window.__S.DELETE
+    this.popupMenu = window.__S.DELETE + "," + window.__S.FLAG 
 
     this.shouldCacheScreen = false;
 

@@ -75,7 +75,7 @@ class CourseFragment extends View {
   handleResponse = () => {
 
       if(this.props.response===undefined) {
-        JBridge.showSnackBar(window.__S.ERROR_OFFLINE_MODE)
+        // JBridge.showSnackBar(window.__S.ERROR_OFFLINE_MODE)
         return;
       }
 

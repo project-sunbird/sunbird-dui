@@ -38,7 +38,7 @@ class ModuleDetailActivity extends View {
 
     this.menuData = {
       url: [
-        
+        {}
       ]
     }
 

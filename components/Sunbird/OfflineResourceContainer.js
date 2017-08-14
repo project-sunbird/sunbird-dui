@@ -54,7 +54,7 @@ class OfflineResourceContainer extends View {
 
       if (item.contentType != "course") {
 
-
+        console.log("item in offline container",item)
         this.offlineCount++;
         var size = item.hasOwnProperty("size") ? " [" + utils.formatBytes(item.size) + "]" : "";
         var footerTitle = item.contentType + size;

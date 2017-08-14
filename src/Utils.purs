@@ -57,15 +57,9 @@ foreign import ui' :: forall a c e. (Error -> Eff e Unit) -> (a -> Eff e Unit) -
 -- getEulerLocation = "https://qa.ekstep.in"
 getEulerLocation1 = "https://staging.open-sunbird.org/api"
 
-getEulerLocation_signup = "https://staging.ntp.net.in/api"
 --getEulerLocation1 = "http://52.172.36.121:9000"
 -- getApiKey ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkMTc1MDIwNDdlODc0ODZjOTM0ZDQ1ODdlYTQ4MmM3MyJ9.7LWocwCn5rrCScFQYOne8_Op2EOo-xTCK5JCFarHKSs"
 
-keyCloakRealm = "sunbird"
-keyCloakClientId ="android"
-keyCLoakGrantType = "password"
-
-keyCloakAuthUrl = "https://keycloakidp-coacher.rhcloud.com/auth/realms/"<> keyCloakRealm <>"/protocol/openid-connect/token"
 
 type State a = {screen :: String |a}
 
@@ -97,17 +91,8 @@ get path headers =
   makeAff(\error success -> callAPI' success error GET ((getEulerLocation1) <> path) (A.jsonEmptyObject) headers')
   where headers' = cons (RequestHeader "Content-Type" "application/json") headers
 
-get_dev path headers =
-  makeAff(\error success -> callAPI' success error GET ((getEulerLocation_signup) <> path) (A.jsonEmptyObject) headers')
-  where headers' = cons (RequestHeader "Content-Type" "application/json") headers
-
-
 post path headers body =
   makeAff(\error success -> callAPI' success error POST ((getEulerLocation1) <> path) body headers')
-  where headers' = cons (RequestHeader "Content-Type" "application/json") headers
-
-post_signup path headers body =
-  makeAff(\error success -> callAPI' success error POST ((getEulerLocation_signup) <> path) body headers')
   where headers' = cons (RequestHeader "Content-Type" "application/json") headers
 
 
@@ -220,10 +205,11 @@ getContentStatus courseId user_token api_token =
                                                    ]) in
   (post requestUrl headers payload)
 
-flagContent user_token api_token contentId flagReason flags =
+flagContent user_token api_token contentId flagReason flags version_key=
   let requestUrl = "/content/v1/flag" 
       headers = (generateRequestHeaders user_token api_token)
       payload = A.fromObject (StrMap.fromFoldable [(Tuple "request" (A.fromObject (StrMap.fromFoldable  [ (Tuple "flaggedBy" (A.fromString user_token))
+                                                                                                          ,(Tuple "versionKey" (A.fromString version_key))
                                                                                                           , (Tuple "flagReasons" (A.fromArray [(A.fromString flagReason)]))
                                                                                                           , (Tuple "flags" (A.fromArray [(A.fromString flags)]))
                                                                                                           ])))
@@ -251,8 +237,8 @@ getUserEnrolledCourses user_token api_token =
 
 getProfileDetail user_token api_token =
   let requestUrl = "/user/v1/read/" <> user_token
-      headers = (generateRequestHeaders user_token "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI1MjMwZGU5YjA1Mzg5MWFjZDdkOTg2NGExOWNlNTRjMjE5MTUzM2VlIn0.NKkAMGNz9CNYXqSjUyDAzpedXhbL8mEXUyMMiONX2Ls") in
-  (get_dev requestUrl headers) 
+      headers = (generateRequestHeaders user_token api_token) in
+  (get requestUrl headers) 
 
 
 
@@ -261,7 +247,7 @@ userSignup request api_token =
       headers = (getDummyHeader api_token)
       payload = A.fromObject (StrMap.fromFoldable [(Tuple "request" (getJsonFromString request))
                                                    ]) in
-  (post_signup requestUrl headers payload)
+  (post requestUrl headers payload)
 
 
 getExceptT value = ExceptT $ pure $ Right value
