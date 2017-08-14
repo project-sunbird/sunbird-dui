@@ -94,7 +94,7 @@ instance encodeMainActivityAction :: Encode MainActivityAction where encode = de
 
 data ResourceDetailActivity = ResourceDetailActivity {resourceDetails::String}
 data ResourceDetailActivityAction =  DummyResourceDetailActivityAction | 
-  BACK_ResourceDetailActivity | API_FlagContent{user_token::String,api_token::String,contentId::String,flagReason::String,flags::String}
+  BACK_ResourceDetailActivity | API_FlagContent{user_token::String,api_token::String,contentId::String,flagReason::String,flags::String,versionKey::String}
 
 instance resourceDetailActivity :: UIScreen ResourceDetailActivity ResourceDetailActivityAction where
   generateMockEvents _ = [DummyResourceDetailActivityAction , BACK_ResourceDetailActivity]

@@ -52,8 +52,8 @@ filterActivity input whereFrom whatToSendBack = do
 resourceDetailActivity input whereFrom whatToSendBack = do
 	event <- ui $ ResourceDetailActivity {resourceDetails : input}
 	case event of
-		API_FlagContent{user_token: user_token,api_token: api_token,contentId: contentId,flagReason: flagReason,flags: flags} -> do
-			responseData <- flagContent user_token api_token contentId flagReason flags
+		API_FlagContent{user_token: user_token,api_token: api_token,contentId: contentId,flagReason: flagReason,flags: flags, versionKey: version_key} -> do
+			responseData <- flagContent user_token api_token contentId flagReason flags version_key
 			_ <- sendUpdatedState {response : responseData, responseFor : "API_FlagContent", screen:"asas"}
 			pure $ "handled"
 		BACK_ResourceDetailActivity -> case whereFrom of

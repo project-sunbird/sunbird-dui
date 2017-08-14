@@ -60,11 +60,6 @@ getEulerLocation1 = "https://staging.open-sunbird.org/api"
 --getEulerLocation1 = "http://52.172.36.121:9000"
 -- getApiKey ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkMTc1MDIwNDdlODc0ODZjOTM0ZDQ1ODdlYTQ4MmM3MyJ9.7LWocwCn5rrCScFQYOne8_Op2EOo-xTCK5JCFarHKSs"
 
-keyCloakRealm = "sunbird"
-keyCloakClientId ="android"
-keyCLoakGrantType = "password"
-
-keyCloakAuthUrl = "https://keycloakidp-coacher.rhcloud.com/auth/realms/"<> keyCloakRealm <>"/protocol/openid-connect/token"
 
 type State a = {screen :: String |a}
 
@@ -210,10 +205,11 @@ getContentStatus courseId user_token api_token =
                                                    ]) in
   (post requestUrl headers payload)
 
-flagContent user_token api_token contentId flagReason flags =
+flagContent user_token api_token contentId flagReason flags version_key=
   let requestUrl = "/content/v1/flag" 
       headers = (generateRequestHeaders user_token api_token)
       payload = A.fromObject (StrMap.fromFoldable [(Tuple "request" (A.fromObject (StrMap.fromFoldable  [ (Tuple "flaggedBy" (A.fromString user_token))
+                                                                                                          ,(Tuple "versionKey" (A.fromString version_key))
                                                                                                           , (Tuple "flagReasons" (A.fromArray [(A.fromString flagReason)]))
                                                                                                           , (Tuple "flags" (A.fromArray [(A.fromString flags)]))
                                                                                                           ])))
