@@ -265,6 +265,7 @@ class UserActivity extends View {
           JBridge.showSnackBar(window.__S.WELCOME_ON_BOARD.format(this.userName))
           JBridge.setInSharedPrefs("user_name", this.userFirstName);
           JBridge.setInSharedPrefs("user_token", result.userId);
+          window.__pressedLoggedOut=true;
           this.userToken=result.userId;
           this.setDataInStorage();
           JBridge.setProfile(this.userToken);

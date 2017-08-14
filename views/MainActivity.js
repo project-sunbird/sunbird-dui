@@ -82,21 +82,22 @@ class MainActivity extends View {
 
   onPop = () => {
 
+
+    Android.runInUI(
+      this.animateView(),
+      null
+    );
+
     if(window.__pressedLoggedOut){
       this.currentPageIndex=0
       window.__pressedLoggedOut=false;
+      this.afterRender();
+      return;
     }
 
     if(this.currentPageIndex==undefined){
       this.currentPageIndex=0;
     }
-
-     
-
-      Android.runInUI(
-        this.animateView(),
-        null
-      );
 
 
     this.backPressCount = 0;
