@@ -99,6 +99,12 @@ if (typeof window !== "undefined") {
     window.__CACHED_SCREENS[window.__CURR_SCREEN].screen.onBackPressed();
   }
 
+  window.onStop = () => {
+    console.log("onStop");
+    window.__CACHED_SCREENS[window.__CURR_SCREEN].screen.onStop();
+  }
+
+
   window.onActivityLifeCycleEvent = (event) => {
     console.log("-->", event);
 

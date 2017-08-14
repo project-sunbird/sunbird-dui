@@ -102,6 +102,11 @@ class ResourceDetailActivity extends View {
     );
   }
 
+  onStop = () =>{
+    window.__SharePopup.hide();
+    console.log("ON STOP IN ResourceDetailActivity")
+  }
+
 
 
   shareContent = (isContentLocallyAvailable) =>{
@@ -150,7 +155,7 @@ class ResourceDetailActivity extends View {
     }
     else{
       var layout=(<TextView
-          text={window.__s.NO_RATINGs}
+          text={window.__S.NO_RATING}
           style={window.__TextStyle.textStyle.HINT.TINY}/>)
 
         this.replaceChild(this.idSet.ratingContainer,layout.render(),0)
