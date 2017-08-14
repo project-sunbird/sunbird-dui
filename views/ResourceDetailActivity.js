@@ -43,7 +43,7 @@ class ResourceDetailActivity extends View {
         {imageUrl:'ic_action_overflow'}
       ]
     }
-    this.popupMenu = window.__S.DELETE
+    this.popupMenu = window.__S.DELETE + "," + window.__S.FLAG 
 
     this.shouldCacheScreen = false;
 
@@ -150,7 +150,7 @@ class ResourceDetailActivity extends View {
     }
     else{
       var layout=(<TextView
-          text={window.__s.NO_RATINGs}
+          text={window.__S.NO_RATING}
           style={window.__TextStyle.textStyle.HINT.TINY}/>)
 
         this.replaceChild(this.idSet.ratingContainer,layout.render(),0)
