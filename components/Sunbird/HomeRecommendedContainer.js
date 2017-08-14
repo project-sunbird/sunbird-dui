@@ -86,19 +86,17 @@ class HomeRecommendedContainer extends View {
             orientation="horizontal">
 
             <TextView
-            width="wrap_content"
-            height="wrap_content"
-            text={this.props.title}
-            style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
+              width="wrap_content"
+              height="wrap_content"
+              text={this.props.title}
+              style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
             </LinearLayout>)
   }
 
 
     handleCardClick  = (content,type) =>{
-      console.log("content is!!",content);
-
-      console.log("type is ",type);
+     
 
       var callback2 = callbackMapper.map(function(data) {
         console.log("data!",JSON.parse(data));
@@ -125,10 +123,10 @@ class HomeRecommendedContainer extends View {
   render() {
       this.layout = (
         <RelativeLayout
-      root="true"
-      clickable="false"
-      width="match_parent"
-      height="250">
+          root="true"
+          clickable="false"
+          width="match_parent"
+          height="250">
 
             <LinearLayout
               height="match_parent"

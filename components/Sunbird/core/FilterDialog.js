@@ -70,28 +70,26 @@ class FilterDialog extends View {
       return (<LinearLayout
                 width="match_parent"
                 height="wrap_content"
-                margin="0,10,0,0"
-                >
+                margin="0,10,0,0">
 
-                <TextView
-                width="wrap_content"
-                height="wrap_content"
-                text ={item.title}
-                style={window.__TextStyle.textStyle.HINT.REGULAR}/>
+                  <TextView
+                    width="wrap_content"
+                    height="wrap_content"
+                    text ={item.title}
+                    style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
-                <ViewWidget
-                height="0"
-                width="0"
-                weight="1"/>
+                  <ViewWidget
+                    height="0"
+                    width="0"
+                    weight="1"/>
 
-                <Spinner
-                  id = {this.idSet.spinner}
-                  background="#000000"
-                  width = "wrap_content"
-                  height = "wrap_content"
-                  values = {item.options}
-                  onItemClick = {this.onItemClick}/>
-
+                  <Spinner
+                    id = {this.idSet.spinner}
+                    background="#000000"
+                    width = "wrap_content"
+                    height = "wrap_content"
+                    values = {item.options}
+                    onItemClick = {this.onItemClick}/>
 
                 </LinearLayout>)
 
@@ -116,13 +114,12 @@ class FilterDialog extends View {
         height="match_parent"
         orientation="vertical">
 
-      <TextView
-        width="wrap_content"
-        height="wrap_content"
-        text = "Search Filter"
-        margin="0,0,0,20"
-        style={window.__TextStyle.textStyle.CARD.HEADING}/>
-
+        <TextView
+          width="wrap_content"
+          height="wrap_content"
+          text = "Search Filter"
+          margin="0,0,0,20"
+          style={window.__TextStyle.textStyle.CARD.HEADING}/>
 
         {this.getRows()}
 
@@ -148,8 +145,7 @@ class FilterDialog extends View {
               <ScrollView
                 height="match_parent"
                 width="match_parent"
-                fillViewport="true"
-                >
+                fillViewport="true">
 
                 <LinearLayout
                   height="match_parent"

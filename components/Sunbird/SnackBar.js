@@ -56,7 +56,6 @@ class SnackBar extends View {
   }
 
   setValues = (options) => {
-    console.log("SET VALUES", options)
     let background = null;
     if (options.status == "success") {
       background = window.__Colors.SUCCESS_GREEN;

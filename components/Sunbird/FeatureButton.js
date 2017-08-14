@@ -27,7 +27,6 @@ class FeatureButton extends View {
   }
 
   afterRender = () =>{
-      console.log("afterRender","came")
      JBridge.setClickFeedback(this.idSet.buttonText);
   }
 
@@ -43,7 +42,6 @@ class FeatureButton extends View {
         margin={this.props.margin||"0,0,0,0"}
         stroke={this.props.stroke||"3,"+this.props.background||"1,#000000"}
         background={this.props.background||"#FFFFFF"}
-        
         visibility={this.props.visibility||"visible"}
         gravity="center">
         <TextView

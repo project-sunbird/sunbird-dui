@@ -23,13 +23,16 @@ class FilterActivity extends View {
   constructor(props, children,state) {
     super(props, children,state);
 
+    _this=this;
+
+    this.screenName = "FilterActivity";
+    this.shouldCacheScreen = false;
+
     this.tempData = JSON.parse(state.data.value0.filterDetails);
     this.searchedFor = this.tempData.filterFor;
     this.searchedType = this.tempData.filterType;
     this.data = JSON.parse(this.tempData.filterDetails);
     this.facetData = this.data.facetFilters;
-    this.screenName = "FilterActivity";
-    this.shouldCacheScreen = false;
     this.filterData  = [];
 
     for(let i in this.facetData){
@@ -89,7 +92,7 @@ class FilterActivity extends View {
                           <TextView
                           width="match_parent"
                           height="wrap_content"
-                          text="Star ratings"
+                          text={window.__S.STAR_RATINGS}
                           gravity="center_horizontal"
                           style={window.__TextStyle.textStyle.FILTER.REGULAR_BLUE}
                           weight="1"/>
@@ -97,7 +100,7 @@ class FilterActivity extends View {
                           <TextView
                           width="match_parent"
                           height="wrap_content"
-                          text="Number of votes"
+                          text={window.__S.NUMBER_OF_VOTES}
                           gravity="center_horizontal"
                           style={window.__TextStyle.textStyle.FILTER.REGULAR_BLACK}
                           weight="1"/>
@@ -105,7 +108,7 @@ class FilterActivity extends View {
                           <TextView
                           width="match_parent"
                           height="wrap_content"
-                          text = "Published date"
+                          text = {window.__S.PUBLISHED_DATE}
                           gravity="center_horizontal"
                           style={window.__TextStyle.textStyle.FILTER.REGULAR_BLACK}
                           weight="1"/>
@@ -143,11 +146,13 @@ class FilterActivity extends View {
 
 
   render() {
-    var buttonList = ["APPLY FILTER"];
+    var buttonList = [window.__S.APPLY_FILTER];
     this.layout = (
       <RelativeLayout
       root="true"
       width="match_parent"
+      clickable="true"
+      root="true"
       height="match_parent">
 
       <LinearLayout
@@ -163,7 +168,7 @@ class FilterActivity extends View {
         height="match_parent">
 
         <SimpleToolbar
-          title="Filter"
+          title={window.__S.FILTER}
           onBackPress={this.onBackPressed}
           invert="true"
           width="match_parent"/>
@@ -194,7 +199,7 @@ class FilterActivity extends View {
                       gravity="center_vertical"
                       style={window.__TextStyle.textStyle.FILTER.REGULAR_BLACK}
                       background={window.__Colors.WHITE_F7}
-                      text="SORT BY"/>
+                      text={window.__S.SORT_BY}/>
 
                       {this.getSortCard()}
 
@@ -207,7 +212,7 @@ class FilterActivity extends View {
                       padding="16,8,16,8"
                       style={window.__TextStyle.textStyle.FILTER.REGULAR_BLACK}
                       background={window.__Colors.WHITE_F7}
-                      text="FILTER BY"/>
+                      text={window.__S.FILTER_BY}/>
 
                       <FilterCard
                       filterData={this.filterData}

@@ -62,23 +62,23 @@ class LoaderDialog extends View {
         height="match_parent">
 
                
-                  <LinearLayout
-                    background={window.__Colors.WHITE}
-                    width="match_parent"
-                    padding="30,20,30,20"
-                    margin="24,0,24,0"
-                    gravity="center">
+        <LinearLayout
+          background={window.__Colors.WHITE}
+          width="match_parent"
+          padding="30,20,30,20"
+          margin="24,0,24,0"
+          gravity="center">
 
-                    <TextView
-                      style ={window.__TextStyle.textStyle.LOADING_TEXT}
-                      text = "Please wait..."/>
+          <TextView
+            style ={window.__TextStyle.textStyle.LOADING_TEXT}
+            text = {window.__S.WAIT_REQUEST}/>
 
-                    <ProgressBar
-                      margin="20,0,0,0"
-                      height="40"
-                      width="40"/>
+          <ProgressBar
+            margin="20,0,0,0"
+            height="40"
+            width="40"/>
 
-                  </LinearLayout>
+        </LinearLayout>
 
        
       </LinearLayout>

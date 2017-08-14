@@ -57,9 +57,9 @@ class RecommendedCourses extends View {
   getRows = () =>{
     var rows = this.data.map((item,i) => {
          return (<CourseCard 
-                 data={item}
-                 onCourseClick = {this.handleCourseClick}
-                 onCourseOpenClick = {this.handleCourseOpenClick}/>)
+                   data={item}
+                   onCourseClick = {this.handleCourseClick}
+                   onCourseOpenClick = {this.handleCourseOpenClick}/>)
                  
     });
 
@@ -78,16 +78,16 @@ class RecommendedCourses extends View {
 
   getHeader(){
     return (<LinearLayout
-            width="match_parent"
-            height="wrap_content"
-            margin="16,16,16,16"
-            orientation="horizontal">
+              width="match_parent"
+              height="wrap_content"
+              margin="16,16,16,16"
+              orientation="horizontal">
 
-            <TextView
-            width="wrap_content"
-            height="wrap_content"
-            text="Recommended"
-            style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
+              <TextView
+                width="wrap_content"
+                height="wrap_content"
+                text={window.__S.RECOMMENDED}
+                style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
 
             </LinearLayout>)
@@ -126,13 +126,13 @@ class RecommendedCourses extends View {
            scrollBarX="false"
            fillViewport="true">
 
-           <LinearLayout
+            <LinearLayout
                     width="match_parent"
                     height="wrap_content">
 
-           {this.getRows()}
+              {this.getRows()}
 
-         </LinearLayout>
+            </LinearLayout>
 
 
 

@@ -52,7 +52,10 @@ class AnswerView extends View {
 
 
   getIndexHolder = () => {
-    return (<TextView id = {this.idSet.itemPosition} text={this.props.index + 1} />)
+    return (
+      <TextView 
+        id = {this.idSet.itemPosition} 
+        text={this.props.index + 1} />)
   }
 
   getSelectedImage = () => {
@@ -74,19 +77,20 @@ class AnswerView extends View {
 
     this.layout = (
       <LinearLayout
-      width="match_parent"
-      cornerRadius="5"
-      id ={this.idSet.parentContainer}
-      margin="0,0,0,12"
-      stroke ={"2," + window.__Colors.PRIMARY_BLACK_66}
-      height="56">
+        width="match_parent"
+        cornerRadius="5"
+        id ={this.idSet.parentContainer}
+        margin="0,0,0,12"
+        stroke ={"2," + window.__Colors.PRIMARY_BLACK_66}
+        height="56">
+        
         <LinearLayout
-      width="match_parent"
-      gravity="center_vertical"
-      allowMultipleClicks="true"
-      padding="12,8,12,8"
-      onClick={this.handleSelectionEvent}
-      height="match_parent">
+          width="match_parent"
+          gravity="center_vertical"
+          allowMultipleClicks="true"
+          padding="12,8,12,8"
+          onClick={this.handleSelectionEvent}
+          height="match_parent">
 
             <RelativeLayout
               width="40"
@@ -102,6 +106,7 @@ class AnswerView extends View {
               {this.getIndexHolder()}
              
             </RelativeLayout>
+           
            <TextView
             width="wrap_content"
             height="match_parent"
@@ -112,6 +117,7 @@ class AnswerView extends View {
             style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>
 
          </LinearLayout> 
+
       </LinearLayout>
     )
 

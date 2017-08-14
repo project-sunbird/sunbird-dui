@@ -26,7 +26,7 @@ class CommunityInfoActivity extends View {
     
 
     this.screenName="CommunityInfoActivity";
-    // this.props.appendText = this.props.appendText || "";
+
     this.setIds([
       'defaultContainer',
       'descContainer',
@@ -83,7 +83,7 @@ class CommunityInfoActivity extends View {
                       height="32"
                       imageUrl="ic_action_group"/>
 
-                  </LinearLayout>
+                </LinearLayout>
 
                 <LinearLayout
                   width="70"
@@ -92,18 +92,18 @@ class CommunityInfoActivity extends View {
                   gravity="center">
 
                     <TextView
-                    width="wrap_content"
-                    height="wrap_content"
-                    padding="5,2,5,2"
-                    cornerRadius="3"
-                    gravity="center"
-                    background={window.__Colors.PRIMARY_BLACK_66}
-                    text="OPEN"
-                    style={window.__TextStyle.textStyle.SYMBOL.STATUSBAR.LABEL}/>
+                      width="wrap_content"
+                      height="wrap_content"
+                      padding="5,2,5,2"
+                      cornerRadius="3"
+                      gravity="center"
+                      background={window.__Colors.PRIMARY_BLACK_66}
+                      text={window.__S.OPEN}
+                      style={window.__TextStyle.textStyle.SYMBOL.STATUSBAR.LABEL}/>
 
-                  </LinearLayout>
+                </LinearLayout>
 
-                </RelativeLayout>)
+            </RelativeLayout>)
   }
 
   getGroupInfo = () => {
@@ -111,8 +111,7 @@ class CommunityInfoActivity extends View {
             width="200"
             height="wrap_content"
             orientation="vertical"
-            margin="10,0,0,0"
-            >
+            margin="10,0,0,0">
                 <TextView
                 width="wrap_content"
                 height="wrap_content"
@@ -242,10 +241,11 @@ class CommunityInfoActivity extends View {
     this.layout = (
       <LinearLayout
         root="true"
-        orientation="vertical"
+        height="match_parent"
         width="match_parent"
+        orientation="vertical"
         background={window.__Colors.WHITE_F7}
-        height="match_parent">
+        clickable="true">
 
           <SearchToolbar
             hint="Enter your search"
@@ -270,25 +270,26 @@ class CommunityInfoActivity extends View {
                   {this.getHeader()}
 
                   <LinearLayout
-                  width="match_parent"
-                  height="wrap_content"
-                  orientation="vertical"
-                  gravity="center"
-                  visibility="visible"
-                  id={this.idSet.defaultContainer}>
+                    id={this.idSet.defaultContainer}
+                    width="match_parent"
+                    height="wrap_content"
+                    orientation="vertical"
+                    gravity="center"
+                    visibility="visible">
 
-                  <CommunityDefault/>
+                    <CommunityDefault/>
 
                   </LinearLayout>
 
                   <LinearLayout
-                  width="match_parent"
-                  height="wrap_content"
-                  visibility="gone"
-                  id={this.idSet.descContainer}
-                  orientation="vertical">
+                    width="match_parent"
+                    height="wrap_content"
+                    visibility="gone"
+                    id={this.idSet.descContainer}
+                    orientation="vertical">
 
-                  <CommunityDescription type="join"/>
+                  <CommunityDescription 
+                    type="join"/>
 
                   </LinearLayout>
 

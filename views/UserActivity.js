@@ -441,6 +441,9 @@ class UserActivity extends View {
   }
 
   handleLoginClick = () => {
+    
+    console.log(window.__loginUrl , "/auth/realms/sunbird/protocol/openid-connect/auth","\nandroid");
+
     JBridge.keyCloakLogin(window.__loginUrl + "/auth/realms/sunbird/protocol/openid-connect/auth","android");
   }
 

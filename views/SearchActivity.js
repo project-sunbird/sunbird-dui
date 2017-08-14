@@ -37,45 +37,31 @@ class SearchActivity extends View {
     this.shouldCacheScreen = false;
 
     this.screenName = "SearchActivity"
-    console.log("state in search activity",state)
+
     this.tempData = JSON.parse(state.data.value0.filterDetails);
-    console.log("tempData in search ^^^^^^^^^^^^^^^^^^", this.tempData);
+
 
     this.filter=[]
-    // if(this.tempData.length>0){
-      this.filterData = this.tempData.filterDetails;
-      this.searchText = this.tempData.filterDetails.query
-      this.searchType = this.tempData.filterType
-    // }
-    console.log("filter in search ^^^^^^^^^^^^^^^^^^", this.filterData);
+    this.filterData = this.tempData.filterDetails;
+    this.searchText = this.tempData.filterDetails.query
+    this.searchType = this.tempData.filterType
     this.temp = state.data;
-    console.log("temp in search ^^^^^^^^^^^^^^^^^^", this.temp);
     this.searchType = this.tempData.searchType;
-    console.log("type", this.searchType);
+
 
     window.searchData = this.logSearch;
 
     _this = this;
-    // this.checkSearchList(this.filterData.length, this.filterData);
+
   }
 
-  // checkSearchList = (length, data) => {
-  //   if (length != 0) {
-
-  //     data = JSON.parse(data)
-  //     console.log("query!", data.query)
-  //     this.getSearchList(data.query,"true");
-
-
-
-  //   }
-  // }
+ 
 
   afterRender = () => {
-    console.log(this.filterData)
+
 
     if(this.filterData!=undefined && this.filterData.length != 0){
-    JBridge.showSnackBar("Loading Search Results Please Wait......")
+    JBridge.showSnackBar(window.__S.SEARCH_LOADING_MESSAGE)
        var cmd = "";
         cmd += _this.set({
           id: _this.idSet.filterHolder,
@@ -89,7 +75,6 @@ class SearchActivity extends View {
       }else{
         searchData=JSON.parse(this.filter)
       }
-      console.log("Loading detials for ")
       this.getSearchList(this.searchText,"true");
     }
 
@@ -105,7 +90,7 @@ class SearchActivity extends View {
 
   onPop = () => {
     Android.runInUI(
-      this.animateView(),
+      _this.animateView(),
       null
     );
   }
@@ -133,7 +118,6 @@ class SearchActivity extends View {
                   height="match_parent"
                   width="0"
                   weight="1"
-
                   maxLines="1"
                   hint="Search"
                   layoutTransition="true"
@@ -153,17 +137,17 @@ class SearchActivity extends View {
                    height="wrap_content">
 
                    <ImageView
-                    onClick={this.handleClearClick}
-                    id={this.idSet.clearHolder}
-                    style = {IconStyle}
-                    imageUrl = "ic_action_close"/>
+                      onClick={this.handleClearClick}
+                      id={this.idSet.clearHolder}
+                      style = {IconStyle}
+                      imageUrl = "ic_action_close"/>
 
                     <ImageView
-                    onClick={this.handleFilterClick}
-                    id={this.idSet.filterHolder}
-                    style = {IconStyle}
-                    visibility="gone"
-                    imageUrl = "ic_action_filter"/>
+                      onClick={this.handleFilterClick}
+                      id={this.idSet.filterHolder}
+                      style = {IconStyle}
+                      visibility="gone"
+                      imageUrl = "ic_action_filter"/>
 
                    </LinearLayout>)
     return layout;
@@ -193,7 +177,7 @@ class SearchActivity extends View {
                       maxLines="1"
                       margin="16,16,16,16"
                       style={window.__TextStyle.textStyle.TOOLBAR.HEADING}
-                      text="No Search Results Found"/>
+                      text={window.__S.EMPTY_SEARCH_RESULTS}/>
 
                   </LinearLayout>);
 
@@ -231,10 +215,8 @@ class SearchActivity extends View {
     }
     else
     {
-        console.log("oin get search List",searchText);
+
         var callback = callbackMapper.map(function(data) {
-          console.log("search data from api",data)
-          console.log("search results", JSON.parse(data[1]));
           data[0] = utils.decodeBase64(data[0])
           _this.filterData = data[1];
 
@@ -253,44 +235,25 @@ class SearchActivity extends View {
                   s = s.replace(/[\u0000-\u0019]+/g, "");
                   _this.renderResult(JSON.parse(s));
                 }
-
-
         });
-        console.log("searchText",searchText)
-        // if (searchText.length > 2) {
+
+
           if (this.filterData!=undefined && this.filterData.length == 0) {
             status = "false";
           } else {
             status = "true";
-            // this.filterData = this.temp;
           }
-          console.log("this.filterData in search",this.filterData)
-          // console.log("searchtext", searchText);
-          // console.log("this.filterData", this.filterData);
 
+      
           var s = "";
-          // if (typeof this.filterData == 'object') {
-          //   this.filterData = this.filterData.value0.filterDetails;
-          //   console.log("this.filterData", this.filterData);
-          //   var s = JSON.parse(this.filterData);
-          //   console.log("filterHolder", s.filterDetails);
-          //   this.filterData = s.filterDetails;
-          // }
-          // if(typeof this.filterData == "string" && this.filterData.length >10){
-          //   this.filterData = JSON.parse(this.filterData)
-          // }
-
-
-          console.log("this.filterData", this.filterData);
-          console.log("this.filterData", typeof(this.filterData));
           if(JBridge.isNetworkAvailable()){
-              JBridge.showSnackBar("Loading Search Results Please Wait......")
+              JBridge.showSnackBar(window.__S.SEARCH_LOADING_MESSAGE)
               JBridge.searchContent(callback, JSON.stringify(this.filterData), searchText, this.searchType, flag, 30);
           }
           else{
-            JBridge.showSnackBar("No internet connection");
+            JBridge.showSnackBar(window.__S.NO_INTERNET);
           }
-        // }
+
         this.showFilter();
     }
   }
@@ -318,12 +281,7 @@ class SearchActivity extends View {
 
   handleSearchClick = (searchText) => {
     JBridge.hideKeyboard();
-
-
     this.getSearchList(searchText[0],"false");
-
-
-
   }
 
   handleClearClick = () => {
@@ -356,7 +314,7 @@ class SearchActivity extends View {
   }
 
   onItemClick = (params) => {
-    console.log("parmas sare", params);
+    console.log("parmas are", params);
   }
 
 
@@ -396,6 +354,7 @@ class SearchActivity extends View {
 
       <RelativeLayout
         root = "true"
+        clickable="true"
         width="match_parent"
         height="match_parent">
 
