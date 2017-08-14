@@ -145,7 +145,8 @@ const stringsRes = {
 		AS_LINK : "As Link",
 		AS_FILE : "As File",
 		SHARE_THIS : "Share this",
-		FLAG : "Flag / Report"
+		FLAG : "Flag / Report",
+		ADD_COMMENT : "ADD COMMENT",
 	},
 	"hi_IN" : {
 	},

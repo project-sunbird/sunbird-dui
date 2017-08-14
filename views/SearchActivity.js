@@ -48,7 +48,7 @@ class SearchActivity extends View {
     this.temp = state.data;
     this.searchType = this.tempData.searchType;
 
-
+    this.searchResponse = null;
     window.searchData = this.logSearch;
 
     _this = this;
@@ -58,7 +58,8 @@ class SearchActivity extends View {
  
 
   afterRender = () => {
-
+    
+    
 
     if(this.filterData!=undefined && this.filterData.length != 0){
     JBridge.showSnackBar(window.__S.SEARCH_LOADING_MESSAGE)
@@ -89,6 +90,8 @@ class SearchActivity extends View {
   }
 
   onPop = () => {
+    
+
     Android.runInUI(
       _this.animateView(),
       null

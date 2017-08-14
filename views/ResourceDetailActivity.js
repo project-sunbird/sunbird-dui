@@ -49,7 +49,7 @@ class ResourceDetailActivity extends View {
 
     this.details = state.data.value0.resourceDetails;
     this.details = JSON.parse(this.details);
-
+    console.log("RDA",this.details)
 
     this.localStatus = false;
 
@@ -155,6 +155,36 @@ class ResourceDetailActivity extends View {
 
         this.replaceChild(this.idSet.ratingContainer,layout.render(),0)
     }
+
+  }
+
+  flagContent = (comment,selectedList) =>{
+
+    console.log("flag request",this.details)
+    console.log(comment,selectedList)
+    var versionKey;
+    if(this.details.content.hasOwnProperty("versionKey")){
+      versionKey = this.details.content.versionKey;
+    }
+    else if(this.details.content.hasOwnProperty("contentData") && this.details.content.contentData.hasOwnProperty("versionKey")){
+      versionKey = this.details.content.contentData.versionKey
+    }
+
+    var request = {
+                          "flagReasons":selectedList,
+                          "flaggedBy":"",
+                          "versionKey": versionKey,
+                          "flags": [comment]
+                     }
+    
+    var whatToSend = {
+      "user_token" : window.__userToken,
+      "api_token" : window.__apiToken,
+      "requestBody" : JSON.stringify(request),
+      "identifier" : this.details.content.identifier
+    }
+    var event= { "tag": "API_FlagContent", contents: whatToSend };
+    window.__runDuiCallback(event);
 
   }
 
@@ -413,6 +443,7 @@ class ResourceDetailActivity extends View {
 
   handleMenuClick = (url) =>{
     if(url == "ic_action_share_black"){
+      window.__SharePopup.resetPopup();
       window.__SharePopup.show();
     }
   }
@@ -484,7 +515,9 @@ class ResourceDetailActivity extends View {
 
 
       </LinearLayout>
-      <FlagPopup/>
+      <FlagPopup
+      onConfirm  = {this.flagContent}
+      />
       <LinearLayout
        width="match_parent"
        height="match_parent"
