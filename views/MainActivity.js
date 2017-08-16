@@ -303,7 +303,8 @@ class MainActivity extends View {
             height="match_parent"
             root="true"
             width="match_parent"
-            response = {data} />
+            response = {data}
+            editable = "true" />
         )
         break;
 
