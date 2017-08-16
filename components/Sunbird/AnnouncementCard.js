@@ -21,99 +21,101 @@ class AnnouncementCard extends View {
 
   }
 
-  afterRender(){
+  afterRender = () => {
   }
 
-  getLabel(){
+  getLabel = () =>{
     return(<LinearLayout
             width="wrap_content"
             height="wrap_content"
-            gravity="center_vertical"
-            >
+            gravity="center_vertical">
+                
                 <TextView
-                width="match_parent"
-                height="wrap_content"
-                margin="0,0,3,0"
-                gravity="center_vertical"
-                text={this.props.params.labelText}
-                style={window.__TextStyle.textStyle.HINT.REGULAR}/>
+                  width="match_parent"
+                  height="wrap_content"
+                  margin="0,0,3,0"
+                  gravity="center_vertical"
+                  text={this.props.params.labelText}
+                  style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
                 <ImageView
-                width="15"
-                height="12"
-                imageUrl={this.props.params.labelIcon}/>
+                  width="15"
+                  height="12"
+                  imageUrl={this.props.params.labelIcon}/>
 
                 <ViewWidget
-                height="0"
-                weight="1"/>
+                  height="0"
+                  weight="1"/>
+                
                 <TextView
-                width="match_parent"
-                height="wrap_content"
-                margin="8,0,0,0"
-                gravity="center_vertical"
-                text={this.props.params.date}
-                style={window.__TextStyle.textStyle.HINT.REGULAR}/>
+                  width="match_parent"
+                  height="wrap_content"
+                  margin="8,0,0,0"
+                  gravity="center_vertical"
+                  text={this.props.params.date}
+                  style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
             </LinearLayout>
           )
   }
 
   getBody(){
-        return (<LinearLayout
-                width="match_parent"
-                height="wrap_content"
-                orientation="horizontal"
-                margin="0,12,0,0"
-                >
-                  <ImageView
-                  width="23"
-                  height="27"
-                  imageUrl={this.props.params.bodyIcon}
-                  />
+    return (
 
-                  <LinearLayout
-                    width="wrap_content"
-                    height="wrap_content"
-                    orientation="vertical"
-                    padding="12,0,0,0">
-                     <TextView
-                      width="wrap_content"
-                      height="wrap_content"
-                      text={this.props.params.bodyHeading}
-                      style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
+      <LinearLayout
+        width="match_parent"
+        height="wrap_content"
+        orientation="horizontal"
+        margin="0,12,0,0">
+        
+        <ImageView
+        width="23"
+        height="27"
+        imageUrl={this.props.params.bodyIcon}/>
 
+        <LinearLayout
+          width="wrap_content"
+          height="wrap_content"
+          orientation="vertical"
+          padding="12,0,0,0">
+           
+          <TextView
+            width="wrap_content"
+            height="wrap_content"
+            text={this.props.params.bodyHeading}
+            style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
-                          <TextView
-                          width="wrap_content"
-                          height="wrap_content"
-                          text={this.props.params.bodyContent}
-                          gravity="center_vertical"
-                          style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>
+            <TextView
+            width="wrap_content"
+            height="wrap_content"
+            text={this.props.params.bodyContent}
+            gravity="center_vertical"
+            style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>
 
-                  </LinearLayout>
+        </LinearLayout>
 
-              </LinearLayout>);
+    </LinearLayout>);
 
   }
 
-  getFooter(){
+  getFooter = () => {
 
       return (<LinearLayout
-              width="match_parent"
-              height="wrap_content"
-              orientation="horizontal"
-              margin="0,12,0,0"
-              >
+                width="match_parent"
+                height="wrap_content"
+                orientation="horizontal"
+                margin="0,12,0,0">
 
-              <ViewWidget
-              weight="1"
-              height="0"/>
-              <TextView
-              width="wrap_content"
-              height="wrap_content"
-              text={this.props.params.footerTitle}
-              gravity="center_vertical"
-              style={window.__TextStyle.textStyle.CLICKABLE.BLUE_SEMI}/>
+                <ViewWidget
+                  weight="1"
+                  height="0"/>
+                
+                <TextView
+                  width="wrap_content"
+                  height="wrap_content"
+                  text={this.props.params.footerTitle}
+                  gravity="center_vertical"
+                  style={window.__TextStyle.textStyle.CLICKABLE.BLUE_SEMI}/>
 
             </LinearLayout>
             )
@@ -131,14 +133,13 @@ class AnnouncementCard extends View {
         padding="16,16,16,16"
         root="true"
         orientation="vertical"
-        background={window.__Colors.WHITE}
-        >
+        background={window.__Colors.WHITE}>
 
         {this.getLabel()}
+
         {this.getBody()}
+
         {this.getFooter()}
-
-
 
      </LinearLayout>
 

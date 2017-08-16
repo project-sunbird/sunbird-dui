@@ -29,8 +29,8 @@ class DoubleRadioList extends View {
 
 getSingleRow = (item,index) =>{
   return (<RadioListItem
-          title={item}
-          index={index}/>);
+            title={item}
+            index={index}/>);
 }
 
 
@@ -52,22 +52,28 @@ renderItems() {
       });
       this.totalBar = (
           <LinearLayout
-          orientation = "horizontal"
-          width = "wrap_content"
-          height = "wrap_content">
-          <LinearLayout
-          orientation = "vertical"
-          width = "wrap_content"
-          height = "wrap_content">
-          {leftBar}
-          </LinearLayout>
-          <LinearLayout
-          orientation = "vertical"
-          width = "wrap_content"
-          height = "wrap_content"
-          margin = "86,0,0,0">
-          {rightBar}
-          </LinearLayout>
+            orientation = "horizontal"
+            width = "wrap_content"
+            height = "wrap_content">
+            <LinearLayout
+              orientation = "vertical"
+              width = "wrap_content"
+              height = "wrap_content">
+              
+              {leftBar}
+            
+            </LinearLayout>
+          
+            <LinearLayout
+              orientation = "vertical"
+              width = "wrap_content"
+              height = "wrap_content"
+              margin = "86,0,0,0">
+              
+              {rightBar}
+
+            </LinearLayout>
+
           </LinearLayout>
         )
 
@@ -83,6 +89,7 @@ renderItems() {
         width="wrap_content" >
            
         {this.renderItems()}
+        
        </LinearLayout>
     )
      

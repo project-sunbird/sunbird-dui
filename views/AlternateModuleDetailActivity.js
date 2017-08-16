@@ -31,22 +31,19 @@ class AlternateModuleDetailActivity extends View {
         ]);
         this.state = state;
         this.screenName = "AlternateModuleDetailActivity"
-        this.menuData = {
-            url: [
 
+        this.menuData = {
+          url: [
+            {}
+          ]
+        }
+        
+        this.menuData1 = {
+            url: [
+                { imageUrl: 'ic_action_overflow' }
             ]
         }
-            this.menuData = {
-              url: [
-                
-              ]
-            }
-            this.menuData1 = {
-              url: [
-                {imageUrl:'ic_action_overflow'}
-              ]
-            }
-            this.popupMenu = "Delete"
+        this.popupMenu = "Delete"
 
 
         this.shouldCacheScreen = false;
@@ -61,12 +58,11 @@ class AlternateModuleDetailActivity extends View {
         this.moduleName = state.data.value0.moduleName;
 
 
-        console.log("ModueDetail ", this.module)
+
         this.module = JSON.parse(this.module)
-        console.log("module local statuws", this.module.isAvailableLocally)
         this.localStatus = this.module.isAvailableLocally;
-        console.log("Module Title", this.moduleName)
-        console.log("ModueContentDetials ", this.module)
+
+
 
 
 
@@ -79,23 +75,21 @@ class AlternateModuleDetailActivity extends View {
         else return (bytes / 1073741824).toFixed(3) + " GB";
     };
 
-overFlowCallback = (params) => {
-    console.log("ITEM CLICKED",params);
-    if(params == 0){
-      var callback = callbackMapper.map(function(response){
-        console.log("repsonse for delete",response)
-        if(response[0] == "successful"){
-          console.log("back to resource");
-          _this.onBackPressed();
-        }
-      }); 
-      JBridge.deleteContent(this.module.identifier,callback);
-    }
-  }
+    overFlowCallback = (params) => {
 
-  handleOverFlowClick = () => {
-  
-}
+        if (params == 0) {
+            var callback = callbackMapper.map(function(response) {
+                if (response[0] == "successful") {
+                    _this.onBackPressed();
+                }
+            });
+            JBridge.deleteContent(this.module.identifier, callback);
+        }
+    }
+
+    handleOverFlowClick = () => {
+
+    }
 
 
 
@@ -111,7 +105,7 @@ overFlowCallback = (params) => {
 
     getSpineStatus = (pValue) => {
         var cmd;
-        console.log("--->\t\t\t\n\n\n", pValue);
+
 
         var data = JSON.parse(pValue);
 
@@ -119,14 +113,12 @@ overFlowCallback = (params) => {
             return;
 
         var textToShow = ""
-        console.log("DATA -> ", data)
 
-         data.downloadProgress= data.downloadProgress == undefined || isNaN(data.downloadProgress) ? 0 : data.downloadProgress;
+
+        data.downloadProgress = data.downloadProgress == undefined || isNaN(data.downloadProgress) ? 0 : data.downloadProgress;
         var downloadedPercent = data.downloadProgress;
-        downloadedPercent =  downloadedPercent < 0 ? 0 : downloadedPercent;
+        downloadedPercent = downloadedPercent < 0 ? 0 : downloadedPercent;
         if (downloadedPercent == 100) {
-
-            console.log("SPINE IMPORTED -> ")
             this.checkContentLocalStatus(this.module.identifier);
 
         } else {
@@ -142,42 +134,41 @@ overFlowCallback = (params) => {
         console.log("in checkContentLocalStatus")
         var _this = this;
         var callback = callbackMapper.map(function(status) {
-             console.log("in callback localStatus")
+
             if (status == "true") {
-                console.log("Spine Found")
+
                 var callback1 = callbackMapper.map(function(data) {
-                    console.log("module details;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;", JSON.parse(data));
+
                     _this.module = JSON.parse(data);
                     _this.renderModuleChildren()
                 });
                 JBridge.getChildContent(identifier, callback1)
             } else {
-                console.log("else for status")
-                 var callback22= callbackMapper.map(function(data){
-                        console.log("data",data)
-                        data = JSON.parse(data)
-                      if(data.status==="NOT_FOUND"){
-                           if(JBridge.isNetworkAvailable())
-                            JBridge.importCourse(identifier,"false")
-                          else
+
+                var callback22 = callbackMapper.map(function(data) {
+
+                    data = JSON.parse(data)
+                    if (data.status === "NOT_FOUND") {
+                        if (JBridge.isNetworkAvailable())
+                            JBridge.importCourse(identifier, "false")
+                        else
                             JBridge.showSnackBar(window.__S.NO_INTERNET)
-                      }
-                      else{
+                    } else {
                         _this.renderModuleChildren()
-                      }
-                    })
-            JBridge.getContentImportStatus(identifier,callback22)
+                    }
+                })
+                JBridge.getContentImportStatus(identifier, callback22)
             }
 
 
 
         });
         if (!this.module.isAvailableLocally || this.module.isUpdateAvailable) {
-            console.log("local")
+
             window.__getDownloadStatus = this.getSpineStatus;
             JBridge.getLocalContentStatus(identifier, callback);
         } else {
-            console.log("ALREADY PRESENT")
+
             this.renderModuleChildren();
         }
     }
@@ -195,12 +186,14 @@ overFlowCallback = (params) => {
         console.log("RENDRING BREKAUP", this.module.children)
         if (this.module.children) {
 
-            layout = ( <
-                CourseCurriculum height = "match_parent"
+            layout = ( <CourseCurriculum 
+                height = "match_parent"
+                width = "match_parent"
                 root = "true"
                 margin = "0,0,0,12"
                 brief = { true } title = ""
-                onClick = { this.handleModuleClick } content = { this.module.children } width = "match_parent" / >
+                onClick = { this.handleModuleClick } 
+                content = { this.module.children }  />
             )
             this.replaceChild(this.idSet.descriptionContainer, layout.render(), 0);
         } else {
@@ -217,50 +210,51 @@ overFlowCallback = (params) => {
     }
 
     afterRender = () => {
-        console.log("in after render")
         this.checkContentLocalStatus(this.module.identifier);
     }
 
 
     getLineSeperator = () => {
-            return ( <LinearLayout width = "match_parent"
-                height = "2"
-                margin = "0,16,0,0"
-                background = { window.__Colors.PRIMARY_BLACK_22 }/>
-                )
-            }
-
-
-
-    getHeader = () => {
+        return ( <LinearLayout width = "match_parent"
+            height = "2"
+            margin = "0,16,0,0"
+            background = { window.__Colors.PRIMARY_BLACK_22 }/>
+        )
+    }
+     getHeader = () => {
         var headerLayout = ( 
             <LinearLayout 
                 height = "wrap_content"
                 width = "match_parent"
                 orientation = "vertical">
 
-                <LinearLayout height = "wrap_content"
-                gravity = "center_vertical"
-                margin = "0,12,0,12"
-                width = "match_parent" >
+                <LinearLayout 
+                    height = "wrap_content"
+                    gravity = "center_vertical"
+                    margin = "0,12,0,12"
+                    width = "match_parent" >
                     <TextView height = "wrap_content"
                         width = "0"
                         weight = "1"
-                        style = { window.__TextStyle.textStyle.CARD.TITLE.DARK } text = { this.moduleName }/>
+                        style = { window.__TextStyle.textStyle.CARD.TITLE.DARK } 
+                        text = { this.moduleName }/>
 
                 </LinearLayout>  
 
 
-                <TextView height = "wrap_content"
-                margin = "0,0,0,12"
-                width = "match_parent"
-                text={this.module.contentData.hasOwnProperty("size")? "Module Size "+this.formatBytes(this.module.contentData.size) : "Module Size Not available"}/>
+                <TextView 
+                    height = "wrap_content"
+                    margin = "0,0,0,12"
+                    width = "match_parent"
+                    text={this.module.contentData.hasOwnProperty("size")? window.__S.MODULE_SIZE +" "+this.formatBytes(this.module.contentData.size) : window.__S.MODULE_SIZE_UNAVAILABLE }/>
 
 
-                <CropParagraph height = "wrap_content"
-                margin = "0,0,0,12"
-                width = "match_parent"
-                headText = { this.module.contentData.description ? "Description" : undefined } contentText = { this.module.contentData.description }/>
+                <CropParagraph 
+                    height = "wrap_content"
+                    margin = "0,0,0,12"
+                    width = "match_parent"
+                    headText = { this.module.contentData.description ? window.__S.DESCRIPTION : undefined } 
+                    contentText = { this.module.contentData.description }/>
 
 
             </LinearLayout>)
@@ -306,10 +300,11 @@ overFlowCallback = (params) => {
         this.layout = ( 
             <LinearLayout 
             root = "true"
-            background = { window.__Colors.WHITE } 
-            orientation = "vertical"
             width = "match_parent"
-            height = "match_parent" >
+            height = "match_parent"
+            background = { window.__Colors.WHITE }
+            clickable="true" 
+            orientation = "vertical">
                 <LinearLayout
                     root = "true"
                     width="match_parent"
@@ -325,10 +320,11 @@ overFlowCallback = (params) => {
                       invert="true"/>
                 </LinearLayout>
 
-                <ScrollView height = "0"
-                weight = "1"
-                width = "match_parent"
-                fillViewport = "true" >
+                <ScrollView 
+                    height = "0"
+                    weight = "1"
+                    width = "match_parent"
+                    fillViewport = "true" >
 
                     <LinearLayout height = "match_parent"
                     width = "match_parent"
@@ -362,6 +358,10 @@ overFlowCallback = (params) => {
 
             return this.layout.render();
         }
-    }
+
+
+
+
+}
 
 module.exports = Connector(AlternateModuleDetailActivity);

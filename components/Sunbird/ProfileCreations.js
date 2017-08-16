@@ -37,25 +37,25 @@ class ProfileCreations extends View {
 
   getHeader = () => {
     return (  <LinearLayout
-              margin="0,0,0,16"
-              width="match_parent"
-              height="wrap_content">
+                margin="0,0,0,16"
+                width="match_parent"
+                height="wrap_content">
 
-              <TextView
-              width="wrap_content"
-              height="wrap_content"
-              text="Creator of"
-              style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
+                <TextView
+                  width="wrap_content"
+                  height="wrap_content"
+                  text="Creator of"
+                  style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
-              <ViewWidget
-              height="0"
-              weight="1"/>
+                <ViewWidget
+                  height="0"
+                  weight="1"/>
 
-              <TextView
-              width="wrap_content"
-              height="wrap_content"
-              text="View all"
-              style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
+                <TextView
+                  width="wrap_content"
+                  height="wrap_content"
+                  text={window.__S.VIEW_ALL}
+                  style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
 
               </LinearLayout>)
   }
@@ -74,38 +74,38 @@ class ProfileCreations extends View {
                  width="200"
                  height="110">
 
-                <ImageView
-                  height="match_parent"
-                  width="match_parent"
-                  scaleType="fixXY"
-                  gravity="center"
-                  circularImageUrl={"10,"+item.imageUrl}/>
+                  <ImageView
+                    height="match_parent"
+                    width="match_parent"
+                    scaleType="fixXY"
+                    gravity="center"
+                    circularImageUrl={"10,"+item.imageUrl}/>
 
-                <LinearLayout
-                  width="match_parent"
-                  height="match_parent"
-                  gravity="center"
-                  cornerRadius="4"
-                  background={window.__Colors.BLACK}
-                  alpha="0.50"/>
+                  <LinearLayout
+                    width="match_parent"
+                    height="match_parent"
+                    gravity="center"
+                    cornerRadius="4"
+                    background={window.__Colors.BLACK}
+                    alpha="0.50"/>
 
-                <TextView
-                  width="wrap_content"
-                  height="wrap_content"
-                  padding = "10,10,10,10"
-                  text= {item.type}
-                  padding="5,3,5,3"
-                  cornerRadius="4"
-                  background={window.__Colors.PRIMARY_BLACK}
-                  style={window.__TextStyle.textStyle.SYMBOL.STATUSBAR.LABEL}/>
+                  <TextView
+                    width="wrap_content"
+                    height="wrap_content"
+                    padding = "10,10,10,10"
+                    text= {item.type}
+                    padding="5,3,5,3"
+                    cornerRadius="4"
+                    background={window.__Colors.PRIMARY_BLACK}
+                    style={window.__TextStyle.textStyle.SYMBOL.STATUSBAR.LABEL}/>
 
-                <TextView
-                  width="match_parent"
-                  height="wrap_content"
-                  padding = "10,10,10,10"
-                  alignParentBottom="true,-1"
-                  text= {item.moduleText}
-                  style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}/>
+                  <TextView
+                    width="match_parent"
+                    height="wrap_content"
+                    padding = "10,10,10,10"
+                    alignParentBottom="true,-1"
+                    text= {item.moduleText}
+                    style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}/>
 
               </RelativeLayout>
 
@@ -121,21 +121,20 @@ class ProfileCreations extends View {
     return (<LinearLayout
             width="wrap_content"
             height="wrap_content"
-            margin="0,16,0,0"
-            >
+            margin="0,16,0,0">
 
-            {this.getCards()}
+              { this.getCards() }
 
             </LinearLayout>
     )
   }
 
-  getLineSeperator() {
+  getLineSeperator = () => {
     return (<LinearLayout
-            width="match_parent"
-            height="1"
-            margin="0,0,0,24"
-            background={window.__Colors.PRIMARY_BLACK_22}/>)
+              width="match_parent"
+              height="1"
+              margin="0,0,0,24"
+              background={window.__Colors.PRIMARY_BLACK_22}/>)
   }
 
 
@@ -155,7 +154,7 @@ class ProfileCreations extends View {
                  scrollBarX="false"
                  fillViewport="true">
 
-                {this.getBody()}
+                  {this.getBody()}
 
                 </HorizontalScrollView>
 

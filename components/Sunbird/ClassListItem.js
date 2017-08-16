@@ -1,5 +1,3 @@
-
-
 var dom = require("@juspay/mystique-backend").doms.android;
 var Connector = require("@juspay/mystique-backend").connector;
 var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
@@ -9,46 +7,52 @@ var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 window.R = require("ramda");
+
 class ClassListItem extends View {
   constructor(props, children) {
     super(props, children);
   }
+  
   getData = () => {
     var answerLayout = this.props.data.values.map((item, index) => {
      return (<LinearLayout
-            width="match_parent"
-            height="wrap_content"
-            orientation="vertical">
+              width="match_parent"
+              height="wrap_content"
+              orientation="vertical">
                 <LinearLayout
-                width="match_parent"
-                height="wrap_content"
-                margin="16,11,16,11">
-                <LinearLayout
-                  padding="10,7,10,7"
-                  background={item.color}
-                  gravity="center"
-                  >
-                    <ImageView
-                      height="20"
-                      width="14"
-                      imageUrl= {item.imageUrl} />
+                  width="match_parent"
+                  height="wrap_content"
+                  margin="16,11,16,11">
+                  
+                  <LinearLayout
+                    padding="10,7,10,7"
+                    background={item.color}
+                    gravity="center">
+                      
+                      <ImageView
+                        height="20"
+                        width="14"
+                        imageUrl= {item.imageUrl} />
 
                   </LinearLayout>
+                  
                   <LinearLayout
-                        height="wrap_content"
-                        width="0"
-                        weight="1"
-                        padding="16,0,0,0"
-                        orientation="vertical">
+                    height="wrap_content"
+                    width="0"
+                    weight="1"
+                    padding="16,0,0,0"
+                    orientation="vertical">
 
                       <TextView
                         onClick={item.onMenuItemClick}
                         textFromHtml={item.subject}
                         height="wrap_content"
                         style={window.__TextStyle.textStyle.CARD.HEADING}/>
+                      
                       <Space
                         width="0"
                         weight="1" />
+                      
                       <TextView
                         textFromHtml={item.comment}
                         height="wrap_content"
@@ -86,28 +90,33 @@ class ClassListItem extends View {
 
   getMenuItems(data,cardNo){
     var layout = data.logo.map((item, index) => {
-               return <LinearLayout
+               return (
+                  <LinearLayout
                     width="wrap_content"
                     height="wrap_content">
+                    
                     <ImageView
                         height="20"
                         width="20"
                         margin="0,0,16,0"
                         imageUrl= {item}
-                        onClick={()=>{this.handleItemClick(cardNo,index)}}
-                        />
-                      <Space
-                        height="1"
-                        width="0"
-                        weight="1"/>
-                  </LinearLayout>
+                        onClick={()=>{this.handleItemClick(cardNo,index)}}/>
+                    
+                    <Space
+                      height="1"
+                      width="0"
+                      weight="1"/>
+
+                  </LinearLayout>)
             })
 
     return (
             <LinearLayout
             width="wrap_content"
             height="wrap_content">
+            
             {layout}
+
             </LinearLayout>
       )
   }
@@ -120,21 +129,23 @@ class ClassListItem extends View {
       <LinearLayout
 			width="match_parent"
 			height="wrap_content"
-			orientation="vertical"
-			>
-      <ScrollView
-          height="match_parent"
-          width="match_parent"
-          fillViewPort="true">
-          <LinearLayout
+			orientation="vertical">
+      
+        <ScrollView
             height="match_parent"
             width="match_parent"
-            orientation="vertical">
+            fillViewPort="true">
+            
+            <LinearLayout
+              height="match_parent"
+              width="match_parent"
+              orientation="vertical">
 
-                {this.getData()}
+                  {this.getData()}
 
-          </LinearLayout>
-      </ScrollView>
+            </LinearLayout>
+            
+        </ScrollView>
 
        </LinearLayout>
 

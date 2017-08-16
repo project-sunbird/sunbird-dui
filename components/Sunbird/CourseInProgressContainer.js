@@ -46,9 +46,6 @@ class CourseInProgressContainer extends View {
     this.data = data;
 
 
-    console.log("GODATA-->", data);
-
-    console.log("IS DATA EMPTY",isDataEmpty)
 
      var layout="";
      var rows="";
@@ -65,7 +62,7 @@ class CourseInProgressContainer extends View {
               width="match_parent"
               height="50"
               gravity="center"
-              text={"No Courses enrolled yet"}
+              text={window.__S.ERROR_NO_COURSES_ENROLLED}
               style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>
 
       </LinearLayout>);
@@ -85,14 +82,14 @@ class CourseInProgressContainer extends View {
       });
 
        layout = (
-      <LinearLayout
-        root="true"
-        height="wrap_content"
-        width="match_parent">
+        <LinearLayout
+          root="true"
+          height="wrap_content"
+          width="match_parent">
 
-        {rows}
+          {rows}
 
-      </LinearLayout>);
+        </LinearLayout>);
 
     }
 
@@ -144,23 +141,23 @@ class CourseInProgressContainer extends View {
             orientation="horizontal">
 
             <TextView
-            width="wrap_content"
-            height="wrap_content"
-            text={this.props.title}
-            style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
+              width="wrap_content"
+              height="wrap_content"
+              text={this.props.title}
+              style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
             <ViewWidget
-            width="0"
-            height="0"
-            weight="1"/>
+              width="0"
+              height="0"
+              weight="1"/>
 
             <TextView
-            width="wrap_content"
-            height="wrap_content"
-            text="VIEW ALL"
-            id={this.idSet.viewAllContainer}
-            onClick={this.handleViewAllClick}
-            style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
+              width="wrap_content"
+              height="wrap_content"
+              text={window.__S.VIEW_ALL}
+              id={this.idSet.viewAllContainer}
+              onClick={this.handleViewAllClick}
+              style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
 
 
             </LinearLayout>)

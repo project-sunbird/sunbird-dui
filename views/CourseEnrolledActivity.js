@@ -46,24 +46,24 @@ class CourseEnrolledActivity extends View {
       ]
     }
 
-    // this.popupMenu="Flag/Report content,Logout";
+
 
     _this = this;
     this.shouldCacheScreen = false;
     this.courseContent = "";
 
     this.enrolledCourses = window.__enrolledCourses;
-    //this.checkContentLocalStatus(this.details.identifier);
+
     
     this.details = JSON.parse(state.data.value0.courseDetails);
     
-    console.log("detials in CES",this.details)
+
     
     //to get geneie callback for download of spine
     window.__getDownloadStatus = this.getSpineStatus;
 
     this.showProgress = this.details.hasOwnProperty("contentType") && this.details.contentType == "collection" || this.details.contentType == "TextBook" ? "gone" : "visible";
-    console.log("\n\n\n\n progress",this.showProgress)
+
     if(this.details.hasOwnProperty("courseId")){
       this.baseIdentifier = this.details.courseId
     }
@@ -73,10 +73,8 @@ class CourseEnrolledActivity extends View {
     else if(this.details.hasOwnProperty("identifier")){
       this.baseIdentifier = this.details.identifier
     }
-    // this.baseIdentifier = this.details.identifier ? this.details.identifier : this.details.contentId;
-    console.log("baseIdentifier",this.baseIdentifier)
 
-    console.log("enrolled courses details",window.__enrolledCourses)
+
 
     if(window.__enrolledCourses != undefined){
       window.__enrolledCourses.map((item)=>{
@@ -94,12 +92,10 @@ class CourseEnrolledActivity extends View {
     
     this.data = {
       courseName: this.details ? this.details.courseName : "",
-      courseDesc: this.details ? this.details.courseDesc : "This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced",
+      courseDesc: this.details ? this.details.courseDesc : "",
       completedProgress: this.downloadProgress
-      
     };
 
-    // window.__ContentLoaderDialog.show();
 
   }
 
@@ -111,21 +107,14 @@ class CourseEnrolledActivity extends View {
     );
   }
 
-  // getContentState = (courseId,userToken) =>{
-  //   var whatToSend = { 
-  //     "courseId": courseId, 
-  //     "user_token": userToken, 
-  //     "api_token": window.__apiToken 
-  //   }
-  //   var event = { "tag": "API_GetContentState", contents: whatToSend };
-  //   window.__runDuiCallback(event);
-
-  // }
+   onStop = () =>{
+    window.__SharePopup.hide();
+    console.log("ON STOP IN ResourceDetailActivity")
+  }
 
 
   getSpineStatus = (pValue) => {
     var cmd;
-    console.log("--->\t\t\t\n\n\n", pValue);
 
     var data = JSON.parse(pValue);
 
@@ -133,11 +122,10 @@ class CourseEnrolledActivity extends View {
       return;
     
     var textToShow = ""
-    console.log("DATA -> ", data)
-
+   
     if(data.status == "NOT_FOUND"){
       window.__ContentLoaderDialog.hide();
-      JBridge.showSnackBar("Content not available");
+      JBridge.showSnackBar(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
       this.onBackPressed();
       return;
     }
@@ -149,7 +137,6 @@ class CourseEnrolledActivity extends View {
     if (downloadedPercent == 100) {
       window.__ContentLoaderDialog.updateProgressBar(100);
       window.__ContentLoaderDialog.hide();
-      console.log("SPINE IMPORTED -> ")
       this.checkContentLocalStatus(this.baseIdentifier);
 
     } else {
@@ -163,34 +150,22 @@ class CourseEnrolledActivity extends View {
 
 
   checkContentLocalStatus = (identifier) => {
-
-    console.log("in check local status",identifier)
-    
     var callback = callbackMapper.map(function(status) {
 
       if (status == "true") {
         window.__ContentLoaderDialog.hide()
-        console.log("Spine Found")
         var callback1 = callbackMapper.map(function(data) {
-          console.log(data)
-          // window.__testJSON = data[0];
-          // data[0] = data [0].replace(/\t/g, ' ');
           data[0] = utils.jsonifyData(data[0])
           _this.courseContent = JSON.parse(data[0]);
           window.__ContentLoaderDialog.hide();
           _this.renderCourseChildren()
         });
         JBridge.getChildContent(identifier, callback1)
-
-
-      } else {
-        console.log("Spine Not Found, IMPORTING ")
-          
+      } else {          
           var callback22= callbackMapper.map(function(data){
             console.log(data)
                 data = JSON.parse(data)
                 if(data.status==="NOT_FOUND"){
-                      console.log("Import")
                       if(JBridge.isNetworkAvailable())
                         JBridge.importCourse(identifier,"false")
                       else
@@ -234,18 +209,18 @@ class CourseEnrolledActivity extends View {
                   width="match_parent"
                   gravity="center"
                   root="true"
-                  text="Contents not added yet" />
+                  text={window.__S.ERROR_CONTENT_NOT_FOUND} />
     }else{
      layout = (
                 <CourseCurriculum
                   height="match_parent"
+                  width="match_parent"
                   root="true"
                   margin="0,0,0,12"
                   brief={true}
                   title=""
                   onClick={this.handleModuleClick}
-                  content= {this.courseContent.children}
-                  width="match_parent"/>
+                  content= {this.courseContent.children}/>
                   )
    }
     this.replaceChild(this.idSet.descriptionContainer, layout.render(), 0)
@@ -261,15 +236,13 @@ class CourseEnrolledActivity extends View {
   }
 
   afterRender=()=>{
-
-    console.log("AFTER RENDER CAME IN COURSE ENROLLED")
     this.checkContentLocalStatus(this.baseIdentifier);
 
     var callback = callbackMapper.map(function(data) {
 
       var input = [{
                     type : "text",
-                    data : "staging.open-sunbird.org/c/"+_this.baseIdentifier
+                    data : "staging.open-sunbird.org/public/"+_this.baseIdentifier
 
                   },{
                     type : "file",
@@ -282,11 +255,8 @@ class CourseEnrolledActivity extends View {
         data = {input}/>
         )
 
-    _this.replaceChild(_this.idSet.sharePopupContainer,sharePopUp.render(),0);
-
-    
+    _this.replaceChild(_this.idSet.sharePopupContainer,sharePopUp.render(),0);    
     });
-
     JBridge.exportEcar(this.baseIdentifier, callback);
 
   }
@@ -313,23 +283,25 @@ class CourseEnrolledActivity extends View {
 
 
   render() {
-    var buttonList = ["RESUME THE COURSE"];
     this.layout = (
 
       <RelativeLayout
-      width="match_parent"
       height="match_parent"
+      width="match_parent"
+      clickable="true"
       root="true">
 
       <LinearLayout
         root="true"
+        width="match_parent"
+        height="match_parent"
         background={window.__Colors.WHITE}
         orientation="vertical"
-        width="match_parent"
-        height="match_parent">
+        >
 
         <SimpleToolbar
             title=""
+            height="wrap_content"
             width="match_parent"
             menuData={this.menuData}
             popupMenu={this.popupMenu}
@@ -341,19 +313,17 @@ class CourseEnrolledActivity extends View {
 
 
           <HorizontalProgressBar
-            currentProgress={this.data.completedProgress}
-            totalProgress={this.data.totalProgress}
             width="match_parent"
             height="wrap_content"
-            visibility = {this.showProgress}
-
-            />
+            currentProgress={this.data.completedProgress}
+            totalProgress={this.data.totalProgress}
+            visibility = {this.showProgress}/>
 
             <LinearLayout
-              height="match_parent"
-              orientation="vertical"
               id={this.idSet.parentContainer}
-              width="match_parent">
+              height="match_parent"
+              width="match_parent"
+              orientation="vertical">
 
               <ScrollView
                   height="0"
@@ -376,48 +346,41 @@ class CourseEnrolledActivity extends View {
                         visibility = {this.showProgress}/>
 
 
-                          <LinearLayout
-                            height="match_parent"
-                            width="match_parent"
-                            gravity="center"
-                            root="true"
-                            orientation="vertical"
-                            id={this.idSet.descriptionContainer}>
+                      <LinearLayout
+                        id={this.idSet.descriptionContainer}
+                        height="match_parent"
+                        width="match_parent"
+                        gravity="center"
+                        root="true"
+                        orientation="vertical">
 
-                            <TextView
-                            margin="0,50,0,0"
-                            width="wrap_content"
-                            height="wrap_content"
-                            gravity="center"
-                            text="Loading content"/>
+                      <TextView
+                        margin="0,50,0,0"
+                        width="wrap_content"
+                        height="wrap_content"
+                        gravity="center"
+                        text={window.__S.LOADING_CONTENT}/>
 
-                            <ProgressBar
-                            margin="0,10,0,0"
-                            gravity="center"
-                            width="20"
-                            height="20"/>
+                      <ProgressBar
+                        margin="0,10,0,0"
+                        gravity="center"
+                        width="20"
+                        height="20"/>
 
-                            </LinearLayout>
-
-
-                </LinearLayout>
-
+                      </LinearLayout>
+                  </LinearLayout>
                 </ScrollView>
-
-                
-
           </LinearLayout>
 
-          
 
       </LinearLayout>
 
        <FlagPopup/>
 
        <LinearLayout
-       width="match_parent"
-       height="match_parent"
-       id={this.idSet.sharePopupContainer}/>
+       id={this.idSet.sharePopupContainer}
+        height="match_parent"
+       width="match_parent"/>
 
       </RelativeLayout>
     );

@@ -80,77 +80,75 @@ class SharePopup extends View {
     return (
 
       <ScrollView
-      width="match_parent"
-      height="wrap_content">
-
-      <LinearLayout
-      orientation="vertical"
-      width="match_parent"
-      height="wrap_content">
-
-      <LinearLayout
-      width="wrap_content"
-      height="wrap_content"
-      orientation="vertical"
-      visibility={textLinkAvailable?"visibile":"gone"}>
-
-        <TextView
-        margin="0,25,0,12"
         width="match_parent"
-        style={window.__TextStyle.textStyle.CARD.TITLE.REGULAR_BLACK}
-        height="wrap_content"
-        text="As Link"/>
+        height="wrap_content">
 
-
-        <HorizontalScrollView
-           width = "wrap_content"
-           height = "wrap_content"
-           scrollBarX="false"
-           fillViewport="true">
-
-             <LinearLayout
-              width="wrap_content"
-              id={this.idSet.linkShareIntents}
-              height="wrap_content"/>
-
-             
-
-        </HorizontalScrollView>
-
-      </LinearLayout>
-
-
-      <LinearLayout
-      width="wrap_content"
-      height="wrap_content"
-      orientation="vertical"
-      visibility={fileLinkAvailable?"visibile":"gone"}>
-
-       <TextView
-          margin="0,25,0,12"
+        <LinearLayout
+          orientation="vertical"
           width="match_parent"
-          style={window.__TextStyle.textStyle.CARD.TITLE.REGULAR_BLACK}
-          height="wrap_content"
-          text="As File"/>
+          height="wrap_content">
+
+          <LinearLayout
+            width="wrap_content"
+            height="wrap_content"
+            orientation="vertical"
+            visibility={textLinkAvailable?"visibile":"gone"}>
+
+            <TextView
+              margin="0,25,0,12"
+              width="match_parent"
+              style={window.__TextStyle.textStyle.CARD.TITLE.REGULAR_BLACK}
+              height="wrap_content"
+              text={window.__S.AS_LINK}/>
 
 
-         <HorizontalScrollView
-           width = "wrap_content"
-           height = "wrap_content"
-           scrollBarX="false"
-           fillViewport="true">
+            <HorizontalScrollView
+              width = "wrap_content"
+              height = "wrap_content"
+              scrollBarX="false"
+              fillViewport="true">
 
               <LinearLayout
-              width="wrap_content"
-              id={this.idSet.fileShareIntents}
-              height="wrap_content"/>
+                width="wrap_content"
+                id={this.idSet.linkShareIntents}
+                height="wrap_content"/>
 
-        </HorizontalScrollView>
+            </HorizontalScrollView>
 
-        </LinearLayout>
+          </LinearLayout>
 
-      
-     </LinearLayout>
+
+        <LinearLayout
+          width="wrap_content"
+          height="wrap_content"
+          orientation="vertical"
+          visibility={fileLinkAvailable?"visibile":"gone"}>
+
+          <TextView
+            margin="0,25,0,12"
+            width="match_parent"
+            style={window.__TextStyle.textStyle.CARD.TITLE.REGULAR_BLACK}
+            height="wrap_content"
+            text={window.__S.AS_FILE}/>
+
+
+           <HorizontalScrollView
+            width = "wrap_content"
+            height = "wrap_content"
+            scrollBarX="false"
+            fillViewport="true">
+
+              <LinearLayout
+                width="wrap_content"
+                id={this.idSet.fileShareIntents}
+                height="wrap_content"/>
+
+            </HorizontalScrollView>
+
+          </LinearLayout>
+
+       </LinearLayout>
+
      </ScrollView>
      );
 
@@ -160,29 +158,29 @@ class SharePopup extends View {
   getHeader = () => {
     return (
       <LinearLayout
-      width="match_parent"
-      height="wrap_content"
-      gravity="center_vertical"
-      margin="0,0,0,0">
+        width="match_parent"
+        height="wrap_content"
+        gravity="center_vertical"
+        margin="0,0,0,0">
 
           <TextView
-           width = "wrap_content"
-           height = "wrap_content"
-           gravity="center_vertical"
-           text = "Share this"
-           style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
+            width = "wrap_content"
+            height = "wrap_content"
+            gravity="center_vertical"
+            text = {window.__S.SHARE_THIS}
+            style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
-           <ViewWidget
-           width="0"
-           weight="1"
-           height="0"/>
+          <ViewWidget
+            width="0"
+            weight="1"
+            height="0"/>
 
-           <ImageView
-           width="18"
-           height="18"
-           onClick={this.handleDismissClick}
-           gravity="center_vertical"
-           imageUrl="ic_action_close"/>
+          <ImageView
+            width="18"
+            height="18"
+            onClick={this.handleDismissClick}
+            gravity="center_vertical"
+            imageUrl="ic_action_close"/>
 
       </LinearLayout>
     )
@@ -202,9 +200,9 @@ class SharePopup extends View {
               padding="16,18,16,16"
               background="#ffffff">
               
-             {this.getHeader()}
+               {this.getHeader()}
 
-             {this.getContent()}
+               {this.getContent()}
 
             
             </LinearLayout>)
@@ -230,7 +228,6 @@ class SharePopup extends View {
   }
 
   afterRender = () => {
-      console.log("AFTER RENDER IN SHARE POPUP");
       this.shareContent();
   }
 

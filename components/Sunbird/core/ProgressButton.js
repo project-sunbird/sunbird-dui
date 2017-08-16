@@ -25,17 +25,10 @@ class ProgressButton extends View {
     window.__ProgressButton = this;
     this.isDownloaded = false;
     this.startedDownloading = false;
-    // console.log("props in console",this.props.contentDetails.isAvailableLocally);
-    // this.checkContentLocalStatus(this.props.identifier);
-
-
+  
     _this = this;
     this.isCancelVisible=false;
-    console.log("progress button data", this.props)
-
-    
-    console.log("telemetry info contenttype",this.props.contentDetails)
-
+   
   }
 
   afterRender = () => {
@@ -43,7 +36,6 @@ class ProgressButton extends View {
   }
 
   setCancelButtonVisibility = (value) =>{
-    console.log("visible for cancel")
     var cmd = this.set({
       id: this.idSet.cancelDownloadHolder,
       visibility: value
@@ -66,8 +58,7 @@ class ProgressButton extends View {
 
 
   checkContentLocalStatus = (status) => {
-    // console.log("this.props.contentDetails",this.props.contentDetails)
-    // var callback = callbackMapper.map(function(status) {
+
     if (status == true) {
       this.isDownloaded = true;
       console.log("status", status == "true")
@@ -75,9 +66,6 @@ class ProgressButton extends View {
 
 
     }
-
-    // });
-    // JBridge.getLocalContentStatus(this.props.identifier, callback);
 
   }
 
@@ -134,16 +122,12 @@ class ProgressButton extends View {
 
   handleButtonClick = () => {
 
-
-
-
       window.__getDownloadStatus = this.updateProgress;
-      console.log("dp", this.isDownloaded);
-
+      
       if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
 
         if (this.isDownloaded) {
-          console.log("play");
+
           if (this.props.isCourse == "true") {
             window.__getGenieEvents = this.checkTelemetry;
             JBridge.playChildContent(this.props.identifier)
@@ -152,18 +136,18 @@ class ProgressButton extends View {
           }
 
         } else if(JBridge.isNetworkAvailable()){
-          console.log("download");
+
           if (!this.startedDownloading) {
             this.startedDownloading = true;
             JBridge.importCourse(this.props.identifier, this.props.isCourse);
           }
         }
         else{
-            JBridge.showSnackBar("No internet connection");
+            JBridge.showSnackBar(window.__S.NO_INTERNET);
         }
 
       } else {
-        console.log("handleButtonClick PERMISSION");
+
         this.setPermissions();
       }
 
@@ -174,12 +158,10 @@ class ProgressButton extends View {
   checkTelemetry = (telemetryData) => {
     telemetryData = JSON.parse(utils.decodeBase64(telemetryData));
     if (telemetryData.eid == "OE_END") {
-        console.log("reached end of content");
         var time = new Date();
         var date = utils.formatDate(time);
         var contentProgress = {};
 
-        console.log("hierarchy info", this.props.contentDetails.hierarchyInfo)
 
         contentProgress['contentId'] = this.props.identifier;
         contentProgress['courseId'] = this.props.contentDetails.hierarchyInfo[0].identifier;
@@ -192,14 +174,19 @@ class ProgressButton extends View {
         contentProgress['result'] = "pass";
         contentProgress['grade'] = "B";
         contentProgress['score'] = "10";
-        
-        console.log("progress status", contentProgress)
-          // JBridge.setInSharedPrefs(this.props.identifier, JSON.stringify(contentProgress));
+        var enrolledCourse;
+        window.__enrolledCourses.map(function(item){
+          if(item.courseId == _this.props.contentDetails.hierarchyInfo[0].identifier)
+            enrolledCourse = item;
+        })
+
+        contentProgress['batchId'] = enrolledCourse.hasOwnProperty("batchId")? enrolledCourse.batchId : 0 ;
+        console.log("batch ID",enrolledCourse)
+
         var url = window.__apiUrl + "/api/course/v1/content/state/update"
 
         console.log("date",date)
 
-        // if(telemetryData.edata.eks.length)
         var requestObject = {};
 
         var body = {
@@ -220,25 +207,22 @@ class ProgressButton extends View {
     var callback = callbackMapper.map(function(data){
         console.log(data)
         if(data[0] == "true"){
-            console.log("calling patch request",body)
+            console.log("in patch",body)
+
             JBridge.patchApi(url,JSON.stringify(body),window.__userToken,window.__apiToken);
           }
           JBridge.stopEventBus();
       })
       JBridge.getContentType(this.props.contentDetails.hierarchyInfo[0].identifier,callback)
 
-
-
-      // var sharedData = JBridge.getFromSharedPrefs(this.props.identifier)
     }
-    // JBridge.syncTelemetry();
+
   }
 
 
   setPermissions = () => {
 
    var callback = callbackMapper.map(function(data) {
-      console.log("GOT PERMISSION\n\n\n\n\n\n\n",data);
 
       if (data == "android.permission.WRITE_EXTERNAL_STORAGE") {
         JBridge.setKey("isPermissionSetWriteExternalStorage", "true");
@@ -258,6 +242,13 @@ class ProgressButton extends View {
     var pLeft = parseFloat(value) / parseFloat(100);
     var pRight = (1 - pLeft);
 
+    var mCornerLeft = "8,0,0,8,";
+    var mCornerRight = "0,8,8,0,";
+    if(pLeft==1){
+      mCornerLeft = "8,8,8,8,";
+    }else if(pLeft <= 0){
+      mCornerRight = "8,8,8,8,";
+    }
     return (<LinearLayout
         width="match_parent"
         onClick={this.handleButtonClick}
@@ -265,16 +256,16 @@ class ProgressButton extends View {
         height="48">
 
             <LinearLayout
-            width="0"
-            height="match_parent"
-            weight={pLeft}
-            multiCorners={"8,0,0,8,"+window.__Colors.THICK_BLUE}/>
+              width="0"
+              height="match_parent"
+              weight={pLeft}
+              multiCorners={mCornerLeft+window.__Colors.THICK_BLUE}/>
 
             <LinearLayout
-            width="0"
-            height="match_parent"
-            weight={pRight}
-            multiCorners={"0,8,8,0,"+window.__Colors.PRIMARY_DARK}/>
+              width="0"
+              height="match_parent"
+              weight={pRight}
+              multiCorners={mCornerRight+window.__Colors.PRIMARY_DARK}/>
 
         </LinearLayout>)
 
@@ -291,16 +282,16 @@ class ProgressButton extends View {
         root="true">
 
 
-      { this.getDownloadBackground(value)}
+        { this.getDownloadBackground(value)}
 
 
         <TextView
-        width="wrap_content"
-        height="wrap_content"
-        centerInParent="true,-1"
-        id={this.idSet.downloadingText}
-        style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
-        text={text}/>
+          width="wrap_content"
+          height="wrap_content"
+          centerInParent="true,-1"
+          id={this.idSet.downloadingText}
+          style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
+          text={text}/>
 
         </RelativeLayout>)
 
@@ -313,24 +304,23 @@ class ProgressButton extends View {
 
 
       <LinearLayout
+        width="match_parent"
+        id={this.idSet.cancelDownloadHolder}
+        height="48"
+        cornerRadius="5"
+        margin="16,16,16,4"
+        visibility="gone"
+        layoutTransition="true"
+        background={window.__Colors.WHITE}
+        stroke={"2,"+window.__Colors.THICK_BLUE}>
+
+          <TextView
             width="match_parent"
-            id={this.idSet.cancelDownloadHolder}
-            height="48"
-            cornerRadius="5"
-            margin="16,16,16,4"
-            visibility="gone"
-            layoutTransition="true"
-            background={window.__Colors.WHITE}
-            stroke={"2,"+window.__Colors.THICK_BLUE}>
-
-
-              <TextView
-              width="match_parent"
-              height="match_parent"
-              gravity="center"
-              onClick={this.handleCancelDownload}
-              style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}
-              text="CANCEL DOWNLOAD"/>
+            height="match_parent"
+            gravity="center"
+            onClick={this.handleCancelDownload}
+            style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}
+            text={window.__S.CANCEL_DOWNLOAD﻿}/>
 
          </LinearLayout>
 
@@ -354,8 +344,8 @@ class ProgressButton extends View {
         background={window.__Colors.WHITE}
         visibility = {this.props.visibility?this.props.visibility : "visible"}
         id={this.idSet.downloadBar}
-        layoutTransition="true"
-        >
+        layoutTransition="true">
+
         <LinearLayout
           height="2"
           visibility={this.props.hideDivider?"gone":"visible"}
@@ -371,9 +361,7 @@ class ProgressButton extends View {
           root="true"
           id={this.idSet.downloadBarContainer}>
 
-
-
-            {this.getButtons(0,this.props.buttonText)}
+          {this.getButtons(0,this.props.buttonText)}
 
          </LinearLayout>
 

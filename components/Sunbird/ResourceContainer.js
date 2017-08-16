@@ -31,7 +31,7 @@ class ResourceContainer extends View {
       if(this.data==undefined)
           this.data=[];
       var rows = this.data.map((item, i) => {
-      console.log("item in RC",item)
+
       var size = item.hasOwnProperty("size") ? " ["+ utils.formatBytes(item.size)+"]" : "";
       var footerTitle = item.contentType + size;
 
@@ -42,7 +42,7 @@ class ResourceContainer extends View {
       temp['footerSubTitle'] = item.contentType;
       temp['footerTitle'] = "";
       temp['stars'] = item.hasOwnProperty("me_averageRating")? item.me_averageRating+ "" : "0";
-      temp['actionText'] = "OPEN";
+      temp['actionText'] = window.__S.OPEN;
 
       return (<CardComponent
                  data={temp}
@@ -52,9 +52,9 @@ class ResourceContainer extends View {
 
 
     var layout = (<LinearLayout
+                    height="wrap_content"
                     width="match_parent"
-                    root="true"
-                    height="wrap_content">
+                    root="true">
 
                     {rows}
 
@@ -67,30 +67,29 @@ class ResourceContainer extends View {
 
   getHeader() {
     return (<LinearLayout
-            width="match_parent"
-            height="wrap_content"
-            margin="16,16,16,16"
-            orientation="horizontal">
+              width="match_parent"
+              height="wrap_content"
+              margin="16,16,16,16"
+              orientation="horizontal">
 
-            <TextView
-            width="wrap_content"
-            height="wrap_content"
-            text={this.props.title}
-            style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
+              <TextView
+                width="wrap_content"
+                height="wrap_content"
+                text={this.props.title}
+                style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
-            <ViewWidget
-            weight="1"
-            height="0"/>
+              <ViewWidget
+                weight="1"
+                height="0"/>
 
-            <TextView
-            width="wrap_content"
-            height="wrap_content"
-            text="VIEW ALL"
-            visibility = {(this.count <= 0)? "gone" : "visible"}
-            padding="8,8,8,8"
-            onClick={()=>{this.handleViewAllClick()}}
-            style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
-
+              <TextView
+                width="wrap_content"
+                height="wrap_content"
+                text={window.__S.VIEW_ALL}
+                visibility = {(this.count <= 0)? "gone" : "visible"}
+                padding="8,8,8,8"
+                onClick={()=>{this.handleViewAllClick()}}
+                style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
 
             </LinearLayout>)
   }
@@ -101,7 +100,6 @@ class ResourceContainer extends View {
   }
 
   handleCardClick = (item, type) => {
-
 
        if(item.contentType.toLowerCase() == "course" || item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "TextBook"){
         var whatToSend={course:JSON.stringify(item)}
@@ -120,16 +118,13 @@ class ResourceContainer extends View {
         resDetails['identifier'] = item.identifier;
         resDetails['content'] = item;
 
-        console.log("RESOURCE DETAILS SENDING",resDetails)
-
         var whatToSend = {resourceDetails:JSON.stringify(resDetails)}
         var event = {tag:"OPEN_ResourceDetailActivity",contents:whatToSend}
         window.__runDuiCallback(event);
       }
   }
 
-  handleViewAllClick() {
-    console.log("\n\n\n\n\n\nview all click",this.props)
+  handleViewAllClick =()=> {
     this.props.onViewAllClick(this.data,this.props.title,this.props.searchQuery,"visible");
   }
 
@@ -148,14 +143,14 @@ class ResourceContainer extends View {
            scrollBarX="false"
            fillViewport="true">
 
-           <LinearLayout
-                    padding="0,0,16,0"
-                    width="match_parent"
-                    height="wrap_content">
+            <LinearLayout
+              padding="0,0,16,0"
+              width="match_parent"
+              height="wrap_content">
 
-           {this.getRows()}
+              {this.getRows()}
 
-         </LinearLayout>
+            </LinearLayout>
 
 
 

@@ -22,7 +22,7 @@ class DownloadedCard extends View {
 
     this.setIds([
     ]);
-    console.log("download card contetn",this.props.content);
+
 
     
   }
@@ -37,11 +37,11 @@ class DownloadedCard extends View {
   getBody = () =>{
     return(
             <LinearLayout
-            width="wrap_content"
-            height="wrap_content"
-            margin="16,0,0,22"
-            onClick={()=>{this.handleCardClick(this.props.data.moduleText)}}
-            orientation="vertical">
+              width="wrap_content"
+              height="wrap_content"
+              margin="16,0,0,22"
+              onClick={()=>{this.handleCardClick(this.props.data.moduleText)}}
+              orientation="vertical">
 
               <RelativeLayout
                width="200"
@@ -49,29 +49,27 @@ class DownloadedCard extends View {
                cornerRadius="4"
                height="110">
 
-              <TextView
-                width="200"
-                height="wrap_content"
-                padding = "10,10,10,10"
-                alignParentBottom="true,-1"
-                text= {this.props.data.moduleText}
-                style={window.__TextStyle.textStyle.HINT.DULL}/>
+                <TextView
+                  width="200"
+                  height="wrap_content"
+                  padding = "10,10,10,10"
+                  alignParentBottom="true,-1"
+                  text= {this.props.data.moduleText}
+                  style={window.__TextStyle.textStyle.HINT.DULL}/>
 
-                <LinearLayout
-                width="200"
-                height="110"
-                gravity="center_horizontal"
-                margin="0,22,0,0">
+                  <LinearLayout
+                    width="200"
+                    height="110"
+                    gravity="center_horizontal"
+                    margin="0,22,0,0">
 
-                <ImageView
-                width="46"
-                height="58"
-                scaleType="fixXY"
-                imageUrl={"ic_action_pdf"}/>
+                    <ImageView
+                      width="46"
+                      height="58"
+                      scaleType="fixXY"
+                      imageUrl={"ic_action_pdf"}/>
 
-                </LinearLayout>
-
-              
+                  </LinearLayout>
 
             </RelativeLayout>
 
@@ -83,39 +81,39 @@ class DownloadedCard extends View {
 
   getFooter= ()=>{
     return (<LinearLayout
-            margin="0,8,0,0"
-            width="200"
-            height="wrap_content">
+              margin="0,8,0,0"
+              width="200"
+              height="wrap_content">
 
-            <LinearLayout
-            width="wrap_content"
-            height="wrap_content"
-            orientation="vertical">
+              <LinearLayout
+                width="wrap_content"
+                height="wrap_content"
+                orientation="vertical">
 
-            <TextView
-            width="wrap_content"
-            height="wrap_content"
-            text={this.props.data.stars}
-            style={window.__TextStyle.textStyle.HINT.REGULAR}/>
+                <TextView
+                  width="wrap_content"
+                  height="wrap_content"
+                  text={this.props.data.stars}
+                  style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
-            <TextView
-            width="wrap_content"
-            height="wrap_content"
-            text={this.props.data.votes}
-            style={window.__TextStyle.textStyle.HINT.REGULAR}/>
+                <TextView
+                  width="wrap_content"
+                  height="wrap_content"
+                  text={this.props.data.votes}
+                  style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
-            </LinearLayout>
+              </LinearLayout>
 
-            <ViewWidget
-            height="0"
-            weight="1"/>
+              <ViewWidget
+                height="0"
+                weight="1"/>
 
-            <Button
-            type="SmallButton_Secondary_BT"
-            width="wrap_content"
-            height="wrap_content"
-             onClick={()=>{this.handleCardClick()}}
-            text="OPEN"/>
+              <Button
+              type="SmallButton_Secondary_BT"
+              width="wrap_content"
+              height="wrap_content"
+              onClick={()=>{this.handleCardClick()}}
+              text={window.__S.OPEN}/>
 
 
             </LinearLayout>

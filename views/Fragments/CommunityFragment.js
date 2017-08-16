@@ -40,7 +40,7 @@ class CommunityFragment extends View {
   }
 
 
-  parentBody() {
+  getParentBody = () => {
     return (
       <LinearLayout
         orientation="vertical"
@@ -52,7 +52,7 @@ class CommunityFragment extends View {
             hint="Enter your search"
             invert="true"
             hideBack="true"
-            title="Groups"
+            title={window.__S.GROUPS}
             onMenuItemClick={this.handleMenuClick}
             menuData={this.menuData}
             onSearch={this.handleSearch}/>
@@ -70,8 +70,8 @@ class CommunityFragment extends View {
                   orientation="vertical">
 
                   <MyCommunities
-                  onMyCommunityClick={this.handleMyCommunityClick}
-                  onViewAllClick={this.handleMyViewAllClick}/>
+                    onMyCommunityClick={this.handleMyCommunityClick}
+                    onViewAllClick={this.handleMyViewAllClick}/>
 
                   <PopularCommunities
                   onPopularCommunityClick={this.handlePopularCommunityClick}/>
@@ -170,7 +170,7 @@ class CommunityFragment extends View {
         afterRender={this.afterRender}
         height="match_parent">
 
-        {this.parentBody()}
+        {this.getParentBody()}
 
 
         </LinearLayout>

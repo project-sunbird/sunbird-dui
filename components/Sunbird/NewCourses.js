@@ -77,17 +77,16 @@ class NewCourses extends View {
 
   getHeader(){
     return (<LinearLayout
-            width="match_parent"
-            height="wrap_content"
-            margin="16,16,16,16"
-            orientation="horizontal">
+              width="match_parent"
+              height="wrap_content"
+              margin="16,16,16,16"
+              orientation="horizontal">
 
-            <TextView
-            width="wrap_content"
-            height="wrap_content"
-            text="New"
-            style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
-
+              <TextView
+                width="wrap_content"
+                height="wrap_content"
+                text={window.__S.NEW}
+                style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
             </LinearLayout>)
   }
@@ -125,13 +124,13 @@ class NewCourses extends View {
            scrollBarX="false"
            fillViewport="true">
 
-           <LinearLayout
-                    width="match_parent"
-                    height="wrap_content">
+            <LinearLayout
+              width="match_parent"
+              height="wrap_content">
 
-           {this.getRows()}
+              {this.getRows()}
 
-         </LinearLayout>
+            </LinearLayout>
 
 
 

@@ -23,22 +23,28 @@ window.R = require("ramda");
 
 const mockResponse = require('../mockResponse.js');
 
+var _this;
+
 class MainActivity extends View {
   constructor(props, children, state) {
     super(props, children, state);
+
     this.state = state;
+
+
     //Assigning feedback duration of BottomNavbar
     this.handleBottomNavBarAction = debounce(this.handleBottomNavBarAction, 50);
-    //TODO : REVERT THIS LOGIC
 
     this.setIds([
       "viewPagerContainer",
       "tabLayoutContainer",
     ]);
 
+    _this= this;
+    
     //CurrentIndexOfViewPager
     this.currentPageIndex = 0;
-    console.log("CURRENT INDEX", this.currentPageIndex);
+
 
     //BackPressCount of MainActivity
     this.backPressCount = 0;
@@ -47,7 +53,7 @@ class MainActivity extends View {
     this.feedData = FeedParams.feedParams;
 
     this.deipalayName = "MainActivity"
-    
+
     this.tabValues = [{
         name: window.__S.HOME_BNAV,
         select: "1",
@@ -78,46 +84,47 @@ class MainActivity extends View {
 
   onPop = () => {
 
+
+    Android.runInUI(
+      this.animateView(),
+      null
+    );
+
     if(window.__pressedLoggedOut){
       this.currentPageIndex=0
       window.__pressedLoggedOut=false;
+      this.afterRender();
+      return;
     }
 
     if(this.currentPageIndex==undefined){
       this.currentPageIndex=0;
     }
-    console.log("on pop in main activity")
-     
-
-      Android.runInUI(
-        this.animateView(),
-        null
-      );
 
 
     this.backPressCount = 0;
 
     if(this.currentPageIndex==1 || this.currentPageIndex==0){
-      var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken} 
+      var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken}
       var event ={ "tag": "API_UserEnrolledCourse", contents: whatToSend};
       window.__runDuiCallback(event);
     }else if(this.currentPageIndex==2){
       window.__UpdateOfflineContent();
     }
-    
+
   }
 
 
   onBackPressed = () => {
 
-    
+
     if(window.__PageFilterChooser.getVisibility()){
       window.__PageFilterChooser.hide();
-      return; 
+      return;
     }
     if(window.__PageFilterPopup.getVisibility()){
       window.__PageFilterPopup.hide();
-      return; 
+      return;
     }
 
     this.backPressCount++;
@@ -163,7 +170,7 @@ class MainActivity extends View {
       return;
     }else if(responseCode == 501 || status === "failure" || status=="f") {
       JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION)
-      responseData=tmp; 
+      responseData=tmp;
     } else {
      // responseData = utils.jsonifyData(responseData);
       responseData = JSON.parse(responseData);
@@ -173,21 +180,15 @@ class MainActivity extends View {
 
 
     if (responseData.params.err) {
-      console.log("EROR MESSAGE :", response.params.errmsg)
-      JBridge.showSnackBar("ERROR MESSAGE ->" + response.params.errmsg)
+      JBridge.showSnackBar(window.__S.ERROR_SERVER_MESSAGE + response.params.errmsg)
       return;
     }
 
     if (state.responseFor == "API_UserEnrolledCourse") {
-      // var enrolled = [];
-      // responseData.result.courses.map((item)=>{
-      //   enrolled.push(item.courseId);
-      // });
-      // console.log("enrolled ids",enrolled)
-      window.__enrolledCourses = responseData.result.courses;
-      console.log("TOTAL ENROLLED COURSES",window.__enrolledCourses);
-      window.setEnrolledCourses(responseData.result.courses);
       
+      window.__enrolledCourses = responseData.result.courses;
+      window.setEnrolledCourses(responseData.result.courses);
+
       return;
     }
 
@@ -229,15 +230,19 @@ class MainActivity extends View {
 
 
       default:
-        console.log("[handleStateChange]\t\t MATCHED WITH default")
 
         break;
     }
 
     if (shouldBeModified) {
+      if(state.hasOwnProperty("filter_to_send"))
+         responseData.filter_to_send=state.filter_to_send;
+      else
+         responseData.filter_to_send=null;
+
       this.switchContent(this.currentPageIndex, responseData);
     } else {
-      console.log("GOT SAME DATA, not modifying")
+      console.log("GOT SAME DATA, not modifying");
     }
 
   }
@@ -247,13 +252,11 @@ class MainActivity extends View {
     var tmp;
     var contentLayout;
     this.color = "#123123"
-
-    console.log("SWITCHING CONTENT OF", index)
     switch (index) {
       case 0:
         contentLayout = (
           <HomeFragment
-                response = {data} 
+                response = {data}
                 recommendedData={this.recommendedData}
                 recommendedimageUrls={this.recommendedimageUrls}
                 menuData={this.menuData}
@@ -352,14 +355,14 @@ class MainActivity extends View {
         event = { "tag": "OPEN_HomeFragment", contents: whatToSend };
         break;
       case 1:
-        
-        whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken} 
+
+        whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken}
         event = { "tag": "API_CourseFragment", contents: whatToSend};
         break;
       case 2:
-        whatToSend =  {"user_token":window.__userToken,"api_token": window.__apiToken} 
+        whatToSend =  {"user_token":window.__userToken,"api_token": window.__apiToken}
         event = { "tag": "API_ResourceFragment", contents:whatToSend};
-       
+
         break;
       case 3:
         whatToSend = []
@@ -387,18 +390,20 @@ class MainActivity extends View {
         }
 
         if(JBridge.isNetworkAvailable()||(index!=1&&index!=4)){
-              console.log("NETWORK AVAILABLE");
               this.currentPageIndex = index;
-              this.switchContent(index);
+              
+              if(index!=1 && index!=2 && index!=4){
+                this.switchContent(index);
+              }
         }
         else{
-            JBridge.showSnackBar("NO INTERNET CONNECTION")
+            JBridge.showSnackBar(window.__S.NO_INTERNET)
         }
 
         window.__BottomNavBar.handleNavigationChange(this.currentPageIndex);
         this.setupDuiCallback();
 
-  
+
 
   }
 
@@ -456,4 +461,3 @@ class MainActivity extends View {
 }
 
 module.exports = Connector(MainActivity);
-

@@ -265,6 +265,7 @@ class UserActivity extends View {
           JBridge.showSnackBar(window.__S.WELCOME_ON_BOARD.format(this.userName))
           JBridge.setInSharedPrefs("user_name", this.userFirstName);
           JBridge.setInSharedPrefs("user_token", result.userId);
+          window.__pressedLoggedOut=true;
           this.userToken=result.userId;
           this.setDataInStorage();
           JBridge.setProfile(this.userToken);
@@ -429,7 +430,7 @@ class UserActivity extends View {
       requestBody=JSON.stringify(requestBody);
       var whatToSend = {
         "request" : requestBody,
-        "api_token": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI1MjMwZGU5YjA1Mzg5MWFjZDdkOTg2NGExOWNlNTRjMjE5MTUzM2VlIn0.NKkAMGNz9CNYXqSjUyDAzpedXhbL8mEXUyMMiONX2Ls"
+        "api_token": window.__apiToken
       }
       var event = { "tag": "API_SignUp", "contents": whatToSend };
       window.__runDuiCallback(event);
@@ -441,6 +442,9 @@ class UserActivity extends View {
   }
 
   handleLoginClick = () => {
+    
+    console.log(window.__loginUrl , "/auth/realms/sunbird/protocol/openid-connect/auth","\nandroid");
+
     JBridge.keyCloakLogin(window.__loginUrl + "/auth/realms/sunbird/protocol/openid-connect/auth","android");
   }
 

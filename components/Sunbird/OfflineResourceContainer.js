@@ -39,7 +39,7 @@ class OfflineResourceContainer extends View {
 
 
   getRows = () => {
-    console.log("OFFLINE CONTENT", this.props.data);
+
     if (this.props.data == undefined || this.props.data.length == 0){
       this.jsData = []
 
@@ -47,14 +47,14 @@ class OfflineResourceContainer extends View {
       this.jsData = this.props.data;
     }
 
-    console.log("OFFLINE CONTENT", this.jsData);
+
 
     var rows = this.jsData.map((item, i) => {
 
-      console.log("item content type", item.contentType);
+
       if (item.contentType != "course") {
 
-
+        console.log("item in offline container",item)
         this.offlineCount++;
         var size = item.hasOwnProperty("size") ? " [" + utils.formatBytes(item.size) + "]" : "";
         var footerTitle = item.contentType + size;
@@ -68,8 +68,8 @@ class OfflineResourceContainer extends View {
         temp['footerSubTitle'] = "Saved on " + fileSavedTime;
         temp['actionText'] = "OPEN";
         temp['content'] = item;
+        
 
-        console.log("FILE IMAGE URL \n\n\n\n\n\n\n\n\n\n\n\n",fileImageUrl)
 
 
 
@@ -92,7 +92,7 @@ class OfflineResourceContainer extends View {
               width="match_parent"
               height="50"
               gravity="center"
-              text={"No offline resource yet"}
+              text={window.__S.ERROR_NO_OFFLINE_RESOURCE}
               style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>)
     }
 
@@ -112,29 +112,29 @@ class OfflineResourceContainer extends View {
 
   getHeader() {
     return (<LinearLayout
-            width="match_parent"
-            height="wrap_content"
-            margin="16,16,16,16"
-            orientation="horizontal">
+              width="match_parent"
+              height="wrap_content"
+              margin="16,16,16,16"
+              orientation="horizontal">
 
-            <TextView
-            width="wrap_content"
-            height="wrap_content"
-            text={this.props.title}
-            style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
+              <TextView
+                width="wrap_content"
+                height="wrap_content"
+                text={this.props.title}
+                style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
-            <ViewWidget
-            weight="1"
-            height="0"/>
+              <ViewWidget
+                weight="1"
+                height="0"/>
 
-            <TextView
-            width="wrap_content"
-            height="wrap_content"
-            text="VIEW ALL"
-            id={this.idSet.viewAllContainer}
-            padding="8,8,8,8"
-            onClick={this.handleViewAllClick}
-            style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
+              <TextView
+                width="wrap_content"
+                height="wrap_content"
+                text="VIEW ALL"
+                id={this.idSet.viewAllContainer}
+                padding="8,8,8,8"
+                onClick={this.handleViewAllClick}
+                style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
 
             </LinearLayout>)
   }
@@ -155,8 +155,7 @@ class OfflineResourceContainer extends View {
     {
       var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");
       var resDetails = {};
-      console.log("ITEM NAME IN OFFLINE",item)
-      console.log("ITEM IN OFFLINE",item.appIcon)
+
       resDetails['imageUrl'] = "file://"+item.basePath+"/"+item.contentData.appIcon;
       resDetails['title'] = item.contentData.name;
       resDetails['description'] = item.contentData.description;
@@ -173,8 +172,6 @@ class OfflineResourceContainer extends View {
   }
 
   handleViewAllClick() {
-
-    console.log("OFFLINE RESOURCE CONTAINER",_this.props.data)
     _this.props.onViewAllClick(_this.props.data,_this.props.title,"","gone");
   }
 

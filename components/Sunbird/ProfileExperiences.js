@@ -38,14 +38,14 @@ class ProfileExperiences extends View {
               height="wrap_content">
 
               <TextView
-              width="wrap_content"
-              height="wrap_content"
-              text="Experience"
-              style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
+                width="wrap_content"
+                height="wrap_content"
+                text="Experience"
+                style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
               <ViewWidget
-              height="0"
-              weight="1"/>
+                height="0"
+                weight="1"/>
 
               <TextView
               width="wrap_content"
@@ -59,10 +59,10 @@ class ProfileExperiences extends View {
 
   getLineSeperator = () => {
     return (<LinearLayout
-            width="match_parent"
-            height="1"
-            margin="0,0,0,24"
-            background={window.__Colors.PRIMARY_BLACK_22}/>)
+              width="match_parent"
+              height="1"
+              margin="0,0,0,24"
+              background={window.__Colors.PRIMARY_BLACK_22}/>)
   }
 
   getBody(input) {
@@ -77,11 +77,10 @@ class ProfileExperiences extends View {
       var noOfYears = "";
     }
     return (<LinearLayout
-                width="wrap_content"
-                height="wrap_content"
-                orientation="vertical"
-                margin="12,0,0,0"
-                >
+              width="wrap_content"
+              height="wrap_content"
+              orientation="vertical"
+              margin="12,0,0,0">
 
                     <TextView
                     width="wrap_content"
@@ -104,20 +103,19 @@ class ProfileExperiences extends View {
                 </LinearLayout>)
   }
 
-  experienceBody() {
+  experienceBody = () => {
 
     var cards = this.jobs.map((item, i) => {
       return (<LinearLayout
                 width="wrap_content"
                 height="wrap_content"
                 gravity="center_vertical"
-                margin="0,16,0,0"
-                >
+                margin="0,16,0,0">
 
                 <LinearLayout
-                background={window.__Colors.WHITE_F4}
-                width="44"
-                height="44"/>
+                  background={window.__Colors.WHITE_F4}
+                  width="44"
+                  height="44"/>
 
                 {this.getBody(item)}
 
@@ -129,7 +127,7 @@ class ProfileExperiences extends View {
 
   }
 
-  getLineSeperator() {
+  getLineSeperator = () => {
     return (<LinearLayout
             width="match_parent"
             height="1"

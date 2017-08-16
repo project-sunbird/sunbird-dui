@@ -20,7 +20,7 @@ class ProfileHeader extends View {
     this.imageUrl = this.props.data.avatar ? this.props.data.avatar : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR1X3cm5xzR4D1W9oPb2QWioKlrfLVd0DvXFUNqSjZfg-M0bpc";
     this.firstName = this.props.data.firstName ? this.props.data.firstName : this.userName
     this.lastName = this.props.data.lastName ? " " + this.props.data.lastName : ""
-    this.address = (this.props.data.address.length > 0) ? this.props.data.address : ""
+    this.address = (this.props.data.address && this.props.data.address.length > 0) ? this.props.data.address : ""
 
   }
 
@@ -28,7 +28,8 @@ class ProfileHeader extends View {
 
 
   render() {
-    this.layout = (<LinearLayout
+    this.layout = (
+            <LinearLayout
               width="match_parent"
               height="wrap_content"
               gravity="center_horizontal"

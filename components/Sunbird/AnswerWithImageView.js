@@ -46,15 +46,15 @@ class AnswerWithImageView extends View {
               imageFromUrl={this.props.item.imageUrl}
               id={this.idSet.picassoImageView}
               margin="0,0,0,0"/>)
-      // imageFromUrl={this.props.item.imageUrl}
+
   }
 
   getSelectedImage = () => {
     return (<ImageView
-            width="40"
-            height="40"
-            imageUrl={"ic_action_completed"}
-            margin="0,0,0,0"/>)
+              width="40"
+              height="40"
+              imageUrl="ic_action_completed"
+              margin="0,0,0,0"/>)
   }
 
   handleSelectionEvent = () => {
@@ -72,33 +72,35 @@ class AnswerWithImageView extends View {
 
     this.layout = (
       <LinearLayout
-      width="156"
-      cornerRadius="5"
-      margin="0,0,0,12"
-      afterRender={this.afterRender}
-      stroke ={"2," + window.__Colors.PRIMARY_BLACK_66}
-      height="180">
+        width="156"
+        cornerRadius="5"
+        margin="0,0,0,12"
+        afterRender={this.afterRender}
+        stroke ={"2," + window.__Colors.PRIMARY_BLACK_66}
+        height="180">
+        
         <LinearLayout
-      width="match_parent"
-      orientation="vertical"
-      gravity="center_horizontal"
-      padding="1,1,1,1"
-      allowMultipleClicks="true"
-      onClick={this.handleSelectionEvent}
-      height="match_parent">
+          width="match_parent"
+          orientation="vertical"
+          gravity="center_horizontal"
+          padding="1,1,1,1"
+          allowMultipleClicks="true"
+          onClick={this.handleSelectionEvent}
+          height="match_parent">
 
               
-              {this.getIndexHolder()}
+            {this.getIndexHolder()}
              
             <TextView
-            width="match_parent"
-            height="wrap_content"
-            gravity="center"
-            text={this.props.item.key}
-            margin="0,0,0,0"
-            style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>
+              width="match_parent"
+              height="wrap_content"
+              gravity="center"
+              text={this.props.item.key}
+              margin="0,0,0,0"
+              style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>
 
          </LinearLayout> 
+         
       </LinearLayout>
     )
 

@@ -1,5 +1,3 @@
-
-
 var dom = require("@juspay/mystique-backend").doms.android;
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
@@ -10,7 +8,7 @@ var ListView = require("@juspay/mystique-backend").androidViews.ListView;
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 
-class ListGenerator extends View {
+class ListViewComponent extends View {
   constructor(props, children) {
     super(props, children);
     this.displayName = "listGenerator";
@@ -47,18 +45,20 @@ class ListGenerator extends View {
             margin="5,5,5,5"
              id = {this.idSet.rItem}
             onClick={()=>{console.log("CLICKED R BUTTON OF ",i)}}
-            text={"R of i:"+ i}/>
+            text={"R of i:"+ i}
+            />
 
         </LinearLayout>
       )
 
       var listItemLayout2 = (
-        <LinearLayout>
-          <LinearLayout
-            height="100"
-            margin="12,6,12,6"
-            background="#cccccc"
-            width="match_parent">
+        <LinearLayout
+          >
+        <LinearLayout
+        height="100"
+        margin="12,6,12,6"
+        background="#cccccc"
+        width="match_parent">
 
             <ImageView
               width="156"
@@ -71,9 +71,10 @@ class ListGenerator extends View {
             color="#ff0000"
             weight="1"
             margin="5,5,5,5"
-            id = {this.idSet.lItem}
+             id = {this.idSet.lItem}
             onClick={()=>{console.log("CLICKED BUTTON OF ",i); this.indexToModify =i ; this.updateListView() }}
-            text={"R of i:"+ i}/>
+            text={"R of i:"+ i}
+            />
 
         </LinearLayout>
 
@@ -226,4 +227,4 @@ class ListGenerator extends View {
   }
 }
 
-module.exports = ListGenerator;
+module.exports = ListViewComponent;

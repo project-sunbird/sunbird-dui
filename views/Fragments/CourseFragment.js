@@ -31,15 +31,29 @@ class CourseFragment extends View {
     ]);
     _this = this;
 
+    this.props=props;
     this.myCommunitySelected = "";
     this.popularCommunitySelected = "";
     this.recommendedCommunitySelected = "";
 
-    this.menuData = {
-      url: [
-        { imageUrl: "ic_action_search" },
-        { imageUrl: "ic_action_filter" }
-      ]
+    console.log("course constructor");
+    if(this.props.response != undefined && this.props.response.hasOwnProperty("filter_to_send") && this.props.response.filter_to_send!=null)
+    { console.log(props.response.filter_to_send, "fiter applied");
+      this.menuData = {
+           url: [
+             { imageUrl: "ic_action_search" },
+             { imageUrl: "ic_action_filter_applied" }
+           ]
+         }
+    }
+    else{
+      console.log("no filter applied");
+     this.menuData = {
+          url: [
+            { imageUrl: "ic_action_search" },
+            { imageUrl: "ic_action_filter" }
+          ]
+        }
     }
     this.enrolledCourses = []
     window.setEnrolledCourses = this.setEnrolledCourses;
@@ -74,19 +88,19 @@ class CourseFragment extends View {
 
   handleResponse = () => {
 
-      console.log("SERVER GAVE RESPONSE", this.props.response)
       if(this.props.response===undefined) {
+        JBridge.showSnackBar(window.__S.ERROR_EMPTY_RESULT)
         return;
       }
 
       this.details = this.props.response.result.response;
       if (!this.details.hasOwnProperty("name")) {
-        JBridge.showSnackBar("Error Fetching Data");
+        JBridge.showSnackBar(window.__S.ERROR_FETCHING_DATA);
         return;
       }
 
       if(this.details.sections==undefined && this.details.sections.length==0){
-          JBridge.showSnackBar("Error Fetching Data");
+          JBridge.showSnackBar(window.__S.ERROR_FETCHING_DATA);
           return;
       }
 
@@ -102,7 +116,7 @@ class CourseFragment extends View {
 
       var rows=this.details.sections.map((item,index) => {
           return this.getCourseCardLayout(item);
-          //this.appendChild(this.idSet.parentContainer,this.getCourseCardLayout(item).render(),index);
+
       })
 
 
@@ -117,7 +131,7 @@ class CourseFragment extends View {
         </LinearLayout>)
 
       return layout;
-    //this.replaceChild(this.idSet.parentContainer,layout.render(),0)
+
 
 
   }
@@ -143,12 +157,11 @@ class CourseFragment extends View {
 
 
   handleCourseClick = (content, type) => {
-    console.log("content in handle course click1",content)
-    console.log("content in handle course click1",type)
+
     var tmp = JSON.stringify(content)
     var whatToSend = []
     var event = {};
-    console.log("content   ",content)
+
     if (this.checkIfEnrolled(content.identifier)) {
       whatToSend = { "course": tmp }
       event = { tag: 'OPEN_EnrolledCourseActivity', contents: whatToSend }
@@ -162,8 +175,6 @@ class CourseFragment extends View {
   }
 
   handleUserCoursesClick = (content, type) => {
-    console.log("content in handle course click",content)
-    console.log("content in handle course click",type)
     var whatToSend = { "course": JSON.stringify(content) }
     var event = { tag: 'OPEN_EnrolledCourseActivity', contents: whatToSend }
     window.__runDuiCallback(event);
@@ -172,7 +183,7 @@ class CourseFragment extends View {
   addSwipeFunction = () => {
 
       var callbackRefresh = callbackMapper.map(function(params) {
-        window.__BNavFlowRestart();         
+        window.__BNavFlowRestart();
     });
 
       JBridge.addSwipeRefreshScrollView(this.idSet.scrollViewContainerCourse,callbackRefresh);
@@ -189,7 +200,7 @@ class CourseFragment extends View {
         height="match_parent">
 
           <SimpleToolbar
-            title="Courses"
+            title={window.__S.COURSES_LW}
             width="match_parent"
             showMenu="true"
             invert="true"
@@ -213,7 +224,7 @@ class CourseFragment extends View {
 
                   <CourseInProgressContainer
                     transparent="true"
-                    title="Courses In Progress"
+                    title={window.__S.COURSES_IN_PROGRESS}
                     onCourseClick={this.handleUserCoursesClick}/>
 
 
@@ -229,17 +240,17 @@ class CourseFragment extends View {
   handleMenuClick = (url) => {
 
     if (url == "ic_notification_red") {
-      JBridge.showSnackBar("Comming Soon")
+      JBridge.showSnackBar(window.__S.COMMING_SOON)
     }
     else if (url == "ic_action_search") {
       var searchDetails = { filterDetails: "", searchType: "Course" }
-      var whatToSend = { filterDetails: JSON.stringify(searchDetails) } 
+      var whatToSend = { filterDetails: JSON.stringify(searchDetails) }
       var event = { tag: "OPEN_SearchActivity", contents: whatToSend}
       window.__runDuiCallback(event);
 
     }
-     else if (url == "ic_action_filter") {
-      window.__PageFilterPopup.resetPopup("Cource");
+     else if (url == "ic_action_filter" || url == "ic_action_filter_applied") {
+      window.__PageFilterPopup.resetPopup("Cource",this.props.response);
       window.__PageFilterPopup.show();
     }
   }
@@ -251,7 +262,8 @@ class CourseFragment extends View {
              orientation="vertical"
              width="match_parent"
              background={window.__Colors.WHITE_F2}/>)
-  }
+           }
+
 
 
   render() {

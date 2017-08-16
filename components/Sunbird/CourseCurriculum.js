@@ -24,9 +24,9 @@ class CourseCurriculum extends View {
   getChapterList = () => {
     var items = this.props.content.map((item) => {
       return (<ChapterList 
-              item={item} 
-              _onClick={this.props.onItemSelected}
-              enrolledStatus={this.enrolledStatus}/>)
+                item={item} 
+                _onClick={this.props.onItemSelected}
+                enrolledStatus={this.enrolledStatus}/>)
     })
 
     return (
@@ -34,15 +34,16 @@ class CourseCurriculum extends View {
         orientation="vertical"
         height="wrap_content"
         width="match_parent">
+        
         {items}
+
       </LinearLayout>);
   }
 
   getCourseBreakUp = () => {
 
     var items = this.props.content.map((item, index) => {
-      console.log("INDEX IN COURSE CURRICULUME",index);
-      console.log("PROPS LENGTH",this.props.content.length-1);
+    
       return (
         <LinearLayout
           width="match_parent"

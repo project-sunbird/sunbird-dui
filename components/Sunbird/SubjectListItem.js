@@ -30,8 +30,7 @@ class SubjectListItem extends View {
               heigh="32"
               padding="0,0,0,0"
               background={window.__Colors.RED_10}
-              gravity="center"
-              >
+              gravity="center">
             <ImageView
               height="20"
               width="14"
@@ -100,8 +99,7 @@ class SubjectListItem extends View {
       <LinearLayout
 			width="match_parent"
 			height="wrap_content"
-			orientation="vertical"
-			>
+			orientation="vertical">
 
                 {this.getData()}
                     		

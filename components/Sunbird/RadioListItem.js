@@ -21,7 +21,6 @@ class RadioListItem extends View {
 
     this.isSelected = this.props.isSelected ? this.props.isSelected : false;
 
-    console.log("SELCTED STATUS FOR ", this.props.title, "\t", this.isSelected);
   }
 
 
@@ -69,7 +68,9 @@ class RadioListItem extends View {
           width="48"
           height="48"/>
 
-        <TextView style={TextStyle.textStyle.bigBody} text={this.props.title}/>
+        <TextView 
+          style={TextStyle.textStyle.bigBody} 
+          text={this.props.title}/>
 
 
        </LinearLayout>
