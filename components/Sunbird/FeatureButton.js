@@ -54,7 +54,7 @@ class FeatureButton extends View {
           height="match_parent"
           gravity="center"
           afterRender = {this.afterRender}
-          textSize={this.props.textSize || "18"}
+          textSize={this.props.textSize || "14"}
           padding={this.props.padding ||"10,10,10,10"}
           color={this.props.textColor||"#FFFFFF"}/>
       </LinearLayout>

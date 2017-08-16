@@ -177,7 +177,7 @@ class ResourceDetailActivity extends View {
 
     var request = {
                           "flagReasons":selectedList,
-                          "flaggedBy":"",
+                          "flaggedBy":"kiran",
                           "versionKey": versionKey,
                           "flags": [comment]
                      }
@@ -448,7 +448,6 @@ class ResourceDetailActivity extends View {
 
   handleMenuClick = (url) =>{
     if(url == "ic_action_share_black"){
-      window.__SharePopup.resetPopup();
       window.__SharePopup.show();
     }
   }

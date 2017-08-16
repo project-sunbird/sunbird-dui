@@ -85,7 +85,12 @@ class ProgressButton extends View {
     data.downloadProgress = ( data.downloadProgress == undefined || data.downloadProgress < 0 )? 0 : data.downloadProgress;
     console.log("--->\t\t\t\n\n\n", data);
      console.log(data.downloadProgress)
-
+     if(data.status == "NOT_FOUND"){ 
+          this.setCancelButtonVisibility("gone");
+        _this.replaceChild(_this.idSet.downloadBarContainer, _this.getButtons(0, "DOWNLOAD").render(), 0);
+        JBridge.showSnackBar("Content Not Available");
+        return;
+     }
     if (parseInt(data.downloadProgress) == 100) {
     console.log(data.downloadProgress ,"DONE")
       _this.props.changeOverFlowMenu();

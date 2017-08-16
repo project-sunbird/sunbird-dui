@@ -94,7 +94,7 @@ class UserActivity extends View {
           var event={tag:"OPEN_DeepLink_CourseInfo",contents:whatToSend}
           window.__runDuiCallback(event);
         }
-        else if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "TextBook"){
+        else if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook"){
 
           var itemDetails = JSON.stringify(item.contentData);
           _this.deepLinkCollectionDetails = itemDetails;

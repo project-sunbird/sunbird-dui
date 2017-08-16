@@ -137,7 +137,7 @@ getRows = (data) =>{
         var event = {tag:"OPEN_ResourceViewAllDetail",contents:whatToSend}
         window.__runDuiCallback(event);
       }
-      else if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "TextBook"){
+      else if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook"){
         var whatToSend={course:JSON.stringify(item)};
         var event={tag:"OPEN_CourseEnrolled",contents:whatToSend}
         window.__runDuiCallback(event);
