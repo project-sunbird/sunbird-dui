@@ -33,7 +33,11 @@ class CourseViewAllActivity extends View {
     this.shouldCacheScreen = false;
 
     this.totalDetails = JSON.parse(state.data.value0.courseViewAllDetails);
+    
+    this.appbarTitle = this.totalDetails.title; 
     this.totalDetails = this.totalDetails.courseListDetails;
+
+    
 
     this.menuData = {
     url: [
