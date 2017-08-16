@@ -251,6 +251,7 @@ handleResourceViewAllClick= (data,title,searchQuery,visibility) =>{
       var event = { tag: "OPEN_NotificationActivity", contents: [] }
       window.__runDuiCallback(event);
     }else if (url == "ic_action_search") {
+      window.searchText = "";
       var searchDetails = { filterDetails: "", searchType: "Resource" }
       var whatToSend = { filterDetails: JSON.stringify(searchDetails) }
       var event = { tag: "OPEN_SearchActivity", contents: whatToSend }
