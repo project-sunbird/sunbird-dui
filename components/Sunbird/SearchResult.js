@@ -97,7 +97,7 @@ class SearchResult extends View {
       var event={tag:"OPEN_CourseInfoActivity_SEARCH",contents:whatToSend}
       window.__runDuiCallback(event);
     }
-    else if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "TextBook"){
+    else if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook"){
       
       var whatToSend={course:itemDetails};
       var event={tag:"OPEN_CourseEnrolledActivity_SEARCH",contents:whatToSend}
