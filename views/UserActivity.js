@@ -52,7 +52,7 @@ class UserActivity extends View {
     this.userName = this.userPass = this.firstName = "";
     _this = this;
 
-    this.deepLinkCollectionDetails;
+    this.deepLinkCollectionDetails="";
 
     window.__loginCallback=this.getLoginCallback;
 
