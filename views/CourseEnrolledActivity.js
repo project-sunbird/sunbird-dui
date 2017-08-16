@@ -10,6 +10,7 @@ var ScrollView = require('@juspay/mystique-backend').androidViews.ScrollView;
 var ProgressBar = require("@juspay/mystique-backend").androidViews.ProgressBar;
 
 var objectAssign = require('object-assign');
+var FeatureButton = require('../components/Sunbird/FeatureButton');
 
 window.R = require("ramda");
 
@@ -238,26 +239,26 @@ class CourseEnrolledActivity extends View {
   afterRender=()=>{
     this.checkContentLocalStatus(this.baseIdentifier);
 
-    var callback = callbackMapper.map(function(data) {
+    // var callback = callbackMapper.map(function(data) {
 
-      var input = [{
-                    type : "text",
-                    data : "staging.open-sunbird.org/public/"+_this.baseIdentifier
+    //   var input = [{
+    //                 type : "text",
+    //                 data : "staging.open-sunbird.org/public/"+_this.baseIdentifier
 
-                  },{
-                    type : "file",
-                    data : "file://"+data[0]
+    //               },{
+    //                 type : "file",
+    //                 data : "file://"+data[0]
 
-                  }];
+    //               }];
 
-      var sharePopUp = (
-        <SharePopup
-        data = {input}/>
-        )
+    //   var sharePopUp = (
+    //     <SharePopup
+    //     data = {input}/>
+    //     )
 
-    _this.replaceChild(_this.idSet.sharePopupContainer,sharePopUp.render(),0);    
-    });
-    JBridge.exportEcar(this.baseIdentifier, callback);
+    // _this.replaceChild(_this.idSet.sharePopupContainer,sharePopUp.render(),0);    
+    // });
+    // JBridge.exportEcar(this.baseIdentifier, callback);
 
   }
 
@@ -279,6 +280,27 @@ class CourseEnrolledActivity extends View {
 
   handlePageOptionClick = (data) =>{
 
+  }
+
+  handleResumeClick = () =>{
+    console.log(this.details)
+    var callback = callbackMapper.map(function(data){
+      console.log("local content details",data)
+      data[0] = JSON.parse(data[0])
+      _this.handleModuleClick(data[0].contentData.name,data[0])
+    });
+    var id;
+    if(this.details.hasOwnProperty("lastReadContentId")){
+      id = this.details.lastReadContentId
+    }
+    else if(!(this.courseContent.children == undefined)){
+      console.log("children details",this.courseContent.children)
+      id = this.courseContent.children[0].identifier;
+    }
+    else{
+      JBridge.showSnackBar("No Resume Content Available")
+    }
+    JBridge.getChildContent(id,callback)
   }
 
 
@@ -370,6 +392,16 @@ class CourseEnrolledActivity extends View {
                       </LinearLayout>
                   </LinearLayout>
                 </ScrollView>
+                <FeatureButton
+                    clickable="true"
+                    margin = "16,16,16,16"
+                    width = "match_parent"
+                    height = "56"
+                    background = {window.__Colors.PRIMARY_ACCENT}
+                    text = {"RESUME COURSE"}
+                    style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
+                    buttonClick = {this.handleResumeClick}
+                    />
           </LinearLayout>
 
 
