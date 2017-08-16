@@ -96,6 +96,11 @@ exports.textStyle = {
         color: Colors.DARK_GRAY,
         textSize: Font.fontSize.FONT_16,
         fontStyle: Font.fontStyle.BOLD
+      },
+      BIG_BLUE: {
+        color: Colors.PRIMARY_ACCENT,
+        textSize: Font.fontSize.FONT_20,
+        fontStyle: Font.fontStyle.BOLD
       }
     },
     BODY: {

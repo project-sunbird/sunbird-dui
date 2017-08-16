@@ -16,7 +16,7 @@ class ProfileExperiences extends View {
 
     ]);
     _this = this;
-
+    this.isEditable = this.props.editable;
     this.data = [{
       "position": "All subjects class teacher",
       "place": "Balamandir, Vadgaon",
@@ -26,6 +26,8 @@ class ProfileExperiences extends View {
       "place": "Balamandir, Vadgaon",
       "duration": "JUN ’10 - JUL ‘16 (6 YRS)"
     }]
+
+    this.jobs = (this.props.data != undefined)? this.props.data : [];
 
   }
 
@@ -49,11 +51,12 @@ class ProfileExperiences extends View {
               width="wrap_content"
               height="wrap_content"
               text="Edit"
+              visibility = {(this.isEditable == "true") ? "visible" : "gone"}
               style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
 
               </LinearLayout>)
   }
-  
+
   getLineSeperator = () => {
     return (<LinearLayout
             width="match_parent"
@@ -63,6 +66,16 @@ class ProfileExperiences extends View {
   }
 
   getBody(input) {
+    var dateOptions = {month: "short", year: "2-digit"};
+    var endDate = new Date(input.endDate);
+    var endDateString = endDate.toLocaleDateString("en-us", dateOptions);
+    var joiningDate = new Date(input.joiningDate);
+    var joiningDateString = joiningDate.toLocaleDateString("en-us", dateOptions);
+    if(input.hasOwnProperty("joiningDate") && input.joiningDate != ""){
+      var noOfYears = " (" + Math.abs(joiningDate.getUTCFullYear() - endDate.getUTCFullYear()) + " YRS)";
+    } else {
+      var noOfYears = "";
+    }
     return (<LinearLayout
                 width="wrap_content"
                 height="wrap_content"
@@ -73,19 +86,19 @@ class ProfileExperiences extends View {
                     <TextView
                     width="wrap_content"
                     height="wrap_content"
-                    text={input.position}
+                    text={input.jobName}
                     style={window.__TextStyle.textStyle.CARD.HEADING}/>
 
                     <TextView
                     width="wrap_content"
                     height="wrap_content"
-                    text={input.place}
+                    text={input.address.city + ", " + input.address.country}
                     style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
                     <TextView
                     width="wrap_content"
                     height="wrap_content"
-                    text={input.duration}
+                    text={joiningDateString + " - " + endDateString + noOfYears}
                     style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
                 </LinearLayout>)
@@ -93,7 +106,7 @@ class ProfileExperiences extends View {
 
   experienceBody() {
 
-    var cards = this.data.map((item, i) => {
+    var cards = this.jobs.map((item, i) => {
       return (<LinearLayout
                 width="wrap_content"
                 height="wrap_content"
@@ -127,7 +140,7 @@ class ProfileExperiences extends View {
 
   render() {
     this.layout = (
-    
+
       <LinearLayout
                 width="wrap_content"
                 height="match_parent"
@@ -142,8 +155,8 @@ class ProfileExperiences extends View {
 
               </LinearLayout>
 
-               
-     
+
+
     )
     return this.layout.render();
   }
