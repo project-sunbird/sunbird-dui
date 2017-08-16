@@ -799,9 +799,9 @@ class UserActivity extends View {
             gravity="center"
             orientation="vertical">
 
-              <ImageView
-                height="300"
-                width="300"
+               <ImageView
+                height="250"
+                width="250"
                 layout_gravity="center"
                 imageUrl="ic_launcher"/>
               <TextView
@@ -809,6 +809,7 @@ class UserActivity extends View {
                 margin="20,120,20,20"
                 layout_gravity="center"
                 height="wrap_content"/>
+
            </LinearLayout>
       </LinearLayout>
 
