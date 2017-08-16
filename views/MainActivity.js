@@ -417,6 +417,11 @@ class MainActivity extends View {
     return this.bNavBar;
   }
 
+   onStop = () =>{
+    window.__PermissionDeniedDialog.hide();
+  }
+
+
 
 
   render() {

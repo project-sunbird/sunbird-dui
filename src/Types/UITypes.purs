@@ -31,7 +31,7 @@ instance encodeInitScreenAction :: Encode InitScreenAction where encode = defaul
 
 
 data SplashScreenActivity = SplashScreenActivity
-data SplashScreenActivityAction = DummyUserActivityAction  | 
+data SplashScreenActivityAction = DummyUserActivityAction  |
   BACK_SplashScreenActivity
 
 instance splashScreenActivity :: UIScreen SplashScreenActivity SplashScreenActivityAction where
@@ -48,7 +48,7 @@ data UserActivityAction = OPEN_MainActivity |
   OPEN_Deeplink_ResourceDetail {resource :: String} |
   OPEN_Deeplink_CourseEnrolled {course::String}|
   OPEN_DeepLink_CourseInfo {course::String}|
-  API_LogIn {userName::String, userPass::String} | 
+  API_LogIn {userName::String, userPass::String} |
   API_SignUp {request::String, api_token::String} |
   API_EnrolledCourses {user_token::String, api_token::String}
 
@@ -62,20 +62,21 @@ instance encodeUserActivityAction :: Encode UserActivityAction where encode = de
 
 
 data MainActivity = MainActivity
-data MainActivityAction = OPEN_HomeFragment | 
-  OPEN_CourseFragment | 
-  OPEN_ResourceFragment | 
-  OPEN_CommunityFragment | 
+data MainActivityAction = OPEN_HomeFragment |
+  OPEN_CourseFragment |
+  OPEN_ResourceFragment |
+  OPEN_CommunityFragment |
   OPEN_ProfileFragment |
-  BACK_HomeActivity | 
-  OPEN_CourseInfoActivity {course::String} | 
-  OPEN_EnrolledCourseActivity {course::String} | 
+  BACK_HomeActivity |
+  OPEN_CourseInfoActivity {course::String} |
+  OPEN_EnrolledCourseActivity {course::String} |
   OPEN_CourseViewAllActivity {courseListDetails :: String} |
   OPEN_ResourceDetailActivity {resourceDetails::String} |
   OPEN_ResourceViewAllActivity {resourceDetails::String} |
-  OPEN_CommunityInfoActivity {community::String} | 
+  OPEN_CommunityInfoActivity {community::String} |
   OPEN_CommunityViewAllActivity |
-  OPEN_NotificationActivity | 
+  OPEN_NotificationActivity |
+  OPEN_EditProfileActivity |
   OPEN_SearchActivity {filterDetails::String}|
   API_ResourceFragment {user_token::String, api_token::String}|
   API_CourseFragment {user_token::String, api_token::String} |
@@ -93,7 +94,7 @@ instance encodeMainActivityAction :: Encode MainActivityAction where encode = de
 
 
 data ResourceDetailActivity = ResourceDetailActivity {resourceDetails::String}
-data ResourceDetailActivityAction =  DummyResourceDetailActivityAction | 
+data ResourceDetailActivityAction =  DummyResourceDetailActivityAction |
   BACK_ResourceDetailActivity | API_FlagContent{user_token::String,api_token::String,requestBody::String,identifier::String}
 
 instance resourceDetailActivity :: UIScreen ResourceDetailActivity ResourceDetailActivityAction where
@@ -107,7 +108,7 @@ instance encodeResourceDetailActivityAction:: Encode ResourceDetailActivityActio
 data CourseInfoActivity = CourseInfoActivity {courseDetails::String}
 data CourseInfoActivityAction = BACK_CourseInfoActivity |
   OPEN_EnrolledActivity {course::String} |
-  API_EnrollCourse {user_token::String,reqParams ::String, api_token::String} | 
+  API_EnrollCourse {user_token::String,reqParams ::String, api_token::String} |
   ShowModuleDetails {moduleName::String,moduleDetails::String} |
   API_EnrolledCoursesList {user_token::String,api_token::String}
 
@@ -117,13 +118,13 @@ instance courseInfoScreen :: UIScreen CourseInfoActivity CourseInfoActivityActio
 
 derive instance genericourseInfoActivityAction  :: Generic CourseInfoActivityAction _
 instance decodeCourseInfoActivityAction :: Decode CourseInfoActivityAction where decode = defaultDecode
-instance encodeCourseInfoActivityAction :: Encode CourseInfoActivityAction where encode = defaultEncode  
+instance encodeCourseInfoActivityAction :: Encode CourseInfoActivityAction where encode = defaultEncode
 
 data CourseEnrolledActivity = CourseEnrolledActivity {courseDetails::String}
-data CourseEnrolledActivityAction = DummyCourseEnrolledActivityAction | 
-  BACK_CourseEnrolledActivity | 
+data CourseEnrolledActivityAction = DummyCourseEnrolledActivityAction |
+  BACK_CourseEnrolledActivity |
   OPEN_ModuleDetailsActivity {moduleName::String,moduleDetails::String} |
-  API_GetContentState {courseId::String,user_token::String,api_token::String}  
+  API_GetContentState {courseId::String,user_token::String,api_token::String}
 
 instance courseEnrolledActivity :: UIScreen CourseEnrolledActivity CourseEnrolledActivityAction where
   generateMockEvents _ = [DummyCourseEnrolledActivityAction , BACK_CourseEnrolledActivity]
@@ -136,7 +137,7 @@ instance encodeCourseEnrolledActivityAction :: Encode CourseEnrolledActivityActi
 
 data ModuleDetailActivity = ModuleDetailActivity {moduleName::String,moduleDetails::String}
 data ModuleDetailActivityAction = DummyModuleDetailActivityAction |
- BACK_ModuleDetailActivity | 
+ BACK_ModuleDetailActivity |
  OPEN_AlternateModuleDetailActivity {moduleName::String,moduleDetails::String}
 
 instance moduleDetailActivity :: UIScreen ModuleDetailActivity ModuleDetailActivityAction where
@@ -149,8 +150,8 @@ instance encodeModuleDetailActivityAction :: Encode ModuleDetailActivityAction w
 
 
 data AlternateModuleDetailActivity = AlternateModuleDetailActivity {moduleName::String,moduleDetails::String}
-data AlternateModuleDetailActivityAction = DummyAlternateModuleDetailAction | 
-  BACK_AlternateModuleDetailActivity | 
+data AlternateModuleDetailActivityAction = DummyAlternateModuleDetailAction |
+  BACK_AlternateModuleDetailActivity |
   OPEN_ModuleActivity {moduleName::String,moduleDetails::String}
 
 
@@ -164,7 +165,7 @@ instance encodeAlternateModuleDetailActivityAction :: Encode AlternateModuleDeta
 
 
 data CommunityViewAllActivity = CommunityViewAllActivity
-data CommunityViewAllAction = DummyCommunityViewAllAction | 
+data CommunityViewAllAction = DummyCommunityViewAllAction |
   BACK_CommunityViewAllActivity
 
 
@@ -203,10 +204,10 @@ instance decodeNotificationActivityAction :: Decode NotificationActivityAction w
 instance encodeNotificationActivityAction :: Encode NotificationActivityAction where encode = defaultEncode
 
 data ResourceViewAllActivity = ResourceViewAllActivity {resourceDetails::String}
-data ResourceViewAllActivityAction = DummyResourceViewAllAction | 
-  BACK_ResourceViewAllActivity | 
-  OPEN_ResourceInfo {resourceDetails::String} | 
-  OPEN_CourseEnrolled {course::String} | 
+data ResourceViewAllActivityAction = DummyResourceViewAllAction |
+  BACK_ResourceViewAllActivity |
+  OPEN_ResourceInfo {resourceDetails::String} |
+  OPEN_CourseEnrolled {course::String} |
   OPEN_ResourceViewAllDetail {resourceDetails::String}
 
 
@@ -220,9 +221,15 @@ instance encodeResourceViewAllActivityAction :: Encode ResourceViewAllActivityAc
 
 
 data CourseViewAllActivity = CourseViewAllActivity {courseViewAllDetails::String}
+<<<<<<< Updated upstream
 data CourseViewAllActivityAction = DummyCourseViewAllActivityAction | 
   BACK_CourseViewAllActivity | 
   OPEN_EnrolledCourseFlowFromCourseViewAll {course::String} | OPEN_CourseInfoFlowFromCourseViewAll {course::String}
+=======
+data CourseViewAllActivityAction = DummyCourseViewAllActivityAction |
+  BACK_CourseViewAllActivity |
+  OPEN_EnrolledCourseFlowFromCourseViewAll {course::String}
+>>>>>>> Stashed changes
 
 instance courseViewAllActivity :: UIScreen CourseViewAllActivity CourseViewAllActivityAction where
   generateMockEvents _ = [DummyCourseViewAllActivityAction , BACK_CourseViewAllActivity]
@@ -234,12 +241,12 @@ instance encodeCourseViewAllActivityAction :: Encode CourseViewAllActivityAction
 
 
 data SearchActivity = SearchActivity {filterDetails::String}
-data SearchActivityAction = DummySearchActivity | 
-  BACK_SearchActivity | 
-  OPEN_ResourceDetailActivity_SEARCH {resourceDetails::String} | 
+data SearchActivityAction = DummySearchActivity |
+  BACK_SearchActivity |
+  OPEN_ResourceDetailActivity_SEARCH {resourceDetails::String} |
   OPEN_FilterActivity {filterDetails::String} |
-  OPEN_CourseInfoActivity_SEARCH {course::String} | 
-  OPEN_CourseEnrolledActivity_SEARCH {course::String} | 
+  OPEN_CourseInfoActivity_SEARCH {course::String} |
+  OPEN_CourseEnrolledActivity_SEARCH {course::String} |
   OPEN_ResourceFragment_SEARCH {course::String}
 
 instance searchActivity :: UIScreen SearchActivity SearchActivityAction where
@@ -251,9 +258,9 @@ instance decodeSearchActivityAction :: Decode SearchActivityAction where decode 
 instance encodeSearchActivityAction :: Encode SearchActivityAction where encode = defaultEncode
 
 data FilterActivity = FilterActivity {filterDetails::String}
-data FilterActivityAction = DummyFilterActivity | 
-  BACK_FilterActivity | 
-  OPEN_SearchActivity_FILTER {filterData::String}  
+data FilterActivityAction = DummyFilterActivity |
+  BACK_FilterActivity |
+  OPEN_SearchActivity_FILTER {filterData::String}
 
 instance filterActivity :: UIScreen FilterActivity FilterActivityAction where
   generateMockEvents _ = [ DummyFilterActivity , BACK_FilterActivity ]
@@ -262,3 +269,16 @@ instance filterActivity :: UIScreen FilterActivity FilterActivityAction where
 derive instance genericFilterActivityAction  :: Generic FilterActivityAction _
 instance decodeFilterActivityAction :: Decode FilterActivityAction where decode = defaultDecode
 instance encodeFilterActivityAction :: Encode FilterActivityAction where encode = defaultEncode
+
+
+data AdditionalInformationActivity = AdditionalInformationActivity
+data AdditionalInformationActivityAction = DummyAdditionalInformationActivity |
+  BACK_AdditionalInformationActivity 
+
+instance addtionalInsormationActivity :: UIScreen AdditionalInformationActivity AdditionalInformationActivityAction where
+  generateMockEvents _ = [ DummyAdditionalInformationActivity , BACK_AdditionalInformationActivity]
+  ui x = genericUI x (generateMockEvents x :: Array AdditionalInformationActivityAction)
+
+derive instance genericAdditionalInformationActivityAction  :: Generic AdditionalInformationActivityAction _
+instance decodeAdditionalInformationActivityAction :: Decode AdditionalInformationActivityAction where decode = defaultDecode
+instance encodeAdditionalInformationActivityAction :: Encode AdditionalInformationActivityAction where encode = defaultEncode

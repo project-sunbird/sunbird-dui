@@ -10,6 +10,8 @@ var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var Button = require('../Sunbird/Button');
 var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
+var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
+
 var _this;
 var CardComponent = require('../Sunbird/core/CardComponent');
 
@@ -165,9 +167,30 @@ class CourseInProgressContainer extends View {
 
 
 
-  handleCardClick = (content, type) => {
-    this.props.onCourseClick(content, type);
+   handleCardClick = (content, type) => {
+
+
+    var callback = callbackMapper.map(function(data) {
+
+      if (data == "android.permission.WRITE_EXTERNAL_STORAGE") {
+        JBridge.setKey("isPermissionSetWriteExternalStorage", "true");
+
+        _this.props.onCourseClick(content, type);
+
+      }
+      if(data == "DeniedPermanently"){
+        console.log("DENIED DeniedPermanently");
+        window.__PermissionDeniedDialog.show("ic_flag_warning","Cannot download content since permission is denied");
+      }
+
+    });
+
+    JBridge.setPermissions(callback,"android.permission.WRITE_EXTERNAL_STORAGE");
+    
   }
+
+
+
 
   handleViewAllClick = () =>{
 

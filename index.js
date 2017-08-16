@@ -104,6 +104,16 @@ if (typeof window !== "undefined") {
     window.__CACHED_SCREENS[window.__CURR_SCREEN].screen.onStop();
   }
 
+  window.onResume = () => {
+    console.log("onResume");
+    window.__CACHED_SCREENS[window.__CURR_SCREEN].screen.onResume();
+  }
+
+  window.onPause = () => {
+    console.log("onPause");
+    window.__CACHED_SCREENS[window.__CURR_SCREEN].screen.onPause();
+  }
+
 
   window.onActivityLifeCycleEvent = (event) => {
     console.log("-->", event);

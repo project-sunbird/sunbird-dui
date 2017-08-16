@@ -152,14 +152,12 @@ class ProgressButton extends View {
         }
 
       } else {
-
         this.setPermissions();
       }
 
-
-
-
   }
+
+
   checkTelemetry = (telemetryData) => {
     telemetryData = JSON.parse(utils.decodeBase64(telemetryData));
     if (telemetryData.eid == "OE_END") {
@@ -231,6 +229,10 @@ class ProgressButton extends View {
 
       if (data == "android.permission.WRITE_EXTERNAL_STORAGE") {
         JBridge.setKey("isPermissionSetWriteExternalStorage", "true");
+      }
+      if(data == "DeniedPermanently"){
+        console.log("DENIED DeniedPermanently");
+        window.__PermissionDeniedDialog.show("ic_flag_warning","Cannot download content since permission is denied");
       }
 
     });

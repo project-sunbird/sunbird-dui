@@ -7,6 +7,7 @@ var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
+var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 var utils = require('../../utils/GenericFunctions');
 
 
@@ -92,16 +93,28 @@ class SearchResult extends View {
     var itemDetails = JSON.stringify(item);
 
     if(item.contentType.toLowerCase() == "course"){
-      
-      var whatToSend={course:itemDetails};
-      var event={tag:"OPEN_CourseInfoActivity_SEARCH",contents:whatToSend}
-      window.__runDuiCallback(event);
+
+      if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
+        var whatToSend={course:itemDetails};
+        var event={tag:"OPEN_CourseInfoActivity_SEARCH",contents:whatToSend}
+        window.__runDuiCallback(event);
+      }else{
+        this.setPermissions();
+      }
+    
     }
     else if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook"){
+
+      if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
+        var whatToSend={course:itemDetails};
+        var event={tag:"OPEN_CourseEnrolledActivity_SEARCH",contents:whatToSend}
+        window.__runDuiCallback(event);
+      }else{
+        this.setPermissions();
+      }
+
+
       
-      var whatToSend={course:itemDetails};
-      var event={tag:"OPEN_CourseEnrolledActivity_SEARCH",contents:whatToSend}
-      window.__runDuiCallback(event);
     }
     else
     {
@@ -119,6 +132,24 @@ class SearchResult extends View {
       var event= {tag:"OPEN_ResourceDetailActivity_SEARCH",contents:whatToSend}
       window.__runDuiCallback(event); 
     }
+
+  }
+
+  setPermissions = () => {
+
+   var callback = callbackMapper.map(function(data) {
+
+      if (data == "android.permission.WRITE_EXTERNAL_STORAGE") {
+        JBridge.setKey("isPermissionSetWriteExternalStorage", "true");
+      }
+      if(data == "DeniedPermanently"){
+        console.log("DENIED DeniedPermanently");
+        window.__PermissionDeniedDialog.show("ic_flag_warning","Cannot download content since permission is denied");
+      }
+
+    });
+
+    JBridge.setPermissions(callback,"android.permission.WRITE_EXTERNAL_STORAGE");
 
   }
 

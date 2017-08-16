@@ -24,7 +24,7 @@ var ProfileAdditionalInfo = require('../components/Sunbird/ProfileAdditionalInfo
 var Styles = require("../res/Styles");
 let IconStyle = Styles.Params.IconStyle;
 
-class AdditionalInformation extends View{
+class AdditionalInformationActivity extends View{
   constructor(props, children,state) {
     super(props, children,state);
     this.setIds([
@@ -33,8 +33,9 @@ class AdditionalInformation extends View{
       "HobbiesLayout",
       "predictionHobbiesLayout"
     ]);
+    this.shouldCacheScreen = false;
     this.state=state;
-    this.screenName="AdditionalInformation"
+    this.screenName="AdditionalInformationActivity"
     this.languageDictionary=["english","hindi","marathi","telugu","kannada","punjabi","bhojpuri","bengali"];
     this.selectedLanguages=[];
     this.hobbieDictionary=["english","hindi","marathi","telugu","kannada","punjabi","bhojpuri","bengali"];
@@ -386,7 +387,7 @@ console.log("rendered");
          for(i=0; i < this.languageDictionary.length;i++)
          {
            if(this.languageDictionary[i].startsWith(data))
-              predictions.push(this.languageDictionary[i]);
+              predictions.unshift(this.languageDictionary[i]);
          }
          console.log(predictions, "LangPredi");
          if(predictions!=[])
@@ -483,7 +484,7 @@ console.log("rendered");
       this.replaceChild(this.idSet.predictionLanguageLayout, this.predictLanguageLayout.render(), 0);
 
      this.languageDictionary.splice(index,1);
-     this.selectedLanguages.push(data);
+     this.selectedLanguages.unshift(data);
 
 
      var skills = this.selectedLanguages.map((item) => {
@@ -512,7 +513,7 @@ console.log("rendered");
   addLanguageItem = (data) =>{
     if(this.languageDictionary.indexOf(data)==-1 && this.selectedLanguages.indexOf(data)==-1)
     {
-      this.languageDictionary.push(data);
+      this.languageDictionary.unshift(data);
       this.selectLanguageItem(data);
     }
     else {
@@ -541,7 +542,8 @@ console.log("rendered");
                 width="wrap_content"
                 textColor="#ffffff"
                 text={item}
-                margin="12,2,0,0"
+                margin="12,0,0,0"
+                gravity="center"
                 />
                 <ImageView
                 margin="11,8,11,8"
@@ -563,7 +565,7 @@ console.log("rendered");
     var index= this.selectedLanguages.indexOf(item);
     if(index>-1){
       this.selectedLanguages.splice(index,1);
-      this.languageDictionary.push(item);
+      this.languageDictionary.unshift(item);
 
       var languages = this.selectedLanguages.map((data) => {
         return (this.languageItemLayout(data));
@@ -599,7 +601,7 @@ console.log("rendered");
          for(i=0; i < this.hobbieDictionary.length;i++)
          {
            if(this.hobbieDictionary[i].startsWith(data))
-              predictions.push(this.hobbieDictionary[i]);
+              predictions.unshift(this.hobbieDictionary[i]);
          }
          console.log(predictions, "HobbPredi");
          if(predictions!=[])
@@ -696,7 +698,7 @@ console.log("rendered");
       this.replaceChild(this.idSet.predictionHobbiesLayout, this.predictHobbieLayout.render(), 0);
 
      this.hobbieDictionary.splice(index,1);
-     this.selectedHobbies.push(data);
+     this.selectedHobbies.unshift(data);
 
 
      var skills = this.selectedHobbies.map((item) => {
@@ -725,7 +727,7 @@ console.log("rendered");
   addHobbieItem = (data) =>{
     if(this.hobbieDictionary.indexOf(data)==-1 && this.selectedHobbies.indexOf(data)==-1)
     {
-      this.hobbieDictionary.push(data);
+      this.hobbieDictionary.unshift(data);
       this.selectHobbieItem(data);
     }
     else {
@@ -754,7 +756,8 @@ console.log("rendered");
                 width="wrap_content"
                 textColor="#ffffff"
                 text={item}
-                margin="12,2,0,0"
+                margin="12,0,0,0"
+                gravity="center"
                 />
                 <ImageView
                 margin="11,8,11,8"
@@ -776,7 +779,7 @@ console.log("rendered");
     var index= this.selectedHobbies.indexOf(item);
     if(index>-1){
       this.selectedHobbies.splice(index,1);
-      this.hobbieDictionary.push(item);
+      this.hobbieDictionary.unshift(item);
 
       var Hobbies = this.selectedHobbies.map((data) => {
         return (this.hobbieItemLayout(data));
@@ -800,8 +803,13 @@ console.log("rendered");
     }
   }
 
+  onBackPressed = () => {
+    var whatToSend = []
+    var event = { tag: "BACK_AdditionalInformationActivity", contents: whatToSend};
+    window.__runDuiCallback(event);
+  }
 
 
 
 }
-module.exports = Connector(AdditionalInformation);
+module.exports = Connector(AdditionalInformationActivity);

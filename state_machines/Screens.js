@@ -17,7 +17,7 @@ module.exports = function(action, payload, state) {
      case "SplashScreenActivity":
       localState.isInit = false
       localState.currScreen = "SplashScreenActivity";
-      break; 
+      break;
 
      case "AlternateModuleDetailActivity":
       localState.isInit = false;
@@ -34,12 +34,12 @@ module.exports = function(action, payload, state) {
       localState.currScreen = "CommunityViewAllActivity";
       break;
 
-    
+
     case "CourseEnrolledActivity":
       localState.isInit = false;
       localState.currScreen = "CourseEnrolledActivity";
       break;
-    
+
     case "CourseInfoActivity":
       localState.isInit = false;
       localState.currScreen = "CourseInfoActivity";
@@ -53,13 +53,13 @@ module.exports = function(action, payload, state) {
       case "FilterActivity":
       localState.isInit = false;
       localState.currScreen = "FilterActivity";
-      break;   
+      break;
 
     case "MainActivity":
       localState.isInit = false
       localState.currScreen = "MainActivity";
       break;
-     
+
     case "ModuleDetailActivity":
       localState.isInit = false;
       localState.currScreen = "ModuleDetailActivity";
@@ -69,7 +69,7 @@ module.exports = function(action, payload, state) {
      case "NotificationActivity":
       localState.isInit = false;
       localState.currScreen = "NotificationActivity";
-      break; 
+      break;
 
     case "ResourceDetailActivity":
       localState.isInit = false;
@@ -83,15 +83,19 @@ module.exports = function(action, payload, state) {
     case "SearchActivity":
       localState.isInit = false;
       localState.currScreen = "SearchActivity";
-      break;  
-      
-    
+      break;
+
+
 
     case "UserActivity":
       localState.isInit = false
       localState.currScreen = "UserActivity";
       break;
-    
+
+    case "AdditionalInformationActivity":
+      localState.isInit = false
+      localState.currScreen ="AdditionalInformationActivity"
+      break;
     case "GO_BACK":
       break;
 

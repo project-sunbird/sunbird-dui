@@ -133,6 +133,10 @@ class CourseContainer extends View {
         _this.props.onCourseClick(content, type);
 
       }
+      if(data == "DeniedPermanently"){
+        console.log("DENIED DeniedPermanently");
+        window.__PermissionDeniedDialog.show("ic_flag_warning","Cannot download content since permission is denied");
+      }
 
     });
 

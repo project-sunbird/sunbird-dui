@@ -15,8 +15,9 @@ var objectAssign = require('object-assign');
 var LoaderDialog = require('../components/Sunbird/core/LoaderDialog');
 var PageFilterPopup = require('../components/Sunbird/PageFilterPopup');
 var ContentLoaderDialog = require('../components/Sunbird/core/ContentLoaderDialog');
+var PermissionDeniedDialog = require('../components/Sunbird/core/PermissionDeniedDialog');
 
-const Str = require("../res/strings") ;
+const Str = require("../res/Strings") ;
 
 
 class RootScreen extends View {
@@ -38,7 +39,7 @@ class RootScreen extends View {
     window.__Font = Font;
     window.__ObjectAssign = objectAssign;
 
-    
+
     window.__userOrgImg=JBridge.getFromSharedPrefs("org_img");
     if(window.__userOrgImg==="__failed"){
       window.__userOrgImg="ic_launcher";
@@ -68,14 +69,14 @@ class RootScreen extends View {
   render() {
     this.layout = (
       <RelativeLayout
-        root="true" 
-        width="match_parent" 
+        root="true"
+        width="match_parent"
         height="match_parent">
         <LinearLayout
           orientation="vertical"
           width="match_parent"
-          height="match_parent">   
-           
+          height="match_parent">
+
           <RelativeLayout
             id = {this.idSet.root}
             width="match_parent"
@@ -86,6 +87,7 @@ class RootScreen extends View {
         <LoaderDialog/>
         <PageFilterPopup/>
         <ContentLoaderDialog/>
+        <PermissionDeniedDialog/>
       </RelativeLayout>
     );
 
