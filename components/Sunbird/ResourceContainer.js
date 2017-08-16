@@ -101,7 +101,7 @@ class ResourceContainer extends View {
 
   handleCardClick = (item, type) => {
 
-       if(item.contentType.toLowerCase() == "course" || item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "TextBook"){
+       if(item.contentType.toLowerCase() == "course" || item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook"){
         var whatToSend={course:JSON.stringify(item)}
         var event ={tag:"OPEN_EnrolledCourseActivity",contents:whatToSend}
         window.__runDuiCallback(event);
