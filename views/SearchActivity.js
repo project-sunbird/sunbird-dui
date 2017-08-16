@@ -39,6 +39,7 @@ class SearchActivity extends View {
     this.screenName = "SearchActivity"
 
     this.tempData = JSON.parse(state.data.value0.filterDetails);
+    this.filterIcon="ic_action_filter";
 
 
     this.filter=[]
@@ -48,6 +49,7 @@ class SearchActivity extends View {
     this.temp = state.data;
     this.searchType = this.tempData.searchType;
     window.searchData = this.logSearch;
+
 
     _this = this;
 
@@ -60,11 +62,14 @@ class SearchActivity extends View {
 
 
     if(this.filterData!=undefined && this.filterData.length != 0){
+      this.filterIcon="ic_action_filter_applied";
+
     JBridge.showSnackBar(window.__S.SEARCH_LOADING_MESSAGE)
        var cmd = "";
         cmd += _this.set({
           id: _this.idSet.filterHolder,
-          visibility: "visible"
+          visibility: "visible",
+          imageUrl : this.filterIcon
         })
         Android.runInUI(cmd, 0);
 
@@ -77,7 +82,12 @@ class SearchActivity extends View {
       this.getSearchList(this.searchText,"true");
     }
     else if(window.searchText!=undefined && window.searchText!=""){
+<<<<<<< Updated upstream
         this.getSearchList(window.searchText,"false");
+=======
+        this.getSearchList(window.searchText[0],"false");
+
+>>>>>>> Stashed changes
     }
 
     var callback = callbackMapper.map(function(data) {
@@ -152,7 +162,7 @@ class SearchActivity extends View {
                       id={this.idSet.filterHolder}
                       style = {IconStyle}
                       visibility="gone"
-                      imageUrl = "ic_action_filter"/>
+                      imageUrl = {this.filterIcon}/>
 
                    </LinearLayout>)
     return layout;
@@ -253,6 +263,7 @@ class SearchActivity extends View {
           var s = "";
           if(JBridge.isNetworkAvailable()){
               JBridge.showSnackBar(window.__S.SEARCH_LOADING_MESSAGE)
+              console.log(this.filterData," filterData ");
               JBridge.searchContent(callback, JSON.stringify(this.filterData), searchText, this.searchType, flag, 30);
           }
           else{

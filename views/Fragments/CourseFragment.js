@@ -39,12 +39,27 @@ class CourseFragment extends View {
     console.log("course constructor");
     if(this.props.response != undefined && this.props.response.hasOwnProperty("filter_to_send") && this.props.response.filter_to_send!=null)
     { console.log(props.response.filter_to_send, "fiter applied");
-      this.menuData = {
-           url: [
-             { imageUrl: "ic_action_search" },
-             { imageUrl: "ic_action_filter_applied" }
-           ]
-         }
+      console.log([].concat.apply([], Object.values(JSON.parse(props.response.filter_to_send))).length, "lenth");
+
+     if(  ([].concat.apply([], Object.values(JSON.parse(props.response.filter_to_send)))).length > 0 )
+     {
+        this.menuData = {
+             url: [
+               { imageUrl: "ic_action_search" },
+               { imageUrl: "ic_action_filter_applied" }
+             ]
+           }
+     }
+     else{
+
+       this.menuData = {
+            url: [
+              { imageUrl: "ic_action_search" },
+              { imageUrl: "ic_action_filter" }
+            ]
+          }
+     }
+
     }
     else{
       console.log("no filter applied");

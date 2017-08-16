@@ -801,8 +801,7 @@ class UserActivity extends View {
             width="match_parent"
             gravity="center"
             orientation="vertical">
-
-               <ImageView
+              <ImageView
                 height="250"
                 width="250"
                 layout_gravity="center"

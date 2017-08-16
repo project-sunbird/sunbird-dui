@@ -55,7 +55,9 @@ class ProfileCreations extends View {
             width="wrap_content"
             height="wrap_content"
             text="Edit Profile"
-            style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
+            style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}
+            onClick={this.handleEditProfileClick}
+            />
 
           </LinearLayout>
           <LinearLayout
@@ -226,6 +228,15 @@ class ProfileCreations extends View {
     )
     return this.layout.render();
   }
+
+  handleEditProfileClick = () => {
+
+    var whatToSend = {}
+    var event ={ tag: "OPEN_EditProfileActivity", contents: whatToSend }
+    window.__runDuiCallback(event);
+
+  }
+
 }
 
 

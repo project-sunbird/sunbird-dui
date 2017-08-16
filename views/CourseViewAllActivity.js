@@ -35,10 +35,8 @@ class CourseViewAllActivity extends View {
     this.shouldCacheScreen = false;
 
     this.totalDetails = JSON.parse(state.data.value0.courseViewAllDetails);
-    console.log("c S k" ,this.totalDetails)
     this.searchQuery = this.totalDetails.hasOwnProperty("searchQuery") ? this.totalDetails.searchQuery : null;
 
-    this.totalDetails = this.totalDetails.courseListDetails;
     this.displayContent = [];
     this.start_index = 0;
     this.appbarTitle = this.totalDetails.title; 
@@ -70,8 +68,8 @@ class CourseViewAllActivity extends View {
   getRows = (list) =>{
 
      console.log("data in cva",this.totalDetails)
-     if(list == undefined)
-      list = this.totalDetails;
+     // if(list == undefined)
+     //  list = this.totalDetails;
 
 
       var rows = list.map((item,i) => {
@@ -268,7 +266,7 @@ class CourseViewAllActivity extends View {
                         id = {this.idSet.listItems}
                         >
 
-                        {this.getRows()}
+                        {this.getRows(this.totalDetails)}
 
 
                       </LinearLayout>
