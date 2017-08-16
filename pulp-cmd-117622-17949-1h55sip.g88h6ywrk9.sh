@@ -1,0 +1,1 @@
+webpack-dev-server --inline --watch --hot --content    -base dist/ --host  0.0.0.0

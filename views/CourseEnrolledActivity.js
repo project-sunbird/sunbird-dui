@@ -10,6 +10,7 @@ var ScrollView = require('@juspay/mystique-backend').androidViews.ScrollView;
 var ProgressBar = require("@juspay/mystique-backend").androidViews.ProgressBar;
 
 var objectAssign = require('object-assign');
+var FeatureButton = require('../components/Sunbird/FeatureButton');
 
 window.R = require("ramda");
 
@@ -35,7 +36,8 @@ class CourseEnrolledActivity extends View {
       "descriptionContainer",
       "downloadProgressText",
       "sharePopupContainer",
-      "contentLoaderContainer"
+      "contentLoaderContainer",
+      "featureButton"
     ]);
     this.state = state;
     this.screenName = "CourseEnrolledActivity"
@@ -230,15 +232,50 @@ class CourseEnrolledActivity extends View {
 
 
   onBackPressed = () => {
+    window.__ContentLoaderDialog.hide();
+   
+    if(window.__SharePopup != undefined && window.__SharePopup.getVisible()){
+     window.__SharePopup.hide();
+     return;
+    }
+
    var whatToSend = []
    var event = { tag: 'BACK_CourseEnrolledActivity', contents: whatToSend }
    window.__runDuiCallback(event);
   }
 
   afterRender=()=>{
+    if(this.details.contentType!="course" || this.details.contentType != "Course"){
+      var cmd = this.set({
+        id: this.idSet.featureButton,
+        visibility: "gone"
+
+      })
+      Android.runInUI(cmd, 0);
+    }
+
+
     this.checkContentLocalStatus(this.baseIdentifier);
+  }
+
+
+  overFlowCallback = (params) => {
+    if(params == 0){
+      window.__FlagPopup.show();
+    }else if(params == 1){
+      this.logout();
+    }
+  }
+
+  handleMenuClick = (url) =>{
+    console.log("menu item clicked",url);
+
+
+    if(url=="ic_action_share_black"){
+
 
     var callback = callbackMapper.map(function(data) {
+
 
       var input = [{
                     type : "text",
@@ -255,30 +292,42 @@ class CourseEnrolledActivity extends View {
         data = {input}/>
         )
 
-    _this.replaceChild(_this.idSet.sharePopupContainer,sharePopUp.render(),0);    
+
+    _this.replaceChild(_this.idSet.sharePopupContainer,sharePopUp.render(),0); 
+
+     setTimeout(function() {
+      window.__SharePopup.show();
+    }, 200);
+
     });
     JBridge.exportEcar(this.baseIdentifier, callback);
 
   }
-
-
-  overFlowCallback = (params) => {
-    if(params == 0){
-      window.__FlagPopup.show();
-    }else if(params == 1){
-      this.logout();
-    }
-  }
-
-  handleMenuClick = (url) =>{
-    console.log("menu item clicked",url);
-    if(url=="ic_action_share_black"){
-      window.__SharePopup.show();
-    }
-  }
+}
 
   handlePageOptionClick = (data) =>{
 
+  }
+
+  handleResumeClick = () =>{
+    console.log(this.details)
+    var callback = callbackMapper.map(function(data){
+      console.log("local content details",data)
+      data[0] = JSON.parse(data[0])
+      _this.handleModuleClick(data[0].contentData.name,data[0])
+    });
+    var id;
+    if(this.details.hasOwnProperty("lastReadContentId")){
+      id = this.details.lastReadContentId
+    }
+    else if(!(this.courseContent.children == undefined)){
+      console.log("children details",this.courseContent.children)
+      id = this.courseContent.children[0].identifier;
+    }
+    else{
+      JBridge.showSnackBar("No Resume Content Available")
+    }
+    JBridge.getChildContent(id,callback)
   }
 
 
@@ -370,6 +419,17 @@ class CourseEnrolledActivity extends View {
                       </LinearLayout>
                   </LinearLayout>
                 </ScrollView>
+                <FeatureButton
+                    clickable="true"
+                    margin = "16,16,16,16"
+                    width = "match_parent"
+                    height = "56"
+                    id = {this.idSet.featureButton}
+                    background = {window.__Colors.PRIMARY_ACCENT}
+                    text = {"RESUME COURSE"}
+                    style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
+                    buttonClick = {this.handleResumeClick}
+                    />
           </LinearLayout>
 
 
