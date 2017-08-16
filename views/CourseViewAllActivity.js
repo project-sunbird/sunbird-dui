@@ -36,7 +36,7 @@ class CourseViewAllActivity extends View {
 
     this.totalDetails = JSON.parse(state.data.value0.courseViewAllDetails);
     this.searchQuery = this.totalDetails.hasOwnProperty("searchQuery") ? this.totalDetails.searchQuery : null;
-
+    this.btnStatus = this.totalDetails.viewMore;
     this.displayContent = [];
     this.start_index = 0;
     this.appbarTitle = this.totalDetails.title; 
@@ -131,7 +131,7 @@ class CourseViewAllActivity extends View {
 
 
   afterRender = () => {
-
+    this.changeViewMoreButtonStatus(this.btnStatus)
   }
 
   handleCourseClick = (content)=>{
@@ -278,7 +278,7 @@ class CourseViewAllActivity extends View {
                               id = {this.idSet.viewMoreButton}
                               background = {window.__Colors.PRIMARY_DARK}
                               gravity = "center"
-
+                              visibility = "gone"
                               >
                               <TextView
                                 height = "match_parent"

@@ -196,7 +196,8 @@ class CourseInProgressContainer extends View {
 
       var courseListDetails = {
                                "title" : this.props.title || window.__S.COURSES_IN_PROGRESS,
-                               "courseListDetails" : this.data
+                               "courseListDetails" : this.data,
+                               "viewMore" : this.props.showViewMore
                               }
                               
       var whatToSend = {"courseListDetails": JSON.stringify(courseListDetails)}
