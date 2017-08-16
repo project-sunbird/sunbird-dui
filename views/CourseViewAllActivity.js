@@ -41,6 +41,8 @@ class CourseViewAllActivity extends View {
     this.totalDetails = this.totalDetails.courseListDetails;
     this.displayContent = [];
     this.start_index = 0;
+    this.appbarTitle = this.totalDetails.title; 
+    this.totalDetails = this.totalDetails.courseListDetails;
     this.menuData = {
     url: [
     ]

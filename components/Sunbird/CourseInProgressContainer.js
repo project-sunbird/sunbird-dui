@@ -172,9 +172,10 @@ class CourseInProgressContainer extends View {
   handleViewAllClick = () =>{
 
       var courseListDetails = {
-                               "title" : "Courses In Progress",
+                               "title" : this.props.title || window.__S.COURSES_IN_PROGRESS,
                                "courseListDetails" : this.data
                               }
+                              
       var whatToSend = {"courseListDetails": JSON.stringify(courseListDetails)}
       var event = { tag: "OPEN_CourseViewAllActivity", contents: whatToSend};
       window.__runDuiCallback(event);

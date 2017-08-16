@@ -246,7 +246,7 @@ class AlternateModuleDetailActivity extends View {
                     height = "wrap_content"
                     margin = "0,0,0,12"
                     width = "match_parent"
-                    text={this.module.contentData.hasOwnProperty("size")? window.__S.MODULE_SIZE +" "+this.formatBytes(this.module.contentData.size) : window.__S.MODULE_SIZE_UNAVAILABLE }/>
+                    text={this.module.contentData.hasOwnProperty("size")? window.__S.MODULE_SIZE.format(this.formatBytes(this.module.contentData.size)) : window.__S.MODULE_SIZE_UNAVAILABLE }/>
 
 
                 <CropParagraph 

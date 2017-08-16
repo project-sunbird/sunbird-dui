@@ -232,6 +232,13 @@ class CourseEnrolledActivity extends View {
 
 
   onBackPressed = () => {
+    window.__ContentLoaderDialog.hide();
+   
+    if(window.__SharePopup != undefined && window.__SharePopup.getVisible()){
+     window.__SharePopup.hide();
+     return;
+    }
+
    var whatToSend = []
    var event = { tag: 'BACK_CourseEnrolledActivity', contents: whatToSend }
    window.__runDuiCallback(event);
