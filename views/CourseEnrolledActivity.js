@@ -36,7 +36,8 @@ class CourseEnrolledActivity extends View {
       "descriptionContainer",
       "downloadProgressText",
       "sharePopupContainer",
-      "contentLoaderContainer"
+      "contentLoaderContainer",
+      "featureButton"
     ]);
     this.state = state;
     this.screenName = "CourseEnrolledActivity"
@@ -237,6 +238,16 @@ class CourseEnrolledActivity extends View {
   }
 
   afterRender=()=>{
+    if(this.details.contentType!="course" || this.details.contentType != "Course"){
+      var cmd = this.set({
+        id: this.idSet.featureButton,
+        visibility: "gone"
+
+      })
+      Android.runInUI(cmd, 0);
+    }
+
+
     this.checkContentLocalStatus(this.baseIdentifier);
 
     // var callback = callbackMapper.map(function(data) {
@@ -397,6 +408,7 @@ class CourseEnrolledActivity extends View {
                     margin = "16,16,16,16"
                     width = "match_parent"
                     height = "56"
+                    id = {this.idSet.featureButton}
                     background = {window.__Colors.PRIMARY_ACCENT}
                     text = {"RESUME COURSE"}
                     style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
