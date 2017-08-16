@@ -23,10 +23,7 @@ class ResourceViewAllCard extends View {
       'leftProgress',
       'rightProgress'
     ]);
-    console.log("download card contetn",this.props.content);
-    console.log("subtitle i gotISSSSS",this.props.data.footerSubTitle);
-    console.log("IMAGE URL IN RESOURCEV",this.props.data.imageUrl);
-
+  
 
   }
 
@@ -35,15 +32,14 @@ class ResourceViewAllCard extends View {
 
   }
 
-   getRemainingProgress = (progress) =>{
-    var remainingProgress = 100 - parseInt(progress);
-    return remainingProgress;
+  getRemainingProgress = (progress) =>{
+    return (100 - parseInt(progress));
   }
 
 
   getFooter = () =>{
     return (    <LinearLayout
-                  width="wrap_content"
+                  width="match_parent"
                   height="wrap_content"
                   padding = "12,27,16,12">
 
@@ -100,33 +96,34 @@ class ResourceViewAllCard extends View {
         <LinearLayout
           width="match_parent"
           height="match_parent"
-          multiCorners={"10,10,10,10,"+window.__Colors.WHITE}>
+          multiCorners={"10,10,10,10,"+window.__Colors.WHITE}
+          onClick={this.handleCardClick}>
+
+          <RelativeLayout
+            width = "100"
+            height = "100">
+
+
+            <LinearLayout
+              width="match_parent"
+              height="match_parent"
+              scaleType="fixXY"
+              alpha="0.5"
+              multiCorners={"10,0,0,10,"+window.__Colors.BLACK}/>
+
+            <ImageView
+              width="100"
+              height="100"
+              gravity="center"
+              circularImageUrl={"5,"+this.props.data.imageUrl}/>
+
+          </RelativeLayout>
 
           <LinearLayout
-            onClick={this.handleCardClick}>
-
-
-            <RelativeLayout
-              width = "100"
-              height = "100">
-
-
-              <LinearLayout
-                width="match_parent"
-                height="match_parent"
-                scaleType="fixXY"
-                alpha="0.5"
-                multiCorners={"10,0,0,10,"+window.__Colors.BLACK}/>
-
-              <ImageView
-                width="100"
-                height="100"
-                gravity="center"
-                circularImageUrl={"5,"+this.props.data.imageUrl}/>
-
-            </RelativeLayout>
-
-          <LinearLayout
+            width="0"
+            weight="1"
+            background={window.__Colors.WHITE}
+            height="match_parent"
             orientation = "vertical">
 
             <LinearLayout
@@ -164,7 +161,7 @@ class ResourceViewAllCard extends View {
 
             </LinearLayout>
 
-          </LinearLayout>
+
 
         </LinearLayout>
     </LinearLayout> )
