@@ -82,12 +82,8 @@ class SearchActivity extends View {
       this.getSearchList(this.searchText,"true");
     }
     else if(window.searchText!=undefined && window.searchText!=""){
-<<<<<<< Updated upstream
         this.getSearchList(window.searchText,"false");
-=======
-        this.getSearchList(window.searchText[0],"false");
 
->>>>>>> Stashed changes
     }
 
     var callback = callbackMapper.map(function(data) {
