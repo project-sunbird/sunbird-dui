@@ -122,6 +122,7 @@ exports["getJsonFromString"] = function(normalString) {
 };
 
 
+
 exports["sendUpdatedState'"] = function(state) {
 
   console.log('sendupdatedstate', state);
@@ -182,6 +183,8 @@ exports["updateState'"] = function(success) {
     };
   };
 };
+
+
 
 exports["getLoginStatus'"] = function(success) {
   return function(error) {
@@ -317,3 +320,5 @@ exports["getUserId'"] = function(success) {
     };
   };
 };
+
+

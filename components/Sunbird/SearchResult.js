@@ -87,7 +87,7 @@ class SearchResult extends View {
 
 
   handleItemClick = (item) =>{
-    console.log("clicked item<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<",item);
+
 
     var itemDetails = JSON.stringify(item);
 
@@ -132,22 +132,20 @@ class SearchResult extends View {
       <LinearLayout
 			width="match_parent"
 			height="wrap_content"
-			orientation="vertical"
-			>
-      <ScrollView
-          height="match_parent"
-          width="match_parent"
-          fillViewPort="true">
-          <LinearLayout
+			orientation="vertical">
+        <ScrollView
             height="match_parent"
             width="match_parent"
-            orientation="vertical">
+            fillViewPort="true">
+            <LinearLayout
+              height="match_parent"
+              width="match_parent"
+              orientation="vertical">
 
-                {this.getData()}
+                  {this.getData()}
 
-          </LinearLayout>
-      </ScrollView>
-
+            </LinearLayout>
+        </ScrollView>
        </LinearLayout>
 
 

@@ -88,19 +88,19 @@ class CourseFragment extends View {
 
   handleResponse = () => {
 
-      console.log("SERVER GAVE RESPONSE", this.props)
       if(this.props.response===undefined) {
+        JBridge.showSnackBar(window.__S.ERROR_EMPTY_RESULT)
         return;
       }
 
       this.details = this.props.response.result.response;
       if (!this.details.hasOwnProperty("name")) {
-        JBridge.showSnackBar("Error Fetching Data");
+        JBridge.showSnackBar(window.__S.ERROR_FETCHING_DATA);
         return;
       }
 
       if(this.details.sections==undefined && this.details.sections.length==0){
-          JBridge.showSnackBar("Error Fetching Data");
+          JBridge.showSnackBar(window.__S.ERROR_FETCHING_DATA);
           return;
       }
 
@@ -116,7 +116,7 @@ class CourseFragment extends View {
 
       var rows=this.details.sections.map((item,index) => {
           return this.getCourseCardLayout(item);
-          //this.appendChild(this.idSet.parentContainer,this.getCourseCardLayout(item).render(),index);
+
       })
 
 
@@ -131,7 +131,7 @@ class CourseFragment extends View {
         </LinearLayout>)
 
       return layout;
-    //this.replaceChild(this.idSet.parentContainer,layout.render(),0)
+
 
 
   }
@@ -200,7 +200,7 @@ class CourseFragment extends View {
         height="match_parent">
 
           <SimpleToolbar
-            title="Courses"
+            title={window.__S.COURSES_LW}
             width="match_parent"
             showMenu="true"
             invert="true"
@@ -224,7 +224,7 @@ class CourseFragment extends View {
 
                   <CourseInProgressContainer
                     transparent="true"
-                    title="Courses In Progress"
+                    title={window.__S.COURSES_IN_PROGRESS}
                     onCourseClick={this.handleUserCoursesClick}/>
 
 
@@ -240,7 +240,7 @@ class CourseFragment extends View {
   handleMenuClick = (url) => {
 
     if (url == "ic_notification_red") {
-      JBridge.showSnackBar("Comming Soon")
+      JBridge.showSnackBar(window.__S.COMMING_SOON)
     }
     else if (url == "ic_action_search") {
       var searchDetails = { filterDetails: "", searchType: "Course" }

@@ -1,5 +1,3 @@
-
-
 const dom = require("@juspay/mystique-backend").doms.android;
 const View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
@@ -35,14 +33,15 @@ class ChooseItem extends View {
   getFeatureButton = (isClickable) => {
     var color = isClickable == "true" ? window.__Colors.PRIMARY_ACCENT : window.__Colors.PRIMARY_BLACK_22;
     return (<LinearLayout
-                  width = "match_parent"
-                  orientation="vertical"
-                  height="0"
-                  alignParentBottom="true,-1"
-                  id={this.idSet.featureContainer}
-                  padding = "3,3,3,3"
-                  weight="20"
-                  gravity = "center">
+              id={this.idSet.featureContainer}
+              height="0"
+              width = "match_parent"
+              weight="20"
+              orientation="vertical"
+              alignParentBottom="true,-1"
+              padding = "3,3,3,3"
+              gravity = "center">
+
                   <FeatureButton
                     typeface = "bold"
                     clickable={isClickable}
@@ -54,6 +53,7 @@ class ChooseItem extends View {
                     buttonClick = {this.onConfirm}
                     textColor = {window.__Colors.WHITE}
                     textSize = "18"/>
+
                 </LinearLayout>)
 
 
@@ -71,37 +71,44 @@ class ChooseItem extends View {
     var rightBar = "";
     leftBar = this.leftItems.map((item, index) => {
       return (<RadioListItem
-                  onItemClick={this.handleItemClick}
-                  title={item}
-                  index={index}/>)
+                onItemClick={this.handleItemClick}
+                title={item}
+                index={index}/>)
     });
 
     rightBar = this.rightItems.map((item, index) => {
       return (<RadioListItem
-                  onItemClick={this.handleItemClick}
-                  title={item}
-                  index={index}/>)
+                onItemClick={this.handleItemClick}
+                title={item}
+                index={index}/>)
     });
-    console.log("leftBar BBBBAR", this.leftItems);
+
     this.totalBar = (
       <LinearLayout
-          orientation = "horizontal"
-          width = "wrap_content"
-          height = "wrap_content">
+        orientation = "horizontal"
+        width = "wrap_content"
+        height = "wrap_content">
+
           <LinearLayout
-          orientation = "vertical"
-          width = "wrap_content"
-          height = "wrap_content">
-          {leftBar}
+            orientation = "vertical"
+            width = "wrap_content"
+            height = "wrap_content">
+
+            {leftBar}
+
           </LinearLayout>
+
           <LinearLayout
-          orientation = "vertical"
-          width = "wrap_content"
-          height = "wrap_content"
-          margin = "86,0,0,0">
-          {rightBar}
+            orientation = "vertical"
+            width = "wrap_content"
+            height = "wrap_content"
+            margin = "86,0,0,0">
+            
+              {rightBar}
+          
           </LinearLayout>
-          </LinearLayout>
+          
+        </LinearLayout>
     )
 
     return this.totalBar;
@@ -139,7 +146,7 @@ class ChooseItem extends View {
           <TextView
            width = "wrap_content"
            height = "wrap_content"
-           text = "Choose from following"
+           text = {window.__S.CHOOSE_FROM_FOLLOWING}
            style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
       </LinearLayout>
@@ -166,8 +173,6 @@ class ChooseItem extends View {
 
 
   onConfirm = () => {
-    console.log("submitted", this.selectedList);
-
     window.__RootScreen.hideFilterDialog();
     this.props.onSelect(this.selectedList);
   }
@@ -182,15 +187,15 @@ class ChooseItem extends View {
 
     this.layout = (
       <LinearLayout
-          cornerRadius = "2"
-          afterRender={this.afterRender}
-          width = "match_parent"
-          height = "450"
-          orientation= "vertical"
-          clickable = "true"
-          padding="16,18,16,16"
-          alignParentBottom = "true,-1"
-          background="#ffffff">
+        afterRender={this.afterRender}
+        height = "450"
+        width = "match_parent"
+        orientation= "vertical"
+        clickable = "true"
+        padding="16,18,16,16"
+        alignParentBottom = "true,-1"
+        cornerRadius = "2"
+        background="#ffffff">
           
          {this.getHeader()}
 

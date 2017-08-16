@@ -35,14 +35,14 @@ class ResourceViewAllActivity extends View {
     this.shouldCacheScreen = false;
     this.totalDetails = JSON.parse(state.data.value0.resourceDetails);
 
-    console.log(this.totalDetails,"TOTAL")
+
     
     _this = this;
     this.start_index = 0;
     this.details = this.totalDetails.resourceDetails;
     this.appbarTitle = this.totalDetails.title;
 
-    console.log("DETAILS IN ResourceViewAllActivity",this.details)
+
     
     this.size;
     this.fileImageUrl;
@@ -91,14 +91,14 @@ getRows = (data) =>{
                   this.time = d.getDay() + "-" + d.getMonth()+ "-" + d.getUTCFullYear();
                 }
 
-                console.log("FILE IMAGE URL ",this.fileImageUrl)
+
 
                 var temp = {};
                 temp['imageUrl'] = this.fileImageUrl;
                 temp['name'] = this.name;
                 temp['progress'];
                 temp['footerTitle'] = this.time;
-                temp['actionText'] = "OPEN";
+                temp['actionText'] = window.__S.OPEN ;
                 temp["footerSubTitle"] = this.cType + this.size;
 
          return (<LargeCardComponent
@@ -119,8 +119,7 @@ getRows = (data) =>{
                     width="match_parent"
                     root="true"
                     height="wrap_content"
-                    orientation = "vertical"
-                    >
+                    orientation = "vertical">
 
                     {rows}
 
@@ -139,10 +138,10 @@ getRows = (data) =>{
         window.__runDuiCallback(event);
       }
       else if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "TextBook"){
-      var whatToSend={course:JSON.stringify(item)};
-      var event={tag:"OPEN_CourseEnrolled",contents:whatToSend}
-      window.__runDuiCallback(event);
-    }
+        var whatToSend={course:JSON.stringify(item)};
+        var event={tag:"OPEN_CourseEnrolled",contents:whatToSend}
+        window.__runDuiCallback(event);
+      }
       else
       {
         var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");
@@ -189,7 +188,6 @@ getRows = (data) =>{
   }
 
   handleViewMoreClick = () =>{
-    console.log("handle more")
     var listContent = [];
     window.__LoaderDialog.show();
     if(this.displayContent == "[]" || this.displayContent.length == 0){
@@ -242,11 +240,12 @@ getRows = (data) =>{
   
 
   render() {
-    var buttonList = ["ENROLL FOR THIS COURSE"];
+
     this.layout = (
       <LinearLayout
         root = "true"
         background={window.__Colors.WHITE}
+        clickable="true"
         orientation="vertical"
         width="match_parent"
         height="match_parent"
@@ -298,7 +297,7 @@ getRows = (data) =>{
                           width = "match_parent"
                           gravity="center"
                           onClick = {this.handleViewMoreClick}
-                          text = "VIEW MORE"
+                          text = {window.__S.VIEW_MORE}
                           style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
                           />
                       </LinearLayout>     

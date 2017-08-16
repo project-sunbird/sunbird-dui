@@ -25,23 +25,23 @@ class ComingSoonComponent extends View {
     this.layout = (
     
     <LinearLayout
-                  gravity="center"
-                  centerInParent="true,-1"
-                  clickable="false"
-                  alpha = "0.9"
-                  background={window.__Colors.WHITE}
-                  width="match_parent"
-                  height="150">
+      gravity="center"
+      centerInParent="true,-1"
+      clickable="false"
+      alpha = "0.9"
+      background={window.__Colors.WHITE}
+      width="match_parent"
+      height="150">
 
-                    <TextView
-                    gravity="center"
-                    width="match_parent"
-                    height="match_parent"
-                    style ={window.__TextStyle.textStyle.NOTHING}
-                    text={this.props.text||"Coming Soon.."}/>
-                  
+        <TextView
+          gravity="center"
+          width="match_parent"
+          height="match_parent"
+          style ={window.__TextStyle.textStyle.NOTHING}
+          text={this.props.text||window.__S.COMING_SOON}/>
+      
 
-                </LinearLayout>
+    </LinearLayout>
 
                
      

@@ -163,7 +163,7 @@ class SearchToolbar extends View {
   }
 
 
-  getSearchIcon() {
+  getSearchIcon = () => {
     return (<LinearLayout
             height="match_parent"
             gravity="center_vertical">
@@ -179,7 +179,7 @@ class SearchToolbar extends View {
 
   }
 
-  getBack() {
+  getBack = () => {
     return (
       <ImageView
       margin="0,0,10,0"
@@ -190,7 +190,7 @@ class SearchToolbar extends View {
       imageUrl = {"ic_action_arrow_left"}/>)
   }
 
-  getSearchBack() {
+  getSearchBack = () => {
     return (<ImageView
             margin="0,0,0,0"
             style={IconStyle}
@@ -200,7 +200,7 @@ class SearchToolbar extends View {
             imageUrl = {"ic_action_arrow_left"}/>)
   }
 
-  getTitle() {
+  getTitle = () => {
     return (<LinearLayout
             height="match_parent"
             layoutTransition="true"
@@ -252,8 +252,10 @@ class SearchToolbar extends View {
 
 
   getMenu = () => {
-    if (!this.props.menuData)
-      return <Space width="0"/>
+    if (!this.props.menuData){
+      return (<Space 
+                width="0"/>)
+    }
 
     var menu = this.props.menuData.url.map((item, index) => {
       return (<ImageView
@@ -266,7 +268,9 @@ class SearchToolbar extends View {
              width="wrap_content"
              height="wrap_content"
              id={this.idSet.menuContainer}>
+            
              {menu}
+
              </LinearLayout>)
   }
 
@@ -292,10 +296,7 @@ class SearchToolbar extends View {
     var temp = [];
     var totalJson = {};
     var callback = callbackMapper.map(function(data) {
-      // console.log("params",JSON.parse(data));
 
-      console.log("length", searchText);
-      console.log(data);
       if (searchText == "" || data == "[]") {
 
         var layout = (<LinearLayout
@@ -313,7 +314,7 @@ class SearchToolbar extends View {
                             maxLines="1"
                             margin="16,16,16,16"
                             style={window.__TextStyle.textStyle.TOOLBAR.HEADING}
-                            text="No Search Results Found"/>
+                            text={window.__S.EMPTY_SEARCH_RESULTS}/>
 
                         </LinearLayout>);
       } else {
@@ -324,8 +325,10 @@ class SearchToolbar extends View {
                          root="true"
                          background="#ffffff"
                          orientation="vertical">
+                          
                           <SearchResult 
                             data={data} />
+
                         </LinearLayout>)
 
       }
@@ -335,32 +338,6 @@ class SearchToolbar extends View {
 
       _this.replaceChild(_this.idSet.searchListContainer, layout.render(), 0);
 
-      // if(searchText.length != 0){
-      //     for(var i = 0;i<data.length;i++){
-      //       if(data[i].subject.toLowerCase().includes(searchText.toLowerCase())||data[i].comment.toLowerCase().includes(searchText.toLowerCase())){
-      //       temp["subject"]= this.replaceAll(data[i].subject,searchText,"<font color='#007AFF'>"+searchText+"</font>");
-      //       temp["comment"]= this.replaceAll(data[i].comment,searchText,"<font color='#007AFF'>"+searchText+"</font>");
-      //       temp["color"]= data[i].color;
-      //       temp["imageUrl"]=data[i].imageUrl;
-      //       temp["logo"]=data[i].logo;
-      //       listData.push(temp);
-      //       temp = [];
-      //       }
-      //     }
-      //     totalJson["type"] = this.textData.type;
-      //     totalJson["values"] = listData;
-      //     var layout = (<LinearLayout
-      //                    width="match_parent"
-      //                    height="match_parent"
-      //                    background="#ffffff"
-      //                    orientation="vertical">
-      //                      <ClassListItem
-      //                       data={totalJson}
-      //                       itemClick={this.handleItemClick}
-      //                       lineSeparator="true"/>
-      //                   </LinearLayout>);
-      //     _this.replaceChild(_this.idSet.searchListContainer,layout.render(),0);
-      // }
     });
     if (searchText.length > 2) {
       JBridge.searchContent(callback, searchText);
@@ -403,29 +380,37 @@ class SearchToolbar extends View {
        gravity="center_vertical"
        root="true">
 
-      <LinearLayout
-        height="56"
-        padding="0,0,0,2"
-        gravity="center_vertical"
-        background={window.__Colors.PRIMARY_BLACK_22}
-        width="match_parent" >
-      <LinearLayout
-        height="56"
-        padding="0,0,0,0"
-        gravity="center_vertical"
-        root="true"
-        background={this.props.invert?window.__Colors.WHITE:window.__Colors.LIGHT_VIOLET}
-        width="match_parent" >
+        <LinearLayout
+          height="56"
+          padding="0,0,0,2"
+          gravity="center_vertical"
+          background={window.__Colors.PRIMARY_BLACK_22}
+          width="match_parent" >
+        
+          <LinearLayout
+            height="56"
+            padding="0,0,0,0"
+            gravity="center_vertical"
+            root="true"
+            background={this.props.invert?window.__Colors.WHITE:window.__Colors.LIGHT_VIOLET}
+            width="match_parent" >
 
-          {back}
-          {searchBack}
-          {title}
+            {back}
 
-          <Space width="0" weight="1"/>
-          {menu}
-          {searchIcon}
+            {searchBack}
 
-       </LinearLayout>
+            {title}
+
+            <Space 
+              width="0" 
+              weight="1"/>
+
+            {menu}
+
+            {searchIcon}
+
+          </LinearLayout>
+          
        </LinearLayout>
 
        <ScrollView

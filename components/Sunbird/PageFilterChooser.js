@@ -50,7 +50,6 @@ class PageFilterChooser extends View {
       id: this.idSet.parentContainer,
       visibility: data
     })
-
     Android.runInUI(cmd, 0)
   }
 
@@ -58,27 +57,29 @@ class PageFilterChooser extends View {
 
   getFeatureButton = () => {
     return (<LinearLayout
-                  width = "match_parent"
-                  orientation="vertical"
-                  height="0"
-                  alignParentBottom="true,-1"
-                  id={this.idSet.featureContainer}
-                  padding = "3,3,3,3"
-                  cornerRadius="5"
-                  weight="20"
-                  gravity = "center">
-                  <FeatureButton
-                    typeface = "bold"
-                    clickable="true"
-                    width = "match_parent"
-                    height = "56"
-                    stroke = {"3," + window.__Colors.WHITE}
-                    background = {window.__Colors.PRIMARY_ACCENT}
-                    text = {"SELECT"}
-                    buttonClick = {this.onConfirm}
-                    textColor = {window.__Colors.WHITE}
-                    textSize = "18"/>
-                </LinearLayout>)
+              id={this.idSet.featureContainer}
+              width = "match_parent"
+              height="0"
+              orientation="vertical"
+              alignParentBottom="true,-1"
+              padding = "3,3,3,3"
+              cornerRadius="5"
+              weight="20"
+              gravity = "center">
+              
+              <FeatureButton
+                typeface = "bold"
+                clickable="true"
+                width = "match_parent"
+                height = "56"
+                stroke = {"3," + window.__Colors.WHITE}
+                background = {window.__Colors.PRIMARY_ACCENT}
+                text = {window.__S.SELECT}
+                buttonClick = {this.onConfirm}
+                textColor = {window.__Colors.WHITE}
+                textSize = "18"/>
+
+              </LinearLayout>)
 
 
   }
@@ -98,9 +99,6 @@ class PageFilterChooser extends View {
       }
     })
 
-    console.log("DATA :", this.dataToChooseFrom)
-    console.log("leftItems :", leftItems)
-    console.log("rightItems :", rightItems)
 
     var leftBar = "";
     var rightBar = "";
@@ -149,20 +147,20 @@ class PageFilterChooser extends View {
 
   getRadioList = () => {
     return (<LinearLayout
-            width = "match_parent"
-            height = "0"
-            weight="70"
-            margin = "0,0,0,0"
-            padding = "0,0,10,10"
-            orientation = "vertical">
+              width = "match_parent"
+              height = "0"
+              weight="70"
+              margin = "0,0,0,0"
+              padding = "0,0,10,10"
+              orientation = "vertical">
 
-             <ScrollView
-              height="wrap_content"
-              width="match_parent">
+               <ScrollView
+                height="wrap_content"
+                width="match_parent">
 
-              {this.getList()}
-            
-              </ScrollView>
+                  {this.getList()}
+              
+                </ScrollView>
 
             </LinearLayout>)
   }
@@ -170,10 +168,10 @@ class PageFilterChooser extends View {
   getHeader = () => {
     return (
       <LinearLayout
-      width="match_parent"
-      height="0"
-      weight="10"
-      margin="0,0,16,0">
+        width="match_parent"
+        height="0"
+        weight="10"
+        margin="0,0,16,0">
 
           <TextView
            width = "wrap_content"
@@ -196,9 +194,6 @@ class PageFilterChooser extends View {
 
 
   handleItemClick = (title,checked) => {
-    console.log("Filters",title,"\t",checked)
-    console.log("Filters",title,"\t",this.selectedList)
-
     if(checked=="true"){
       var newList=[];
       this.selectedList.map((item)=>{
@@ -214,12 +209,8 @@ class PageFilterChooser extends View {
         if(title!=item)
           newList.push(item)
       })
-
       this.selectedList=newList;
     }
-
-    console.log("UPDATED SELECTION",this.selectedList);
-
   }
 
   getBody = () => {
@@ -233,11 +224,11 @@ class PageFilterChooser extends View {
               padding="16,18,16,16"
               background="#ffffff">
               
-             {this.getHeader()}
+               {this.getHeader()}
 
-             {this.getRadioList()}
+               {this.getRadioList()}
 
-             {this.getFeatureButton()}
+               {this.getFeatureButton()}
 
             </LinearLayout>)
   }
@@ -263,11 +254,9 @@ class PageFilterChooser extends View {
 
   onConfirm = () => {
     if (this.propsOnConfirm != undefined) {
-      console.log("CALL PARENT FUNCTION")
       this.propsOnConfirm(this.selectedList);
       this.hide();
     } else {
-        console.log("propsOnConfirm in UNDEFINED")
         this.hide();
     }
   }
@@ -300,6 +289,7 @@ class PageFilterChooser extends View {
             orientation="vertical"
             root="true"
             id={this.idSet.contentContainer}/>
+            
       </LinearLayout>
 
     )

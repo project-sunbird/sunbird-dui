@@ -47,10 +47,15 @@ class SplashScreenActivity extends View {
   afterRender = () => {
     JBridge.syncTelemetry();
 
+    // JBridge.setInSharedPrefs("logged_in","YES");
+    // JBridge.setInSharedPrefs("user_id", "029c72b5-4691-4bf2-a6de-72b18df0b748");
+    // JBridge.setInSharedPrefs("user_name", "vinay");
+    // JBridge.setInSharedPrefs("user_token", "029c72b5-4691-4bf2-a6de-72b18df0b748");
     
-    // if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "false") {
-    //   this.setPermissions();
-    // }
+    window.__loginUrl = "https://staging.open-sunbird.org";
+
+    window.__apiUrl = "https://staging.open-sunbird.org";
+    
 
     setTimeout(() => {
       var whatToSend = [] 
@@ -64,46 +69,26 @@ class SplashScreenActivity extends View {
     return true;
   }
 
-
-
-  // setPermissions = () => {
-
-  //   var callback = callbackMapper.map(function(data) {
-  //     console.log("GOT PERMISSION\n\n\n\n\n\n\n",data);
-
-  //     if (data == "STORAGE") {
-  //       JBridge.setKey("isPermissionSetWriteExternalStorage", "true");
-  //     }
-
-  //   });
-
-  //   JBridge.setPermissions(callback,"android.permission.CAMERA");
-  // }
-
-
   render() {
     this.layout = (
       <LinearLayout
         root="true"
+        clickable="true"
         width="match_parent"
-        height="match_parent">
-          <LinearLayout
-            height="match_parent"
-            width="match_parent"
-            gravity="center"
-            orientation="vertical">
+        height="match_parent"
+        gravity="center"
+        orientation="vertical">
 
-              <ImageView
-                height="300"
-                width="300"
-                layout_gravity="center"
-                imageUrl="ic_launcher"/>
-              <TextView
-                text={window.__S.SPLASH_MESSAGE}
-                margin="20,120,20,20"
-                layout_gravity="center"
-                height="wrap_content"/>
-           </LinearLayout>
+          <ImageView
+            height="250"
+            width="250"
+            layout_gravity="center"
+            imageUrl="ic_launcher"/>
+          <TextView
+            text={window.__S.SPLASH_MESSAGE}
+            margin="20,120,20,20"
+            layout_gravity="center"
+            height="wrap_content"/>
       </LinearLayout>
     );
 

@@ -19,10 +19,12 @@ class CourseProgress extends View {
     this.setIds([
       "completedTextView"
     ]);
+
     this.displayName = "course_progress"
-    console.log("data to progress",this.props.content)
+
     var curValue = this.props.content.competedCount;
     var totalValue = this.props.content.totalCount;
+
     this.progressBar = this.props.content.completedProgress;
     this.percentVal = parseFloat(curValue / totalValue);
     this.percentVal *= 100;
@@ -34,16 +36,12 @@ class CourseProgress extends View {
             visibility = {this.props.visibility}
             width="match_parent"
             margin="0,0,0,0">
-                <TextView
-                  style={window.__TextStyle.textStyle.HINT.REGULAR}
-                  text={"Your Progress: "}/>
+               
                 <TextView
                   style={window.__TextStyle.textStyle.HINT.REGULAR}
                   id ={this.idSet.completedTextView}
-                  text={this.progressBar}/>
-                <TextView
-                  style={window.__TextStyle.textStyle.HINT.REGULAR}
-                  text={" %"}/> 
+                  text={window.__S.YOUR_PROGRESS.format(this.progressBar)}/>
+                
           </LinearLayout>)
   }
 
@@ -51,7 +49,7 @@ class CourseProgress extends View {
     this.competedCount = pStatus
     var cmd = this.set({
       id: this.idSet.completedTextView,
-      text: pStatus
+      text: window.__S.YOUR_PROGRESS.format(pStatus)
     })
     Android.runInUI(cmd, 0);
 
@@ -64,18 +62,19 @@ class CourseProgress extends View {
 
   getResumeButton = () => {
     return (<LinearLayout
-          width="wrap_content"
-          height="wrap_content"
-          background={window.__Colors.PRIMARY_ACCENT}
-          cornerRadius="2"
-          gravity="center">
-          <TextView 
             width="wrap_content"
             height="wrap_content"
-            text="RESUME"
-            gravity="center"
-            onClick={this.handleResumeClick}
-            style={window.__TextStyle.textStyle.TABBAR.WHITE}/>
+            background={window.__Colors.PRIMARY_ACCENT}
+            cornerRadius="2"
+            gravity="center">
+          
+            <TextView 
+              width="wrap_content"
+              height="wrap_content"
+              text="RESUME"
+              gravity="center"
+              onClick={this.handleResumeClick}
+              style={window.__TextStyle.textStyle.TABBAR.WHITE}/>
 
         </LinearLayout>)
   }

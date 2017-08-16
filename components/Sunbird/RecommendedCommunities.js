@@ -60,31 +60,31 @@ class RecommendedCommunities extends View {
                        width="wrap_content"
                        height="wrap_content">
 
-                      <ImageView
-                        height="110"
-                        width="200"
-                        scaleType="fixXY"
-                        gravity="center"
-                        circularImageUrl={"10,"+item.imageUrl}/>
+                        <ImageView
+                          height="110"
+                          width="200"
+                          scaleType="fixXY"
+                          gravity="center"
+                          circularImageUrl={"10,"+item.imageUrl}/>
 
-                      <LinearLayout
-                        width="200"
-                        height="110"
-                        gravity="center"
-                        cornerRadius="4"
-                        background={window.__Colors.BLACK}
-                        alpha="0.50"/>
+                        <LinearLayout
+                          width="200"
+                          height="110"
+                          gravity="center"
+                          cornerRadius="4"
+                          background={window.__Colors.BLACK}
+                          alpha="0.50"/>
 
-                      <TextView
-                        gravity="center"
-                        width="150"
-                        height="wrap_content"
-                        padding = "10,10,10,10"
-                        centerInParent="true,-1"
-                        text= {item.moduleText}
-                        style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}/>
+                        <TextView
+                          gravity="center"
+                          width="150"
+                          height="wrap_content"
+                          padding = "10,10,10,10"
+                          centerInParent="true,-1"
+                          text= {item.moduleText}
+                          style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}/>
 
-                    </RelativeLayout>
+                      </RelativeLayout>
 
                     {this.getFooter(item)}
 
@@ -108,39 +108,38 @@ class RecommendedCommunities extends View {
 
   getFooter(item){
     return (<LinearLayout
-            margin="0,8,0,0"
-            width="200"
-            height="wrap_content">
+              margin="0,8,0,0"
+              width="200"
+              height="wrap_content">
 
-            <LinearLayout
-            width="wrap_content"
-            height="wrap_content"
-            orientation="vertical">
+              <LinearLayout
+                width="wrap_content"
+                height="wrap_content"
+                orientation="vertical">
 
-            <TextView
-            width="wrap_content"
-            height="wrap_content"
-            text={item.members}
-            style={window.__TextStyle.textStyle.HINT.REGULAR}/>
-            <TextView
-            width="wrap_content"
-            height="wrap_content"
-            text={item.lastSeen}
-            style={window.__TextStyle.textStyle.HINT.REGULAR}/>
+                <TextView
+                  width="wrap_content"
+                  height="wrap_content"
+                  text={item.members}
+                  style={window.__TextStyle.textStyle.HINT.REGULAR}/>
+                <TextView
+                  width="wrap_content"
+                  height="wrap_content"
+                  text={item.lastSeen}
+                  style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
-            </LinearLayout>
+              </LinearLayout>
 
-            <ViewWidget
-            height="0"
-            weight="1"/>
+              <ViewWidget
+                height="0"
+                weight="1"/>
 
-            <Button
-            type="SmallButton_Secondary_WB"
-            width="wrap_content"
-            height="wrap_content"
-            onClick={this.handleAnswerSubmit}
-            text="VIEW"/>
-
+              <Button
+                type="SmallButton_Secondary_WB"
+                width="wrap_content"
+                height="wrap_content"
+                onClick={this.handleAnswerSubmit}
+                text={window.__S.VIEW}/>
 
             </LinearLayout>
         )
@@ -148,16 +147,16 @@ class RecommendedCommunities extends View {
 
   getHeader(){
     return (<LinearLayout
-            width="match_parent"
-            height="wrap_content"
-            margin="16,16,16,16"
-            orientation="horizontal">
+              width="match_parent"
+              height="wrap_content"
+              margin="16,16,16,16"
+              orientation="horizontal">
 
-            <TextView
-            width="wrap_content"
-            height="wrap_content"
-            text="Recommended"
-            style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
+              <TextView
+                width="wrap_content"
+                height="wrap_content"
+                text="Recommended"
+                style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
             </LinearLayout>)
   }
@@ -185,7 +184,6 @@ class RecommendedCommunities extends View {
            fillViewport="true">
 
            {this.getRows()}
-
 
           </HorizontalScrollView>
 

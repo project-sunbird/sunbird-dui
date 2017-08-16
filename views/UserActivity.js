@@ -265,6 +265,7 @@ class UserActivity extends View {
           JBridge.showSnackBar(window.__S.WELCOME_ON_BOARD.format(this.userName))
           JBridge.setInSharedPrefs("user_name", this.userFirstName);
           JBridge.setInSharedPrefs("user_token", result.userId);
+          window.__pressedLoggedOut=true;
           this.userToken=result.userId;
           this.setDataInStorage();
           JBridge.setProfile(this.userToken);
@@ -329,20 +330,20 @@ class UserActivity extends View {
 
   toggleSignUpForm = () => {
 
-    JBridge.showSnackBar("Logged out")
-    JBridge.setInSharedPrefs("logged_in","NO");
-    JBridge.setInSharedPrefs("user_id", "__failed");
-    JBridge.setInSharedPrefs("user_name",  "__failed");
-    JBridge.setInSharedPrefs("user_token",  "__failed");
+    // JBridge.showSnackBar("Logged out")
+    // JBridge.setInSharedPrefs("logged_in","NO");
+    // JBridge.setInSharedPrefs("user_id", "__failed");
+    // JBridge.setInSharedPrefs("user_name",  "__failed");
+    // JBridge.setInSharedPrefs("user_token",  "__failed");
 
-    console.log("IN P1 ",window.__pressedLoggedOut)
-    window.__pressedLoggedOut=true;
-    console.log("IN P2 ",window.__pressedLoggedOut)
-    JBridge.keyCloakLogout("https://ntp.net.in/auth/realms/sunbird/protocol/openid-connect/logout");
+    // console.log("IN P1 ",window.__pressedLoggedOut)
+    // window.__pressedLoggedOut=true;
+    // console.log("IN P2 ",window.__pressedLoggedOut)
+    // JBridge.keyCloakLogout(window.__apiUrl + "/auth/realms/sunbird/protocol/openid-connect/logout");
     
-    window.__Logout();
+    // window.__Logout();
 
-    return
+    // return
     this.isLoginMode = !this.isLoginMode;
     var visibilityVal= this.isLoginMode?"gone":"visible"
     var oppVisibilityValue = !this.isLoginMode?"gone":"visible"
@@ -441,7 +442,10 @@ class UserActivity extends View {
   }
 
   handleLoginClick = () => {
-    JBridge.keyCloakLogin("https://ntp.net.in/auth/realms/sunbird/protocol/openid-connect/auth","android");
+    
+    console.log(window.__loginUrl , "/auth/realms/sunbird/protocol/openid-connect/auth","\nandroid");
+
+    JBridge.keyCloakLogin(window.__loginUrl + "/auth/realms/sunbird/protocol/openid-connect/auth","android");
   }
 
   handleForgotPasscode = ()=>{

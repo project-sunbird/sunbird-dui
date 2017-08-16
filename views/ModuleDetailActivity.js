@@ -17,6 +17,7 @@ var CropParagraph = require('../components/Sunbird/CropParagraph');
 var ProgressButton = require('../components/Sunbird/core/ProgressButton');
 var CourseCurriculum = require('../components/Sunbird/CourseCurriculum');
 
+var _this = this;
 
 class ModuleDetailActivity extends View {
   constructor(props, children, state) {
@@ -33,38 +34,27 @@ class ModuleDetailActivity extends View {
     this.screenName = "ModuleDetailActivity"
     this.shouldCacheScreen = false;
 
+    _this=this;
+
     this.menuData = {
       url: [
-        
+        {}
       ]
     }
+
     this.menuData1 = {
       url: [
         {imageUrl:'ic_action_overflow'}
       ]
     }
-    this.popupMenu = "Delete"
-
-    
-
-
-    //to get geneie callback for download of spine
-
-
-
+    this.popupMenu = window.__S.DELETE;
 
     this.module = state.data.value0.moduleDetails;
     this.moduleName = state.data.value0.moduleName;
 
-
-    console.log("ModueDetail ", this.module)
     this.module = JSON.parse(this.module)
-    console.log("module local status", this.module.isAvailableLocally)
+
     this.localStatus = this.module.isAvailableLocally;
-    console.log("Module Title", this.moduleName)
-    console.log("ModueContentDetials ", this.module)
-
-
 
   }
 
@@ -86,7 +76,6 @@ class ModuleDetailActivity extends View {
           overFlowCallback = {this.overFlowCallback}
           showMenu="true"
           invert="true"
-          
           />)
 
     this.replaceChild(this.idSet.simpleToolBarOverFlow, toolbar.render(), 0);
@@ -104,7 +93,6 @@ class ModuleDetailActivity extends View {
 
   getSpineStatus = (pValue) => {
     var cmd;
-    console.log("--->\t\t\t\n\n\n", pValue);
 
     var data = JSON.parse(pValue);
 
@@ -112,21 +100,18 @@ class ModuleDetailActivity extends View {
       return;
 
     var textToShow = ""
-    console.log("DATA -> ", data)
     data.downloadProgress= data.downloadProgress == undefined || isNaN(data.downloadProgress) ? 0 : data.downloadProgress;
     var downloadedPercent = data.downloadProgress;
     downloadedPercent =  downloadedPercent < 0 ? 0 : downloadedPercent;
     
 
     if (downloadedPercent == 100) {
-
-      console.log("SPINE IMPORTED -> ")
       this.checkContentLocalStatus(this.module.identifier);
 
     } else {
       var cmd = this.set({
         id: this.idSet.downloadProgressText,
-        text: "Fetching Contents: " + downloadedPercent + "%"
+        text: window.__S.FETCHING_CONTENTS.format(downloadedPercent)
       })
       Android.runInUI(cmd, 0);
     }
@@ -137,10 +122,10 @@ class ModuleDetailActivity extends View {
     var callback = callbackMapper.map(function(status) {
 
       if (status == "true") {
-        console.log("Spine Found")
+
         _this.localStatus = true;
         var callback1 = callbackMapper.map(function(data) {
-          console.log("module details;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;", JSON.parse(data));
+
           _this.module = JSON.parse(data);
           _this.renderModuleChildren()
         });
@@ -167,11 +152,11 @@ class ModuleDetailActivity extends View {
     });
 
     if (!this.module.isAvailableLocally || this.module.isUpdateAvailable) {
-      console.log("local")
+
       window.__getDownloadStatus = this.getSpineStatus;
       JBridge.getLocalContentStatus(identifier, callback);
     } else {
-      console.log("ALREADY PRESENT")
+
       this.renderModuleChildren();
     }
   }
@@ -185,20 +170,20 @@ class ModuleDetailActivity extends View {
 
   renderModuleChildren = () => {
     var layout;
-    console.log("RENDRING BREKAUP", this.module.children)
+
     if (this.module.children) {
 
       layout = (
 
         <CourseCurriculum
                   height="match_parent"
+                  width="match_parent"
                   root="true"
                   margin="0,0,0,12"
                   brief={true}
                   title=""
                   onClick={this.handleModuleClick}
-                  content= {this.module.children}
-                  width="match_parent"/>
+                  content= {this.module.children}/>
       )
 
       this.replaceChild(this.idSet.descriptionContainer, layout.render(), 0);
@@ -208,7 +193,7 @@ class ModuleDetailActivity extends View {
         visibility: "gone"
       });
       Android.runInUI(cmd, 0);
-      console.log("button visible")
+
       window.__ProgressButton.setVisibility("visible")
 
     }
@@ -232,7 +217,8 @@ class ModuleDetailActivity extends View {
 
 
   getHeader = () => {
-    var headerLayout = (<LinearLayout
+    var headerLayout = (
+      <LinearLayout
         height="wrap_content"
         width="match_parent"
         orientation="vertical">
@@ -263,14 +249,14 @@ class ModuleDetailActivity extends View {
             height="wrap_content"
             margin="0,0,0,12"
             width="match_parent"
-            text={this.module.contentData.hasOwnProperty("size")? "Module Size "+this.formatBytes(this.module.contentData.size) : "Module Size Not available"}/>
+            text={this.module.contentData.hasOwnProperty("size")? window.__S.MODULE_SIZE.format(_this.formatBytes(_this.module.contentData.size)) : window.__S.MODULE_SIZE_UNAVAILABLE}/>
 
 
            <CropParagraph
                   height="wrap_content"
                   margin="0,0,0,12"
                   width="match_parent"
-                  headText={this.module.contentData.description?"Description":undefined}
+                  headText={this.module.contentData.description?window.__S.DESCRIPTION:undefined}
                   contentText={this.module.contentData.description}
                   />
 
@@ -287,20 +273,20 @@ class ModuleDetailActivity extends View {
 
   getBody = () => {
     var bodyLayout = (<LinearLayout
+                  id={this.idSet.descriptionContainer}
                   height="match_parent"
                   width="match_parent"
                   root="true"
-                  orientation="vertical"
-                  
-                  id={this.idSet.descriptionContainer}>
+                  orientation="vertical">
                      
                     
                      <TextView
                         id={this.idSet.downloadProgressText}
-                        test="Fetching spine"
+                        test={window.__S.LOADING_CONTENT}
                         height="match_parent"
                         gravity="center"
                         width="match_parent"/>
+
                 </LinearLayout>)
 
 
@@ -308,12 +294,9 @@ class ModuleDetailActivity extends View {
   }
 
 overFlowCallback = (params) => {
-    console.log("ITEM CLICKED",params);
     if(params == 0){
       var callback = callbackMapper.map(function(response){
-        console.log("repsonse for delete",response)
         if(response[0] == "successful"){
-          console.log("back to resource");
           _this.onBackPressed();
         }
       }); 
@@ -337,16 +320,17 @@ handleOverFlowClick = () => {
       <LinearLayout
         root = "true"
         background={window.__Colors.WHITE}
+        clickable="true"
         orientation="vertical"
         width="match_parent"
         height="match_parent">
 
       <LinearLayout
+        id = {this.idSet.simpleToolBarOverFlow}
         root = "true"
         width="match_parent"
-        height="wrap_content"
-        id = {this.idSet.simpleToolBarOverFlow}
-        >
+        height="wrap_content">
+        
         <SimpleToolbar
           width="match_parent"
           menuData={this.menuData}
@@ -354,17 +338,15 @@ handleOverFlowClick = () => {
           onBackPress={onBackPressed}
           overFlowCallback = {this.overFlowCallback}
           showMenu="true"
-          invert="true"
-          
-          />
+          invert="true"/>
+
         </LinearLayout>
 
               <ScrollView
                 height="0"
                 weight="1"
                 width="match_parent"
-                fillViewport="true"
-                >
+                fillViewport="true">
 
                 <LinearLayout
                   height="match_parent"
@@ -388,7 +370,7 @@ handleOverFlowClick = () => {
                  width="match_parent"
                  visibility="gone"
                  isCourse = "true"
-                 buttonText="DOWNLOAD"
+                 buttonText={window.__S.DOWNLOAD}
                  changeOverFlowMenu = {this.handleOverFlowClick}
                  localStatus = {this.localStatus}
                  identifier = {this.module.identifier}

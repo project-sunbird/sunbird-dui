@@ -21,8 +21,9 @@ var utils = require('../utils/GenericFunctions');
 
 window.R = require("ramda");
 
-
 const mockResponse = require('../mockResponse.js');
+
+var _this;
 
 class MainActivity extends View {
   constructor(props, children, state) {
@@ -33,16 +34,17 @@ class MainActivity extends View {
 
     //Assigning feedback duration of BottomNavbar
     this.handleBottomNavBarAction = debounce(this.handleBottomNavBarAction, 50);
-    //TODO : REVERT THIS LOGIC
 
     this.setIds([
       "viewPagerContainer",
       "tabLayoutContainer",
     ]);
 
+    _this= this;
+    
     //CurrentIndexOfViewPager
     this.currentPageIndex = 0;
-    console.log("CURRENT INDEX", this.currentPageIndex);
+
 
     //BackPressCount of MainActivity
     this.backPressCount = 0;
@@ -82,19 +84,24 @@ class MainActivity extends View {
 
   onPop = () => {
 
+
+    Android.runInUI(
+      this.animateView(),
+      null
+    );
+
     if(window.__pressedLoggedOut){
       this.currentPageIndex=0
       window.__pressedLoggedOut=false;
+      this.afterRender();
+      return;
     }
 
     if(this.currentPageIndex==undefined){
       this.currentPageIndex=0;
     }
 
-    Android.runInUI(
-      this.animateView(),
-      null
-    );
+
     this.backPressCount = 0;
 
     if(this.currentPageIndex==1 || this.currentPageIndex==0){
@@ -173,19 +180,13 @@ class MainActivity extends View {
 
 
     if (responseData.params.err) {
-      console.log("EROR MESSAGE :", response.params.errmsg)
-      JBridge.showSnackBar("ERROR MESSAGE ->" + response.params.errmsg)
+      JBridge.showSnackBar(window.__S.ERROR_SERVER_MESSAGE + response.params.errmsg)
       return;
     }
 
     if (state.responseFor == "API_UserEnrolledCourse") {
-      // var enrolled = [];
-      // responseData.result.courses.map((item)=>{
-      //   enrolled.push(item.courseId);
-      // });
-      // console.log("enrolled ids",enrolled)
+      
       window.__enrolledCourses = responseData.result.courses;
-      console.log("TOTAL ENROLLED COURSES",window.__enrolledCourses);
       window.setEnrolledCourses(responseData.result.courses);
 
       return;
@@ -229,7 +230,6 @@ class MainActivity extends View {
 
 
       default:
-        console.log("[handleStateChange]\t\t MATCHED WITH default")
 
         break;
     }
@@ -252,8 +252,6 @@ class MainActivity extends View {
     var tmp;
     var contentLayout;
     this.color = "#123123"
-
-    console.log("SWITCHING CONTENT OF", index)
     switch (index) {
       case 0:
         contentLayout = (
@@ -391,12 +389,14 @@ class MainActivity extends View {
         }
 
         if(JBridge.isNetworkAvailable()||(index!=1&&index!=4)){
-              console.log("NETWORK AVAILABLE");
               this.currentPageIndex = index;
-              this.switchContent(index);
+              
+              if(index!=1 && index!=2 && index!=4){
+                this.switchContent(index);
+              }
         }
         else{
-            JBridge.showSnackBar("NO INTERNET CONNECTION")
+            JBridge.showSnackBar(window.__S.NO_INTERNET)
         }
 
         window.__BottomNavBar.handleNavigationChange(this.currentPageIndex);

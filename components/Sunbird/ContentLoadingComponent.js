@@ -31,10 +31,9 @@ class ContentLoadingComponent extends View {
               orientation="vertical">
 
                 <TextView
-                  text="Layout Not Passed"
+                  text={window.__S.ERROR_LAYOUT_NOT_PASSED}
                   textSize="30"
-                  width="match_parent"
-                  />
+                  width="match_parent"/>
 
             </LinearLayout>)
   }
@@ -51,7 +50,7 @@ class ContentLoadingComponent extends View {
   startRendering = () => {
     if(this.isRendering)
         return;
-    console.log("Starting Rendering Content to holder")
+    
     var  layout = (<LinearLayout
                       height="match_parent"
                       width="match_parent"
@@ -75,20 +74,20 @@ class ContentLoadingComponent extends View {
 
       <LinearLayout
        height="match_parent"
+       width="match_parent"
        orientation="vertical"
        gravity="center"
        root="true"
-       afterRender={this.startRendering}
-
-       width="match_parent">
-          <LinearLayout 
+       afterRender={this.startRendering}>
+          
+          <LinearLayout
+            id={this.idSet.loaderComponent} 
             height="match_parent"
             width="match_parent"
             gravity="center"
-            id={this.idSet.loaderComponent}
-            background={window.__Colors.WHITE}>
+            background={window.__Colors.WHITE}/>
                  
-          </LinearLayout>  
+  
           <LinearLayout 
             height="match_parent"
             width="match_parent"

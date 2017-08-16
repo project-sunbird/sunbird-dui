@@ -73,6 +73,7 @@ class PageFilterPopup extends View {
                   padding = "3,3,3,0"
                   cornerRadius="5"
                   gravity = "center">
+
                   <FeatureButton
                     typeface = "bold"
                     clickable="true"
@@ -84,6 +85,7 @@ class PageFilterPopup extends View {
                     buttonClick = {action}
                     textColor = {invert?window.__Colors.PRIMARY_ACCENT:window.__Colors.WHITE}
                     textSize = "18"/>
+
                 </LinearLayout>)
 
 
@@ -92,12 +94,7 @@ class PageFilterPopup extends View {
 
 
   setValues = (item,values) => {
-    console.log("hereeee");
-    console.log("SELECTED ",values);
-    console.log("FOR ->",item);
-
     this.filter[item]=values;
-    console.log("MODIFIED ",this.filter)
   }
 
 
@@ -111,7 +108,7 @@ class PageFilterPopup extends View {
     }else{
       listToUse = this.filterListCource
     }
-    
+
     listToUse.map((item)=>{
 
       item.selected=this.filter[item.name];
@@ -121,7 +118,6 @@ class PageFilterPopup extends View {
 
     var listItem=listToUse.map((item,index)=>{
       return (
-
                   <FilterItem
                     height="match_parent"
                     width="match_parent"
@@ -130,7 +126,6 @@ class PageFilterPopup extends View {
                     data={item}
                     onUpdate={this.setValues}
                     forPage={true}/>
-
 
               )
     });
@@ -235,7 +230,9 @@ class PageFilterPopup extends View {
 
   isEmpty = (obj) => {
     for (var key in obj) {
-        if (hasOwnProperty.call(obj, key)) return false;
+        if (hasOwnProperty.call(obj, key)) {
+          return false;
+        }
     }
     return true;
   }

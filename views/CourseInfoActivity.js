@@ -21,6 +21,8 @@ var CourseCurriculum = require('../components/Sunbird/CourseCurriculum');
 var PageOption = require('../components/Sunbird/core/PageOption');
 var CourseProgress = require('../components/Sunbird/CourseProgress');
 var ProgressButton = require('../components/Sunbird/core/ProgressButton');
+var SharePopup = require('../components/Sunbird/core/SharePopup');
+
 var _this;
 class CourseInfoActivity extends View {
   constructor(props, children, state) {
@@ -31,15 +33,15 @@ class CourseInfoActivity extends View {
       "pageOption",
       "descriptionContainer",
       "downloadProgressText",
-      "totalContainer"
+      "totalContainer",
+      "sharePopupContainer"
     ]);
     this.state = state;
     this.screenName = "CourseInfoActivity"
-      // console.log("GOT STATE", JSON.stringify(state))
-      // window.__RootScreen.snackBar("Hellllllo")
     
     this.menuData = {
       url: [
+        {imageUrl: "ic_action_share_black" },
       ]
     }
 
@@ -51,135 +53,38 @@ class CourseInfoActivity extends View {
 
     _this = this;
 
+
     this.details = JSON.parse(state.data.value0.courseDetails);
-    console.log("GOT VALUES CIS ", this.details)
+
 
     this.checkContentLocalStatus(this.details.identifier);
-
-    
-
-    this.data = {
+   this.data = {
       courseName: this.details ? this.details.name : "",
-      courseDesc: this.details ? this.details.description : "This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced. This is the course description, which will be created by someone who has advanced",
+      courseDesc: this.details ? this.details.description : "",
       competedCount: this.details && this.details.footerTitle ? this.details.footerTitle.split('%')[0] : "10",
-      totalCount: "150",
-      courseBrief: [{
-        count: "50",
-        type: "Modules"
-      }, {
-        count: "25",
-        type: "Videos"
-      }, {
-        count: "5",
-        type: "Quizes"
-      }],
-      chapterList: [{
-        chapterName: "Progression",
-        chapterDuration: "30",
-        chapterFinished: "3",
-        chapterContent: [{
-          name: "Arithemetic Progression",
-          type: "PLAY",
-          status: "DONE"
-        }, {
-          name: "Geometric Progeressions",
-          type: "PLAY",
-          status: "DONE"
-        }, {
-          name: "Quiz 1: 10 questions",
-          type: "QUIZ",
-          status: "DONE"
-        }]
-      }, {
-        chapterName: "Scientific Notations",
-        chapterFinished: "2",
-        chapterDuration: "50",
-        chapterContent: [{
-          name: "Arithemetic Progression",
-          type: "PLAY",
-          status: "DONE"
-        }, {
-          name: "Geometric Progeressions",
-          type: "PLAY",
-          status: "DONE"
-        }, {
-          name: "Significant figures",
-          type: "ASSIGNMENT",
-          status: "PROGRESS"
-        }, {
-          name: "Quiz 2: 5 questions",
-          type: "QUIZ",
-          status: "PENDING"
-        }]
-      }, {
-        chapterName: "Scientific Notations",
-        chapterFinished: "2",
-        chapterDuration: "50",
-        chapterContent: [{
-          name: "Arithemetic Progression",
-          type: "PLAY",
-          status: "DONE"
-        }, {
-          name: "Geometric Progeressions",
-          type: "PLAY",
-          status: "DONE"
-        }, {
-          name: "Significant figures",
-          type: "ASSIGNMENT",
-          status: "PROGRESS"
-        }, {
-          name: "Quiz 2: 5 questions",
-          type: "QUIZ",
-          status: "PENDING"
-        }]
-      }, {
-        chapterName: "Progression",
-        chapterFinished: "0",
-        chapterDuration: "10",
-        chapterContent: [{
-          name: "Arithemetic Progression",
-          type: "Chapter",
-          status: "PENDING"
-        }, {
-          name: "Geometric Progeressions",
-          type: "Chapter",
-          status: "PENDING"
-        }, {
-          name: "Quiz 1: 10 questions",
-          type: "Quiz",
-          status: "PENDING"
-        }]
-      }]
     };
-
   }
-
 
 
   getSpineStatus = (pValue) => {
     var cmd;
-    console.log("--->\t\t\t\n\n\n", pValue);
-
     var data = JSON.parse(pValue);
 
     if (data.identifier != this.details.identifier)
       return;
 
     var textToShow = ""
-    console.log("DATA -> ", data)
     data.downloadProgress = data.downloadProgress == undefined ? 0 : data.downloadProgress;
     var downloadedPercent = parseInt(data.downloadProgress);
     downloadedPercent = downloadedPercent < 0 ? 0 : downloadedPercent;
 
     if (downloadedPercent == 100) {
-
-      console.log("SPINE IMPORTED -> ")
       this.checkContentLocalStatus(this.details.identifier);
 
     } else {
       var cmd = this.set({
         id: this.idSet.downloadProgressText,
-        text: "Fetching Contents: " + downloadedPercent + "%"
+        text: window.__S.FETCHING_CONTENTS.format(downloadedPercent)
       })
       Android.runInUI(cmd, 0);
     }
@@ -189,7 +94,6 @@ class CourseInfoActivity extends View {
     var callback = callbackMapper.map(function(status) {
 
       if (status == "true") {
-        console.log("Spine Found")
         var callback1 = callbackMapper.map(function(data) {
           data[0] = utils.jsonifyData(data[0])
           _this.courseContent = JSON.parse(data[0]);
@@ -225,33 +129,33 @@ class CourseInfoActivity extends View {
                   width="match_parent"
                   gravity="center"
                   root="true"
-                  text="Contents not added yet" />
+                  text={window.__S.ERROR_CONTENT_NOT_FOUND} />
     }
     else{
        child = (<CourseCurriculum
                   height="match_parent"
+                  width="match_parent"
                   root="true"
                   margin="0,0,0,12"
                   brief={true}
                   shouldGoForward={"gone"}
-                  content= {this.courseContent.children}
-                  width="match_parent"/>)
+                  content= {this.courseContent.children}/>)
       }
 
       var layout = (
         <LinearLayout
-        orientation="vertical"
         width="match_parent"
-        height="wrap_content">
-
-        <TextView
-        width="wrap_content"
         height="wrap_content"
-        margin="0,16,0,0"
-        style={window.__TextStyle.textStyle.CARD.TITLE.DARK}
-        text="Structure"/>
+        orientation="vertical">
 
-        {child}
+          <TextView
+          width="wrap_content"
+          height="wrap_content"
+          margin="0,16,0,0"
+          style={window.__TextStyle.textStyle.CARD.TITLE.DARK}
+          text={window.__S.STRUCTURE}/>
+
+          {child}
 
         </LinearLayout>
         )
@@ -259,8 +163,8 @@ class CourseInfoActivity extends View {
   }
 
 
-
   onPop = () => {
+
     Android.runInUI(
       this.animateView(),
       null
@@ -270,8 +174,9 @@ class CourseInfoActivity extends View {
 
 
   afterRender = () => {
-    console.log("progress CIA",this.details);
-    
+
+    this.shareContent();
+
     if(window.__enrolledCourses == undefined){
       window.__LoaderDialog.show();
       var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken} 
@@ -279,7 +184,7 @@ class CourseInfoActivity extends View {
       window.__runDuiCallback(event);
     }else{
 
-      this.replaceChild(this.idSet.totalContainer,this.getBody.render(),0);
+      this.replaceChild(this.idSet.totalContainer,this.getBody().render(),0);
       var enrolledIds = window.__enrolledCourses;
       enrolledIds.map((item)=>{
       if(item.courseId == this.details.identifier){
@@ -300,47 +205,34 @@ class CourseInfoActivity extends View {
     var response = JSON.parse(utils.decodeBase64(state.response.status[1]));
     var responseCode = state.response.status[2];
     var responseUrl = state.response.status[3];
-    console.log("STATE IN HANDLE STATE CHANGE",state);
+
     
     if (parseInt(responseCode) != 200) {
-      console.log("INVALID FORMAT")
       return;
     }
 
     var result = response.result;
 
     if (response.params.err) {
-      console.log("EROR MESSAGE :", response.params.errmsg)
-      JBridge.showSnackBar("E MSG ->" + response.params.errmsg)
+      JBridge.showSnackBar(response.params.errmsg)
       return;
     }
 
-    console.log("GOT RESULT FORM RESPONSE ->>", result)
-
-    if (response.params.err == "INVALID_CREDENTIAL") {
-      console.log("EROR MESSAGE :", response.params.errmsg)
-      JBridge.showSnackbar("E MSG ->" + response.params.errmsg)
-      return;
-    }
-
-    console.log("BEFOR SWITCH", state.responseFor)
     switch (state.responseFor + "") {
       case "API_EnrollCourse":
         if (result.response == "SUCCESS") {
-          console.log("WELCOME -->>", result.response.firstName);
-          JBridge.showSnackBar("Course enrolled")
-
+          JBridge.showSnackBar(window.__S.COURSE_ENROLLED)
           var whatToSend = { "course": this.state.data.value0.courseDetails }
           var event = { tag: 'OPEN_EnrolledActivity', contents: whatToSend }
           window.__runDuiCallback(event);
         } else {
-          JBridge.showSnackBar("Please retry")
+          JBridge.showSnackBar(window.__S.RETRY_ACTION)
         }
         break;
 
 
       case "API_EnrolledCoursesList":
-        console.log("API_EnrolledCourses in courseInfoActivity")
+
         window.__enrolledCourses = response.result.courses;
         window.__LoaderDialog.hide();
 
@@ -357,21 +249,46 @@ class CourseInfoActivity extends View {
         break;
         
       default:
-        console.log("default SWITCH")
+
         break;
 
 
     }
 
-    console.log("AFTER SWITCH")
-
-
   }
+
+
+
+  shareContent = () =>{
+
+    console.log("SHARE POP UP CALLED")
+
+    var shareCallback = callbackMapper.map(function(data) {
+    var input = [
+                 {
+                    type : "text",
+                    data : "staging.open-sunbird.org/public/"+_this.details.identifier
+                 }
+                ];
+
+            
+      var sharePopUp = (
+        <SharePopup
+        data = {input}/>
+        )
+
+    _this.replaceChild(_this.idSet.sharePopupContainer,sharePopUp.render(),0);
+
+    });
+
+    JBridge.exportEcar(this.details.identifier, shareCallback);
+  }
+
 
   handleEnrollClick = (data) => {
     if(JBridge.isNetworkAvailable()){
 
-        console.log("---->\t", "handleEnrollClick");
+
         window.__LoaderDialog.show();
 
         var whatToSend = { "user_token":window.__userToken,
@@ -389,15 +306,36 @@ class CourseInfoActivity extends View {
     }
   }
 
+
   onBackPressed = () => {
    var whatToSend = []
    var event = { tag: 'BACK_CourseInfoActivity', contents: whatToSend }  
+   
    window.__runDuiCallback(event);
   }
 
   getCurriculumnBrief = () => {
+    var json = [];
+    if(this.details.hasOwnProperty("contentTypesCount")){
+        var Curriculum = JSON.parse(this.details.contentTypesCount);
 
-    var items = this.data.courseBrief.map((item, i) => {
+        var index = 0;
+        var json = [];
+        for(var item in Curriculum){
+          json.push({
+            "count" : Curriculum[item],
+            "type" : item
+          })
+        }
+    }
+    else{
+      json.push({
+        "count" : "Not",
+        "type" : "Available"
+      })
+    }
+
+    var items = json.map((item, i) => {
       return (<TextView
                 style={window.__TextStyle.textStyle.HINT.REGULAR}
                 text ={(i==0?"":" | ") +item.count + " "+item.type}/>)
@@ -412,30 +350,39 @@ class CourseInfoActivity extends View {
       </LinearLayout>);
   }
 
+  handleMenuClick = (url) =>{
+    if(url == "ic_action_share_black"){
+      window.__SharePopup.show();
+    }
+  }
+
 
   getBody = () =>{
-
+    var buttonList = [window.__S.ENROLL_COURSE];
     return (
+
       <LinearLayout
         root="true"
-        background={window.__Colors.WHITE}
-        orientation="vertical"
         width="match_parent"
-        height="match_parent">
+        height="match_parent"
+        background={window.__Colors.WHITE}
+        orientation="vertical">
 
         <SimpleToolbar
             title=""
             width="match_parent"
+            height="wrap_content"
             menuData={this.menuData}
+            onMenuItemClick={this.handleMenuClick}
             showMenu="true"
             onBackPress={this.onBackPressed}
             invert="true"/>
 
         <LinearLayout
-          height="match_parent"
-          orientation="vertical"
           id={this.idSet.parentContainer}
-          width="match_parent">
+          height="match_parent"
+          width="match_parent"
+          orientation="vertical">
             <ScrollView
               height="0"
               weight="1"
@@ -458,14 +405,14 @@ class CourseInfoActivity extends View {
 
                 <TextView
                   height="wrap_content"
-                  margin="0,0,0,12"
                   width="match_parent"
+                  margin="0,0,0,12"
                   text={this.data.courseDesc}/>
 
 
                 <TextView
                   margin="0,0,0,4"
-                  text="Curriculum"
+                  text={window.__S.STRUCTURE}
                   style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
                   {this.getCurriculumnBrief()}
@@ -473,12 +420,12 @@ class CourseInfoActivity extends View {
 
 
                 <LinearLayout
+                  id={this.idSet.descriptionContainer}
                   height="wrap_content"
                   width="match_parent"
                   gravity="center"
                   root="true"
-                  orientation="vertical"
-                  id={this.idSet.descriptionContainer}>
+                  orientation="vertical">
                       <ProgressBar
                         height="30"
                         width="30"
@@ -502,8 +449,7 @@ class CourseInfoActivity extends View {
              onButtonClick={this.handleEnrollClick}/>
 
             </LinearLayout>
-
-      </LinearLayout>);
+            </LinearLayout>);
 
   }
 
@@ -517,27 +463,40 @@ class CourseInfoActivity extends View {
     JBridge.setInSharedPrefs("user_name",  "__failed");
     JBridge.setInSharedPrefs("user_token",  "__failed");
 
-    console.log("IN P1 ",window.__pressedLoggedOut)
+
     window.__pressedLoggedOut=true;
-    console.log("IN P2 ",window.__pressedLoggedOut)
-    JBridge.keyCloakLogout("https://dev.open-sunbird.org/auth/realms/sunbird/protocol/openid-connect/logout");
+
+    JBridge.keyCloakLogout(window.__loginUrl  + "/auth/realms/sunbird/protocol/openid-connect/logout");
     
     window.__Logout();
   }
 
 
   render() {
-    var buttonList = ["ENROLL FOR THIS COURSE"];
     this.layout = (
 
-      <LinearLayout
-        root="true"
-        background={window.__Colors.WHITE}
-        orientation="vertical"
-        id={this.idSet.totalContainer}
-        width="match_parent"
-        height="match_parent"/>
+     <RelativeLayout
+      width="match_parent"
+      height="match_parent"
+      clickable="true"
+      root="true">
 
+        <LinearLayout
+          background={window.__Colors.WHITE}
+          orientation="vertical"
+          id={this.idSet.totalContainer}
+          width="match_parent"
+          height="match_parent"/>
+      
+
+        <LinearLayout
+         width="match_parent"
+         height="match_parent"
+         id={this.idSet.sharePopupContainer}/>
+
+       
+
+      </RelativeLayout> 
     );
 
     return this.layout.render();
