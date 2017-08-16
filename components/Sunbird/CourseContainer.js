@@ -112,7 +112,7 @@ class CourseContainer extends View {
  handleViewAllClick = () =>{
 
       var courseListDetails = {
-                               "title" : "Courses In Progress",
+                               "title" : this.props.title,
                                "courseListDetails" : this.data,
                                "searchQuery" : this.props.searchQuery,
                                "viewMore" : this.props.showViewMore
