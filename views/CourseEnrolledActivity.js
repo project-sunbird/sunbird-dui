@@ -237,8 +237,24 @@ class CourseEnrolledActivity extends View {
 
   afterRender=()=>{
     this.checkContentLocalStatus(this.baseIdentifier);
+  }
 
-    var callback = callbackMapper.map(function(data) {
+
+  overFlowCallback = (params) => {
+    if(params == 0){
+      window.__FlagPopup.show();
+    }else if(params == 1){
+      this.logout();
+    }
+  }
+
+  handleMenuClick = (url) =>{
+    console.log("menu item clicked",url);
+
+
+    if(url=="ic_action_share_black"){
+
+      var callback = callbackMapper.map(function(data) {
 
       var input = [{
                     type : "text",
@@ -255,25 +271,15 @@ class CourseEnrolledActivity extends View {
         data = {input}/>
         )
 
-    _this.replaceChild(_this.idSet.sharePopupContainer,sharePopUp.render(),0);    
+    _this.replaceChild(_this.idSet.sharePopupContainer,sharePopUp.render(),0);
+
+    setTimeout(function() {
+      window.__SharePopup.show();
+    }, 200);
+
     });
     JBridge.exportEcar(this.baseIdentifier, callback);
 
-  }
-
-
-  overFlowCallback = (params) => {
-    if(params == 0){
-      window.__FlagPopup.show();
-    }else if(params == 1){
-      this.logout();
-    }
-  }
-
-  handleMenuClick = (url) =>{
-    console.log("menu item clicked",url);
-    if(url=="ic_action_share_black"){
-      window.__SharePopup.show();
     }
   }
 
