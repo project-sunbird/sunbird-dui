@@ -45,7 +45,8 @@ class ResourceViewAllCard extends View {
 
 
                   <LinearLayout
-                    width="match_parent"
+                    width="0"
+                    weight="1"
                     height="wrap_content"
                     orientation="vertical">
 
@@ -53,19 +54,18 @@ class ResourceViewAllCard extends View {
                       width="wrap_content"
                       height="wrap_content"
                       style={window.__TextStyle.textStyle.FILTER.REGULAR_BLACK}
+                      enableEllipse="true"
                       text={this.props.data.footerTitle}/>
 
                     <TextView
                       width="wrap_content"
                       height="wrap_content"
                       style={window.__TextStyle.textStyle.HINT.REGULAR}
+                      enableEllipse="true"
                       text={this.props.data.footerSubTitle}/>
 
                   </LinearLayout>
 
-                  <ViewWidget
-                    height="0"
-                    weight="1"/>
 
                   <Button
                     type="SmallButton_Secondary_BT"
