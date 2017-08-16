@@ -72,7 +72,7 @@ class HomeFragment extends View {
 
     }
     if (url == "ic_action_search") {
-      window.searchText = "";
+      
       var searchDetails = { filterDetails: "", searchType: "Combined" }
       var whatToSend = { filterDetails: JSON.stringify(searchDetails) }
       var event = { tag: "OPEN_SearchActivity", contents: whatToSend }

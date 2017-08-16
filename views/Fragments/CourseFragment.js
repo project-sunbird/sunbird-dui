@@ -243,7 +243,7 @@ class CourseFragment extends View {
       JBridge.showSnackBar(window.__S.COMMING_SOON)
     }
     else if (url == "ic_action_search") {
-      window.searchText = "";
+      
       var searchDetails = { filterDetails: "", searchType: "Course" }
       var whatToSend = { filterDetails: JSON.stringify(searchDetails) }
       var event = { tag: "OPEN_SearchActivity", contents: whatToSend}
