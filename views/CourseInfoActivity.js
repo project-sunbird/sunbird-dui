@@ -119,6 +119,14 @@ class CourseInfoActivity extends View {
   }
 
 
+  
+   onStop = () =>{
+    window.__SharePopup.hide();
+    console.log("ON STOP IN ResourceDetailActivity")
+  }
+
+
+
 
   renderCourseChildren = () => {
     console.log("RENDRING BREKAUP", this.courseContent)

@@ -249,28 +249,6 @@ class CourseEnrolledActivity extends View {
 
 
     this.checkContentLocalStatus(this.baseIdentifier);
-
-    // var callback = callbackMapper.map(function(data) {
-
-    //   var input = [{
-    //                 type : "text",
-    //                 data : "staging.open-sunbird.org/public/"+_this.baseIdentifier
-
-    //               },{
-    //                 type : "file",
-    //                 data : "file://"+data[0]
-
-    //               }];
-
-    //   var sharePopUp = (
-    //     <SharePopup
-    //     data = {input}/>
-    //     )
-
-    // _this.replaceChild(_this.idSet.sharePopupContainer,sharePopUp.render(),0);    
-    // });
-    // JBridge.exportEcar(this.baseIdentifier, callback);
-
   }
 
 
@@ -284,10 +262,41 @@ class CourseEnrolledActivity extends View {
 
   handleMenuClick = (url) =>{
     console.log("menu item clicked",url);
+
+
     if(url=="ic_action_share_black"){
+
+
+    var callback = callbackMapper.map(function(data) {
+
+
+      var input = [{
+                    type : "text",
+                    data : "staging.open-sunbird.org/public/"+_this.baseIdentifier
+
+                  },{
+                    type : "file",
+                    data : "file://"+data[0]
+
+                  }];
+
+      var sharePopUp = (
+        <SharePopup
+        data = {input}/>
+        )
+
+
+    _this.replaceChild(_this.idSet.sharePopupContainer,sharePopUp.render(),0); 
+
+     setTimeout(function() {
       window.__SharePopup.show();
-    }
+    }, 200);
+
+    });
+    JBridge.exportEcar(this.baseIdentifier, callback);
+
   }
+}
 
   handlePageOptionClick = (data) =>{
 
