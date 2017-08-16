@@ -34,6 +34,7 @@ courseViewAllActivity input whereFrom whatToSendBack = do
 	event <- ui $ CourseViewAllActivity {courseViewAllDetails : input}
 	case event of
 		OPEN_EnrolledCourseFlowFromCourseViewAll {course:output} -> enrolledCourseActivity output "CourseViewAllActivity" input
+		OPEN_CourseInfoFlowFromCourseViewAll {course:output} -> courseInfoActivity output "CourseViewAllActivity" input
 		BACK_CourseViewAllActivity -> case whereFrom of
 			"CourseFragment" -> courseFragment whatToSendBack "Terminate"  input
 			_ -> courseFragment whatToSendBack "Terminate" input

@@ -53,11 +53,11 @@ class SearchActivity extends View {
 
   }
 
- 
+
 
   afterRender = () => {
-    
-    
+
+
 
     if(this.filterData!=undefined && this.filterData.length != 0){
     JBridge.showSnackBar(window.__S.SEARCH_LOADING_MESSAGE)
@@ -77,11 +77,11 @@ class SearchActivity extends View {
       this.getSearchList(this.searchText,"true");
     }
     else if(window.searchText!=undefined && window.searchText!=""){
-        this.getSearchList(window.searchText[0],"false");
+        this.getSearchList(window.searchText,"false");
     }
 
     var callback = callbackMapper.map(function(data) {
-      window.searchText=data;
+      window.searchText=data[0];
       _this.handleSearchClick(data);
 
     });
@@ -91,13 +91,13 @@ class SearchActivity extends View {
   }
 
   onPop = () => {
-    
+
 
     Android.runInUI(
       _this.animateView(),
       null
     );
-    
+
   }
 
 
@@ -249,7 +249,7 @@ class SearchActivity extends View {
             status = "true";
           }
 
-      
+
           var s = "";
           if(JBridge.isNetworkAvailable()){
               JBridge.showSnackBar(window.__S.SEARCH_LOADING_MESSAGE)
@@ -268,7 +268,7 @@ class SearchActivity extends View {
   onBackPressed = () => {
      JBridge.hideKeyboard();
      var whatToSend = [];
-     window.searchText[0]="";
+     window.searchText="";
      var event = { tag: "BACK_SearchActivity", contents: whatToSend }
      window.__runDuiCallback(event);
   }

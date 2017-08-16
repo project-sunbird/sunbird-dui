@@ -46,13 +46,14 @@ class UserActivity extends View {
     ]);
     this.backPressCount = 0;
     this.shouldCacheScreen=false;
-    
+
     this.isLoginMode = true;
     this.language = "English";
     this.userName = this.userPass = this.firstName = "";
     _this = this;
 
-    this.deepLinkCollectionDetails;
+    this.deepLinkCollectionDetails="";
+
 
     window.__loginCallback=this.getLoginCallback;
 
@@ -94,7 +95,7 @@ class UserActivity extends View {
           var event={tag:"OPEN_DeepLink_CourseInfo",contents:whatToSend}
           window.__runDuiCallback(event);
         }
-        else if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "TextBook"){
+        else if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook"){
 
           var itemDetails = JSON.stringify(item.contentData);
           _this.deepLinkCollectionDetails = itemDetails;
@@ -150,7 +151,7 @@ class UserActivity extends View {
 
   getLoginCallback = (response) => {
     console.log("GOT LOGIN RESPONSE ",response)
-    
+
     window.__LoaderDialog.hide()
 
     if(!this.enableLoginCallback){
@@ -223,25 +224,25 @@ class UserActivity extends View {
     var responseCode = state.response.status[2];
     var responseUrl = state.response.status[3];
 
-    
+
     if(responseCode == 401){
       var callback  = callbackMapper.map(function(token){
         window.__apiToken = token;
         if(state.responseFor == "API_SignUp"){
           _this.handleSignUpClick();
         }
-         
+
       });
       JBridge.getApiToken();
       return;
         }
-    
-    
+
+
     if (responseCode == 501) {
       JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION)
       return;
     }
-    
+
 
     if (status === "failure" || status=="f") {
       if (response.params.err) {
@@ -253,11 +254,11 @@ class UserActivity extends View {
       return;
     }
 
-   
+
 
     var result = response.result;
 
-    
+
 
     switch (state.responseFor + "") {
       case "API_SignUp":
@@ -351,7 +352,7 @@ class UserActivity extends View {
       id: this.idSet.userForumContainer,
       visibility: visibilityVal
     });
-   
+
     cmd += this.set({
       id: this.idSet.signUpHolder,
       visibility: visibilityVal
@@ -386,8 +387,10 @@ class UserActivity extends View {
     this.mobileNumber=this.mobileNumber.trim();
 
 
-
-    if (this.firstName.length <= 0) {
+    if (this.firstName.length <= 0 && this.userName.length <= 0 && this.email.length <= 0 && this.userPass.length <= 0 && this.mobileNumber.length <= 0){
+      JBridge.showSnackBar(window.__S.ERROR_EMPTY_FIELDS);
+      return;
+    } else if (this.firstName.length <= 0) {
       JBridge.showSnackBar(window.__S.ERROR_EMPTY_FIRSTNAME);
       return;
     }  else if (this.userName.length <= 0) {
@@ -417,7 +420,7 @@ class UserActivity extends View {
     }
 
     if (this.userName.length > 0 && this.userPass.length > 0 && this.firstName.length > 0 && this.language.length > 0 && this.email.length > 0 && this.mobileNumber.length > 0) {
-      window.__LoaderDialog.show() 
+      window.__LoaderDialog.show()
       var requestBody = {
         "userName": this.userName,
         "firstName": this.firstName,
@@ -425,7 +428,7 @@ class UserActivity extends View {
         "language": ["English"],
         "phone": this.mobileNumber,
         "email": this.email
-        
+
       };
       requestBody=JSON.stringify(requestBody);
       var whatToSend = {
@@ -494,8 +497,8 @@ class UserActivity extends View {
             gravity="center"
             margin="24,0,24,0"
             >
-            
-                
+
+
               <LinearLayout
                 height="wrap_content"
                 width="wrap_content"
@@ -553,7 +556,7 @@ class UserActivity extends View {
         height="match_parent"
         width="match_parent"
         fillViewPort="true"
-        
+
         gravity="center"
         >
         <LinearLayout
@@ -626,7 +629,7 @@ class UserActivity extends View {
                     margin="20,0,24,12"
                     _onChange={this.updateUserPassword}/>
 
-              </LinearLayout>      
+              </LinearLayout>
 
             <LinearLayout
               height="wrap_content"
@@ -649,7 +652,7 @@ class UserActivity extends View {
 
             </LinearLayout>
 
-            
+
 
          </LinearLayout>
 
@@ -714,7 +717,7 @@ class UserActivity extends View {
 
          {this.getTopLayout()}
 
-       
+
 
          {this.getForum()}
 
@@ -799,9 +802,9 @@ class UserActivity extends View {
             gravity="center"
             orientation="vertical">
 
-              <ImageView
-                height="300"
-                width="300"
+               <ImageView
+                height="250"
+                width="250"
                 layout_gravity="center"
                 imageUrl="ic_launcher"/>
               <TextView
@@ -809,6 +812,7 @@ class UserActivity extends View {
                 margin="20,120,20,20"
                 layout_gravity="center"
                 height="wrap_content"/>
+
            </LinearLayout>
       </LinearLayout>
 

@@ -104,6 +104,7 @@ class SearchResult extends View {
     
     }
     else if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook"){
+
       if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
         var whatToSend={course:itemDetails};
         var event={tag:"OPEN_CourseEnrolledActivity_SEARCH",contents:whatToSend}
@@ -111,6 +112,8 @@ class SearchResult extends View {
       }else{
         this.setPermissions();
       }
+
+
       
     }
     else

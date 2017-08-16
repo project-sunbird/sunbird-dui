@@ -138,7 +138,6 @@ class CourseFragment extends View {
 
 
   getCourseCardLayout = (item) => {
-
     return (<LinearLayout
         height="wrap_content"
         width="match_parent"
@@ -149,6 +148,7 @@ class CourseFragment extends View {
                   <CourseContainer
                     title={item.name}
                     data = {item.contents}
+                    searchQuery = {item.searchQuery}
                     onCourseClick={this.handleCourseClick}/>
 
 
@@ -244,6 +244,7 @@ class CourseFragment extends View {
       JBridge.showSnackBar(window.__S.COMMING_SOON)
     }
     else if (url == "ic_action_search") {
+      
       var searchDetails = { filterDetails: "", searchType: "Course" }
       var whatToSend = { filterDetails: JSON.stringify(searchDetails) }
       var event = { tag: "OPEN_SearchActivity", contents: whatToSend}

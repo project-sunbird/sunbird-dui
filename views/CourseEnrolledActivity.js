@@ -232,18 +232,26 @@ class CourseEnrolledActivity extends View {
 
 
   onBackPressed = () => {
+    window.__ContentLoaderDialog.hide();
+   
+    if(window.__SharePopup != undefined && window.__SharePopup.getVisible()){
+     window.__SharePopup.hide();
+     return;
+    }
+
    var whatToSend = []
    var event = { tag: 'BACK_CourseEnrolledActivity', contents: whatToSend }
    window.__runDuiCallback(event);
   }
 
   afterRender=()=>{
-    if(this.details.contentType!="course" || this.details.contentType != "Course"){
+    console.log("details",this.details)
+    if((this.details.hasOwnProperty("contentType")) && (this.details.contentType.toLocaleLowerCase() == "collection" || this.details.contentType.toLocaleLowerCase() == "textbook")){
       var cmd = this.set({
         id: this.idSet.featureButton,
         visibility: "gone"
 
-      })
+      });
       Android.runInUI(cmd, 0);
     }
 

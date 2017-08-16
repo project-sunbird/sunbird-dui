@@ -33,15 +33,22 @@ class SharePopup extends View {
     _this=this;
     window.__SharePopup = this;
     console.log("SHARE POPUP CME")
+    this.isVisible=false;
   }
 
 
   show = () => {
     this.setVisibility("visible");
+    this.isVisible=true;
   }
 
   hide = () => {
     this.setVisibility("gone");
+    this.isVisible=false;
+  }
+
+  getVisible = () => {
+    return this.isVisible;
   }
 
   setVisibility = (data) => {
