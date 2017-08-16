@@ -23,6 +23,7 @@ class CourseContainer extends View {
     this.setIds([
       "courseContainer",
       "parentContainer"]);
+    this.count = (this.props.data != undefined) ? this.props.data.length : 0;
   }
 
 
@@ -32,6 +33,7 @@ class CourseContainer extends View {
           this.data=[];
         
     var rows = this.data.map((item, i) => {
+
       return this.geCardLayout(item);
 
     });
@@ -97,14 +99,28 @@ class CourseContainer extends View {
               <TextView
                 width="wrap_content"
                 height="wrap_content"
-                visibility={this.props.isViewAllExist?"visible":"gone"}
                 text={window.__S.VIEW_ALL}
+                visibility = {(this.count <= 0)? "gone" : "visible"}
+                padding="8,8,8,8"
+                onClick={()=>{this.handleViewAllClick()}}
                 style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
             
 
             </LinearLayout>)
   }
 
+ handleViewAllClick = () =>{
+
+      var courseListDetails = {
+                               "title" : "Courses In Progress",
+                               "courseListDetails" : this.data,
+                               "searchQuery" : this.props.searchQuery
+                              }
+      var whatToSend = {"courseListDetails": JSON.stringify(courseListDetails)}
+      var event = { tag: "OPEN_CourseViewAllActivity", contents: whatToSend};
+      window.__runDuiCallback(event);
+
+  }
 
 
   handleCardClick = (content, type) => {

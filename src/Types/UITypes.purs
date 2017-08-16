@@ -222,7 +222,7 @@ instance encodeResourceViewAllActivityAction :: Encode ResourceViewAllActivityAc
 data CourseViewAllActivity = CourseViewAllActivity {courseViewAllDetails::String}
 data CourseViewAllActivityAction = DummyCourseViewAllActivityAction | 
   BACK_CourseViewAllActivity | 
-  OPEN_EnrolledCourseFlowFromCourseViewAll {course::String}
+  OPEN_EnrolledCourseFlowFromCourseViewAll {course::String} | OPEN_CourseInfoFlowFromCourseViewAll {course::String}
 
 instance courseViewAllActivity :: UIScreen CourseViewAllActivity CourseViewAllActivityAction where
   generateMockEvents _ = [DummyCourseViewAllActivityAction , BACK_CourseViewAllActivity]

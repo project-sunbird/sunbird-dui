@@ -25,6 +25,8 @@ class CourseViewAllActivity extends View {
     super(props, children, state);
 
     this.setIds([
+      "listItems",
+      "viewMoreButton"
     ]);
     this.state = state;
 
@@ -33,16 +35,19 @@ class CourseViewAllActivity extends View {
     this.shouldCacheScreen = false;
 
     this.totalDetails = JSON.parse(state.data.value0.courseViewAllDetails);
-    
+    console.log("c S k" ,this.totalDetails)
+    this.searchQuery = this.totalDetails.hasOwnProperty("searchQuery") ? this.totalDetails.searchQuery : null;
+
+    this.totalDetails = this.totalDetails.courseListDetails;
+    this.displayContent = [];
+    this.start_index = 0;
     this.appbarTitle = this.totalDetails.title; 
     this.totalDetails = this.totalDetails.courseListDetails;
-
-    
-
     this.menuData = {
     url: [
     ]
     }
+
 
     _this = this;
     setTimeout(function() {
@@ -62,19 +67,47 @@ class CourseViewAllActivity extends View {
   }
 
 
-  getRows = () =>{
+  getRows = (list) =>{
+
+     console.log("data in cva",this.totalDetails)
+     if(list == undefined)
+      list = this.totalDetails;
 
 
-      var rows = this.totalDetails.map((item,i) => {
+      var rows = list.map((item,i) => {
                 var progressCount = item.leafNodesCount == null ? 0 : (item.progress/item.leafNodesCount)*100;
                 progressCount = parseInt(progressCount)
+                var appIcon;
+                
+                  var appIcon,name,isProgress,size,actionText;
+                  if(item.courseId){
+                    appIcon = item.courseLogoUrl
+                    name = item.courseName
+                    isProgress = "true"
+                    size = window.__S.COURSE_PROGRESS_COMPLETED.format(progressCount)
+                    actionText = window.__S.RESUME;
+                  }
+                  else if(item.identifier) {
+                    appIcon = item.appIcon
+                    name = item.name
+                    isProgress = "false"
+                    size = item.hasOwnProperty("size") ? window.__S.FILE_SIZE.format(utils.formatBytes(item.size)) : "";
+                    actionText = window.__S.OPEN
+                  }
+                  else{
+                    appIcon = "ic_action_course"
+                    name = ""
+                    isProgress = "false"
+                  }
+                  
+
 
                   var temp = {};
-                  temp['imageUrl'] = item.courseLogoUrl?item.courseLogoUrl:"ic_action_course";
-                  temp['name'] = item.courseName;
-                  temp['isProgress'] = "true";
-                  temp['footerTitle'] = window.__S.COURSE_PROGRESS_COMPLETED.format(progressCount);
-                  temp['actionText'] = window.__S.RESUME;
+                  temp['imageUrl'] = appIcon;
+                  temp['name'] = name;
+                  temp['isProgress'] = isProgress;
+                  temp['footerTitle'] = size;
+                  temp['actionText'] = actionText;
                   temp["footerSubTitle"] = window.__S.ERROR_DURATION_NOT_AVAILABLE;
 
            return (<LargeCardComponent
@@ -109,7 +142,12 @@ class CourseViewAllActivity extends View {
     var whatToSend = {
         "course": tmp 
       };
-     var event = { tag: 'OPEN_EnrolledCourseFlowFromCourseViewAll', contents: whatToSend };
+      if(this.totalDetails[0].courseId){
+       var event = { tag: 'OPEN_EnrolledCourseFlowFromCourseViewAll', contents: whatToSend };
+      }
+      else{
+       var event = { tag: 'OPEN_CourseInfoFlowFromCourseViewAll', contents: whatToSend }; 
+      }
     window.__runDuiCallback(event);
   }
 
@@ -126,6 +164,68 @@ class CourseViewAllActivity extends View {
     var whatToSend = []
     var event = { tag: 'BACK_CourseViewAllActivity', contents: whatToSend }
     window.__runDuiCallback(event);
+  }
+
+  changeViewMoreButtonStatus(status){
+    
+      var cmd = this.set({
+        id: this.idSet.viewMoreButton,
+        visibility: status
+      });
+      Android.runInUI(cmd, 0);
+    
+  }
+
+  
+  handleViewMoreClick = () =>{
+    var listContent = [];
+    window.__LoaderDialog.show();
+    if(this.displayContent == "[]" || this.displayContent.length == 0){
+       if(JBridge.isNetworkAvailable()){
+            var callback = callbackMapper.map(function(data){
+              data[0] = JSON.parse(utils.decodeBase64(data[0]));
+              _this.displayContent=data[0];
+              console.log("data from response",data[0])
+              _this.displayContent.map(function(item,index){
+                if(index > _this.start_index*10 && index<(_this.start_index+1)*10 && index<_this.displayContent.length)
+                  listContent.push(item)
+              })
+              _this.start_index++;
+              console.log(listContent)
+              _this.appendChild(_this.idSet.listItems,_this.getRows(listContent).render(),_this.start_index)
+              window.__LoaderDialog.hide();
+              if(_this.start_index*10>=_this.displayContent.length){
+                _this.changeViewMoreButtonStatus("gone")
+              }
+              
+              });
+              JBridge.searchContent(callback, JSON.stringify(this.searchQuery), "", "Course", false,100);
+        }
+        else{
+          window.__LoaderDialog.hide();
+          JBridge.showSnackBar(window.__S.NO_INTERNET)
+        }
+    }
+    else{
+          this.displayContent.map(function(item,index){
+            if(index > _this.start_index*10 && index<(_this.start_index+1)*10 && _this.start_index<_this.displayContent.length)
+              listContent.push(item)
+          })
+          _this.start_index++;
+          _this.appendChild(_this.idSet.listItems,_this.getRows(listContent).render(),_this.start_index)
+          window.__LoaderDialog.hide();
+          if(_this.start_index*10>=_this.displayContent.length){
+                _this.changeViewMoreButtonStatus("gone")
+          }
+          
+
+    }
+    console.log(this.start_index,this.displayContent.length)
+     if(this.start_index >= 9 ){
+      _this.changeViewMoreButtonStatus("gone")
+      
+     }
+
   }
 
   render() {
@@ -153,15 +253,44 @@ class CourseViewAllActivity extends View {
                 width="match_parent"
                 fillViewport="true"
                 >
-
                 <LinearLayout
-                  height="match_parent"
-                  width="match_parent"
-                  orientation="vertical">
+                  height = "match_parent"
+                  width = "match_parent"
+                  orientation = "vertical"
+                  layouTransition="true"
+                  >
 
-                  {this.getRows()}
+                      <LinearLayout
+                        height="match_parent"
+                        width="match_parent"
+                        orientation="vertical"
+                        padding= "0,0,0,16"
+                        id = {this.idSet.listItems}
+                        >
+
+                        {this.getRows()}
 
 
+                      </LinearLayout>
+                      <LinearLayout
+                              width = "match_parent"
+                              height = "50"
+                              margin = "16,16,16,16"
+                              layouTransition="true"
+                              id = {this.idSet.viewMoreButton}
+                              background = {window.__Colors.PRIMARY_DARK}
+                              gravity = "center"
+
+                              >
+                              <TextView
+                                height = "match_parent"
+                                width = "match_parent"
+                                gravity="center"
+                                onClick = {this.handleViewMoreClick}
+                                text = {window.__S.VIEW_MORE}
+                                style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
+                                />
+                            </LinearLayout>  
                 </LinearLayout>
 
                 </ScrollView>
