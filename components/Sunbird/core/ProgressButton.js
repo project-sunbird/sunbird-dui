@@ -85,7 +85,12 @@ class ProgressButton extends View {
     data.downloadProgress = ( data.downloadProgress == undefined || data.downloadProgress < 0 )? 0 : data.downloadProgress;
     console.log("--->\t\t\t\n\n\n", data);
      console.log(data.downloadProgress)
-
+     if(data.status == "NOT_FOUND"){ 
+          this.setCancelButtonVisibility("gone");
+        _this.replaceChild(_this.idSet.downloadBarContainer, _this.getButtons(0, "DOWNLOAD").render(), 0);
+        JBridge.showSnackBar("Content Not Available");
+        return;
+     }
     if (parseInt(data.downloadProgress) == 100) {
     console.log(data.downloadProgress ,"DONE")
       _this.props.changeOverFlowMenu();
@@ -174,7 +179,15 @@ class ProgressButton extends View {
         contentProgress['result'] = "pass";
         contentProgress['grade'] = "B";
         contentProgress['score'] = "10";
-        
+        var enrolledCourse;
+        window.__enrolledCourses.map(function(item){
+          if(item.courseId == _this.props.contentDetails.hierarchyInfo[0].identifier)
+            enrolledCourse = item;
+        })
+
+        contentProgress['batchId'] = enrolledCourse.hasOwnProperty("batchId")? enrolledCourse.batchId : 0 ;
+        console.log("batch ID",enrolledCourse)
+
         var url = window.__apiUrl + "/api/course/v1/content/state/update"
 
         console.log("date",date)
@@ -199,6 +212,8 @@ class ProgressButton extends View {
     var callback = callbackMapper.map(function(data){
         console.log(data)
         if(data[0] == "true"){
+            console.log("in patch",body)
+
             JBridge.patchApi(url,JSON.stringify(body),window.__userToken,window.__apiToken);
           }
           JBridge.stopEventBus();

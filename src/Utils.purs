@@ -226,6 +226,20 @@ getResourcePageFilterApi user_token api_token filter_to_use=
                                                    ]) in
   (post requestUrl headers payload)   
 
+searchUser user_token api_token filter_to_use=
+  let requestUrl = "/user/v1/search"
+      headers = (generateRequestHeaders user_token api_token)
+      payload = A.fromObject (StrMap.fromFoldable [ (Tuple "id" (A.fromString "unique API ID"))
+                                                   , (Tuple "ts" (A.fromString "2013/10/15 16:16:3"))
+                                                   , (Tuple "request" (A.fromObject (StrMap.fromFoldable  [ (Tuple "request" (getJsonFromString filter_to_use))
+                                                                                                                                                              
+                                                                                                          ])))
+                                                   ]) in
+  (post requestUrl headers payload)   
+
+
+
+
 getUserEnrolledCourses user_token api_token =
   let requestUrl = "/course/v1/user/enrollment/list/" <> user_token
       headers = (generateRequestHeaders user_token api_token) in

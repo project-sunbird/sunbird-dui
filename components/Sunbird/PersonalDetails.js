@@ -19,6 +19,7 @@ class PersonalDetails extends View {
     this.userName = (this.props.data.userName == undefined) ? "Mock User" : this.props.data.userName;
     this.email = (this.props.data.email == undefined) ? "mock@mock.com" : this.props.data.email;
     this.phone = (this.props.data.phone == undefined) ? "91mock4721" : this.props.data.phone;
+    this.currLoc = (this.props.data.currLoc == undefined) ? "Bangalore" : this.props.data.currLoc;
     this.languagesData = (this.props.data.language == undefined) ? ["Mock"] : this.props.data.language;
     this.language = "";
     this.languagesData.map((item) => {
@@ -44,7 +45,7 @@ class PersonalDetails extends View {
               height="0"
               weight="1"/>
 
-          
+
 
               </LinearLayout>)
   }
@@ -87,20 +88,19 @@ class PersonalDetails extends View {
             background={window.__Colors.PRIMARY_BLACK_22}/>)
   }
 
-
   render() {
     this.layout = (<LinearLayout
               width="wrap_content"
               height="wrap_content"
               gravity="center_horizontal"
               orientation="vertical">
-               {this.getLineSeperator()}
+
               {this.getHeader()}
 
+              {this.getRows("LANGUAGES",this.language)}
               {this.getRows("E-MAIL",this.email)}
               {this.getRows("PHONE",this.phone)}
-              {this.getRows("LANGUAGES",this.language)}
-
+              {this.getRows("CURRENT LOCATION",this.currLoc)}
 
               </LinearLayout>)
     return this.layout.render();
