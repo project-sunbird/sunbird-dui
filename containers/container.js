@@ -35,6 +35,7 @@ const ResourceViewAllActivity = require("../views/ResourceViewAllActivity");
 const CourseViewAllActivity = require("../views/CourseViewAllActivity");
 const SearchActivity = require("../views/SearchActivity");
 const FilterActivity = require("../views/FilterActivity");
+const AdditionalInformationActivity = require("../views/AdditionalInformationActivity");
 
 // ScreenActions
 const RootScreenActions = require("../actions/RootScreenActions");
@@ -65,12 +66,13 @@ var determineScreen = (screenName, state) => {
     case "UserActivity":
       screen = new(UserActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
-
-    
+    case "AdditionalInformationActivity":
+      screen = new(AdditionalInformationActivity(dispatcher, RootScreenActions))(null,null,state);
+      break;
     case "ModuleDetailActivity":
       screen = new(ModuleDetailActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
-   
+
 
     case "CourseInfoActivity":
       screen = new(CourseInfoActivity(dispatcher, RootScreenActions))(null, null, state);
@@ -100,7 +102,7 @@ var determineScreen = (screenName, state) => {
       screen = new(FilterActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
     case "RootScreen":
-      screen = new(RootScreen(dispatcher,RootScreenActions))(null, null,state) ; 
+      screen = new(RootScreen(dispatcher,RootScreenActions))(null, null,state) ;
       break;
   }
 
