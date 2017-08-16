@@ -800,8 +800,8 @@ class UserActivity extends View {
             orientation="vertical">
 
               <ImageView
-                height="300"
-                width="300"
+                height="250"
+                width="250"
                 layout_gravity="center"
                 imageUrl="ic_launcher"/>
               <TextView
