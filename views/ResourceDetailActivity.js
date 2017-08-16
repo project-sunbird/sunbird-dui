@@ -114,43 +114,45 @@ class ResourceDetailActivity extends View {
 
   shareContent = (isContentLocallyAvailable) =>{
 
-    var shareCallback = callbackMapper.map(function(data) {
-    var input;
-    if(isContentLocallyAvailable){
-                  input = [{
-                    type : "text",
-                    data : "staging.open-sunbird.org/c/"+_this.details.identifier
 
-                  },{
-                    type : "file",
-                    data : "file://"+data[0]
+        var shareCallback = callbackMapper.map(function(data) {
+        var input;
+        if(isContentLocallyAvailable){
+                      input = [{
+                        type : "text",
+                        data : "staging.open-sunbird.org/c/"+_this.details.identifier
 
-                  }];
+                      },{
+                        type : "file",
+                        data : "file://"+data[0]
 
-    }else{
-                  input = [{
-                              type : "text",
-                              data : "staging.open-sunbird.org/public/"+_this.details.identifier
-                          }];
+                      }];
 
-    }
-                  
-      var sharePopUp = (
-        <SharePopup
-        data = {input}/>
-        )
+        }else{
+                      input = [{
+                                  type : "text",
+                                  data : "staging.open-sunbird.org/public/"+_this.details.identifier
+                              }];
 
-    _this.replaceChild(_this.idSet.sharePopupContainer,sharePopUp.render(),0);
+        }
+                      
+          var sharePopUp = (
+            <SharePopup
+            data = {input}/>
+            )
 
-    });
+        _this.replaceChild(_this.idSet.sharePopupContainer,sharePopUp.render(),0);
 
-    JBridge.exportEcar(this.details.identifier, shareCallback);
+        });
+
+        JBridge.exportEcar(this.details.identifier, shareCallback);
+      
   }
 
   afterRender = () => {
-    this.checkLocalStatus(this.details);
 
-
+     this.checkLocalStatus(this.details);
+    
     if(this.details && this.details.content && this.details.content.me_averageRating){
     JBridge.setRating(this.idSet.ratingBar, this.details.content.me_averageRating);
     }else if(this.details.content.hasOwnProperty("contentData") && this.details.content.contentData.hasOwnProperty("me_averageRating")){
@@ -456,7 +458,11 @@ class ResourceDetailActivity extends View {
 
   handleMenuClick = (url) =>{
     if(url == "ic_action_share_black"){
-      window.__SharePopup.show();
+     if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
+       window.__SharePopup.show();
+     }else{
+        utils.setPermissions("android.permission.WRITE_EXTERNAL_STORAGE");
+      }
     }
   }
 
@@ -468,7 +474,6 @@ class ResourceDetailActivity extends View {
       <RelativeLayout
       width="match_parent"
       height="match_parent"
-      afterRender={this.afterRender}
       clickable="true"
       root="true">
       <LinearLayout

@@ -1,4 +1,4 @@
-
+var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 
 exports.formatBytes = (bytes)=> {
 	    if(bytes < 1024) return (bytes/1).toFixed(0) + " Bytes";
@@ -41,6 +41,25 @@ exports.formatDate = (d) =>{
 
 exports.decodeBase64 = (data) =>{
   return decodeURIComponent(escape(atob(data)))
+}
+
+exports.setPermissions = (permission) => {
+
+   var callback = callbackMapper.map(function(data) {
+
+      if (data == permission) {
+        if(data == "android.permission.WRITE_EXTERNAL_STORAGE"){
+          JBridge.setKey("isPermissionSetWriteExternalStorage", "true");
+        }
+      }
+      if(data == "DeniedPermanently"){
+        window.__PermissionDeniedDialog.show("ic_flag_warning","Storage permission is required for this functionality");
+      }
+
+    });
+
+    JBridge.setPermissions(callback,permission);
+
 }
 
 
