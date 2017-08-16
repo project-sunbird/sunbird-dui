@@ -202,7 +202,9 @@ getRows = (data) =>{
               _this.start_index++;
               _this.appendChild(_this.idSet.listItems,_this.getRows(listContent).render(),_this.start_index)
               window.__LoaderDialog.hide();
-              
+              if(_this.start_index*10>=_this.displayContent.length){
+                _this.changeViewMoreButtonStatus("gone")
+              }
               });
               JBridge.searchContent(callback, JSON.stringify(this.details.searchQuery), "", "Resource", false,100);
         }
@@ -219,6 +221,9 @@ getRows = (data) =>{
           _this.start_index++;
           _this.appendChild(_this.idSet.listItems,_this.getRows(listContent).render(),_this.start_index)
           window.__LoaderDialog.hide();
+          if(_this.start_index*10>=_this.displayContent.length){
+                _this.changeViewMoreButtonStatus("gone")
+          }
 
     }
      if(this.start_index >= 9){
@@ -279,6 +284,7 @@ getRows = (data) =>{
                         layouTransition="true"
                         id = {this.idSet.listItems}
                         orientation = "vertical"
+                        padding = "0,0,0,16"
                         >
                       </LinearLayout>
 
