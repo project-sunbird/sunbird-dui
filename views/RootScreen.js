@@ -15,6 +15,7 @@ var objectAssign = require('object-assign');
 var LoaderDialog = require('../components/Sunbird/core/LoaderDialog');
 var PageFilterPopup = require('../components/Sunbird/PageFilterPopup');
 var ContentLoaderDialog = require('../components/Sunbird/core/ContentLoaderDialog');
+var PermissionDeniedDialog = require('../components/Sunbird/core/PermissionDeniedDialog');
 
 const Str = require("../res/strings") ;
 
@@ -86,6 +87,7 @@ class RootScreen extends View {
         <LoaderDialog/>
         <PageFilterPopup/>
         <ContentLoaderDialog/>
+        <PermissionDeniedDialog/>
       </RelativeLayout>
     );
 

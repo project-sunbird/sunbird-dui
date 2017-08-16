@@ -103,11 +103,14 @@ class ResourceDetailActivity extends View {
   }
 
   onStop = () =>{
+    window.__PermissionDeniedDialog.hide();
     window.__SharePopup.hide();
     console.log("ON STOP IN ResourceDetailActivity")
   }
 
-
+  onPause = () =>{
+    console.log("ON PAUSE IN ResourceDetailActivity")
+  }
 
   shareContent = (isContentLocallyAvailable) =>{
 
@@ -426,9 +429,14 @@ class ResourceDetailActivity extends View {
 
   onBackPressed = () => {
 
-    var whatToSend = [];
-    var event= { "tag": "BACK_ResourceDetailActivity", contents: whatToSend };
-    window.__runDuiCallback(event);
+    if(window.__PermissionDeniedDialog.getVisibility() == "visible"){
+      window.__PermissionDeniedDialog.hide();
+    }else{
+      var whatToSend = [];
+      var event= { "tag": "BACK_ResourceDetailActivity", contents: whatToSend };
+      window.__runDuiCallback(event);
+    }
+    
   }
 
   changeOverFlow = () =>{

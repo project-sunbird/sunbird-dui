@@ -330,20 +330,20 @@ class UserActivity extends View {
 
   toggleSignUpForm = () => {
 
-    // JBridge.showSnackBar("Logged out")
-    // JBridge.setInSharedPrefs("logged_in","NO");
-    // JBridge.setInSharedPrefs("user_id", "__failed");
-    // JBridge.setInSharedPrefs("user_name",  "__failed");
-    // JBridge.setInSharedPrefs("user_token",  "__failed");
+    JBridge.showSnackBar("Logged out")
+    JBridge.setInSharedPrefs("logged_in","NO");
+    JBridge.setInSharedPrefs("user_id", "__failed");
+    JBridge.setInSharedPrefs("user_name",  "__failed");
+    JBridge.setInSharedPrefs("user_token",  "__failed");
 
-    // console.log("IN P1 ",window.__pressedLoggedOut)
-    // window.__pressedLoggedOut=true;
-    // console.log("IN P2 ",window.__pressedLoggedOut)
-    // JBridge.keyCloakLogout(window.__apiUrl + "/auth/realms/sunbird/protocol/openid-connect/logout");
+    console.log("IN P1 ",window.__pressedLoggedOut)
+    window.__pressedLoggedOut=true;
+    console.log("IN P2 ",window.__pressedLoggedOut)
+    JBridge.keyCloakLogout(window.__apiUrl + "/auth/realms/sunbird/protocol/openid-connect/logout");
     
-    // window.__Logout();
+    window.__Logout();
 
-    // return
+    return
     this.isLoginMode = !this.isLoginMode;
     var visibilityVal= this.isLoginMode?"gone":"visible"
     var oppVisibilityValue = !this.isLoginMode?"gone":"visible"

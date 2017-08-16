@@ -155,6 +155,7 @@ class CourseFragment extends View {
         </LinearLayout>)
   }
 
+ 
 
   handleCourseClick = (content, type) => {
 
