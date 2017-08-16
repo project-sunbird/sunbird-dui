@@ -38,11 +38,23 @@ class ResourceComponent extends View {
 
     this.data = [];
 
-    this.menuData = {
-      url: [
-        { imageUrl: "ic_action_search" },
-        { imageUrl: "ic_action_filter" }
-      ]
+    if(this.props.response != undefined && this.props.response.hasOwnProperty("filter_to_send") && this.props.response.filter_to_send!=null)
+    { console.log(props.response.filter_to_send, "fiter applied");
+      this.menuData = {
+           url: [
+             { imageUrl: "ic_action_search" },
+             { imageUrl: "ic_action_filter_applied" }
+           ]
+         }
+    }
+    else{
+      console.log("no filter applied");
+     this.menuData = {
+          url: [
+            { imageUrl: "ic_action_search" },
+            { imageUrl: "ic_action_filter" }
+          ]
+        }
     }
 
 
@@ -82,7 +94,7 @@ class ResourceComponent extends View {
           width="match_parent"
           orientation="vertical"
           root="true">
-            
+
           </LinearLayout>)
       }
     } else {
@@ -92,7 +104,7 @@ class ResourceComponent extends View {
           width="match_parent"
           orientation="vertical"
           root="true">
-            
+
           </LinearLayout>)
     }
   }
@@ -106,9 +118,9 @@ class ResourceComponent extends View {
         width="match_parent"
         root="true"
         orientation="vertical">
-          
+
           {this.getSpaceSeparator()}
-          
+
           <ResourceContainer
            data = {content.contents}
            title={content.name}
@@ -186,8 +198,8 @@ handleResourceViewAllClick= (data,title,searchQuery,visibility) =>{
             title={window.__S.RESOURCES_LW}
             width="match_parent"
             showMenu="true"
-            invert="true" 
-            hideBack="true" 
+            invert="true"
+            hideBack="true"
             menuData={this.menuData}
             onMenuItemClick={this.handleMenuClick}/>
 
@@ -230,8 +242,9 @@ handleResourceViewAllClick= (data,title,searchQuery,visibility) =>{
   }
 
   handleMenuClick = (url) => {
-    if (url == "ic_action_filter") {
-      window.__PageFilterPopup.resetPopup("Resource");
+    console.log("url clicked", url);
+    if (url == "ic_action_filter" ||  url == "ic_action_filter_applied") {
+      window.__PageFilterPopup.resetPopup("Resource",this.props.response);
       window.__PageFilterPopup.show();
     }else if (url == "ic_notification_red") {
       var whatToSend = []
@@ -249,7 +262,7 @@ handleResourceViewAllClick= (data,title,searchQuery,visibility) =>{
 
 
   handleResourceOpen = (data) => {
-    var whatToSend = { resourceDetails: "nothing" } 
+    var whatToSend = { resourceDetails: "nothing" }
     var event = { tag: "StartResourceDetailFlow", contents: whatToSend}
     window.whatToSend(event);
   }
@@ -266,12 +279,12 @@ handleResourceViewAllClick= (data,title,searchQuery,visibility) =>{
   }
 
   afterRender = () => {
-      
+
      this.renderOfflineCard();
 
 
      var callbackRefresh = callbackMapper.map(function(params) {
-        window.__BNavFlowRestart();         
+        window.__BNavFlowRestart();
     });
 
       JBridge.addSwipeRefreshScrollView(this.idSet.scrollViewContainer,callbackRefresh);
@@ -291,7 +304,7 @@ handleResourceViewAllClick= (data,title,searchQuery,visibility) =>{
                          title="Saved Resources"
                          onViewAllClick = {_this.handleResourceViewAllClick}/>)
 
-        _this.replaceChild(_this.idSet.offlineContainer,layout.render(),0);            
+        _this.replaceChild(_this.idSet.offlineContainer,layout.render(),0);
 
 
     });
@@ -311,7 +324,7 @@ handleResourceViewAllClick= (data,title,searchQuery,visibility) =>{
         height="match_parent">
 
         {this.getBody()}
-        
+
 
         </LinearLayout>
     )
