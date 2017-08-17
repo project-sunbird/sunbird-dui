@@ -64,6 +64,19 @@ class CourseViewAllActivity extends View {
     );
   }
 
+  checkEnrolledCourse = (identifier) =>{
+    
+    var enrolled = false;
+    window.__enrolledCourses.map(function(item){
+      if(item.courseId == identifier){
+        enrolled = true;
+      }
+    })
+
+     return enrolled;
+
+  }
+
 
   getRows = (list) =>{
 
@@ -77,28 +90,29 @@ class CourseViewAllActivity extends View {
                 progressCount = parseInt(progressCount)
                 var appIcon;
                 
-                  var appIcon,name,isProgress,size,actionText;
+                  var appIcon,name,isProgress,size,actionText,type;
                   if(item.courseId){
-                    appIcon = item.courseLogoUrl
+                    appIcon = item.courseLogoUrl ? item.courseLogoUrl : "ic_action_course";
                     name = item.courseName
                     isProgress = "true"
                     size = window.__S.COURSE_PROGRESS_COMPLETED.format(progressCount)
                     actionText = window.__S.RESUME;
+                    type = null;
                   }
                   else if(item.identifier) {
-                    appIcon = item.appIcon
+                    appIcon = item.appIcon ? item.appIcon : "ic_action_course";
                     name = item.name
                     isProgress = "false"
                     size = item.hasOwnProperty("size") ? window.__S.FILE_SIZE.format(utils.formatBytes(item.size)) : "";
                     actionText = window.__S.OPEN
+                    type = _this.checkEnrolledCourse(item.identifier) ? "ENROLLED" : null;
                   }
                   else{
                     appIcon = "ic_action_course"
                     name = ""
                     isProgress = "false"
                   }
-                  
-
+                
 
                   var temp = {};
                   temp['imageUrl'] = appIcon;
@@ -107,6 +121,8 @@ class CourseViewAllActivity extends View {
                   temp['footerTitle'] = size;
                   temp['actionText'] = actionText;
                   temp["footerSubTitle"] = window.__S.ERROR_DURATION_NOT_AVAILABLE;
+                  temp["type"] = type;
+
 
            return (<LargeCardComponent
                    data={temp}

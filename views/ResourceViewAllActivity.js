@@ -100,6 +100,7 @@ getRows = (data) =>{
                 temp['footerTitle'] = this.time;
                 temp['actionText'] = window.__S.OPEN ;
                 temp["footerSubTitle"] = this.cType + this.size;
+                temp['type'] = null;
 
          return (<LargeCardComponent
                  data={temp}
