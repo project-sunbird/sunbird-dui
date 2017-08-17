@@ -43,7 +43,7 @@ instance decodeSplashScreenActivityAction :: Decode SplashScreenActivityAction w
 instance encodeSplashScreenActivityAction :: Encode SplashScreenActivityAction where encode = defaultEncode
 
 
-data UserActivity = UserActivity
+data UserActivity = UserActivity {whereFrom::String}
 data UserActivityAction = OPEN_MainActivity |
   OPEN_Deeplink_ResourceDetail {resource :: String} |
   OPEN_Deeplink_CourseEnrolled {course::String}|

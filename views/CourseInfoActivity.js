@@ -185,36 +185,48 @@ class CourseInfoActivity extends View {
 
     this.shareContent();
 
-    if(window.__enrolledCourses == undefined){
-      window.__LoaderDialog.show();
-      var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken} 
-      var event ={ "tag": "API_EnrolledCoursesList", contents: whatToSend};
-      window.__runDuiCallback(event);
-    }else{
+    // if(window.__enrolledCourses == undefined){
+    //   window.__LoaderDialog.show();
+    //   var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken} 
+    //   var event ={ "tag": "API_EnrolledCoursesList", contents: whatToSend};
+    //   window.__runDuiCallback(event);
+    // }else{
 
       this.replaceChild(this.idSet.totalContainer,this.getBody().render(),0);
-      var enrolledIds = window.__enrolledCourses;
-      enrolledIds.map((item)=>{
-      if(item.courseId == this.details.identifier){
-          var whatToSend = { "course": this.state.data.value0.courseDetails }
-          var event = { tag: 'OPEN_EnrolledActivity', contents: whatToSend }
-          window.__runDuiCallback(event);
+    //   var enrolledIds = window.__enrolledCourses;
+    //   enrolledIds.map((item)=>{
+    //   if(item.courseId == this.details.identifier){
+    //       var whatToSend = { "course": this.state.data.value0.courseDetails }
+    //       var event = { tag: 'OPEN_EnrolledActivity', contents: whatToSend }
+    //       window.__runDuiCallback(event);
 
-        }
-      })
-    }
+    //     }
+    //   })
+    // }
 
   }
 
 
   handleStateChange = (state) => {
-    window.__LoaderDialog.hide();
-    var status = state.response.status[0];
-    var response = JSON.parse(utils.decodeBase64(state.response.status[1]));
-    var responseCode = state.response.status[2];
-    var responseUrl = state.response.status[3];
 
+    if(state.responseFor+""=="ExitApp"){
+      JBridge.killApp();
+      return;
+    }
+
+
+    window.__LoaderDialog.hide();
+    var status,response,responseCode,responseUrl;
+
+    if(state.response != ""){
+     status = state.response.status[0];
+     response = JSON.parse(utils.decodeBase64(state.response.status[1]));
+     responseCode = state.response.status[2];
+     responseUrl = state.response.status[3];
+    }
     
+
+  
     if (parseInt(responseCode) != 200) {
       return;
     }
@@ -227,6 +239,7 @@ class CourseInfoActivity extends View {
     }
 
     switch (state.responseFor + "") {
+
       case "API_EnrollCourse":
         if (result.response == "SUCCESS") {
           JBridge.showSnackBar(window.__S.COURSE_ENROLLED)
@@ -257,6 +270,7 @@ class CourseInfoActivity extends View {
         break;
         
       default:
+
 
         break;
 
@@ -296,10 +310,10 @@ class CourseInfoActivity extends View {
   handleEnrollClick = (data) => {
     if(JBridge.isNetworkAvailable()){
 
-
         window.__LoaderDialog.show();
 
-        var whatToSend = { "user_token":window.__userToken,
+        var whatToSend = { 
+        "user_token":window.__userToken!=undefined?window.__userToken:"",
         "reqParams": this.details.identifier,
         "api_token": window.__apiToken }
         var event = {
@@ -308,6 +322,8 @@ class CourseInfoActivity extends View {
         }
         
         window.__runDuiCallback(event);
+
+
     }
     else{
       JBridge.showSnackBar(window.__S.NO_INTERNET)
@@ -470,7 +486,6 @@ class CourseInfoActivity extends View {
     JBridge.setInSharedPrefs("user_id", "__failed");
     JBridge.setInSharedPrefs("user_name",  "__failed");
     JBridge.setInSharedPrefs("user_token",  "__failed");
-
 
     window.__pressedLoggedOut=true;
 
