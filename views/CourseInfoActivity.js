@@ -275,7 +275,7 @@ class CourseInfoActivity extends View {
     var input = [
                  {
                     type : "text",
-                    data : "staging.open-sunbird.org/public/"+_this.details.identifier
+                    data : window.__deepLinkUrl+"/public/"+_this.details.identifier
                  }
                 ];
 

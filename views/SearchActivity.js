@@ -64,7 +64,7 @@ class SearchActivity extends View {
     if(this.filterData!=undefined && this.filterData.length != 0){
       this.filterIcon="ic_action_filter_applied";
 
-    JBridge.showSnackBar(window.__S.SEARCH_LOADING_MESSAGE)
+    // JBridge.showSnackBar(window.__S.SEARCH_LOADING_MESSAGE)
        var cmd = "";
         cmd += _this.set({
           id: _this.idSet.filterHolder,
@@ -80,9 +80,11 @@ class SearchActivity extends View {
         searchData=JSON.parse(this.filter)
       }
       this.getSearchList(this.searchText,"true");
+      window.__LoaderDialog.show();
     }
     else if(window.searchText!=undefined && window.searchText!=""){
         this.getSearchList(window.searchText,"false");
+        window.__LoaderDialog.show();
 
     }
 
@@ -222,6 +224,7 @@ class SearchActivity extends View {
 
   getSearchList=(searchText,flag)=> {
     if(searchText == ""){
+      window.__LoaderDialog.hide();
       this.renderNoResult();
     }
     else
@@ -230,7 +233,7 @@ class SearchActivity extends View {
         var callback = callbackMapper.map(function(data) {
           data[0] = utils.decodeBase64(data[0])
           _this.filterData = data[1];
-
+          window.__LoaderDialog.hide();
                 if (searchText == "" || data[0] == "[]") {
                   _this.renderNoResult();
                 } else {
@@ -258,11 +261,12 @@ class SearchActivity extends View {
 
           var s = "";
           if(JBridge.isNetworkAvailable()){
-              JBridge.showSnackBar(window.__S.SEARCH_LOADING_MESSAGE)
+              // JBridge.showSnackBar(window.__S.SEARCH_LOADING_MESSAGE)
               console.log(this.filterData," filterData ");
               JBridge.searchContent(callback, JSON.stringify(this.filterData), searchText, this.searchType, flag, 30);
           }
           else{
+            window.__LoaderDialog.hide();
             JBridge.showSnackBar(window.__S.NO_INTERNET);
           }
 
@@ -295,6 +299,7 @@ class SearchActivity extends View {
   handleSearchClick = (searchText) => {
     JBridge.hideKeyboard();
     this.getSearchList(searchText[0],"false");
+    window.__LoaderDialog.show();
   }
 
   handleClearClick = () => {

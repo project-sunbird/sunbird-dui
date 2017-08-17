@@ -280,7 +280,7 @@ class CourseEnrolledActivity extends View {
 
       var input = [{
                     type : "text",
-                    data : "staging.open-sunbird.org/public/"+_this.baseIdentifier
+                    data : window.__deepLinkUrl+"/public/"+_this.baseIdentifier
 
                   },{
                     type : "file",
