@@ -225,7 +225,6 @@ data CourseViewAllActivityAction = DummyCourseViewAllActivityAction |
   BACK_CourseViewAllActivity | 
   OPEN_EnrolledCourseFlowFromCourseViewAll {course::String} | OPEN_CourseInfoFlowFromCourseViewAll {course::String}
 
-
 instance courseViewAllActivity :: UIScreen CourseViewAllActivity CourseViewAllActivityAction where
   generateMockEvents _ = [DummyCourseViewAllActivityAction , BACK_CourseViewAllActivity]
   ui x = genericUI x (generateMockEvents x :: Array CourseViewAllActivityAction)

@@ -31,7 +31,7 @@ class ProfileAdditionalInfo extends View {
       value : this.languages
     },
     {
-      name: "LANGUAGES",
+      name: "EMAIL",
       value : this.data.email
     },
     {
@@ -101,7 +101,7 @@ class ProfileAdditionalInfo extends View {
             orientation="vertical">
 
             {this.getRows()}
-            {this.getHobbies()}
+            
 
             </LinearLayout>)
   }
@@ -111,12 +111,6 @@ class ProfileAdditionalInfo extends View {
               width="wrap_content"
               height="wrap_content"
               >
-
-              <TextView
-              width="wrap_content"
-              height="wrap_content"
-              text="Additional Information"
-              style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
               <ViewWidget
               height="0"

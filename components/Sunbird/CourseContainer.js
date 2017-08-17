@@ -112,9 +112,10 @@ class CourseContainer extends View {
  handleViewAllClick = () =>{
 
       var courseListDetails = {
-                               "title" : "Courses In Progress",
+                               "title" : this.props.title,
                                "courseListDetails" : this.data,
-                               "searchQuery" : this.props.searchQuery
+                               "searchQuery" : this.props.searchQuery,
+                               "viewMore" : this.props.showViewMore
                               }
       var whatToSend = {"courseListDetails": JSON.stringify(courseListDetails)}
       var event = { tag: "OPEN_CourseViewAllActivity", contents: whatToSend};

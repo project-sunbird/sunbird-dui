@@ -228,27 +228,6 @@ class ProfileFragment extends View {
                 <ProfileHeader
                   data={this.details}/>
 
-                <ProfileProgress
-                  editable = {this.isEditable}/>
-
-                <LinearLayout
-                  width = "match_parent"
-                  height = "wrap_content"
-                  orientation = "vertical"
-                  visibility = {(this.description && this.description != "") ? "visible" : "gone"}>
-
-                  {this.getLineSeperator()}
-                  <CropParagraph
-                    headText = "Description"
-                    contentText = {(this.description && this.description != "") ? this.description : ""}/>
-                </LinearLayout>
-
-                <ProfileExperiences
-                  editable = {this.isEditable}
-                  data = {this.jobProfile}/>
-
-                <ProfileBadges
-                  editable = {this.isEditable}/>
 
                 <ProfileAdditionalInfo
                   data={this.details}

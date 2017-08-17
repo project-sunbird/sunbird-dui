@@ -82,10 +82,7 @@ class SearchActivity extends View {
       this.getSearchList(this.searchText,"true");
     }
     else if(window.searchText!=undefined && window.searchText!=""){
-
         this.getSearchList(window.searchText,"false");
-
-
     }
 
     var callback = callbackMapper.map(function(data) {
