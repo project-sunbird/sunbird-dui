@@ -19,8 +19,9 @@ class CropParagraph extends View {
       "showMoreButton",
     ]);
     this.str = this.props.contentText;
-    var len = 50;
-    if(this.str.length > len) this.str = this.str.substring(0,len) + "...";
+    // console.log("inside CropParagraph, content : " + this.str);
+    this.len = 50;
+    if(this.str.length > this.len) this.str = this.str.substring(0,len) + "...";
   }
 
   handleMoreClick = (data) => {
@@ -91,7 +92,7 @@ class CropParagraph extends View {
               <TextView
                margin="0,0,8,0"
                id={this.idSet.showMoreButton}
-               visibility="visible"
+               visibility={this.str.length > this.len ? "visible" : "gone"}
                text="Read more"
                gravity = "right"
                width = "wrap_content"
