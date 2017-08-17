@@ -206,6 +206,7 @@ class CourseEnrolledActivity extends View {
   renderCourseChildren = () => {
     var layout;
     if(this.courseContent.children==undefined){
+      this.hideResumeButton();
       layout = <TextView
                   height="300"
                   width="match_parent"
@@ -244,23 +245,22 @@ class CourseEnrolledActivity extends View {
    window.__runDuiCallback(event);
   }
 
+  hideResumeButton = () =>{
+    var cmd = this.set({
+        id: this.idSet.featureButton,
+        visibility: "gone"
+
+      });
+      Android.runInUI(cmd, 0);
+  }
+
   afterRender=()=>{
     console.log("details",this.details)
     if((this.details.hasOwnProperty("contentType")) && (this.details.contentType.toLocaleLowerCase() == "collection" || this.details.contentType.toLocaleLowerCase() == "textbook")){
-      var cmd = this.set({
-        id: this.idSet.featureButton,
-        visibility: "gone"
-
-      });
-      Android.runInUI(cmd, 0);
+      this.hideResumeButton();
     }
     if(this.details.hasOwnProperty("lastReadContentId") || (this.details.hasOwnProperty("lastReadContentId") && this.details.lastReadContentId==null)){
-      var cmd = this.set({
-        id: this.idSet.featureButton,
-        visibility: "gone"
-
-      });
-      Android.runInUI(cmd, 0);
+      this.hideResumeButton();
     }
 
 
