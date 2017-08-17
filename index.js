@@ -167,13 +167,25 @@ const runDuiCallback = (state) => {
   callback ? callback(JSON.stringify(state))() : JSON.stringify(state);
 };
 
+const logoutUser = () => {
+    JBridge.showSnackBar("Logged out")
+    JBridge.setInSharedPrefs("logged_in","NO");
+    JBridge.setInSharedPrefs("user_id", "__failed");
+    JBridge.setInSharedPrefs("user_name",  "__failed");
+    JBridge.setInSharedPrefs("user_token",  "__failed");
+    window.__pressedLoggedOut=true;
+    JBridge.keyCloakLogout(window.__apiUrl + "/auth/realms/sunbird/protocol/openid-connect/logout");
+    purescriptUserActivityFlow();
+
+}
+
 let purescriptInit = () => {
   window.__duiShowScreen = duiShowScreen;
   window.__duiCb = null;
   window.__runDuiCallback = runDuiCallback;
   window.__setCallback = setCallback
   window.__changePureScriptFlow = purescriptChangeFlow;
-  window.__Logout = purescriptUserActivityFlow
+  window.__Logout = logoutUser
   window.__typeFlow = purescriptTypeFlow;
   
   purescriptMain();
