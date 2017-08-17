@@ -28,7 +28,7 @@ var _this;
 class ProfileFragment extends View {
   constructor(props, children) {
     super(props, children);
-
+    console.log(props, "this.props");
 
     this.props.appendText = this.props.appendText || "";
     this.setIds([
@@ -39,6 +39,8 @@ class ProfileFragment extends View {
     this.isEditable = this.props.editable;
     this.menuData = {
       url: [
+        { imageUrl: "ic_action_search" },
+        { imageUrl: "ic_action_notification"},
         { imageUrl: "ic_action_overflow" }
       ]
     }
@@ -147,8 +149,6 @@ class ProfileFragment extends View {
     }
   }
 
-  handleSearch = (data) => {}
-
   getLineSeperator() {
     return (<LinearLayout
             width="match_parent"
@@ -188,6 +188,17 @@ class ProfileFragment extends View {
     )
   }
 
+  handleMenuClick = (url) => {
+    if (url == "ic_action_notification") {
+      JBridge.showSnackBar(window.__S.COMMING_SOON);
+    } else if (url == "ic_action_search") {
+      var searchDetails = { filterDetails: "", searchType: "Profile" }
+      var whatToSend = { filterDetails: JSON.stringify(searchDetails) }
+      var event = { tag: "OPEN_CommProfSearchActivity", contents: whatToSend}
+      window.__runDuiCallback(event);
+    }
+  }
+
   render() {
     this.layout = (
 
@@ -208,6 +219,7 @@ class ProfileFragment extends View {
             menuData={this.menuData}
             popupMenu={this.popupMenu}
             overFlowCallback = {this.overFlowCallback}
+            onMenuItemClick={this.handleMenuClick}
             showMenu="true"
             hideBack="true"
             invert="true"/>
