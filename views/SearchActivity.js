@@ -195,6 +195,7 @@ class SearchActivity extends View {
                   </LinearLayout>);
 
     this.replaceChild(this.idSet.searchListContainer, layout.render(), 0);
+    window.__LoaderDialog.hide();
 
   }
 
@@ -212,6 +213,7 @@ class SearchActivity extends View {
                   </LinearLayout>)
 
     this.replaceChild(this.idSet.searchListContainer, layout.render(), 0);
+    window.__LoaderDialog.hide();
   }
 
   updateSearchText = (data) => {
@@ -233,9 +235,9 @@ class SearchActivity extends View {
         var callback = callbackMapper.map(function(data) {
           data[0] = utils.decodeBase64(data[0])
           _this.filterData = data[1];
-          window.__LoaderDialog.hide();
                 if (searchText == "" || data[0] == "[]") {
                   _this.renderNoResult();
+                  window.__LoaderDialog.hide();
                 } else {
                   var s = data[0];
                   s = s.replace(/\\n/g, "\\n")
@@ -248,6 +250,7 @@ class SearchActivity extends View {
                     .replace(/\\f/g, "\\f");
                   s = s.replace(/[\u0000-\u0019]+/g, "");
                   _this.renderResult(JSON.parse(s));
+                  window.__LoaderDialog.hide();
                 }
         });
 
