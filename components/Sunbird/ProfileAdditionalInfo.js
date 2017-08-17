@@ -101,7 +101,6 @@ class ProfileAdditionalInfo extends View {
             orientation="vertical">
 
             {this.getRows()}
-            
 
             </LinearLayout>)
   }
