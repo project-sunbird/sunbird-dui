@@ -40,6 +40,11 @@ module.exports = function(action, payload, state) {
       localState.currScreen = "CourseEnrolledActivity";
       break;
 
+    case "ContentPreviewScreen":
+      localState.isInit = false;
+      localState.currScreen = "ContentPreviewScreen";
+      break;
+
     case "CourseInfoActivity":
       localState.isInit = false;
       localState.currScreen = "CourseInfoActivity";
