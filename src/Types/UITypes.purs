@@ -221,15 +221,10 @@ instance encodeResourceViewAllActivityAction :: Encode ResourceViewAllActivityAc
 
 
 data CourseViewAllActivity = CourseViewAllActivity {courseViewAllDetails::String}
-<<<<<<< Updated upstream
 data CourseViewAllActivityAction = DummyCourseViewAllActivityAction | 
   BACK_CourseViewAllActivity | 
   OPEN_EnrolledCourseFlowFromCourseViewAll {course::String} | OPEN_CourseInfoFlowFromCourseViewAll {course::String}
-=======
-data CourseViewAllActivityAction = DummyCourseViewAllActivityAction |
-  BACK_CourseViewAllActivity |
-  OPEN_EnrolledCourseFlowFromCourseViewAll {course::String}
->>>>>>> Stashed changes
+
 
 instance courseViewAllActivity :: UIScreen CourseViewAllActivity CourseViewAllActivityAction where
   generateMockEvents _ = [DummyCourseViewAllActivityAction , BACK_CourseViewAllActivity]

@@ -135,7 +135,7 @@ class CourseContainer extends View {
       }
       if(data == "DeniedPermanently"){
         console.log("DENIED DeniedPermanently");
-        window.__PermissionDeniedDialog.show("ic_flag_warning","Cannot download content since permission is denied");
+        window.__PermissionDeniedDialog.show("ic_flag_warning","Storage permission is required for this functionality");
       }
 
     });
