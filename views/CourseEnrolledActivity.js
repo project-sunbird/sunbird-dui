@@ -254,6 +254,14 @@ class CourseEnrolledActivity extends View {
       });
       Android.runInUI(cmd, 0);
     }
+    if(this.details.hasOwnProperty("lastReadContentId") || (this.details.hasOwnProperty("lastReadContentId") && this.details.lastReadContentId==null)){
+      var cmd = this.set({
+        id: this.idSet.featureButton,
+        visibility: "gone"
+
+      });
+      Android.runInUI(cmd, 0);
+    }
 
 
     this.checkContentLocalStatus(this.baseIdentifier);
