@@ -85,7 +85,6 @@ class SearchActivity extends View {
     else if(window.searchText!=undefined && window.searchText!=""){
         this.getSearchList(window.searchText,"false");
         window.__LoaderDialog.show();
-
     }
 
     var callback = callbackMapper.map(function(data) {

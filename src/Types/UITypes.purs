@@ -221,7 +221,6 @@ instance encodeResourceViewAllActivityAction :: Encode ResourceViewAllActivityAc
 
 
 data CourseViewAllActivity = CourseViewAllActivity {courseViewAllDetails::String}
-
 data CourseViewAllActivityAction = DummyCourseViewAllActivityAction | 
   BACK_CourseViewAllActivity | 
   OPEN_EnrolledCourseFlowFromCourseViewAll {course::String} | OPEN_CourseInfoFlowFromCourseViewAll {course::String}
