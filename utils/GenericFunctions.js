@@ -63,6 +63,19 @@ exports.setPermissions = (permission) => {
 }
 
 
+exports.checkEnrolledCourse = (identifier) =>{
+    
+    var enrolled = false;
+    window.__enrolledCourses.map(function(item){
+      if(item.courseId == identifier){
+        enrolled = true;
+      }
+    })
+
+     return enrolled;
+
+  }
+
 
 
 

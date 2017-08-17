@@ -52,25 +52,30 @@ class CommProfSearchActivity extends View {
 
   handleStateChange = (state) => {
     console.log(state, "handleStateChange resData");
+    
     var status = state.response.status[0];
     var responseData = state.response.status[1];
     var responseCode = state.response.status[2];
     var responseUrl = state.response.status[3];
+    
 
     responseData = utils.decodeBase64(responseData);
     if(responseCode == 401){
+      window.__LoaderDialog.hide();
       var callback  = callbackMapper.map(function(token){
         window.__apiToken = token;
         var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken}
         var event = { "tag": state.responseFor, contents: whatToSend };
         window.__runDuiCallback(event);
       });
-      JBridge.getApiToken();
+      JBridge.getApiToken(callback);
       return;
     }else if(responseCode == 501 || status === "failure" || status=="f") {
+      window.__LoaderDialog.hide();
       JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION)
       responseData=tmp;
     } else {
+      window.__LoaderDialog.hide();
       responseData = JSON.parse(responseData);
     }
 
@@ -85,8 +90,11 @@ class CommProfSearchActivity extends View {
         })
       })
       this.renderResult(data);
-    }else
+      window.__LoaderDialog.hide();
+    }else{
       this.renderNoResult();
+      window.__LoaderDialog.hide();
+    }
 
     var callback = callbackMapper.map(function(data) {
       window.searchProf=data[0];
@@ -100,7 +108,7 @@ class CommProfSearchActivity extends View {
     console.log("afterRender - CommProfSearchActivity");
     if(this.filterData!=undefined && this.filterData.length != 0){
       JBridge.showSnackBar(window.__S.SEARCH_LOADING_MESSAGE)
-
+      
       var cmd = "";
       cmd += _this.set({
         id: _this.idSet.filterHolder,
@@ -115,8 +123,12 @@ class CommProfSearchActivity extends View {
         searchData=JSON.parse(this.filter)
       }
       this.getSearchList(this.searchText,"true");
+      window.__LoaderDialog.show();
+
     } else if(window.searchProf!=undefined && window.searchProf!=""){
         this.getSearchList(window.searchProf,"false");
+        window.__LoaderDialog.show();
+
     }
 
     var callback = callbackMapper.map(function(data) {
@@ -296,6 +308,7 @@ class CommProfSearchActivity extends View {
 
     if (searchText == ""){
       this.renderNoResult();
+      window.__LoaderDialog.hide();
     }
     var req = {
        "query": searchText,
@@ -318,6 +331,7 @@ class CommProfSearchActivity extends View {
 
   handleSearchClick = (searchText) => {
     JBridge.hideKeyboard();
+    window.__LoaderDialog.show();
     this.getSearchList(searchText[0],"false");
   }
 

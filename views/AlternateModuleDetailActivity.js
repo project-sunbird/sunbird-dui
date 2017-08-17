@@ -17,7 +17,7 @@ var ProgressButton = require('../components/Sunbird/core/ProgressButton');
 var CourseCurriculum = require('../components/Sunbird/CourseCurriculum');
 
 
-
+var _this;
 
 class AlternateModuleDetailActivity extends View {
     constructor(props, children, state) {
@@ -27,7 +27,8 @@ class AlternateModuleDetailActivity extends View {
             'ratingBar',
             "downloadProgressText",
             "descriptionContainer",
-            "playButtonContainer"
+            "playButtonContainer",
+            "simpleToolBarOverFlow"
         ]);
         this.state = state;
         this.screenName = "AlternateModuleDetailActivity"
@@ -37,7 +38,7 @@ class AlternateModuleDetailActivity extends View {
             {}
           ]
         }
-        
+
         this.menuData1 = {
             url: [
                 { imageUrl: 'ic_action_overflow' }
@@ -65,7 +66,7 @@ class AlternateModuleDetailActivity extends View {
 
 
 
-
+        _this = this;
     }
 
     formatBytes = (bytes) => {
@@ -132,7 +133,7 @@ class AlternateModuleDetailActivity extends View {
 
     checkContentLocalStatus = (identifier) => {
         console.log("in checkContentLocalStatus")
-        var _this = this;
+        _this = this;
         var callback = callbackMapper.map(function(status) {
 
             if (status == "true") {
@@ -145,19 +146,11 @@ class AlternateModuleDetailActivity extends View {
                 JBridge.getChildContent(identifier, callback1)
             } else {
 
-                var callback22 = callbackMapper.map(function(data) {
-
-                    data = JSON.parse(data)
-                    if (data.status === "NOT_FOUND") {
-                        if (JBridge.isNetworkAvailable())
-                            JBridge.importCourse(identifier, "false")
-                        else
-                            JBridge.showSnackBar(window.__S.NO_INTERNET)
-                    } else {
-                        _this.renderModuleChildren()
-                    }
-                })
-                JBridge.getContentImportStatus(identifier, callback22)
+              if (JBridge.isNetworkAvailable()){
+                JBridge.importCourse(identifier, "false")
+              }
+              else
+                JBridge.showSnackBar(window.__S.NO_INTERNET)
             }
 
 
@@ -168,7 +161,6 @@ class AlternateModuleDetailActivity extends View {
             window.__getDownloadStatus = this.getSpineStatus;
             JBridge.getLocalContentStatus(identifier, callback);
         } else {
-
             this.renderModuleChildren();
         }
     }
@@ -186,13 +178,13 @@ class AlternateModuleDetailActivity extends View {
         console.log("RENDRING BREKAUP", this.module.children)
         if (this.module.children) {
 
-            layout = ( <CourseCurriculum 
+            layout = ( <CourseCurriculum
                 height = "match_parent"
                 width = "match_parent"
                 root = "true"
                 margin = "0,0,0,12"
                 brief = { true } title = ""
-                onClick = { this.handleModuleClick } 
+                onClick = { this.handleModuleClick }
                 content = { this.module.children }  />
             )
             this.replaceChild(this.idSet.descriptionContainer, layout.render(), 0);
@@ -222,13 +214,13 @@ class AlternateModuleDetailActivity extends View {
         )
     }
      getHeader = () => {
-        var headerLayout = ( 
-            <LinearLayout 
+        var headerLayout = (
+            <LinearLayout
                 height = "wrap_content"
                 width = "match_parent"
                 orientation = "vertical">
 
-                <LinearLayout 
+                <LinearLayout
                     height = "wrap_content"
                     gravity = "center_vertical"
                     margin = "0,12,0,12"
@@ -236,24 +228,24 @@ class AlternateModuleDetailActivity extends View {
                     <TextView height = "wrap_content"
                         width = "0"
                         weight = "1"
-                        style = { window.__TextStyle.textStyle.CARD.TITLE.DARK } 
+                        style = { window.__TextStyle.textStyle.CARD.TITLE.DARK }
                         text = { this.moduleName }/>
 
-                </LinearLayout>  
+                </LinearLayout>
 
 
-                <TextView 
+                <TextView
                     height = "wrap_content"
                     margin = "0,0,0,12"
                     width = "match_parent"
                     text={this.module.contentData.hasOwnProperty("size")? window.__S.MODULE_SIZE.format(this.formatBytes(this.module.contentData.size)) : window.__S.MODULE_SIZE_UNAVAILABLE }/>
 
 
-                <CropParagraph 
+                <CropParagraph
                     height = "wrap_content"
                     margin = "0,0,0,12"
                     width = "match_parent"
-                    headText = { this.module.contentData.description ? window.__S.DESCRIPTION : undefined } 
+                    headText = { this.module.contentData.description ? window.__S.DESCRIPTION : undefined }
                     contentText = { this.module.contentData.description }/>
 
 
@@ -267,16 +259,16 @@ class AlternateModuleDetailActivity extends View {
 
 
     getBody = () => {
-        var bodyLayout = ( 
-            <LinearLayout 
+        var bodyLayout = (
+            <LinearLayout
                 height = "match_parent"
                 width = "match_parent"
                 root = "true"
                 id = { this.idSet.descriptionContainer }
                 orientation = "vertical">
-                
-                <TextView 
-                    id = { this.idSet.downloadProgressText } 
+
+                <TextView
+                    id = { this.idSet.downloadProgressText }
                     test = "Fetching spine"
                     height = "match_parent"
                     gravity = "centerz"
@@ -294,16 +286,29 @@ class AlternateModuleDetailActivity extends View {
         window.__runDuiCallback(event);
     }
 
+    changeOverFlow = () =>{
+      console.log("inside changeOverFlow");
+      var toolbar =  (<SimpleToolbar
+        width="match_parent"
+        menuData={this.menuData1}
+        popupMenu={this.popupMenu}
+        onBackPress={onBackPressed}
+        overFlowCallback = {this.overFlowCallback}
+        showMenu="true"
+        invert="true"/>)
+
+      this.replaceChild(this.idSet.simpleToolBarOverFlow, toolbar.render(), 0);
+    }
 
     render() {
 
-        this.layout = ( 
-            <LinearLayout 
+        this.layout = (
+            <LinearLayout
             root = "true"
             width = "match_parent"
             height = "match_parent"
             background = { window.__Colors.WHITE }
-            clickable="true" 
+            clickable="true"
             orientation = "vertical">
                 <LinearLayout
                     root = "true"
@@ -320,7 +325,7 @@ class AlternateModuleDetailActivity extends View {
                       invert="true"/>
                 </LinearLayout>
 
-                <ScrollView 
+                <ScrollView
                     height = "0"
                     weight = "1"
                     width = "match_parent"
@@ -343,11 +348,11 @@ class AlternateModuleDetailActivity extends View {
                 </ScrollView>
 
                 <ProgressButton
-                    id = { this.idSet.playButtonContainer } 
+                    id = { this.idSet.playButtonContainer }
                     width = "match_parent"
                     visibility = "gone"
                     isCourse = "true"
-                    contentDetails = { this.module } 
+                    contentDetails = { this.module }
                     changeOverFlowMenu = {this.handleOverFlowClick}
                     buttonText = "DOWNLOAD"
                     localStatus = { this.localStatus }
@@ -358,10 +363,6 @@ class AlternateModuleDetailActivity extends View {
 
             return this.layout.render();
         }
-
-
-
-
 }
 
 module.exports = Connector(AlternateModuleDetailActivity);
