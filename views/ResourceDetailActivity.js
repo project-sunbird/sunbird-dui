@@ -8,6 +8,7 @@ var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 var ScrollView = require('@juspay/mystique-backend').androidViews.ScrollView;
+var HorizontalScrollView = require('@juspay/mystique-backend').androidViews.HorizontalScrollView;
 var RatingBar = require('@juspay/mystique-backend').androidViews.RatingBar;
 var objectAssign = require('object-assign');
 var SharePopup = require('../components/Sunbird/core/SharePopup');
@@ -207,6 +208,77 @@ class ResourceDetailActivity extends View {
             background={window.__Colors.PRIMARY_BLACK_22}/>)
   }
 
+  handlePreviewImageClick = (imgUrl) => {
+    window.__PreviewImagePopup.show(imgUrl);
+  }
+
+  getPreviewLayout = () => {
+    //this.details.dummyUrl=["https://pbs.twimg.com/media/CRafzhtWIAEQ2c9.png","https://pbs.twimg.com/media/CRafzhtWIAEQ2c9.png","https://pbs.twimg.com/media/CRafzhtWIAEQ2c9.png"]
+    var cards ;
+
+    if(this.details.screenshots== undefined){
+      this.details.dummyUrl=[];
+      cards= (
+          <TextView
+            margin="0,4,0,0"
+            width="wrap_content"
+            height="wrap_content"
+            text={window.__S.NO_PREVIEW}
+            style={window.__TextStyle.textStyle.HINT.REGULAR}/>)
+    }else{
+      cards = this.details.screenshots.map((item,i)=>{
+        return (<LinearLayout
+                  height="match_parent"
+                  width="match_parent"
+                  orientation="vertical"
+                  onClick={()=>{_this.handlePreviewImageClick(item)}}>
+                
+                  <ImageView
+                          width="156"
+                          height="200"
+                          margin="10,10,10,10"
+                          stroke ={"3," + window.__Colors.PRIMARY_BLACK}
+                          imageFromUrl = {item}/>
+                
+                </LinearLayout>)
+    })
+  
+    }
+
+    
+    return (
+    <LinearLayout
+      height="wrap_content"
+      width="match_parent"
+      orientation="vertical">
+    
+      <TextView
+        margin="0,16,0,0"
+        width="wrap_content"
+        height="wrap_content"
+        text={window.__S.PREVIEWS}
+        style={window.__TextStyle.textStyle.HINT.BOLD}/>
+
+      <HorizontalScrollView
+        width = "wrap_content"
+        height = "wrap_content"
+        scrollBarX="false"
+        fillViewport="true">
+
+        <LinearLayout
+          width="match_parent"
+          height="wrap_content"
+          margin="0,8,0,0">
+
+          {cards}
+
+        </LinearLayout>
+
+      </HorizontalScrollView>  
+        
+    </LinearLayout>)
+  }
+
 
   getBody = () => {
 
@@ -231,44 +303,7 @@ class ResourceDetailActivity extends View {
           style={window.__TextStyle.textStyle.CARD.TITLE.REGULAR_BLACK}/>
 
 
-          <TextView
-            margin="0,16,0,0"
-            width="wrap_content"
-            height="wrap_content"
-            text={window.__S.PREVIEWS}
-            style={window.__TextStyle.textStyle.HINT.BOLD}/>
-
-
-         <LinearLayout
-          width="match_parent"
-          height="wrap_content"
-          visibility="gone"
-          margin="0,8,0,0">
-
-
-            <ImageView
-              width="156"
-              height="200"
-              stroke ={"3," + window.__Colors.PRIMARY_BLACK}
-              imageFromUrl = "https://pbs.twimg.com/media/CRafzhtWIAEQ2c9.png"/>
-
-            <ImageView
-              width="156"
-              height="200"
-              margin="16,0,0,0"
-              stroke ={"3," + window.__Colors.PRIMARY_BLACK}
-              imageFromUrl = "https://pbs.twimg.com/media/CRafzhtWIAEQ2c9.png"/>
-
-          </LinearLayout>
-
-
-
-          <TextView
-            margin="0,4,0,0"
-            width="wrap_content"
-            height="wrap_content"
-            text={window.__S.NO_PREVIEW}
-            style={window.__TextStyle.textStyle.HINT.REGULAR}/>
+          { this.getPreviewLayout() }
 
 
           <TextView

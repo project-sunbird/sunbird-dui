@@ -14,6 +14,7 @@ var objectAssign = require('object-assign');
 
 var LoaderDialog = require('../components/Sunbird/core/LoaderDialog');
 var PageFilterPopup = require('../components/Sunbird/PageFilterPopup');
+var PreviewImagePopup = require('../components/Sunbird/PreviewImagePopup');
 var ContentLoaderDialog = require('../components/Sunbird/core/ContentLoaderDialog');
 var PermissionDeniedDialog = require('../components/Sunbird/core/PermissionDeniedDialog');
 
@@ -88,6 +89,8 @@ class RootScreen extends View {
         <PageFilterPopup/>
         <ContentLoaderDialog/>
         <PermissionDeniedDialog/>
+        <PreviewImagePopup
+          defaultImage="https://pbs.twimg.com/media/CRafzhtWIAEQ2c9.png"/>
       </RelativeLayout>
     );
 
