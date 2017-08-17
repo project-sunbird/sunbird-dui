@@ -37,7 +37,8 @@ class CourseEnrolledActivity extends View {
       "downloadProgressText",
       "sharePopupContainer",
       "contentLoaderContainer",
-      "featureButton"
+      "featureButton",
+      "simpleToolBarOverFlow"
     ]);
     this.state = state;
     this.screenName = "CourseEnrolledActivity"
@@ -45,6 +46,13 @@ class CourseEnrolledActivity extends View {
     this.menuData = {
       url: [
         { imageUrl: "ic_action_share_black" }
+      ]
+    }
+
+    this.menuData1 = {
+      url: [
+        { imageUrl: "ic_action_share_black" },
+        { imageUrl: 'ic_action_overflow'}
       ]
     }
 
@@ -56,11 +64,12 @@ class CourseEnrolledActivity extends View {
 
     this.enrolledCourses = window.__enrolledCourses;
 
-    
-    this.details = JSON.parse(state.data.value0.courseDetails);
-    
 
-    
+    this.details = JSON.parse(state.data.value0.courseDetails);
+
+
+    this.popupMenu = window.__S.DELETE;
+
     //to get geneie callback for download of spine
     window.__getDownloadStatus = this.getSpineStatus;
 
@@ -91,7 +100,7 @@ class CourseEnrolledActivity extends View {
 
       this.downloadProgress = 0;
     }
-    
+
     this.data = {
       courseName: this.details ? this.details.courseName : "",
       courseDesc: this.details ? this.details.courseDesc : "",
@@ -122,16 +131,16 @@ class CourseEnrolledActivity extends View {
 
     if (data.identifier != this.baseIdentifier)
       return;
-    
+
     var textToShow = ""
-   
+
     if(data.status == "NOT_FOUND"){
       window.__ContentLoaderDialog.hide();
       JBridge.showSnackBar(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
       this.onBackPressed();
       return;
     }
-    
+
     data.downloadProgress= data.downloadProgress == undefined || isNaN(data.downloadProgress) ? 0 : data.downloadProgress;
     var downloadedPercent = data.downloadProgress;
     downloadedPercent =  downloadedPercent < 0 ? 0 : downloadedPercent;
@@ -144,10 +153,10 @@ class CourseEnrolledActivity extends View {
     } else {
       window.__ContentLoaderDialog.show();
       window.__ContentLoaderDialog.updateProgressBar(downloadedPercent);
-      
+
     }
 
-    
+
   }
 
 
@@ -161,24 +170,16 @@ class CourseEnrolledActivity extends View {
           _this.courseContent = JSON.parse(data[0]);
           window.__ContentLoaderDialog.hide();
           _this.renderCourseChildren()
+          _this.changeOverFlow();
         });
         JBridge.getChildContent(identifier, callback1)
-      } else {          
-          var callback22= callbackMapper.map(function(data){
-            console.log(data)
-                data = JSON.parse(data)
-                if(data.status==="NOT_FOUND"){
-                      if(JBridge.isNetworkAvailable())
-                        JBridge.importCourse(identifier,"false")
-                      else
-                        JBridge.showSnackBar(window.__S.NO_INTERNET)
-                }
-                else{
-                  this.checkContentLocalStatus(identifier)
-                }
-          })
-
-          JBridge.getContentImportStatus(identifier,callback22) 
+      } else {
+        if(JBridge.isNetworkAvailable()){
+          JBridge.importCourse(identifier,"false");
+          this.changeOverFlow();
+        }
+        else
+          JBridge.showSnackBar(window.__S.NO_INTERNET)
       }
 
     });
@@ -190,10 +191,10 @@ class CourseEnrolledActivity extends View {
 
 
   handleModuleClick = (moduleName, module) => {
-    var whatToSend = { 
+    var whatToSend = {
       "moduleName": moduleName,
-      "moduleDetails": JSON.stringify(module) 
-     } 
+      "moduleDetails": JSON.stringify(module)
+     }
     var event = { "tag": "OPEN_ModuleDetailsActivity", contents: whatToSend};
     window.__runDuiCallback(event);
 
@@ -206,7 +207,6 @@ class CourseEnrolledActivity extends View {
   renderCourseChildren = () => {
     var layout;
     if(this.courseContent.children==undefined){
-      this.hideResumeButton();
       layout = <TextView
                   height="300"
                   width="match_parent"
@@ -234,7 +234,7 @@ class CourseEnrolledActivity extends View {
 
   onBackPressed = () => {
     window.__ContentLoaderDialog.hide();
-   
+
     if(window.__SharePopup != undefined && window.__SharePopup.getVisible()){
      window.__SharePopup.hide();
      return;
@@ -245,34 +245,41 @@ class CourseEnrolledActivity extends View {
    window.__runDuiCallback(event);
   }
 
-  hideResumeButton = () =>{
-    var cmd = this.set({
+  afterRender=()=>{
+    console.log("details",this.details)
+    if((this.details.hasOwnProperty("contentType")) && (this.details.contentType.toLocaleLowerCase() == "collection" || this.details.contentType.toLocaleLowerCase() == "textbook")){
+      var cmd = this.set({
         id: this.idSet.featureButton,
         visibility: "gone"
 
       });
       Android.runInUI(cmd, 0);
-  }
-
-  afterRender=()=>{
-    console.log("details",this.details)
-    if((this.details.hasOwnProperty("contentType")) && (this.details.contentType.toLocaleLowerCase() == "collection" || this.details.contentType.toLocaleLowerCase() == "textbook")){
-      this.hideResumeButton();
     }
     if(this.details.hasOwnProperty("lastReadContentId") || (this.details.hasOwnProperty("lastReadContentId") && this.details.lastReadContentId==null)){
-      this.hideResumeButton();
+      var cmd = this.set({
+        id: this.idSet.featureButton,
+        visibility: "gone"
+
+      });
+      Android.runInUI(cmd, 0);
     }
 
 
     this.checkContentLocalStatus(this.baseIdentifier);
   }
 
-
   overFlowCallback = (params) => {
-    if(params == 0){
-      window.__FlagPopup.show();
-    }else if(params == 1){
-      this.logout();
+    window.__LoaderDialog.show();
+     if(params == 0){
+      var callback = callbackMapper.map(function(response){
+        window.__LoaderDialog.hide();
+
+        if(response[0] == "successful"){
+
+          _this.onBackPressed();
+        }
+      });
+      JBridge.deleteContent(this.baseIdentifier,callback);
     }
   }
 
@@ -302,7 +309,7 @@ class CourseEnrolledActivity extends View {
         )
 
 
-    _this.replaceChild(_this.idSet.sharePopupContainer,sharePopUp.render(),0); 
+    _this.replaceChild(_this.idSet.sharePopupContainer,sharePopUp.render(),0);
 
      setTimeout(function() {
       window.__SharePopup.show();
@@ -339,6 +346,21 @@ class CourseEnrolledActivity extends View {
     JBridge.getChildContent(id,callback)
   }
 
+  changeOverFlow = () =>{
+    var toolbar =  (<SimpleToolbar
+        title=""
+        height="wrap_content"
+        width="match_parent"
+        menuData={this.menuData1}
+        popupMenu={this.popupMenu}
+        onMenuItemClick={this.handleMenuClick}
+        overFlowCallback = {this.overFlowCallback}
+        showMenu="true"
+        onBackPress={this.onBackPressed}
+        invert="true"/>)
+
+    this.replaceChild(this.idSet.simpleToolBarOverFlow, toolbar.render(), 0);
+  }
 
   render() {
     this.layout = (
@@ -356,19 +378,23 @@ class CourseEnrolledActivity extends View {
         background={window.__Colors.WHITE}
         orientation="vertical"
         >
-
-        <SimpleToolbar
-            title=""
-            height="wrap_content"
-            width="match_parent"
-            menuData={this.menuData}
-            popupMenu={this.popupMenu}
-            onMenuItemClick={this.handleMenuClick}
-            overFlowCallback = {this.overFlowCallback}
-            showMenu="true"
-            onBackPress={this.onBackPressed}
-            invert="true"/>
-
+        <LinearLayout
+          root = "true"
+          width="match_parent"
+          height="wrap_content"
+          id = {this.idSet.simpleToolBarOverFlow}>
+          <SimpleToolbar
+              title=""
+              height="wrap_content"
+              width="match_parent"
+              menuData={this.menuData}
+              popupMenu={this.popupMenu}
+              onMenuItemClick={this.handleMenuClick}
+              overFlowCallback = {this.overFlowCallback}
+              showMenu="true"
+              onBackPress={this.onBackPressed}
+              invert="true"/>
+        </LinearLayout>
 
           <HorizontalProgressBar
             width="match_parent"
