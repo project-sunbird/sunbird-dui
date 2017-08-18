@@ -188,7 +188,7 @@ class ModuleDetailActivity extends View {
 
     renderModuleChildren = (module) => {
         var layout;
-        console.log("RENDRING BREKAUP", module.children)
+
         if (module.children) {
             layout = ( <CourseCurriculum
                 height = "match_parent"
@@ -291,7 +291,6 @@ class ModuleDetailActivity extends View {
     onBackPressed = () => {
         this.stackPop();
         var top = this.stackTop();
-        console.log(this.stack.length)
         if (!this.stack.length < 1 || top){
           this.reRender(top.moduleName, top.module);
           window.__ProgressButton.setVisibility("gone")
