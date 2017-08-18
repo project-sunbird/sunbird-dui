@@ -50,7 +50,7 @@ class ResourceDetailActivity extends View {
     this.details = state.data.value0.resourceDetails;
     this.details = JSON.parse(this.details);
     console.log("RDA",this.details)
-
+    
     this.localStatus = false;
 
     _this = this;
