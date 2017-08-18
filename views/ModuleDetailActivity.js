@@ -361,8 +361,8 @@ class ModuleDetailActivity extends View {
                     isCourse = "true"
                     contentDetails = { this.module }
                     changeOverFlowMenu = {this.handleOverFlowClick}
-                    buttonText = "DOWNLOAD"
-                    localStatus = { this.localStatus }
+                    buttonText = "PLAY"
+                    localStatus = {true}
                     identifier = { this.module.identifier }/>
 
             </LinearLayout>
