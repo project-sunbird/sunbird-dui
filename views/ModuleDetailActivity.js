@@ -279,7 +279,7 @@ class ModuleDetailActivity extends View {
                     id = { this.idSet.downloadProgressText }
                     test = "Fetching spine"
                     height = "match_parent"
-                    gravity = "centerz"
+                    gravity = "center"
                     width = "match_parent" />
 
             </LinearLayout>)
