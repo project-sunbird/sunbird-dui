@@ -298,7 +298,7 @@ class ContentPreviewScreen extends View {
       });
       Android.runInUI(cmd, 0);
       layout = <TextView
-                  height="300"
+                  height="wrap_content"
                   width="match_parent"
                   gravity="center"
                   root="true"
