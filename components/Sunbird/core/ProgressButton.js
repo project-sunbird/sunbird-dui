@@ -132,18 +132,20 @@ class ProgressButton extends View {
       if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
 
         if (this.isDownloaded) {
-
-          if (this.props.isCourse == "true") {
-            window.__getGenieEvents = this.checkTelemetry;
-            JBridge.playChildContent(this.props.identifier)
-          } else {
-            JBridge.playContent(this.props.identifier);
-          }
+          window.__getGenieEvents = this.checkTelemetry;
+          JBridge.playContent(this.props.identifier);
+          // if (this.props.isCourse == "true") {
+          //   window.__getGenieEvents = this.checkTelemetry;
+          //   JBridge.playChildContent(this.props.identifier)
+          // } else {
+          //   JBridge.playContent(this.props.identifier);
+          // }
 
         } else if(JBridge.isNetworkAvailable()){
 
           if (!this.startedDownloading) {
             this.startedDownloading = true;
+            console.log("\n\n\n\n\n\n\n\n\n isCourse",this.props.isCourse)
             JBridge.importCourse(this.props.identifier, this.props.isCourse);
           }
         }
@@ -160,7 +162,10 @@ class ProgressButton extends View {
 
   checkTelemetry = (telemetryData) => {
     telemetryData = JSON.parse(utils.decodeBase64(telemetryData));
+    console.log("telemetry Data",telemetryData);
     if (telemetryData.eid == "OE_END") {
+        JBridge.endContent();
+        JBridge.stopEventBus();
         var time = new Date();
         var date = utils.formatDate(time);
         var contentProgress = {};
@@ -214,11 +219,11 @@ class ProgressButton extends View {
 
             JBridge.patchApi(url,JSON.stringify(body),window.__userToken,window.__apiToken);
           }
-          JBridge.stopEventBus();
       })
       JBridge.getContentType(this.props.contentDetails.hierarchyInfo[0].identifier,callback)
 
     }
+
 
   }
 
