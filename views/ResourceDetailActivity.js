@@ -403,6 +403,14 @@ class ResourceDetailActivity extends View {
   handleStateChange = (state) =>{
 
     var response = utils.decodeBase64(state.response.status[1])
+    var responseCode = state.response.status[2]
+    if(responseCode == 200){
+      console.log("flag successful",this.details)
+      setTimeout(() => {
+          this.overFlowCallback(0)
+         }, 2000)
+    }
+    console.log(response)
 
   }
 

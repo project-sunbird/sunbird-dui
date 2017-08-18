@@ -40,9 +40,19 @@ module.exports = function(action, payload, state) {
       localState.currScreen = "CourseEnrolledActivity";
       break;
 
+    case "ContentPreviewScreen":
+      localState.isInit = false;
+      localState.currScreen = "ContentPreviewScreen";
+      break;
+
     case "CourseInfoActivity":
       localState.isInit = false;
       localState.currScreen = "CourseInfoActivity";
+      break;
+
+    case "ProfileActivity":
+      localState.isInit = false;
+      localState.currScreen = "ProfileActivity";
       break;
 
      case "CourseViewAllActivity":
@@ -85,7 +95,10 @@ module.exports = function(action, payload, state) {
       localState.currScreen = "SearchActivity";
       break;
 
-
+    case "CommProfSearchActivity":
+    localState.isInit = false;
+    localState.currScreen = "CommProfSearchActivity";
+    break;
 
     case "UserActivity":
       localState.isInit = false

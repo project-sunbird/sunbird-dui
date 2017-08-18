@@ -231,7 +231,7 @@ class UserActivity extends View {
         }
 
       });
-      JBridge.getApiToken();
+      JBridge.getApiToken(callback);
       return;
         }
 

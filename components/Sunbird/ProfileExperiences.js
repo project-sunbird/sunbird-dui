@@ -143,7 +143,8 @@ class ProfileExperiences extends View {
                 width="wrap_content"
                 height="match_parent"
                 margin="0,16,0,0"
-                orientation="vertical">
+                orientation="vertical"
+                visibility = {(this.jobs.length > 0) ? "visible" : "gone"}>
 
                 {this.getLineSeperator()}
 

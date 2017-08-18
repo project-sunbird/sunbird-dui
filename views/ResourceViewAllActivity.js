@@ -100,6 +100,7 @@ getRows = (data) =>{
                 temp['footerTitle'] = this.time;
                 temp['actionText'] = window.__S.OPEN ;
                 temp["footerSubTitle"] = this.cType + this.size;
+                temp['type'] = null;
 
          return (<LargeCardComponent
                  data={temp}
@@ -190,13 +191,13 @@ getRows = (data) =>{
   handleViewMoreClick = () =>{
     var listContent = [];
     window.__LoaderDialog.show();
-    if(this.displayContent == "[]" || this.displayContent.length == 0){
+    // if(this.displayContent == "[]" || this.displayContent.length == 0){
        if(JBridge.isNetworkAvailable()){
             var callback = callbackMapper.map(function(data){
               data[0] = JSON.parse(utils.decodeBase64(data[0]));
               _this.displayContent=data[0];
               _this.displayContent.map(function(item,index){
-                if(index > _this.start_index*10 && index<(_this.start_index+1)*10)
+                if(index > _this.start_index*10 && index<(_this.start_index+1)*10 && index<_this.displayContent.length)
                   listContent.push(item)
               })
               _this.start_index++;
@@ -206,30 +207,30 @@ getRows = (data) =>{
                 _this.changeViewMoreButtonStatus("gone")
               }
               });
-              JBridge.searchContent(callback, JSON.stringify(this.details.searchQuery), "", "Resource", false,100);
+              JBridge.searchContent(callback, JSON.stringify(this.details.searchQuery), "", "Resource", false,(_this.start_index+2)*10);
         }
         else{
           window.__LoaderDialog.hide();
           JBridge.showSnackBar(window.__S.NO_INTERNET)
         }
-    }
-    else{
-          this.displayContent.map(function(item,index){
-            if(index > _this.start_index*10 && index<(_this.start_index+1)*10)
-              listContent.push(item)
-          })
-          _this.start_index++;
-          _this.appendChild(_this.idSet.listItems,_this.getRows(listContent).render(),_this.start_index)
-          window.__LoaderDialog.hide();
-          if(_this.start_index*10>=_this.displayContent.length){
-                _this.changeViewMoreButtonStatus("gone")
-          }
+    // }
+    // else{
+    //       this.displayContent.map(function(item,index){
+    //         if(index > _this.start_index*10 && index<(_this.start_index+1)*10)
+    //           listContent.push(item)
+    //       })
+    //       _this.start_index++;
+    //       _this.appendChild(_this.idSet.listItems,_this.getRows(listContent).render(),_this.start_index)
+    //       window.__LoaderDialog.hide();
+    //       if(_this.start_index*10>=_this.displayContent.length){
+    //             _this.changeViewMoreButtonStatus("gone")
+    //       }
 
-    }
-     if(this.start_index >= 9){
-      _this.changeViewMoreButtonStatus("gone")
+    // }
+     // if(this.start_index >= 9){
+     //  _this.changeViewMoreButtonStatus("gone")
       
-     }
+     // }
 
   }
 

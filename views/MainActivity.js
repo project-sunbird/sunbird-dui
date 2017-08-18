@@ -166,7 +166,7 @@ class MainActivity extends View {
         var event = { "tag": state.responseFor, contents: whatToSend };
         window.__runDuiCallback(event);
       });
-      JBridge.getApiToken();
+      JBridge.getApiToken(callback);
       return;
     }else if(responseCode == 501 || status === "failure" || status=="f") {
       JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION)

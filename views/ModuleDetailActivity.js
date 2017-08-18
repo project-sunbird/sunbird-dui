@@ -103,7 +103,7 @@ class ModuleDetailActivity extends View {
     data.downloadProgress= data.downloadProgress == undefined || isNaN(data.downloadProgress) ? 0 : data.downloadProgress;
     var downloadedPercent = data.downloadProgress;
     downloadedPercent =  downloadedPercent < 0 ? 0 : downloadedPercent;
-    
+
 
     if (downloadedPercent == 100) {
       this.checkContentLocalStatus(this.module.identifier);
@@ -131,22 +131,11 @@ class ModuleDetailActivity extends View {
         });
         JBridge.getChildContent(identifier, callback1)
       } else {
-         var callback22= callbackMapper.map(function(data){
-          data = JSON.parse(data)
-          if(data.status==="NOT_FOUND"){
-                if(JBridge.isNetworkAvailable())
-                        JBridge.importCourse(identifier,"false")
-                      else
-                        JBridge.showSnackBar(window.__S.NO_INTERNET)
-          }
-          else{
-                _this.renderModuleChildren()
-              }
-        })
-
-
-
-        JBridge.getContentImportStatus(identifier,callback22)
+        if(JBridge.isNetworkAvailable()){
+          JBridge.importCourse(identifier,"false")
+        }
+        else
+          JBridge.showSnackBar(window.__S.NO_INTERNET)
       }
 
     });
@@ -226,7 +215,7 @@ class ModuleDetailActivity extends View {
           <LinearLayout
             height="wrap_content"
             gravity="center_vertical"
-            margin="0,12,0,12"  
+            margin="0,12,0,12"
             width="match_parent">
             <TextView
               height="wrap_content"
@@ -242,7 +231,7 @@ class ModuleDetailActivity extends View {
               height="48"
               padding="12,12,12,12"/>
 
-          </LinearLayout>  
+          </LinearLayout>
 
 
           <TextView
@@ -278,8 +267,8 @@ class ModuleDetailActivity extends View {
                   width="match_parent"
                   root="true"
                   orientation="vertical">
-                     
-                    
+
+
                      <TextView
                         id={this.idSet.downloadProgressText}
                         test={window.__S.LOADING_CONTENT}
@@ -299,7 +288,7 @@ overFlowCallback = (params) => {
         if(response[0] == "successful"){
           _this.onBackPressed();
         }
-      }); 
+      });
       JBridge.deleteContent(this.module.identifier,callback);
     }
   }
@@ -311,7 +300,7 @@ overFlowCallback = (params) => {
   }
 
 handleOverFlowClick = () => {
-  
+
 }
 
   render() {
@@ -330,7 +319,7 @@ handleOverFlowClick = () => {
         root = "true"
         width="match_parent"
         height="wrap_content">
-        
+
         <SimpleToolbar
           width="match_parent"
           menuData={this.menuData}
@@ -357,9 +346,9 @@ handleOverFlowClick = () => {
 
                   {this.getHeader()}
 
-                 
+
                   {this.getBody()}
-                  
+
 
                 </LinearLayout>
 
@@ -376,7 +365,7 @@ handleOverFlowClick = () => {
                  identifier = {this.module.identifier}
                  contentDetails = {this.module}
                  />
-       
+
       </LinearLayout>
     );
 

@@ -78,6 +78,7 @@ data MainActivityAction = OPEN_HomeFragment |
   OPEN_NotificationActivity |
   OPEN_EditProfileActivity |
   OPEN_SearchActivity {filterDetails::String}|
+  OPEN_CommProfSearchActivity {filterDetails::String}|
   API_ResourceFragment {user_token::String, api_token::String}|
   API_CourseFragment {user_token::String, api_token::String} |
   API_ProfileFragment {user_token::String, api_token::String}|
@@ -221,8 +222,8 @@ instance encodeResourceViewAllActivityAction :: Encode ResourceViewAllActivityAc
 
 
 data CourseViewAllActivity = CourseViewAllActivity {courseViewAllDetails::String}
-data CourseViewAllActivityAction = DummyCourseViewAllActivityAction | 
-  BACK_CourseViewAllActivity | 
+data CourseViewAllActivityAction = DummyCourseViewAllActivityAction |
+  BACK_CourseViewAllActivity |
   OPEN_EnrolledCourseFlowFromCourseViewAll {course::String} | OPEN_CourseInfoFlowFromCourseViewAll {course::String}
 
 instance courseViewAllActivity :: UIScreen CourseViewAllActivity CourseViewAllActivityAction where
@@ -251,6 +252,34 @@ derive instance genericSearchActivityAction  :: Generic SearchActivityAction _
 instance decodeSearchActivityAction :: Decode SearchActivityAction where decode = defaultDecode
 instance encodeSearchActivityAction :: Encode SearchActivityAction where encode = defaultEncode
 
+data CommProfSearchActivity = CommProfSearchActivity {filterDetails::String}
+data CommProfSearchActivityAction = DummyCommProfSearchActivity |
+  BACK_CommProfSearchActivity |
+  OPEN_FilterActivity2 {filterDetails::String} |
+  OPEN_ProfileActivity_SEARCH {profile::String}|
+  API_SearchProfile {user_token::String, api_token::String,filter_to_send::String}
+
+instance commProfSearchActivity :: UIScreen CommProfSearchActivity CommProfSearchActivityAction where
+  generateMockEvents _ = [DummyCommProfSearchActivity , BACK_CommProfSearchActivity ]
+  ui x = genericUI x (generateMockEvents x :: Array CommProfSearchActivityAction)
+
+derive instance genericCommProfSearchActivityAction  :: Generic CommProfSearchActivityAction _
+instance decodeCommProfSearchActivityAction :: Decode CommProfSearchActivityAction where decode = defaultDecode
+instance encodeCommProfSearchActivityAction :: Encode CommProfSearchActivityAction where encode = defaultEncode
+
+data ProfileActivity = ProfileActivity {profile::String}
+data ProfileActivityAction = DummyProfileActivity |
+  BACK_ProfileActivity |
+	OPEN_CommProfSearchActivity_Prof {filterDetails :: String}
+
+instance profileActivity :: UIScreen ProfileActivity ProfileActivityAction where
+  generateMockEvents _ = [DummyProfileActivity , BACK_ProfileActivity ]
+  ui x = genericUI x (generateMockEvents x :: Array ProfileActivityAction)
+
+derive instance genericProfileActivityAction  :: Generic ProfileActivityAction _
+instance decodeProfileActivityAction :: Decode ProfileActivityAction where decode = defaultDecode
+instance encodeProfileActivityAction :: Encode ProfileActivityAction where encode = defaultEncode
+
 data FilterActivity = FilterActivity {filterDetails::String}
 data FilterActivityAction = DummyFilterActivity |
   BACK_FilterActivity |
@@ -267,7 +296,7 @@ instance encodeFilterActivityAction :: Encode FilterActivityAction where encode 
 
 data AdditionalInformationActivity = AdditionalInformationActivity
 data AdditionalInformationActivityAction = DummyAdditionalInformationActivity |
-  BACK_AdditionalInformationActivity 
+  BACK_AdditionalInformationActivity
 
 instance addtionalInsormationActivity :: UIScreen AdditionalInformationActivity AdditionalInformationActivityAction where
   generateMockEvents _ = [ DummyAdditionalInformationActivity , BACK_AdditionalInformationActivity]

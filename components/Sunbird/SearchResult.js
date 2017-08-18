@@ -91,8 +91,24 @@ class SearchResult extends View {
 
 
     var itemDetails = JSON.stringify(item);
+    if (item.hasOwnProperty("data") && item.data.hasOwnProperty("education")){
+         var data = JSON.stringify(item);
+         var whatToSend={profile:data};
+         var event={tag:"OPEN_ProfileActivity_SEARCH",contents:whatToSend}
+         window.__runDuiCallback(event);
+   }
+    else if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook" || utils.checkEnrolledCourse(item.identifier)){
 
-    if(item.contentType.toLowerCase() == "course"){
+      if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
+        var whatToSend={course:itemDetails};
+        var event={tag:"OPEN_CourseEnrolledActivity_SEARCH",contents:whatToSend}
+        window.__runDuiCallback(event);
+      }else{
+        this.setPermissions();
+      }
+ 
+    }
+    else if(item.contentType.toLowerCase() == "course"){
 
       if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
         var whatToSend={course:itemDetails};
@@ -103,19 +119,7 @@ class SearchResult extends View {
       }
     
     }
-    else if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook"){
-
-      if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
-        var whatToSend={course:itemDetails};
-        var event={tag:"OPEN_CourseEnrolledActivity_SEARCH",contents:whatToSend}
-        window.__runDuiCallback(event);
-      }else{
-        this.setPermissions();
-      }
-
-
-      
-    }
+    
     else
     {
 
