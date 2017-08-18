@@ -98,6 +98,11 @@ class FlagPopup extends View {
 
 
   onConfirm = () =>{
+    if (this.selectedList.length == 0) {
+      JBridge.showSnackBar(window.__S.ERROR_FLAG_CONTENT_MIN_REASON)
+      return;
+    }
+
     this.hideBodyWithOptions();
     this.showBodyWithMessage();
     console.log(this.comment,this.selectedList)
@@ -142,7 +147,7 @@ class FlagPopup extends View {
 
   handleSpinnerClick = (...params) => {
 
-    
+
     console.log("SPINNER CLICKED",params);
 
   }
@@ -164,7 +169,7 @@ class FlagPopup extends View {
       orientation="vertical"
       width="match_parent"
       height="wrap_content">
-        
+
         <TextView
           margin="0,16,0,0"
           width="match_parent"
@@ -188,7 +193,7 @@ class FlagPopup extends View {
         maxLine = "2"
         singleLine="true"
          />
-        
+
 
 
 
@@ -220,7 +225,7 @@ class FlagPopup extends View {
     this.radioList = ["Inappropriate content","Copyright violation","Piracy violation","Other"];
 
     var rows = this.radioList.map((item, index) => {
-      return( 
+      return(
         <LinearLayout
         margin="0,4,0,0"
         gravity="center_vertical"
@@ -232,7 +237,7 @@ class FlagPopup extends View {
           gravity="center_vertical"
           onCheckChange={(value)=>{this.handleRadioButtonClick(item,value)}}
           checked= {false}
-          text={item}/> 
+          text={item}/>
 
         <ImageView
          margin="8,0,0,0"
@@ -242,7 +247,7 @@ class FlagPopup extends View {
          imageUrl="ic_info_grey"/>
 
         </LinearLayout> )
-            
+
          });
 
         return (
@@ -258,7 +263,7 @@ class FlagPopup extends View {
           )
   }
 
-  
+
   getHeader = () => {
     return (
       <LinearLayout
@@ -358,7 +363,7 @@ class FlagPopup extends View {
               clickable = "true"
               padding="16,18,16,16"
               background="#ffffff">
-              
+
                {this.getHeader()}
 
                {this.getContent()}
@@ -373,7 +378,7 @@ class FlagPopup extends View {
             </LinearLayout>)
   }
 
-  
+
 
 
   handleDismissClick = () => {
@@ -385,10 +390,10 @@ class FlagPopup extends View {
             height="wrap_content"
             width="match_parent"
             root="true"
-            orientation="vertical">  
+            orientation="vertical">
 
             {this.getBodyWithOptions()}
-            
+
             {this.getBodyWithMessage()}
 
           </LinearLayout>)
@@ -397,7 +402,7 @@ class FlagPopup extends View {
   render() {
 
     this.layout = (
-      <LinearLayout 
+      <LinearLayout
         height = "match_parent"
         width = "match_parent"
         id={this.idSet.parentContainer}
@@ -405,7 +410,7 @@ class FlagPopup extends View {
         root="true"
         background = { window.__Colors.PRIMARY_BLACK_44}
         orientation="vertical">
-          
+
           <LinearLayout
             height="0"
             width="match_parent"
@@ -415,11 +420,11 @@ class FlagPopup extends View {
           <LinearLayout
             height="wrap_content"
             width="match_parent"
-            id={this.idSet.bodyContainer}>  
+            id={this.idSet.bodyContainer}>
 
             {this.getBody()}
-            
-           
+
+
 
           </LinearLayout>
 
