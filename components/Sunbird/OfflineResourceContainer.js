@@ -65,6 +65,7 @@ class OfflineResourceContainer extends View {
         temp['imageUrl'] = fileImageUrl;
         temp['title'] = item.contentData.name;
         temp['footerTitle'] = footerTitle;
+        temp['screenshots'] = item.screenshots || [] ;
         temp['footerSubTitle'] = "Saved on " + fileSavedTime;
         temp['actionText'] = "OPEN";
         temp['content'] = item;
@@ -161,6 +162,7 @@ class OfflineResourceContainer extends View {
       resDetails['description'] = item.contentData.description;
       resDetails['headFooterTitle'] = headFooterTitle;
       resDetails['identifier'] = item.identifier;
+      resDetails['screenshots'] = item.screenshots || [] ;
       resDetails['content'] = item;
 
 
