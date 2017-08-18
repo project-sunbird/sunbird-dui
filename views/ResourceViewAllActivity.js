@@ -147,10 +147,9 @@ getRows = (data) =>{
       {
         var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");
         var resDetails = {};
-
         resDetails['imageUrl'] = item.hasOwnProperty("contentData") ?"file://"+item.basePath+"/"+item.contentData.appIcon : item.appIcon;
-        resDetails['title'] = item.name;
-        resDetails['description'] = item.description;
+        resDetails['title'] = item.contentData.name;
+        resDetails['description'] = item.contentData.description;
         resDetails['headFooterTitle'] = headFooterTitle;
         resDetails['identifier'] = item.identifier;
         resDetails['content'] = item;
