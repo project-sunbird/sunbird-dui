@@ -31,7 +31,7 @@ class ModuleDetailActivity extends View {
             "renderPage"
         ]);
         this.state = state;
-        this.screenName = "AlternateModuleDetailActivity"
+        this.screenName = "ModuleDetailActivity"
         this.menuData = {
           url: [
             {}
