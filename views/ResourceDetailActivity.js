@@ -439,10 +439,21 @@ class ResourceDetailActivity extends View {
     var response = utils.decodeBase64(state.response.status[1])
     var responseCode = state.response.status[2]
     if(responseCode == 200){
-      console.log("flag successful",this.details)
-      setTimeout(() => {
-          this.overFlowCallback(0)
-         }, 2000)
+      var callback = callbackMapper.map(function(response){
+        window.__LoaderDialog.hide();
+
+        if(response[0] == "successful"){
+          JBridge.showSnackBar(window.__S.CONTENT_FLAGGED_MSG)
+          _this.onBackPressed();
+        }
+      });
+      JBridge.deleteContent(this.details.identifier,callback);
+      
+    }
+    else{
+      JBridge.showSnackBar(window.__S.CONTENT_FLAG_FAIL);
+      _this.onBackPressed();
+      
     }
     console.log(response)
 

@@ -99,8 +99,6 @@ class UserActivity extends View {
 
               console.log("Content type is course",item.contentData);
 
-              
-
               console.log("DEEPLINK MODE COURSE",deeplinkMode);
 
               if(deeplinkMode=="preview"){
@@ -191,8 +189,12 @@ class UserActivity extends View {
 
     });
 
-
-    JBridge.getContentDetails(identifier,callback)
+    if(identifier!=""){
+      JBridge.getContentDetails(identifier,callback)
+    }else{
+      JBridge.showToast("Can't open empty content","short");
+      this.performLogin();
+    }
   }
 
   onPop = () => {

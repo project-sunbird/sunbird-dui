@@ -104,7 +104,7 @@ class FlagPopup extends View {
     }
 
     this.hideBodyWithOptions();
-    this.showBodyWithMessage();
+    // this.showBodyWithMessage();
     console.log(this.comment,this.selectedList)
     this.props.onConfirm(this.comment,this.selectedList)
   }
