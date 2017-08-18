@@ -43,14 +43,15 @@ instance decodeSplashScreenActivityAction :: Decode SplashScreenActivityAction w
 instance encodeSplashScreenActivityAction :: Encode SplashScreenActivityAction where encode = defaultEncode
 
 
-data UserActivity = UserActivity
+data UserActivity = UserActivity {whereFrom::String}
 data UserActivityAction = OPEN_MainActivity |
   OPEN_Deeplink_ResourceDetail {resource :: String} |
   OPEN_Deeplink_CourseEnrolled {course::String}|
   OPEN_DeepLink_CourseInfo {course::String}|
+  OPEN_DeepLink_ContentPreview{details::String} |
   API_LogIn {userName::String, userPass::String} |
   API_SignUp {request::String, api_token::String} |
-  API_EnrolledCourses {user_token::String, api_token::String}
+  API_EnrolledCourses {user_token::String, api_token::String} 
 
 instance userActivity :: UIScreen UserActivity UserActivityAction where
   generateMockEvents _ = [OPEN_MainActivity , API_LogIn {userName:"String",userPass:"String"}]
@@ -59,6 +60,20 @@ instance userActivity :: UIScreen UserActivity UserActivityAction where
 derive instance genericUserActivityAction  :: Generic UserActivityAction _
 instance decodeUserActivityAction :: Decode UserActivityAction where decode = defaultDecode
 instance encodeUserActivityAction :: Encode UserActivityAction where encode = defaultEncode
+
+
+
+data ContentPreviewScreen = ContentPreviewScreen {details::String}
+data ContentPreviewScreenAction = BACK_ContentPreviewScreen | OPEN_UserActivityFromPreview
+
+instance contentPreviewScreen :: UIScreen ContentPreviewScreen ContentPreviewScreenAction where
+  generateMockEvents _ = [BACK_ContentPreviewScreen]
+  ui x = genericUI x (generateMockEvents x :: Array ContentPreviewScreenAction)
+
+derive instance generiContentPreviewScreenAction  :: Generic ContentPreviewScreenAction _
+instance decodeContentPreviewScreenAction :: Decode ContentPreviewScreenAction where decode = defaultDecode
+instance encodeContentPreviewScreenAction :: Encode ContentPreviewScreenAction where encode = defaultEncode
+
 
 
 data MainActivity = MainActivity
@@ -138,8 +153,7 @@ instance encodeCourseEnrolledActivityAction :: Encode CourseEnrolledActivityActi
 
 data ModuleDetailActivity = ModuleDetailActivity {moduleName::String,moduleDetails::String}
 data ModuleDetailActivityAction = DummyModuleDetailActivityAction |
- BACK_ModuleDetailActivity |
- OPEN_AlternateModuleDetailActivity {moduleName::String,moduleDetails::String}
+ BACK_ModuleDetailActivity
 
 instance moduleDetailActivity :: UIScreen ModuleDetailActivity ModuleDetailActivityAction where
   generateMockEvents _ = [DummyModuleDetailActivityAction , BACK_ModuleDetailActivity ]
@@ -150,26 +164,9 @@ instance decodeModuleDetailActivityAction :: Decode ModuleDetailActivityAction w
 instance encodeModuleDetailActivityAction :: Encode ModuleDetailActivityAction where encode = defaultEncode
 
 
-data AlternateModuleDetailActivity = AlternateModuleDetailActivity {moduleName::String,moduleDetails::String}
-data AlternateModuleDetailActivityAction = DummyAlternateModuleDetailAction |
-  BACK_AlternateModuleDetailActivity |
-  OPEN_ModuleActivity {moduleName::String,moduleDetails::String}
-
-
-instance alternateModuleDetailActivity :: UIScreen AlternateModuleDetailActivity AlternateModuleDetailActivityAction where
-  generateMockEvents _ = [ DummyAlternateModuleDetailAction , BACK_AlternateModuleDetailActivity]
-  ui x = genericUI x (generateMockEvents x :: Array AlternateModuleDetailActivityAction)
-
-derive instance genericAlternateModuleDetailActivityAction  :: Generic AlternateModuleDetailActivityAction _
-instance decodeAlternateModuleDetailActivityAction :: Decode AlternateModuleDetailActivityAction where decode = defaultDecode
-instance encodeAlternateModuleDetailActivityAction :: Encode AlternateModuleDetailActivityAction where encode = defaultEncode
-
-
 data CommunityViewAllActivity = CommunityViewAllActivity
 data CommunityViewAllAction = DummyCommunityViewAllAction |
   BACK_CommunityViewAllActivity
-
-
 
 instance communityViewAllActivity :: UIScreen CommunityViewAllActivity CommunityViewAllAction where
   generateMockEvents _ = [DummyCommunityViewAllAction ,  BACK_CommunityViewAllActivity]
