@@ -429,7 +429,12 @@ class CourseEnrolledActivity extends View {
                         onResumeClick={this.handleCourseResume}
                         visibility = {this.showProgress}/>
 
-
+                       <TextView
+                        width="wrap_content"
+                        height="wrap_content"
+                        margin="0,16,0,0"
+                        style={window.__TextStyle.textStyle.CARD.TITLE.DARK}
+                        text={window.__S.STRUCTURE}/> 
                       <LinearLayout
                         id={this.idSet.descriptionContainer}
                         height="match_parent"
