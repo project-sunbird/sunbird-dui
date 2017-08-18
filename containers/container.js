@@ -38,6 +38,8 @@ const FilterActivity = require("../views/FilterActivity");
 const AdditionalInformationActivity = require("../views/AdditionalInformationActivity");
 const CommProfSearchActivity = require("../views/CommProfSearchActivity");
 const ProfileActivity = require("../views/ProfileActivity");
+
+const ContentPreviewScreen = require("../views/ContentPreviewScreen");
 // ScreenActions
 const RootScreenActions = require("../actions/RootScreenActions");
 
@@ -72,6 +74,9 @@ var determineScreen = (screenName, state) => {
       break;
     case "ModuleDetailActivity":
       screen = new(ModuleDetailActivity(dispatcher, RootScreenActions))(null, null, state);
+      break;
+    case "ContentPreviewScreen":
+      screen = new(ContentPreviewScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
 
 

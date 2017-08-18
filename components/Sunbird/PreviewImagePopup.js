@@ -17,10 +17,12 @@ class PreviewImagePopup extends View {
         ]);
         window.__PreviewImagePopup = this;
         this.props = props;
+        this.visibility=false;
 
     }
 
     show = (imageUrl) => {
+        this.visibility=true;
         this.setVisibility("visible");
         if(imageUrl==undefined)
           imageUrl=this.props.defaultImage;
@@ -29,7 +31,12 @@ class PreviewImagePopup extends View {
     }
 
     hide = () => {
+        this.visibility=false;
         this.setVisibility("gone");
+    }
+
+    getVisibility = () => {
+      return this.visibility;
     }
 
     setVisibility = (data) => {

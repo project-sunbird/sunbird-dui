@@ -213,10 +213,8 @@ class ResourceDetailActivity extends View {
   }
 
   getPreviewLayout = () => {
-    //this.details.dummyUrl=["https://pbs.twimg.com/media/CRafzhtWIAEQ2c9.png","https://pbs.twimg.com/media/CRafzhtWIAEQ2c9.png","https://pbs.twimg.com/media/CRafzhtWIAEQ2c9.png"]
     var cards ;
-
-    if(this.details.screenshots== undefined){
+    if(this.details.screenshots== undefined || this.details.screenshots.length == 0){
       this.details.dummyUrl=[];
       cards= (
           <TextView
@@ -231,12 +229,13 @@ class ResourceDetailActivity extends View {
                   height="match_parent"
                   width="match_parent"
                   orientation="vertical"
+                  padding="5,5,5,5"
+
                   onClick={()=>{_this.handlePreviewImageClick(item)}}>
-                
                   <ImageView
                           width="156"
                           height="200"
-                          margin="10,10,10,10"
+                          padding="10,10,10,10"
                           stroke ={"3," + window.__Colors.PRIMARY_BLACK}
                           imageFromUrl = {item}/>
                 
@@ -438,6 +437,14 @@ class ResourceDetailActivity extends View {
   handleStateChange = (state) =>{
 
     var response = utils.decodeBase64(state.response.status[1])
+    var responseCode = state.response.status[2]
+    if(responseCode == 200){
+      console.log("flag successful",this.details)
+      setTimeout(() => {
+          this.overFlowCallback(0)
+         }, 2000)
+    }
+    console.log(response)
 
   }
 
@@ -468,6 +475,10 @@ class ResourceDetailActivity extends View {
 
     if(window.__PermissionDeniedDialog.getVisibility() == "visible"){
       window.__PermissionDeniedDialog.hide();
+      return;
+    }else if(window.__PreviewImagePopup.getVisibility()){
+      window.__PreviewImagePopup.hide();
+      return
     }else{
       var whatToSend = [];
       var event= { "tag": "BACK_ResourceDetailActivity", contents: whatToSend };
