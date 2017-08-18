@@ -122,7 +122,7 @@ class ModuleDetailActivity extends View {
         var downloadedPercent = data.downloadProgress;
         downloadedPercent = downloadedPercent < 0 ? 0 : downloadedPercent;
         if (downloadedPercent == 100) {
-            this.checkContentLocalStatus(this.module.identifier);
+            this.checkContentLocalStatus(this.module);
         } else {
             var cmd = this.set({
                 id: this.idSet.downloadProgressText,
@@ -132,7 +132,7 @@ class ModuleDetailActivity extends View {
         }
     }
 
-    checkContentLocalStatus = (identifier) => {
+    checkContentLocalStatus = (module) => {
         _this = this;
         var callback = callbackMapper.map(function(status) {
             if (status == "true") {
@@ -140,20 +140,21 @@ class ModuleDetailActivity extends View {
                     _this.module = JSON.parse(data);
                     _this.renderModuleChildren(_this.module)
                 });
-                JBridge.getChildContent(identifier, callback1)
+                JBridge.getChildContent(module.identifier, callback1)
             } else {
               if (JBridge.isNetworkAvailable()){
-                JBridge.importCourse(identifier, "false")
+                JBridge.importCourse(module.identifier, "false")
               }
               else
                 JBridge.showSnackBar(window.__S.NO_INTERNET)
             }
         });
-        if (!this.module.isAvailableLocally || this.module.isUpdateAvailable) {
+
+        if (!module.isAvailableLocally || module.isUpdateAvailable) {
             window.__getDownloadStatus = this.getSpineStatus;
-            JBridge.getLocalContentStatus(identifier, callback);
+            JBridge.getLocalContentStatus(module.identifier, callback);
         } else {
-            this.renderModuleChildren(_this.module);
+            this.renderModuleChildren(module);
         }
     }
 
@@ -170,9 +171,11 @@ class ModuleDetailActivity extends View {
       this.moduleName = moduleName;
       this.module = module;
        var layout = (
-        <LinearLayout height = "match_parent"
-        width = "match_parent"
-        orientation = "vertical">
+        <LinearLayout 
+            height = "match_parent"
+            root="true"
+            width = "match_parent"
+            orientation = "vertical">
 
             { this.getHeader() }
             { this.getBody() }
@@ -180,12 +183,12 @@ class ModuleDetailActivity extends View {
         </LinearLayout>
       )
       this.replaceChild(this.idSet.renderPage, layout.render(), 0);
-      this.afterRender();
+      this.checkContentLocalStatus(module);
     }
 
     renderModuleChildren = (module) => {
         var layout;
-        console.log("RENDRING BREKAUP", module.children)
+
         if (module.children) {
             layout = ( <CourseCurriculum
                 height = "match_parent"
@@ -212,7 +215,7 @@ class ModuleDetailActivity extends View {
     }
 
     afterRender = () => {
-        this.checkContentLocalStatus(this.module.identifier);
+        this.checkContentLocalStatus(this.module);
     }
 
 
@@ -288,8 +291,9 @@ class ModuleDetailActivity extends View {
     onBackPressed = () => {
         this.stackPop();
         var top = this.stackTop();
-        if (top){
+        if (!this.stack.length < 1 || top){
           this.reRender(top.moduleName, top.module);
+          window.__ProgressButton.setVisibility("gone")
         } else {
           var whatToSend = []
           var event = { "tag": "BACK_ModuleDetailActivity", contents: whatToSend };
