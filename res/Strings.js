@@ -149,6 +149,7 @@ const stringsRes = {
 		SHARE_THIS : "Share this",
 		FLAG : "Flag / Report",
 		ADD_COMMENT : "ADD COMMENT",
+		ERROR_FLAG_CONTENT_MIN_REASON : "Please select atleast one reason for flag the content"
 	},
 	"hi_IN" : {
 	},
