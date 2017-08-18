@@ -57,7 +57,11 @@ class UserActivity extends View {
 
     window.__loginCallback=this.getLoginCallback;
 
-    this.whereFrom = this.state.data.value0.whereFrom;
+    
+    if(JBridge.getFromSharedPrefs("whereFromInUserActivity") != "Deeplink"){
+      JBridge.setInSharedPrefs("whereFromInUserActivity", this.state.data.value0.whereFrom);
+    }
+
 
     window.__onContentImportResponse = this.getImportStatus;
     window.__LoaderDialog.hide();
@@ -94,9 +98,29 @@ class UserActivity extends View {
 
               console.log("Content type is course",item.contentData);
 
-              var whatToSend={course:JSON.stringify(item.contentData)};
-              var event={tag:"OPEN_DeepLink_CourseInfo",contents:whatToSend}
-              window.__runDuiCallback(event);
+              var deeplinkMode = JBridge.getFromSharedPrefs("deeplinkMode");
+
+              console.log("DEEPLINK MODE",deeplinkMode);
+
+              if(deeplinkMode=="preview"){
+
+                console.log("COURSE PREVIEW MODE");
+                var whatToSend={details:JSON.stringify(item)};
+                var event={tag:"OPEN_DeepLink_ContentPreview",contents:whatToSend}
+                window.__runDuiCallback(event);
+
+              }else if(deeplinkMode=="actual"){
+
+                console.log("COURSE ACTUAL MODE")
+
+                JBridge.setInSharedPrefs("deeplinkMode","");
+                JBridge.setInSharedPrefs("whereFromInUserActivity","");
+
+                var whatToSend={course:JSON.stringify(item.contentData)};
+                var event={tag:"OPEN_DeepLink_CourseInfo",contents:whatToSend}
+                window.__runDuiCallback(event);
+              }
+              
         }
         else if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook"){
 
@@ -173,6 +197,9 @@ class UserActivity extends View {
     JBridge.showSnackBar(window.__S.WELCOME_ON_BOARD.format(contentBody.given_name))
     JBridge.setProfile(this.userToken);
     this.setDataInStorage();
+
+    // this.setLoginPreferences();
+
 
     this.performLogin();
     }catch(e){
@@ -750,6 +777,7 @@ class UserActivity extends View {
   clearDeeplinkPreferences = () =>{
     JBridge.setInSharedPrefs("intentLinkPath", "__failed");
     JBridge.setInSharedPrefs("intentFilePath", "__failed");
+
   }
 
   performDeeplinkAction = () =>{
@@ -763,12 +791,12 @@ class UserActivity extends View {
 
     }else if("__failed" != JBridge.getFromSharedPrefs("intentLinkPath")){
 
-                  console.log("INSIDE LINK INTENT");
+                console.log("INSIDE LINK INTENT");
 
-                  var output = JBridge.getFromSharedPrefs("intentLinkPath");
+                var output = JBridge.getFromSharedPrefs("intentLinkPath");
 
-                  var identifier = output.substr(output.indexOf('do'),output.length);
-                  _this.handleDeepLinkAction(identifier);
+                var identifier = output.substr(output.indexOf('do'),output.length);
+                _this.handleDeepLinkAction(identifier);
 
     }
   }
@@ -778,10 +806,16 @@ class UserActivity extends View {
 
   afterRender = () =>{
 
+    console.log("AFTER RENDER IN USER ACTIVITY");
+
+    var whereFrom = JBridge.getFromSharedPrefs("whereFromInUserActivity");
+    console.log("WHERE FROM IN AFTER RENDER",whereFrom)
+
 //from link
       if(("__failed" != JBridge.getFromSharedPrefs("intentFilePath"))||("__failed" != JBridge.getFromSharedPrefs("intentLinkPath"))){
-     
-        if(this.whereFrom == "splashScreenActivity"){
+        
+        console.log("SHARED PREFERENCES ARE THERE STILL");
+        if(whereFrom == "splashScreenActivity"){
 
           if(("YES"==JBridge.getFromSharedPrefs("logged_in"))){
 
@@ -791,17 +825,24 @@ class UserActivity extends View {
 
           }else{
 
-            this.deeplinkMode = "preview";
+            JBridge.setInSharedPrefs("deeplinkMode", "preview");
             this.performDeeplinkAction();
           }
 
-        }else if( this.whereFrom == "Deeplink") {
+        }else if(whereFrom == "Deeplink") {
+
+          console.log("FROM DEEPLINK ");
           
           if(("YES"==JBridge.getFromSharedPrefs("logged_in"))){
+            console.log("LOGGED IN AND FROM DEEPLINK","ACTUAL");
+
+            JBridge.setInSharedPrefs("deeplinkMode", "actual");
             this.performDeeplinkAction();
             this.clearDeeplinkPreferences();
             this.setLoginPreferences();
           }else{
+
+            console.log("NOT LOGGED IN");
             this.replaceChild(this.idSet.parentContainer,this.getBody().render(),0);
           }
         }

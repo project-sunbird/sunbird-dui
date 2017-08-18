@@ -185,34 +185,31 @@ class CourseInfoActivity extends View {
 
     this.shareContent();
 
-    // if(window.__enrolledCourses == undefined){
-    //   window.__LoaderDialog.show();
-    //   var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken} 
-    //   var event ={ "tag": "API_EnrolledCoursesList", contents: whatToSend};
-    //   window.__runDuiCallback(event);
-    // }else{
+    if(window.__enrolledCourses == undefined){
+      window.__LoaderDialog.show();
+      var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken} 
+      var event ={ "tag": "API_EnrolledCoursesList", contents: whatToSend};
+      window.__runDuiCallback(event);
+    }else{
 
       this.replaceChild(this.idSet.totalContainer,this.getBody().render(),0);
-    //   var enrolledIds = window.__enrolledCourses;
-    //   enrolledIds.map((item)=>{
-    //   if(item.courseId == this.details.identifier){
-    //       var whatToSend = { "course": this.state.data.value0.courseDetails }
-    //       var event = { tag: 'OPEN_EnrolledActivity', contents: whatToSend }
-    //       window.__runDuiCallback(event);
+      var enrolledIds = window.__enrolledCourses;
+      enrolledIds.map((item)=>{
+      if(item.courseId == this.details.identifier){
+          var whatToSend = { "course": this.state.data.value0.courseDetails }
+          var event = { tag: 'OPEN_EnrolledActivity', contents: whatToSend }
+          window.__runDuiCallback(event);
 
-    //     }
-    //   })
-    // }
+        }
+      })
+    }
 
   }
 
 
   handleStateChange = (state) => {
 
-    if(state.responseFor+""=="ExitApp"){
-      JBridge.killApp();
-      return;
-    }
+    console.log("STATE IN HANDLE STATE CHANGE",state)
 
 
     window.__LoaderDialog.hide();
@@ -255,17 +252,25 @@ class CourseInfoActivity extends View {
       case "API_EnrolledCoursesList":
 
         window.__enrolledCourses = response.result.courses;
+
+        console.log("ENROLLED COURSES",window.__enrolledCourses);
         window.__LoaderDialog.hide();
 
         var enrolledIds = window.__enrolledCourses;
+        var courseEnrollCheckCount = 0;
         enrolledIds.map((item)=>{
         if(item.courseId == this.details.identifier){
             var whatToSend = { "course": this.state.data.value0.courseDetails }
             var event = { tag: 'OPEN_EnrolledActivity', contents: whatToSend }
             window.__runDuiCallback(event);
+            courseEnrollCheckCount = courseEnrollCheckCount+1;
 
-          }
+        }
         })
+
+        if(courseEnrollCheckCount == 0){
+          this.replaceChild(this.idSet.totalContainer,this.getBody().render(),0);
+        }
 
         break;
         

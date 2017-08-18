@@ -45,7 +45,9 @@ class ContentPreviewScreen extends View {
       "moduleText"
     ]);
     this.state = state;
-    this.screenName = "ContentPreviewScreen"
+    this.screenName = "ContentPreviewScreen";
+
+    console.log("CONTENT PREVIEW STATE\nn\n\n\n\n\n\n\n",state.data.value0.details)
 
     this.menuData = {
       url: [
@@ -69,45 +71,7 @@ class ContentPreviewScreen extends View {
     this.enrolledCourses = window.__enrolledCourses;
 
 
-    this.details = {
-              "basePath": "/storage/emulated/0/.NTP/content/do_30022230",
-              "contentData": {
-                "appIcon": "do_30022230/times-tables-11-20_1467119901085.jpg",
-                "contentType": "Collection",
-                "contentVariantList": [],
-                "copyright": "CC0",
-                "description": "This collection contains multiplication worksheets, one each for 11 to 20 times tables. Each worksheet contains 10 questions. These are suitable for students learning multiplication tables.",
-                "downloadUrl": "https://ekstep-public.s3-ap-southeast-1.amazonaws.com/ecar_files/do_30022230_1467121607982.ecar",
-                "gradeLevel": [
-                  "Grade 1",
-                  "Grade 2",
-                  "Grade 3",
-                  "Grade 4",
-                  "Grade 5",
-                  "Other"
-                ],
-                "identifier": "do_30022230",
-                "language": [
-                  "English"
-                ],
-                "license": "Creative Commons Attribution (CC BY)",
-                "name": "Times Tables 11 to 20",
-                "osId": "org.ekstep.quiz.app",
-                "owner": "Parabal Partap Singh",
-                "pkgVersion": "4.0",
-                "publisher": "",
-                "size": "1.4975878E7",
-                "status": "Live",
-                "subject": "domain"
-              },
-              "contentType": "collection",
-              "identifier": "do_30022230",
-              "isAvailableLocally": true,
-              "isUpdateAvailable": false,
-              "lastUpdatedTime": 1502983623000,
-              "mimeType": "application/vnd.ekstep.content-collection",
-              "referenceCount": 1
-            }
+    this.details = JSON.parse(state.data.value0.details);
     // this.details = {
     //     "basePath": "/storage/emulated/0/.NTP/content/do_30014516",
     //     "contentData": {
@@ -400,6 +364,12 @@ class ContentPreviewScreen extends View {
 
   }
 
+  handleButtonClick = () =>{
+    console.log("HANDLE PREVIEW CLICK")
+    var event={tag:"OPEN_UserActivityFromPreview",contents:{}}
+    window.__runDuiCallback(event);
+  }
+
   
 
   changeOverFlow = () =>{
@@ -688,7 +658,7 @@ class ContentPreviewScreen extends View {
                     background = {window.__Colors.PRIMARY_ACCENT}
                     text = {"CLICK HERE TO OPEN CONTENT"}
                     style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
-                    buttonClick = {this.handleResumeClick}
+                    buttonClick = {this.handleButtonClick}
                     />
           </LinearLayout>
 

@@ -49,7 +49,17 @@ userActivity whereFrom = do
         OPEN_Deeplink_ResourceDetail {resource:details} ->  resourceDetailActivity details "Deeplink" details
         OPEN_Deeplink_CourseEnrolled {course:details} -> enrolledCourseActivity details "Deeplink" details
         OPEN_DeepLink_CourseInfo {course:details} -> courseInfoActivity details "Deeplink" details
+        OPEN_DeepLink_ContentPreview {details:details} -> contentPreviewActivity details "Deeplink" details
+
         _ -> pure $ "UserActivity"
+
+contentPreviewActivity input whereFrom whatToSendBack = do
+    event <- ui $ ContentPreviewScreen {details:input}
+    case event of
+        BACK_ContentPreviewScreen -> pure $ "handled"
+        OPEN_UserActivityFromPreview -> userActivity "Deeplink"
+        _ -> pure $ "default"
+
 
 
 courseInfoActivity input whereFrom whatToSendBack= do
@@ -63,9 +73,7 @@ courseInfoActivity input whereFrom whatToSendBack= do
                 pure $ "apiDefault"
         BACK_CourseInfoActivity -> do
             case whereFrom of
-                "Deeplink" -> do
-                    _ <- sendUpdatedState {response : "", responseFor : "Exit App", screen:"asas"}
-                    pure $ "done"
+                "Deeplink" -> mainActivity "{}" "UserActivity" "{}"
                 _ -> pure $ "default"
         _ -> courseInfoActivity input whereFrom whatToSendBack
 
