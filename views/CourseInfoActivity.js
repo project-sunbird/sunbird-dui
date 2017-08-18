@@ -156,13 +156,6 @@ class CourseInfoActivity extends View {
         height="wrap_content"
         orientation="vertical">
 
-          {/* <TextView
-          width="wrap_content"
-          height="wrap_content"
-          margin="0,16,0,0"
-          style={window.__TextStyle.textStyle.CARD.TITLE.DARK}
-          text={window.__S.STRUCTURE}/> */}
-
           {child}
 
         </LinearLayout>
