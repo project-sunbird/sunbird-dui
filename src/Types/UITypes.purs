@@ -43,14 +43,15 @@ instance decodeSplashScreenActivityAction :: Decode SplashScreenActivityAction w
 instance encodeSplashScreenActivityAction :: Encode SplashScreenActivityAction where encode = defaultEncode
 
 
-data UserActivity = UserActivity
+data UserActivity = UserActivity {whereFrom::String}
 data UserActivityAction = OPEN_MainActivity |
   OPEN_Deeplink_ResourceDetail {resource :: String} |
   OPEN_Deeplink_CourseEnrolled {course::String}|
   OPEN_DeepLink_CourseInfo {course::String}|
+  OPEN_DeepLink_ContentPreview{details::String} |
   API_LogIn {userName::String, userPass::String} |
   API_SignUp {request::String, api_token::String} |
-  API_EnrolledCourses {user_token::String, api_token::String}
+  API_EnrolledCourses {user_token::String, api_token::String} 
 
 instance userActivity :: UIScreen UserActivity UserActivityAction where
   generateMockEvents _ = [OPEN_MainActivity , API_LogIn {userName:"String",userPass:"String"}]
@@ -59,6 +60,20 @@ instance userActivity :: UIScreen UserActivity UserActivityAction where
 derive instance genericUserActivityAction  :: Generic UserActivityAction _
 instance decodeUserActivityAction :: Decode UserActivityAction where decode = defaultDecode
 instance encodeUserActivityAction :: Encode UserActivityAction where encode = defaultEncode
+
+
+
+data ContentPreviewScreen = ContentPreviewScreen {details::String}
+data ContentPreviewScreenAction = BACK_ContentPreviewScreen | OPEN_UserActivityFromPreview
+
+instance contentPreviewScreen :: UIScreen ContentPreviewScreen ContentPreviewScreenAction where
+  generateMockEvents _ = [BACK_ContentPreviewScreen]
+  ui x = genericUI x (generateMockEvents x :: Array ContentPreviewScreenAction)
+
+derive instance generiContentPreviewScreenAction  :: Generic ContentPreviewScreenAction _
+instance decodeContentPreviewScreenAction :: Decode ContentPreviewScreenAction where decode = defaultDecode
+instance encodeContentPreviewScreenAction :: Encode ContentPreviewScreenAction where encode = defaultEncode
+
 
 
 data MainActivity = MainActivity

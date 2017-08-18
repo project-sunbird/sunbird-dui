@@ -30,12 +30,12 @@ splashScreenActivity :: Aff(ui::UI,console::CONSOLE) String
 splashScreenActivity = do
     event <- ui $ InitScreen
     case event of
-        OPEN_UserActivity -> userActivity
+        OPEN_UserActivity -> userActivity "splashScreenActivity"
         _ -> pure $ "SplashScreenActivity"
 
 
-userActivity = do
-    event <- ui $ UserActivity
+userActivity whereFrom = do
+    event <- ui $ UserActivity {whereFrom:whereFrom}
     case event of
         API_SignUp { request: requestBody , api_token :token} -> do
             responseData <- userSignup requestBody token
@@ -49,7 +49,17 @@ userActivity = do
         OPEN_Deeplink_ResourceDetail {resource:details} ->  resourceDetailActivity details "Deeplink" details
         OPEN_Deeplink_CourseEnrolled {course:details} -> enrolledCourseActivity details "Deeplink" details
         OPEN_DeepLink_CourseInfo {course:details} -> courseInfoActivity details "Deeplink" details
+        OPEN_DeepLink_ContentPreview {details:details} -> contentPreviewActivity details "Deeplink" details
+
         _ -> pure $ "UserActivity"
+
+contentPreviewActivity input whereFrom whatToSendBack = do
+    event <- ui $ ContentPreviewScreen {details:input}
+    case event of
+        BACK_ContentPreviewScreen -> pure $ "handled"
+        OPEN_UserActivityFromPreview -> userActivity "Deeplink"
+        _ -> pure $ "default"
+
 
 
 courseInfoActivity input whereFrom whatToSendBack= do
@@ -58,7 +68,7 @@ courseInfoActivity input whereFrom whatToSendBack= do
         OPEN_EnrolledActivity {course:output} -> enrolledCourseActivity output "HomeFragment" input
         API_EnrollCourse {user_token:x,reqParams:details,api_token:token} -> do
             output <- enrollCourse x details token
-            _ <- sendUpdatedState {response : output, responseFor : "EnrollCourseApi", screen:"asas"}
+            _ <- sendUpdatedState {response : output, responseFor : "API_EnrollCourse", screen:"asas"}
             pure $ "apiDefault"
         API_EnrolledCoursesList {user_token:x,api_token:y} -> do
                 responseData <- getUserEnrolledCourses x y

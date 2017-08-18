@@ -115,6 +115,11 @@ exports["callbackListner'"] = function(callback) {
   };
 };
 
+exports["killApp'"] = function(data){
+  JBridge.killApp();
+  return " ";
+}
+
 
 exports["getJsonFromString"] = function(normalString) {
   return JSON.parse(normalString);
