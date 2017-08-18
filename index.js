@@ -103,9 +103,12 @@ if (typeof window !== "undefined") {
   window.onStop = () => {
     console.log("onStop");
     //clear preferences
-
-    utils.clearDeeplinkPreferences();
     window.__CACHED_SCREENS[window.__CURR_SCREEN].screen.onStop();
+  }
+
+  window.onDestroy = () =>{
+    console.log("onDestroy");
+    utils.clearDeeplinkPreferences();
   }
 
   window.onResume = () => {
