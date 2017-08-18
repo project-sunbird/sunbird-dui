@@ -774,6 +774,8 @@ class UserActivity extends View {
   }
 
 
+
+
   afterRender = () =>{
 
 //from link
@@ -788,6 +790,8 @@ class UserActivity extends View {
             this.setLoginPreferences();
 
           }else{
+
+            this.deeplinkMode = "preview";
             this.performDeeplinkAction();
           }
 
