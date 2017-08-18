@@ -6,6 +6,7 @@ import { main } from './output/Main/index.js';
 import { changeFlow } from './output/Main/index.js';
 import { typeFlow } from './output/Main/index.js';
 import { userActivity } from './output/Main/index.js';
+var utils = require('./utils/GenericFunctions');
 
 const purescriptMain = main;
 const purescriptChangeFlow = changeFlow;
@@ -101,6 +102,9 @@ if (typeof window !== "undefined") {
 
   window.onStop = () => {
     console.log("onStop");
+    //clear preferences
+
+    utils.clearDeeplinkPreferences();
     window.__CACHED_SCREENS[window.__CURR_SCREEN].screen.onStop();
   }
 

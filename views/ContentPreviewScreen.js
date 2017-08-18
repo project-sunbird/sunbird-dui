@@ -260,6 +260,10 @@ class ContentPreviewScreen extends View {
         id: this.idSet.moduleText,
         visibility: "gone"
       });
+       cmd += this.set({
+        id: this.idSet.descriptionContainer,
+        visibility: "gone"
+      });
       Android.runInUI(cmd, 0);
       layout = <TextView
                   height="wrap_content"

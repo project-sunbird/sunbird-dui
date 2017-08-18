@@ -235,6 +235,8 @@ class CourseInfoActivity extends View {
       return;
     }
 
+    console.log("RESPONSE FOR IN COURSE INFO",state.responseFor)
+
     switch (state.responseFor + "") {
 
       case "API_EnrollCourse":

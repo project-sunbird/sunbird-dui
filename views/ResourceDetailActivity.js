@@ -466,7 +466,9 @@ class ResourceDetailActivity extends View {
 
   handleMenuClick = (url) =>{
     if(url == "ic_action_share_black"){
+      console.log("share clicked before")
      if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
+      console.log("share clicked after")
        window.__SharePopup.show();
      }else{
         utils.setPermissions("android.permission.WRITE_EXTERNAL_STORAGE");
