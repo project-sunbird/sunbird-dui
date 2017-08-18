@@ -133,7 +133,7 @@ class CourseEnrolledActivity extends View {
       return;
 
     var textToShow = ""
-
+    console.log(data)
     if(data.status == "NOT_FOUND"){
       window.__ContentLoaderDialog.hide();
       JBridge.showSnackBar(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
@@ -175,8 +175,8 @@ class CourseEnrolledActivity extends View {
         JBridge.getChildContent(identifier, callback1)
       } else {
         if(JBridge.isNetworkAvailable()){
-          JBridge.importCourse(identifier,"false");
-          this.changeOverFlow();
+          JBridge.importCourse(identifier,"true");
+          _this.changeOverFlow();
         }
         else
           JBridge.showSnackBar(window.__S.NO_INTERNET)
