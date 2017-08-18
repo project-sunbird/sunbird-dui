@@ -35,12 +35,13 @@ class ResourceContainer extends View {
       var size = item.hasOwnProperty("size") ? " ["+ utils.formatBytes(item.size)+"]" : "";
       var footerTitle = item.contentType + size;
 
-
+      console.log("adad",item)
       var temp = {};
       temp['imageUrl'] = item.hasOwnProperty("appIcon")?item.appIcon:"ic_action_resource";
       temp['title'] = item.name;
       temp['footerSubTitle'] = item.contentType;
       temp['footerTitle'] = "";
+      temp['screenshots'] = item.screenshots || [] ;
       temp['stars'] = item.hasOwnProperty("me_averageRating")? item.me_averageRating+ "" : "0";
       temp['actionText'] = window.__S.OPEN;
 
@@ -110,13 +111,14 @@ class ResourceContainer extends View {
       {
         var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");
         var resDetails = {};
-        console.log("ITEM NAME",item.name)
+        console.log("ITEM Clicked",item)
         resDetails['imageUrl'] = item.appIcon;
         resDetails['title'] = item.name;
         resDetails['description'] = item.description;
         resDetails['headFooterTitle'] = headFooterTitle;
         resDetails['identifier'] = item.identifier;
         resDetails['content'] = item;
+        resDetails['screenshots'] = item.screenshots;
 
         var whatToSend = {resourceDetails:JSON.stringify(resDetails)}
         var event = {tag:"OPEN_ResourceDetailActivity",contents:whatToSend}
