@@ -12,7 +12,7 @@ import UI
 
 
 homeFragment input whereFrom whatToSendBack = do
-	event <- ui $ MainActivity 
+	event <- ui $ MainActivity
 	case event of
 		OPEN_EnrolledCourseActivity {course:output} -> enrolledCourseActivity output "HomeFragment" input
 		OPEN_SearchActivity {filterDetails : output} -> homeSearchActivity output "HomeFragment" input
@@ -39,7 +39,7 @@ filterActivity input whereFrom whatToSendBack = do
 	event <- ui $ FilterActivity {filterDetails : input}
 	case event of
 		OPEN_SearchActivity_FILTER {filterData: output} -> homeSearchActivity output "FilterActivity" input
-		BACK_FilterActivity -> homeSearchActivity whatToSendBack "HomeFragment" input 
+		BACK_FilterActivity -> homeSearchActivity whatToSendBack "HomeFragment" input
 		_ -> filterActivity input whereFrom whatToSendBack
 
 resourceDetailActivity input whereFrom whatToSendBack= do
@@ -59,7 +59,7 @@ courseViewAllActivity input whereFrom whatToSendBack = do
 			"HomeFragment" -> homeFragment whatToSendBack "Terminate" input
 			"SearchActivity" -> homeSearchActivity whatToSendBack "Terminate" input
 			_ -> homeFragment whatToSendBack "Terminate" input
-		_ -> courseViewAllActivity input whereFrom whatToSendBack	
+		_ -> courseViewAllActivity input whereFrom whatToSendBack
 
 courseInfoActivity input whereFrom whatToSendBack= do
 	event <- ui $ CourseInfoActivity {courseDetails:input}
@@ -92,26 +92,12 @@ enrolledCourseActivity input whereFrom whatToSendBack= do
 				_ -> homeFragment whatToSendBack "Terminate" input
 		_ -> enrolledCourseActivity input whereFrom whatToSendBack
 
-moduleDetailActivity mName input whereFrom whatToSendBack= do
-	event <- ui $ ModuleDetailActivity {moduleName:mName,moduleDetails:input}
-	case event of
-		OPEN_AlternateModuleDetailActivity {moduleName:output1,moduleDetails:output2} -> subModuleDetailActivity output1 output2  "Terminate" input
-		BACK_ModuleDetailActivity -> case whereFrom of
-			"EnrolledCourseActivity" -> enrolledCourseActivity whatToSendBack "Terminate" input
-			"Terminate" -> enrolledCourseActivity whatToSendBack "Terminate" input
-			_ ->  enrolledCourseActivity whatToSendBack "Terminate" input
-  		_ -> moduleDetailActivity mName input whereFrom whatToSendBack
-
 
 subModuleDetailActivity mName input whereFrom whatToSendBack= do
-	event <- ui $ AlternateModuleDetailActivity {moduleName:mName,moduleDetails:input}
+	event <- ui $ ModuleDetailActivity {moduleName:mName,moduleDetails:input}
 	case event of
-		OPEN_ModuleActivity {moduleName:output1,moduleDetails:output2} -> moduleDetailActivity output1 output2 "Terminate" input
-		BACK_AlternateModuleDetailActivity -> case whereFrom of
+		BACK_ModuleDetailActivity -> case whereFrom of
 			"Terminate"->  enrolledCourseActivity whatToSendBack "Terminate" input
 			"EnrolledCourseActivity" -> enrolledCourseActivity whatToSendBack "Terminate" input
 			_ ->  enrolledCourseActivity whatToSendBack "Terminate" input
   		_ -> subModuleDetailActivity mName input whereFrom whatToSendBack
-
-
-

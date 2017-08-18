@@ -21,7 +21,6 @@ const UserActivity = require("../views/UserActivity");
 const CourseInfoActivity = require("../views/CourseInfoActivity");
 const CourseEnrolledActivity = require("../views/CourseEnrolledActivity");
 const ModuleDetailActivity = require("../views/ModuleDetailActivity");
-const AlternateModuleDetailActivity = require("../views/AlternateModuleDetailActivity");
 
 //Resource
 
@@ -50,10 +49,6 @@ var determineScreen = (screenName, state) => {
   // Space has been added for dir strucuture
   // add accordingly
   switch (state.currScreen) {
-     case "AlternateModuleDetailActivity":
-      screen = new(AlternateModuleDetailActivity(dispatcher, RootScreenActions))(null, null, state);
-      break;
-
       case "CourseInfoActivty":
       screen = new(CourseInfoActivty(dispatcher, RootScreenActions))(null, null, state);
       break;
