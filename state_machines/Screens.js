@@ -19,11 +19,6 @@ module.exports = function(action, payload, state) {
       localState.currScreen = "SplashScreenActivity";
       break;
 
-     case "AlternateModuleDetailActivity":
-      localState.isInit = false;
-      localState.currScreen = "AlternateModuleDetailActivity";
-      break;
-
      case "CommunityInfoActivity":
       localState.isInit = false;
       localState.currScreen = "CommunityInfoActivity";
