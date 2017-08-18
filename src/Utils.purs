@@ -235,6 +235,15 @@ searchUser user_token api_token filter_to_use=
                                                    ]) in
   (post requestUrl headers payload)
 
+compositeSearch user_token api_token filter_to_use=
+  let requestUrl = "/composite/v1/search"
+      headers = (generateRequestHeaders user_token api_token)
+      payload = A.fromObject (StrMap.fromFoldable [ (Tuple "id" (A.fromString "unique API ID"))
+                                                   , (Tuple "ts" (A.fromString "2013/10/15 16:16:3"))
+                                                   , (Tuple "request" (getJsonFromString filter_to_use))
+                                                   ]) in
+  (post requestUrl headers payload)
+
 
 
 
