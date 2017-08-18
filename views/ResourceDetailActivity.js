@@ -170,7 +170,7 @@ class ResourceDetailActivity extends View {
   }
 
   flagContent = (comment,selectedList) =>{
-
+    window.__LoaderDialog.show();
     console.log("flag request",this.details)
     console.log(comment,selectedList)
     var versionKey;
@@ -435,7 +435,6 @@ class ResourceDetailActivity extends View {
 
   }
   handleStateChange = (state) =>{
-
     var response = utils.decodeBase64(state.response.status[1])
     var responseCode = state.response.status[2]
     if(responseCode == 200){
@@ -451,6 +450,7 @@ class ResourceDetailActivity extends View {
       
     }
     else{
+      window.__LoaderDialog.hide();
       JBridge.showSnackBar(window.__S.CONTENT_FLAG_FAIL);
       _this.onBackPressed();
       

@@ -98,6 +98,7 @@ class FlagPopup extends View {
 
 
   onConfirm = () =>{
+    
     if (this.selectedList.length == 0) {
       JBridge.showSnackBar(window.__S.ERROR_FLAG_CONTENT_MIN_REASON)
       return;
