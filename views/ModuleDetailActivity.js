@@ -210,7 +210,8 @@ class ModuleDetailActivity extends View {
               visibility: "gone"
             });
             Android.runInUI(cmd, 0);
-            window.__ProgressButton.setVisibility("visible")
+            window.__ProgressButton.setButtonFor(module.identifier);
+            window.__ProgressButton.setVisibility("visible");
         }
     }
 
