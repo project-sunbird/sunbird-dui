@@ -130,6 +130,7 @@ class SearchResult extends View {
       resDetails['description'] = item.description;
       resDetails['headFooterTitle'] = headFooterTitle;
       resDetails['identifier'] = item.identifier;
+      resDetails['screenshots'] = item.screenshots || [] ;
       resDetails['content'] = item;
 
       var whatToSend = {resourceDetails:JSON.stringify(resDetails)}

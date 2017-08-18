@@ -74,6 +74,12 @@ class CourseInfoActivity extends View {
       return;
 
     var textToShow = ""
+    if(data.status == "NOT_FOUND"){
+      window.__ContentLoaderDialog.hide();
+      JBridge.showSnackBar(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
+      this.onBackPressed();
+      return;
+    }
     data.downloadProgress = data.downloadProgress == undefined ? 0 : data.downloadProgress;
     var downloadedPercent = parseInt(data.downloadProgress);
     downloadedPercent = downloadedPercent < 0 ? 0 : downloadedPercent;

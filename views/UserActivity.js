@@ -219,6 +219,7 @@ class UserActivity extends View {
 
   handleStateChange = (state) => {
     window.__LoaderDialog.hide();
+    console.log(state)
     var status = state.response.status[0];
     var response = JSON.parse(utils.decodeBase64(state.response.status[1]));
     var responseCode = state.response.status[2];
@@ -263,14 +264,17 @@ class UserActivity extends View {
     switch (state.responseFor + "") {
       case "API_SignUp":
         if (result.response == "SUCCESS") {
+          console.log(window.__S.WELCOME_ON_BOARD.format(this.userName))
           JBridge.showSnackBar(window.__S.WELCOME_ON_BOARD.format(this.userName))
-          JBridge.setInSharedPrefs("user_name", this.userFirstName);
+          JBridge.setInSharedPrefs("user_name", this.firstName);
           JBridge.setInSharedPrefs("user_token", result.userId);
           window.__pressedLoggedOut=true;
           this.userToken=result.userId;
           this.setDataInStorage();
           JBridge.setProfile(this.userToken);
           this.performLogin()
+
+
 
         } else {
           JBridge.showSnackBar(window.__S.RETRY_ACTION)
@@ -330,21 +334,6 @@ class UserActivity extends View {
   }
 
   toggleSignUpForm = () => {
-
-    JBridge.showSnackBar("Logged out")
-    JBridge.setInSharedPrefs("logged_in","NO");
-    JBridge.setInSharedPrefs("user_id", "__failed");
-    JBridge.setInSharedPrefs("user_name",  "__failed");
-    JBridge.setInSharedPrefs("user_token",  "__failed");
-
-    console.log("IN P1 ",window.__pressedLoggedOut)
-    window.__pressedLoggedOut=true;
-    console.log("IN P2 ",window.__pressedLoggedOut)
-    JBridge.keyCloakLogout(window.__apiUrl + "/auth/realms/sunbird/protocol/openid-connect/logout");
-    
-    window.__Logout();
-
-    return
     this.isLoginMode = !this.isLoginMode;
     var visibilityVal= this.isLoginMode?"gone":"visible"
     var oppVisibilityValue = !this.isLoginMode?"gone":"visible"
