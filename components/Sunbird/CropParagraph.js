@@ -21,7 +21,7 @@ class CropParagraph extends View {
     this.str = this.props.contentText;
     // console.log("inside CropParagraph, content : " + this.str);
     this.len = 50;
-    if(this.str.length > this.len) this.str = this.str.substring(0,len) + "...";
+    if(this.str.length > this.len) this.str = this.str.substring(0,this.len) + "...";
   }
 
   handleMoreClick = (data) => {
