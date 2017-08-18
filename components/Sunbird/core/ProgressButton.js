@@ -124,6 +124,10 @@ class ProgressButton extends View {
     Android.runInUI(cmd, 0);
   }
 
+  setButtonFor = (identifier) => {
+    this.props.identifier=identifier;
+  }
+
 
   handleButtonClick = () => {
 
