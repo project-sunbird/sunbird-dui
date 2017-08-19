@@ -34,8 +34,8 @@ splashScreenActivity = do
         _ -> pure $ "SplashScreenActivity"
 
 
-userActivity whereFrom = do
-    event <- ui $ UserActivity {whereFrom:whereFrom}
+userActivity input = do
+    event <- ui $ UserActivity {whereFrom:input}
     case event of
         API_GetProfileData {user_token:x,api_token:y}-> do
             responseData <- getProfileDetail x y
@@ -141,4 +141,4 @@ mainActivity input whereFrom whatToSendBack = do
 
 
 changeFlow = void $ launchAff $ mainActivity "{}" "LogInScreen" "Nothing"
-onBoardingFLow = void $ launchAff $ userActivity "SplashScreen" 
+onBoardingFLow = void $ launchAff $ userActivity "SplashScreenActivity" 

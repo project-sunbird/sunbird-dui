@@ -76,8 +76,18 @@ class ProfileExperiences extends View {
     } else {
       var noOfYears = "";
     }
-    console.log("input",input)
-    
+
+    var address = "";
+    if(input.hasOwnProperty("address")){
+      if(input.address.hasOwnProperty("city")){
+        address = input.address.city;
+      }
+      if(input.address.hasOwnProperty("country")){
+         address  = address == "" ? input.address.country : address + "," +input.address.country;
+      }
+    }
+
+
 
     return (<LinearLayout
               width="wrap_content"
@@ -94,7 +104,8 @@ class ProfileExperiences extends View {
                     <TextView
                     width="wrap_content"
                     height="wrap_content"
-                    text={input.address.city + ", " + input.address.country}
+                    visibility = {address == "" ? "gone" : "visible"}
+                    text={address}
                     style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
                     <TextView
