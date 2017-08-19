@@ -79,6 +79,7 @@ class ProfileFragment extends View {
       this.description = this.details.profileSummary ? this.details.profileSummary : ""
       this.createdBy = this.props.response.result;
       this.jobProfile = this.details.jobProfile;
+      this.education = this.details.education;
       console.log("this.createdBy", this.createdBy);
     } else {
       this.details = {};
@@ -240,7 +241,13 @@ class ProfileFragment extends View {
 
                 <ProfileExperiences
                   editable = {this.isEditable}
-                  data = {this.jobProfile}/>
+                  data = {this.education}
+                  heading = "Education"/>
+
+                <ProfileExperiences
+                  editable = {this.isEditable}
+                  data = {this.jobProfile}
+                  heading = "Experiences"/>
 
                 <ProfileCreations
                   data = {this.createdBy}

@@ -51,7 +51,8 @@ data UserActivityAction = OPEN_MainActivity |
   OPEN_DeepLink_ContentPreview{details::String} |
   API_LogIn {userName::String, userPass::String} |
   API_SignUp {request::String, api_token::String} |
-  API_EnrolledCourses {user_token::String, api_token::String}
+  API_EnrolledCourses {user_token::String, api_token::String} |
+  API_GetProfileData {user_token::String, api_token::String}
 
 instance userActivity :: UIScreen UserActivity UserActivityAction where
   generateMockEvents _ = [OPEN_MainActivity , API_LogIn {userName:"String",userPass:"String"}]
