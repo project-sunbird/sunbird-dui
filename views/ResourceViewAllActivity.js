@@ -132,7 +132,7 @@ getRows = (data) =>{
 
     handleResourceClick = (item)=>{
 
-
+      console.log(item)
        if(item.contentType.toLowerCase() == "course"){
         var whatToSend = {resourceDetails:JSON.stringify(item)}
         var event = {tag:"OPEN_ResourceViewAllDetail",contents:whatToSend}
@@ -145,11 +145,24 @@ getRows = (data) =>{
       }
       else
       {
+        var name = "",description = "";
+        if(item.hasOwnProperty("name")){
+          name = item.name;
+          description = item.description
+        }
+        else if(item.hasOwnProperty("contentData"))
+        {
+          name = item.contentData.name;
+          description = item.contentData.description;
+        }
+        else{
+          name = "";
+        }
         var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");
         var resDetails = {};
         resDetails['imageUrl'] = item.hasOwnProperty("contentData") ?"file://"+item.basePath+"/"+item.contentData.appIcon : item.appIcon;
-        resDetails['title'] = item.contentData.name;
-        resDetails['description'] = item.contentData.description;
+        resDetails['title'] = name;
+        resDetails['description'] = description;
         resDetails['headFooterTitle'] = headFooterTitle;
         resDetails['identifier'] = item.identifier;
         resDetails['content'] = item;
