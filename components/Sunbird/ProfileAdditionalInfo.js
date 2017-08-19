@@ -37,30 +37,28 @@ class ProfileAdditionalInfo extends View {
     {
       name: "PHONE",
       value : this.data.phone
-    },
-    {
-      name: "CURRENT LOCATION",
-      value : this.address
     }]
 
-  //   this.data = [{
-  //     name: "LANGUAGES",
-  //     date: "English, Hindi, Marathi"
-  //   },
-  //   {
-  //     name: "E-MAIL",
-  //     date: "harish.bookwala@gmail.com"
-  //   },
-  //   {
-  //     name: "PHONE",
-  //     date: "+91 80808 88888"
-  //   },
-  //   {
-  //     name: "CURRENT LOCATION",
-  //     date: "Pune, Maharashtra"
-  //   }
-  // ]
-  this.hobbies = "Books, cycling, music, sports, browsing, teaching"
+    this.getAddress(this.data.address);
+
+    this.hobbies = "Books, cycling, music, sports, browsing, teaching"
+  }
+
+  getAddress = (address) => {
+    address.map((item, i) => {
+      // if(item.addType == "permanent"){
+      //   this.info.push({
+      //     name: "PERMANENT ADDRESS",
+      //     value :item.city + ", " + item.country
+      //   })
+      // } else
+      if (item.addType == "current"){
+        this.info.push({
+          name: "CURRENT LOCATION",
+          value :item.city + ", " + item.country
+        })
+      }
+    })
   }
 
   getRows = (input)=> {
