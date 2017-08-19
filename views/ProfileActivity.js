@@ -4,6 +4,7 @@ var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
 var ProfileFragment = require('./Fragments/ProfileFragment');
 var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
+var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 
 var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
 var ProfileHeader = require('../components/Sunbird/ProfileHeader');
@@ -37,6 +38,10 @@ class ProfileActivity extends View {
       ]
     }
 
+    this.setIds([
+      "mainHolder"
+    ]);
+
     this.popupMenu="Logout";
 
     _this = this;
@@ -50,42 +55,14 @@ class ProfileActivity extends View {
     this.jobProfile = this.profileData.jobProfile;
     this.createdBy = this.data.creatorOfData.result;
     console.log("this.profileData", this.profileData);
+    console.log("this.createdBy", this.createdBy);
   }
 
-  handleStateChange = (state) => {
-    console.log(state, "handleStateChange resData");
-
-    var status = state.response.status[0];
-    var responseData = state.response.status[1];
-    var responseCode = state.response.status[2];
-    var responseUrl = state.response.status[3];
-
-
-    responseData = utils.decodeBase64(responseData);
-    if(responseCode == 401){
-      window.__LoaderDialog.hide();
-      var callback  = callbackMapper.map(function(token){
-        window.__apiToken = token;
-        var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken}
-        var event = { "tag": state.responseFor, contents: whatToSend };
-        window.__runDuiCallback(event);
-      });
-      JBridge.getApiToken(callback);
-      return;
-    }else if(responseCode == 501 || status === "failure" || status=="f") {
-      window.__LoaderDialog.hide();
-      JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION)
-      responseData=tmp;
-    } else {
-      window.__LoaderDialog.hide();
-      responseData = JSON.parse(responseData);
-    }
-
-    if(responseData.result.response.content && responseData.result.response.content.length > 0){
-
-    }else{
-
-    }
+  isAllFeildsPresent = () => {
+    if ((this.profileData.profileSummary && this.profileData.profileSummary == "") || (this.jobProfile && this.jobProfile.length > 0) || (this.createdBy && this.createdBy.content) || (this.profileData && this.profileData.language.length && this.profileData.language.length > 0 && this.profileData.address && this.profileData.address.length))
+      return true;
+    else
+      return false;
   }
 
   onBackPressed = () => {
@@ -168,6 +145,23 @@ class ProfileActivity extends View {
   }
 
   afterRender = () => {
+    if(!this.isAllFeildsPresent()){
+      console.log("displaying nothing");
+      var layout = (
+        <LinearLayout
+          width = "match_parent"
+          height = "match_parent"
+          orientation = "vertical">
+          {this.getLineSeperator()}
+          <TextView
+            height = "wrap_content"
+            width = "wrap_content"
+            text = "No details to show"
+            gravity = "center_vertical" />
+        </LinearLayout>
+      )
+      this.replaceChild(this.idSet.mainHolder, layout.render(), 0);
+    }
   }
 
   handleCreatedCardClick = (item) => {
@@ -242,20 +236,27 @@ class ProfileActivity extends View {
                 <ProfileHeader
                   data={this.profileData}/>
 
-                {this.getDescription()}
+                <LinearLayout
+                  width = "match_parent"
+                  height = "wrap_content"
+                  orientation = "vertical"
+                  id = {this.idSet.mainHolder}>
 
-                <ProfileExperiences
-                  editable = {this.isEditable}
-                  data = {this.jobProfile}/>
+                  {this.getDescription()}
 
-                <ProfileCreations
-                  data = {this.createdBy}
-                  editable = {this.editable}
-                  onCardClick = {this.handleCreatedCardClick}/>
+                  <ProfileExperiences
+                    editable = {this.isEditable}
+                    data = {this.jobProfile}/>
 
-                <ProfileAdditionalInfo
-                  data={this.profileData}
-                  editable = {this.isEditable}/>
+                  <ProfileCreations
+                    data = {this.createdBy}
+                    editable = {this.editable}
+                    onCardClick = {this.handleCreatedCardClick}/>
+
+                  <ProfileAdditionalInfo
+                    data={this.profileData}
+                    editable = {this.isEditable}/>
+                </LinearLayout>
 
               </LinearLayout>
 
