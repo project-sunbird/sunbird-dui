@@ -5,6 +5,7 @@ var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout
 var ProfileFragment = require('./Fragments/ProfileFragment');
 var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
+var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 
 var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
 var ProfileHeader = require('../components/Sunbird/ProfileHeader');
@@ -152,13 +153,26 @@ class ProfileActivity extends View {
         <LinearLayout
           width = "match_parent"
           height = "match_parent"
+          gravity="center_horizontal"
+          alpha="0.33"
           orientation = "vertical">
           {this.getLineSeperator()}
+
+          <ImageView
+          height="70"
+          width="70"
+          margin="0,150,0,0"
+          gravity="center_horizontal"
+          imageUrl="ic_blank_doc"/>
+
+
           <TextView
             height = "wrap_content"
             width = "wrap_content"
+            margin="0,30,0,0"
+            style={window.__TextStyle.textStyle.HEADING.DARK}
             text = "No details to show"
-            gravity = "center_vertical" />
+            gravity = "center_horizontal" />
         </LinearLayout>
       )
       this.replaceChild(this.idSet.mainHolder, layout.render(), 0);

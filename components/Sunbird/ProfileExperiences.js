@@ -67,6 +67,7 @@ class ProfileExperiences extends View {
     } else {
       var noOfYears = "";
     }
+
     var address = "";
     if(input.hasOwnProperty("address")){
       if(input.address.hasOwnProperty("city")){
@@ -76,6 +77,7 @@ class ProfileExperiences extends View {
          address  = address == "" ? input.address.country : address + "," +input.address.country;
       }
     }
+
 
 
     return (<LinearLayout

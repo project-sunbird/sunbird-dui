@@ -61,6 +61,11 @@ exports.textStyle = {
       color: Colors.PRIMARY_BLACK,
       textSize: Font.fontSize.FONT_20,
       fontStyle: Font.fontStyle.BOLD
+    },
+    SEMI_DARK:{
+      color: Colors.PRIMARY_BLACK_44,
+      textSize: Font.fontSize.FONT_20,
+      fontStyle: Font.fontStyle.BOLD
     }
   },
   TOOLBAR: {
