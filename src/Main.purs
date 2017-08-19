@@ -30,7 +30,7 @@ splashScreenActivity :: Aff(ui::UI,console::CONSOLE) String
 splashScreenActivity = do
     event <- ui $ InitScreen
     case event of
-        OPEN_UserActivity -> userActivity "splashScreenActivity"
+        OPEN_UserActivity -> userActivity "SplashScreenActivity"
         _ -> pure $ "SplashScreenActivity"
 
 
@@ -133,3 +133,4 @@ mainActivity input whereFrom whatToSendBack = do
 
 
 changeFlow = void $ launchAff $ mainActivity "{}" "LogInScreen" "Nothing"
+onBoardingFLow = void $ launchAff $ userActivity "SplashScreen" 
