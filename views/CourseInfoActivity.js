@@ -318,6 +318,9 @@ class CourseInfoActivity extends View {
 
         window.__LoaderDialog.show();
 
+
+        console.log("HANDLE ENROLL CLICK");
+
         var whatToSend = { 
         "user_token":window.__userToken!=undefined?window.__userToken:"",
         "reqParams": this.details.identifier,

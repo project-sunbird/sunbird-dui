@@ -44,7 +44,7 @@ class ResourceDetailActivity extends View {
         {imageUrl:'ic_action_overflow'}
       ]
     }
-    this.popupMenu = window.__S.DELETE + "," + window.__S.FLAG
+    this.popupMenu = window.__S.DELETE + "," + window.__S.FLAG 
 
     this.shouldCacheScreen = false;
 
@@ -136,7 +136,7 @@ class ResourceDetailActivity extends View {
                               }];
 
         }
-
+                      
           var sharePopUp = (
             <SharePopup
             data = {input}/>
@@ -147,13 +147,13 @@ class ResourceDetailActivity extends View {
         });
 
         JBridge.exportEcar(this.details.identifier, shareCallback);
-
+      
   }
 
   afterRender = () => {
 
      this.checkLocalStatus(this.details);
-
+    
     if(this.details && this.details.content && this.details.content.me_averageRating){
     JBridge.setRating(this.idSet.ratingBar, this.details.content.me_averageRating);
     }else if(this.details.content.hasOwnProperty("contentData") && this.details.content.contentData.hasOwnProperty("me_averageRating")){
@@ -170,7 +170,7 @@ class ResourceDetailActivity extends View {
   }
 
   flagContent = (comment,selectedList) =>{
-
+    window.__LoaderDialog.show();
     console.log("flag request",this.details)
     console.log(comment,selectedList)
     var versionKey;
@@ -187,7 +187,7 @@ class ResourceDetailActivity extends View {
                           "versionKey": versionKey,
                           "flags": [comment]
                      }
-
+    
     var whatToSend = {
       "user_token" : window.__userToken,
       "api_token" : window.__apiToken,
@@ -435,14 +435,25 @@ class ResourceDetailActivity extends View {
 
   }
   handleStateChange = (state) =>{
-
     var response = utils.decodeBase64(state.response.status[1])
     var responseCode = state.response.status[2]
     if(responseCode == 200){
-      console.log("flag successful",this.details)
-      setTimeout(() => {
-          this.overFlowCallback(0)
-         }, 2000)
+      var callback = callbackMapper.map(function(response){
+        window.__LoaderDialog.hide();
+
+        if(response[0] == "successful"){
+          JBridge.showSnackBar(window.__S.CONTENT_FLAGGED_MSG)
+          _this.onBackPressed();
+        }
+      });
+      JBridge.deleteContent(this.details.identifier,callback);
+      
+    }
+    else{
+      window.__LoaderDialog.hide();
+      JBridge.showSnackBar(window.__S.CONTENT_FLAG_FAIL);
+      _this.onBackPressed();
+      
     }
     console.log(response)
 
@@ -457,7 +468,7 @@ class ResourceDetailActivity extends View {
         window.__LoaderDialog.hide();
 
         if(response[0] == "successful"){
-          JBridge.showSnackBar(window.__S.MSG_RESOURCE_DELETED)
+          
           _this.onBackPressed();
         }
       });
@@ -484,7 +495,7 @@ class ResourceDetailActivity extends View {
       var event= { "tag": "BACK_ResourceDetailActivity", contents: whatToSend };
       window.__runDuiCallback(event);
     }
-
+    
   }
 
   changeOverFlow = () =>{
@@ -504,9 +515,8 @@ class ResourceDetailActivity extends View {
 
   handleMenuClick = (url) =>{
     if(url == "ic_action_share_black"){
-      console.log("share clicked before")
+
      if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
-      console.log("share clicked after")
        window.__SharePopup.show();
      }else{
         utils.setPermissions("android.permission.WRITE_EXTERNAL_STORAGE");
@@ -588,7 +598,7 @@ class ResourceDetailActivity extends View {
        height="match_parent"
        id={this.idSet.sharePopupContainer}/>
 
-
+       
 
       </RelativeLayout>
     );

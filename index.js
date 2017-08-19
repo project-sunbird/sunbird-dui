@@ -97,25 +97,38 @@ if (typeof window !== "undefined") {
 
   window.onBackPressed = () => {
     console.log("onBackPressed");
-    window.__CACHED_SCREENS[window.__CURR_SCREEN].screen.onBackPressed();
+     if(window.__CACHED_SCREENS[window.__CURR_SCREEN].screen.hasOwnProperty("onBackPressed")){
+        window.__CACHED_SCREENS[window.__CURR_SCREEN].screen.onBackPressed();
+    }
   }
 
   window.onStop = () => {
     console.log("onStop");
-    //clear preferences
+    if(window.__CACHED_SCREENS[window.__CURR_SCREEN].screen.hasOwnProperty("onStop")){
+      window.__CACHED_SCREENS[window.__CURR_SCREEN].screen.onStop();
+    }
+  }
 
+  window.onDestroy = () =>{
+    console.log("onDestroy");
     utils.clearDeeplinkPreferences();
-    window.__CACHED_SCREENS[window.__CURR_SCREEN].screen.onStop();
+    if(window.__CACHED_SCREENS[window.__CURR_SCREEN].screen.hasOwnProperty("onDestroy")){
+      window.__CACHED_SCREENS[window.__CURR_SCREEN].screen.onDestroy();
+    }
   }
 
   window.onResume = () => {
     console.log("onResume");
-    window.__CACHED_SCREENS[window.__CURR_SCREEN].screen.onResume();
+    if(window.__CACHED_SCREENS[window.__CURR_SCREEN].screen.hasOwnProperty("onResume")){
+      window.__CACHED_SCREENS[window.__CURR_SCREEN].screen.onResume();
+    }
   }
 
   window.onPause = () => {
     console.log("onPause");
-    window.__CACHED_SCREENS[window.__CURR_SCREEN].screen.onPause();
+    if(window.__CACHED_SCREENS[window.__CURR_SCREEN].screen.hasOwnProperty("onPause")){
+      window.__CACHED_SCREENS[window.__CURR_SCREEN].screen.onPause();
+    }
   }
 
 
