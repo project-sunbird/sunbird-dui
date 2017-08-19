@@ -50,6 +50,7 @@ class ResourceDetailActivity extends View {
 
     this.details = state.data.value0.resourceDetails;
     this.details = JSON.parse(this.details);
+    
     console.log("RDA",this.details)
     
     this.localStatus = false;
@@ -309,7 +310,7 @@ class ResourceDetailActivity extends View {
             margin="0,16,0,0"
             width="wrap_content"
             height="wrap_content"
-            text="CREATED BY"
+            text={window.__S.CREATED_BY}
             style={window.__TextStyle.textStyle.HINT.BOLD}/>
 
 
@@ -321,7 +322,7 @@ class ResourceDetailActivity extends View {
               margin="0,4,0,10"
               width="wrap_content"
               height="wrap_content"
-              text={this.details.content.creator}
+              text={this.details.content.creator || window.__S.CREATOR_NAME_NOT_AVAILABLE}
               style={window.__TextStyle.textStyle.CARD.TITLE.REGULAR_BLACK}/>
 
 

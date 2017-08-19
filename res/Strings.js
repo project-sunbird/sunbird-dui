@@ -23,6 +23,7 @@ const stringsRes = {
 		ALREADY_HAVE_ACC : "Already have an Account? Sign in now",
 		NO_ACC_YET : "No Account yet? Sign up now",
 		FORGOT_PASSWORD : "FORGOT PASSWORD?",
+		CREATOR_NAME_NOT_AVAILABLE : "Creator name not available",
 		BACK_TO_EXIT : "Press back again to exit app",
 		INTERNET_ISSUE : "INTERNET CONNECTION ISSUE",
 		ERROR_SERVER_MESSAGE : "Error :",
