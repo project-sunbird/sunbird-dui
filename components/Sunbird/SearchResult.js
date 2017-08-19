@@ -16,7 +16,7 @@ class SearchResult extends View {
   constructor(props, children) {
     super(props, children);
     console.log(this.props.data);
-    
+
   }
   getData = () => {
     var answerLayout = this.props.data.map((item, index) => {
@@ -92,10 +92,18 @@ class SearchResult extends View {
 
     var itemDetails = JSON.stringify(item);
     if (item.hasOwnProperty("data") && item.data.hasOwnProperty("education")){
-         var data = JSON.stringify(item);
-         var whatToSend={profile:data};
-         var event={tag:"OPEN_ProfileActivity_SEARCH",contents:whatToSend}
-         window.__runDuiCallback(event);
+      console.log("item data", item);
+      var data = JSON.stringify(item);
+      var whatToSend={
+        user_token: item.data.identifier,
+        api_token: window.__apiToken
+      };
+      var event = { tag: "API_GetProfile", contents: whatToSend }
+      if (JBridge.isNetworkAvailable()){
+        window.__runDuiCallback(event);
+      } else {
+        JBridge.showSnackBar(window.__S.NO_INTERNET);
+      }
    }
     else if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook" || utils.checkEnrolledCourse(item.identifier)){
 
@@ -106,7 +114,7 @@ class SearchResult extends View {
       }else{
         this.setPermissions();
       }
- 
+
     }
     else if(item.contentType.toLowerCase() == "course"){
 
@@ -117,13 +125,13 @@ class SearchResult extends View {
       }else{
         this.setPermissions();
       }
-    
+
     }
-    
+
     else
     {
 
-      var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");      
+      var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");
       var resDetails = {};
       resDetails['imageUrl'] = item.appIcon;
       resDetails['title'] = item.name;
@@ -135,7 +143,7 @@ class SearchResult extends View {
 
       var whatToSend = {resourceDetails:JSON.stringify(resDetails)}
       var event= {tag:"OPEN_ResourceDetailActivity_SEARCH",contents:whatToSend}
-      window.__runDuiCallback(event); 
+      window.__runDuiCallback(event);
     }
 
   }
@@ -158,7 +166,7 @@ class SearchResult extends View {
 
   }
 
-  
+
 
   render() {
 

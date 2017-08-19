@@ -125,16 +125,31 @@ class ProfileFragment extends View {
   }
 
   handleResponse = () => {
-
-
-
+    console.log("this.props.response", this.props.response);
     if (this.props.response) {
-
-      this.details = this.props.response.result.response;
+      if (!this.props.response.sendBack){
+        var whatToSend = {
+          user_token: window.__userToken,
+          api_token: window.__apiToken,
+          sendBack : JSON.stringify(this.props.response),
+          filters: JSON.stringify({"filters" : {
+                     "createdBy": this.props.response.result.response.userId,
+                     "status": ["Live"],
+                     "contentType": ["Collection", "Story", "Worksheet", "TextBook", "Course", "LessonPlan"]
+                 }
+               })
+         }
+        var event = { tag: "API_CreatedBy", contents: whatToSend}
+        window.__runDuiCallback(event);
+      }
+      var profileData = JSON.parse(this.props.response.sendBack)
+      this.details = profileData.result.response;
       this.description = this.details.profileSummary ? this.details.profileSummary : ""
+      this.createdBy = this.props.response.result.content;
     } else {
-
       this.details = {};
+      this.description = "";
+      this.createdBy = {};
     }
   }
 
@@ -229,10 +244,13 @@ class ProfileFragment extends View {
                 <ProfileHeader
                   data={this.details}/>
 
-
                 <ProfileAdditionalInfo
                   data={this.details}
                   editable = {this.isEditable}/>
+
+                <ProfileCreations
+                  data = {this.createdBy}
+                  editable = {this.editable}/>
 
               </LinearLayout>
 

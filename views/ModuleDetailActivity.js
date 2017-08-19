@@ -143,7 +143,7 @@ class ModuleDetailActivity extends View {
                 JBridge.getChildContent(identifier, callback1)
             } else {
               if (JBridge.isNetworkAvailable()){
-                JBridge.importCourse(identifier, "false")
+                JBridge.importCourse(identifier, "true")
               }
               else
                 JBridge.showSnackBar(window.__S.NO_INTERNET)

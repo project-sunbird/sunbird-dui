@@ -41,7 +41,7 @@ class MainActivity extends View {
     ]);
 
     _this= this;
-    
+
     //CurrentIndexOfViewPager
     this.currentPageIndex = 0;
 
@@ -141,7 +141,7 @@ class MainActivity extends View {
 
   handleStateChange = (state) => {
     window.__LoaderDialog.hide();
-
+    console.log(state, "state in handleStateChange");
     this.currentPageIndex = isNaN(this.currentPageIndex) ? 0 : this.currentPageIndex;
     var shouldBeModified = false;
     var status = state.response.status[0];
@@ -158,7 +158,7 @@ class MainActivity extends View {
           }
         }
       }
-      responseData = utils.decodeBase64(responseData)
+
     if(responseCode == 401){
       var callback  = callbackMapper.map(function(token){
         window.__apiToken = token;
@@ -173,7 +173,11 @@ class MainActivity extends View {
       responseData=tmp;
     } else {
      // responseData = utils.jsonifyData(responseData);
+      responseData = utils.decodeBase64(responseData)
       responseData = JSON.parse(responseData);
+      if(state.sendBack){
+        responseData.sendBack = state.sendBack;
+      }
 
     }
 
@@ -185,7 +189,7 @@ class MainActivity extends View {
     }
 
     if (state.responseFor == "API_UserEnrolledCourse") {
-      
+
       window.__enrolledCourses = responseData.result.courses;
       window.setEnrolledCourses(responseData.result.courses);
 
@@ -391,7 +395,7 @@ class MainActivity extends View {
 
         if(JBridge.isNetworkAvailable()||(index!=1&&index!=4)){
               this.currentPageIndex = index;
-              
+
               if(index!=1 && index!=2 && index!=4){
                 this.switchContent(index);
               }

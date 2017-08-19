@@ -51,7 +51,7 @@ data UserActivityAction = OPEN_MainActivity |
   OPEN_DeepLink_ContentPreview{details::String} |
   API_LogIn {userName::String, userPass::String} |
   API_SignUp {request::String, api_token::String} |
-  API_EnrolledCourses {user_token::String, api_token::String} 
+  API_EnrolledCourses {user_token::String, api_token::String}
 
 instance userActivity :: UIScreen UserActivity UserActivityAction where
   generateMockEvents _ = [OPEN_MainActivity , API_LogIn {userName:"String",userPass:"String"}]
@@ -98,7 +98,8 @@ data MainActivityAction = OPEN_HomeFragment |
   API_CourseFragment {user_token::String, api_token::String} |
   API_ProfileFragment {user_token::String, api_token::String}|
   API_UserEnrolledCourse {user_token::String, api_token::String} |
-  API_FilterPage {user_token::String, api_token::String,filter_to_send::String}
+  API_FilterPage {user_token::String, api_token::String,filter_to_send::String} |
+  API_CreatedBy {user_token::String, api_token::String, sendBack::String, filters::String }
 
 instance homeActivity :: UIScreen MainActivity MainActivityAction where
   generateMockEvents _ = [BACK_HomeActivity , OPEN_HomeFragment , OPEN_CourseFragment , OPEN_ResourceFragment , OPEN_CommunityFragment , OPEN_ProfileFragment ]
@@ -254,7 +255,8 @@ data CommProfSearchActivityAction = DummyCommProfSearchActivity |
   BACK_CommProfSearchActivity |
   OPEN_FilterActivity2 {filterDetails::String} |
   OPEN_ProfileActivity_SEARCH {profile::String}|
-  API_SearchProfile {user_token::String, api_token::String,filter_to_send::String}
+  API_SearchProfile {user_token::String, api_token::String,filter_to_send::String} |
+  API_GetProfile {user_token::String, api_token::String}
 
 instance commProfSearchActivity :: UIScreen CommProfSearchActivity CommProfSearchActivityAction where
   generateMockEvents _ = [DummyCommProfSearchActivity , BACK_CommProfSearchActivity ]

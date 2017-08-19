@@ -16,6 +16,10 @@ profileFragment input whereFrom whatToSendBack = do
 		OPEN_NotificationActivity -> notificationActivity "{}" "ProfileFragment"  input
 		OPEN_CommProfSearchActivity {filterDetails : output} -> searchProfileActivity output "ProfileFragment" input
 		OPEN_EditProfileActivity -> additionalInformationActivity "{}" "profileFragment"  input
+		API_CreatedBy { user_token:x, api_token:y, sendBack:z , filters:w} -> do
+			responseData <- compositeSearch x y w
+			_ <- sendUpdatedState {response : responseData, responseFor : "API_CreatedBy", screen:"asas", sendBack:z}
+			pure $ "handled"
 		_ -> profileFragment input whereFrom whatToSendBack
 
 notificationActivity input whereFrom whatToSendBack = do
@@ -33,6 +37,10 @@ searchProfileActivity input whereFrom whatToSendBack = do
 			resData <- searchUser x y z
 			_<- sendUpdatedState {response : resData, responseFor : "API_SearchProfile", screen:"asas"}
 			pure $ "apiCalled"
+		API_GetProfile {user_token:x, api_token:y} -> do
+			resData <- getProfileDetail x y
+			_<- sendUpdatedState {response : resData, responseFor : "API_GetProfile", screen:"asas"}
+			pure $ "apiCalled"
 		OPEN_ProfileActivity_SEARCH {profile: output} -> profileActivity output "CommProfSearchActivity" input
 		BACK_CommProfSearchActivity -> case whereFrom of
 			"ProfileFragment" -> profileFragment whatToSendBack "Terminate" input
@@ -45,7 +53,7 @@ profileActivity input whereFrom whatToSendBack = do
 		OPEN_CommProfSearchActivity_Prof {filterDetails : output} -> searchProfileActivity output "ProfileFragment" input
 		BACK_ProfileActivity -> searchProfileActivity whatToSendBack "Terminate" input
 		_ -> profileActivity input whereFrom whatToSendBack
-		
+
 additionalInformationActivity input whereFrom whatToSendBack = do
 	event <- ui $ AdditionalInformationActivity
 	case event of

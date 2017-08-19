@@ -52,14 +52,19 @@ class CommProfSearchActivity extends View {
 
   handleStateChange = (state) => {
     console.log(state, "handleStateChange resData");
-    
-    var status = state.response.status[0];
-    var responseData = state.response.status[1];
-    var responseCode = state.response.status[2];
-    var responseUrl = state.response.status[3];
-    
 
-    responseData = utils.decodeBase64(responseData);
+    if (state.response.status[0]){
+      var status = state.response.status[0];
+      var responseData = state.response.status[1];
+      var responseCode = state.response.status[2];
+      var responseUrl = state.response.status[3];
+    } else if (state.response.hasOwnProperty("status")){
+      var status = state.response.status;
+      var responseData = "";
+      var responseCode = state.response.statusCode;
+      var responseUrl = "";
+    }
+
     if(responseCode == 401){
       window.__LoaderDialog.hide();
       var callback  = callbackMapper.map(function(token){
@@ -70,30 +75,40 @@ class CommProfSearchActivity extends View {
       });
       JBridge.getApiToken(callback);
       return;
-    }else if(responseCode == 501 || status === "failure" || status=="f") {
+    }else if(responseCode == 501 || status === "failure" || status=="f" || responseCode == 504 || status == "failed") {
       window.__LoaderDialog.hide();
       JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION)
-      responseData=tmp;
     } else {
+      responseData = utils.decodeBase64(responseData);
       window.__LoaderDialog.hide();
       responseData = JSON.parse(responseData);
     }
 
-    if(responseData.result.response.content && responseData.result.response.content.length > 0){
-      var content = responseData.result.response.content;
-      console.log(responseData, "res after parse");
-      var data = [];
-      content.map((item, i) => {
-        data.push({
-          name: item.firstName + (item.lastName?" " + item.lastName : ""),
-          data: item
+    if(state.responseFor == "API_SearchProfile"){
+      if(responseData.result.response.content && responseData.result.response.content.length > 0){
+        var content = responseData.result.response.content;
+        console.log(responseData, "res after parse");
+        var data = [];
+        content.map((item, i) => {
+          data.push({
+            name: item.firstName + (item.lastName?" " + item.lastName : ""),
+            data: item
+          })
         })
-      })
-      this.renderResult(data);
-      window.__LoaderDialog.hide();
-    }else{
-      this.renderNoResult();
-      window.__LoaderDialog.hide();
+        this.renderResult(data);
+        window.__LoaderDialog.hide();
+      }else{
+        this.renderNoResult();
+        window.__LoaderDialog.hide();
+      }
+    } else if (state.responseFor == "API_GetProfile"){
+      console.log("responseData", responseData);
+       var data = JSON.stringify(responseData);
+       var whatToSend={profile:data};
+       var event={tag:"OPEN_ProfileActivity_SEARCH",contents:whatToSend}
+       window.__runDuiCallback(event);
+    }else {
+      JBridge.showSnackBar("Unhandled responseFor");
     }
 
     var callback = callbackMapper.map(function(data) {
@@ -108,7 +123,7 @@ class CommProfSearchActivity extends View {
     console.log("afterRender - CommProfSearchActivity");
     if(this.filterData!=undefined && this.filterData.length != 0){
       JBridge.showSnackBar(window.__S.SEARCH_LOADING_MESSAGE)
-      
+
       var cmd = "";
       cmd += _this.set({
         id: _this.idSet.filterHolder,
@@ -331,8 +346,12 @@ class CommProfSearchActivity extends View {
 
   handleSearchClick = (searchText) => {
     JBridge.hideKeyboard();
-    window.__LoaderDialog.show();
-    this.getSearchList(searchText[0],"false");
+    if(JBridge.isNetworkAvailable()){
+      window.__LoaderDialog.show();
+      this.getSearchList(searchText[0],"false");
+    } else {
+      JBridge.showSnackBar(window.__S.NO_INTERNET);
+    }
   }
 
   handleClearClick = () => {

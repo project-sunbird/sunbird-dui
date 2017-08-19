@@ -19,18 +19,7 @@ class ProfileCreations extends View {
 
     ]);
     _this=this;
-    this.data=[
-      {
-        "type":"course",
-        "moduleText":"Organic Chemistry for Standard VII",
-        "imageUrl":"https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg"
-      },
-      {
-        "type":"course",
-        "moduleText":"Atomic Physics for Standard VII",
-        "imageUrl":"https://www.arborday.org/images/hero/medium/hero-green-leaves-in-sunlight.jpg"
-      }
-    ]
+    this.data = this.props.data;
 
   }
 
@@ -93,7 +82,7 @@ class ProfileCreations extends View {
                     width="wrap_content"
                     height="wrap_content"
                     padding = "10,10,10,10"
-                    text= {item.type}
+                    text= {item.contentType}
                     padding="5,3,5,3"
                     cornerRadius="4"
                     background={window.__Colors.PRIMARY_BLACK}
@@ -104,7 +93,7 @@ class ProfileCreations extends View {
                     height="wrap_content"
                     padding = "10,10,10,10"
                     alignParentBottom="true,-1"
-                    text= {item.moduleText}
+                    text= {item.name}
                     style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}/>
 
               </RelativeLayout>
