@@ -157,7 +157,7 @@ class ProfileFragment extends View {
     return (<LinearLayout
             width="match_parent"
             height="1"
-            margin="0,24,0,0"
+            margin="0,0,0,15"
             background={window.__Colors.PRIMARY_BLACK_22}/>)
   }
 
@@ -179,17 +179,40 @@ class ProfileFragment extends View {
   }
 
   getDescription = () => {
-    return(
-      <LinearLayout
-        orientation = "vertical"
-        height = "wrap_content"
-        width = "match_parent">
-        <TextView
-          text = "Description"
-          style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
+    console.log("this.details", this.details.profileSummary);
+    if(this.details.profileSummary){
+      console.log("inside getDescription");
+      return(
+        <LinearLayout
+          orientation = "vertical"
+          height = "wrap_content"
+          width = "match_parent">
 
-      </LinearLayout>
-    )
+          {this.getLineSeperator()}
+          {
+          // <TextView
+          //   text = "Description"
+          //   style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
+          }
+            <CropParagraph
+              height = "wrap_content"
+              margin = "0,0,0,12"
+              width = "match_parent"
+              headText = { window.__S.DESCRIPTION }
+              contentText = { this.details.profileSummary }/>
+
+        </LinearLayout>
+      )
+    } else {
+      return (
+        <LinearLayout
+          orientation = "vertical"
+          height = "wrap_content"
+          width = "match_parent">
+        </LinearLayout>
+      )
+    }
+
   }
 
   handleMenuClick = (url) => {
@@ -244,13 +267,15 @@ class ProfileFragment extends View {
                 <ProfileHeader
                   data={this.details}/>
 
-                <ProfileAdditionalInfo
-                  data={this.details}
-                  editable = {this.isEditable}/>
+                {this.getDescription()}
 
                 <ProfileCreations
                   data = {this.createdBy}
                   editable = {this.editable}/>
+
+                <ProfileAdditionalInfo
+                  data={this.details}
+                  editable = {this.isEditable}/>
 
               </LinearLayout>
 

@@ -25,7 +25,6 @@ class ProfileAdditionalInfo extends View {
       if (i == this.data.language.length - 1) append = "";
       this.languages += item + append;
     })
-    this.address = (this.data.address.length > 0) ? this.data.address : ""
     this.info = [{
       name: "LANGUAGES",
       value : this.languages
@@ -52,7 +51,7 @@ class ProfileAdditionalInfo extends View {
       //     value :item.city + ", " + item.country
       //   })
       // } else
-      if (item.addType == "current"){
+      if (item.addType == "current" && item.country){
         this.info.push({
           name: "CURRENT LOCATION",
           value :item.city + ", " + item.country
@@ -106,8 +105,13 @@ class ProfileAdditionalInfo extends View {
   getHeader = () =>{
     return (<LinearLayout
               width="wrap_content"
-              height="wrap_content"
-              >
+              height="wrap_content">
+
+              <TextView
+                width="wrap_content"
+                height="wrap_content"
+                text="Personal Details"
+                style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
               <ViewWidget
               height="0"
@@ -127,7 +131,7 @@ class ProfileAdditionalInfo extends View {
     return (<LinearLayout
             width="match_parent"
             height="1"
-            margin="0,0,0,24"
+            margin="0,0,0,15"
             background={window.__Colors.PRIMARY_BLACK_22}/>)
   }
 
@@ -168,7 +172,7 @@ class ProfileAdditionalInfo extends View {
       <LinearLayout
                 width="wrap_content"
                 height="wrap_content"
-                margin="0,16,0,0"
+                margin="0,15,0,0"
                 orientation="vertical">
 
                 {this.getLineSeperator()}
