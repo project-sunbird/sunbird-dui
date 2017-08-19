@@ -17,15 +17,6 @@ class ProfileExperiences extends View {
     ]);
     _this = this;
     this.isEditable = this.props.editable;
-    this.data = [{
-      "position": "All subjects class teacher",
-      "place": "Balamandir, Vadgaon",
-      "duration": "JUN ’10 - JUL ‘16 (6 YRS)"
-    }, {
-      "position": "Chemistry teacher - Std VII & VIII",
-      "place": "Balamandir, Vadgaon",
-      "duration": "JUN ’10 - JUL ‘16 (6 YRS)"
-    }]
 
     this.jobs = (this.props.data != undefined)? this.props.data : [];
 
@@ -40,7 +31,7 @@ class ProfileExperiences extends View {
               <TextView
                 width="wrap_content"
                 height="wrap_content"
-                text="Experience"
+                text={this.props.heading}
                 style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
               <ViewWidget
@@ -98,7 +89,7 @@ class ProfileExperiences extends View {
                     <TextView
                     width="wrap_content"
                     height="wrap_content"
-                    text={input.jobName}
+                    text={input.jobName ? input.jobName : input.name}
                     style={window.__TextStyle.textStyle.CARD.HEADING}/>
 
                     <TextView

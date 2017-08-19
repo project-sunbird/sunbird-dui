@@ -54,13 +54,14 @@ class ProfileActivity extends View {
 
     this.profileData = (JSON.parse(this.data.profileData)).data;
     this.jobProfile = this.profileData.jobProfile;
+    this.education = this.profileData.education;
     this.createdBy = this.data.creatorOfData.result;
     console.log("this.profileData", this.profileData);
     console.log("this.createdBy", this.createdBy);
   }
 
   isAllFeildsPresent = () => {
-    if ((this.profileData.profileSummary && this.profileData.profileSummary == "") || (this.jobProfile && this.jobProfile.length > 0) || (this.createdBy && this.createdBy.content) || (this.profileData && this.profileData.language.length && this.profileData.language.length > 0 && this.profileData.address && this.profileData.address.length))
+    if ((this.profileData.profileSummary && this.profileData.profileSummary == "") || (this.education && this.education.length > 0) || (this.jobProfile && this.jobProfile.length > 0) || (this.createdBy && this.createdBy.content) || (this.profileData && this.profileData.language.length && this.profileData.language.length > 0 && this.profileData.address && this.profileData.address.length))
       return true;
     else
       return false;
@@ -260,7 +261,13 @@ class ProfileActivity extends View {
 
                   <ProfileExperiences
                     editable = {this.isEditable}
-                    data = {this.jobProfile}/>
+                    data = {this.education}
+                    heading = "Education"/>
+
+                  <ProfileExperiences
+                    editable = {this.isEditable}
+                    data = {this.jobProfile}
+                    heading = "Experiences"/>
 
                   <ProfileCreations
                     data = {this.createdBy}
