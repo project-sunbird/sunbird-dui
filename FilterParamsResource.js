@@ -1,6 +1,7 @@
 exports.filterParamsResource =[
 {
   name : "language",
+  displayName : "Language",
   values : [ "English",
             "Hindi",
             "Assamese",
@@ -26,6 +27,7 @@ exports.filterParamsResource =[
 },
 {
   name : "grade",
+  displayName : "Grade",
   values : [   "Kindergarten",
               "Grade 1",
               "Grade 2",
@@ -43,6 +45,7 @@ exports.filterParamsResource =[
 },
 {
   name : "domain",
+  displayName : "Domain",
   values : [ "numeracy",
             "literacy",
             "science" ]
@@ -50,6 +53,7 @@ exports.filterParamsResource =[
 },
 {
   name : "contentType",
+  displayName : "Content Type",
   values : [ "Story",
             "Worksheet",
             "Collection",
@@ -59,6 +63,7 @@ exports.filterParamsResource =[
 },
 {
   name : "subject",
+  displayName : "Sunject",
   values : [ "Maths",
             "English",
             "Hindi",
@@ -79,6 +84,7 @@ exports.filterParamsResource =[
 },
 {
   name : "ageGroup",
+  displayName : "Age Group",
   values : [ "<5",
               "5-6",
               "6-7",
@@ -91,6 +97,7 @@ exports.filterParamsResource =[
 },
 {
   name : "medium",
+  displayName : "Medium",
   values : [ "English",
             "Hindi",
             "Assamese",
@@ -110,12 +117,14 @@ exports.filterParamsResource =[
 },
 {
   name : "ownership",
+  displayName : "Ownership",
   values : [ "current user",
             "all" ]
              
 },
 {
   name : "status",
+  displayName : "Status",
   values : [ "Live" ]
              
 }];
