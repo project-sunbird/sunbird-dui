@@ -258,7 +258,8 @@ data CommProfSearchActivityAction = DummyCommProfSearchActivity |
   OPEN_FilterActivity2 {filterDetails::String} |
   OPEN_ProfileActivity_SEARCH {profile::String}|
   API_SearchProfile {user_token::String, api_token::String,filter_to_send::String} |
-  API_GetProfile {user_token::String, api_token::String}
+  API_GetProfile {user_token::String, api_token::String} |
+  API_CreatedBy_Search {user_token::String, api_token::String, sendBack::String, filters::String }
 
 instance commProfSearchActivity :: UIScreen CommProfSearchActivity CommProfSearchActivityAction where
   generateMockEvents _ = [DummyCommProfSearchActivity , BACK_CommProfSearchActivity ]
@@ -271,7 +272,10 @@ instance encodeCommProfSearchActivityAction :: Encode CommProfSearchActivityActi
 data ProfileActivity = ProfileActivity {profile::String}
 data ProfileActivityAction = DummyProfileActivity |
   BACK_ProfileActivity |
-	OPEN_CommProfSearchActivity_Prof {filterDetails :: String}
+	OPEN_CommProfSearchActivity_Prof {filterDetails :: String}|
+  OPEN_EnrolledCourseActivity_Prof {course::String} |
+  OPEN_CourseInfoActivity_Prof {course::String} |
+  OPEN_ResourceDetailActivity_Prof {resourceDetails::String}
 
 instance profileActivity :: UIScreen ProfileActivity ProfileActivityAction where
   generateMockEvents _ = [DummyProfileActivity , BACK_ProfileActivity ]

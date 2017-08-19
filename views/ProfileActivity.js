@@ -43,12 +43,13 @@ class ProfileActivity extends View {
     this.shouldCacheScreen = false;
 
     this.state = state;
-    this.profileData = JSON.parse(this.state.data.value0.profile);
-    console.log(this.profileData, "profileData in ProfileActivity");
+    this.data = JSON.parse(this.state.data.value0.profile);
+    console.log(this.data, "profileData in ProfileActivity");
 
-    this.details = this.profileData.result.response;
-    this.jobProfile = this.details.jobProfile;
-
+    this.profileData = (JSON.parse(this.data.profileData)).data;
+    this.jobProfile = this.profileData.jobProfile;
+    this.createdBy = this.data.creatorOfData.result;
+    console.log("this.profileData", this.profileData);
   }
 
   handleStateChange = (state) => {
@@ -123,17 +124,36 @@ class ProfileActivity extends View {
   }
 
   getDescription = () => {
-    return(
-      <LinearLayout
-        orientation = "vertical"
-        height = "wrap_content"
-        width = "match_parent">
-        <TextView
-          text = "Description"
-          style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
+    console.log("this.details", this.profileData.profileSummary);
+    if(this.profileData.profileSummary){
+      console.log("inside getDescription");
+      return(
+        <LinearLayout
+          orientation = "vertical"
+          height = "wrap_content"
+          width = "match_parent">
 
-      </LinearLayout>
-    )
+            {this.getLineSeperator()}
+
+            <CropParagraph
+              height = "wrap_content"
+              margin = "0,0,0,12"
+              width = "match_parent"
+              headText = { window.__S.DESCRIPTION }
+              contentText = { this.profileData.profileSummary }/>
+
+        </LinearLayout>
+      )
+    } else {
+      return (
+        <LinearLayout
+          orientation = "vertical"
+          height = "wrap_content"
+          width = "match_parent">
+        </LinearLayout>
+      )
+    }
+
   }
 
   handleMenuClick = (url) => {
@@ -148,6 +168,41 @@ class ProfileActivity extends View {
   }
 
   afterRender = () => {
+  }
+
+  handleCreatedCardClick = (item) => {
+    var itemDetails = JSON.stringify(item);
+    if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook" || utils.checkEnrolledCourse(item.identifier)){
+      if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
+        var whatToSend={course:itemDetails};
+        var event={tag:"OPEN_EnrolledCourseActivity_Prof",contents:whatToSend}
+        window.__runDuiCallback(event);
+      }else{
+        this.setPermissions();
+      }
+    }else if(item.contentType.toLowerCase() == "course"){
+      if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
+        var whatToSend={course:itemDetails};
+        var event={tag:"OPEN_CourseInfoActivity_Prof",contents:whatToSend}
+        window.__runDuiCallback(event);
+      }else{
+        this.setPermissions();
+      }
+    } else {
+      var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");
+      var resDetails = {};
+      resDetails['imageUrl'] = item.appIcon;
+      resDetails['title'] = item.name;
+      resDetails['description'] = item.description;
+      resDetails['headFooterTitle'] = headFooterTitle;
+      resDetails['identifier'] = item.identifier;
+      resDetails['screenshots'] = item.screenshots || [] ;
+      resDetails['content'] = item;
+
+      var whatToSend = {resourceDetails:JSON.stringify(resDetails)}
+      var event= {tag:"OPEN_ResourceDetailActivity_Prof",contents:whatToSend}
+      window.__runDuiCallback(event);
+    }
   }
 
   render() {
@@ -185,26 +240,21 @@ class ProfileActivity extends View {
                 orientation="vertical">
 
                 <ProfileHeader
-                  data={this.details}/>
+                  data={this.profileData}/>
 
-                <LinearLayout
-                  width = "match_parent"
-                  height = "wrap_content"
-                  orientation = "vertical"
-                  visibility = {(this.description && this.description != "") ? "visible" : "gone"}>
-
-                  {this.getLineSeperator()}
-                  <CropParagraph
-                    headText = "Description"
-                    contentText = {(this.description && this.description != "") ? this.description : ""}/>
-                </LinearLayout>
+                {this.getDescription()}
 
                 <ProfileExperiences
                   editable = {this.isEditable}
                   data = {this.jobProfile}/>
 
+                <ProfileCreations
+                  data = {this.createdBy}
+                  editable = {this.editable}
+                  onCardClick = {this.handleCreatedCardClick}/>
+
                 <ProfileAdditionalInfo
-                  data={this.details}
+                  data={this.profileData}
                   editable = {this.isEditable}/>
 
               </LinearLayout>

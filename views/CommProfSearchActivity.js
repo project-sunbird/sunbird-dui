@@ -101,9 +101,12 @@ class CommProfSearchActivity extends View {
         this.renderNoResult();
         window.__LoaderDialog.hide();
       }
-    } else if (state.responseFor == "API_GetProfile"){
-      console.log("responseData", responseData);
-       var data = JSON.stringify(responseData);
+    } else if (state.responseFor == "API_CreatedBy_Search"){
+      console.log("state in handleStateChange", state);
+      var data = {};
+       data.profileData = state.sendBack;
+       data.creatorOfData = responseData;
+       data = JSON.stringify(data);
        var whatToSend={profile:data};
        var event={tag:"OPEN_ProfileActivity_SEARCH",contents:whatToSend}
        window.__runDuiCallback(event);
