@@ -84,6 +84,10 @@ courseInfoActivity input whereFrom whatToSendBack= do
 enrolledCourseActivity input whereFrom whatToSendBack= do
 	event <- ui $ CourseEnrolledActivity {courseDetails:input}
 	case event of
+		API_FlagCourse {user_token: user_token,api_token: api_token,requestBody:request,identifier:identifier} -> do
+			responseData <- flagContent user_token api_token request identifier
+			_ <- sendUpdatedState {response : responseData, responseFor : "API_FlagCourse", screen:"asas"}
+			pure $ "handled"
   		OPEN_ModuleDetailsActivity {moduleName:output1,moduleDetails:output2} -> subModuleDetailActivity output1 output2 "EnrolledCourseActivity" input
   		BACK_CourseEnrolledActivity -> do
 			case whereFrom of
