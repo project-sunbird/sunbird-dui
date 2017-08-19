@@ -5,13 +5,13 @@ import ext from './ext';
 import { main } from './output/Main/index.js';
 import { changeFlow } from './output/Main/index.js';
 import { typeFlow } from './output/Main/index.js';
-import { userActivity } from './output/Main/index.js';
+import { onBoardingFLow } from './output/Main/index.js';
 var utils = require('./utils/GenericFunctions');
 
 const purescriptMain = main;
 const purescriptChangeFlow = changeFlow;
 const purescriptTypeFlow = typeFlow;
-const purescriptUserActivityFlow = userActivity;
+const purescriptUserActivityFlow = onBoardingFLow;
 
 // import lock from './lock';
 // require('es6-promise').polyfill();

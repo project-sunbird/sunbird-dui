@@ -468,7 +468,7 @@ class ResourceDetailActivity extends View {
         window.__LoaderDialog.hide();
 
         if(response[0] == "successful"){
-          
+          JBridge.showSnackBar(window.__S.MSG_RESOURCE_DELETED)
           _this.onBackPressed();
         }
       });

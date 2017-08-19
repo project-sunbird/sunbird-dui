@@ -432,7 +432,7 @@ class CourseInfoActivity extends View {
                   width="wrap_content"
                   height="wrap_content"
                   margin="0,0,0,7"
-                  text={this.data.courseName}
+                  text={utils.firstLeterCapital(this.data.courseName)}
                   style={window.__TextStyle.textStyle.HEADING.DARK} />
 
 

@@ -8,6 +8,11 @@ exports.formatBytes = (bytes)=> {
 };
 
 
+exports.firstLeterCapital = (data) =>{
+  return data.charAt(0).toUpperCase() + data.substring(1,data.length);
+}
+
+
 exports.prettifyDate = (data) => {
 
   var date = new Date(data);

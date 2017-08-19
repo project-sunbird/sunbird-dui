@@ -12,6 +12,7 @@ var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 
 
+var utils = require('../../utils/GenericFunctions');
 
 class CourseProgress extends View {
   constructor(props, children) {
@@ -96,7 +97,7 @@ class CourseProgress extends View {
           height="match_parent"
           orientation="vertical">
             <TextView
-              text = {this.props.title|| this.props.name || "No title"}
+              text = {utils.firstLeterCapital(this.props.title|| this.props.name || "No title")}
               style= {window.__TextStyle.textStyle.HEADING.DARK}
               margin="0,0,0,8"/>
 
