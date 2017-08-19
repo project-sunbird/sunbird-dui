@@ -141,7 +141,8 @@ data CourseEnrolledActivity = CourseEnrolledActivity {courseDetails::String}
 data CourseEnrolledActivityAction = DummyCourseEnrolledActivityAction |
   BACK_CourseEnrolledActivity |
   OPEN_ModuleDetailsActivity {moduleName::String,moduleDetails::String} |
-  API_GetContentState {courseId::String,user_token::String,api_token::String}
+  API_GetContentState {courseId::String,user_token::String,api_token::String} |
+  API_FlagCourse {user_token::String,api_token::String,requestBody::String,identifier::String}
 
 instance courseEnrolledActivity :: UIScreen CourseEnrolledActivity CourseEnrolledActivityAction where
   generateMockEvents _ = [DummyCourseEnrolledActivityAction , BACK_CourseEnrolledActivity]

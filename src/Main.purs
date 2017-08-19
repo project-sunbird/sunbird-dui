@@ -30,7 +30,7 @@ splashScreenActivity :: Aff(ui::UI,console::CONSOLE) String
 splashScreenActivity = do
     event <- ui $ InitScreen
     case event of
-        OPEN_UserActivity -> userActivity "splashScreenActivity"
+        OPEN_UserActivity -> userActivity "SplashScreenActivity"
         _ -> pure $ "SplashScreenActivity"
 
 
@@ -92,6 +92,10 @@ resourceDetailActivity input whereFrom whatToSendBack = do
 enrolledCourseActivity input whereFrom whatToSendBack = do
     event <- ui $ CourseEnrolledActivity {courseDetails : input}
     case event of
+        API_FlagCourse {user_token: user_token,api_token: api_token,requestBody:request,identifier:identifier} -> do
+            responseData <- flagContent user_token api_token request identifier
+            _ <- sendUpdatedState {response : responseData, responseFor : "API_FlagCourse", screen:"asas"}
+            pure $ "handled"
         OPEN_ModuleDetailsActivity {moduleName:output1,moduleDetails:output2} -> subModuleDetailActivity output1 output2 "DeepLinkCourseEnrolled" input
         BACK_CourseEnrolledActivity -> case whereFrom of
             "Deeplink" -> mainActivity "{}" "UserActivity" "{}"
@@ -133,3 +137,4 @@ mainActivity input whereFrom whatToSendBack = do
 
 
 changeFlow = void $ launchAff $ mainActivity "{}" "LogInScreen" "Nothing"
+onBoardingFLow = void $ launchAff $ userActivity "SplashScreen" 
