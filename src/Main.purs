@@ -37,9 +37,9 @@ splashScreenActivity = do
 userActivity whereFrom = do
     event <- ui $ UserActivity {whereFrom:whereFrom}
     case event of
-        API_GetProfile {user_token:x,api_token:y}-> do
+        API_GetProfileData {user_token:x,api_token:y}-> do
             responseData <- getProfileDetail x y
-            _ <- sendUpdatedState {response : responseData, responseFor : "API_GetProfile", screen:"asas"}
+            _ <- sendUpdatedState {response : responseData, responseFor : "API_GetProfileData", screen:"asas"}
             pure $ "handled"
         API_SignUp { request: requestBody , api_token :token} -> do
             responseData <- userSignup requestBody token

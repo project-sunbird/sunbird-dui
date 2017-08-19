@@ -76,6 +76,9 @@ class ProfileExperiences extends View {
     } else {
       var noOfYears = "";
     }
+    console.log("input",input)
+    
+
     return (<LinearLayout
               width="wrap_content"
               height="wrap_content"
