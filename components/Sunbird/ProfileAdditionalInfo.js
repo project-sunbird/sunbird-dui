@@ -14,11 +14,13 @@ class ProfileAdditionalInfo extends View {
     super(props, children);
 
     this.setIds([
-
+      "holder"
     ]);
     _this = this;
 
     this.data = this.props.data;
+    console.log("this.data", this.data);
+
     this.languages = "";
     this.data.language.map((item, i) => {
       var append = ",";
@@ -41,6 +43,11 @@ class ProfileAdditionalInfo extends View {
     this.getAddress(this.data.address);
 
     this.hobbies = "Books, cycling, music, sports, browsing, teaching"
+
+    this.visibility = "gone"
+    if (this.data.languages != "" && this.data.email && this.data.phone){
+      this.visibility = "visible";
+    }
   }
 
   getAddress = (address) => {
@@ -167,13 +174,17 @@ class ProfileAdditionalInfo extends View {
     )
   }
 
+
   render() {
     this.layout = (
       <LinearLayout
-                width="wrap_content"
+                width="match_parent"
                 height="wrap_content"
                 margin="0,15,0,0"
-                orientation="vertical">
+                orientation="vertical"
+                id = {this.idSet.holder}
+                gravity = "center"
+                visibility = {this.visibility}>
 
                 {this.getLineSeperator()}
 

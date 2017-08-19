@@ -73,43 +73,25 @@ class ProfileCreations extends View {
   }
 
   handleCardClick = (item) => {
-    var itemDetails = JSON.stringify(item);
-    if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook" || utils.checkEnrolledCourse(item.identifier)){
-      if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
-        var whatToSend={course:itemDetails};
-        var event={tag:"OPEN_EnrolledCourseActivity",contents:whatToSend}
-        window.__runDuiCallback(event);
-      }else{
-        this.setPermissions();
-      }
-    }else if(item.contentType.toLowerCase() == "course"){
-      if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
-        var whatToSend={course:itemDetails};
-        var event={tag:"OPEN_CourseInfoActivity",contents:whatToSend}
-        window.__runDuiCallback(event);
-      }else{
-        this.setPermissions();
-      }
-    } else {
-      var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");
-      var resDetails = {};
-      resDetails['imageUrl'] = item.appIcon;
-      resDetails['title'] = item.name;
-      resDetails['description'] = item.description;
-      resDetails['headFooterTitle'] = headFooterTitle;
-      resDetails['identifier'] = item.identifier;
-      resDetails['screenshots'] = item.screenshots || [] ;
-      resDetails['content'] = item;
-
-      var whatToSend = {resourceDetails:JSON.stringify(resDetails)}
-      var event= {tag:"OPEN_ResourceDetailActivity",contents:whatToSend}
-      window.__runDuiCallback(event);
+    if(this.props.onCardClick){
+      this.props.onCardClick(item);
     }
   }
 
   getCards = () => {
-    var cards = this.data.map((item, i) => {
-      return this.getCardLayout(item);
+    if (this.data.hasOwnProperty("content")){
+      var cards = this.data.content.map((item, i) => {
+        return this.getCardLayout(item);
+      });
+    } else {
+      return(
+        <LinearLayout
+          width="wrap_content"
+          height="wrap_content">
+        </LinearLayout>
+      )
+    }
+
     // return (<LinearLayout
     //           width="wrap_content"
     //           height="wrap_content"
@@ -157,8 +139,6 @@ class ProfileCreations extends View {
     //
     //           </LinearLayout>);
     //
-            });
-
       return cards;
   }
 
@@ -188,7 +168,8 @@ class ProfileCreations extends View {
     this.layout= (
               <LinearLayout
                 margin="0,15,0,0"
-                orientation="vertical">
+                orientation="vertical"
+                visibility = {(this.data.hasOwnProperty("content")) ? "visible" : "gone"}>
 
                 {this.getLineSeperator()}
 
