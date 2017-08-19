@@ -42,7 +42,7 @@ class ProfileExperiences extends View {
               width="wrap_content"
               height="wrap_content"
               text="Edit"
-              visibility = {(this.isEditable == "true") ? "visible" : "gone"}
+              visibility = {"gone"/*(this.isEditable == "true") ? "visible" : "gone"*/}
               style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
 
               </LinearLayout>)
