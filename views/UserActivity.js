@@ -844,7 +844,7 @@ class UserActivity extends View {
       if(("__failed" != JBridge.getFromSharedPrefs("intentFilePath"))||("__failed" != JBridge.getFromSharedPrefs("intentLinkPath"))){
         
         console.log("SHARED PREFERENCES ARE THERE STILL");
-        if(whereFrom == "splashScreenActivity"){
+        if(whereFrom == "SplashScreenActivity"){
 
           console.log("FROM SPLASH SCREEN ACTIVITY");
 
