@@ -62,7 +62,31 @@ class SearchActivity extends View {
 
 
     if(this.filterData!=undefined && this.filterData.length != 0){
-      this.filterIcon="ic_action_filter_applied";
+      console.log(this.filterData, "filterinsearch");
+      var flag=false;
+      var facetFilters = this.filterData.facetFilters
+      var i=0;
+      var j=0;
+      for (i=0;i<facetFilters.length;i++)
+      {
+        for (j=0; j<facetFilters[i].values.length;j++)
+        {
+            if(facetFilters[i].values[j].apply==true)
+                {
+                  flag=true;
+                  break;
+                }
+
+        }
+         if(flag)
+         {break;}
+      }
+
+      if(flag)
+      {this.filterIcon="ic_action_filter_applied";}
+      else {
+        this.filterIcon="ic_action_filter";
+      }
 
     JBridge.showSnackBar(window.__S.SEARCH_LOADING_MESSAGE)
        var cmd = "";
@@ -82,12 +106,7 @@ class SearchActivity extends View {
       this.getSearchList(this.searchText,"true");
     }
     else if(window.searchText!=undefined && window.searchText!=""){
-<<<<<<< Updated upstream
         this.getSearchList(window.searchText,"false");
-=======
-        this.getSearchList(window.searchText[0],"false");
-
->>>>>>> Stashed changes
     }
 
     var callback = callbackMapper.map(function(data) {
