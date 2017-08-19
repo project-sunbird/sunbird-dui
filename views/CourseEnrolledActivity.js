@@ -66,10 +66,11 @@ class CourseEnrolledActivity extends View {
 
 
     this.details = JSON.parse(state.data.value0.courseDetails);
-
+    this.courseDetails  = "";
 
     this.popupMenu = window.__S.DELETE;
 
+    this.popupMenu = window.__S.DELETE + "," + window.__S.FLAG;
     //to get geneie callback for download of spine
     window.__getDownloadStatus = this.getSpineStatus;
 
@@ -123,6 +124,36 @@ class CourseEnrolledActivity extends View {
     console.log("ON STOP IN ResourceDetailActivity")
   }
 
+  flagContent = (comment,selectedList) =>{
+    window.__LoaderDialog.show();
+    console.log("flag request",this.details)
+    console.log(comment,selectedList)
+    var versionKey;
+    if(this.courseDetails.hasOwnProperty("contentData") && this.courseDetails.contentData.hasOwnProperty("versionKey")){
+      versionKey = this.courseDetails.contentData.versionKey
+    }
+    else{
+      versionKey = "0";
+    }
+
+    var request = {
+                          "flagReasons":selectedList,
+                          "flaggedBy":"kiran",
+                          "versionKey": versionKey,
+                          "flags": [comment]
+                     }
+    
+    var whatToSend = {
+      "user_token" : window.__userToken,
+      "api_token" : window.__apiToken,
+      "requestBody" : JSON.stringify(request),
+      "identifier" : this.baseIdentifier
+    }
+    var event= { "tag": "API_FlagCourse", contents: whatToSend };
+    window.__runDuiCallback(event);
+
+  }
+
 
   getSpineStatus = (pValue) => {
     var cmd;
@@ -161,9 +192,12 @@ class CourseEnrolledActivity extends View {
 
 
   checkContentLocalStatus = (identifier) => {
-    var callback = callbackMapper.map(function(status) {
 
-      if (status == "true") {
+    var callback = callbackMapper.map(function(data) {
+      data = JSON.parse(data)
+      _this.courseDetails = data;
+      console.log("data",data)
+      if (data.isAvailableLocally == true) {
         window.__ContentLoaderDialog.hide()
         var callback1 = callbackMapper.map(function(data) {
           data[0] = utils.jsonifyData(data[0])
@@ -184,13 +218,14 @@ class CourseEnrolledActivity extends View {
 
     });
     window.__getDownloadStatus = this.getSpineStatus;
-    JBridge.getLocalContentStatus(identifier, callback);
+    JBridge.getContentDetails(identifier, callback);
 
 
   }
 
 
   handleModuleClick = (moduleName, module) => {
+
     var whatToSend = {
       "moduleName": moduleName,
       "moduleDetails": JSON.stringify(module)
@@ -199,8 +234,22 @@ class CourseEnrolledActivity extends View {
     window.__runDuiCallback(event);
 
   }
-  handleStateChange(state){
-    console.log("state in CES",state)
+  handleStateChange = (state) =>{
+    var response = utils.decodeBase64(state.response.status[1])
+    var responseCode = state.response.status[2]
+    if(responseCode == 200){
+        window.__LoaderDialog.hide();
+        if(response[0] == "successful"){
+          JBridge.showSnackBar(window.__S.CONTENT_FLAGGED_MSG)
+          _this.onBackPressed();
+        }
+    }
+    else{
+      window.__LoaderDialog.hide();
+      JBridge.showSnackBar(window.__S.CONTENT_FLAG_FAIL);
+      _this.onBackPressed();
+      
+    }
   }
 
 
@@ -280,6 +329,11 @@ class CourseEnrolledActivity extends View {
         }
       });
       JBridge.deleteContent(this.baseIdentifier,callback);
+    }
+    else if(params == 1){
+      console.log("in flag rda")
+      window.__LoaderDialog.hide();
+      window.__FlagPopup.show();
     }
   }
 
@@ -475,7 +529,9 @@ class CourseEnrolledActivity extends View {
 
       </LinearLayout>
 
-       <FlagPopup/>
+       <FlagPopup
+      onConfirm  = {this.flagContent}
+      />
 
        <LinearLayout
        id={this.idSet.sharePopupContainer}

@@ -9,6 +9,9 @@ var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var RatingBar = require("@juspay/mystique-backend").androidViews.RatingBar;
 var HorizontalScrollView = require("@juspay/mystique-backend").androidViews.HorizontalScrollView;
+var CardComponent = require('../Sunbird/core/CardComponent');
+var utils = require('../../utils/GenericFunctions');
+
 
 var _this;
 class ProfileCreations extends View {
@@ -43,65 +46,99 @@ class ProfileCreations extends View {
                 <TextView
                   width="wrap_content"
                   height="wrap_content"
+                  visibility = "gone"
                   text={window.__S.VIEW_ALL}
                   style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
 
               </LinearLayout>)
   }
 
+  getCardLayout = (item) => {
+    var size = item.hasOwnProperty("size") ? "  "+window.__S.FILE_SIZE.format(utils.formatBytes(item.size)) : "";
 
+    var temp = {
+        imageUrl: (item.appIcon ? item.appIcon : "ic_action_course"),
+        title: item.name,
+        actionText: window.__S.OPEN,
+        footerTitle : "",
+        stars : item.hasOwnProperty("me_averageRating")? item.me_averageRating+ "" : "0",
+        footerSubTitle: size,
+        type : item.contentType
+    };
+      return (<CardComponent
+                 data={temp}
+                 content={item}
+                 onCardClick={this.handleCardClick}/>)
+
+  }
+
+  handleCardClick = (item) => {
+    if(this.props.onCardClick){
+      this.props.onCardClick(item);
+    }
+  }
 
   getCards = () => {
-    var cards = this.data.map((item, i) => {
-    return (<LinearLayout
-              width="wrap_content"
-              height="wrap_content"
-              margin="0,0,12,6"
-              orientation="vertical">
+    if (this.data.hasOwnProperty("content")){
+      var cards = this.data.content.map((item, i) => {
+        return this.getCardLayout(item);
+      });
+    } else {
+      return(
+        <LinearLayout
+          width="wrap_content"
+          height="wrap_content">
+        </LinearLayout>
+      )
+    }
 
-                <RelativeLayout
-                 width="200"
-                 height="110">
-
-                  <ImageView
-                    height="match_parent"
-                    width="match_parent"
-                    scaleType="fixXY"
-                    gravity="center"
-                    circularImageUrl={"10,"+item.imageUrl}/>
-
-                  <LinearLayout
-                    width="match_parent"
-                    height="match_parent"
-                    gravity="center"
-                    cornerRadius="4"
-                    background={window.__Colors.BLACK}
-                    alpha="0.50"/>
-
-                  <TextView
-                    width="wrap_content"
-                    height="wrap_content"
-                    padding = "10,10,10,10"
-                    text= {item.contentType}
-                    padding="5,3,5,3"
-                    cornerRadius="4"
-                    background={window.__Colors.PRIMARY_BLACK}
-                    style={window.__TextStyle.textStyle.SYMBOL.STATUSBAR.LABEL}/>
-
-                  <TextView
-                    width="match_parent"
-                    height="wrap_content"
-                    padding = "10,10,10,10"
-                    alignParentBottom="true,-1"
-                    text= {item.name}
-                    style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}/>
-
-              </RelativeLayout>
-
-              </LinearLayout>);
-
-            });
-
+    // return (<LinearLayout
+    //           width="wrap_content"
+    //           height="wrap_content"
+    //           margin="0,0,12,6"
+    //           orientation="vertical">
+    //
+    //             <RelativeLayout
+    //              width="200"
+    //              height="110">
+    //
+    //               <ImageView
+    //                 height="match_parent"
+    //                 width="match_parent"
+    //                 scaleType="fixXY"
+    //                 gravity="center"
+    //                 circularImageUrl={"10,"+item.imageUrl}/>
+    //
+    //               <LinearLayout
+    //                 width="match_parent"
+    //                 height="match_parent"
+    //                 gravity="center"
+    //                 cornerRadius="4"
+    //                 background={window.__Colors.BLACK}
+    //                 alpha="0.50"/>
+    //
+    //               <TextView
+    //                 width="wrap_content"
+    //                 height="wrap_content"
+    //                 padding = "10,10,10,10"
+    //                 text= {item.contentType}
+    //                 padding="5,3,5,3"
+    //                 cornerRadius="4"
+    //                 background={window.__Colors.PRIMARY_BLACK}
+    //                 style={window.__TextStyle.textStyle.SYMBOL.STATUSBAR.LABEL}/>
+    //
+    //               <TextView
+    //                 width="match_parent"
+    //                 height="wrap_content"
+    //                 padding = "10,10,10,10"
+    //                 alignParentBottom="true,-1"
+    //                 text= {item.name}
+    //                 style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}/>
+    //
+    //           </RelativeLayout>
+    //
+    //           </LinearLayout>);
+    //
       return cards;
   }
 
@@ -122,7 +159,7 @@ class ProfileCreations extends View {
     return (<LinearLayout
               width="match_parent"
               height="1"
-              margin="0,0,0,24"
+              margin="0,0,0,15"
               background={window.__Colors.PRIMARY_BLACK_22}/>)
   }
 
@@ -130,8 +167,9 @@ class ProfileCreations extends View {
   render() {
     this.layout= (
               <LinearLayout
-                margin="0,24,0,0"
-                orientation="vertical">
+                margin="0,15,0,0"
+                orientation="vertical"
+                visibility = {(this.data.hasOwnProperty("content")) ? "visible" : "gone"}>
 
                 {this.getLineSeperator()}
 

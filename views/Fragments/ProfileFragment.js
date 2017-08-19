@@ -23,6 +23,8 @@ var ProfileProgress = require('../../components/Sunbird/ProfileProgress');
 var ProfileAdditionalInfo = require('../../components/Sunbird/ProfileAdditionalInfo');
 var ProfilAffiliations = require('../../components/Sunbird/ProfileAffiliations');
 var CropParagraph = require('../../components/Sunbird/CropParagraph');
+var utils = require('../../utils/GenericFunctions');
+
 
 var _this;
 class ProfileFragment extends View {
@@ -45,76 +47,6 @@ class ProfileFragment extends View {
       ]
     }
     this.popupMenu="Logout";
-
-    this.jobProfile = [
-      {
-        "jobName": "jobName",
-        "orgName": "AP ORG",
-        "role": "teacher",
-        "updatedBy": null,
-        "address": {
-          "country": "India",
-          "updatedBy": null,
-          "city": "Bangalore1",
-          "updatedDate": null,
-          "userId": "7d086e8c-68ac-4aaa-8b91-d75ff922bae5",
-          "zipcode": "560135",
-          "addType": "permanent1",
-          "createdDate": "2017-07-07 07:18:38:611+0530",
-          "createdBy": "7d086e8c-68ac-4aaa-8b91-d75ff922bae5",
-          "addressLine1": "2121 winding hill dr",
-          "addressLine2": "Frazer town1",
-          "id": "0122833794922004481",
-          "state": "Karnataka1"
-        },
-        "endDate": "1992-10-12",
-        "isVerified": null,
-        "subject": [
-          "Physics",
-          "Chemistry"
-        ],
-        "joiningDate": "1998-10-12",
-        "updatedDate": null,
-        "verifiedBy": null,
-        "userId": "7d086e8c-68ac-4aaa-8b91-d75ff922bae5",
-        "boardName": null,
-        "orgId": "123",
-        "addressId": "0122833753304186887",
-        "createdDate": "2017-07-07 07:18:38:695+0530",
-        "createdBy": "7d086e8c-68ac-4aaa-8b91-d75ff922bae5",
-        "verifiedDate": null,
-        "isRejected": null,
-        "id": "0122833760735477766"
-      },
-      {
-        "jobName": "jobName1",
-        "orgName": "AP ORG1",
-        "role": "teacher1",
-        "address": {
-          "country": "India",
-          "updatedBy": null,
-          "city": "Bangalore11",
-          "zipcode": "560135",
-          "addType": "permanent1",
-          "addressLine1": "2121 winding hill dr1",
-          "addressLine2": "Frazer town1",
-          "state": "Karnataka1"
-        },
-        "endDate": "1994-10-12",
-        "isVerified": null,
-        "subject": [
-          "Physics",
-          "Chemistry"
-        ],
-        "joiningDate": "1992-10-12",
-        "updatedDate": null,
-        "verifiedBy": null,
-        "boardName": "AP BOARD12",
-        "orgId": "123",
-        "verifiedDate": null,
-        "isRejected": null
-      }
-    ];
 
     this.handleResponse();
   }
@@ -145,7 +77,9 @@ class ProfileFragment extends View {
       var profileData = JSON.parse(this.props.response.sendBack)
       this.details = profileData.result.response;
       this.description = this.details.profileSummary ? this.details.profileSummary : ""
-      this.createdBy = this.props.response.result.content;
+      this.createdBy = this.props.response.result;
+      this.jobProfile = this.details.jobProfile;
+      console.log("this.createdBy", this.createdBy);
     } else {
       this.details = {};
       this.description = "";
@@ -157,7 +91,7 @@ class ProfileFragment extends View {
     return (<LinearLayout
             width="match_parent"
             height="1"
-            margin="0,24,0,0"
+            margin="0,0,0,15"
             background={window.__Colors.PRIMARY_BLACK_22}/>)
   }
 
@@ -179,17 +113,40 @@ class ProfileFragment extends View {
   }
 
   getDescription = () => {
-    return(
-      <LinearLayout
-        orientation = "vertical"
-        height = "wrap_content"
-        width = "match_parent">
-        <TextView
-          text = "Description"
-          style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
+    console.log("this.details", this.details.profileSummary);
+    if(this.details.profileSummary){
+      console.log("inside getDescription");
+      return(
+        <LinearLayout
+          orientation = "vertical"
+          height = "wrap_content"
+          width = "match_parent">
 
-      </LinearLayout>
-    )
+          {this.getLineSeperator()}
+          {
+          // <TextView
+          //   text = "Description"
+          //   style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
+          }
+            <CropParagraph
+              height = "wrap_content"
+              margin = "0,0,0,12"
+              width = "match_parent"
+              headText = { window.__S.DESCRIPTION }
+              contentText = { this.details.profileSummary }/>
+
+        </LinearLayout>
+      )
+    } else {
+      return (
+        <LinearLayout
+          orientation = "vertical"
+          height = "wrap_content"
+          width = "match_parent">
+        </LinearLayout>
+      )
+    }
+
   }
 
   handleMenuClick = (url) => {
@@ -199,6 +156,41 @@ class ProfileFragment extends View {
       var searchDetails = { filterDetails: "", searchType: "Profile" }
       var whatToSend = { filterDetails: JSON.stringify(searchDetails) }
       var event = { tag: "OPEN_CommProfSearchActivity", contents: whatToSend}
+      window.__runDuiCallback(event);
+    }
+  }
+
+  handleCreatedCardClick = (item) => {
+    var itemDetails = JSON.stringify(item);
+    if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook" || utils.checkEnrolledCourse(item.identifier)){
+      if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
+        var whatToSend={course:itemDetails};
+        var event={tag:"OPEN_EnrolledCourseActivity",contents:whatToSend}
+        window.__runDuiCallback(event);
+      }else{
+        this.setPermissions();
+      }
+    }else if(item.contentType.toLowerCase() == "course"){
+      if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
+        var whatToSend={course:itemDetails};
+        var event={tag:"OPEN_CourseInfoActivity",contents:whatToSend}
+        window.__runDuiCallback(event);
+      }else{
+        this.setPermissions();
+      }
+    } else {
+      var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");
+      var resDetails = {};
+      resDetails['imageUrl'] = item.appIcon;
+      resDetails['title'] = item.name;
+      resDetails['description'] = item.description;
+      resDetails['headFooterTitle'] = headFooterTitle;
+      resDetails['identifier'] = item.identifier;
+      resDetails['screenshots'] = item.screenshots || [] ;
+      resDetails['content'] = item;
+
+      var whatToSend = {resourceDetails:JSON.stringify(resDetails)}
+      var event= {tag:"OPEN_ResourceDetailActivity",contents:whatToSend}
       window.__runDuiCallback(event);
     }
   }
@@ -244,13 +236,20 @@ class ProfileFragment extends View {
                 <ProfileHeader
                   data={this.details}/>
 
-                <ProfileAdditionalInfo
-                  data={this.details}
-                  editable = {this.isEditable}/>
+                {this.getDescription()}
+
+                <ProfileExperiences
+                  editable = {this.isEditable}
+                  data = {this.jobProfile}/>
 
                 <ProfileCreations
                   data = {this.createdBy}
-                  editable = {this.editable}/>
+                  editable = {this.editable}
+                  onCardClick = {this.handleCreatedCardClick}/>
+
+                <ProfileAdditionalInfo
+                  data={this.details}
+                  editable = {this.isEditable}/>
 
               </LinearLayout>
 

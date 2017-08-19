@@ -15,7 +15,10 @@ profileFragment input whereFrom whatToSendBack = do
 	case event of
 		OPEN_NotificationActivity -> notificationActivity "{}" "ProfileFragment"  input
 		OPEN_CommProfSearchActivity {filterDetails : output} -> searchProfileActivity output "ProfileFragment" input
-		OPEN_EditProfileActivity -> additionalInformationActivity "{}" "profileFragment"  input
+		OPEN_EditProfileActivity -> additionalInformationActivity "{}" "ProfileFragment"  input
+		OPEN_EnrolledCourseActivity {course:output} -> enrolledCourseActivity output "ProfileFragment" input
+		OPEN_CourseInfoActivity {course:output} -> courseInfoActivity output "ProfileFragment" input
+		OPEN_ResourceDetailActivity {resourceDetails:output} -> resourceDetailActivity output "ProfileFragment" input
 		API_CreatedBy { user_token:x, api_token:y, sendBack:z , filters:w} -> do
 			responseData <- compositeSearch x y w
 			_ <- sendUpdatedState {response : responseData, responseFor : "API_CreatedBy", screen:"asas", sendBack:z}
@@ -41,6 +44,10 @@ searchProfileActivity input whereFrom whatToSendBack = do
 			resData <- getProfileDetail x y
 			_<- sendUpdatedState {response : resData, responseFor : "API_GetProfile", screen:"asas"}
 			pure $ "apiCalled"
+		API_CreatedBy_Search { user_token:x, api_token:y, sendBack:z , filters:w} -> do
+			responseData <- compositeSearch x y w
+			_ <- sendUpdatedState {response : responseData, responseFor : "API_CreatedBy_Search", screen:"asas", sendBack:z}
+			pure $ "handled"
 		OPEN_ProfileActivity_SEARCH {profile: output} -> profileActivity output "CommProfSearchActivity" input
 		BACK_CommProfSearchActivity -> case whereFrom of
 			"ProfileFragment" -> profileFragment whatToSendBack "Terminate" input
@@ -51,6 +58,9 @@ profileActivity input whereFrom whatToSendBack = do
 	event <- ui $ ProfileActivity {profile : input}
 	case event of
 		OPEN_CommProfSearchActivity_Prof {filterDetails : output} -> searchProfileActivity output "ProfileFragment" input
+		OPEN_EnrolledCourseActivity_Prof {course:output} -> enrolledCourseActivity output "ProfileActivity" input
+		OPEN_CourseInfoActivity_Prof {course:output} -> courseInfoActivity output "ProfileActivity" input
+		OPEN_ResourceDetailActivity_Prof {resourceDetails:output} -> resourceDetailActivity output "ProfileActivity" input
 		BACK_ProfileActivity -> searchProfileActivity whatToSendBack "Terminate" input
 		_ -> profileActivity input whereFrom whatToSendBack
 
@@ -61,3 +71,58 @@ additionalInformationActivity input whereFrom whatToSendBack = do
 			"ProfileFragment" -> profileFragment input "Terminate" input
 			_ -> profileFragment input "Terminate" input
 		_ -> additionalInformationActivity input whereFrom whatToSendBack
+
+--------------------------------------------------------------------------------
+
+resourceDetailActivity input whereFrom whatToSendBack = do
+	event <- ui $ ResourceDetailActivity {resourceDetails : input}
+	case event of
+		API_FlagContent{user_token: user_token,api_token: api_token,requestBody:request,identifier:identifier} -> do
+			responseData <- flagContent user_token api_token request identifier
+			_ <- sendUpdatedState {response : responseData, responseFor : "API_FlagContent", screen:"asas"}
+			pure $ "handled"
+		BACK_ResourceDetailActivity -> case whereFrom of
+			"ProfileFragment" -> profileFragment whatToSendBack "Terminate" input
+			"ProfileActivity" -> profileActivity whatToSendBack "Terminate" input
+			_ -> profileFragment whatToSendBack "Terminate" input
+		_ -> resourceDetailActivity input whereFrom whatToSendBack
+
+--------------------------------------------------------------------------------
+
+courseInfoActivity input whereFrom whatToSendBack = do
+	event <- ui $ CourseInfoActivity {courseDetails : input}
+	case event of
+		OPEN_EnrolledActivity {course: output} -> enrolledCourseActivity output "CourseFragment" input
+		API_EnrollCourse {user_token : x, reqParams : details , api_token: token} -> do
+				responseData <- enrollCourse x details token
+	  			_ <- sendUpdatedState {response : responseData, responseFor : "API_EnrollCourse", screen:"asas"}
+				pure $ "apiDefault"
+		API_EnrolledCoursesList {user_token:x,api_token:y} -> do
+	            responseData <- getUserEnrolledCourses x y
+	            _ <- sendUpdatedState {response : responseData, responseFor : "API_EnrolledCoursesList", screen:"asas"}
+	            pure $ "apiDefault"
+		BACK_CourseInfoActivity -> case whereFrom of
+			"ProfileFragment" -> profileFragment whatToSendBack "Terminate" input
+			"ProfileActivity" -> profileActivity whatToSendBack "Terminate" input
+			_ -> profileFragment whatToSendBack "Terminate" input
+		_ -> courseInfoActivity input whereFrom whatToSendBack
+
+enrolledCourseActivity input whereFrom whatToSendBack = do
+	event <- ui $ CourseEnrolledActivity {courseDetails : input}
+	case event of
+  		OPEN_ModuleDetailsActivity {moduleName:output1,moduleDetails:output2} -> subModuleDetailActivity output1 output2 "EnrolledCourseActivity" input
+  		BACK_CourseEnrolledActivity -> case whereFrom of
+			"ProfileFragment" -> profileFragment whatToSendBack "Terminate" input
+			"ProfileActivity" -> profileActivity whatToSendBack "Terminate" input
+			_ -> profileFragment whatToSendBack "Terminate" input
+		_ -> enrolledCourseActivity input whereFrom whatToSendBack
+
+
+subModuleDetailActivity mName input whereFrom whatToSendBack = do
+	event <- ui $ ModuleDetailActivity {moduleName:mName,moduleDetails:input}
+	case event of
+		BACK_ModuleDetailActivity -> case whereFrom of
+			"Misc" ->  subModuleDetailActivity mName input whereFrom input
+			"EnrolledCourseActivity" -> enrolledCourseActivity whatToSendBack "Terminate" input
+			_ ->  enrolledCourseActivity whatToSendBack "Terminate" input
+  		_ -> subModuleDetailActivity mName input whereFrom whatToSendBack

@@ -14,9 +14,9 @@ class ProfileHeader extends View {
     this.setIds([
 
     ]);
-
+    console.log("this.props.data", this.props.data);
     this.isEditable = this.props.editable;
-    this.userName = (this.props.data.userName == undefined) ? "Mock User" : this.props.data.userName;
+    this.userName = this.props.data.userName ? this.props.data.userName : "";
     this.imageUrl = this.props.data.avatar ? this.props.data.avatar : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR1X3cm5xzR4D1W9oPb2QWioKlrfLVd0DvXFUNqSjZfg-M0bpc";
     this.firstName = this.props.data.firstName ? this.props.data.firstName : this.userName
     this.lastName = this.props.data.lastName ? " " + this.props.data.lastName : ""
@@ -61,7 +61,7 @@ class ProfileHeader extends View {
                 width = "wrap_content"
                 background = "#FFD8D8D8"
                 cornerRadius = "4"
-                visibility = {(this.isEditable == "true") ? "visible" : "gone"}>
+                visibility = {(this.userName != "" && this.isEditable == "true") ? "visible" : "gone"}>
                 <TextView
                   padding = "10, 2, 10, 2"
                   text = {"Username: @" + this.userName} />
