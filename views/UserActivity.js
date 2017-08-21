@@ -90,6 +90,8 @@ class UserActivity extends View {
 
 
   handleDeepLinkAction = (identifier) =>{
+      console.log("IDENTIFIER IN HANDLE DEEPLINK ACTION",identifier);
+
     var callback = callbackMapper.map(function(data) {
         var item = JSON.parse(data[0]);
         console.log("Callback data in userActivity",item);
@@ -169,7 +171,7 @@ class UserActivity extends View {
                 var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");
 
                 resDetails['imageUrl'] = item.hasOwnProperty("contentData") ?"file://"+item.basePath+"/"+item.contentData.appIcon : item.appIcon;
-                resDetails['title'] = item.name;
+                resDetails['title'] = item.contentData.name;
                 resDetails['description'] = item.description;
                 resDetails['headFooterTitle'] = headFooterTitle;
                 resDetails['identifier'] = item.identifier;
@@ -851,10 +853,9 @@ class UserActivity extends View {
           if(("YES"==JBridge.getFromSharedPrefs("logged_in"))){
 
             console.log("LOGGED IN");
-
+            JBridge.setInSharedPrefs("deeplinkMode", "actual");
             this.performDeeplinkAction();
             this.setLoginPreferences();
-            JBridge.setInSharedPrefs("deeplinkMode", "actual");
 
           }else{
 
