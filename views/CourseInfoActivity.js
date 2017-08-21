@@ -183,7 +183,7 @@ class CourseInfoActivity extends View {
   afterRender = () => {
 
     this.shareContent();
-
+    
     
 
     if(window.__enrolledCourses == undefined){
