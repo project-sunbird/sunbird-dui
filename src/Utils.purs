@@ -244,6 +244,15 @@ compositeSearch user_token api_token filter_to_use=
                                                    ]) in
   (post requestUrl headers payload)
 
+getBatchList user_token api_token request_body=
+  let requestUrl = "/course/v1/batch/list"
+      headers = (generateRequestHeaders user_token api_token)
+      payload = A.fromObject (StrMap.fromFoldable [ (Tuple "id" (A.fromString "unique API ID"))
+                                                   , (Tuple "ts" (A.fromString "2013/10/15 16:16:3"))
+                                                   , (Tuple "request" (getJsonFromString request_body))
+                                                   ]) in
+  (post requestUrl headers payload)
+
 
 
 

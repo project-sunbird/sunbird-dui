@@ -128,7 +128,8 @@ data CourseInfoActivityAction = BACK_CourseInfoActivity |
   OPEN_EnrolledActivity {course::String} |
   API_EnrollCourse {user_token::String,reqParams ::String, api_token::String} |
   ShowModuleDetails {moduleName::String,moduleDetails::String} |
-  API_EnrolledCoursesList {user_token::String,api_token::String}
+  API_EnrolledCoursesList {user_token::String,api_token::String} |
+  API_Get_Batch_list {user_token::String, api_token::String, request::String }
 
 instance courseInfoScreen :: UIScreen CourseInfoActivity CourseInfoActivityAction where
   generateMockEvents _ = [BACK_CourseInfoActivity , OPEN_EnrolledActivity {course:"Dummy"} ]

@@ -184,6 +184,8 @@ class CourseInfoActivity extends View {
 
     this.shareContent();
 
+    
+
     if(window.__enrolledCourses == undefined){
       window.__LoaderDialog.show();
       var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken} 
@@ -316,6 +318,16 @@ class CourseInfoActivity extends View {
 
 
   handleEnrollClick = (data) => {
+    // var request = 
+    //               "filters": {
+    //                   "courseId":"do_2123138572751912961138"
+    //               }
+    //           }
+
+    // var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken, request : JSON.stringify(request)} 
+    //   var event ={ "tag": "API_Get_Batch_list", contents: whatToSend};
+    //   window.__runDuiCallback(event);
+
     if(JBridge.isNetworkAvailable()){
 
         window.__LoaderDialog.show();
