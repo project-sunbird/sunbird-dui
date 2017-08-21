@@ -49,7 +49,7 @@ class CourseInfoActivity extends View {
     
     //to get geneie callback for download of spine
     window.__getDownloadStatus = this.getSpineStatus;
-
+    this.cour = "";
 
     _this = this;
 
@@ -240,6 +240,8 @@ class CourseInfoActivity extends View {
 
       case "API_EnrollCourse":
         if (result.response == "SUCCESS") {
+          console.log("response",response)
+          window.__enrolledCourses.push(this.cour)
           JBridge.showSnackBar(window.__S.COURSE_ENROLLED)
           var whatToSend = { "course": this.state.data.value0.courseDetails }
           var event = { tag: 'OPEN_EnrolledActivity', contents: whatToSend }
@@ -320,6 +322,27 @@ class CourseInfoActivity extends View {
 
 
         console.log("HANDLE ENROLL CLICK");
+        this.cour = {
+            "dateTime": "2017-08-18 16:05:24.347",
+            "identifier": "a045981883fa87cb403fdd5916585a8630a10787c04ea5572b788a94f70b4e13",
+            "lastReadContentStatus": 2,
+            "enrolledDate": "2017-08-18 11:52:14:977+0000",
+            "addedBy": "db705067-0516-483f-bc6a-aa57d44b51b9",
+            "delta": "delta",
+            "contentId": this.details.identifier,
+            "description": "dsd",
+            "active": true,
+            "courseLogoUrl": null,
+            "batchId": "1",
+            "userId": "db705067-0516-483f-bc6a-aa57d44b51b9",
+            "courseName": "Enrollment 3",
+            "leafNodesCount": 1,
+            "progress": 0,
+            "id": "a045981883fa87cb403fdd5916585a8630a10787c04ea5572b788a94f70b4e13",
+            "courseId": this.details.identifier,
+            "status": 0
+          }
+
 
         var whatToSend = { 
         "user_token":window.__userToken!=undefined?window.__userToken:"",
