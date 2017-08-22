@@ -273,7 +273,10 @@ getProfileDetail user_token api_token =
       headers = (generateRequestHeaders user_token api_token) in
   (get requestUrl headers)
 
-
+getTenantDetail user_token api_token slug =
+  let requestUrl = "/org/v1/tenant/info/" <> slug
+      headers = (generateRequestHeaders user_token api_token) in
+  (get requestUrl headers)
 
 userSignup request api_token =
   let requestUrl = "/user/v1/create"

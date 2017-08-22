@@ -77,9 +77,9 @@ class MainActivity extends View {
       }
 
     ]
+    window.__API_Profile_Called = false;
     this.apiToken = window.__apiToken;
     window.__BNavFlowRestart= this.setupDuiCallback;
-
   }
 
   onPop = () => {
@@ -114,6 +114,11 @@ class MainActivity extends View {
 
   }
 
+  getUserProfileData = () => {
+    var whatToSend= {"user_token":window.__userToken,"api_token": window.__apiToken}
+    var event = { "tag": "API_ProfileFragment", contents:whatToSend };
+    window.__runDuiCallback(event);
+  }
 
   onBackPressed = () => {
 
@@ -180,8 +185,22 @@ class MainActivity extends View {
       }
 
     }
+    console.log("JBridge.getFromSharedPrefs('logo')",JBridge.getFromSharedPrefs("logo"));
+    if ( !window.__API_Profile_Called && !(JBridge.getFromSharedPrefs("logo") == "__failed" && JBridge.getFromSharedPrefs("orgName") == "__failed")){
+      console.log("slug", responseData.result.response.rootOrg.slug);
+      window.__orgName = responseData.result.response.rootOrg.orgName;
+      window.__API_Profile_Called = true;
+      var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken, "slug": responseData.result.response.rootOrg.slug};
+      var event = { tag: "API_Tenant", contents: whatToSend};
+      window.__runDuiCallback(event);
+    }
 
-
+    if (state.responseFor == "API_Tenant"){
+      console.log("responseFor API_Tenant", responseData);
+      JBridge.setInSharedPrefs("logo", responseData.result.logo);
+      JBridge.setInSharedPrefs("orgName", window.__orgName);
+      return;
+    }
 
     if (responseData.params.err) {
       JBridge.showSnackBar(window.__S.ERROR_SERVER_MESSAGE + response.params.errmsg)
@@ -344,7 +363,7 @@ class MainActivity extends View {
   afterRender = () => {
     this.currentPageIndex = 0;
     this.handleBottomNavBarAction(0);
-
+    this.getUserProfileData();
 
   }
 

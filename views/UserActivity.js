@@ -57,7 +57,7 @@ class UserActivity extends View {
 
     window.__loginCallback=this.getLoginCallback;
 
-    
+
     if(JBridge.getFromSharedPrefs("whereFromInUserActivity") != "Deeplink"){
       JBridge.setInSharedPrefs("whereFromInUserActivity", this.state.data.value0.whereFrom);
     }
@@ -85,7 +85,7 @@ class UserActivity extends View {
         var event = { tag: "OPEN_MainActivity", contents: whatToSend };
         window.__runDuiCallback(event);
     }
-  
+
   }
 
 
@@ -118,10 +118,10 @@ class UserActivity extends View {
                 var event={tag:"OPEN_DeepLink_CourseInfo",contents:whatToSend}
                 window.__runDuiCallback(event);
               }
-              
+
         }
         else if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook"){
-              
+
               if(deeplinkMode=="preview"){
                 var whatToSend={details:JSON.stringify(item)};
                 var event={tag:"OPEN_DeepLink_ContentPreview",contents:whatToSend}
@@ -132,7 +132,7 @@ class UserActivity extends View {
                 console.log("ACTUAL MODE RESOURCE")
 
                 _this.clearDeeplinkPreferences();
-                
+
                 var itemDetails = JSON.stringify(item.contentData);
                 _this.deepLinkCollectionDetails = itemDetails;
 
@@ -142,7 +142,7 @@ class UserActivity extends View {
                 var event={tag:"OPEN_Deeplink_CourseEnrolled",contents:whatToSend}
                 window.__runDuiCallback(event);
 
-              // var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken} 
+              // var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken}
               // var event ={ "tag": "API_EnrolledCourses", contents: whatToSend};
               // window.__runDuiCallback(event);
             }
@@ -181,11 +181,11 @@ class UserActivity extends View {
 
                 var whatToSend = {resource:JSON.stringify(resDetails)}
                 var event = {tag:"OPEN_Deeplink_ResourceDetail",contents:whatToSend}
-                window.__runDuiCallback(event); 
+                window.__runDuiCallback(event);
 
-                
+
               }
-   
+
         }
 
 
@@ -260,7 +260,7 @@ class UserActivity extends View {
   }
 
 
-  
+
 
 
 
@@ -355,7 +355,7 @@ class UserActivity extends View {
       //     var event={tag:"OPEN_Deeplink_CourseEnrolled",contents:whatToSend}
       //     window.__runDuiCallback(event);
       //   }
-        
+
       //   break;
       default:
         console.log("default SWITCH")
@@ -496,7 +496,7 @@ class UserActivity extends View {
   }
 
   handleLoginClick = () => {
-    
+
     console.log(window.__loginUrl , "/auth/realms/sunbird/protocol/openid-connect/auth","\nandroid");
 
     JBridge.keyCloakLogin(window.__loginUrl + "/auth/realms/sunbird/protocol/openid-connect/auth","android");
@@ -811,7 +811,7 @@ class UserActivity extends View {
     if("__failed" != JBridge.getFromSharedPrefs("intentFilePath")){
 
                 console.log("INSIDE FILE PATH INTENT");
-             
+
                 var filePath = JBridge.getFromSharedPrefs("intentFilePath");
                 JBridge.importEcar(filePath);
 
@@ -844,7 +844,7 @@ class UserActivity extends View {
 
 //from link
       if(("__failed" != JBridge.getFromSharedPrefs("intentFilePath"))||("__failed" != JBridge.getFromSharedPrefs("intentLinkPath"))){
-        
+
         console.log("SHARED PREFERENCES ARE THERE STILL");
         if(whereFrom == "SplashScreenActivity"){
 
@@ -867,7 +867,7 @@ class UserActivity extends View {
         }else if(whereFrom == "Deeplink") {
 
           console.log("FROM DEEPLINK ");
-          
+
           if(("YES"==JBridge.getFromSharedPrefs("logged_in"))){
             console.log("LOGGED IN AND FROM DEEPLINK","ACTUAL");
 
@@ -888,12 +888,20 @@ class UserActivity extends View {
               this.performLogin();
           }else{
               this.replaceChild(this.idSet.parentContainer,this.getBody().render(),0);
-          } 
+          }
 
       }
   }
 
   render() {
+    var imgUrl = "ic_launcher";
+    var textToDisplay = window.__S.SPLASH_MESSAGE;
+    if (JBridge.getFromSharedPrefs("logo_url") != "__failed" && JBridge.getFromSharedPrefs("logo_file_path") != "__failed"){
+      imgUrl = "file://" + JBridge.getFromSharedPrefs("logo_file_path");
+    }
+    if (JBridge.getFromSharedPrefs("orgName") != "__failed"){
+      textToDisplay = JBridge.getFromSharedPrefs("orgName");
+    }
     this.layout = (
 
         <LinearLayout
@@ -910,9 +918,9 @@ class UserActivity extends View {
                 height="250"
                 width="250"
                 layout_gravity="center"
-                imageUrl="ic_launcher"/>
+                circularImageUrl = {"1," + imgUrl}/>
               <TextView
-                text={window.__S.SPLASH_MESSAGE}
+                text={textToDisplay}
                 margin="20,120,20,20"
                 layout_gravity="center"
                 height="wrap_content"/>

@@ -21,6 +21,10 @@ homeFragment input whereFrom whatToSendBack = do
 			responseData <- getUserEnrolledCourses x y
 	 		_ <- sendUpdatedState {response : responseData, responseFor : "API_UserEnrolledCourse", screen:"asas"}
 	  		pure $ "apiDefault"
+		API_Tenant {user_token:x, api_token:y, slug:z} -> do
+			responseData <- getTenantDetail x y z
+			_ <- sendUpdatedState {response : responseData, responseFor : "API_Tenant", screen:"asas"}
+			pure $ "apiDefault"
 		_ -> homeFragment input whereFrom whatToSendBack
 
 homeSearchActivity input whereFrom whatToSendBack = do
