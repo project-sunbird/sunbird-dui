@@ -364,7 +364,6 @@ class MainActivity extends View {
     this.currentPageIndex = 0;
     this.handleBottomNavBarAction(0);
     this.getUserProfileData();
-
   }
 
   setupDuiCallback = () => {
