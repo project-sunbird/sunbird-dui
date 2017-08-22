@@ -256,6 +256,13 @@ getBatchList user_token api_token request_body=
 
 
 
+getBatchDetails user_token api_token batch_id=
+  let requestUrl = "/course/v1/batch/read/" <> batch_id
+      headers = (generateRequestHeaders user_token api_token) in
+  (get requestUrl headers)
+
+
+
 getUserEnrolledCourses user_token api_token =
   let requestUrl = "/course/v1/user/enrollment/list/" <> user_token
       headers = (generateRequestHeaders user_token api_token) in

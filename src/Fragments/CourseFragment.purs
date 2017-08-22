@@ -74,6 +74,10 @@ enrolledCourseActivity input whereFrom whatToSendBack = do
 			responseData <- flagContent user_token api_token request identifier
 			_ <- sendUpdatedState {response : responseData, responseFor : "API_FlagCourse", screen:"asas"}
 			pure $ "handled"
+		API_Get_Batch_Details {user_token : user_token,api_token : api_token ,batch_id : batch_id} -> do
+			responseData <- getBatchDetails user_token api_token batch_id
+			_ <- sendUpdatedState {response : responseData, responseFor : "API_Get_Batch_Details", screen:"asas"}
+			pure $ "handled"
   		OPEN_ModuleDetailsActivity {moduleName:output1,moduleDetails:output2} -> subModuleDetailActivity output1 output2 "EnrolledCourseActivity" input
   		BACK_CourseEnrolledActivity -> case whereFrom of
 			"CourseFragment" -> courseFragment whatToSendBack "Terminate" input
