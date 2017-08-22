@@ -38,7 +38,7 @@ class AdditionalInformationActivity extends View{
     this.screenName="AdditionalInformationActivity"
     this.languageDictionary=["english","hindi","marathi","telugu","kannada","punjabi","bhojpuri","bengali"];
     this.selectedLanguages=[];
-    this.hobbieDictionary=["english","hindi","marathi","telugu","kannada","punjabi","bhojpuri","bengali"];
+    this.hobbieDictionary=["cycling","swimming","singing","travelling","playing","dancing"];
     this.selectedHobbies=[];
     console.log("cons");
   }

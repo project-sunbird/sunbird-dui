@@ -17,6 +17,8 @@ var PageFilterPopup = require('../components/Sunbird/PageFilterPopup');
 var PreviewImagePopup = require('../components/Sunbird/PreviewImagePopup');
 var ContentLoaderDialog = require('../components/Sunbird/core/ContentLoaderDialog');
 var PermissionDeniedDialog = require('../components/Sunbird/core/PermissionDeniedDialog');
+var ExperiencePopUp = require('../components/Sunbird/ExperiencePopUp');
+
 
 const Str = require("../res/Strings") ;
 
@@ -73,6 +75,7 @@ class RootScreen extends View {
         root="true"
         width="match_parent"
         height="match_parent">
+
         <LinearLayout
           orientation="vertical"
           width="match_parent"
@@ -88,7 +91,8 @@ class RootScreen extends View {
         <LoaderDialog/>
         <PageFilterPopup/>
         <ContentLoaderDialog/>
-        <PermissionDeniedDialog/>
+
+        <ExperiencePopUp/>
         <PreviewImagePopup
           defaultImage="https://pbs.twimg.com/media/CRafzhtWIAEQ2c9.png"/>
       </RelativeLayout>

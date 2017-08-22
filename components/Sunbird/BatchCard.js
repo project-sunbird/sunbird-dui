@@ -76,7 +76,7 @@ class BatchCard extends View {
                 <TextView
                   width="match_parent"
                   height="wrap_content"
-                  text={this.props.batch.name}
+                  text={utils.firstLeterCapital(this.props.batch.name)}
                   style={window.__TextStyle.textStyle.CARD.TITLE.DARK_14}/>
 
                 <TextView
