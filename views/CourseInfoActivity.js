@@ -56,9 +56,9 @@ class CourseInfoActivity extends View {
 
     this.details = JSON.parse(state.data.value0.courseDetails);
 
-
+    this.localContent = null;
     this.checkContentLocalStatus(this.details.identifier);
-   this.data = {
+    this.data = {
       courseName: this.details ? this.details.name : "",
       courseDesc: this.details ? this.details.description : "",
       competedCount: this.details && this.details.footerTitle ? this.details.footerTitle.split('%')[0] : "10",
@@ -97,9 +97,9 @@ class CourseInfoActivity extends View {
   }
 
   checkContentLocalStatus = (identifier) => {
-    var callback = callbackMapper.map(function(status) {
-
-      if (status == "true") {
+    var callback = callbackMapper.map(function(data) {
+      _this.localContent  = JSON.parse(data[0]);
+      if (_this.localContent.isAvailableLocally == true) {
         var callback1 = callbackMapper.map(function(data) {
           data[0] = utils.jsonifyData(data[0])
           _this.courseContent = JSON.parse(data[0]);
@@ -121,7 +121,7 @@ class CourseInfoActivity extends View {
       }
 
     });
-    JBridge.getLocalContentStatus(identifier, callback);
+    JBridge.getContentDetails(identifier, callback);
   }
 
 

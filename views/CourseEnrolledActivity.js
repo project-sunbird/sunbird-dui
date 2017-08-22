@@ -276,6 +276,12 @@ class CourseEnrolledActivity extends View {
                   content= {this.courseContent.children}/>
                   )
    }
+   var cmd = this.set({
+        id: this.idSet.featureButton,
+        visibility: "gone"
+
+      });
+      Android.runInUI(cmd, 0);
     this.replaceChild(this.idSet.descriptionContainer, layout.render(), 0)
   }
 
