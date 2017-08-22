@@ -36,7 +36,7 @@ class ViewBatchActivity extends View {
 
         //set false to disable caching
         this.shouldCacheScreen = "true"
-        this.searchId="do_2123138572751912961138";
+        this.searchId = this.extras.identifier || "do_2123138572751912961138";
         //this.extras.course.identifier = ( this.extras.course.identifier || "do_2123138572751912961138");
 
         setTimeout(() => {
@@ -146,9 +146,10 @@ class ViewBatchActivity extends View {
       switch (state.responseFor + "") {
 
         case "API_EnrollInBatch":
+          window.__LoaderDialog.hide();
           if (result.response == "SUCCESS") {
             console.log("response",response)
-            window.__enrolledCourses.push(this.courseDetails)
+            window.__enrolledCourses.push(this.extras)
             JBridge.showSnackBar(window.__S.COURSE_ENROLLED)
             var whatToSend = { "course": this.extras}
             var event = { tag: 'OPEN_EnrolledActivity_BATCH', contents: whatToSend }
