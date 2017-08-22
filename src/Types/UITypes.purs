@@ -100,7 +100,8 @@ data MainActivityAction = OPEN_HomeFragment |
   API_ProfileFragment {user_token::String, api_token::String}|
   API_UserEnrolledCourse {user_token::String, api_token::String} |
   API_FilterPage {user_token::String, api_token::String,filter_to_send::String} |
-  API_CreatedBy {user_token::String, api_token::String, sendBack::String, filters::String }
+  API_CreatedBy {user_token::String, api_token::String, sendBack::String, filters::String }|
+  API_Tenant {user_token::String, api_token::String, slug::String }
 
 instance homeActivity :: UIScreen MainActivity MainActivityAction where
   generateMockEvents _ = [BACK_HomeActivity , OPEN_HomeFragment , OPEN_CourseFragment , OPEN_ResourceFragment , OPEN_CommunityFragment , OPEN_ProfileFragment ]

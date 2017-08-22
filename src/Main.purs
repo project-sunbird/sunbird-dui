@@ -137,8 +137,12 @@ mainActivity input whereFrom whatToSendBack = do
             responseData <- getProfileDetail x y
             _ <- sendUpdatedState {response : responseData, responseFor : "API_ProfileFragment", screen:"asas"}
             pure $ "handled"
+        API_Tenant {user_token:x, api_token:y, slug:z} -> do
+          responseData <- getTenantDetail x y z
+          _ <- sendUpdatedState {response : responseData, responseFor : "API_Tenant", screen:"asas"}
+          pure $ "apiDefault"
         _ -> mainActivity input whereFrom whatToSendBack
 
 
 changeFlow = void $ launchAff $ mainActivity "{}" "LogInScreen" "Nothing"
-onBoardingFLow = void $ launchAff $ userActivity "SplashScreenActivity" 
+onBoardingFLow = void $ launchAff $ userActivity "SplashScreenActivity"
