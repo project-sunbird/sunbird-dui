@@ -351,7 +351,7 @@ class ViewBatchActivity extends View {
               clickable="true">
 
               <SimpleToolbar
-                title={window.__S.FILTER}
+                title={window.__S.BATCHES_FOR_THIS_COURSE}
                 onBackPress={this.onBackPressed}
                 invert="true"
                 width="match_parent"/>

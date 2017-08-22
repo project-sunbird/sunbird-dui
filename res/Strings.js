@@ -21,6 +21,7 @@ const stringsRes = {
 		LANGUAGE : "LANGUAGE",
 		HINT_LANGUAGE : "Choose preffered language",
 		SIGN_IN : "SIGN IN",
+		BATCHES_FOR_THIS_COURSE : "Batches for the course",
 		SIGN_UP : "SIGN UP",
 		ALREADY_HAVE_ACC : "Already have an Account? Sign in now",
 		NO_ACC_YET : "No Account yet? Sign up now",

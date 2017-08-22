@@ -102,6 +102,12 @@ class BatchCard extends View {
 
            {this.getBody()}
 
+           <LinearLayout
+             height="2"
+             width="match_parent"
+             background={window.__Colors.LIGHT_GRAY}
+             padding="16,0,16,0"/>
+
          </LinearLayout>
     )
 
