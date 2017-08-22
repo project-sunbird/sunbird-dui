@@ -31,7 +31,7 @@ class ViewBatchActivity extends View {
         ]);
 
         _this = this;
-        this.screenName = "ViewBatchScreen"
+        this.screenName = "ViewBatchActivity"
         this.extras=JSON.parse(this.state.data.value0.extras);
 
         //set false to disable caching
@@ -54,14 +54,13 @@ class ViewBatchActivity extends View {
             _this.animateView(),
             null
         );
-        JBridge.showSnackBar("SADDD")
     }
 
     onBackPressed = () => {
       return;
 
       var whatToSend = []
-      var event = { tag: 'BACK_ViewBatchScreen', contents: whatToSend }
+      var event = { tag: 'BACK_ViewBatchActivity', contents: whatToSend }
       window.__runDuiCallback(event);
     }
 
@@ -102,8 +101,9 @@ class ViewBatchActivity extends View {
 
           var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken, request : JSON.stringify(request)}
           var event ={ "tag": "API_Get_Batch_list", contents: whatToSend};
-          window.__runDuiCallback(event);
           window.__LoaderDialog.show();
+          window.__runDuiCallback(event);
+
       }else{
         JBridge.showSnackBar(window.__S.NO_INTERNET)
       }
@@ -155,7 +155,7 @@ class ViewBatchActivity extends View {
             console.log("response",response)
             window.__enrolledCourses.push(this.extras)
             JBridge.showSnackBar(window.__S.COURSE_ENROLLED)
-            var whatToSend = { "course": this.extras}
+            var whatToSend = { "course": JSON.stringify(this.extras)}
             var event = { tag: 'OPEN_EnrolledActivity_BATCH', contents: whatToSend }
             window.__runDuiCallback(event);
           } else {
