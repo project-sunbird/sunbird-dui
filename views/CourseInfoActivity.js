@@ -182,10 +182,8 @@ class CourseInfoActivity extends View {
 
   afterRender = () => {
 
-    this.shareContent();
     
-    
-
+  
     if(window.__enrolledCourses == undefined){
       window.__LoaderDialog.show();
       var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken} 
@@ -311,6 +309,11 @@ class CourseInfoActivity extends View {
 
     _this.replaceChild(_this.idSet.sharePopupContainer,sharePopUp.render(),0);
 
+        setTimeout(function() {
+           window.__SharePopup.show();
+        }, 200);
+
+
     });
 
     JBridge.exportEcar(this.details.identifier, shareCallback);
@@ -420,7 +423,9 @@ class CourseInfoActivity extends View {
 
   handleMenuClick = (url) =>{
     if(url == "ic_action_share_black"){
-      window.__SharePopup.show();
+
+      this.shareContent();
+
     }
   }
 
