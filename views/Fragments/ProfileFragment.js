@@ -197,11 +197,12 @@ class ProfileFragment extends View {
   }
 
   render() {
+
     this.layout = (
 
-
-
-
+  <RelativeLayout
+     height="match_parent"
+     width="match_parent">
       <LinearLayout
         root="true"
         orientation="vertical"
@@ -264,6 +265,10 @@ class ProfileFragment extends View {
 
         </LinearLayout>
 
+
+
+
+   </RelativeLayout>
 
 
     )
