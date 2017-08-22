@@ -8,6 +8,7 @@ window.R = require("ramda");
 var LinearLayout  = require("@juspay/mystique-backend").androidViews.LinearLayout ;
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
+var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 
 //Components
 var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
@@ -46,7 +47,7 @@ class ViewBatchActivity extends View {
             );
         });
 
-        this.showChooser=true;
+        this.showChooser=false;
     }
 
     onPop = (type) => {
@@ -57,27 +58,24 @@ class ViewBatchActivity extends View {
     }
 
     onBackPressed = () => {
-      return;
-
       var whatToSend = []
       var event = { tag: 'BACK_ViewBatchActivity', contents: whatToSend }
       window.__runDuiCallback(event);
     }
 
-    showBachTypeChooser = (showChooser) => {
-     if(showChooser==undefined)
-        showChooser= this.showChooser;
+    toggleBatchTypeChooser = () => {
 
+      this.showChooser = !this.showChooser;
       Android.runInUI(this.set({
         id : this.idSet.chooserPopup,
-        visibility :showChooser?"visible":"gone"
+        visibility :this.showChooser?"visible":"gone"
       }),0);
 
     }
 
 
     handleTypeChange = (type)=> {
-      this.showBachTypeChooser(false);
+      this.toggleBatchTypeChooser();
       Android.runInUI(this.set({
         id : this.idSet.batchTypeTextView,
         text : type
@@ -199,16 +197,33 @@ class ViewBatchActivity extends View {
       return (
         <LinearLayout
         height="wrap_content"
-        onClick={this.showBachTypeChooser}
-        width="match_parent">
+        width="match_parent"
+        background={window.__Colors.LIGHT_GRAY}>
 
             <TextView
               id={this.idSet.batchTypeTextView}
               height="wrap_content"
-              width="match_parent"
+              width="0"
+              weight="1"
               padding="16,4,16,4"
-              background={window.__Colors.LIGHT_GRAY}
               text={window.__S.VIEW_ONGOING_BATCH}/>
+
+              <LinearLayout
+                height="32"
+                width="wrap_content"
+                orientation="vertical">
+
+                <ImageView
+                  height="32"
+                  width="32"
+                  padding="8,8,8,8,8"
+                  onClick={this.toggleBatchTypeChooser}
+                  imageUrl="ic_action_arrow_down"/>
+
+              </LinearLayout>
+
+
+
 
       </LinearLayout>)
     }
@@ -265,7 +280,7 @@ class ViewBatchActivity extends View {
               <TextView
                 height="wrap_content"
                 width="match_parent"
-                padding="16,4,16,4"
+                padding="20,4,16,4"
                 background={window.__Colors.LIGHT_GRAY}
                 text={item}/>
 
