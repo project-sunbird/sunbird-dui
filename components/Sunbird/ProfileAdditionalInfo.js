@@ -127,8 +127,9 @@ class ProfileAdditionalInfo extends View {
               <TextView
               width="wrap_content"
               height="wrap_content"
-              text="View all"
-              visibility = "gone"
+              text="Edit"
+              visibility = "visible"
+              onClick={this.handleEditProfileClick}
               style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
 
               </LinearLayout>)
@@ -195,6 +196,14 @@ class ProfileAdditionalInfo extends View {
     )
     return this.layout.render();
   }
+  handleEditProfileClick = () => {
+
+    var whatToSend = {}
+    var event ={ tag: "OPEN_EditProfileActivity", contents: whatToSend }
+    window.__runDuiCallback(event);
+
+  }
+
 }
 
 

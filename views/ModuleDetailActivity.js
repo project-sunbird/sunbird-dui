@@ -49,6 +49,7 @@ class ModuleDetailActivity extends View {
         this.module = state.data.value0.moduleDetails;
         this.module = JSON.parse(this.module)
         this.localStatus = this.module.isAvailableLocally;
+        this.localContent = null;
         _this = this;
 
         //stack to maintain child traversal
@@ -134,8 +135,9 @@ class ModuleDetailActivity extends View {
 
     checkContentLocalStatus = (module) => {
         _this = this;
-        var callback = callbackMapper.map(function(status) {
-            if (status == "true") {
+        var callback = callbackMapper.map(function(data) {
+            _this.localContent = JSON.parse(data[0])
+            if (_this.localContent.isAvailableLocally == true) {
                 var callback1 = callbackMapper.map(function(data) {
                     _this.module = JSON.parse(data);
                     _this.renderModuleChildren(_this.module)
@@ -152,7 +154,7 @@ class ModuleDetailActivity extends View {
 
         if (!module.isAvailableLocally || module.isUpdateAvailable) {
             window.__getDownloadStatus = this.getSpineStatus;
-            JBridge.getLocalContentStatus(module.identifier, callback);
+            JBridge.getContentDetails(module.identifier, callback);
         } else {
             this.renderModuleChildren(module);
         }
@@ -364,6 +366,7 @@ class ModuleDetailActivity extends View {
                     width = "match_parent"
                     visibility = "gone"
                     isCourse = "true"
+                    playContent = {this.props.localContent}
                     contentDetails = { this.module }
                     changeOverFlowMenu = {this.handleOverFlowClick}
                     buttonText = "PLAY"

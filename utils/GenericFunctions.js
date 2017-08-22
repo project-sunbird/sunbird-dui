@@ -94,9 +94,18 @@ exports.checkEnrolledCourse = (identifier) =>{
     })
 
      return enrolled;
-
   }
+exports.getEnrolledCourse = (identifier) =>{
+    
+    var enrolled = null;
+    window.__enrolledCourses.map(function(item){
+      if(item.courseId == identifier){
+        enrolled = item;
+      }
+    })
 
+     return enrolled;
+  }
 
 
 

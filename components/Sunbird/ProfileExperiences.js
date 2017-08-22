@@ -41,8 +41,9 @@ class ProfileExperiences extends View {
               <TextView
               width="wrap_content"
               height="wrap_content"
-              text="Edit"
-              visibility = {"gone"/*(this.isEditable == "true") ? "visible" : "gone"*/}
+              text="Add"
+              onClick = {window.__ExperiencePopUp.show}
+              visibility = {(this.isEditable == "true") ? "visible" : "gone"}
               style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
 
               </LinearLayout>)
@@ -54,6 +55,39 @@ class ProfileExperiences extends View {
               height="1"
               margin="0,0,0,24"
               background={window.__Colors.PRIMARY_BLACK_22}/>)
+  }
+
+  getEditButton = (item) =>{
+    if(this.editable){
+    return (
+      <LinearLayout
+      height="wrap_content"
+      width="wrap_content"
+      gravity="center">
+      <ViewWidget
+        height="0"
+        weight="1"/>
+        <ImageView
+        width="18"
+        height="18"
+        imageUrl="ic_action_edit_blue"
+        onClick={()=>{this.showPopUp(item)}}/>
+      </LinearLayout>
+    )
+   }
+
+   else {
+     return (<LinearLayout
+       height="wrap_content"
+       width="wrap_content"/>)
+   }
+  }
+
+  showPopUp = (item) =>{
+    console.log(item, "showPopUp");
+
+    window.__ExperiencePopUp.data=item;
+    window.__ExperiencePopUp.show();
   }
 
   getBody(input) {
@@ -135,6 +169,7 @@ class ProfileExperiences extends View {
                   height="44"/>
 
                 {this.getBody(item)}
+                {this.getEditButton(item)}
 
                 </LinearLayout>)
 

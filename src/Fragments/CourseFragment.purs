@@ -45,6 +45,10 @@ courseInfoActivity input whereFrom whatToSendBack = do
 	event <- ui $ CourseInfoActivity {courseDetails : input}
 	case event of
 		OPEN_EnrolledActivity {course: output} -> enrolledCourseActivity output "CourseFragment" input
+		API_Get_Batch_list {user_token : x, api_token: token , request : request } -> do
+				responseData <- getBatchList x token request 
+	  			_ <- sendUpdatedState {response : responseData, responseFor : "API_Get_Batch_list", screen:"asas"}
+				pure $ "apiDefault"
 		API_EnrollCourse {user_token : x, reqParams : details , api_token: token} -> do
 				responseData <- enrollCourse x details token
 	  			_ <- sendUpdatedState {response : responseData, responseFor : "API_EnrollCourse", screen:"asas"}
@@ -69,6 +73,10 @@ enrolledCourseActivity input whereFrom whatToSendBack = do
 		API_FlagCourse {user_token: user_token,api_token: api_token,requestBody:request,identifier:identifier} -> do
 			responseData <- flagContent user_token api_token request identifier
 			_ <- sendUpdatedState {response : responseData, responseFor : "API_FlagCourse", screen:"asas"}
+			pure $ "handled"
+		API_Get_Batch_Details {user_token : user_token,api_token : api_token ,batch_id : batch_id} -> do
+			responseData <- getBatchDetails user_token api_token batch_id
+			_ <- sendUpdatedState {response : responseData, responseFor : "API_Get_Batch_Details", screen:"asas"}
 			pure $ "handled"
   		OPEN_ModuleDetailsActivity {moduleName:output1,moduleDetails:output2} -> subModuleDetailActivity output1 output2 "EnrolledCourseActivity" input
   		BACK_CourseEnrolledActivity -> case whereFrom of

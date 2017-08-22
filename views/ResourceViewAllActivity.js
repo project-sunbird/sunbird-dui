@@ -14,7 +14,7 @@ var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
 var CropParagraph = require('../components/Sunbird/CropParagraph');
 var ProgressButton = require('../components/Sunbird/core/ProgressButton');
 var LargeCardComponent = require('../components/Sunbird/core/LargeCardComponent');
-var utils = require('../utils/GenericFunctions'); 
+var utils = require('../utils/GenericFunctions');
 
 var _this;
 
@@ -36,21 +36,21 @@ class ResourceViewAllActivity extends View {
     this.totalDetails = JSON.parse(state.data.value0.resourceDetails);
 
 
-    
+
     _this = this;
     this.start_index = 0;
     this.details = this.totalDetails.resourceDetails;
     this.appbarTitle = this.totalDetails.title;
 
 
-    
+
     this.size;
     this.fileImageUrl;
     this.cType;
     this.name;
     this.time;
     this.displayContent = [];
-    
+
     setTimeout(function() {
       Android.runInUI(
         _this.animateView(),
@@ -83,7 +83,7 @@ getRows = (data) =>{
                    this.name = item.name;
                     if(item.hasOwnProperty("createdOn")){
                      var d =  new Date(item.createdOn);
-              
+
                    }
                    else{
                     var d = new Date();
@@ -241,21 +241,21 @@ getRows = (data) =>{
     // }
      // if(this.start_index >= 9){
      //  _this.changeViewMoreButtonStatus("gone")
-      
+
      // }
 
   }
 
   changeViewMoreButtonStatus(status){
-    
+
       var cmd = this.set({
         id: this.idSet.viewMoreButton,
         visibility: status
       });
       Android.runInUI(cmd, 0);
-    
+
   }
-  
+
 
   render() {
 
@@ -319,8 +319,8 @@ getRows = (data) =>{
                           text = {window.__S.VIEW_MORE}
                           style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
                           />
-                      </LinearLayout>     
-                  
+                      </LinearLayout>
+
                   </LinearLayout>
                 </ScrollView>
 
