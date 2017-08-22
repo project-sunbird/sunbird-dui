@@ -5,11 +5,11 @@ import Control.Monad.Aff
 
 import Utils
 
-import Fragments.CommunityFragment
-import Fragments.CourseFragment
-import Fragments.ProfileFragment
-import Fragments.ResourceFragment
-import Fragments.HomeFragment
+import Fragments.CommunityFragment ( communityFragment)
+import Fragments.CourseFragment ( courseFragment)
+import Fragments.ProfileFragment ( profileFragment)
+import Fragments.ResourceFragment ( resourceFragment)
+import Fragments.HomeFragment ( homeFragment )
 
 import Control.Monad.Eff (Eff)
 import Control.Monad.Aff (launchAff)
@@ -69,6 +69,7 @@ contentPreviewActivity input whereFrom whatToSendBack = do
 courseInfoActivity input whereFrom whatToSendBack= do
     event <- ui $ CourseInfoActivity {courseDetails:input}
     case event of
+        OPEN_ViewBatchActivity {course: output}-> viewBatchActivity output "CourseInfoActivity" input
         OPEN_EnrolledActivity {course:output} -> enrolledCourseActivity output "HomeFragment" input
         API_EnrollCourse {user_token:x,reqParams:details,api_token:token} -> do
             output <- enrollCourse x details token
@@ -84,6 +85,20 @@ courseInfoActivity input whereFrom whatToSendBack= do
                 _ -> pure $ "default"
         _ -> courseInfoActivity input whereFrom whatToSendBack
 
+viewBatchActivity input whereFrom whatToSendBack = do
+	event <- ui $ ViewBatchActivity {extras : input}
+	case event of
+		OPEN_EnrolledActivity_BATCH {course: output} -> enrolledCourseActivity output "CourseFragment" input
+		API_Get_Batch_list {user_token : x, api_token: token , request : request } -> do
+			responseData <- getBatchList x token request
+			_ <- sendUpdatedState {response : responseData, responseFor : "API_Get_Batch_list", screen:"asas"}
+			pure $ "apiDefault"
+		API_EnrollInBatch {reqParams : details , user_token : x, api_token: token} -> do
+			responseData <- enrollInBatch details x token
+			_ <- sendUpdatedState {response : responseData, responseFor : "API_EnrollInBatch", screen:"asas"}
+			pure $ "apiDefault"
+		BACK_ViewBatchActivity -> courseInfoActivity whatToSendBack "Deeplink" input
+		_ -> viewBatchActivity input whereFrom whatToSendBack
 
 resourceDetailActivity input whereFrom whatToSendBack = do
     event <- ui $ ResourceDetailActivity {resourceDetails : input}

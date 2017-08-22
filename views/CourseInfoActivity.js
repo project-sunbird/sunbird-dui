@@ -321,7 +321,6 @@ class CourseInfoActivity extends View {
 
 
   handleEnrollClick = (data) => {
-
     var whatToSend = { "course": this.state.data.value0.courseDetails }
     var event ={ "tag": "OPEN_ViewBatchActivity", contents: whatToSend};
     window.__runDuiCallback(event);

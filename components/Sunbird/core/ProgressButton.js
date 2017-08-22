@@ -25,10 +25,10 @@ class ProgressButton extends View {
     window.__ProgressButton = this;
     this.isDownloaded = false;
     this.startedDownloading = false;
-  
+
     _this = this;
     this.isCancelVisible=false;
-   
+
   }
 
   afterRender = () => {
@@ -44,10 +44,10 @@ class ProgressButton extends View {
   }
 
   handleCancelDownload = () => {
-     
+
      JBridge.cancelDownload(this.props.identifier)
-      
-     this.isCancelVisible=false; 
+
+     this.isCancelVisible=false;
      this.setCancelButtonVisibility("gone");
 
      this.startedDownloading=false;
@@ -79,13 +79,13 @@ class ProgressButton extends View {
       console.log("NOT mine")
       return;
     }
-    
+
     var textToShow = ""
 
     data.downloadProgress = ( data.downloadProgress == undefined || data.downloadProgress < 0 )? 0 : data.downloadProgress;
     console.log("--->\t\t\t\n\n\n", data);
      console.log(data.downloadProgress)
-     if(data.status == "NOT_FOUND"){ 
+     if(data.status == "NOT_FOUND"){
           this.setCancelButtonVisibility("gone");
         _this.replaceChild(_this.idSet.downloadBarContainer, _this.getButtons(0, "DOWNLOAD").render(), 0);
         JBridge.showSnackBar("Content Not Available");
@@ -132,7 +132,7 @@ class ProgressButton extends View {
   handleButtonClick = () => {
 
       window.__getDownloadStatus = this.updateProgress;
-      
+
       if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
 
         if (this.isDownloaded) {

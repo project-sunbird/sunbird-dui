@@ -23,7 +23,7 @@ exports.prettifyDate = (data) => {
 }
 
 exports.jsonifyData = (data) =>{
-	data = data.replace(/\\n/g, "\\n")  
+	data = data.replace(/\\n/g, "\\n")
                .replace(/\\'/g, "\\'")
                .replace(/\\"/g, '\\"')
                .replace(/\\&/g, "\\&")
@@ -85,7 +85,7 @@ exports.clearDeeplinkPreferences = () =>{
 
 
 exports.checkEnrolledCourse = (identifier) =>{
-    
+
     var enrolled = false;
     window.__enrolledCourses.map(function(item){
       if(item.courseId == identifier){
@@ -96,7 +96,7 @@ exports.checkEnrolledCourse = (identifier) =>{
      return enrolled;
   }
 exports.getEnrolledCourse = (identifier) =>{
-    
+
     var enrolled = null;
     window.__enrolledCourses.map(function(item){
       if(item.courseId == identifier){
@@ -106,9 +106,3 @@ exports.getEnrolledCourse = (identifier) =>{
 
      return enrolled;
   }
-
-
-
-
-
-
