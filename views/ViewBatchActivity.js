@@ -28,7 +28,9 @@ class ViewBatchActivity extends View {
         this.setIds([
           "chooserPopup",
           "batchTypeTextView",
-          "batchListContainer"
+          "batchListContainer",
+          "viewOnGoingContainer",
+          "viewUpComingContainer"
         ]);
 
         _this = this;
@@ -65,9 +67,7 @@ class ViewBatchActivity extends View {
     }
 
     toggleBatchTypeChooser = () => {
-      console.log("BEFORE :",this.showChooser);
       this.showChooser = !this.showChooser;
-      console.log("AFTER :",this.showChooser);
       Android.runInUI(this.set({
         id : this.idSet.chooserPopup,
         visibility :this.showChooser?"visible":"gone"
@@ -78,10 +78,20 @@ class ViewBatchActivity extends View {
 
     handleTypeChange = (type)=> {
       this.toggleBatchTypeChooser();
-      Android.runInUI(this.set({
+      var cmd=this.set({
         id : this.idSet.batchTypeTextView,
         text : type
-      }),0)
+      });
+        cmd+=this.set({
+          id: this.idSet.viewOnGoingContainer,
+          visibility : (type=== window.__S.VIEW_ONGOING_BATCH)?"gone":"visible"
+        })
+        cmd+=this.set({
+          id: this.idSet.viewUpComingContainer,
+          visibility : (type=== window.__S.VIEW_ONGOING_BATCH)?"visible":"gone"
+        })
+
+      Android.runInUI(cmd,0)
 
       if( type=== window.__S.VIEW_ONGOING_BATCH ){
         this.replaceChild(_this.idSet.batchListContainer,_this.getBatchesList(this.ongoingList,"1").render(),0);
@@ -277,30 +287,6 @@ class ViewBatchActivity extends View {
     }
 
     getBatchTypeChoser = () => {
-      var list= [
-       window.__S.VIEW_ONGOING_BATCH,
-       window.__S.VIEW_UPCOMING_BATCHES
-      ]
-
-
-
-      var cards = list.map((item)=>{
-        return (<LinearLayout
-          height="wrap_content"
-          width="match_parent"
-          orientatio="vertical"
-          onClick={()=>{this.handleTypeChange(item)}}>
-
-              <TextView
-                height="wrap_content"
-                width="match_parent"
-                padding="20,4,16,4"
-                background={window.__Colors.LIGHT_GRAY}
-                text={item}/>
-
-        </LinearLayout>)
-      })
-
       return (<LinearLayout
                 id={this.idSet.chooserPopup}
                 height="wrap_content"
@@ -310,7 +296,37 @@ class ViewBatchActivity extends View {
                 orientation="vertical">
 
 
-              { cards }
+                <LinearLayout
+                          height="wrap_content"
+                          width="match_parent"
+                          id={this.idSet.viewOnGoingContainer}
+                          orientatio="vertical"
+                          onClick={()=>{_this.handleTypeChange(window.__S.VIEW_ONGOING_BATCH)}}>
+
+                      <TextView
+                        height="wrap_content"
+                        width="match_parent"
+                        padding="20,4,16,4"
+                        background={window.__Colors.LIGHT_GRAY}
+                        text={window.__S.VIEW_ONGOING_BATCH}/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                          height="wrap_content"
+                          width="match_parent"
+                          orientatio="vertical"
+                          id={this.idSet.viewUpComingContainer}
+                          onClick={()=>{_this.handleTypeChange(window.__S.VIEW_UPCOMING_BATCHES)}}>
+
+                      <TextView
+                        height="wrap_content"
+                        width="match_parent"
+                        padding="20,4,16,4"
+                        background={window.__Colors.LIGHT_GRAY}
+                        text={window.__S.VIEW_UPCOMING_BATCHES}/>
+
+                </LinearLayout>
 
 
       </LinearLayout>)
