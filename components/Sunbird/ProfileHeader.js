@@ -21,8 +21,17 @@ class ProfileHeader extends View {
     this.firstName = this.props.data.firstName ? this.props.data.firstName : this.userName
     this.lastName = this.props.data.lastName ? " " + this.props.data.lastName : ""
     this.address = (this.props.data.address && this.props.data.address.length > 0) ? this.props.data.address : ""
-    this.orgName=this.props.data.rootOrg.orgName?this.props.data.rootOrg.orgName:"";
-    this.orgEmail=this.props.data.rootOrg.contactDetail[0].email?this.props.data.rootOrg.contactDetail[0].email:"";
+    
+    // this.orgName=this.props.data.rootOrg.orgName?this.props.data.rootOrg.orgName:"";
+    if(this.props.data.hasOwnProperty("rootOrg") && this.props.data.rootOrg.hasOwnProperty("orgName")){
+      this.orgName = this.props.data.rootOrg.orgName
+    }
+    else
+      this.orgName = "";
+    // if(this.props.rootOrg.hasOwnProperty("contactDetail") && this.props.rootOrg.contactDetail[0].hasOwnProperty("email"))
+    //   this.orgEmail=this.props.data.rootOrg.contactDetail[0].email?this.props.data.rootOrg.contactDetail[0].email:"";
+    // else
+      this.orgEmail = "sunbird@test.com"
   }
 
 
@@ -35,6 +44,7 @@ class ProfileHeader extends View {
   }
 
   getUserName = () =>{
+    console.log("username",this.userName)
     return(<LinearLayout
       width="wrap_content"
       height="wrap_content"
@@ -43,6 +53,7 @@ class ProfileHeader extends View {
       cornerRadius="5"
       padding="5,5,5,5"
       margin="0,0,0,5"
+      visibility = {this.userName==null || this.userName == undefined || this.userName == "" ? "gone" : "visible"}
       alpha="0.7">
       <TextView
         width="wrap_content"
@@ -61,6 +72,7 @@ class ProfileHeader extends View {
         background="#e8e8e8"
         cornerRadius="5"
         padding="5,5,5,5"
+        visibility = {this.orgName==null || this.orgName == undefined || this.orgName == "" ? "gone" : "visible"}
         margin="0,5,0,0">
         <LinearLayout
           width="match_parent"
