@@ -35,7 +35,7 @@ class ViewBatchActivity extends View {
         this.extras=JSON.parse(this.state.data.value0.extras);
 
         //set false to disable caching
-        this.shouldCacheScreen = "true"
+        this.shouldCacheScreen = false
         this.searchId = this.extras.identifier || "do_2123138572751912961138";
         //this.extras.course.identifier = ( this.extras.course.identifier || "do_2123138572751912961138");
 
@@ -54,6 +54,7 @@ class ViewBatchActivity extends View {
             _this.animateView(),
             null
         );
+        JBridge.showSnackBar("SADDD")
     }
 
     onBackPressed = () => {
