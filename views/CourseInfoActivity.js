@@ -182,15 +182,14 @@ class CourseInfoActivity extends View {
 
   afterRender = () => {
 
-    this.shareContent();
-    
-    
+    // this.shareContent();
 
     if(window.__enrolledCourses == undefined){
       window.__LoaderDialog.show();
       var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken}
       var event ={ "tag": "API_EnrolledCoursesList", contents: whatToSend};
       window.__runDuiCallback(event);
+
     }else{
 
       this.replaceChild(this.idSet.totalContainer,this.getBody().render(),0);
@@ -239,19 +238,19 @@ class CourseInfoActivity extends View {
     console.log("RESPONSE FOR IN COURSE INFO",state.responseFor)
 
     switch (state.responseFor + "") {
-
-      case "API_EnrollCourse":
-        if (result.response == "SUCCESS") {
-          console.log("response",response)
-          window.__enrolledCourses.push(this.cour)
-          JBridge.showSnackBar(window.__S.COURSE_ENROLLED)
-          var whatToSend = { "course": this.state.data.value0.courseDetails }
-          var event = { tag: 'OPEN_EnrolledActivity', contents: whatToSend }
-          window.__runDuiCallback(event);
-        } else {
-          JBridge.showSnackBar(window.__S.RETRY_ACTION)
-        }
-        break;
+      //REMOVED FOR NOW
+      // case "API_EnrollCourse":
+      //   if (result.response == "SUCCESS") {
+      //     console.log("response",response)
+      //     window.__enrolledCourses.push(this.cour)
+      //     JBridge.showSnackBar(window.__S.COURSE_ENROLLED)
+      //     var whatToSend = { "course": this.state.data.value0.courseDetails }
+      //     var event = { tag: 'OPEN_EnrolledActivity', contents: whatToSend }
+      //     window.__runDuiCallback(event);
+      //   } else {
+      //     JBridge.showSnackBar(window.__S.RETRY_ACTION)
+      //   }
+      //   break;
 
 
       case "API_EnrolledCoursesList":
@@ -318,60 +317,10 @@ class CourseInfoActivity extends View {
 
 
   handleEnrollClick = (data) => {
-    // var request = 
-    //               "filters": {
-    //                   "courseId":"do_2123138572751912961138"
-    //               }
-    //           }
-
-    // var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken, request : JSON.stringify(request)} 
-    //   var event ={ "tag": "API_Get_Batch_list", contents: whatToSend};
-    //   window.__runDuiCallback(event);
-
-    if(JBridge.isNetworkAvailable()){
-
-        window.__LoaderDialog.show();
-
-
-        console.log("HANDLE ENROLL CLICK");
-        this.cour = {
-            "dateTime": "2017-08-18 16:05:24.347",
-            "identifier": "a045981883fa87cb403fdd5916585a8630a10787c04ea5572b788a94f70b4e13",
-            "lastReadContentStatus": 2,
-            "enrolledDate": "2017-08-18 11:52:14:977+0000",
-            "addedBy": "db705067-0516-483f-bc6a-aa57d44b51b9",
-            "delta": "delta",
-            "contentId": this.details.identifier,
-            "description": "dsd",
-            "active": true,
-            "courseLogoUrl": null,
-            "batchId": "1",
-            "userId": "db705067-0516-483f-bc6a-aa57d44b51b9",
-            "courseName": "Enrollment 3",
-            "leafNodesCount": 1,
-            "progress": 0,
-            "id": "a045981883fa87cb403fdd5916585a8630a10787c04ea5572b788a94f70b4e13",
-            "courseId": this.details.identifier,
-            "status": 0
-          }
-
-
-        var whatToSend = {
-        "user_token":window.__userToken!=undefined?window.__userToken:"",
-        "reqParams": this.details.identifier,
-        "api_token": window.__apiToken }
-        var event = {
-          "tag": "API_EnrollCourse",
-          "contents": whatToSend
-        }
-
-        window.__runDuiCallback(event);
-
-
-    }
-    else{
-      JBridge.showSnackBar(window.__S.NO_INTERNET)
-    }
+    var whatToSend = { "course": this.state.data.value0.courseDetails }
+    var event ={ "tag": "OPEN_ViewBatchActivity", contents: whatToSend};
+    window.__runDuiCallback(event);
+    return;
   }
 
 
