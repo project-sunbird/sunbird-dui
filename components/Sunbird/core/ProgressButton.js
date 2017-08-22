@@ -137,13 +137,15 @@ class ProgressButton extends View {
 
         if (this.isDownloaded) {
           window.__getGenieEvents = this.checkTelemetry;
-          JBridge.playContent(this.props.identifier);
-          // if (this.props.isCourse == "true") {
-          //   window.__getGenieEvents = this.checkTelemetry;
-          //   JBridge.playChildContent(this.props.identifier)
-          // } else {
-          //   JBridge.playContent(this.props.identifier);
-          // }
+          // JBridge.playContent(this.props.identifier);
+          if(this.props.playContent!=null)
+            JBridge.playContent(JSON.stringify(this.props.playContent));
+          else{
+            var callback = callbackMapper.map(function(data){
+              JBridge.playContent(data[0]);
+            });
+            JBridge.getContentDetails(_this.props.identifier,callback);
+          }
 
         } else if(JBridge.isNetworkAvailable()){
 

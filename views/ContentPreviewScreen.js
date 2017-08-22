@@ -70,7 +70,7 @@ class ContentPreviewScreen extends View {
 
     this.enrolledCourses = window.__enrolledCourses;
 
-
+    this.localContent = null;
     this.details = JSON.parse(state.data.value0.details);
     // this.details = {
     //     "basePath": "/storage/emulated/0/.NTP/content/do_30014516",
@@ -211,9 +211,9 @@ class ContentPreviewScreen extends View {
 
 
   checkContentLocalStatus = (identifier) => {
-    var callback = callbackMapper.map(function(status) {
-
-      if (status == "true") {
+    var callback = callbackMapper.map(function(data) {
+      _this.localContent = JSON.parse(data[0]);
+      if (_this.localContent.isAvailableLocally == true) {
         window.__ContentLoaderDialog.hide()
         var callback1 = callbackMapper.map(function(data) {
           data[0] = utils.jsonifyData(data[0])
@@ -233,7 +233,7 @@ class ContentPreviewScreen extends View {
 
     });
     window.__getDownloadStatus = this.getSpineStatus;
-    JBridge.getLocalContentStatus(identifier, callback);
+    JBridge.getContentDetails(identifier, callback);
 
 
   }

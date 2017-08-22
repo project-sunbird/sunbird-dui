@@ -50,7 +50,7 @@ class ResourceDetailActivity extends View {
 
     this.details = state.data.value0.resourceDetails;
     this.details = JSON.parse(this.details);
-    
+    this.playContent = "";
     console.log("RDA",this.details)
     
     this.localStatus = false;
@@ -62,13 +62,15 @@ class ResourceDetailActivity extends View {
 
   checkLocalStatus = (data) => {
 
-    var callback = callbackMapper.map(function(params) {
-      if (params[0] == "true") {
+    var callback = callbackMapper.map(function(data) {
+      _this.playContent = JSON.parse(data)
+      if (_this.playContent.isAvailableLocally == true) {
         _this.localStatus = true;
         var pButonLayout = (
               <ProgressButton
                  width="match_parent"
                  isCourse = "false"
+                 playContent = {_this.playContent} 
                  contentDetail = {_this.details.content}
                  buttonText="PLAY"
                  localStatus = {_this.localStatus}
@@ -84,6 +86,7 @@ class ResourceDetailActivity extends View {
                  isCourse = "false"
                  contentDetail = {_this.details.content}
                  buttonText="DOWNLOAD"
+                 playContent = {null}
                  localStatus = {_this.localStatus}
                  identifier = {_this.details.identifier}
                  changeOverFlowMenu = {_this.changeOverFlow} />);
@@ -92,7 +95,7 @@ class ResourceDetailActivity extends View {
 
       }
     });
-    JBridge.getLocalContentStatus(data.content.identifier, callback);
+    JBridge.getContentDetails(data.content.identifier, callback);
 
   }
 
