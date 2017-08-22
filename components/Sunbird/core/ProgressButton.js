@@ -105,7 +105,7 @@ class ProgressButton extends View {
       textToShow = "DOWNLOADING " + data.downloadProgress + "%"
 
     }
-    if(!this.isCancelVisible){
+    if(!this.isCancelVisible && data.downloadProgress>0){
         this.setCancelButtonVisibility("visible");
         this.isCancelVisible=true;
 

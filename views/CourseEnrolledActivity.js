@@ -172,7 +172,7 @@ class CourseEnrolledActivity extends View {
       this.onBackPressed();
       return;
     }
-
+    
     data.downloadProgress= data.downloadProgress == undefined || isNaN(data.downloadProgress) ? 0 : data.downloadProgress;
     var downloadedPercent = data.downloadProgress;
     downloadedPercent =  downloadedPercent < 0 ? 0 : downloadedPercent;

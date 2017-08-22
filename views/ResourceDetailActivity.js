@@ -284,6 +284,15 @@ class ResourceDetailActivity extends View {
 
 
   getBody = () => {
+    var description = "Not Available";
+    if(this.details.description)
+        description = this.details.description
+    else if(this.details.hasOwnProperty("content")){
+      if(this.details.content.hasOwnProperty("description"))
+          description  = this.details.content.description
+      else if(this.details.content.hasOwnProperty("contentData") && this.details.content.contentData.description)
+          description = this.details.content.contentData.description
+    }
 
     return (
       <LinearLayout
@@ -302,7 +311,7 @@ class ResourceDetailActivity extends View {
           margin="0,4,0,0"
           width="wrap_content"
           height="wrap_content"
-          text={this.details.description || this.details.content.contentData.description}
+          text={description}
           style={window.__TextStyle.textStyle.CARD.TITLE.REGULAR_BLACK}/>
 
 
