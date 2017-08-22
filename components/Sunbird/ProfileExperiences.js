@@ -63,20 +63,22 @@ class ProfileExperiences extends View {
         date = "Year of passing : " + input.yearOfPassing;
     } else {
       var dateOptions = {month: "short", year: "2-digit"};
-      var endDate = new Date(input.endDate);
-      var endDateString = endDate.toLocaleDateString("en-us", dateOptions);
       var joiningDate = new Date(input.joiningDate);
       var joiningDateString = joiningDate.toLocaleDateString("en-us", dateOptions);
-      if(input.hasOwnProperty("joiningDate") && input.joiningDate != ""){
+      date = joiningDateString;
+      if(input.hasOwnProperty("endDate") && input.endDate && input.endDate != ""){
+        var endDate = new Date(input.endDate);
+        var endDateString = endDate.toLocaleDateString("en-us", dateOptions);
         var val = Math.abs(joiningDate.getUTCFullYear() - endDate.getUTCFullYear());
         if (val == 0)
           var noOfYears = "";
         else
           var noOfYears = " (" + val + " YRS)";
+        date = date + " - " + endDateString + noOfYears;
       } else {
         var noOfYears = "";
+        date = date + " - Present";
       }
-      date = joiningDateString + " - " + endDateString + noOfYears;
     }
 
     var address = "";
