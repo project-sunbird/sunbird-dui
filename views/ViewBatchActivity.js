@@ -37,14 +37,18 @@ class ViewBatchActivity extends View {
 
         //set false to disable caching
         this.shouldCacheScreen = false
-        this.searchId = this.extras.identifier 
+        this.searchId = this.extras.identifier
+        this.showChooser=true;
+
+
+        setTimeout(() => {
             Android.runInUI(
                 _this.animateView(),
                 null
             );
         });
 
-        this.showChooser=false;
+
     }
 
     onPop = (type) => {
@@ -61,9 +65,9 @@ class ViewBatchActivity extends View {
     }
 
     toggleBatchTypeChooser = () => {
-
+      console.log("BEFORE :"this.showChooser);
       this.showChooser = !this.showChooser;
-      console.log(this.showChooser)
+      console.log("AFTER :"this.showChooser);
       Android.runInUI(this.set({
         id : this.idSet.chooserPopup,
         visibility :this.showChooser?"visible":"gone"
@@ -172,7 +176,6 @@ class ViewBatchActivity extends View {
             }
           })
 
-          this.showChooser==true;
           this.handleTypeChange(window.__S.VIEW_ONGOING_BATCH);
 
           break;
@@ -294,7 +297,7 @@ class ViewBatchActivity extends View {
 
 
     getBatchesList = (batchList,batchStatus) => {
-
+      console.log((window.__HEIGHT-300))
       if(batchList.length==0){
         return (
           <LinearLayout
@@ -304,7 +307,7 @@ class ViewBatchActivity extends View {
             orientation="vertical">
 
             <TextView
-              height="match_parent"
+              height="500"
               width="match_parent"
               gravity="center"
               text="No Batch Found"/>
