@@ -155,6 +155,16 @@ enrollCourse user_token courseId api_token =
                                                    ]) in
  (post requestUrl headers payload)
 
+enrollInBatch bodyToSend user_token api_token =
+  let requestUrl = "/course/v1/enrol"
+      headers = (generateRequestHeaders user_token api_token)
+      payload = A.fromObject (StrMap.fromFoldable [ (Tuple "id" (A.fromString "unique API ID"))
+        ,(Tuple "ts" (A.fromString "2013/10/15 16:16:39"))
+        ,(Tuple "request" (getJsonFromString bodyToSend))
+        ]) in
+  (post requestUrl headers payload)
+
+
 
 getCoursesPageApi user_token api_token =
   let requestUrl = "/data/v1/page/assemble"

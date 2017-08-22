@@ -21,7 +21,7 @@ const UserActivity = require("../views/UserActivity");
 const CourseInfoActivity = require("../views/CourseInfoActivity");
 const CourseEnrolledActivity = require("../views/CourseEnrolledActivity");
 const ModuleDetailActivity = require("../views/ModuleDetailActivity");
-const ViewBatchScreen = require("../views/ViewBatchScreen");
+const ViewBatchActivity = require("../views/ViewBatchActivity");
 
 //Resource
 
@@ -50,7 +50,7 @@ var determineScreen = (screenName, state) => {
   // Space has been added for dir strucuture
   // add accordingly
   switch (state.currScreen) {
-      case "CourseInfoActivty":
+    case "CourseInfoActivty":
       screen = new(CourseInfoActivty(dispatcher, RootScreenActions))(null, null, state);
       break;
     case "CourseEnrolledActivity":
@@ -62,8 +62,8 @@ var determineScreen = (screenName, state) => {
     case "MainActivity":
       screen = new(MainActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
-    case "ViewBatchScreen":
-      screen = new(ViewBatchScreen(dispatcher, RootScreenActions))(null, null, state);
+    case "ViewBatchActivity":
+      screen = new(ViewBatchActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
     case "UserActivity":
       screen = new(UserActivity(dispatcher, RootScreenActions))(null, null, state);
