@@ -344,8 +344,6 @@ class MainActivity extends View {
   afterRender = () => {
     this.currentPageIndex = 0;
     this.handleBottomNavBarAction(0);
-
-
   }
 
   setupDuiCallback = () => {

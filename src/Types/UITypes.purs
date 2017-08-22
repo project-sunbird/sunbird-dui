@@ -124,12 +124,11 @@ instance decodeResourceDetailActivityAction :: Decode ResourceDetailActivityActi
 instance encodeResourceDetailActivityAction:: Encode ResourceDetailActivityAction where encode = defaultEncode
 
 data CourseInfoActivity = CourseInfoActivity {courseDetails::String}
-data CourseInfoActivityAction = BACK_CourseInfoActivity |
+data CourseInfoActivityAction = BACK_CourseInfoActivity | OPEN_ViewBatchActivity {course::String}|
   OPEN_EnrolledActivity {course::String} |
   API_EnrollCourse {user_token::String,reqParams ::String, api_token::String} |
   ShowModuleDetails {moduleName::String,moduleDetails::String} |
-  API_EnrolledCoursesList {user_token::String,api_token::String} |
-  API_Get_Batch_list {user_token::String, api_token::String, request::String }
+  API_EnrolledCoursesList {user_token::String,api_token::String}
 
 instance courseInfoScreen :: UIScreen CourseInfoActivity CourseInfoActivityAction where
   generateMockEvents _ = [BACK_CourseInfoActivity , OPEN_EnrolledActivity {course:"Dummy"} ]
@@ -299,6 +298,21 @@ instance filterActivity :: UIScreen FilterActivity FilterActivityAction where
 derive instance genericFilterActivityAction  :: Generic FilterActivityAction _
 instance decodeFilterActivityAction :: Decode FilterActivityAction where decode = defaultDecode
 instance encodeFilterActivityAction :: Encode FilterActivityAction where encode = defaultEncode
+
+data ViewBatchActivity = ViewBatchActivity { extras::String }
+data ViewBatchActivityAction = DummyViewBatchActivity |
+  BACK_ViewBatchActivity |
+  OPEN_EnrolledActivity_BATCH {course::String} |
+  API_EnrollInBatch {reqParams ::String , user_token::String ,api_token::String}  |
+  API_Get_Batch_list {user_token::String, api_token::String, request::String }
+
+instance viewBatchActivity :: UIScreen ViewBatchActivity ViewBatchActivityAction where
+  generateMockEvents _ = [ DummyViewBatchActivity , BACK_ViewBatchActivity ]
+  ui x = genericUI x (generateMockEvents x :: Array ViewBatchActivityAction)
+
+derive instance genericViewBatchActivity  :: Generic ViewBatchActivityAction _
+instance decodeViewBatchActivityAction :: Decode ViewBatchActivityAction where decode = defaultDecode
+instance encodeViewBatchActivityAction :: Encode ViewBatchActivityAction where encode = defaultEncode
 
 
 data AdditionalInformationActivity = AdditionalInformationActivity
