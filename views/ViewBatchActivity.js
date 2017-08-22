@@ -37,10 +37,7 @@ class ViewBatchActivity extends View {
 
         //set false to disable caching
         this.shouldCacheScreen = false
-        this.searchId = this.extras.identifier || "do_2123138572751912961138";
-        //this.extras.course.identifier = ( this.extras.course.identifier || "do_2123138572751912961138");
-
-        setTimeout(() => {
+        this.searchId = this.extras.identifier 
             Android.runInUI(
                 _this.animateView(),
                 null
@@ -66,6 +63,7 @@ class ViewBatchActivity extends View {
     toggleBatchTypeChooser = () => {
 
       this.showChooser = !this.showChooser;
+      console.log(this.showChooser)
       Android.runInUI(this.set({
         id : this.idSet.chooserPopup,
         visibility :this.showChooser?"visible":"gone"
@@ -116,7 +114,6 @@ class ViewBatchActivity extends View {
 
     handleStateChange = (state) => {
 
-      console.log("STATE IN HANDLE STATE CHANGE",state)
 
       var status,response,responseCode,responseUrl;
 
@@ -150,7 +147,6 @@ class ViewBatchActivity extends View {
         case "API_EnrollInBatch":
           window.__LoaderDialog.hide();
           if (result.response == "SUCCESS") {
-            console.log("response",response)
             window.__enrolledCourses.push(this.extras)
             JBridge.showSnackBar(window.__S.COURSE_ENROLLED)
             var whatToSend = { "course": JSON.stringify(this.extras)}
@@ -166,19 +162,17 @@ class ViewBatchActivity extends View {
 
           window.__LoaderDialog.hide();
           this.batchList=result.response.content;
-          console.log(this.batchList)
           this.upComingList=[];
           this.ongoingList=[];
           this.batchList.map((item)=>{
-            console.log(item)
             if(item.status==1){
               this.ongoingList.push(item);
             }else{
               this.upComingList.push(item);
             }
           })
-          console.log(this.ongoingList)
-          console.log(this.upComingList)
+
+          this.showChooser==true;
           this.handleTypeChange(window.__S.VIEW_ONGOING_BATCH);
 
           break;
@@ -229,14 +223,10 @@ class ViewBatchActivity extends View {
     }
 
     handleBatchEnrollClick = (batch) => {
-      console.log("BATCH Clicked")
 
       if(JBridge.isNetworkAvailable()){
 
           window.__LoaderDialog.show();
-
-
-        console.log("HANDLE ENROLL CLICK");
          this.courseDetails = {
               "delta": "delta",
               "contentId": this.searchId,
@@ -292,7 +282,7 @@ class ViewBatchActivity extends View {
                 height="wrap_content"
                 layouTransition="true"
                 width="match_parent"
-                visibility="gone"
+                visibility={this.showChooser?"visible":"gone"}
                 orientation="vertical">
 
 
@@ -316,6 +306,7 @@ class ViewBatchActivity extends View {
             <TextView
               height="match_parent"
               width="match_parent"
+              gravity="center"
               text="No Batch Found"/>
 
 
@@ -377,16 +368,16 @@ class ViewBatchActivity extends View {
               {this.getBatchTypeChoser()}
 
               <ScrollView
-                height="0"
+                height="match_parent"
                 width="match_parent"
-                weight="1"
                 fillViewPort="true">
 
                 <LinearLayout
                   id={this.idSet.batchListContainer}
                   height="match_parent"
                   width="match_parent"
-                  orientation="vertical"/>
+                  orientation="vertical"
+                  gravity="center"/>
 
               </ScrollView>
 
