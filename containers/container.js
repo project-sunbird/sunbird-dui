@@ -21,6 +21,7 @@ const UserActivity = require("../views/UserActivity");
 const CourseInfoActivity = require("../views/CourseInfoActivity");
 const CourseEnrolledActivity = require("../views/CourseEnrolledActivity");
 const ModuleDetailActivity = require("../views/ModuleDetailActivity");
+const ViewBatchScreen = require("../views/ViewBatchScreen");
 
 //Resource
 
@@ -60,6 +61,9 @@ var determineScreen = (screenName, state) => {
       break;
     case "MainActivity":
       screen = new(MainActivity(dispatcher, RootScreenActions))(null, null, state);
+      break;
+    case "ViewBatchScreen":
+      screen = new(ViewBatchScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
     case "UserActivity":
       screen = new(UserActivity(dispatcher, RootScreenActions))(null, null, state);

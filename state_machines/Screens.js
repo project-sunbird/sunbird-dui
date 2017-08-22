@@ -11,12 +11,17 @@ module.exports = function(action, payload, state) {
   switch (action) {
     case "InitScreen":
       localState.isInit = true;
-      localState.currScreen = "SplashScreenActivity";
+      localState.currScreen = "ViewBatchScreen";
       break;
 
      case "SplashScreenActivity":
       localState.isInit = false
       localState.currScreen = "SplashScreenActivity";
+      break;
+
+    case "ViewBatchScreen":
+      localState.isInit = false
+      localState.currScreen = "ViewBatchScreen";
       break;
 
      case "CommunityInfoActivity":
