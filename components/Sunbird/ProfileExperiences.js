@@ -17,15 +17,6 @@ class ProfileExperiences extends View {
     ]);
     _this = this;
     this.isEditable = this.props.editable;
-    this.data = [{
-      "position": "All subjects class teacher",
-      "place": "Balamandir, Vadgaon",
-      "duration": "JUN ’10 - JUL ‘16 (6 YRS)"
-    }, {
-      "position": "Chemistry teacher - Std VII & VIII",
-      "place": "Balamandir, Vadgaon",
-      "duration": "JUN ’10 - JUL ‘16 (6 YRS)"
-    }]
 
     this.jobs = (this.props.data != undefined)? this.props.data : [];
 
@@ -40,7 +31,7 @@ class ProfileExperiences extends View {
               <TextView
                 width="wrap_content"
                 height="wrap_content"
-                text="Experience"
+                text={this.props.heading}
                 style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
               <ViewWidget
@@ -51,7 +42,7 @@ class ProfileExperiences extends View {
               width="wrap_content"
               height="wrap_content"
               text="Edit"
-              visibility = {(this.isEditable == "true") ? "visible" : "gone"}
+              visibility = {"gone"/*(this.isEditable == "true") ? "visible" : "gone"*/}
               style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
 
               </LinearLayout>)
@@ -66,16 +57,41 @@ class ProfileExperiences extends View {
   }
 
   getBody(input) {
-    var dateOptions = {month: "short", year: "2-digit"};
-    var endDate = new Date(input.endDate);
-    var endDateString = endDate.toLocaleDateString("en-us", dateOptions);
-    var joiningDate = new Date(input.joiningDate);
-    var joiningDateString = joiningDate.toLocaleDateString("en-us", dateOptions);
-    if(input.hasOwnProperty("joiningDate") && input.joiningDate != ""){
-      var noOfYears = " (" + Math.abs(joiningDate.getUTCFullYear() - endDate.getUTCFullYear()) + " YRS)";
+    var date = "";
+    if (this.props.heading == "Education"){
+      if (input.yearOfPassing)
+        date = "Year of passing : " + input.yearOfPassing;
     } else {
-      var noOfYears = "";
+      var dateOptions = {month: "short", year: "2-digit"};
+      var endDate = new Date(input.endDate);
+      var endDateString = endDate.toLocaleDateString("en-us", dateOptions);
+      var joiningDate = new Date(input.joiningDate);
+      var joiningDateString = joiningDate.toLocaleDateString("en-us", dateOptions);
+      if(input.hasOwnProperty("joiningDate") && input.joiningDate != ""){
+        var val = Math.abs(joiningDate.getUTCFullYear() - endDate.getUTCFullYear());
+        if (val == 0)
+          var noOfYears = "";
+        else
+          var noOfYears = " (" + val + " YRS)";
+      } else {
+        var noOfYears = "";
+      }
+      date = joiningDateString + " - " + endDateString + noOfYears;
     }
+
+    var address = "";
+    if(input.hasOwnProperty("address")){
+      if(input.address.hasOwnProperty("city")){
+        address = input.address.city ? input.address.city : "";
+      }
+      if(input.address.hasOwnProperty("country")){
+        if (input.address.country)
+          address  = (address == "") ? input.address.country : address + "," +input.address.country;
+      }
+    }
+
+
+
     return (<LinearLayout
               width="wrap_content"
               height="wrap_content"
@@ -85,19 +101,20 @@ class ProfileExperiences extends View {
                     <TextView
                     width="wrap_content"
                     height="wrap_content"
-                    text={input.jobName}
+                    text={input.jobName ? input.jobName : input.name}
                     style={window.__TextStyle.textStyle.CARD.HEADING}/>
 
                     <TextView
                     width="wrap_content"
                     height="wrap_content"
-                    text={input.address.city + ", " + input.address.country}
+                    visibility = {address == "" ? "gone" : "visible"}
+                    text={address}
                     style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
                     <TextView
                     width="wrap_content"
                     height="wrap_content"
-                    text={joiningDateString + " - " + endDateString + noOfYears}
+                    text={date}
                     style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
                 </LinearLayout>)

@@ -39,12 +39,12 @@ class CommProfSearchActivity extends View {
 
     this.tempData = JSON.parse(state.data.value0.filterDetails);
 
-    this.filter=[]
-    this.filterData = this.tempData.filterDetails;
-    this.searchText = this.tempData.filterDetails.query
-    this.searchType = this.tempData.filterType
-    this.temp = state.data;
-    this.searchType = this.tempData.searchType;
+    // this.filter=[]
+    // this.filterData = this.tempData.filterDetails;
+    // this.searchText = this.tempData.filterDetails.query
+    // this.searchType = this.tempData.filterType
+    // this.temp = state.data;
+    // this.searchType = this.tempData.searchType;
     window.searchData = this.logSearch;
     // window.searchProf = "";
     _this = this;

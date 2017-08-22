@@ -180,7 +180,7 @@ class ProfileAdditionalInfo extends View {
       <LinearLayout
                 width="match_parent"
                 height="wrap_content"
-                margin="0,15,0,0"
+                margin="0,15,0,60"
                 orientation="vertical"
                 id = {this.idSet.holder}
                 gravity = "center"

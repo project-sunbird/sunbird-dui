@@ -98,20 +98,6 @@ class HomeRecommendedContainer extends View {
     handleCardClick  = (content,type) =>{
      
 
-      var callback2 = callbackMapper.map(function(data) {
-        console.log("data!",JSON.parse(data));
-      });
-
-      JBridge.getLocalContentStatus("do_20043627",callback2);
-
-      
-      JBridge.deleteContent("do_20043627")
-
-      var callback = callbackMapper.map(function(data) {
-        console.log("data!",JSON.parse(data));
-      });
-
-      JBridge.getLocalContentStatus("do_20043627",callback);
     }
 
 

@@ -137,13 +137,15 @@ class ProgressButton extends View {
 
         if (this.isDownloaded) {
           window.__getGenieEvents = this.checkTelemetry;
-          JBridge.playContent(this.props.identifier);
-          // if (this.props.isCourse == "true") {
-          //   window.__getGenieEvents = this.checkTelemetry;
-          //   JBridge.playChildContent(this.props.identifier)
-          // } else {
-          //   JBridge.playContent(this.props.identifier);
-          // }
+          // JBridge.playContent(this.props.identifier);
+          if(this.props.playContent!=null)
+            JBridge.playContent(JSON.stringify(this.props.playContent));
+          else{
+            var callback = callbackMapper.map(function(data){
+              JBridge.playContent(data[0]);
+            });
+            JBridge.getContentDetails(_this.props.identifier,callback);
+          }
 
         } else if(JBridge.isNetworkAvailable()){
 
@@ -167,12 +169,15 @@ class ProgressButton extends View {
   checkTelemetry = (telemetryData) => {
     telemetryData = JSON.parse(utils.decodeBase64(telemetryData));
     console.log("telemetry Data",telemetryData);
+    console.log("props",this.props)
     if (telemetryData.eid == "OE_END") {
         JBridge.endContent();
         JBridge.stopEventBus();
         var time = new Date();
         var date = utils.formatDate(time);
         var contentProgress = {};
+        var courseIdentifer = "";
+
 
 
         contentProgress['contentId'] = this.props.identifier;
@@ -187,11 +192,13 @@ class ProgressButton extends View {
         contentProgress['grade'] = "B";
         contentProgress['score'] = "10";
         var enrolledCourse;
+        console.log("contentProgress",contentProgress)
+
         window.__enrolledCourses.map(function(item){
           if(item.courseId == _this.props.contentDetails.hierarchyInfo[0].identifier)
             enrolledCourse = item;
         })
-
+        console.log("enrolled",enrolledCourse)
         contentProgress['batchId'] = enrolledCourse.hasOwnProperty("batchId")? enrolledCourse.batchId : 0 ;
         console.log("batch ID",enrolledCourse)
 

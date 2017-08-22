@@ -66,6 +66,7 @@ class CourseEnrolledActivity extends View {
 
 
     this.details = JSON.parse(state.data.value0.courseDetails);
+
     this.courseDetails  = "";
 
     this.popupMenu = window.__S.DELETE;
@@ -275,6 +276,12 @@ class CourseEnrolledActivity extends View {
                   content= {this.courseContent.children}/>
                   )
    }
+   var cmd = this.set({
+        id: this.idSet.featureButton,
+        visibility: "gone"
+
+      });
+      Android.runInUI(cmd, 0);
     this.replaceChild(this.idSet.descriptionContainer, layout.render(), 0)
   }
 
@@ -296,6 +303,8 @@ class CourseEnrolledActivity extends View {
 
   afterRender=()=>{
     console.log("details",this.details)
+
+
     if((this.details.hasOwnProperty("contentType")) && (this.details.contentType.toLocaleLowerCase() == "collection" || this.details.contentType.toLocaleLowerCase() == "textbook")){
       var cmd = this.set({
         id: this.idSet.featureButton,
@@ -304,13 +313,20 @@ class CourseEnrolledActivity extends View {
       });
       Android.runInUI(cmd, 0);
     }
-    if(this.details.hasOwnProperty("lastReadContentId") || (this.details.hasOwnProperty("lastReadContentId") && this.details.lastReadContentId==null)){
-      var cmd = this.set({
-        id: this.idSet.featureButton,
-        visibility: "gone"
-
-      });
-      Android.runInUI(cmd, 0);
+    if(!this.enrolledCourses.hasOwnProperty("lastReadContentId") || (this.enrolledCourses.hasOwnProperty("lastReadContentId") && this.enrolledCourses.lastReadContentId==null)){
+      var btn  = (<FeatureButton
+                    clickable="true"
+                    margin = "16,16,16,16"
+                    width = "match_parent"
+                    height = "56"
+                    id = {this.idSet.featureButton}
+                    background = {window.__Colors.PRIMARY_ACCENT}
+                    text = {"START COURSE"}
+                    style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
+                    buttonClick = {this.handleResumeClick}
+                    />)
+      this.replaceChild(this.idSet.featureButton,btn.render(),0)
+      // Android.runInUI(cmd, 0);
     }
 
 
@@ -389,6 +405,9 @@ class CourseEnrolledActivity extends View {
     var id;
     if(this.details.hasOwnProperty("lastReadContentId")){
       id = this.details.lastReadContentId
+    }
+    else if(this.enrolledCourses.hasOwnProperty('lastReadContentId') && this.enrolledCourses.lastReadContentId !=null){
+      id = this.enrolledCourses.lastReadContentId;
     }
     else if(!(this.courseContent.children == undefined)){
       console.log("children details",this.courseContent.children)

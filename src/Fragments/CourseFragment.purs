@@ -45,6 +45,10 @@ courseInfoActivity input whereFrom whatToSendBack = do
 	event <- ui $ CourseInfoActivity {courseDetails : input}
 	case event of
 		OPEN_EnrolledActivity {course: output} -> enrolledCourseActivity output "CourseFragment" input
+		API_Get_Batch_list {user_token : x, api_token: token , request : request } -> do
+				responseData <- getBatchList x token request 
+	  			_ <- sendUpdatedState {response : responseData, responseFor : "API_Get_Batch_list", screen:"asas"}
+				pure $ "apiDefault"
 		API_EnrollCourse {user_token : x, reqParams : details , api_token: token} -> do
 				responseData <- enrollCourse x details token
 	  			_ <- sendUpdatedState {response : responseData, responseFor : "API_EnrollCourse", screen:"asas"}
