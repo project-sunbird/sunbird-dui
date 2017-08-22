@@ -21,12 +21,67 @@ class ProfileHeader extends View {
     this.firstName = this.props.data.firstName ? this.props.data.firstName : this.userName
     this.lastName = this.props.data.lastName ? " " + this.props.data.lastName : ""
     this.address = (this.props.data.address && this.props.data.address.length > 0) ? this.props.data.address : ""
-
+    this.orgName=this.props.data.rootOrg.orgName?this.props.data.rootOrg.orgName:"";
+    this.orgEmail=this.props.data.rootOrg.contactDetail[0].email?this.props.data.rootOrg.contactDetail[0].email:"";
   }
 
 
 
+  sendEmail=()=>{
+    if(this.orgEmail!="")
+      {
+        JBridge.sendEmail(this.orgEmail);
+      }
+  }
 
+  getUserName = () =>{
+    return(<LinearLayout
+      width="wrap_content"
+      height="wrap_content"
+      gravity="center"
+      background="#e8e8e8"
+      cornerRadius="5"
+      padding="5,5,5,5"
+      margin="0,0,0,5"
+      alpha="0.7">
+      <TextView
+        width="wrap_content"
+        height="wrap_content"
+        enableEllipse="true"
+        text={window.__S.USER_NAME_PROFILE+"-"+this.userName}
+        style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
+    </LinearLayout>);
+  }
+  getEmailPart=()=>{
+    return(
+      <LinearLayout
+        width="wrap_content"
+        height="wrap_content"
+        gravity="center"
+        background="#e8e8e8"
+        cornerRadius="5"
+        padding="5,5,5,5"
+        margin="0,5,0,0">
+        <LinearLayout
+          width="match_parent"
+          height="match_parent"
+          gravity="center"
+          orientation="horizontal"
+          alpha="0.7"
+          onClick={this.sendEmail}>
+        <TextView
+          width="wrap_content"
+          height="wrap_content"
+          enableEllipse="true"
+          text={this.orgName}
+          style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
+          <ImageView
+              width="30"
+              height="18"
+              imageUrl="ic_mail_outline"/>
+        </LinearLayout>
+      </LinearLayout>);
+  }
   render() {
     this.layout = (
             <LinearLayout
@@ -46,7 +101,10 @@ class ProfileHeader extends View {
               text={this.firstName + this.lastName}
               padding="0,10,0,2"
               style={window.__TextStyle.textStyle.HEADING.DARK}/>
-
+              
+              {this.getUserName()}
+              {this.getEmailPart()}
+              
               <TextView
               width="wrap_content"
               height="wrap_content"
