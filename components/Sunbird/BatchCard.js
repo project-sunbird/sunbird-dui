@@ -58,7 +58,9 @@ class BatchCard extends View {
 
   getBody= ()=>{
     var description="";
-    description+= utils.prettifyDate(this.props.batch.createdDate);
+    description+= utils.prettifyDate(this.props.batch.startDate);
+    description+= " - ";
+    description+= utils.prettifyDate(this.props.batch.endDate);
     return (<LinearLayout
               margin="0,8,0,0"
               width="match_parent"
@@ -75,7 +77,7 @@ class BatchCard extends View {
                   width="match_parent"
                   height="wrap_content"
                   text={this.props.batch.name}
-                  style={window.__TextStyle.textStyle.CARD.TITLE.DARK_12}/>
+                  style={window.__TextStyle.textStyle.CARD.TITLE.DARK_14}/>
 
                 <TextView
                   width="match_parent"
