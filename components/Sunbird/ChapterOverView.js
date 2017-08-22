@@ -32,7 +32,7 @@ class ChapterOverView extends View {
 
   render() {
 
-    this.chapterName = window.__S.MODULE_LABEL.format( (this.props.index + 1) , this.props.item.contentData.name);
+    this.chapterName =  this.props.index+1 + ". "+ this.props.item.contentData.name;
     
 
     this.layout = (
