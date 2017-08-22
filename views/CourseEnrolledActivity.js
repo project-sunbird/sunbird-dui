@@ -263,6 +263,12 @@ class CourseEnrolledActivity extends View {
                   gravity="center"
                   root="true"
                   text={window.__S.ERROR_CONTENT_NOT_FOUND} />
+      var cmd = this.set({
+        id: this.idSet.featureButton,
+        visibility: "gone"
+
+      });
+      Android.runInUI(cmd, 0);
     }else{
      layout = (
                 <CourseCurriculum
@@ -276,12 +282,6 @@ class CourseEnrolledActivity extends View {
                   content= {this.courseContent.children}/>
                   )
    }
-   var cmd = this.set({
-        id: this.idSet.featureButton,
-        visibility: "gone"
-
-      });
-      Android.runInUI(cmd, 0);
     this.replaceChild(this.idSet.descriptionContainer, layout.render(), 0)
   }
 
@@ -403,11 +403,11 @@ class CourseEnrolledActivity extends View {
       _this.handleModuleClick(data[0].contentData.name,data[0])
     });
     var id;
-    if(this.details.hasOwnProperty("lastReadContentId")){
-      id = this.details.lastReadContentId
-    }
-    else if(this.enrolledCourses.hasOwnProperty('lastReadContentId') && this.enrolledCourses.lastReadContentId !=null){
+    if(this.enrolledCourses.hasOwnProperty('lastReadContentId') && this.enrolledCourses.lastReadContentId !=null){
       id = this.enrolledCourses.lastReadContentId;
+    }
+    else if(this.details.hasOwnProperty("lastReadContentId")){
+      id = this.details.lastReadContentId
     }
     else if(!(this.courseContent.children == undefined)){
       console.log("children details",this.courseContent.children)
