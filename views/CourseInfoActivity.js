@@ -184,9 +184,6 @@ class CourseInfoActivity extends View {
 
     // this.shareContent();
 
-
-
-
     if(window.__enrolledCourses == undefined){
       window.__LoaderDialog.show();
       var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken}
@@ -241,19 +238,19 @@ class CourseInfoActivity extends View {
     console.log("RESPONSE FOR IN COURSE INFO",state.responseFor)
 
     switch (state.responseFor + "") {
-
-      case "API_EnrollCourse":
-        if (result.response == "SUCCESS") {
-          console.log("response",response)
-          window.__enrolledCourses.push(this.cour)
-          JBridge.showSnackBar(window.__S.COURSE_ENROLLED)
-          var whatToSend = { "course": this.state.data.value0.courseDetails }
-          var event = { tag: 'OPEN_EnrolledActivity', contents: whatToSend }
-          window.__runDuiCallback(event);
-        } else {
-          JBridge.showSnackBar(window.__S.RETRY_ACTION)
-        }
-        break;
+      //REMOVED FOR NOW
+      // case "API_EnrollCourse":
+      //   if (result.response == "SUCCESS") {
+      //     console.log("response",response)
+      //     window.__enrolledCourses.push(this.cour)
+      //     JBridge.showSnackBar(window.__S.COURSE_ENROLLED)
+      //     var whatToSend = { "course": this.state.data.value0.courseDetails }
+      //     var event = { tag: 'OPEN_EnrolledActivity', contents: whatToSend }
+      //     window.__runDuiCallback(event);
+      //   } else {
+      //     JBridge.showSnackBar(window.__S.RETRY_ACTION)
+      //   }
+      //   break;
 
 
       case "API_EnrolledCoursesList":

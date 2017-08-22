@@ -62,7 +62,7 @@ courseViewAllActivity input whereFrom whatToSendBack = do
 courseInfoActivity input whereFrom whatToSendBack = do
 	event <- ui $ CourseInfoActivity {courseDetails : input}
 	case event of
-		OPEN_ViewBatchActivity {course: output}-> viewBatchActivity output "CourseFragment" input
+		OPEN_ViewBatchActivity {course: output}-> viewBatchActivity output "CourseInfoActivity" input
 		OPEN_EnrolledActivity {course: output} -> enrolledCourseActivity output "CourseFragment" input
 		API_EnrolledCoursesList {user_token:x,api_token:y} -> do
 	            responseData <- getUserEnrolledCourses x y
