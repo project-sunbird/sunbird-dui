@@ -206,7 +206,7 @@ class ViewBatchActivity extends View {
             }
           })
 
-          this.handleTypeChange(window.__S.VIEW_ONGOING_BATCH);
+          this.handleTypeChange(window.__S.VIEW_ONGOING_BATCHES);
 
           break;
 
@@ -235,7 +235,7 @@ class ViewBatchActivity extends View {
               weight="1"
               padding="16,4,16,4"
               text={window.__S.VIEW_ONGOING_BATCHES}
-              style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
+              style={window.__TextStyle.textStyle.CARD.TITLE.DARK_14}/>
 
               <LinearLayout
                 height="38"
