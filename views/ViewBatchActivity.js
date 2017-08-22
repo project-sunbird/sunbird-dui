@@ -131,12 +131,15 @@ class ViewBatchActivity extends View {
 
 
       if (parseInt(responseCode) != 200) {
+        window.__LoaderDialog.hide();
+        JBridge.showSnackBar(window.__S.RETRY_ACTION)
         return;
       }
 
       var result = response.result;
 
       if (response.params.err) {
+        window.__LoaderDialog.hide();
         JBridge.showSnackBar(response.params.errmsg)
         return;
       }
