@@ -225,6 +225,7 @@ class ViewBatchActivity extends View {
         <LinearLayout
         height="wrap_content"
         width="match_parent"
+        gravity="center_vertical"
         background={window.__Colors.LIGHT_GRAY}>
 
             <TextView
@@ -233,17 +234,18 @@ class ViewBatchActivity extends View {
               width="0"
               weight="1"
               padding="16,4,16,4"
-              text={window.__S.VIEW_ONGOING_BATCH}/>
+              text={window.__S.VIEW_ONGOING_BATCH}
+              style={window.__TextStyle.textStyle.CARD.TITLE.DARK_14}/>
 
               <LinearLayout
-                height="32"
+                height="38"
                 width="wrap_content"
                 orientation="vertical">
 
                 <ImageView
-                  height="32"
-                  width="32"
-                  padding="8,8,8,8,8"
+                  height="38"
+                  width="38"
+                  padding="12,12,12,12"
                   allowMultipleClicks="true"
                   onClick={this.toggleBatchTypeChooser}
                   imageUrl="ic_action_arrow_down"/>
