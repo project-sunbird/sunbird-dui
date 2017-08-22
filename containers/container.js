@@ -21,7 +21,6 @@ const UserActivity = require("../views/UserActivity");
 const CourseInfoActivity = require("../views/CourseInfoActivity");
 const CourseEnrolledActivity = require("../views/CourseEnrolledActivity");
 const ModuleDetailActivity = require("../views/ModuleDetailActivity");
-const AlternateModuleDetailActivity = require("../views/AlternateModuleDetailActivity");
 
 //Resource
 
@@ -36,7 +35,10 @@ const CourseViewAllActivity = require("../views/CourseViewAllActivity");
 const SearchActivity = require("../views/SearchActivity");
 const FilterActivity = require("../views/FilterActivity");
 const AdditionalInformationActivity = require("../views/AdditionalInformationActivity");
+const CommProfSearchActivity = require("../views/CommProfSearchActivity");
+const ProfileActivity = require("../views/ProfileActivity");
 
+const ContentPreviewScreen = require("../views/ContentPreviewScreen");
 // ScreenActions
 const RootScreenActions = require("../actions/RootScreenActions");
 
@@ -47,10 +49,6 @@ var determineScreen = (screenName, state) => {
   // Space has been added for dir strucuture
   // add accordingly
   switch (state.currScreen) {
-     case "AlternateModuleDetailActivity":
-      screen = new(AlternateModuleDetailActivity(dispatcher, RootScreenActions))(null, null, state);
-      break;
-
       case "CourseInfoActivty":
       screen = new(CourseInfoActivty(dispatcher, RootScreenActions))(null, null, state);
       break;
@@ -71,6 +69,9 @@ var determineScreen = (screenName, state) => {
       break;
     case "ModuleDetailActivity":
       screen = new(ModuleDetailActivity(dispatcher, RootScreenActions))(null, null, state);
+      break;
+    case "ContentPreviewScreen":
+      screen = new(ContentPreviewScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
 
 
@@ -101,6 +102,15 @@ var determineScreen = (screenName, state) => {
     case "FilterActivity":
       screen = new(FilterActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
+
+    case "CommProfSearchActivity":
+      screen = new(CommProfSearchActivity(dispatcher, RootScreenActions))(null, null, state);
+      break;
+
+    case "ProfileActivity":
+      screen = new(ProfileActivity(dispatcher, RootScreenActions))(null, null, state);
+      break;
+
     case "RootScreen":
       screen = new(RootScreen(dispatcher,RootScreenActions))(null, null,state) ;
       break;

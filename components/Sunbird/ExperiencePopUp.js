@@ -71,8 +71,10 @@ class ExperiencePopUp extends View{
  }
 
  hide = () => {
-   this.setVisibility("gone");
    JBridge.hideKeyboard();
+   this.setVisibility("gone");
+   window.__ExperiencePopUp.data=undefined;
+
  }
 
  setVisibility = (data) => {
@@ -633,6 +635,7 @@ getUi(){
           json.userId= window.__userToken;
           json.address.userId= window.__userToken;
           this.jobProfile.push(json);
+
         }
 
           var url=window.__apiUrl + "/api/user/v1/update"

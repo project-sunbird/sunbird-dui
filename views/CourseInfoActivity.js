@@ -38,7 +38,7 @@ class CourseInfoActivity extends View {
     ]);
     this.state = state;
     this.screenName = "CourseInfoActivity"
-    
+
     this.menuData = {
       url: [
         {imageUrl: "ic_action_share_black" },
@@ -46,10 +46,10 @@ class CourseInfoActivity extends View {
     }
 
     this.shouldCacheScreen = false;
-    
+
     //to get geneie callback for download of spine
     window.__getDownloadStatus = this.getSpineStatus;
-
+    this.cour = "";
 
     _this = this;
 
@@ -74,6 +74,12 @@ class CourseInfoActivity extends View {
       return;
 
     var textToShow = ""
+    if(data.status == "NOT_FOUND"){
+      window.__ContentLoaderDialog.hide();
+      JBridge.showSnackBar(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
+      this.onBackPressed();
+      return;
+    }
     data.downloadProgress = data.downloadProgress == undefined ? 0 : data.downloadProgress;
     var downloadedPercent = parseInt(data.downloadProgress);
     downloadedPercent = downloadedPercent < 0 ? 0 : downloadedPercent;
@@ -119,7 +125,7 @@ class CourseInfoActivity extends View {
   }
 
 
-  
+
    onStop = () =>{
     window.__SharePopup.hide();
     console.log("ON STOP IN ResourceDetailActivity")
@@ -156,13 +162,6 @@ class CourseInfoActivity extends View {
         height="wrap_content"
         orientation="vertical">
 
-          <TextView
-          width="wrap_content"
-          height="wrap_content"
-          margin="0,16,0,0"
-          style={window.__TextStyle.textStyle.CARD.TITLE.DARK}
-          text={window.__S.STRUCTURE}/>
-
           {child}
 
         </LinearLayout>
@@ -187,7 +186,7 @@ class CourseInfoActivity extends View {
 
     if(window.__enrolledCourses == undefined){
       window.__LoaderDialog.show();
-      var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken} 
+      var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken}
       var event ={ "tag": "API_EnrolledCoursesList", contents: whatToSend};
       window.__runDuiCallback(event);
     }else{
@@ -208,13 +207,22 @@ class CourseInfoActivity extends View {
 
 
   handleStateChange = (state) => {
-    window.__LoaderDialog.hide();
-    var status = state.response.status[0];
-    var response = JSON.parse(utils.decodeBase64(state.response.status[1]));
-    var responseCode = state.response.status[2];
-    var responseUrl = state.response.status[3];
 
-    
+    console.log("STATE IN HANDLE STATE CHANGE",state)
+
+
+    window.__LoaderDialog.hide();
+    var status,response,responseCode,responseUrl;
+
+    if(state.response != ""){
+     status = state.response.status[0];
+     response = JSON.parse(utils.decodeBase64(state.response.status[1]));
+     responseCode = state.response.status[2];
+     responseUrl = state.response.status[3];
+    }
+
+
+
     if (parseInt(responseCode) != 200) {
       return;
     }
@@ -226,9 +234,14 @@ class CourseInfoActivity extends View {
       return;
     }
 
+    console.log("RESPONSE FOR IN COURSE INFO",state.responseFor)
+
     switch (state.responseFor + "") {
+
       case "API_EnrollCourse":
         if (result.response == "SUCCESS") {
+          console.log("response",response)
+          window.__enrolledCourses.push(this.cour)
           JBridge.showSnackBar(window.__S.COURSE_ENROLLED)
           var whatToSend = { "course": this.state.data.value0.courseDetails }
           var event = { tag: 'OPEN_EnrolledActivity', contents: whatToSend }
@@ -242,21 +255,30 @@ class CourseInfoActivity extends View {
       case "API_EnrolledCoursesList":
 
         window.__enrolledCourses = response.result.courses;
+
+        console.log("ENROLLED COURSES",window.__enrolledCourses);
         window.__LoaderDialog.hide();
 
         var enrolledIds = window.__enrolledCourses;
+        var courseEnrollCheckCount = 0;
         enrolledIds.map((item)=>{
         if(item.courseId == this.details.identifier){
             var whatToSend = { "course": this.state.data.value0.courseDetails }
             var event = { tag: 'OPEN_EnrolledActivity', contents: whatToSend }
             window.__runDuiCallback(event);
+            courseEnrollCheckCount = courseEnrollCheckCount+1;
 
-          }
+        }
         })
 
+        if(courseEnrollCheckCount == 0){
+          this.replaceChild(this.idSet.totalContainer,this.getBody().render(),0);
+        }
+
         break;
-        
+
       default:
+
 
         break;
 
@@ -275,11 +297,11 @@ class CourseInfoActivity extends View {
     var input = [
                  {
                     type : "text",
-                    data : "staging.open-sunbird.org/public/"+_this.details.identifier
+                    data : window.__deepLinkUrl+"/public/"+_this.details.identifier
                  }
                 ];
 
-            
+
       var sharePopUp = (
         <SharePopup
         data = {input}/>
@@ -296,18 +318,44 @@ class CourseInfoActivity extends View {
   handleEnrollClick = (data) => {
     if(JBridge.isNetworkAvailable()){
 
-
         window.__LoaderDialog.show();
 
-        var whatToSend = { "user_token":window.__userToken,
+
+        console.log("HANDLE ENROLL CLICK");
+        this.cour = {
+            "dateTime": "2017-08-18 16:05:24.347",
+            "identifier": "a045981883fa87cb403fdd5916585a8630a10787c04ea5572b788a94f70b4e13",
+            "lastReadContentStatus": 2,
+            "enrolledDate": "2017-08-18 11:52:14:977+0000",
+            "addedBy": "db705067-0516-483f-bc6a-aa57d44b51b9",
+            "delta": "delta",
+            "contentId": this.details.identifier,
+            "description": "dsd",
+            "active": true,
+            "courseLogoUrl": null,
+            "batchId": "1",
+            "userId": "db705067-0516-483f-bc6a-aa57d44b51b9",
+            "courseName": "Enrollment 3",
+            "leafNodesCount": 1,
+            "progress": 0,
+            "id": "a045981883fa87cb403fdd5916585a8630a10787c04ea5572b788a94f70b4e13",
+            "courseId": this.details.identifier,
+            "status": 0
+          }
+
+
+        var whatToSend = {
+        "user_token":window.__userToken!=undefined?window.__userToken:"",
         "reqParams": this.details.identifier,
         "api_token": window.__apiToken }
         var event = {
           "tag": "API_EnrollCourse",
           "contents": whatToSend
         }
-        
+
         window.__runDuiCallback(event);
+
+
     }
     else{
       JBridge.showSnackBar(window.__S.NO_INTERNET)
@@ -317,8 +365,8 @@ class CourseInfoActivity extends View {
 
   onBackPressed = () => {
    var whatToSend = []
-   var event = { tag: 'BACK_CourseInfoActivity', contents: whatToSend }  
-   
+   var event = { tag: 'BACK_CourseInfoActivity', contents: whatToSend }
+
    window.__runDuiCallback(event);
   }
 
@@ -407,7 +455,7 @@ class CourseInfoActivity extends View {
                   width="wrap_content"
                   height="wrap_content"
                   margin="0,0,0,7"
-                  text={this.data.courseName}
+                  text={utils.firstLeterCapital(this.data.courseName)}
                   style={window.__TextStyle.textStyle.HEADING.DARK} />
 
 
@@ -471,11 +519,10 @@ class CourseInfoActivity extends View {
     JBridge.setInSharedPrefs("user_name",  "__failed");
     JBridge.setInSharedPrefs("user_token",  "__failed");
 
-
     window.__pressedLoggedOut=true;
 
     JBridge.keyCloakLogout(window.__loginUrl  + "/auth/realms/sunbird/protocol/openid-connect/logout");
-    
+
     window.__Logout();
   }
 
@@ -495,16 +542,16 @@ class CourseInfoActivity extends View {
           id={this.idSet.totalContainer}
           width="match_parent"
           height="match_parent"/>
-      
+
 
         <LinearLayout
          width="match_parent"
          height="match_parent"
          id={this.idSet.sharePopupContainer}/>
 
-       
 
-      </RelativeLayout> 
+
+      </RelativeLayout>
     );
 
     return this.layout.render();

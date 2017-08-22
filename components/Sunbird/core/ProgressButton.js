@@ -25,10 +25,10 @@ class ProgressButton extends View {
     window.__ProgressButton = this;
     this.isDownloaded = false;
     this.startedDownloading = false;
-  
+
     _this = this;
     this.isCancelVisible=false;
-   
+
   }
 
   afterRender = () => {
@@ -44,10 +44,10 @@ class ProgressButton extends View {
   }
 
   handleCancelDownload = () => {
-     
+
      JBridge.cancelDownload(this.props.identifier)
-      
-     this.isCancelVisible=false; 
+
+     this.isCancelVisible=false;
      this.setCancelButtonVisibility("gone");
 
      this.startedDownloading=false;
@@ -79,13 +79,13 @@ class ProgressButton extends View {
       console.log("NOT mine")
       return;
     }
-    
+
     var textToShow = ""
 
     data.downloadProgress = ( data.downloadProgress == undefined || data.downloadProgress < 0 )? 0 : data.downloadProgress;
     console.log("--->\t\t\t\n\n\n", data);
      console.log(data.downloadProgress)
-     if(data.status == "NOT_FOUND"){ 
+     if(data.status == "NOT_FOUND"){
           this.setCancelButtonVisibility("gone");
         _this.replaceChild(_this.idSet.downloadBarContainer, _this.getButtons(0, "DOWNLOAD").render(), 0);
         JBridge.showSnackBar("Content Not Available");
@@ -124,26 +124,32 @@ class ProgressButton extends View {
     Android.runInUI(cmd, 0);
   }
 
+  setButtonFor = (identifier) => {
+    this.props.identifier=identifier;
+  }
+
 
   handleButtonClick = () => {
 
       window.__getDownloadStatus = this.updateProgress;
-      
+
       if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
 
         if (this.isDownloaded) {
-
-          if (this.props.isCourse == "true") {
-            window.__getGenieEvents = this.checkTelemetry;
-            JBridge.playChildContent(this.props.identifier)
-          } else {
-            JBridge.playContent(this.props.identifier);
-          }
+          window.__getGenieEvents = this.checkTelemetry;
+          JBridge.playContent(this.props.identifier);
+          // if (this.props.isCourse == "true") {
+          //   window.__getGenieEvents = this.checkTelemetry;
+          //   JBridge.playChildContent(this.props.identifier)
+          // } else {
+          //   JBridge.playContent(this.props.identifier);
+          // }
 
         } else if(JBridge.isNetworkAvailable()){
 
           if (!this.startedDownloading) {
             this.startedDownloading = true;
+            console.log("\n\n\n\n\n\n\n\n\n isCourse",this.props.isCourse)
             JBridge.importCourse(this.props.identifier, this.props.isCourse);
           }
         }
@@ -160,10 +166,16 @@ class ProgressButton extends View {
 
   checkTelemetry = (telemetryData) => {
     telemetryData = JSON.parse(utils.decodeBase64(telemetryData));
+    console.log("telemetry Data",telemetryData);
+    console.log("props",this.props)
     if (telemetryData.eid == "OE_END") {
+        JBridge.endContent();
+        JBridge.stopEventBus();
         var time = new Date();
         var date = utils.formatDate(time);
         var contentProgress = {};
+        var courseIdentifer = "";
+
 
 
         contentProgress['contentId'] = this.props.identifier;
@@ -178,11 +190,13 @@ class ProgressButton extends View {
         contentProgress['grade'] = "B";
         contentProgress['score'] = "10";
         var enrolledCourse;
+        console.log("contentProgress",contentProgress)
+
         window.__enrolledCourses.map(function(item){
           if(item.courseId == _this.props.contentDetails.hierarchyInfo[0].identifier)
             enrolledCourse = item;
         })
-
+        console.log("enrolled",enrolledCourse)
         contentProgress['batchId'] = enrolledCourse.hasOwnProperty("batchId")? enrolledCourse.batchId : 0 ;
         console.log("batch ID",enrolledCourse)
 
@@ -214,11 +228,11 @@ class ProgressButton extends View {
 
             JBridge.patchApi(url,JSON.stringify(body),window.__userToken,window.__apiToken);
           }
-          JBridge.stopEventBus();
       })
       JBridge.getContentType(this.props.contentDetails.hierarchyInfo[0].identifier,callback)
 
     }
+
 
   }
 

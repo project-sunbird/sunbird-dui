@@ -88,7 +88,7 @@ class SearchActivity extends View {
         this.filterIcon="ic_action_filter";
       }
 
-    JBridge.showSnackBar(window.__S.SEARCH_LOADING_MESSAGE)
+    // JBridge.showSnackBar(window.__S.SEARCH_LOADING_MESSAGE)
        var cmd = "";
         cmd += _this.set({
           id: _this.idSet.filterHolder,
@@ -104,9 +104,11 @@ class SearchActivity extends View {
         searchData=JSON.parse(this.filter)
       }
       this.getSearchList(this.searchText,"true");
+      window.__LoaderDialog.show();
     }
     else if(window.searchText!=undefined && window.searchText!=""){
         this.getSearchList(window.searchText,"false");
+        window.__LoaderDialog.show();
     }
 
     var callback = callbackMapper.map(function(data) {
@@ -216,6 +218,7 @@ class SearchActivity extends View {
                   </LinearLayout>);
 
     this.replaceChild(this.idSet.searchListContainer, layout.render(), 0);
+    window.__LoaderDialog.hide();
 
   }
 
@@ -233,6 +236,7 @@ class SearchActivity extends View {
                   </LinearLayout>)
 
     this.replaceChild(this.idSet.searchListContainer, layout.render(), 0);
+    window.__LoaderDialog.hide();
   }
 
   updateSearchText = (data) => {
@@ -245,6 +249,7 @@ class SearchActivity extends View {
 
   getSearchList=(searchText,flag)=> {
     if(searchText == ""){
+      window.__LoaderDialog.hide();
       this.renderNoResult();
     }
     else
@@ -253,9 +258,9 @@ class SearchActivity extends View {
         var callback = callbackMapper.map(function(data) {
           data[0] = utils.decodeBase64(data[0])
           _this.filterData = data[1];
-
                 if (searchText == "" || data[0] == "[]") {
                   _this.renderNoResult();
+                  window.__LoaderDialog.hide();
                 } else {
                   var s = data[0];
                   s = s.replace(/\\n/g, "\\n")
@@ -268,6 +273,7 @@ class SearchActivity extends View {
                     .replace(/\\f/g, "\\f");
                   s = s.replace(/[\u0000-\u0019]+/g, "");
                   _this.renderResult(JSON.parse(s));
+                  window.__LoaderDialog.hide();
                 }
         });
 
@@ -281,11 +287,12 @@ class SearchActivity extends View {
 
           var s = "";
           if(JBridge.isNetworkAvailable()){
-              JBridge.showSnackBar(window.__S.SEARCH_LOADING_MESSAGE)
+              // JBridge.showSnackBar(window.__S.SEARCH_LOADING_MESSAGE)
               console.log(this.filterData," filterData ");
               JBridge.searchContent(callback, JSON.stringify(this.filterData), searchText, this.searchType, flag, 30);
           }
           else{
+            window.__LoaderDialog.hide();
             JBridge.showSnackBar(window.__S.NO_INTERNET);
           }
 
@@ -318,6 +325,7 @@ class SearchActivity extends View {
   handleSearchClick = (searchText) => {
     JBridge.hideKeyboard();
     this.getSearchList(searchText[0],"false");
+    window.__LoaderDialog.show();
   }
 
   handleClearClick = () => {

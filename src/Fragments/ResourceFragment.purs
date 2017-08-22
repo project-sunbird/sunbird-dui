@@ -67,7 +67,11 @@ resourceDetailActivity input whereFrom whatToSendBack = do
 courseDetailActivity input whereFrom whatToSendBack = do
 	event <- ui $ CourseEnrolledActivity {courseDetails: input}
 	case event of
-		OPEN_ModuleDetailsActivity {moduleName : output1 , moduleDetails : output2} -> moduleResourceDetailActivity output1 output2 "CourseEnrolledActivity" input
+		API_FlagCourse {user_token: user_token,api_token: api_token,requestBody:request,identifier:identifier} -> do
+			responseData <- flagContent user_token api_token request identifier
+			_ <- sendUpdatedState {response : responseData, responseFor : "API_FlagCourse", screen:"asas"}
+			pure $ "handled"
+		OPEN_ModuleDetailsActivity {moduleName : output1 , moduleDetails : output2} -> subModuleResourceDetailActivity output1 output2 "CourseEnrolledActivity" input
 		BACK_CourseEnrolledActivity -> case whereFrom of
 			"ResourceActivity" -> resourceSearchActivity whatToSendBack "Terminate" input
 			"SearchActivity" -> resourceSearchActivity whatToSendBack "Terminate" input
@@ -75,23 +79,10 @@ courseDetailActivity input whereFrom whatToSendBack = do
 			_ -> resourceFragment whatToSendBack whereFrom input
 		_ -> courseDetailActivity input whereFrom whatToSendBack
 
-
-moduleResourceDetailActivity mName input whereFrom whatToSendBack = do
+subModuleResourceDetailActivity mName input whereFrom whatToSendBack = do
 	event <- ui $ ModuleDetailActivity {moduleName:mName,moduleDetails:input}
 	case event of
-		OPEN_AlternateModuleDetailActivity {moduleName : output1, moduleDetails : output2} -> subModuleResourceDetailActivity output1 output2  "Terminate" input
 		BACK_ModuleDetailActivity -> case whereFrom of
-			"CourseEnrolledActivity" -> courseDetailActivity whatToSendBack "Terminate" input
-			"Terminate" -> courseDetailActivity whatToSendBack "Terminate" input
-			_ ->  courseDetailActivity whatToSendBack "Terminate" input
-  		_ -> moduleResourceDetailActivity mName input whereFrom whatToSendBack
-
-
-subModuleResourceDetailActivity mName input whereFrom whatToSendBack = do
-	event <- ui $ AlternateModuleDetailActivity {moduleName:mName,moduleDetails:input}
-	case event of
-		OPEN_ModuleActivity {moduleName:output1,moduleDetails:output2} -> moduleResourceDetailActivity output1 output2 "Terminate" input
-		BACK_AlternateModuleDetailActivity -> case whereFrom of
 			"Terminate"->  courseDetailActivity whatToSendBack "Terminate" input
 			"CourseEnrolledActivity" -> courseDetailActivity whatToSendBack "Terminate" input
 			_ ->  courseDetailActivity whatToSendBack "Terminate" input

@@ -164,6 +164,7 @@ class CourseFragment extends View {
                     title={item.name}
                     data = {item.contents}
                     searchQuery = {item.searchQuery}
+                    showViewMore = "visible"
                     onCourseClick={this.handleCourseClick}/>
 
 
@@ -241,6 +242,7 @@ class CourseFragment extends View {
                   <CourseInProgressContainer
                     transparent="true"
                     title={window.__S.COURSES_IN_PROGRESS}
+                    showViewMore = "gone"
                     onCourseClick={this.handleUserCoursesClick}/>
 
 

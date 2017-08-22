@@ -14,7 +14,7 @@ var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
 var CropParagraph = require('../components/Sunbird/CropParagraph');
 var ProgressButton = require('../components/Sunbird/core/ProgressButton');
 var LargeCardComponent = require('../components/Sunbird/core/LargeCardComponent');
-var utils = require('../utils/GenericFunctions'); 
+var utils = require('../utils/GenericFunctions');
 
 var _this;
 
@@ -36,21 +36,21 @@ class ResourceViewAllActivity extends View {
     this.totalDetails = JSON.parse(state.data.value0.resourceDetails);
 
 
-    
+
     _this = this;
     this.start_index = 0;
     this.details = this.totalDetails.resourceDetails;
     this.appbarTitle = this.totalDetails.title;
 
 
-    
+
     this.size;
     this.fileImageUrl;
     this.cType;
     this.name;
     this.time;
     this.displayContent = [];
-    
+
     setTimeout(function() {
       Android.runInUI(
         _this.animateView(),
@@ -83,7 +83,7 @@ getRows = (data) =>{
                    this.name = item.name;
                     if(item.hasOwnProperty("createdOn")){
                      var d =  new Date(item.createdOn);
-              
+
                    }
                    else{
                     var d = new Date();
@@ -100,6 +100,7 @@ getRows = (data) =>{
                 temp['footerTitle'] = this.time;
                 temp['actionText'] = window.__S.OPEN ;
                 temp["footerSubTitle"] = this.cType + this.size;
+                temp['type'] = null;
 
          return (<LargeCardComponent
                  data={temp}
@@ -131,7 +132,7 @@ getRows = (data) =>{
 
     handleResourceClick = (item)=>{
 
-
+      console.log(item)
        if(item.contentType.toLowerCase() == "course"){
         var whatToSend = {resourceDetails:JSON.stringify(item)}
         var event = {tag:"OPEN_ResourceViewAllDetail",contents:whatToSend}
@@ -144,12 +145,24 @@ getRows = (data) =>{
       }
       else
       {
+        var name = "",description = "";
+        if(item.hasOwnProperty("name")){
+          name = item.name;
+          description = item.description
+        }
+        else if(item.hasOwnProperty("contentData"))
+        {
+          name = item.contentData.name;
+          description = item.contentData.description;
+        }
+        else{
+          name = "";
+        }
         var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");
         var resDetails = {};
-
         resDetails['imageUrl'] = item.hasOwnProperty("contentData") ?"file://"+item.basePath+"/"+item.contentData.appIcon : item.appIcon;
-        resDetails['title'] = item.name;
-        resDetails['description'] = item.description;
+        resDetails['title'] = name;
+        resDetails['description'] = description;
         resDetails['headFooterTitle'] = headFooterTitle;
         resDetails['identifier'] = item.identifier;
         resDetails['content'] = item;
@@ -190,13 +203,13 @@ getRows = (data) =>{
   handleViewMoreClick = () =>{
     var listContent = [];
     window.__LoaderDialog.show();
-    if(this.displayContent == "[]" || this.displayContent.length == 0){
+    // if(this.displayContent == "[]" || this.displayContent.length == 0){
        if(JBridge.isNetworkAvailable()){
             var callback = callbackMapper.map(function(data){
               data[0] = JSON.parse(utils.decodeBase64(data[0]));
               _this.displayContent=data[0];
               _this.displayContent.map(function(item,index){
-                if(index > _this.start_index*10 && index<(_this.start_index+1)*10)
+                if(index > _this.start_index*10 && index<(_this.start_index+1)*10 && index<_this.displayContent.length)
                   listContent.push(item)
               })
               _this.start_index++;
@@ -206,43 +219,43 @@ getRows = (data) =>{
                 _this.changeViewMoreButtonStatus("gone")
               }
               });
-              JBridge.searchContent(callback, JSON.stringify(this.details.searchQuery), "", "Resource", false,100);
+              JBridge.searchContent(callback, JSON.stringify(this.details.searchQuery), "", "Resource", false,(_this.start_index+2)*10);
         }
         else{
           window.__LoaderDialog.hide();
           JBridge.showSnackBar(window.__S.NO_INTERNET)
         }
-    }
-    else{
-          this.displayContent.map(function(item,index){
-            if(index > _this.start_index*10 && index<(_this.start_index+1)*10)
-              listContent.push(item)
-          })
-          _this.start_index++;
-          _this.appendChild(_this.idSet.listItems,_this.getRows(listContent).render(),_this.start_index)
-          window.__LoaderDialog.hide();
-          if(_this.start_index*10>=_this.displayContent.length){
-                _this.changeViewMoreButtonStatus("gone")
-          }
+    // }
+    // else{
+    //       this.displayContent.map(function(item,index){
+    //         if(index > _this.start_index*10 && index<(_this.start_index+1)*10)
+    //           listContent.push(item)
+    //       })
+    //       _this.start_index++;
+    //       _this.appendChild(_this.idSet.listItems,_this.getRows(listContent).render(),_this.start_index)
+    //       window.__LoaderDialog.hide();
+    //       if(_this.start_index*10>=_this.displayContent.length){
+    //             _this.changeViewMoreButtonStatus("gone")
+    //       }
 
-    }
-     if(this.start_index >= 9){
-      _this.changeViewMoreButtonStatus("gone")
-      
-     }
+    // }
+     // if(this.start_index >= 9){
+     //  _this.changeViewMoreButtonStatus("gone")
+
+     // }
 
   }
 
   changeViewMoreButtonStatus(status){
-    
+
       var cmd = this.set({
         id: this.idSet.viewMoreButton,
         visibility: status
       });
       Android.runInUI(cmd, 0);
-    
+
   }
-  
+
 
   render() {
 
@@ -306,8 +319,8 @@ getRows = (data) =>{
                           text = {window.__S.VIEW_MORE}
                           style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
                           />
-                      </LinearLayout>     
-                  
+                      </LinearLayout>
+
                   </LinearLayout>
                 </ScrollView>
 

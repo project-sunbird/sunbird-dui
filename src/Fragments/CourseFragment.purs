@@ -66,6 +66,10 @@ courseInfoActivity input whereFrom whatToSendBack = do
 enrolledCourseActivity input whereFrom whatToSendBack = do
 	event <- ui $ CourseEnrolledActivity {courseDetails : input}
 	case event of
+		API_FlagCourse {user_token: user_token,api_token: api_token,requestBody:request,identifier:identifier} -> do
+			responseData <- flagContent user_token api_token request identifier
+			_ <- sendUpdatedState {response : responseData, responseFor : "API_FlagCourse", screen:"asas"}
+			pure $ "handled"
   		OPEN_ModuleDetailsActivity {moduleName:output1,moduleDetails:output2} -> subModuleDetailActivity output1 output2 "EnrolledCourseActivity" input
   		BACK_CourseEnrolledActivity -> case whereFrom of
 			"CourseFragment" -> courseFragment whatToSendBack "Terminate" input
@@ -75,23 +79,11 @@ enrolledCourseActivity input whereFrom whatToSendBack = do
 		_ -> enrolledCourseActivity input whereFrom whatToSendBack
 
 
-moduleDetailActivity mName input whereFrom whatToSendBack = do
-	event <- ui $ ModuleDetailActivity {moduleName : mName,moduleDetails :input}
-	case event of
-		OPEN_AlternateModuleDetailActivity {moduleName:output1,moduleDetails:output2} -> subModuleDetailActivity output1 output2  "Terminate" input
-		BACK_ModuleDetailActivity-> case whereFrom of
-			"EnrolledCourseActivity" -> enrolledCourseActivity whatToSendBack "Terminate" input
-			"Terminate" -> enrolledCourseActivity whatToSendBack "Terminate" input
-			_ ->  courseFragment whatToSendBack "Terminate" input
-  		_ -> moduleDetailActivity mName input whereFrom whatToSendBack
-
-
 subModuleDetailActivity mName input whereFrom whatToSendBack = do
-	event <- ui $ AlternateModuleDetailActivity {moduleName:mName,moduleDetails:input}
+	event <- ui $ ModuleDetailActivity {moduleName:mName,moduleDetails:input}
 	case event of
-		OPEN_ModuleActivity {moduleName: output1,moduleDetails: output2} -> moduleDetailActivity output1 output2 "Terminate" input
-		BACK_AlternateModuleDetailActivity -> case whereFrom of
-			"Misc" ->  moduleDetailActivity mName input whereFrom input
+		BACK_ModuleDetailActivity -> case whereFrom of
+			"Misc" ->  subModuleDetailActivity mName input whereFrom input
 			"EnrolledCourseActivity" -> enrolledCourseActivity whatToSendBack "Terminate" input
 			_ ->  enrolledCourseActivity whatToSendBack "Terminate" input
   		_ -> subModuleDetailActivity mName input whereFrom whatToSendBack

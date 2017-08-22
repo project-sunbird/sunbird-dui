@@ -55,6 +55,8 @@ class SplashScreenActivity extends View {
     window.__loginUrl = "https://staging.open-sunbird.org";
 
     window.__apiUrl = "https://staging.open-sunbird.org";
+
+    window.__deepLinkUrl = "staging.open-sunbird.org";
     
 
     setTimeout(() => {

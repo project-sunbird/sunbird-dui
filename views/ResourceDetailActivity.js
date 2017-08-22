@@ -8,6 +8,7 @@ var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 var ScrollView = require('@juspay/mystique-backend').androidViews.ScrollView;
+var HorizontalScrollView = require('@juspay/mystique-backend').androidViews.HorizontalScrollView;
 var RatingBar = require('@juspay/mystique-backend').androidViews.RatingBar;
 var objectAssign = require('object-assign');
 var SharePopup = require('../components/Sunbird/core/SharePopup');
@@ -49,8 +50,9 @@ class ResourceDetailActivity extends View {
 
     this.details = state.data.value0.resourceDetails;
     this.details = JSON.parse(this.details);
+    
     console.log("RDA",this.details)
-
+    
     this.localStatus = false;
 
     _this = this;
@@ -114,43 +116,45 @@ class ResourceDetailActivity extends View {
 
   shareContent = (isContentLocallyAvailable) =>{
 
-    var shareCallback = callbackMapper.map(function(data) {
-    var input;
-    if(isContentLocallyAvailable){
-                  input = [{
-                    type : "text",
-                    data : "staging.open-sunbird.org/c/"+_this.details.identifier
 
-                  },{
-                    type : "file",
-                    data : "file://"+data[0]
+        var shareCallback = callbackMapper.map(function(data) {
+        var input;
+        if(isContentLocallyAvailable){
+                      input = [{
+                        type : "text",
+                        data : window.__deepLinkUrl+"/public/"+_this.details.identifier
 
-                  }];
+                      },{
+                        type : "file",
+                        data : "file://"+data[0]
 
-    }else{
-                  input = [{
-                              type : "text",
-                              data : "staging.open-sunbird.org/public/"+_this.details.identifier
-                          }];
+                      }];
 
-    }
-                  
-      var sharePopUp = (
-        <SharePopup
-        data = {input}/>
-        )
+        }else{
+                      input = [{
+                                  type : "text",
+                                  data : window.__deepLinkUrl+"/public/"+_this.details.identifier
+                              }];
 
-    _this.replaceChild(_this.idSet.sharePopupContainer,sharePopUp.render(),0);
+        }
+                      
+          var sharePopUp = (
+            <SharePopup
+            data = {input}/>
+            )
 
-    });
+        _this.replaceChild(_this.idSet.sharePopupContainer,sharePopUp.render(),0);
 
-    JBridge.exportEcar(this.details.identifier, shareCallback);
+        });
+
+        JBridge.exportEcar(this.details.identifier, shareCallback);
+      
   }
 
   afterRender = () => {
-    this.checkLocalStatus(this.details);
 
-
+     this.checkLocalStatus(this.details);
+    
     if(this.details && this.details.content && this.details.content.me_averageRating){
     JBridge.setRating(this.idSet.ratingBar, this.details.content.me_averageRating);
     }else if(this.details.content.hasOwnProperty("contentData") && this.details.content.contentData.hasOwnProperty("me_averageRating")){
@@ -167,7 +171,7 @@ class ResourceDetailActivity extends View {
   }
 
   flagContent = (comment,selectedList) =>{
-
+    window.__LoaderDialog.show();
     console.log("flag request",this.details)
     console.log(comment,selectedList)
     var versionKey;
@@ -205,6 +209,76 @@ class ResourceDetailActivity extends View {
             background={window.__Colors.PRIMARY_BLACK_22}/>)
   }
 
+  handlePreviewImageClick = (imgUrl) => {
+    window.__PreviewImagePopup.show(imgUrl);
+  }
+
+  getPreviewLayout = () => {
+    var cards ;
+    if(this.details.screenshots== undefined || this.details.screenshots.length == 0){
+      this.details.dummyUrl=[];
+      cards= (
+          <TextView
+            margin="0,4,0,0"
+            width="wrap_content"
+            height="wrap_content"
+            text={window.__S.NO_PREVIEW}
+            style={window.__TextStyle.textStyle.HINT.REGULAR}/>)
+    }else{
+      cards = this.details.screenshots.map((item,i)=>{
+        return (<LinearLayout
+                  height="match_parent"
+                  width="match_parent"
+                  orientation="vertical"
+                  padding="5,5,5,5"
+
+                  onClick={()=>{_this.handlePreviewImageClick(item)}}>
+                  <ImageView
+                          width="156"
+                          height="200"
+                          padding="10,10,10,10"
+                          stroke ={"3," + window.__Colors.PRIMARY_BLACK}
+                          imageFromUrl = {item}/>
+                
+                </LinearLayout>)
+    })
+  
+    }
+
+    
+    return (
+    <LinearLayout
+      height="wrap_content"
+      width="match_parent"
+      orientation="vertical">
+    
+      <TextView
+        margin="0,16,0,0"
+        width="wrap_content"
+        height="wrap_content"
+        text={window.__S.PREVIEWS}
+        style={window.__TextStyle.textStyle.HINT.BOLD}/>
+
+      <HorizontalScrollView
+        width = "wrap_content"
+        height = "wrap_content"
+        scrollBarX="false"
+        fillViewport="true">
+
+        <LinearLayout
+          width="match_parent"
+          height="wrap_content"
+          margin="0,8,0,0">
+
+          {cards}
+
+        </LinearLayout>
+
+      </HorizontalScrollView>  
+        
+    </LinearLayout>)
+  }
+
 
   getBody = () => {
 
@@ -229,51 +303,14 @@ class ResourceDetailActivity extends View {
           style={window.__TextStyle.textStyle.CARD.TITLE.REGULAR_BLACK}/>
 
 
-          <TextView
-            margin="0,16,0,0"
-            width="wrap_content"
-            height="wrap_content"
-            text={window.__S.PREVIEWS}
-            style={window.__TextStyle.textStyle.HINT.BOLD}/>
-
-
-         <LinearLayout
-          width="match_parent"
-          height="wrap_content"
-          visibility="gone"
-          margin="0,8,0,0">
-
-
-            <ImageView
-              width="156"
-              height="200"
-              stroke ={"3," + window.__Colors.PRIMARY_BLACK}
-              imageFromUrl = "https://pbs.twimg.com/media/CRafzhtWIAEQ2c9.png"/>
-
-            <ImageView
-              width="156"
-              height="200"
-              margin="16,0,0,0"
-              stroke ={"3," + window.__Colors.PRIMARY_BLACK}
-              imageFromUrl = "https://pbs.twimg.com/media/CRafzhtWIAEQ2c9.png"/>
-
-          </LinearLayout>
-
-
-
-          <TextView
-            margin="0,4,0,0"
-            width="wrap_content"
-            height="wrap_content"
-            text={window.__S.NO_PREVIEW}
-            style={window.__TextStyle.textStyle.HINT.REGULAR}/>
+          { this.getPreviewLayout() }
 
 
           <TextView
             margin="0,16,0,0"
             width="wrap_content"
             height="wrap_content"
-            text="CREATED BY"
+            text={window.__S.CREATED_BY}
             style={window.__TextStyle.textStyle.HINT.BOLD}/>
 
 
@@ -285,7 +322,7 @@ class ResourceDetailActivity extends View {
               margin="0,4,0,10"
               width="wrap_content"
               height="wrap_content"
-              text={this.details.content.creator}
+              text={this.details.content.creator || window.__S.CREATOR_NAME_NOT_AVAILABLE}
               style={window.__TextStyle.textStyle.CARD.TITLE.REGULAR_BLACK}/>
 
 
@@ -399,8 +436,27 @@ class ResourceDetailActivity extends View {
 
   }
   handleStateChange = (state) =>{
-
     var response = utils.decodeBase64(state.response.status[1])
+    var responseCode = state.response.status[2]
+    if(responseCode == 200){
+      var callback = callbackMapper.map(function(response){
+        window.__LoaderDialog.hide();
+
+        if(response[0] == "successful"){
+          JBridge.showSnackBar(window.__S.CONTENT_FLAGGED_MSG)
+          _this.onBackPressed();
+        }
+      });
+      JBridge.deleteContent(this.details.identifier,callback);
+      
+    }
+    else{
+      window.__LoaderDialog.hide();
+      JBridge.showSnackBar(window.__S.CONTENT_FLAG_FAIL);
+      _this.onBackPressed();
+      
+    }
+    console.log(response)
 
   }
 
@@ -413,7 +469,7 @@ class ResourceDetailActivity extends View {
         window.__LoaderDialog.hide();
 
         if(response[0] == "successful"){
-
+          JBridge.showSnackBar(window.__S.MSG_RESOURCE_DELETED)
           _this.onBackPressed();
         }
       });
@@ -431,6 +487,10 @@ class ResourceDetailActivity extends View {
 
     if(window.__PermissionDeniedDialog.getVisibility() == "visible"){
       window.__PermissionDeniedDialog.hide();
+      return;
+    }else if(window.__PreviewImagePopup.getVisibility()){
+      window.__PreviewImagePopup.hide();
+      return
     }else{
       var whatToSend = [];
       var event= { "tag": "BACK_ResourceDetailActivity", contents: whatToSend };
@@ -456,7 +516,12 @@ class ResourceDetailActivity extends View {
 
   handleMenuClick = (url) =>{
     if(url == "ic_action_share_black"){
-      window.__SharePopup.show();
+
+     if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
+       window.__SharePopup.show();
+     }else{
+        utils.setPermissions("android.permission.WRITE_EXTERNAL_STORAGE");
+      }
     }
   }
 
@@ -468,7 +533,6 @@ class ResourceDetailActivity extends View {
       <RelativeLayout
       width="match_parent"
       height="match_parent"
-      afterRender={this.afterRender}
       clickable="true"
       root="true">
       <LinearLayout

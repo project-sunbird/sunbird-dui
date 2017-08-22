@@ -5,12 +5,13 @@ import ext from './ext';
 import { main } from './output/Main/index.js';
 import { changeFlow } from './output/Main/index.js';
 import { typeFlow } from './output/Main/index.js';
-import { userActivity } from './output/Main/index.js';
+import { onBoardingFLow } from './output/Main/index.js';
+var utils = require('./utils/GenericFunctions');
 
 const purescriptMain = main;
 const purescriptChangeFlow = changeFlow;
 const purescriptTypeFlow = typeFlow;
-const purescriptUserActivityFlow = userActivity;
+const purescriptUserActivityFlow = onBoardingFLow;
 
 // import lock from './lock';
 // require('es6-promise').polyfill();
@@ -96,22 +97,38 @@ if (typeof window !== "undefined") {
 
   window.onBackPressed = () => {
     console.log("onBackPressed");
-    window.__CACHED_SCREENS[window.__CURR_SCREEN].screen.onBackPressed();
+     if(window.__CACHED_SCREENS[window.__CURR_SCREEN].screen.hasOwnProperty("onBackPressed")){
+        window.__CACHED_SCREENS[window.__CURR_SCREEN].screen.onBackPressed();
+    }
   }
 
   window.onStop = () => {
     console.log("onStop");
-    window.__CACHED_SCREENS[window.__CURR_SCREEN].screen.onStop();
+    if(window.__CACHED_SCREENS[window.__CURR_SCREEN].screen.hasOwnProperty("onStop")){
+      window.__CACHED_SCREENS[window.__CURR_SCREEN].screen.onStop();
+    }
+  }
+
+  window.onDestroy = () =>{
+    console.log("onDestroy");
+    utils.clearDeeplinkPreferences();
+    if(window.__CACHED_SCREENS[window.__CURR_SCREEN].screen.hasOwnProperty("onDestroy")){
+      window.__CACHED_SCREENS[window.__CURR_SCREEN].screen.onDestroy();
+    }
   }
 
   window.onResume = () => {
     console.log("onResume");
-    window.__CACHED_SCREENS[window.__CURR_SCREEN].screen.onResume();
+    if(window.__CACHED_SCREENS[window.__CURR_SCREEN].screen.hasOwnProperty("onResume")){
+      window.__CACHED_SCREENS[window.__CURR_SCREEN].screen.onResume();
+    }
   }
 
   window.onPause = () => {
     console.log("onPause");
-    window.__CACHED_SCREENS[window.__CURR_SCREEN].screen.onPause();
+    if(window.__CACHED_SCREENS[window.__CURR_SCREEN].screen.hasOwnProperty("onPause")){
+      window.__CACHED_SCREENS[window.__CURR_SCREEN].screen.onPause();
+    }
   }
 
 
@@ -167,13 +184,25 @@ const runDuiCallback = (state) => {
   callback ? callback(JSON.stringify(state))() : JSON.stringify(state);
 };
 
+const logoutUser = () => {
+    JBridge.showSnackBar("Logged out")
+    JBridge.setInSharedPrefs("logged_in","NO");
+    JBridge.setInSharedPrefs("user_id", "__failed");
+    JBridge.setInSharedPrefs("user_name",  "__failed");
+    JBridge.setInSharedPrefs("user_token",  "__failed");
+    window.__pressedLoggedOut=true;
+    JBridge.keyCloakLogout(window.__apiUrl + "/auth/realms/sunbird/protocol/openid-connect/logout");
+    purescriptUserActivityFlow();
+
+}
+
 let purescriptInit = () => {
   window.__duiShowScreen = duiShowScreen;
   window.__duiCb = null;
   window.__runDuiCallback = runDuiCallback;
   window.__setCallback = setCallback
   window.__changePureScriptFlow = purescriptChangeFlow;
-  window.__Logout = purescriptUserActivityFlow
+  window.__Logout = logoutUser
   window.__typeFlow = purescriptTypeFlow;
   
   purescriptMain();

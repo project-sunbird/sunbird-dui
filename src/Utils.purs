@@ -81,9 +81,9 @@ duiLog :: String ->String -> String
 duiLog tag value = log' tag value
 
 foreign import sendUpdatedState' :: forall a b.(State a)-> b
-foreign import saveToMemory :: String -> String -> Unit                           
-foreign import readFromMemory :: String -> String                           
-foreign import getJsonFromString :: String -> A.Json                           
+foreign import saveToMemory :: String -> String -> Unit
+foreign import readFromMemory :: String -> String
+foreign import getJsonFromString :: String -> A.Json
 
 sendUpdatedState state = sendUpdatedState' state
 
@@ -118,10 +118,10 @@ generateRequestHeaders user_token api_token=
                                                             ,(Tuple "X-Consumer-ID" getUserId) --getUserId
                                                             ,(Tuple "X-Device-ID" "X-Device-ID")
                                                             ,(Tuple "X-msgid" "8e27cbf5-e299-43b0-bca7-8347f7e5abcf")
-                                                            ,(Tuple "ts" "2017-05-28 10:52:56:578+0530")  
+                                                            ,(Tuple "ts" "2017-05-28 10:52:56:578+0530")
                                                             ,(Tuple "Accept" "application/json")
                                                             ,(Tuple "X-Source" "web")
-                                                            
+
 
                                                             ] in
   map (\x -> (RequestHeader (fst x) (snd x))) filtered
@@ -131,10 +131,10 @@ getDummyHeader api_token=
   let filtered = filter (\x -> not $ snd(x) == "__failed")  [(Tuple "Authorization" ("Bearer " <> api_token)) --getUserId
                                                             ,(Tuple "X-Device-ID" "X-Device-ID")
                                                             ,(Tuple "X-msgid" "8e27cbf5-e299-43b0-bca7-8347f7e5abcf")
-                                                            ,(Tuple "ts" "2017-05-28 10:52:56:578+0530")  
+                                                            ,(Tuple "ts" "2017-05-28 10:52:56:578+0530")
                                                             ,(Tuple "Accept" "application/json")
                                                             ,(Tuple "X-Source" "web")
-                                                            
+
 
                                                             ] in
   map (\x -> (RequestHeader (fst x) (snd x))) filtered
@@ -167,7 +167,7 @@ getCoursesPageApi user_token api_token =
                                                                                                                                                                 ])))
                                                                                                           ])))
                                                    ]) in
-  (post requestUrl headers payload) 
+  (post requestUrl headers payload)
 
 getResourcePageApi user_token api_token =
   let requestUrl = "/data/v1/page/assemble"
@@ -180,7 +180,7 @@ getResourcePageApi user_token api_token =
                                                                                                                                                                 ])))
                                                                                                           ])))
                                                    ]) in
-  (post requestUrl headers payload) 
+  (post requestUrl headers payload)
 
 getCourcePageFilterApi user_token api_token filter_to_use=
   let requestUrl = "/data/v1/page/assemble"
@@ -190,14 +190,14 @@ getCourcePageFilterApi user_token api_token filter_to_use=
                                                    , (Tuple "request" (A.fromObject (StrMap.fromFoldable  [ (Tuple "name" (A.fromString "Course"))
                                                                                                           , (Tuple "source" (A.fromString "web"))
                                                                                                           , (Tuple "filters" (getJsonFromString filter_to_use))
-                                                                                                                                                              
+
                                                                                                           ])))
                                                    ]) in
-  (post requestUrl headers payload)   
+  (post requestUrl headers payload)
 
 
 getContentStatus courseId user_token api_token =
-  let requestUrl = "/course/v1/content/state/read" 
+  let requestUrl = "/course/v1/content/state/read"
       headers = (generateRequestHeaders user_token api_token)
       payload = A.fromObject (StrMap.fromFoldable [(Tuple "request" (A.fromObject (StrMap.fromFoldable  [ (Tuple "userId" (A.fromString user_token))
                                                                                                           , (Tuple "courseIds" (A.fromArray [(A.fromString courseId)]))
@@ -221,21 +221,28 @@ getResourcePageFilterApi user_token api_token filter_to_use=
                                                    , (Tuple "request" (A.fromObject (StrMap.fromFoldable  [ (Tuple "name" (A.fromString "Resource"))
                                                                                                           , (Tuple "source" (A.fromString "web"))
                                                                                                           , (Tuple "filters" (getJsonFromString filter_to_use))
-                                                                                                                                                              
+
                                                                                                           ])))
                                                    ]) in
-  (post requestUrl headers payload)   
+  (post requestUrl headers payload)
 
 searchUser user_token api_token filter_to_use=
   let requestUrl = "/user/v1/search"
       headers = (generateRequestHeaders user_token api_token)
       payload = A.fromObject (StrMap.fromFoldable [ (Tuple "id" (A.fromString "unique API ID"))
                                                    , (Tuple "ts" (A.fromString "2013/10/15 16:16:3"))
-                                                   , (Tuple "request" (A.fromObject (StrMap.fromFoldable  [ (Tuple "request" (getJsonFromString filter_to_use))
-                                                                                                                                                              
-                                                                                                          ])))
+                                                   , (Tuple "request" (getJsonFromString filter_to_use))
                                                    ]) in
-  (post requestUrl headers payload)   
+  (post requestUrl headers payload)
+
+compositeSearch user_token api_token filter_to_use=
+  let requestUrl = "/composite/v1/search"
+      headers = (generateRequestHeaders user_token api_token)
+      payload = A.fromObject (StrMap.fromFoldable [ (Tuple "id" (A.fromString "unique API ID"))
+                                                   , (Tuple "ts" (A.fromString "2013/10/15 16:16:3"))
+                                                   , (Tuple "request" (getJsonFromString filter_to_use))
+                                                   ]) in
+  (post requestUrl headers payload)
 
 
 
@@ -243,17 +250,17 @@ searchUser user_token api_token filter_to_use=
 getUserEnrolledCourses user_token api_token =
   let requestUrl = "/course/v1/user/enrollment/list/" <> user_token
       headers = (generateRequestHeaders user_token api_token) in
-  (get requestUrl headers) 
+  (get requestUrl headers)
 
 getProfileDetail user_token api_token =
   let requestUrl = "/user/v1/read/" <> user_token
       headers = (generateRequestHeaders user_token api_token) in
-  (get requestUrl headers) 
+  (get requestUrl headers)
 
 
 
 userSignup request api_token =
-  let requestUrl = "/user/v1/create" 
+  let requestUrl = "/user/v1/create"
       headers = (getDummyHeader api_token)
       payload = A.fromObject (StrMap.fromFoldable [(Tuple "request" (getJsonFromString request))
                                                    ]) in

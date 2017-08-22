@@ -1,4 +1,4 @@
-
+var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 
 exports.formatBytes = (bytes)=> {
 	    if(bytes < 1024) return (bytes/1).toFixed(0) + " Bytes";
@@ -6,6 +6,11 @@ exports.formatBytes = (bytes)=> {
 	    else if(bytes < 1073741824) return(bytes / 1048576).toFixed(0) + " MB";
 	    else return(bytes / 1073741824).toFixed(3) + " GB";
 };
+
+
+exports.firstLeterCapital = (data) =>{
+  return data.charAt(0).toUpperCase() + data.substring(1,data.length);
+}
 
 
 exports.prettifyDate = (data) => {
@@ -34,7 +39,15 @@ exports.jsonifyData = (data) =>{
 }
 exports.formatDate = (d) =>{
   var temp = d.toString();
-  var res = d.getFullYear() + "-" + d.getMonth() + "-" + d.getDay() + " " + d.getHours () + ":" + d.getMinutes() + ":" + d.getSeconds() + ":" + d.getMilliseconds() + "+" + temp.substring(29,33);
+  var month = d.getMonth();
+  if(month<10){
+    month = "0" + d.getMonth();
+  }
+  var day = d.getDate();
+  if(day<10){
+    day = "0" + d.getDate();
+  }
+  var res = d.getFullYear() + "-" + month + "-" + day + " " + d.getHours () + ":" + d.getMinutes() + ":" + d.getSeconds() + ":" + d.getMilliseconds() + "+" + temp.substring(29,33);
   console.log("result",res)
   return res;
 }
@@ -43,6 +56,46 @@ exports.decodeBase64 = (data) =>{
   return decodeURIComponent(escape(atob(data)))
 }
 
+exports.setPermissions = (permission) => {
+
+   var callback = callbackMapper.map(function(data) {
+
+      if (data == permission) {
+        if(data == "android.permission.WRITE_EXTERNAL_STORAGE"){
+          JBridge.setKey("isPermissionSetWriteExternalStorage", "true");
+        }
+      }
+      if(data == "DeniedPermanently"){
+        window.__PermissionDeniedDialog.show("ic_flag_warning","Storage permission is required for this functionality");
+      }
+
+    });
+
+    JBridge.setPermissions(callback,permission);
+
+}
+
+
+exports.clearDeeplinkPreferences = () =>{
+    JBridge.setInSharedPrefs("intentLinkPath", "__failed");
+    JBridge.setInSharedPrefs("intentFilePath", "__failed");
+    JBridge.setInSharedPrefs("deeplinkMode","__failed");
+    JBridge.setInSharedPrefs("whereFromInUserActivity","__failed");
+}
+
+
+exports.checkEnrolledCourse = (identifier) =>{
+    
+    var enrolled = false;
+    window.__enrolledCourses.map(function(item){
+      if(item.courseId == identifier){
+        enrolled = true;
+      }
+    })
+
+     return enrolled;
+
+  }
 
 
 

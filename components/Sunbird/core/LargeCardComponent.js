@@ -81,6 +81,7 @@ class ResourceViewAllCard extends View {
 
 
   getBody = () =>{
+    console.log("imageUrl",this.props.data.imageUrl)
     var myProgress = this.props.data.isProgress?this.props.data.footerTitle.split('%')[0]:"0" ;
     var myProgressColor = myProgress==100 ? window.__Colors.SUCCESS_GREEN : window.__Colors.SAFFRON 
 
@@ -116,6 +117,18 @@ class ResourceViewAllCard extends View {
               height="100"
               gravity="center"
               circularImageUrl={"5,"+this.props.data.imageUrl}/>
+            <TextView
+                  width="wrap_content"
+                  height="wrap_content"
+                  margin = "10,8,5,10"
+                  visibility={this.props.data.type?"visible":"gone"}
+                  text= {this.props.data.type}
+                  letterSpacing="0.07"
+                  padding="5,3,5,3"
+                  cornerRadius="4"
+                  background={window.__Colors.PRIMARY_BLACK}
+                  alignParentRight="true,-1"
+                  style={window.__TextStyle.textStyle.SYMBOL.STATUSBAR.LABEL}/>
 
           </RelativeLayout>
 

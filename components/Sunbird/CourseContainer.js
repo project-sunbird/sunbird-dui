@@ -24,6 +24,7 @@ class CourseContainer extends View {
       "courseContainer",
       "parentContainer"]);
     this.count = (this.props.data != undefined) ? this.props.data.length : 0;
+    this.enrolled = false;
   }
 
 
@@ -49,15 +50,28 @@ class CourseContainer extends View {
     this.appendChild(this.idSet.parentContainer,this.getHeader().render(),0);
     this.replaceChild(this.idSet.courseContainer,layout.render(),0)
 
+  }
+
+  checkEnrolledCourse = (identifier) =>{
     
+    var enrolled = false;
+    window.__enrolledCourses.map(function(item){
+      if(item.courseId == identifier){
+        enrolled = true;
+      }
+    })
 
-  
-
+     return enrolled;
 
   }
 
+
   geCardLayout = (item) => {
-    var size = item.hasOwnProperty("size") ? window.__S.FILE_SIZE.format(utils.formatBytes(item.size)) : "";
+
+    
+
+
+    var size = item.hasOwnProperty("size") ? "  "+window.__S.FILE_SIZE.format(utils.formatBytes(item.size)) : "";
 
     var temp = {
         imageUrl: (item.appIcon ? item.appIcon : "ic_action_course"),
@@ -68,7 +82,9 @@ class CourseContainer extends View {
         footerSubTitle: size,
     };
 
-
+    if(_this.checkEnrolledCourse(item.identifier)){
+     temp['type'] = "ENROLLED"; 
+    }
       return (<CardComponent 
                  data={temp}
                  content={item}
@@ -112,9 +128,10 @@ class CourseContainer extends View {
  handleViewAllClick = () =>{
 
       var courseListDetails = {
-                               "title" : "Courses In Progress",
+                               "title" : this.props.title,
                                "courseListDetails" : this.data,
-                               "searchQuery" : this.props.searchQuery
+                               "searchQuery" : this.props.searchQuery,
+                               "viewMore" : this.props.showViewMore
                               }
       var whatToSend = {"courseListDetails": JSON.stringify(courseListDetails)}
       var event = { tag: "OPEN_CourseViewAllActivity", contents: whatToSend};
@@ -135,7 +152,7 @@ class CourseContainer extends View {
       }
       if(data == "DeniedPermanently"){
         console.log("DENIED DeniedPermanently");
-        window.__PermissionDeniedDialog.show("ic_flag_warning","Cannot download content since permission is denied");
+        window.__PermissionDeniedDialog.show("ic_flag_warning","Storage permission is required for this functionality");
       }
 
     });

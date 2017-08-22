@@ -16,7 +16,7 @@ class SearchResult extends View {
   constructor(props, children) {
     super(props, children);
     console.log(this.props.data);
-    
+
   }
   getData = () => {
     var answerLayout = this.props.data.map((item, index) => {
@@ -91,19 +91,28 @@ class SearchResult extends View {
 
 
     var itemDetails = JSON.stringify(item);
-
-    if(item.contentType.toLowerCase() == "course"){
-
-      if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
-        var whatToSend={course:itemDetails};
-        var event={tag:"OPEN_CourseInfoActivity_SEARCH",contents:whatToSend}
+    if (item.hasOwnProperty("data") && item.data.hasOwnProperty("education")){
+      console.log("item data", item);
+      var data = JSON.stringify(item);
+      var whatToSend = {
+        user_token: item.data.identifier,
+        api_token: window.__apiToken,
+        sendBack : data,
+        filters: JSON.stringify({"filters" : {
+                   "createdBy": item.data.identifier,
+                   "status": ["Live"],
+                   "contentType": ["Collection", "Story", "Worksheet", "TextBook", "Course", "LessonPlan"]
+               }
+             })
+       }
+      var event = { tag: "API_CreatedBy_Search", contents: whatToSend}
+      if (JBridge.isNetworkAvailable()){
         window.__runDuiCallback(event);
-      }else{
-        this.setPermissions();
+      } else {
+        JBridge.showSnackBar(window.__S.NO_INTERNET);
       }
-    
-    }
-    else if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook"){
+   }
+    else if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook" || utils.checkEnrolledCourse(item.identifier)){
 
       if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
         var whatToSend={course:itemDetails};
@@ -113,24 +122,35 @@ class SearchResult extends View {
         this.setPermissions();
       }
 
-
-      
     }
+    else if(item.contentType.toLowerCase() == "course"){
+
+      if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
+        var whatToSend={course:itemDetails};
+        var event={tag:"OPEN_CourseInfoActivity_SEARCH",contents:whatToSend}
+        window.__runDuiCallback(event);
+      }else{
+        this.setPermissions();
+      }
+
+    }
+
     else
     {
 
-      var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");      
+      var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");
       var resDetails = {};
       resDetails['imageUrl'] = item.appIcon;
       resDetails['title'] = item.name;
       resDetails['description'] = item.description;
       resDetails['headFooterTitle'] = headFooterTitle;
       resDetails['identifier'] = item.identifier;
+      resDetails['screenshots'] = item.screenshots || [] ;
       resDetails['content'] = item;
 
       var whatToSend = {resourceDetails:JSON.stringify(resDetails)}
       var event= {tag:"OPEN_ResourceDetailActivity_SEARCH",contents:whatToSend}
-      window.__runDuiCallback(event); 
+      window.__runDuiCallback(event);
     }
 
   }
@@ -153,7 +173,7 @@ class SearchResult extends View {
 
   }
 
-  
+
 
   render() {
 

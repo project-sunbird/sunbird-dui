@@ -1,6 +1,7 @@
 exports.filterParamsCource =[
 {
   name : "language",
+  displayName : "Language",
   values : [ "English",
             "Hindi",
             "Assamese",
@@ -26,6 +27,7 @@ exports.filterParamsCource =[
 },
 {
   name : "subject",
+  displayName : "Subject",
   values : [ "Maths",
             "English",
             "Hindi",
@@ -46,6 +48,7 @@ exports.filterParamsCource =[
 },
 {
   name : "medium",
+  displayName : "Medium",
   values : [ "English",
             "Hindi",
             "Assamese",

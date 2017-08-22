@@ -61,6 +61,11 @@ exports.textStyle = {
       color: Colors.PRIMARY_BLACK,
       textSize: Font.fontSize.FONT_20,
       fontStyle: Font.fontStyle.BOLD
+    },
+    SEMI_DARK:{
+      color: Colors.PRIMARY_BLACK_44,
+      textSize: Font.fontSize.FONT_20,
+      fontStyle: Font.fontStyle.BOLD
     }
   },
   TOOLBAR: {
@@ -79,7 +84,7 @@ exports.textStyle = {
       },
       DARK: {
         color: Colors.PRIMARY_BLACK,
-        textSize: Font.fontSize.FONT_16,
+        textSize: Font.fontSize.FONT_18,
         fontStyle: Font.fontStyle.BOLD
       },
       SEMI_DARK: {
@@ -89,7 +94,7 @@ exports.textStyle = {
       },
       REGULAR_BLACK: {
         color: Colors.PRIMARY_BLACK,
-        textSize: Font.fontSize.FONT_12,
+        textSize: Font.fontSize.FONT_16,
         fontStyle: Font.fontStyle.REGULAR
       },
       FADE_DARK: {

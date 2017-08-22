@@ -65,6 +65,7 @@ getMenu = () =>{
         margin="0,0,10,0"
         style={IconStyle}
         onClick={this.props.onBackPress}
+        allowMultipleClicks="true"
         imageUrl = {"ic_action_arrow_left"}/>)
   }
 

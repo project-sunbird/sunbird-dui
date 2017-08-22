@@ -43,14 +43,16 @@ instance decodeSplashScreenActivityAction :: Decode SplashScreenActivityAction w
 instance encodeSplashScreenActivityAction :: Encode SplashScreenActivityAction where encode = defaultEncode
 
 
-data UserActivity = UserActivity
+data UserActivity = UserActivity {whereFrom::String}
 data UserActivityAction = OPEN_MainActivity |
   OPEN_Deeplink_ResourceDetail {resource :: String} |
   OPEN_Deeplink_CourseEnrolled {course::String}|
   OPEN_DeepLink_CourseInfo {course::String}|
+  OPEN_DeepLink_ContentPreview{details::String} |
   API_LogIn {userName::String, userPass::String} |
   API_SignUp {request::String, api_token::String} |
-  API_EnrolledCourses {user_token::String, api_token::String}
+  API_EnrolledCourses {user_token::String, api_token::String} |
+  API_GetProfileData {user_token::String, api_token::String}
 
 instance userActivity :: UIScreen UserActivity UserActivityAction where
   generateMockEvents _ = [OPEN_MainActivity , API_LogIn {userName:"String",userPass:"String"}]
@@ -59,6 +61,20 @@ instance userActivity :: UIScreen UserActivity UserActivityAction where
 derive instance genericUserActivityAction  :: Generic UserActivityAction _
 instance decodeUserActivityAction :: Decode UserActivityAction where decode = defaultDecode
 instance encodeUserActivityAction :: Encode UserActivityAction where encode = defaultEncode
+
+
+
+data ContentPreviewScreen = ContentPreviewScreen {details::String}
+data ContentPreviewScreenAction = BACK_ContentPreviewScreen | OPEN_UserActivityFromPreview
+
+instance contentPreviewScreen :: UIScreen ContentPreviewScreen ContentPreviewScreenAction where
+  generateMockEvents _ = [BACK_ContentPreviewScreen]
+  ui x = genericUI x (generateMockEvents x :: Array ContentPreviewScreenAction)
+
+derive instance generiContentPreviewScreenAction  :: Generic ContentPreviewScreenAction _
+instance decodeContentPreviewScreenAction :: Decode ContentPreviewScreenAction where decode = defaultDecode
+instance encodeContentPreviewScreenAction :: Encode ContentPreviewScreenAction where encode = defaultEncode
+
 
 
 data MainActivity = MainActivity
@@ -78,11 +94,13 @@ data MainActivityAction = OPEN_HomeFragment |
   OPEN_NotificationActivity |
   OPEN_EditProfileActivity |
   OPEN_SearchActivity {filterDetails::String}|
+  OPEN_CommProfSearchActivity {filterDetails::String}|
   API_ResourceFragment {user_token::String, api_token::String}|
   API_CourseFragment {user_token::String, api_token::String} |
   API_ProfileFragment {user_token::String, api_token::String}|
   API_UserEnrolledCourse {user_token::String, api_token::String} |
-  API_FilterPage {user_token::String, api_token::String,filter_to_send::String}
+  API_FilterPage {user_token::String, api_token::String,filter_to_send::String} |
+  API_CreatedBy {user_token::String, api_token::String, sendBack::String, filters::String }
 
 instance homeActivity :: UIScreen MainActivity MainActivityAction where
   generateMockEvents _ = [BACK_HomeActivity , OPEN_HomeFragment , OPEN_CourseFragment , OPEN_ResourceFragment , OPEN_CommunityFragment , OPEN_ProfileFragment ]
@@ -124,7 +142,8 @@ data CourseEnrolledActivity = CourseEnrolledActivity {courseDetails::String}
 data CourseEnrolledActivityAction = DummyCourseEnrolledActivityAction |
   BACK_CourseEnrolledActivity |
   OPEN_ModuleDetailsActivity {moduleName::String,moduleDetails::String} |
-  API_GetContentState {courseId::String,user_token::String,api_token::String}
+  API_GetContentState {courseId::String,user_token::String,api_token::String} |
+  API_FlagCourse {user_token::String,api_token::String,requestBody::String,identifier::String}
 
 instance courseEnrolledActivity :: UIScreen CourseEnrolledActivity CourseEnrolledActivityAction where
   generateMockEvents _ = [DummyCourseEnrolledActivityAction , BACK_CourseEnrolledActivity]
@@ -137,8 +156,7 @@ instance encodeCourseEnrolledActivityAction :: Encode CourseEnrolledActivityActi
 
 data ModuleDetailActivity = ModuleDetailActivity {moduleName::String,moduleDetails::String}
 data ModuleDetailActivityAction = DummyModuleDetailActivityAction |
- BACK_ModuleDetailActivity |
- OPEN_AlternateModuleDetailActivity {moduleName::String,moduleDetails::String}
+ BACK_ModuleDetailActivity
 
 instance moduleDetailActivity :: UIScreen ModuleDetailActivity ModuleDetailActivityAction where
   generateMockEvents _ = [DummyModuleDetailActivityAction , BACK_ModuleDetailActivity ]
@@ -149,26 +167,9 @@ instance decodeModuleDetailActivityAction :: Decode ModuleDetailActivityAction w
 instance encodeModuleDetailActivityAction :: Encode ModuleDetailActivityAction where encode = defaultEncode
 
 
-data AlternateModuleDetailActivity = AlternateModuleDetailActivity {moduleName::String,moduleDetails::String}
-data AlternateModuleDetailActivityAction = DummyAlternateModuleDetailAction |
-  BACK_AlternateModuleDetailActivity |
-  OPEN_ModuleActivity {moduleName::String,moduleDetails::String}
-
-
-instance alternateModuleDetailActivity :: UIScreen AlternateModuleDetailActivity AlternateModuleDetailActivityAction where
-  generateMockEvents _ = [ DummyAlternateModuleDetailAction , BACK_AlternateModuleDetailActivity]
-  ui x = genericUI x (generateMockEvents x :: Array AlternateModuleDetailActivityAction)
-
-derive instance genericAlternateModuleDetailActivityAction  :: Generic AlternateModuleDetailActivityAction _
-instance decodeAlternateModuleDetailActivityAction :: Decode AlternateModuleDetailActivityAction where decode = defaultDecode
-instance encodeAlternateModuleDetailActivityAction :: Encode AlternateModuleDetailActivityAction where encode = defaultEncode
-
-
 data CommunityViewAllActivity = CommunityViewAllActivity
 data CommunityViewAllAction = DummyCommunityViewAllAction |
   BACK_CommunityViewAllActivity
-
-
 
 instance communityViewAllActivity :: UIScreen CommunityViewAllActivity CommunityViewAllAction where
   generateMockEvents _ = [DummyCommunityViewAllAction ,  BACK_CommunityViewAllActivity]
@@ -221,15 +222,9 @@ instance encodeResourceViewAllActivityAction :: Encode ResourceViewAllActivityAc
 
 
 data CourseViewAllActivity = CourseViewAllActivity {courseViewAllDetails::String}
-<<<<<<< Updated upstream
-data CourseViewAllActivityAction = DummyCourseViewAllActivityAction | 
-  BACK_CourseViewAllActivity | 
-  OPEN_EnrolledCourseFlowFromCourseViewAll {course::String} | OPEN_CourseInfoFlowFromCourseViewAll {course::String}
-=======
 data CourseViewAllActivityAction = DummyCourseViewAllActivityAction |
   BACK_CourseViewAllActivity |
-  OPEN_EnrolledCourseFlowFromCourseViewAll {course::String}
->>>>>>> Stashed changes
+  OPEN_EnrolledCourseFlowFromCourseViewAll {course::String} | OPEN_CourseInfoFlowFromCourseViewAll {course::String}
 
 instance courseViewAllActivity :: UIScreen CourseViewAllActivity CourseViewAllActivityAction where
   generateMockEvents _ = [DummyCourseViewAllActivityAction , BACK_CourseViewAllActivity]
@@ -257,6 +252,39 @@ derive instance genericSearchActivityAction  :: Generic SearchActivityAction _
 instance decodeSearchActivityAction :: Decode SearchActivityAction where decode = defaultDecode
 instance encodeSearchActivityAction :: Encode SearchActivityAction where encode = defaultEncode
 
+data CommProfSearchActivity = CommProfSearchActivity {filterDetails::String}
+data CommProfSearchActivityAction = DummyCommProfSearchActivity |
+  BACK_CommProfSearchActivity |
+  OPEN_FilterActivity2 {filterDetails::String} |
+  OPEN_ProfileActivity_SEARCH {profile::String}|
+  API_SearchProfile {user_token::String, api_token::String,filter_to_send::String} |
+  API_GetProfile {user_token::String, api_token::String} |
+  API_CreatedBy_Search {user_token::String, api_token::String, sendBack::String, filters::String }
+
+instance commProfSearchActivity :: UIScreen CommProfSearchActivity CommProfSearchActivityAction where
+  generateMockEvents _ = [DummyCommProfSearchActivity , BACK_CommProfSearchActivity ]
+  ui x = genericUI x (generateMockEvents x :: Array CommProfSearchActivityAction)
+
+derive instance genericCommProfSearchActivityAction  :: Generic CommProfSearchActivityAction _
+instance decodeCommProfSearchActivityAction :: Decode CommProfSearchActivityAction where decode = defaultDecode
+instance encodeCommProfSearchActivityAction :: Encode CommProfSearchActivityAction where encode = defaultEncode
+
+data ProfileActivity = ProfileActivity {profile::String}
+data ProfileActivityAction = DummyProfileActivity |
+  BACK_ProfileActivity |
+	OPEN_CommProfSearchActivity_Prof {filterDetails :: String}|
+  OPEN_EnrolledCourseActivity_Prof {course::String} |
+  OPEN_CourseInfoActivity_Prof {course::String} |
+  OPEN_ResourceDetailActivity_Prof {resourceDetails::String}
+
+instance profileActivity :: UIScreen ProfileActivity ProfileActivityAction where
+  generateMockEvents _ = [DummyProfileActivity , BACK_ProfileActivity ]
+  ui x = genericUI x (generateMockEvents x :: Array ProfileActivityAction)
+
+derive instance genericProfileActivityAction  :: Generic ProfileActivityAction _
+instance decodeProfileActivityAction :: Decode ProfileActivityAction where decode = defaultDecode
+instance encodeProfileActivityAction :: Encode ProfileActivityAction where encode = defaultEncode
+
 data FilterActivity = FilterActivity {filterDetails::String}
 data FilterActivityAction = DummyFilterActivity |
   BACK_FilterActivity |
@@ -273,7 +301,7 @@ instance encodeFilterActivityAction :: Encode FilterActivityAction where encode 
 
 data AdditionalInformationActivity = AdditionalInformationActivity
 data AdditionalInformationActivityAction = DummyAdditionalInformationActivity |
-  BACK_AdditionalInformationActivity 
+  BACK_AdditionalInformationActivity
 
 instance addtionalInsormationActivity :: UIScreen AdditionalInformationActivity AdditionalInformationActivityAction where
   generateMockEvents _ = [ DummyAdditionalInformationActivity , BACK_AdditionalInformationActivity]

@@ -23,12 +23,14 @@ var ProfileProgress = require('../../components/Sunbird/ProfileProgress');
 var ProfileAdditionalInfo = require('../../components/Sunbird/ProfileAdditionalInfo');
 var ProfilAffiliations = require('../../components/Sunbird/ProfileAffiliations');
 var CropParagraph = require('../../components/Sunbird/CropParagraph');
+var utils = require('../../utils/GenericFunctions');
+
 
 var _this;
 class ProfileFragment extends View {
   constructor(props, children) {
     super(props, children);
-
+    console.log(props, "this.props");
 
     this.props.appendText = this.props.appendText || "";
     this.setIds([
@@ -39,121 +41,58 @@ class ProfileFragment extends View {
     this.isEditable = this.props.editable;
     this.menuData = {
       url: [
+        { imageUrl: "ic_action_search" },
+        { imageUrl: "ic_action_notification"},
         { imageUrl: "ic_action_overflow" }
       ]
     }
     this.popupMenu="Logout";
-
-    this.jobProfile = [
-      {
-        "jobName": "jobName",
-        "orgName": "AP ORG",
-        "role": "teacher",
-        "updatedBy": null,
-        "address": {
-          "country": "India",
-          "updatedBy": null,
-          "city": "Bangalore1",
-          "updatedDate": null,
-          "userId": "7d086e8c-68ac-4aaa-8b91-d75ff922bae5",
-          "zipcode": "560135",
-          "addType": "permanent1",
-          "createdDate": "2017-07-07 07:18:38:611+0530",
-          "createdBy": "7d086e8c-68ac-4aaa-8b91-d75ff922bae5",
-          "addressLine1": "2121 winding hill dr",
-          "addressLine2": "Frazer town1",
-          "id": "0122833794922004481",
-          "state": "Karnataka1"
-        },
-        "endDate": "1992-10-12",
-        "isVerified": null,
-        "subject": [
-          "Physics",
-          "Chemistry"
-        ],
-        "joiningDate": "1998-10-12",
-        "updatedDate": null,
-        "verifiedBy": null,
-        "userId": "7d086e8c-68ac-4aaa-8b91-d75ff922bae5",
-        "boardName": null,
-        "orgId": "123",
-        "addressId": "0122833753304186887",
-        "createdDate": "2017-07-07 07:18:38:695+0530",
-        "createdBy": "7d086e8c-68ac-4aaa-8b91-d75ff922bae5",
-        "verifiedDate": null,
-        "isRejected": null,
-        "id": "0122833760735477766"
-      },
-      {
-        "jobName": "jobName1",
-        "orgName": "AP ORG1",
-        "role": "teacher1",
-        "address": {
-          "country": "India",
-          "updatedBy": null,
-          "city": "Bangalore11",
-          "zipcode": "560135",
-          "addType": "permanent1",
-          "addressLine1": "2121 winding hill dr1",
-          "addressLine2": "Frazer town1",
-          "state": "Karnataka1"
-        },
-        "endDate": "1994-10-12",
-        "isVerified": null,
-        "subject": [
-          "Physics",
-          "Chemistry"
-        ],
-        "joiningDate": "1992-10-12",
-        "updatedDate": null,
-        "verifiedBy": null,
-        "boardName": "AP BOARD12",
-        "orgId": "123",
-        "verifiedDate": null,
-        "isRejected": null
-      }
-    ];
 
     this.handleResponse();
   }
 
 
   logout = () =>{
-    JBridge.showSnackBar(window.__S.LOGGED_OUT)
-    JBridge.setInSharedPrefs("logged_in","NO");
-    JBridge.setInSharedPrefs("user_id", "__failed");
-    JBridge.setInSharedPrefs("user_name",  "__failed");
-    JBridge.setInSharedPrefs("user_token",  "__failed");
-
-
-    window.__pressedLoggedOut=true;
-
-    JBridge.keyCloakLogout(window.__loginUrl + "/auth/realms/sunbird/protocol/openid-connect/logout");
-
     window.__Logout();
   }
 
   handleResponse = () => {
-
-
-
+    console.log("this.props.response", this.props.response);
     if (this.props.response) {
-
-      this.details = this.props.response.result.response;
+      if (!this.props.response.sendBack){
+        var whatToSend = {
+          user_token: window.__userToken,
+          api_token: window.__apiToken,
+          sendBack : JSON.stringify(this.props.response),
+          filters: JSON.stringify({"filters" : {
+                     "createdBy": this.props.response.result.response.userId,
+                     "status": ["Live"],
+                     "contentType": ["Collection", "Story", "Worksheet", "TextBook", "Course", "LessonPlan"]
+                 }
+               })
+         }
+        var event = { tag: "API_CreatedBy", contents: whatToSend}
+        window.__runDuiCallback(event);
+      }
+      var profileData = JSON.parse(this.props.response.sendBack)
+      this.details = profileData.result.response;
       this.description = this.details.profileSummary ? this.details.profileSummary : ""
+      this.createdBy = this.props.response.result;
+      this.jobProfile = this.details.jobProfile;
+      this.education = this.details.education;
+      console.log("this.createdBy", this.createdBy);
     } else {
-
       this.details = {};
+      this.description = "";
+      this.createdBy = {};
     }
   }
-
-  handleSearch = (data) => {}
 
   getLineSeperator() {
     return (<LinearLayout
             width="match_parent"
             height="1"
-            margin="0,24,0,0"
+            margin="0,0,0,15"
             background={window.__Colors.PRIMARY_BLACK_22}/>)
   }
 
@@ -175,17 +114,86 @@ class ProfileFragment extends View {
   }
 
   getDescription = () => {
-    return(
-      <LinearLayout
-        orientation = "vertical"
-        height = "wrap_content"
-        width = "match_parent">
-        <TextView
-          text = "Description"
-          style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
+    console.log("this.details", this.details.profileSummary);
+    if(this.details.profileSummary){
+      console.log("inside getDescription");
+      return(
+        <LinearLayout
+          orientation = "vertical"
+          height = "wrap_content"
+          width = "match_parent">
 
-      </LinearLayout>
-    )
+          {this.getLineSeperator()}
+          {
+          // <TextView
+          //   text = "Description"
+          //   style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
+          }
+            <CropParagraph
+              height = "wrap_content"
+              margin = "0,0,0,12"
+              width = "match_parent"
+              headText = { window.__S.DESCRIPTION }
+              contentText = { this.details.profileSummary }/>
+
+        </LinearLayout>
+      )
+    } else {
+      return (
+        <LinearLayout
+          orientation = "vertical"
+          height = "wrap_content"
+          width = "match_parent">
+        </LinearLayout>
+      )
+    }
+
+  }
+
+  handleMenuClick = (url) => {
+    if (url == "ic_action_notification") {
+      JBridge.showSnackBar(window.__S.COMMING_SOON);
+    } else if (url == "ic_action_search") {
+      var searchDetails = { filterDetails: "", searchType: "Profile" }
+      var whatToSend = { filterDetails: JSON.stringify(searchDetails) }
+      var event = { tag: "OPEN_CommProfSearchActivity", contents: whatToSend}
+      window.__runDuiCallback(event);
+    }
+  }
+
+  handleCreatedCardClick = (item) => {
+    var itemDetails = JSON.stringify(item);
+    if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook" || utils.checkEnrolledCourse(item.identifier)){
+      if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
+        var whatToSend={course:itemDetails};
+        var event={tag:"OPEN_EnrolledCourseActivity",contents:whatToSend}
+        window.__runDuiCallback(event);
+      }else{
+        this.setPermissions();
+      }
+    }else if(item.contentType.toLowerCase() == "course"){
+      if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
+        var whatToSend={course:itemDetails};
+        var event={tag:"OPEN_CourseInfoActivity",contents:whatToSend}
+        window.__runDuiCallback(event);
+      }else{
+        this.setPermissions();
+      }
+    } else {
+      var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");
+      var resDetails = {};
+      resDetails['imageUrl'] = item.appIcon;
+      resDetails['title'] = item.name;
+      resDetails['description'] = item.description;
+      resDetails['headFooterTitle'] = headFooterTitle;
+      resDetails['identifier'] = item.identifier;
+      resDetails['screenshots'] = item.screenshots || [] ;
+      resDetails['content'] = item;
+
+      var whatToSend = {resourceDetails:JSON.stringify(resDetails)}
+      var event= {tag:"OPEN_ResourceDetailActivity",contents:whatToSend}
+      window.__runDuiCallback(event);
+    }
   }
 
   render() {
@@ -209,6 +217,7 @@ class ProfileFragment extends View {
             menuData={this.menuData}
             popupMenu={this.popupMenu}
             overFlowCallback = {this.overFlowCallback}
+            onMenuItemClick={this.handleMenuClick}
             showMenu="true"
             hideBack="true"
             invert="true"/>
@@ -229,24 +238,22 @@ class ProfileFragment extends View {
                 <ProfileHeader
                   data={this.details}/>
 
-                <LinearLayout
-                  width = "match_parent"
-                  height = "wrap_content"
-                  orientation = "vertical"
-                  visibility = {(this.description && this.description != "") ? "visible" : "gone"}>
-
-                  {this.getLineSeperator()}
-                  <CropParagraph
-                    headText = "Description"
-                    contentText = {(this.description && this.description != "") ? this.description : ""}/>
-                </LinearLayout>
+                {this.getDescription()}
 
                 <ProfileExperiences
                   editable = {this.isEditable}
-                  data = {this.jobProfile}/>
+                  data = {this.education}
+                  heading = "Education"/>
 
-                <ProfileBadges
-                  editable = {this.isEditable}/>
+                <ProfileExperiences
+                  editable = {this.isEditable}
+                  data = {this.jobProfile}
+                  heading = "Experiences"/>
+
+                <ProfileCreations
+                  data = {this.createdBy}
+                  editable = {this.editable}
+                  onCardClick = {this.handleCreatedCardClick}/>
 
                 <ProfileAdditionalInfo
                   data={this.details}

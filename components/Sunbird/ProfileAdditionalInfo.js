@@ -14,18 +14,19 @@ class ProfileAdditionalInfo extends View {
     super(props, children);
 
     this.setIds([
-
+      "holder"
     ]);
     _this = this;
 
     this.data = this.props.data;
+    console.log("this.data", this.data);
+
     this.languages = "";
     this.data.language.map((item, i) => {
       var append = ",";
       if (i == this.data.language.length - 1) append = "";
       this.languages += item + append;
     })
-    this.address = (this.data.address.length > 0) ? this.data.address : ""
     this.info = [{
       name: "LANGUAGES",
       value : this.languages
@@ -37,30 +38,33 @@ class ProfileAdditionalInfo extends View {
     {
       name: "PHONE",
       value : this.data.phone
-    },
-    {
-      name: "CURRENT LOCATION",
-      value : this.address
     }]
 
-  //   this.data = [{
-  //     name: "LANGUAGES",
-  //     date: "English, Hindi, Marathi"
-  //   },
-  //   {
-  //     name: "E-MAIL",
-  //     date: "harish.bookwala@gmail.com"
-  //   },
-  //   {
-  //     name: "PHONE",
-  //     date: "+91 80808 88888"
-  //   },
-  //   {
-  //     name: "CURRENT LOCATION",
-  //     date: "Pune, Maharashtra"
-  //   }
-  // ]
-  this.hobbies = "Books, cycling, music, sports, browsing, teaching"
+    this.getAddress(this.data.address);
+
+    this.hobbies = "Books, cycling, music, sports, browsing, teaching"
+
+    this.visibility = "gone"
+    if (this.data.languages != "" && this.data.email && this.data.phone){
+      this.visibility = "visible";
+    }
+  }
+
+  getAddress = (address) => {
+    address.map((item, i) => {
+      // if(item.addType == "permanent"){
+      //   this.info.push({
+      //     name: "PERMANENT ADDRESS",
+      //     value :item.city + ", " + item.country
+      //   })
+      // } else
+      if (item.addType == "current" && item.country){
+        this.info.push({
+          name: "CURRENT LOCATION",
+          value :item.city + ", " + item.country
+        })
+      }
+    })
   }
 
   getRows = (input)=> {
@@ -101,7 +105,6 @@ class ProfileAdditionalInfo extends View {
             orientation="vertical">
 
             {this.getRows()}
-            {this.getHobbies()}
 
             </LinearLayout>)
   }
@@ -109,14 +112,13 @@ class ProfileAdditionalInfo extends View {
   getHeader = () =>{
     return (<LinearLayout
               width="wrap_content"
-              height="wrap_content"
-              >
+              height="wrap_content">
 
               <TextView
-              width="wrap_content"
-              height="wrap_content"
-              text="Additional Information"
-              style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
+                width="wrap_content"
+                height="wrap_content"
+                text="Personal Details"
+                style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
               <ViewWidget
               height="0"
@@ -137,7 +139,7 @@ class ProfileAdditionalInfo extends View {
     return (<LinearLayout
             width="match_parent"
             height="1"
-            margin="0,0,0,24"
+            margin="0,0,0,15"
             background={window.__Colors.PRIMARY_BLACK_22}/>)
   }
 
@@ -173,13 +175,17 @@ class ProfileAdditionalInfo extends View {
     )
   }
 
+
   render() {
     this.layout = (
       <LinearLayout
-                width="wrap_content"
+                width="match_parent"
                 height="wrap_content"
-                margin="0,16,0,0"
-                orientation="vertical">
+                margin="0,15,0,60"
+                orientation="vertical"
+                id = {this.idSet.holder}
+                gravity = "center"
+                visibility = {this.visibility}>
 
                 {this.getLineSeperator()}
 

@@ -156,6 +156,7 @@ class CourseInProgressContainer extends View {
             <TextView
               width="wrap_content"
               height="wrap_content"
+              padding = "8,8,8,8"
               text={window.__S.VIEW_ALL}
               id={this.idSet.viewAllContainer}
               onClick={this.handleViewAllClick}
@@ -180,7 +181,7 @@ class CourseInProgressContainer extends View {
       }
       if(data == "DeniedPermanently"){
         console.log("DENIED DeniedPermanently");
-        window.__PermissionDeniedDialog.show("ic_flag_warning","Cannot download content since permission is denied");
+        window.__PermissionDeniedDialog.show("ic_flag_warning","Storage permission is required for this functionality");
       }
 
     });
@@ -196,7 +197,8 @@ class CourseInProgressContainer extends View {
 
       var courseListDetails = {
                                "title" : this.props.title || window.__S.COURSES_IN_PROGRESS,
-                               "courseListDetails" : this.data
+                               "courseListDetails" : this.data,
+                               "viewMore" : this.props.showViewMore
                               }
                               
       var whatToSend = {"courseListDetails": JSON.stringify(courseListDetails)}

@@ -92,10 +92,25 @@ class FilterItem extends View {
 
   }
 
+  getPrettifiedLabel = () =>{
+    var unformatted = this.filterLable.charAt(0).toUpperCase() + this.filterLable.substring(1,this.filterLable.length);
+
+    var formatted = [];
+    for(var i= 0;i<unformatted.length;i++){
+        if(unformatted[i] == unformatted[i].toUpperCase()){
+          formatted.push(" "+unformatted[i]);  
+        }else{
+          formatted.push(unformatted[i]);    
+        }
+        
+      }
+      return formatted.join("");
+    }
+
   render() {
 
-      var label = this.filterLable.charAt(0).toUpperCase() + this.filterLable.substring(1,this.filterLable.length);
-
+      
+      var label = this.getPrettifiedLabel();
 
     this.layout = (
 

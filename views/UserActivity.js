@@ -57,7 +57,14 @@ class UserActivity extends View {
 
     window.__loginCallback=this.getLoginCallback;
 
+    
+    if(JBridge.getFromSharedPrefs("whereFromInUserActivity") != "Deeplink"){
+      JBridge.setInSharedPrefs("whereFromInUserActivity", this.state.data.value0.whereFrom);
+    }
+
+
     window.__onContentImportResponse = this.getImportStatus;
+    window.__LoaderDialog.hide();
   }
 
   getImportStatus = (response) => {
@@ -86,54 +93,108 @@ class UserActivity extends View {
     var callback = callbackMapper.map(function(data) {
         var item = JSON.parse(data[0]);
         console.log("Callback data in userActivity",item);
+        var deeplinkMode = JBridge.getFromSharedPrefs("deeplinkMode");
 
         if(item.contentType.toLowerCase() == "course"){
 
-          console.log("Content type is course",item.contentData);
+              console.log("Content type is course",item.contentData);
 
-          var whatToSend={course:JSON.stringify(item.contentData)};
-          var event={tag:"OPEN_DeepLink_CourseInfo",contents:whatToSend}
-          window.__runDuiCallback(event);
+              console.log("DEEPLINK MODE COURSE",deeplinkMode);
+
+              if(deeplinkMode=="preview"){
+
+
+                var whatToSend={details:JSON.stringify(item)};
+                var event={tag:"OPEN_DeepLink_ContentPreview",contents:whatToSend}
+                window.__runDuiCallback(event);
+
+              }else if(deeplinkMode=="actual"){
+
+                _this.clearDeeplinkPreferences();
+
+                var whatToSend={course:JSON.stringify(item.contentData)};
+                var event={tag:"OPEN_DeepLink_CourseInfo",contents:whatToSend}
+                window.__runDuiCallback(event);
+              }
+              
         }
         else if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook"){
+              
+              if(deeplinkMode=="preview"){
+                var whatToSend={details:JSON.stringify(item)};
+                var event={tag:"OPEN_DeepLink_ContentPreview",contents:whatToSend}
+                window.__runDuiCallback(event);
 
-          var itemDetails = JSON.stringify(item.contentData);
-          _this.deepLinkCollectionDetails = itemDetails;
+              }else if(deeplinkMode=="actual"){
 
-          console.log("Content type is collecion or TextBook",_this.deepLinkCollectionDetails);
+                console.log("ACTUAL MODE RESOURCE")
 
-          var whatToSend={course:_this.deepLinkCollectionDetails};
-          var event={tag:"OPEN_Deeplink_CourseEnrolled",contents:whatToSend}
-          window.__runDuiCallback(event);
+                _this.clearDeeplinkPreferences();
+                
+                var itemDetails = JSON.stringify(item.contentData);
+                _this.deepLinkCollectionDetails = itemDetails;
 
-          // var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken} 
-          // var event ={ "tag": "API_EnrolledCourses", contents: whatToSend};
-          // window.__runDuiCallback(event);
+                console.log("Content type is collecion or TextBook",_this.deepLinkCollectionDetails);
+
+                var whatToSend={course:_this.deepLinkCollectionDetails};
+                var event={tag:"OPEN_Deeplink_CourseEnrolled",contents:whatToSend}
+                window.__runDuiCallback(event);
+
+              // var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken} 
+              // var event ={ "tag": "API_EnrolledCourses", contents: whatToSend};
+              // window.__runDuiCallback(event);
+            }
 
         }
-        else
-        {
-        var resDetails ={};
-        var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");
+        else{
 
-        resDetails['imageUrl'] = item.hasOwnProperty("contentData") ?"file://"+item.basePath+"/"+item.contentData.appIcon : item.appIcon;
-        resDetails['title'] = item.name;
-        resDetails['description'] = item.description;
-        resDetails['headFooterTitle'] = headFooterTitle;
-        resDetails['identifier'] = item.identifier;
-        resDetails['content'] = item;
+              console.log("DEEPLINK MODE RESOURCE",deeplinkMode);
 
-        console.log("resourceDetails IN UserActivity",resDetails);
+              if(deeplinkMode=="preview"){
 
-        var whatToSend = {resource:JSON.stringify(resDetails)}
-        var event = {tag:"OPEN_Deeplink_ResourceDetail",contents:whatToSend}
-        window.__runDuiCallback(event); 
+                console.log("PREVIEW MODE RESOURCE")
+
+                var whatToSend={details:JSON.stringify(item)};
+                var event={tag:"OPEN_DeepLink_ContentPreview",contents:whatToSend}
+                window.__runDuiCallback(event);
+
+              }else if(deeplinkMode=="actual"){
+
+
+                _this.clearDeeplinkPreferences();
+
+                console.log("ACTUAL MODE RESOURCE")
+
+                var resDetails ={};
+                var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");
+
+                resDetails['imageUrl'] = item.hasOwnProperty("contentData") ?"file://"+item.basePath+"/"+item.contentData.appIcon : item.appIcon;
+                resDetails['title'] = item.name;
+                resDetails['description'] = item.description;
+                resDetails['headFooterTitle'] = headFooterTitle;
+                resDetails['identifier'] = item.identifier;
+                resDetails['content'] = item;
+
+                console.log("resourceDetails IN UserActivity",resDetails);
+
+                var whatToSend = {resource:JSON.stringify(resDetails)}
+                var event = {tag:"OPEN_Deeplink_ResourceDetail",contents:whatToSend}
+                window.__runDuiCallback(event); 
+
+                
+              }
+   
         }
 
 
     });
 
-    JBridge.getContentDetails(identifier,callback)
+    if(identifier!=""){
+      JBridge.getContentDetails(identifier,callback)
+    }else{
+      JBridge.showToast("Can't open empty content","short");
+      this.performLogin();
+    }
   }
 
   onPop = () => {
@@ -172,6 +233,9 @@ class UserActivity extends View {
     JBridge.setProfile(this.userToken);
     this.setDataInStorage();
 
+    // this.setLoginPreferences();
+
+
     this.performLogin();
     }catch(e){
      //console.log(e.message)
@@ -194,11 +258,7 @@ class UserActivity extends View {
   }
 
 
-  setLoginPreferences = () =>{
-    JBridge.setInSharedPrefs("logged_in","YES");
-    window.__userToken=JBridge.getFromSharedPrefs("user_token");
-    JBridge.setProfile(window.__userToken);
-  }
+  
 
 
 
@@ -219,6 +279,7 @@ class UserActivity extends View {
 
   handleStateChange = (state) => {
     window.__LoaderDialog.hide();
+    console.log(state)
     var status = state.response.status[0];
     var response = JSON.parse(utils.decodeBase64(state.response.status[1]));
     var responseCode = state.response.status[2];
@@ -233,7 +294,7 @@ class UserActivity extends View {
         }
 
       });
-      JBridge.getApiToken();
+      JBridge.getApiToken(callback);
       return;
         }
 
@@ -263,14 +324,17 @@ class UserActivity extends View {
     switch (state.responseFor + "") {
       case "API_SignUp":
         if (result.response == "SUCCESS") {
+          console.log(window.__S.WELCOME_ON_BOARD.format(this.userName))
           JBridge.showSnackBar(window.__S.WELCOME_ON_BOARD.format(this.userName))
-          JBridge.setInSharedPrefs("user_name", this.userFirstName);
+          JBridge.setInSharedPrefs("user_name", this.firstName);
           JBridge.setInSharedPrefs("user_token", result.userId);
           window.__pressedLoggedOut=true;
           this.userToken=result.userId;
           this.setDataInStorage();
           JBridge.setProfile(this.userToken);
           this.performLogin()
+
+
 
         } else {
           JBridge.showSnackBar(window.__S.RETRY_ACTION)
@@ -330,21 +394,6 @@ class UserActivity extends View {
   }
 
   toggleSignUpForm = () => {
-
-    JBridge.showSnackBar("Logged out")
-    JBridge.setInSharedPrefs("logged_in","NO");
-    JBridge.setInSharedPrefs("user_id", "__failed");
-    JBridge.setInSharedPrefs("user_name",  "__failed");
-    JBridge.setInSharedPrefs("user_token",  "__failed");
-
-    console.log("IN P1 ",window.__pressedLoggedOut)
-    window.__pressedLoggedOut=true;
-    console.log("IN P2 ",window.__pressedLoggedOut)
-    JBridge.keyCloakLogout(window.__apiUrl + "/auth/realms/sunbird/protocol/openid-connect/logout");
-    
-    window.__Logout();
-
-    return
     this.isLoginMode = !this.isLoginMode;
     var visibilityVal= this.isLoginMode?"gone":"visible"
     var oppVisibilityValue = !this.isLoginMode?"gone":"visible"
@@ -743,49 +792,104 @@ class UserActivity extends View {
   }
 
 
+  setLoginPreferences = () =>{
+    JBridge.setInSharedPrefs("logged_in","YES");
+    window.__userToken=JBridge.getFromSharedPrefs("user_token");
+    JBridge.setProfile(window.__userToken);
+  }
+
+  clearDeeplinkPreferences = () =>{
+    JBridge.setInSharedPrefs("intentLinkPath", "__failed");
+    JBridge.setInSharedPrefs("intentFilePath", "__failed");
+    JBridge.setInSharedPrefs("deeplinkMode","__failed");
+    JBridge.setInSharedPrefs("whereFromInUserActivity","__failed");
+  }
+
+  performDeeplinkAction = () =>{
+    if("__failed" != JBridge.getFromSharedPrefs("intentFilePath")){
+
+                console.log("INSIDE FILE PATH INTENT");
+             
+                var filePath = JBridge.getFromSharedPrefs("intentFilePath");
+                JBridge.importEcar(filePath);
+
+
+    }else if("__failed" != JBridge.getFromSharedPrefs("intentLinkPath")){
+
+                console.log("INSIDE LINK INTENT");
+
+                var output = JBridge.getFromSharedPrefs("intentLinkPath");
+
+                var identifier = output.substr(output.indexOf('do'),output.length);
+                _this.handleDeepLinkAction(identifier);
+
+    }
+  }
+
+
+
+
   afterRender = () =>{
 
-    if(("YES"==JBridge.getFromSharedPrefs("logged_in"))){
+    console.log("AFTER RENDER IN USER ACTIVITY");
 
-      if("__failed" != JBridge.getFromSharedPrefs("intentFilePath")){
+    var whereFrom = JBridge.getFromSharedPrefs("whereFromInUserActivity");
+    console.log("WHERE FROM IN AFTER RENDER",whereFrom)
 
-          console.log("INSIDE FILE PATH INTENT");
-       
-          var filePath = JBridge.getFromSharedPrefs("intentFilePath");
-          JBridge.importEcar(filePath);
-
-          JBridge.setInSharedPrefs("intentFilePath", "__failed");
-
-          _this.setLoginPreferences();
+    console.log("SHARED PREFERENCES FOR link",JBridge.getFromSharedPrefs("intentLinkPath"));
+    console.log("SHARED PREFERENCES FOR file",JBridge.getFromSharedPrefs("intentFilePath"));
 
 
+//from link
+      if(("__failed" != JBridge.getFromSharedPrefs("intentFilePath"))||("__failed" != JBridge.getFromSharedPrefs("intentLinkPath"))){
+        
+        console.log("SHARED PREFERENCES ARE THERE STILL");
+        if(whereFrom == "SplashScreenActivity"){
 
-      }else if("__failed" != JBridge.getFromSharedPrefs("intentLinkPath")){
+          console.log("FROM SPLASH SCREEN ACTIVITY");
 
-          console.log("INSIDE LINK INTENT");
+          if(("YES"==JBridge.getFromSharedPrefs("logged_in"))){
 
-          var output = JBridge.getFromSharedPrefs("intentLinkPath");
+            console.log("LOGGED IN");
 
-          console.log("Intent from link",output)
-          JBridge.setInSharedPrefs("intentLinkPath", "__failed");
+            this.performDeeplinkAction();
+            this.setLoginPreferences();
+            JBridge.setInSharedPrefs("deeplinkMode", "actual");
+
+          }else{
+
+            console.log("NOT LOGGED IN")
+            JBridge.setInSharedPrefs("deeplinkMode", "preview");
+            this.performDeeplinkAction();
+          }
+
+        }else if(whereFrom == "Deeplink") {
+
+          console.log("FROM DEEPLINK ");
           
-          var identifier = output.substr(output.indexOf('do'),output.length);
-          _this.setLoginPreferences();
-          _this.handleDeepLinkAction(identifier);
+          if(("YES"==JBridge.getFromSharedPrefs("logged_in"))){
+            console.log("LOGGED IN AND FROM DEEPLINK","ACTUAL");
 
+            JBridge.setInSharedPrefs("deeplinkMode", "actual");
+            this.performDeeplinkAction();
+            this.setLoginPreferences();
+          }else{
+
+            console.log("NOT LOGGED IN");
+            this.replaceChild(this.idSet.parentContainer,this.getBody().render(),0);
+          }
+        }
+
+  //from app
+      }else{
+
+          if(("YES"==JBridge.getFromSharedPrefs("logged_in"))){
+              this.performLogin();
+          }else{
+              this.replaceChild(this.idSet.parentContainer,this.getBody().render(),0);
+          } 
 
       }
-      else {
-          console.log("ALREADY LOGGED IN");
-          this.performLogin();
-      }
-
-
-    }else{
-      console.log("NOT LOGGED IN");
-      this.replaceChild(this.idSet.parentContainer,this.getBody().render(),0);
-    }
-
   }
 
   render() {
@@ -801,8 +905,7 @@ class UserActivity extends View {
             width="match_parent"
             gravity="center"
             orientation="vertical">
-
-               <ImageView
+              <ImageView
                 height="250"
                 width="250"
                 layout_gravity="center"
