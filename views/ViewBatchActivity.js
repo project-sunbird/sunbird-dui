@@ -151,7 +151,27 @@ class ViewBatchActivity extends View {
         case "API_EnrollInBatch":
           window.__LoaderDialog.hide();
           if (result.response == "SUCCESS") {
-            window.__enrolledCourses.push(this.extras)
+            var enrolledCourse = {
+              "dateTime": "2017-08-22 13:25:36.034",
+              "identifier": this.courseDetails.courseId,
+              "enrolledDate": utils.formatDate(new Date()),
+              "addedBy": "",
+              "delta": "delta",
+              "contentId": this.courseDetails.courseId,
+              "description": "dsds",
+              "active": true,
+              "courseLogoUrl": null,
+              "batchId": this.courseDetails.batchId,
+              "userId": "88e0b93a-cb06-47dc-95db-411fc2612735",
+              "courseName": "Invite One JP",
+              "leafNodesCount": 4,
+              "progress": 0,
+              "id": "c59575f7eaabf47e2a6a65b5666fdb5b6c04ab50121bb267142dad5996551908",
+              "courseId": this.courseDetails.courseId,
+              "status": 0
+            }
+            window.__enrolledCourses.push(enrolledCourse);
+            console.log("extras",this.extras)
             JBridge.showSnackBar(window.__S.COURSE_ENROLLED)
             var whatToSend = { "course": JSON.stringify(this.extras)}
             var event = { tag: 'OPEN_EnrolledActivity_BATCH', contents: whatToSend }
