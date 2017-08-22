@@ -156,6 +156,8 @@ const stringsRes = {
 		ENROLL : "ENROLL",
 		VIEW_ONGOING_BATCHES : "View ongoing batches",
 		VIEW_UPCOMING_BATCHES : "View upcoming batches",
+		BATCHES_FOR_THIS_COURSE : "Batches for this course",
+		SHOW_BATCHES : "SHOW BATCHES",
 	},
 	"hi_IN" : {
 	},
