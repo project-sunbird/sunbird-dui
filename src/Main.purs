@@ -97,9 +97,7 @@ viewBatchActivity input whereFrom whatToSendBack = do
 			responseData <- enrollInBatch details x token
 			_ <- sendUpdatedState {response : responseData, responseFor : "API_EnrollInBatch", screen:"asas"}
 			pure $ "apiDefault"
-		BACK_ViewBatchActivity -> case whereFrom of
-			"CourseInfoActivity" -> courseInfoActivity whatToSendBack "Terminate" input
-			_ ->  mainActivity "{}" "UserActivity" "{}"
+		BACK_ViewBatchActivity -> courseInfoActivity whatToSendBack "Deeplink" input
 		_ -> viewBatchActivity input whereFrom whatToSendBack
 
 resourceDetailActivity input whereFrom whatToSendBack = do
