@@ -235,7 +235,7 @@ class ViewBatchActivity extends View {
               weight="1"
               padding="16,4,16,4"
               text={window.__S.VIEW_ONGOING_BATCH}
-              style={window.__TextStyle.textStyle.CARD.TITLE.DARK_14}/>
+              style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
               <LinearLayout
                 height="38"
