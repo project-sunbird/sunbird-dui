@@ -29,8 +29,7 @@ class TextInputView extends View {
   }
 
   afterRender = () =>{
-
-
+    JBridge.changeFontStylePassword(this.idSet.editText);
   }
 
 
