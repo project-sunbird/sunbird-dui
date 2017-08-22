@@ -170,6 +170,7 @@ class ModuleDetailActivity extends View {
     }
 
     reRender = (moduleName, module) => {
+      console.log("inside reRender, index : " + module.index);
       this.moduleName = moduleName;
       this.module = module;
        var layout = (
@@ -198,6 +199,7 @@ class ModuleDetailActivity extends View {
                 root = "true"
                 margin = "0,0,0,12"
                 brief = { true } title = ""
+                currIndex = {module.index}
                 onClick = { this.handleModuleClick }
                 content = { module.children }  />
             )
