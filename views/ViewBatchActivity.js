@@ -65,9 +65,9 @@ class ViewBatchActivity extends View {
     }
 
     toggleBatchTypeChooser = () => {
-      console.log("BEFORE :"this.showChooser);
+      console.log("BEFORE :",this.showChooser);
       this.showChooser = !this.showChooser;
-      console.log("AFTER :"this.showChooser);
+      console.log("AFTER :",this.showChooser);
       Android.runInUI(this.set({
         id : this.idSet.chooserPopup,
         visibility :this.showChooser?"visible":"gone"
@@ -214,6 +214,7 @@ class ViewBatchActivity extends View {
                   height="32"
                   width="32"
                   padding="8,8,8,8,8"
+                  allowMultipleClicks="true"
                   onClick={this.toggleBatchTypeChooser}
                   imageUrl="ic_action_arrow_down"/>
 
@@ -307,7 +308,7 @@ class ViewBatchActivity extends View {
             orientation="vertical">
 
             <TextView
-              height="500"
+              height="400"
               width="match_parent"
               gravity="center"
               text="No Batch Found"/>
