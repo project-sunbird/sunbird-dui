@@ -236,6 +236,48 @@ class EducationPopUp extends View {
 
   handleSaveClick = () => {
     console.log("Save Button Clicked");
+
+    this.education = [];
+    var json;
+
+    if (window.__EducationPopUp.data == undefined) {
+      json = {
+        "degree": this.degree,
+        "yearOfPassing": parseInt(this.yearOfPassing),
+        "name": this.inititution,
+        "percentage": parseFloat(this.percentage),
+        "grade": this.grade,
+        "boardOrUniversity" : this.boardOrUniversity
+      }
+    } else {
+      json = window.__EducationPopUp.data;
+      json.degree = this.degree;
+      json.yearOfPassing = parseInt(this.yearOfPassing);
+      json.name = this.inititution;
+      json.percentage = parseFloat(this.percentage);
+      json.grade = this.grade;
+      json.boardOrUniversity = this.boardOrUniversity;
+    }
+
+    this.education.push(json);
+
+    var url = window.__apiUrl + "/api/user/v1/update";
+    var body = {
+      "id" : "unique API ID",
+      "ts" : "response timestamp YYYY-MM-DDThh:mm:ss+/-nn:nn (timezone defaulted to +5.30)",
+      "params" : {
+
+      },
+      "request" : {
+        "userId" : window.__userToken,
+        "education" : this.education
+      }
+    }
+
+    console.log("whole body", JSON.stringify(body));
+
+    JBridge.patchApi(url, JSON.stringify(body), window.__userToken, window.__apiToken);
+    this.hide();
   }
 
   getToolbar  = () =>{
@@ -344,6 +386,7 @@ class EducationPopUp extends View {
             <EditText
             width="match_parent"
             height="wrap_content"
+            inputType="numeric"
             onChange={this.setYearOfPassingText}
             id = {this.idSet.yearOfPassingText}
             style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
@@ -366,6 +409,7 @@ class EducationPopUp extends View {
             <EditText
             width="match_parent"
             height="wrap_content"
+            inputType="numeric"
             onChange={this.setPercentage}
             id = {this.idSet.percentageText}
             style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
