@@ -43,7 +43,7 @@ class ProfileExperiences extends View {
               height="wrap_content"
               text="Add"
               onClick = {window.__ExperiencePopUp.show}
-              visibility = {(this.isEditable == "true") ? "visible" : "gone"}
+              visibility = "gone"
               style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
 
               </LinearLayout>)
