@@ -34,7 +34,8 @@ class CourseInfoActivity extends View {
       "descriptionContainer",
       "downloadProgressText",
       "totalContainer",
-      "sharePopupContainer"
+      "sharePopupContainer",
+      "enrollButtonId"
     ]);
     this.state = state;
     this.screenName = "CourseInfoActivity"
@@ -55,6 +56,7 @@ class CourseInfoActivity extends View {
 
 
     this.details = JSON.parse(state.data.value0.courseDetails);
+    console.log("data in CIA",this.details);
 
     this.localContent = null;
     this.checkContentLocalStatus(this.details.identifier);
@@ -181,7 +183,7 @@ class CourseInfoActivity extends View {
 
 
   afterRender = () => {
-
+   
 
     if(window.__enrolledCourses == undefined){
       window.__LoaderDialog.show();
@@ -201,6 +203,15 @@ class CourseInfoActivity extends View {
 
         }
       })
+    }
+
+
+     if(this.details.isCreator){
+      console.log("from creation",this.details.isCreator)
+      Android.runInUI(this.set({
+        id : this.idSet.enrollButtonId,
+        visibility :"gone"
+      }),0);
     }
 
   }
@@ -465,12 +476,15 @@ class CourseInfoActivity extends View {
 
 
              </ScrollView>
-
-             <PageOption
-             width="match_parent"
-             buttonItems={buttonList}
-             onButtonClick={this.handleEnrollClick}/>
-
+                 <LinearLayout
+                 width="match_parent"
+                 height = "wrap_content"
+                  id = {this.idSet.enrollButtonId}>
+                       <PageOption
+                       width="match_parent"
+                       buttonItems={buttonList}
+                       onButtonClick={this.handleEnrollClick}/>
+                 </LinearLayout>
             </LinearLayout>
             </LinearLayout>);
 

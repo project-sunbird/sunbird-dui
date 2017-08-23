@@ -162,8 +162,9 @@ class ProfileFragment extends View {
   }
 
   handleCreatedCardClick = (item) => {
+    item.isCreator = true;
     var itemDetails = JSON.stringify(item);
-    if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook" || item.contentType.toLowerCase() == "course" || utils.checkEnrolledCourse(item.identifier)){
+    if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook" || utils.checkEnrolledCourse(item.identifier)){
       if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
         var whatToSend={course:itemDetails};
         var event={tag:"OPEN_EnrolledCourseActivity",contents:whatToSend}
@@ -171,7 +172,16 @@ class ProfileFragment extends View {
       }else{
         this.setPermissions();
       }
-    } else {
+    }else if(item.contentType.toLowerCase() == "course"){
+      if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
+        var whatToSend={course:itemDetails};
+        var event={tag:"OPEN_CourseInfoActivity",contents:whatToSend}
+        window.__runDuiCallback(event);
+      }else{
+        this.setPermissions();
+      }
+    }
+     else {
       var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");
       var resDetails = {};
       resDetails['imageUrl'] = item.appIcon;
