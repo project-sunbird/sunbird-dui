@@ -91,7 +91,7 @@ class RootScreen extends View {
         <LoaderDialog/>
         <PageFilterPopup/>
         <ContentLoaderDialog/>
-
+        <PermissionDeniedDialog/>
         <ExperiencePopUp/>
         <PreviewImagePopup
           defaultImage="https://pbs.twimg.com/media/CRafzhtWIAEQ2c9.png"/>

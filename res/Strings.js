@@ -13,7 +13,7 @@ const stringsRes = {
 		CHOOSE_TITLE : "Choose from the following",
 		COMING_SOON : "Coming soon..",
 		COMING_SOON : "More details coming soon ..",
-		COMMING_SOON : "Comming Soon",
+		COMMING_SOON : "Coming Soon",
 		COMMUNITIES : "Communities",
 		CONFIRM : "Confirm",
 		COURSE : "COURSE",
@@ -23,6 +23,8 @@ const stringsRes = {
 		ERROR_EMPTY_FIELDS : "Please enter the detials.",
 		COURSES_IN_PROGRESS : "Courses In Progress",
 		COURSES_LW : "Courses",
+		CONTENT_FLAGGED_MSG : "Content flagged successfully",
+		CONTENT_FLAG_FAIL : "Content flagging failed",
 		CREATED_BY : "CREATED BY",
 		DELETE : "Delete",
 		DESCRIPTION : "Description",
@@ -159,6 +161,7 @@ const stringsRes = {
 		VIEW_UPCOMING_BATCHES : "View upcoming batches",
 		BATCHES_FOR_THIS_COURSE : "Batches for this course",
 		SHOW_BATCHES : "SHOW BATCHES",
+		USER_NAME_PROFILE : "username"
 	},
 	"hi_IN" : {
 	},
