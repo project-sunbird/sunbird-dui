@@ -38,7 +38,8 @@ class CourseEnrolledActivity extends View {
       "sharePopupContainer",
       "contentLoaderContainer",
       "featureButton",
-      "simpleToolBarOverFlow"
+      "simpleToolBarOverFlow",
+      "batchDetailsContainer"
     ]);
     this.state = state;
     this.screenName = "CourseEnrolledActivity"
@@ -235,9 +236,56 @@ class CourseEnrolledActivity extends View {
     window.__runDuiCallback(event);
 
   }
+
+  getBatchDetailSection = (name,description) => {
+
+    return (<LinearLayout
+              width="match_parent"
+              height="wrap_content"
+              root="true"
+              padding="0,8,0,8"
+              orientation="vertical">
+
+              <TextView
+                width="match_parent"
+                height="wrap_content"
+                text={utils.firstLeterCapital(name)}
+                style={window.__TextStyle.textStyle.CARD.TITLE.DARK_14}/>
+
+              <TextView
+                width="match_parent"
+                height="wrap_content"
+                text={description}
+                style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULA_10}/>
+
+            </LinearLayout>)
+  }
+
   handleStateChange = (state) =>{
     var response = utils.decodeBase64(state.response.status[1])
     var responseCode = state.response.status[2]
+
+
+    if(responseCode == 501 || status === "failure" || status=="f") {
+      JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION)
+      responseData=tmp;
+    }else  if (response.params.err) {
+      JBridge.showSnackBar(window.__S.ERROR_SERVER_MESSAGE + response.params.errmsg)
+      return;
+    }
+
+    if (state.responseFor == "API_Get_Batch_Details") {
+      console.log(response);
+      var batch =response.result;
+      var description="";
+      description+= utils.prettifyDate(batch.startDate);
+      description+= " - ";
+      description+= utils.prettifyDate(batch.endDate);
+      var name = batch.name;
+      this.replaceChild(_this.idSet.batchDetailsContainer,_this.getBatchDetailSection(name,description).render(),0);
+      return;
+    }
+
     if(responseCode == 200){
         window.__LoaderDialog.hide();
         if(response[0] == "successful"){
@@ -251,6 +299,8 @@ class CourseEnrolledActivity extends View {
       _this.onBackPressed();
 
     }
+
+
   }
 
 
@@ -330,7 +380,17 @@ class CourseEnrolledActivity extends View {
                     buttonClick = {this.handleResumeClick}
                     />)
       this.replaceChild(this.idSet.featureButton,btn.render(),0)
-      // Android.runInUI(cmd, 0);
+        // Android.runInUI(cmd, 0);
+        if(this.enrolledCourses.hasOwnProperty("batchId")){
+          var whatToSend = {
+            "user_token" : window.__userToken,
+            "api_token" : window.__apiToken,
+            "batch_id" : this.enrolledCourses.hasOwnProperty("batchId")
+          }
+          var event= { "tag": "API_Get_Batch_Details", contents: whatToSend };
+          window.__runDuiCallback(event);
+        }
+
     }
 
 
@@ -506,12 +566,23 @@ class CourseEnrolledActivity extends View {
                         onResumeClick={this.handleCourseResume}
                         visibility = {this.showProgress}/>
 
+                      <LinearLayout
+                        id={this.idSet.batchDetailsContainer}
+                        height="match_parent"
+                        width="match_parent"
+                        orientation="vertical"/>
+
+
+
                        <TextView
                         width="wrap_content"
                         height="wrap_content"
                         margin="0,16,0,0"
                         style={window.__TextStyle.textStyle.CARD.TITLE.DARK}
                         text={window.__S.STRUCTURE}/>
+
+
+
                       <LinearLayout
                         id={this.idSet.descriptionContainer}
                         height="match_parent"
