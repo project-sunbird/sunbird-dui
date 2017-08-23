@@ -158,6 +158,7 @@ const stringsRes = {
 		VIEW_UPCOMING_BATCHES : "View upcoming batches",
 		BATCHES_FOR_THIS_COURSE : "Batches for this course",
 		SHOW_BATCHES : "SHOW BATCHES",
+		USER_NAME_PROFILE : "username"
 	},
 	"hi_IN" : {
 	},
