@@ -179,6 +179,8 @@ class ViewBatchActivity extends View {
               "courseId": this.courseDetails.courseId,
               "status": 0
             }
+            this.extras.batchId=this.courseDetails.batchId
+            
             window.__enrolledCourses.push(enrolledCourse);
             console.log("extras",this.extras)
             JBridge.showSnackBar(window.__S.COURSE_ENROLLED)
