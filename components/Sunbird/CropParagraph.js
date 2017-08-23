@@ -18,7 +18,8 @@ class CropParagraph extends View {
       "paraContainerCroped",
       "showMoreButton",
     ]);
-    this.str = this.props.contentText;
+    this.str = this.props.contentText!=undefined ? this.props.contentText : "";
+    console.log(this.props)
     // console.log("inside CropParagraph, content : " + this.str);
     this.len = 50;
     if(this.str.length > this.len) this.str = this.str.substring(0,this.len) + "...";
