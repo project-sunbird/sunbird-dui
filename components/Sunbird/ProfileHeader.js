@@ -21,17 +21,19 @@ class ProfileHeader extends View {
     this.firstName = this.props.data.firstName ? this.props.data.firstName : this.userName
     this.lastName = this.props.data.lastName ? " " + this.props.data.lastName : ""
     this.address = (this.props.data.address && this.props.data.address.length > 0) ? this.props.data.address : ""
-    
     // this.orgName=this.props.data.rootOrg.orgName?this.props.data.rootOrg.orgName:"";
     if(this.props.data.hasOwnProperty("rootOrg") && this.props.data.rootOrg.hasOwnProperty("orgName")){
       this.orgName = this.props.data.rootOrg.orgName
     }
     else
       this.orgName = "";
-    // if(this.props.rootOrg.hasOwnProperty("contactDetail") && this.props.rootOrg.contactDetail[0].hasOwnProperty("email"))
-    //   this.orgEmail=this.props.data.rootOrg.contactDetail[0].email?this.props.data.rootOrg.contactDetail[0].email:"";
-    // else
+    if(this.props.data.hasOwnProperty("rootOrg") && this.props.data.rootOrg.hasOwnProperty("contactDetail") && this.props.data.rootOrg.contactDetail.length>0)
+      {
+        this.orgEmail=this.props.data.rootOrg.contactDetail[0].email?this.props.data.rootOrg.contactDetail[0].email:"sunbird@test.com";
+      }
+    else{
       this.orgEmail = "sunbird@test.com"
+    }
   }
 
 
