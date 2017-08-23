@@ -449,31 +449,41 @@ getUi(){
     height="match_parent"
     width="match_parent"
     background="#ffffff">
-      <ScrollView
-      height="479"
-      width="match_parent">
-           {this.getScrollView()}
-      </ScrollView>
-
+     <LinearLayout
+     height="match_parent"
+     width="match_parent"
+     orientation="vertical">
+          <ScrollView
+          height="match_parent"
+          width="match_parent"
+          weight="1">
+               {this.getScrollView()}
+          </ScrollView>
+          <LinearLayout
+          height="match_parent"
+          width="match_parent"
+          weight="6"/>
+      </LinearLayout>
        <LinearLayout
          height="match_parent"
          width="match_parent"
          orientation="vertical" >
             <LinearLayout
-            height="479"
+            height="match_parent"
             width="match_parent"
+            weight="1"
             />
             {this.getLineSeperator()}
 
             <LinearLayout
+            weight="6"
              height="match_parent"
              width="match_parent"
-             padding="12,12,12,12"
+             padding="6,6,6,6"
              background="#ffffff"
              orientation="horizontal"
              id={this.idSet.saveButtonParent}>
                 <LinearLayout
-                cornerRadius="5,5,5,5"
                 height="match_parent"
                 width="match_parent"
                 onClick={ this.sendJSON }>
@@ -481,7 +491,8 @@ getUi(){
                     height="match_parent"
                     width="match_parent"
                     gravity="center"
-                    background={window.__Colors.FADE_BLUE}
+                    cornerRadius="5"
+                    background={window.__Colors.LIGHT_BLUE_22}
                     id={this.idSet.saveButton}>
                         <TextView
                         text="Save"
@@ -755,7 +766,6 @@ getUi(){
           orientation="horizontal"
           id={this.idSet.saveButtonParent}>
              <LinearLayout
-             cornerRadius="5,5,5,5"
              height="match_parent"
              width="match_parent"
              onClick={ this.sendJSON }
@@ -764,6 +774,7 @@ getUi(){
                  height="match_parent"
                  width="match_parent"
                  gravity="center"
+                 cornerRadius="5"
                  background={window.__Colors.LIGHT_BLUE}
                  id={this.idSet.saveButton}>
                      <TextView
@@ -791,7 +802,6 @@ getUi(){
          root ="true"
          id={this.idSet.saveButtonParent}>
             <LinearLayout
-            cornerRadius="5,5,5,5"
             height="match_parent"
             width="match_parent"
             onClick={ this.sendJSON }
@@ -800,6 +810,7 @@ getUi(){
                 height="match_parent"
                 width="match_parent"
                 gravity="center"
+                cornerRadius="5"
                 background={window.__Colors.LIGHT_BLUE_22}
                 id={this.idSet.saveButton}>
                     <TextView
