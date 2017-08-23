@@ -10,7 +10,7 @@ class ChapterOverView extends View {
   constructor(props, children) {
     super(props, children);
     this.displayName = "chapter_overview"
-
+    this.index = (this.props.currIndex == ""? "" : this.props.currIndex + ".") + (this.props.index + 1);
   }
 
   setDownloading = () => {
@@ -18,6 +18,7 @@ class ChapterOverView extends View {
   }
 
   handleClick = () => {
+    this.props.item.index = this.index;
     this.props._onClick(this.chapterName, this.props.item)
   }
 
@@ -32,9 +33,8 @@ class ChapterOverView extends View {
 
   render() {
 
-    this.chapterName =  this.props.index+1 + ". "+ this.props.item.contentData.name;
+    this.chapterName = this.index + " : " + this.props.item.contentData.name;
 
-    
 
     this.layout = (
 
@@ -72,6 +72,3 @@ class ChapterOverView extends View {
 }
 
 module.exports = ChapterOverView;
-
-
-
