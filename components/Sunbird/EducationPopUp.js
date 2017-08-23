@@ -499,48 +499,65 @@ class EducationPopUp extends View {
             <RelativeLayout
             height="match_parent"
             width="match_parent"
+            orientation="vertical"
             background="#ffffff">
-              <ScrollView
-              height="479"
-              width="match_parent">
-                   {this.getScrollView()}
-              </ScrollView>
               <LinearLayout
-                 height="match_parent"
-                 width="match_parent"
-                 orientation="vertical" >
-                  <LinearLayout
-                    height="479"
-                    width="match_parent" />
-                    {this.getLineSeperator()}
-
+                width="match_parent"
+                height="match_parent">
+                  <ScrollView
+                  height="match_parent"
+                  width="match_parent">
+                       {this.getScrollView()}
+                  </ScrollView>
+              </LinearLayout>
+              <LinearLayout
+                width="match_parent"
+                height="match_parent"
+                orientation="vertical">
+                <LinearLayout
+                  width="match_parent"
+                  height="match_parent"
+                  weight="1" />
+                <LinearLayout
+                   height="match_parent"
+                   width="match_parent"
+                   weight="6"
+                   orientation="vertical" >
                     <LinearLayout
-                     height="match_parent"
-                     width="match_parent"
-                     padding="12,12,12,12"
-                     background="#ffffff"
-                     orientation="horizontal"
-                     id={this.idSet.saveButtonParent}>
-                        <LinearLayout
-                        cornerRadius="5,5,5,5"
-                        height="match_parent"
-                        width="match_parent"
-                        id={this.idSet.saveButtonContainer}
-                        onClick={ this.handleSaveClick }>
-                            <LinearLayout
-                            height="match_parent"
-                            width="match_parent"
-                            gravity="center"
-                            background={window.__Colors.FADE_BLUE}
-                            id={this.idSet.saveButton}>
-                                <TextView
-                                text="Save"
-                                gravity="center"
-                                style={window.__TextStyle.textStyle.CARD.TITLE.LIGHT}/>
-                            </LinearLayout>
-                        </LinearLayout>
+                      height="wrap_content"
+                      width="match_parent" />
+                      {this.getLineSeperator()}
+
+                      <LinearLayout
+                       height="match_parent"
+                       width="match_parent"
+                       padding="6, 6, 6, 6"
+                       background="#ffffff"
+                       orientation="horizontal"
+                       id={this.idSet.saveButtonParent}>
+                          <LinearLayout
+                          height="match_parent"
+                          width="match_parent"
+                          id={this.idSet.saveButtonContainer}
+                          onClick={ this.handleSaveClick }>
+                              <LinearLayout
+                              height="match_parent"
+                              width="match_parent"
+                              gravity="center"
+                              cornerRadius="5,5,5,5"
+                              background={window.__Colors.FADE_BLUE}
+                              id={this.idSet.saveButton}>
+                                  <TextView
+                                  text="Save"
+                                  gravity="center"
+                                  style={window.__TextStyle.textStyle.CARD.TITLE.LIGHT}/>
+                              </LinearLayout>
+                          </LinearLayout>
+                      </LinearLayout>
                     </LinearLayout>
-                  </LinearLayout>
+              </LinearLayout>
+
+
             </RelativeLayout>
       </LinearLayout>
     )
