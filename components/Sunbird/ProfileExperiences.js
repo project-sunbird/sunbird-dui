@@ -58,7 +58,7 @@ class ProfileExperiences extends View {
   }
 
   getEditButton = (item) =>{
-    if(this.editable){
+    if(this.isEditable == "true"){
     return (
       <LinearLayout
       height="wrap_content"
