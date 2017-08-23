@@ -84,16 +84,16 @@ class ViewBatchActivity extends View {
       });
         cmd+=this.set({
           id: this.idSet.viewOnGoingContainer,
-          visibility : (type=== window.__S.VIEW_ONGOING_BATCH)?"gone":"visible"
+          visibility : (type=== window.__S.VIEW_ONGOING_BATCHES)?"gone":"visible"
         })
         cmd+=this.set({
           id: this.idSet.viewUpComingContainer,
-          visibility : (type=== window.__S.VIEW_ONGOING_BATCH)?"visible":"gone"
+          visibility : (type=== window.__S.VIEW_ONGOING_BATCHES)?"visible":"gone"
         })
 
       Android.runInUI(cmd,0)
 
-      if( type=== window.__S.VIEW_ONGOING_BATCH ){
+      if( type=== window.__S.VIEW_ONGOING_BATCHES ){
         this.replaceChild(_this.idSet.batchListContainer,_this.getBatchesList(this.ongoingList,"1").render(),0);
       } else{
         this.replaceChild(_this.idSet.batchListContainer,_this.getBatchesList(this.upComingList,"0").render(),0);
@@ -206,7 +206,7 @@ class ViewBatchActivity extends View {
             }
           })
 
-          this.handleTypeChange(window.__S.VIEW_ONGOING_BATCH);
+          this.handleTypeChange(window.__S.VIEW_ONGOING_BATCHES);
 
           break;
 
@@ -234,7 +234,7 @@ class ViewBatchActivity extends View {
               width="0"
               weight="1"
               padding="16,4,16,4"
-              text={window.__S.VIEW_ONGOING_BATCH}
+              text={window.__S.VIEW_ONGOING_BATCHES}
               style={window.__TextStyle.textStyle.CARD.TITLE.DARK_14}/>
 
               <LinearLayout
@@ -303,14 +303,14 @@ class ViewBatchActivity extends View {
                           width="match_parent"
                           id={this.idSet.viewOnGoingContainer}
                           orientatio="vertical"
-                          onClick={()=>{_this.handleTypeChange(window.__S.VIEW_ONGOING_BATCH)}}>
+                          onClick={()=>{_this.handleTypeChange(window.__S.VIEW_ONGOING_BATCHES)}}>
 
                       <TextView
                         height="wrap_content"
                         width="match_parent"
                         padding="20,4,16,4"
                         background={window.__Colors.LIGHT_GRAY}
-                        text={window.__S.VIEW_ONGOING_BATCH}/>
+                        text={window.__S.VIEW_ONGOING_BATCHES}/>
 
                 </LinearLayout>
 
