@@ -172,11 +172,10 @@ class ViewBatchActivity extends View {
               "active": true,
               "courseLogoUrl": null,
               "batchId": this.courseDetails.batchId,
-              "userId": "88e0b93a-cb06-47dc-95db-411fc2612735",
-              "courseName": "Invite One JP",
+              "userId": window.__userToken,
+              "courseName": "",
               "leafNodesCount": 4,
               "progress": 0,
-              "id": "c59575f7eaabf47e2a6a65b5666fdb5b6c04ab50121bb267142dad5996551908",
               "courseId": this.courseDetails.courseId,
               "status": 0
             }
