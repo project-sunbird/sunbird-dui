@@ -16,15 +16,16 @@ class CourseCurriculum extends View {
 
     this.displayName = "course_curriculumn"
     this.enrolledStatus = this.props.enrolledStatus == undefined ? false : this.props.enrolledStatus;
-
+    console.log("CourseCurriculum", props);
+    this.currIndex = this.props.currIndex ? this.props.currIndex : "";
   }
 
 
 
   getChapterList = () => {
     var items = this.props.content.map((item) => {
-      return (<ChapterList 
-                item={item} 
+      return (<ChapterList
+                item={item}
                 _onClick={this.props.onItemSelected}
                 enrolledStatus={this.enrolledStatus}/>)
     })
@@ -34,7 +35,7 @@ class CourseCurriculum extends View {
         orientation="vertical"
         height="wrap_content"
         width="match_parent">
-        
+
         {items}
 
       </LinearLayout>);
@@ -43,7 +44,7 @@ class CourseCurriculum extends View {
   getCourseBreakUp = () => {
 
     var items = this.props.content.map((item, index) => {
-    
+
       return (
         <LinearLayout
           width="match_parent"
@@ -55,12 +56,13 @@ class CourseCurriculum extends View {
             item={item}
             height="wrap_content"
             _onClick={this.handleClick}
+            currIndex = {this.currIndex}
             shouldGoForward={this.props.shouldGoForward?this.props.shouldGoForward:"visible"}
             index={index}/>
 
           {this.getLineSeperator()}
 
-         
+
         </LinearLayout> )
 
     })

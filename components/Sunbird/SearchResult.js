@@ -52,6 +52,7 @@ class SearchResult extends View {
                       height="wrap_content"
                       padding = "10,10,0,0"
                       text= {item.name}
+                      enableEllipse = "true"
                       style={window.__TextStyle.textStyle.CARD.HEADING}/>
                       <ViewWidget
                           weight="1"

@@ -17,6 +17,7 @@ resourceFragment input whereFrom whatToSendBack = do
 	case event of
 		OPEN_ResourceDetailActivity {resourceDetails:output} -> resourceDetailActivity output "ResourceFlow" input
 		OPEN_ResourceViewAllActivity {resourceDetails:output} -> resourceViewAllActivity output "ResourceFragmnet" input
+		OPEN_EnrolledCourseActivity {course:output} -> courseDetailActivity output "ResourceFragmnet" input
 		OPEN_SearchActivity {filterDetails: output} -> resourceSearchActivity output "ResourceFragmnet" input
 		OPEN_CourseInfoActivity {course : output} -> courseDetailActivity output "ResourceFragmnet" input
 		API_FilterPage{user_token:user_token, api_token:api_key,filter_to_send:delta}  ->	do

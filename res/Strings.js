@@ -20,7 +20,7 @@ const stringsRes = {
 		COURSE_ENROLLED : "Course enrolled",
 		COURSE_PROGRESS_COMPLETED : "%s % done",
 		COURSES_BNAV : "COURSES",
-		ERROR_EMPTY_FIELDS : "Please enter the detials.",
+		ERROR_EMPTY_FIELDS : "Please enter the details.",
 		COURSES_IN_PROGRESS : "Courses In Progress",
 		COURSES_LW : "Courses",
 		CONTENT_FLAGGED_MSG : "Content flagged successfully",
