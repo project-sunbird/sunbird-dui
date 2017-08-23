@@ -28,7 +28,7 @@ class ContentLoaderDialog extends View {
 }
 
   afterRender = () => {
-   
+
   }
 
     show = () => {
@@ -54,7 +54,11 @@ class ContentLoaderDialog extends View {
           );
     }
         this.isVisible=false;
-      
+
+    }
+
+    getVisible = () => {
+      return this.isVisible;
     }
 
    updateProgressBar = (pStatus) => {
@@ -117,13 +121,13 @@ class ContentLoaderDialog extends View {
             orientation="vertical"
             id={this.idSet.progressContainer}>
 
-           
+
              {this.getProgressBar(0)}
 
 
-          </LinearLayout>   
+          </LinearLayout>
 
-                  
+
       </LinearLayout>
     );
 
@@ -132,6 +136,3 @@ class ContentLoaderDialog extends View {
 }
 
 module.exports = ContentLoaderDialog;
-
-
-

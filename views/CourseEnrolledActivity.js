@@ -143,7 +143,7 @@ class CourseEnrolledActivity extends View {
                           "versionKey": versionKey,
                           "flags": [comment]
                      }
-    
+
     var whatToSend = {
       "user_token" : window.__userToken,
       "api_token" : window.__apiToken,
@@ -172,7 +172,7 @@ class CourseEnrolledActivity extends View {
       this.onBackPressed();
       return;
     }
-    
+
     data.downloadProgress= data.downloadProgress == undefined || isNaN(data.downloadProgress) ? 0 : data.downloadProgress;
     var downloadedPercent = data.downloadProgress;
     downloadedPercent =  downloadedPercent < 0 ? 0 : downloadedPercent;
@@ -249,7 +249,7 @@ class CourseEnrolledActivity extends View {
       window.__LoaderDialog.hide();
       JBridge.showSnackBar(window.__S.CONTENT_FLAG_FAIL);
       _this.onBackPressed();
-      
+
     }
   }
 
@@ -293,6 +293,10 @@ class CourseEnrolledActivity extends View {
 
     if(window.__SharePopup != undefined && window.__SharePopup.getVisible()){
      window.__SharePopup.hide();
+     return;
+    }
+    if(window.__ContentLoaderDialog.getVisible()){
+     window.__ContentLoaderDialog.hide();
      return;
     }
 
@@ -507,7 +511,7 @@ class CourseEnrolledActivity extends View {
                         height="wrap_content"
                         margin="0,16,0,0"
                         style={window.__TextStyle.textStyle.CARD.TITLE.DARK}
-                        text={window.__S.STRUCTURE}/> 
+                        text={window.__S.STRUCTURE}/>
                       <LinearLayout
                         id={this.idSet.descriptionContainer}
                         height="match_parent"
