@@ -121,8 +121,10 @@ class CourseEnrolledActivity extends View {
     );
   }
 
-   onStop = () =>{
-    window.__SharePopup.hide();
+  onStop = () =>{
+    if( window.__SharePopup){
+      window.__SharePopup.hide();
+    } 
     console.log("ON STOP IN ResourceDetailActivity")
   }
 
@@ -194,7 +196,7 @@ class CourseEnrolledActivity extends View {
 
 
   checkContentLocalStatus = (identifier) => {
-
+    console.log("local status")
     var callback = callbackMapper.map(function(data) {
       data = JSON.parse(data)
       _this.courseDetails = data;
@@ -262,42 +264,45 @@ class CourseEnrolledActivity extends View {
   }
 
   handleStateChange = (state) =>{
-    var response = utils.decodeBase64(state.response.status[1])
+    console.log("STATE \n\n",state)
+    var response = JSON.parse(utils.decodeBase64(state.response.status[1]))
     var responseCode = state.response.status[2]
 
+    console.log("response \n\n",response)
 
     if(responseCode == 501 || status === "failure" || status=="f") {
       JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION)
       responseData=tmp;
-    }else  if (response.params.err) {
+    }else  if (response.params && response.params.err) {
       JBridge.showSnackBar(window.__S.ERROR_SERVER_MESSAGE + response.params.errmsg)
       return;
     }
 
     if (state.responseFor == "API_Get_Batch_Details") {
       console.log(response);
-      var batch =response.result;
+      var batch =response.result.response;
       var description="";
       description+= utils.prettifyDate(batch.startDate);
       description+= " - ";
       description+= utils.prettifyDate(batch.endDate);
       var name = batch.name;
       this.replaceChild(_this.idSet.batchDetailsContainer,_this.getBatchDetailSection(name,description).render(),0);
-      return;
-    }
 
-    if(responseCode == 200){
-        window.__LoaderDialog.hide();
-        if(response[0] == "successful"){
-          JBridge.showSnackBar(window.__S.CONTENT_FLAGGED_MSG)
-          _this.onBackPressed();
+    }else if(state.responseFor == "API_FlagCourse"){
+
+        if(responseCode == 200){
+            window.__LoaderDialog.hide();
+            if(response[0] == "successful"){
+              JBridge.showSnackBar(window.__S.CONTENT_FLAGGED_MSG)
+              _this.onBackPressed();
+            }
         }
-    }
-    else{
-      window.__LoaderDialog.hide();
-      JBridge.showSnackBar(window.__S.CONTENT_FLAG_FAIL);
-      _this.onBackPressed();
+        else{
+          window.__LoaderDialog.hide();
+          JBridge.showSnackBar(window.__S.CONTENT_FLAG_FAIL);
+          _this.onBackPressed();
 
+        }
     }
 
 
@@ -358,6 +363,7 @@ class CourseEnrolledActivity extends View {
   afterRender=()=>{
     console.log("details",this.details)
 
+    
 
     if((this.details.hasOwnProperty("contentType")) && (this.details.contentType.toLocaleLowerCase() == "collection" || this.details.contentType.toLocaleLowerCase() == "textbook")){
       var cmd = this.set({
@@ -368,6 +374,8 @@ class CourseEnrolledActivity extends View {
       Android.runInUI(cmd, 0);
     }
     if(!this.enrolledCourses.hasOwnProperty("lastReadContentId") || (this.enrolledCourses.hasOwnProperty("lastReadContentId") && this.enrolledCourses.lastReadContentId==null)){
+      
+
       var btn  = (<FeatureButton
                     clickable="true"
                     margin = "16,16,16,16"
@@ -379,22 +387,25 @@ class CourseEnrolledActivity extends View {
                     style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
                     buttonClick = {this.handleResumeClick}
                     />)
+      
       this.replaceChild(this.idSet.featureButton,btn.render(),0)
         // Android.runInUI(cmd, 0);
-        if(this.enrolledCourses.hasOwnProperty("batchId")){
-          var whatToSend = {
-            "user_token" : window.__userToken,
-            "api_token" : window.__apiToken,
-            "batch_id" : this.enrolledCourses.hasOwnProperty("batchId")
-          }
-          var event= { "tag": "API_Get_Batch_Details", contents: whatToSend };
-          window.__runDuiCallback(event);
-        }
+
 
     }
 
 
     this.checkContentLocalStatus(this.baseIdentifier);
+
+    if(this.details.batchId){
+      var whatToSend = {
+        "user_token" : window.__userToken,
+        "api_token" : window.__apiToken,
+        "batch_id" : this.details.batchId
+      }
+      var event= { "tag": "API_Get_Batch_Details", contents: whatToSend };
+      window.__runDuiCallback(event);
+    }
   }
 
   overFlowCallback = (params) => {

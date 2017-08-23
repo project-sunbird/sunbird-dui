@@ -128,7 +128,7 @@ const stringsRes = {
 		SIGN_UP_SUCCESS : "Sign Up Completed",
 		SORT_BY : "SORT BY",
 		SORT_BY : "SORT BY",
-		SPLASH_MESSAGE : "Project NCTE",
+		SPLASH_MESSAGE : "Sunbird",
 		STAR_RATINGS : "Star ratings",
 		STRUCTURE : "Structure",
 		TO_DO : "To-Do",
