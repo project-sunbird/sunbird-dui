@@ -189,6 +189,7 @@ class CommunityFragment extends View {
         background={window.__Colors.WHITE}
         alpha = "0.9"
         gravity="center"
+        clickable="false"
         height="match_parent">
 
           <TextView

@@ -35,6 +35,7 @@ class CourseEnrolledActivity extends View {
       "pageOption",
       "descriptionContainer",
       "downloadProgressText",
+      "courseNotStartedOverLay",
       "sharePopupContainer",
       "contentLoaderContainer",
       "featureButton",
@@ -281,12 +282,22 @@ class CourseEnrolledActivity extends View {
     if (state.responseFor == "API_Get_Batch_Details") {
       console.log(response);
       var batch =response.result.response;
+      var curr_Date = new Date();
+      var start_date = new Date(batch.startDate);
+      if(start_date>curr_Date){
+        Android.runInUI(this.set({
+          id: this.idSet.courseNotStartedOverLay,
+          visibility : "visible"
+        }),0);
+
+      }
       var description="";
       description+= utils.prettifyDate(batch.startDate);
       description+= " - ";
       description+= utils.prettifyDate(batch.endDate);
       var name = batch.name;
       this.replaceChild(_this.idSet.batchDetailsContainer,_this.getBatchDetailSection(name,description).render(),0);
+      
 
     }else if(state.responseFor == "API_FlagCourse"){
 
@@ -551,74 +562,78 @@ class CourseEnrolledActivity extends View {
             totalProgress={this.data.totalProgress}
             visibility = {this.showProgress}/>
 
-            <LinearLayout
-              id={this.idSet.parentContainer}
+          <RelativeLayout
               height="match_parent"
-              width="match_parent"
-              orientation="vertical">
+              width="match_parent">
 
-              <ScrollView
-                  height="0"
-                  weight="1"
+              <LinearLayout
+                  id={this.idSet.parentContainer}
+                  height="match_parent"
                   width="match_parent"
-                  fillViewPort="true">
-                  <LinearLayout
-                    height="match_parent"
-                    width="match_parent"
-                    root="true"
-                    padding="16,24,16,16"
-                    orientation="vertical">
+                  orientation="vertical">
 
-                      <CourseProgress
-                        height="wrap_content"
-                        width="wrap_content"
-                        content={this.data}
-                        title={this.data.courseName || this.details.name || this.details.contentData.name}
-                        onResumeClick={this.handleCourseResume}
-                        visibility = {this.showProgress}/>
-
+                  <ScrollView
+                      height="0"
+                      weight="1"
+                      width="match_parent"
+                      fillViewPort="true">
                       <LinearLayout
-                        id={this.idSet.batchDetailsContainer}
                         height="match_parent"
                         width="match_parent"
-                        orientation="vertical"/>
-
-
-
-                       <TextView
-                        width="wrap_content"
-                        height="wrap_content"
-                        margin="0,16,0,0"
-                        style={window.__TextStyle.textStyle.CARD.TITLE.DARK}
-                        text={window.__S.STRUCTURE}/>
-
-
-
-                      <LinearLayout
-                        id={this.idSet.descriptionContainer}
-                        height="match_parent"
-                        width="match_parent"
-                        gravity="center"
                         root="true"
+                        padding="16,24,16,16"
                         orientation="vertical">
 
-                      <TextView
-                        margin="0,50,0,0"
-                        width="wrap_content"
-                        height="wrap_content"
-                        gravity="center"
-                        text={window.__S.LOADING_CONTENT}/>
+                          <CourseProgress
+                            height="wrap_content"
+                            width="wrap_content"
+                            content={this.data}
+                            title={this.data.courseName || this.details.name || this.details.contentData.name}
+                            onResumeClick={this.handleCourseResume}
+                            visibility = {this.showProgress}/>
 
-                      <ProgressBar
-                        margin="0,10,0,0"
-                        gravity="center"
-                        width="20"
-                        height="20"/>
+                          <LinearLayout
+                            id={this.idSet.batchDetailsContainer}
+                            height="match_parent"
+                            width="match_parent"
+                            orientation="vertical"/>
 
+
+
+                           <TextView
+                            width="wrap_content"
+                            height="wrap_content"
+                            margin="0,16,0,0"
+                            style={window.__TextStyle.textStyle.CARD.TITLE.DARK}
+                            text={window.__S.STRUCTURE}/>
+
+
+
+                          <LinearLayout
+                            id={this.idSet.descriptionContainer}
+                            height="match_parent"
+                            width="match_parent"
+                            gravity="center"
+                            root="true"
+                            orientation="vertical">
+
+                                <TextView
+                                  margin="0,50,0,0"
+                                  width="wrap_content"
+                                  height="wrap_content"
+                                  gravity="center"
+                                  text={window.__S.LOADING_CONTENT}/>
+
+                                <ProgressBar
+                                  margin="0,10,0,0"
+                                  gravity="center"
+                                  width="20"
+                                  height="20"/>
+
+                          </LinearLayout>
                       </LinearLayout>
-                  </LinearLayout>
-                </ScrollView>
-                <FeatureButton
+                  </ScrollView>
+                  <FeatureButton
                     clickable="true"
                     margin = "16,16,16,16"
                     width = "match_parent"
@@ -629,7 +644,29 @@ class CourseEnrolledActivity extends View {
                     style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
                     buttonClick = {this.handleResumeClick}
                     />
-          </LinearLayout>
+              </LinearLayout>
+
+
+               <LinearLayout
+                id={this.idSet.courseNotStartedOverLay}
+                height="match_parent"
+                width="match_parent"
+                visibility="gone"
+                clickable="true"
+                background={window.__Colors.WHITE_90}
+                gravity="center">
+
+                  <TextView
+                    gravity="center"
+                    width="match_parent"
+                    height="match_parent"
+                    style ={window.__TextStyle.textStyle.NOTHING}
+                    text="Batch not started"/>
+
+                </LinearLayout>
+
+
+          </RelativeLayout>  
 
 
       </LinearLayout>
