@@ -13,6 +13,7 @@ var Spinner = require('../Sunbird/core/Spinner');
 var RadioButton = require('../Sunbird/core/RadioButton');
 var CheckBox = require("@juspay/mystique-backend").androidViews.CheckBox;
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
+var HorizontalScrollView = require("@juspay/mystique-backend").androidViews.HorizontalScrollView;
 var Styles = require("../../res/Styles");
 let IconStyle = Styles.Params.IconStyle;
 
@@ -32,9 +33,14 @@ class ExperiencePopUp extends View{
       "saveButtonParent",
       "jobText",
       "positionText",
-      "organizationText"
+      "organizationText",
+      "subjectContainer",
+      "spinnerContainer"
 
     ]);
+    this.spinnerArray = ["Select","Hindi","English","Math","Physics","Chemistry","Economics"];
+    this.array="Select,Hindi,English,Math,Physics,Chemistry,Economics";
+
     window.__ExperiencePopUp = this;
     this.props=props;
     this.subjects=[];
@@ -53,8 +59,7 @@ class ExperiencePopUp extends View{
  show = () => {
    console.log(window.__ExperiencePopUp.data , "data Experience Popup");
 
-
-   var cmd=this.set({
+    var cmd=this.set({
      id: this.idSet.saveButtonParent,
      background: window.__Colors.FADE_BLUE
    })
@@ -63,17 +68,18 @@ class ExperiencePopUp extends View{
    this.replaceChild(this.idSet.experiencePopUpParent,this.getUi().render(),0);
    this.setVisibility("visible");
 
-
   this.initializeData();
   this.populateData();
-
-
  }
 
  hide = () => {
+   this.spinnerArray = ["Select","Hindi","English","Math","Physics","Chemistry","Economics"];
+   this.array="Select,Hindi,English,Math,Physics,Chemistry,Economics";
    JBridge.hideKeyboard();
    this.setVisibility("gone");
+   this.subjects=[];
    window.__ExperiencePopUp.data=undefined;
+
 
  }
 
@@ -92,8 +98,8 @@ class ExperiencePopUp extends View{
    this.prevData.jobName="";
    this.prevData.Organization="";
    this.prevData.Position="";
-   this.prevData.joiningDate="";
-   this.prevData.endDate="";
+   this.prevData.joiningDate=null;
+   this.prevData.endDate=null;
    this.jobProfile = [];
    if(window.__ExperiencePopUp.data!=undefined)
    {
@@ -109,7 +115,11 @@ class ExperiencePopUp extends View{
  }
 
  populateData = () =>{
-   this.subjects=this.prevData.subjects;
+   var subs=this.prevData.subjects.slice();
+   subs.map((item)=>{
+     this.addSubject(item);
+   });
+   this.prevData.subjects = this.subjects.slice();
    this.jobName=this.prevData.jobName;
    this.Organization=this.prevData.Organization;
    this.Position=this.prevData.Position;
@@ -288,11 +298,18 @@ class ExperiencePopUp extends View{
            height="wrap_content"
            stroke={"2,"+window.__Colors.PRIMARY_BLACK_66}
            padding="8,8,8,8"
-           cornerRadius="4,4,4,4">
+           cornerRadius="4,4,4,4"
+           id={this.idSet.spinnerContainer}>
              {this.loadSpinner()}
            </LinearLayout>
+           <HorizontalScrollView
+           height = "wrap_content"
+           width = "match_parent"
+           id={this.idSet.subjectContainer}
+           margin = "0,10,0,0">
+          </HorizontalScrollView>
            <LinearLayout
-           height="34"
+           height="24"
            width="1"/>
         </LinearLayout>
 
@@ -432,31 +449,41 @@ getUi(){
     height="match_parent"
     width="match_parent"
     background="#ffffff">
-      <ScrollView
-      height="479"
-      width="match_parent">
-           {this.getScrollView()}
-      </ScrollView>
-
+     <LinearLayout
+     height="match_parent"
+     width="match_parent"
+     orientation="vertical">
+          <ScrollView
+          height="match_parent"
+          width="match_parent"
+          weight="1">
+               {this.getScrollView()}
+          </ScrollView>
+          <LinearLayout
+          height="match_parent"
+          width="match_parent"
+          weight="6"/>
+      </LinearLayout>
        <LinearLayout
          height="match_parent"
          width="match_parent"
          orientation="vertical" >
             <LinearLayout
-            height="479"
+            height="match_parent"
             width="match_parent"
+            weight="1"
             />
             {this.getLineSeperator()}
 
             <LinearLayout
+            weight="6"
              height="match_parent"
              width="match_parent"
-             padding="12,12,12,12"
+             padding="6,6,6,6"
              background="#ffffff"
              orientation="horizontal"
              id={this.idSet.saveButtonParent}>
                 <LinearLayout
-                cornerRadius="5,5,5,5"
                 height="match_parent"
                 width="match_parent"
                 onClick={ this.sendJSON }>
@@ -464,7 +491,8 @@ getUi(){
                     height="match_parent"
                     width="match_parent"
                     gravity="center"
-                    background={window.__Colors.FADE_BLUE}
+                    cornerRadius="5"
+                    background={window.__Colors.LIGHT_BLUE_22}
                     id={this.idSet.saveButton}>
                         <TextView
                         text="Save"
@@ -500,8 +528,6 @@ getUi(){
      }
 
      loadSpinner = () => {
-       this.spinnerArray = ["Select","Hindi","English","Math","Physics","Chemistry","Economics"];
-       this.array="Select,Hindi,English,Math,Physics,Chemistry,Economics";
        return(<Spinner
                width="match_parent"
                height="34"
@@ -516,11 +542,14 @@ getUi(){
 
        console.log("SPINNER CLICKED",params);
        console.log(this.spinnerArray[parseInt(params[2])] , "spinner val");
+
        if(parseInt(params[2])>0)
-       this.subjects.push(this.spinnerArray[parseInt(params[2])]);
+       this.addSubject(this.spinnerArray[parseInt(params[2])]);
+
        if(this.checkCompleteStatus())
-       {
-         this.enableSaveButton();
+          this.enableSaveButton();
+       else {
+         this.disableSaveButton();
        }
      }
 
@@ -549,6 +578,7 @@ getUi(){
        var callback = callbackMapper.map(
          function (data){
              console.log(data[0],"calender");
+               data[0]=_this.formatDate(data[0]);
 
               if(index==1){
                 _this.joiningDate=data[0];
@@ -599,7 +629,22 @@ getUi(){
            id: this.idSet.closingDateLayout,
            visibility: "gone"
          });
+         cmd += this.set({
+           id: this.idSet.closingDateText,
+           text : "Select Date"
+         });
          Android.runInUI(cmd, 0);
+         this.endDate=null;
+
+         if(this.checkCompleteStatus())
+         {
+           this.enableSaveButton();
+         }
+         else {
+           this.disableSaveButton();
+         }
+
+
        }
        else {
          var cmd = this.set({
@@ -607,6 +652,15 @@ getUi(){
            visibility: "visible"
          });
          Android.runInUI(cmd, 0);
+
+
+         if(this.checkCompleteStatus())
+         {
+           this.enableSaveButton();
+         }
+         else {
+           this.disableSaveButton();
+         }
        }
      }
 
@@ -619,13 +673,14 @@ getUi(){
             "role":this.Position,
             "joiningDate":this.joiningDate,
             "endDate":this.endDate,
-            "subject":this.subjects
-          }
-
+            "subject":this.subjects,
+            }
           this.jobProfile.push(this.json);
         }
         else{
           var json=  window.__ExperiencePopUp.data;
+          console.log(json , "json");
+
           json.jobName=this.jobName;
           json.orgName=this.Organization;
           json.role=this.Position;
@@ -633,6 +688,7 @@ getUi(){
           json.endDate=this.endDate;
           json.subject=this.subjects;
           json.userId= window.__userToken;
+          if(json.address!=undefined)
           json.address.userId= window.__userToken;
           this.jobProfile.push(json);
 
@@ -661,12 +717,36 @@ getUi(){
           console.log("JSON SENT");
           this.hide();
      }
+
+     formatDate = (date) =>{
+         date = date.substr(0,4)+"-"+date.substr(5);
+         if(date.charAt(7)!='-')
+            date = date.substr(0,5)+"0"+date.substr(5);
+
+         date = date.substr(0,7)+"-"+date.substr(8);
+         if(date.length<10)
+           date = date.substr(0,8)+"0"+date.substr(8);
+
+           return date;
+
+         }
+
      checkCompleteStatus = () =>{
-       if(this.jobName == this.prevData.jobName && this.Organization == this.prevData.Organization  && this.Position== this.prevData.Position && this.subjects==this.prevData.subjects && this.joiningDate == this.prevData.joiningDate )
+       if(window.__ExperiencePopUp.data != undefined)
        {
-         return false;
-       }
-       return true;
+         if(this.jobName == this.prevData.jobName && this.Organization == this.prevData.Organization  && this.Position== this.prevData.Position && JSON.stringify(this.subjects)==JSON.stringify(this.prevData.subjects) && this.joiningDate == this.prevData.joiningDate && this.endDate == this.prevData.endDate )
+         {
+           return false;
+         }
+         return true;
+      }
+      else {
+        if(this.jobName == this.prevData.jobName || this.Organization == this.prevData.Organization  || this.Position == this.prevData.Position || JSON.stringify(this.subjects)==JSON.stringify(this.prevData.subjects) || this.joiningDate == this.prevData.joiningDate || (window.__RadioButton.currentIndex!=0 && (this.endDate == this.prevData.endDate)) )
+        {
+          return false;
+        }
+        return true;
+      }
      }
 
      doNothing = () =>{
@@ -674,19 +754,8 @@ getUi(){
      }
 
      enableSaveButton = () =>{
-      //  var cmd = this.set({
-      //    id: this.idSet.saveButton,
-      //    clickable: "true"
-      //  })
-       //
-      //  var cmd=this.set({
-      //    id: this.idSet.saveButtonParent,
-      //    background: window.__Colors.LIGHT_BLUE,
-      //    gravity: "center"
-      //  })
-       //
-      //  Android.runInUI(cmd, 0)
-
+       console.log(this.subjects , "subs");
+       console.log(this.prevData.subjects, "prevsubs");
        this.saveButton =(
          <LinearLayout
           height="match_parent"
@@ -697,7 +766,6 @@ getUi(){
           orientation="horizontal"
           id={this.idSet.saveButtonParent}>
              <LinearLayout
-             cornerRadius="5,5,5,5"
              height="match_parent"
              width="match_parent"
              onClick={ this.sendJSON }
@@ -706,6 +774,7 @@ getUi(){
                  height="match_parent"
                  width="match_parent"
                  gravity="center"
+                 cornerRadius="5"
                  background={window.__Colors.LIGHT_BLUE}
                  id={this.idSet.saveButton}>
                      <TextView
@@ -722,19 +791,6 @@ getUi(){
      }
 
      disableSaveButton = () =>{
-      //  var cmd = this.set({
-      //    id: this.idSet.saveButton,
-      //    clickable: "false"
-      //  })
-       //
-      //  cmd+=this.set({
-      //    id: this.idSet.saveButtonParent,
-      //    background: window.__Colors.FADE_BLUE,
-      //    gravity: "center"
-      //  })
-       //
-       //
-      //  Android.runInUI(cmd, 0)
 
       this.saveButton =(
         <LinearLayout
@@ -746,7 +802,6 @@ getUi(){
          root ="true"
          id={this.idSet.saveButtonParent}>
             <LinearLayout
-            cornerRadius="5,5,5,5"
             height="match_parent"
             width="match_parent"
             onClick={ this.sendJSON }
@@ -755,6 +810,7 @@ getUi(){
                 height="match_parent"
                 width="match_parent"
                 gravity="center"
+                cornerRadius="5"
                 background={window.__Colors.LIGHT_BLUE_22}
                 id={this.idSet.saveButton}>
                     <TextView
@@ -801,6 +857,82 @@ getUi(){
          this.disableSaveButton();
        }
      }
+
+
+     removeSubject = (data) =>
+     {console.log(data, "removing");
+       this.subjects.splice(this.subjects.indexOf(data),1);
+       this.array=this.array+","+data;
+       this.spinnerArray.push(data);
+       this.spinnerLayout= (
+         <LinearLayout
+         root="true"
+         height="wrap_content"
+         width="match_parent">
+         {this.loadSpinner()}
+         </LinearLayout>);
+       this.replaceChild(this.idSet.spinnerContainer,this.spinnerLayout.render(),0);
+       this.showSelectedSubjects();
+     }
+
+     addSubject = (data) =>{
+       this.subjects.unshift(data);
+       if(this.array.indexOf(data+",")>-1){
+         this.array = this.array.replace(data+",","");
+       }else{
+         this.array = this.array.replace(","+data, "");
+       }
+       this.spinnerArray.splice(this.spinnerArray.indexOf(data),1);
+       this.spinnerLayout= (
+         <LinearLayout
+         root="true"
+         height="wrap_content"
+         width="match_parent">
+         {this.loadSpinner()}
+         </LinearLayout>);
+       this.replaceChild(this.idSet.spinnerContainer,this.spinnerLayout.render(),0);
+       this.showSelectedSubjects();
+     }
+
+     showSelectedSubjects = () =>{
+       var items = this.subjects.map((data)=>{
+           return(
+             <LinearLayout
+              height="wrap_content"
+              width="wrap_content"
+              padding="6,4,6,4"
+              margin="0,0,10,0"
+              cornerRadius="10,10,10,10"
+              background={window.__Colors.DARK_GRAY_44}
+              gravity="center">
+                 <TextView
+                 height="wrap_content"
+                 width="wrap_content"
+                 text={data}
+                 margin="0,0,4,0"
+                 textStyle={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
+                 <ImageView
+                 height="15"
+                 width="15"
+                 imageUrl="ic_action_close"
+                 margin="0,1,0,0"
+                 onClick={()=>{this.removeSubject(data)}}/>
+              </LinearLayout>
+           )
+       });
+
+
+    this.subjectCards =(
+      <LinearLayout
+      width="match_parent"
+      height="match_parent"
+      root="true">
+      {items}
+      </LinearLayout>
+    )
+
+    this.replaceChild(this.idSet.subjectContainer,this.subjectCards.render(),0);
+   }
 
   }
 
