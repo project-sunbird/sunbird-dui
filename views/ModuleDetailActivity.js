@@ -15,6 +15,7 @@ var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
 var CropParagraph = require('../components/Sunbird/CropParagraph');
 var ProgressButton = require('../components/Sunbird/core/ProgressButton');
 var CourseCurriculum = require('../components/Sunbird/CourseCurriculum');
+var utils = require('../utils/GenericFunctions');
 
 
 var _this;
@@ -147,7 +148,7 @@ class ModuleDetailActivity extends View {
     checkContentLocalStatus = (module) => {
         _this = this;
         var callback = callbackMapper.map(function(data) {
-            _this.localContent = JSON.parse(data[0])
+            _this.localContent = JSON.parse(utils.jsonifyData(data[0]))
             console.log("local status",data[0])
             if (_this.localContent.isAvailableLocally == true) {
                 var callback1 = callbackMapper.map(function(data) {
