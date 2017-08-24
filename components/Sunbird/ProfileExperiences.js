@@ -162,6 +162,12 @@ class ProfileExperiences extends View {
 
   experienceBody = () => {
 
+   if(this.jobs.length <= 0){
+     return(
+       <LinearLayout
+       width="wrap_content"
+       height="wrap_content"/>);
+   }
     var cards = this.jobs.map((item, i) => {
       return (<LinearLayout
                 width="wrap_content"
@@ -202,7 +208,7 @@ class ProfileExperiences extends View {
                 height="match_parent"
                 margin="0,16,0,0"
                 orientation="vertical"
-                visibility = {(this.jobs.length > 0) ? "visible" : "gone"}>
+                >
 
                 {this.getLineSeperator()}
 

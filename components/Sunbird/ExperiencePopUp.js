@@ -58,7 +58,7 @@ class ExperiencePopUp extends View{
 
  show = () => {
    console.log(window.__ExperiencePopUp.data , "data Experience Popup");
-
+   window.__patchCallback = this.getPatchCallback ;
     var cmd=this.set({
      id: this.idSet.saveButtonParent,
      background: window.__Colors.FADE_BLUE
@@ -715,8 +715,16 @@ getUi(){
 
        JBridge.patchApi(url,JSON.stringify(body),window.__userToken,window.__apiToken);
           console.log("JSON SENT");
-          this.hide();
+
+         this.hide();
+
      }
+
+     getPatchCallback = (data) =>{
+      console.log("RESPONSE FOR DATA");
+      window.__BNavFlowRestart();
+
+    }
 
      formatDate = (date) =>{
          date = date.substr(0,4)+"-"+date.substr(5);

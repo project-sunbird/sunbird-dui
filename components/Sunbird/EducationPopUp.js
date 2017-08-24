@@ -50,7 +50,7 @@ class EducationPopUp extends View {
 
   show = () => {
     console.log(window.__EducationPopUp.data, "Data Education Popup");
-
+    window.__patchCallback = this.getPatchCallback ;
     this.updateSaveButtonStatus(false);
 
     this.replaceChild(this.idSet.educationPopUpParent, this.getUi().render(),0);
@@ -280,6 +280,12 @@ class EducationPopUp extends View {
     this.hide();
   }
 
+  getPatchCallback = (data) =>{
+   console.log("RESPONSE FOR DATA");
+   window.__BNavFlowRestart();
+
+ }
+
   getToolbar  = () =>{
     return( <LinearLayout
             height="56"
@@ -503,12 +509,18 @@ class EducationPopUp extends View {
             background="#ffffff">
               <LinearLayout
                 width="match_parent"
-                height="match_parent">
+                height="match_parent"
+                orientation="vertical">
                   <ScrollView
                   height="match_parent"
-                  width="match_parent">
+                  width="match_parent"
+                  weight="1">
                        {this.getScrollView()}
                   </ScrollView>
+                  <LinearLayout
+                  height="match_parent"
+                  width="match_parent"
+                  weight="6"/>
               </LinearLayout>
               <LinearLayout
                 width="match_parent"
