@@ -185,8 +185,14 @@ class MainActivity extends View {
       }
 
     }
+     if (state.responseFor == "API_ProfileFragment"){
+      console.log("profileData", responseData);
+      window.__userName = responseData.result.response.userName;
+    }
+    console.log("window.__API_Profile_Called", window.__API_Profile_Called);
+
     console.log("JBridge.getFromSharedPrefs('logo')",JBridge.getFromSharedPrefs("logo"));
-    if ( !window.__API_Profile_Called && !(JBridge.getFromSharedPrefs("logo") == "__failed" && JBridge.getFromSharedPrefs("orgName") == "__failed")){
+    if ( !window.__API_Profile_Called && (JBridge.getFromSharedPrefs("logo") == "__failed" || JBridge.getFromSharedPrefs("orgName") == "__failed")){
       console.log("slug", responseData.result.response.rootOrg.slug);
       window.__orgName = responseData.result.response.rootOrg.orgName;
       window.__API_Profile_Called = true;

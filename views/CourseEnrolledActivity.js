@@ -143,7 +143,7 @@ class CourseEnrolledActivity extends View {
 
     var request = {
                           "flagReasons":selectedList,
-                          "flaggedBy":"kiran",
+                          "flaggedBy": window.__userName,
                           "versionKey": versionKey,
                           "flags": [comment]
                      }
@@ -272,15 +272,22 @@ class CourseEnrolledActivity extends View {
     console.log("response \n\n",response)
 
     if(responseCode == 501 || status === "failure" || status=="f") {
+      window.__LoaderDialog.hide();
       JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION)
       responseData=tmp;
     }else  if (response.params && response.params.err) {
-      JBridge.showSnackBar(window.__S.ERROR_SERVER_MESSAGE + response.params.errmsg)
+      window.__LoaderDialog.hide();
+        if(state.responseFor == "API_FlagCourse"){
+            JBridge.showSnackBar(window.__S.CONTENT_FLAG_FAIL);
+            _this.onBackPressed();
+          }
+        else
+          JBridge.showSnackBar(window.__S.ERROR_SERVER_MESSAGE + response.params.errmsg)
       return;
     }
 
     if (state.responseFor == "API_Get_Batch_Details") {
-      console.log(response);
+      console.log("batch details",response);
       var batch =response.result.response;
       var curr_Date = new Date();
       var start_date = new Date(batch.startDate);
@@ -409,12 +416,13 @@ class CourseEnrolledActivity extends View {
 
 
     this.checkContentLocalStatus(this.baseIdentifier);
-
-    if(this.details.batchId){
+    console.log("this.enrolledCourses",this.enrolledCourses)
+    if(this.details.batchId || this.enrolledCourses.batchId){
+     var batchId = this.details.batchId ? this.details.batchId : this.enrolledCourses.batchId;
       var whatToSend = {
         "user_token" : window.__userToken,
         "api_token" : window.__apiToken,
-        "batch_id" : this.details.batchId
+        "batch_id" : batchId
       }
       var event= { "tag": "API_Get_Batch_Details", contents: whatToSend };
       window.__runDuiCallback(event);

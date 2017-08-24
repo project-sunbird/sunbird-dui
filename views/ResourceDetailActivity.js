@@ -187,7 +187,7 @@ class ResourceDetailActivity extends View {
 
     var request = {
                           "flagReasons":selectedList,
-                          "flaggedBy":"kiran",
+                          "flaggedBy":window.__userName,
                           "versionKey": versionKey,
                           "flags": [comment]
                      }
