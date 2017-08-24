@@ -31,7 +31,10 @@ class AdditionalInformationActivity extends View{
       "predictionLanguageLayout",
       "LanguageLayout",
       "HobbiesLayout",
-      "predictionHobbiesLayout"
+      "predictionHobbiesLayout",
+      "emailText",
+      "phoneText",
+      "locationText"
     ]);
     this.shouldCacheScreen = false;
     this.state=state;
@@ -40,8 +43,58 @@ class AdditionalInformationActivity extends View{
     this.selectedLanguages=[];
     this.hobbieDictionary=["cycling","swimming","singing","travelling","playing","dancing"];
     this.selectedHobbies=[];
+    this.email = "";
+    this.mobile = "";
+    this.location = "";
+
+
     console.log("cons");
+
+    this.data = JSON.parse(this.state.data.value0.profile);
+    console.log("Info State", this.data);
+
   }
+
+
+  initData = () => {
+    this.selectedLanguages=[];
+    // this.email = "";
+    // this.mobile = "";
+    // this.location = "";
+
+    this.email = this.data.email;
+    this.phone = this.data.phone;
+
+    this.location = this.data.location;
+
+    var cmd = this.set({
+      id: this.idSet.emailText,
+      text: this.email
+    })
+
+    cmd += this.set({
+      id: this.idSet.phoneText,
+      text: this.phone
+    })
+
+    cmd += this.set({
+      id: this.idSet.locationText,
+      text: this.location
+    })
+
+    Android.runInUI(cmd, 0);
+
+    for (var i = 0; i < this.data.language.length; i++) {
+      var value = this.data.language[i].toLowerCase();
+      this.selectLanguageItem(value);
+    }
+
+  }
+
+  afterRender = () => {
+    this.initData();
+  }
+
 
   render(){
     console.log("render");
@@ -51,7 +104,8 @@ class AdditionalInformationActivity extends View{
         root="true"
         background={window.__Colors.WHITE}
         width="match_parent"
-        height="match_parent">
+        height="match_parent"
+        afterRender={this.afterRender}>
 
          {this.getToolbar()}
 
@@ -219,6 +273,7 @@ console.log("rendered");
                           width="match_parent"
                           />
                           <EditText
+                          id={this.idSet.emailText}
                           width="match_parent"
                           height="wrap_content"
                           maxLines="1"
@@ -248,6 +303,7 @@ console.log("rendered");
                            width="match_parent"
                            />
                            <EditText
+                             id={this.idSet.phoneText}
                            width="match_parent"
                            height="wrap_content"
                            maxLines="1"
@@ -277,6 +333,7 @@ console.log("rendered");
                             width="match_parent"
                             />
                             <EditText
+                            id = {this.idSet.locationText}
                             width="match_parent"
                             height="wrap_content"
                             maxLines="1"
