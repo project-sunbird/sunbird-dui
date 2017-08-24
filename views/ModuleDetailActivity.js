@@ -51,6 +51,7 @@ class ModuleDetailActivity extends View {
         this.localStatus = this.module.isAvailableLocally;
         this.localContent = null;
         _this = this;
+        this.downloadList=[];
 
         //stack to maintain child traversal
         this.stack = [];
@@ -111,7 +112,7 @@ class ModuleDetailActivity extends View {
         var data = JSON.parse(pValue);
         if (data.identifier != this.module.identifier)
             return;
-
+        console.log("data in download",data)
         var textToShow = "";
         if(data.status == "NOT_FOUND"){
           window.__ContentLoaderDialog.hide();
@@ -123,7 +124,17 @@ class ModuleDetailActivity extends View {
         var downloadedPercent = data.downloadProgress;
         downloadedPercent = downloadedPercent < 0 ? 0 : downloadedPercent;
         if (downloadedPercent == 100) {
-            this.checkContentLocalStatus(this.module);
+            if(this.downloadList.indexOf(data.identifier) == -1){
+                this.downloadList.push(data.identifier)
+                this.checkContentLocalStatus(this.module);
+            }
+            else{
+                JBridge.showSnackBar(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
+                this.onBackPressed();
+                return;
+            }
+
+            
         } else {
             var cmd = this.set({
                 id: this.idSet.downloadProgressText,
