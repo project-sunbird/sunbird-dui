@@ -42,11 +42,12 @@ class SearchResult extends View {
                 circularImageUrl={"0,"+ appIcon }/>
 
               <LinearLayout
-                width = "wrap_content"
+                width = "match_parent"
                 height = "wrap_content"
                 orientation = "vertical">
                 <LinearLayout
                 height = "wrap_content"
+                width="match_parent"
                 >
                   <TextView
                       height="wrap_content"
@@ -54,12 +55,15 @@ class SearchResult extends View {
                       text= {item.name}
                       enableEllipse = "true"
                       style={window.__TextStyle.textStyle.CARD.HEADING}/>
-                      <ViewWidget
-                          weight="1"
-                          height="0"/>
+                      <LinearLayout
+                       width="0"
+                      weight="0.25" />
                     <TextView
                       height="wrap_content"
-                      padding = "0,10,10,0"
+                      padding = "0,10,0,0"
+                      weight="0.75"
+                      gravity = "right"
+                      width="0"
                       text= { item.hasOwnProperty("size") ? utils.formatBytes(item.size) : " "}
                       style={window.__TextStyle.textStyle.HINT.SEMI}/>
                 </LinearLayout>

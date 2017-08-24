@@ -123,6 +123,7 @@ class ResourceComponent extends View {
 
 
   getResourceCardLayout = (content) => {
+    console.log("resource contents",content)
 
     return (
       <LinearLayout

@@ -97,6 +97,11 @@ exports.textStyle = {
         textSize: Font.fontSize.FONT_14,
         fontStyle: Font.fontStyle.BOLD
       },
+      DARK_16: {
+        color: Colors.PRIMARY_BLACK,
+        textSize: Font.fontSize.FONT_16,
+        fontStyle: Font.fontStyle.BOLD
+      },
       SEMI_DARK: {
         color: Colors.PRIMARY_BLACK,
         textSize: Font.fontSize.FONT_12,

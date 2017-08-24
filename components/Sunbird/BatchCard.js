@@ -57,10 +57,13 @@ class BatchCard extends View {
   }
 
   getBody= ()=>{
+    
     var description="";
     description+= utils.prettifyDate(this.props.batch.startDate);
-    description+= " - ";
-    description+= utils.prettifyDate(this.props.batch.endDate);
+    if(this.props.batch.endDate && this.props.batch.endDate!=null && this.props.batch.endDate!=undefined){
+      description+= " - ";
+      description+= utils.prettifyDate(this.props.batch.endDate);
+    }
     return (<LinearLayout
               margin="0,8,0,0"
               width="match_parent"

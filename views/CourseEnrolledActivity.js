@@ -253,7 +253,7 @@ class CourseEnrolledActivity extends View {
                 width="match_parent"
                 height="wrap_content"
                 text={utils.firstLeterCapital(name)}
-                style={window.__TextStyle.textStyle.CARD.TITLE.DARK_14}/>
+                style={window.__TextStyle.textStyle.CARD.TITLE.DARK_16}/>
 
               <TextView
                 width="match_parent"
@@ -293,8 +293,10 @@ class CourseEnrolledActivity extends View {
       }
       var description="";
       description+= utils.prettifyDate(batch.startDate);
-      description+= " - ";
-      description+= utils.prettifyDate(batch.endDate);
+      if(batch.endDate && batch.endDate!=null && batch.endDate!=undefined){
+        description+= " - ";
+        description+= utils.prettifyDate(batch.endDate);
+      }
       var name = batch.name;
       this.replaceChild(_this.idSet.batchDetailsContainer,_this.getBatchDetailSection(name,description).render(),0);
       

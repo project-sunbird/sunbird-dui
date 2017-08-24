@@ -200,10 +200,12 @@ class ViewBatchActivity extends View {
           this.upComingList=[];
           this.ongoingList=[];
           this.batchList.map((item)=>{
-            if(item.status==1){
-              this.ongoingList.push(item);
-            }else{
-              this.upComingList.push(item);
+            if(item.enrollmentType == "open"){  
+              if(item.status==1){
+                this.ongoingList.push(item);
+              }else{
+                this.upComingList.push(item);
+              }
             }
           })
 

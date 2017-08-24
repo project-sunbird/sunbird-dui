@@ -137,15 +137,25 @@ class ModuleDetailActivity extends View {
         _this = this;
         var callback = callbackMapper.map(function(data) {
             _this.localContent = JSON.parse(data[0])
+            console.log("local status",data[0])
             if (_this.localContent.isAvailableLocally == true) {
                 var callback1 = callbackMapper.map(function(data) {
                     _this.module = JSON.parse(data);
                     _this.renderModuleChildren(_this.module)
                 });
                 JBridge.getChildContent(module.identifier, callback1)
-            } else {
+            }
+             else {
               if (JBridge.isNetworkAvailable()){
-                JBridge.importCourse(module.identifier, "true")
+                // var callback22 = callbackMapper.map(function(data){
+                //     var tmp = JSON.parse(data[0]);
+                //     if(tmp.status == "NOT_FOUND")
+                        JBridge.importCourse(module.identifier, "true")    
+                //     else
+                //         JBridge.showSnackBar(window.__S.ERROR_CONTENT_NOT_AVAILABLE)
+                // });
+                // JBridge.getContentImportStatus(module.identifier,callback22)
+                
               }
               else
                 JBridge.showSnackBar(window.__S.NO_INTERNET)

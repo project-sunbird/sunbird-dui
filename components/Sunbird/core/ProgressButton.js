@@ -138,7 +138,7 @@ class ProgressButton extends View {
         if (this.isDownloaded) {
           window.__getGenieEvents = this.checkTelemetry;
           // JBridge.playContent(this.props.identifier);
-          if(this.props.playContent!=null)
+          if(this.props.playContent!=null && this.props.playContent!=undefined)
             JBridge.playContent(JSON.stringify(this.props.playContent));
           else{
             var callback = callbackMapper.map(function(data){

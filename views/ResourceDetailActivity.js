@@ -311,7 +311,7 @@ class ResourceDetailActivity extends View {
           margin="0,4,0,0"
           width="wrap_content"
           height="wrap_content"
-          text={description}
+          textFromHtml={description}
           style={window.__TextStyle.textStyle.CARD.TITLE.REGULAR_BLACK}/>
 
 
@@ -396,7 +396,8 @@ class ResourceDetailActivity extends View {
           <LinearLayout
           margin="0,12,0,0"
           width="match_parent"
-          height="wrap_content">
+          height="wrap_content"
+          >
 
             <TextView
             width="wrap_content"
@@ -412,6 +413,7 @@ class ResourceDetailActivity extends View {
             <TextView
             width="wrap_content"
             height="wrap_content"
+            visibility = {this.details.hasOwnProperty("content")&& this.details.content.hasOwnProperty("me_totalDownloads") ? "visible" : "gone"}
             text={this.details.hasOwnProperty("content")&& this.details.content.hasOwnProperty("me_totalDownloads") ? this.details.content.me_totalDownloads : "0"}
             style={window.__TextStyle.textStyle.HINT.DULL}/>
 
@@ -439,6 +441,7 @@ class ResourceDetailActivity extends View {
               width="wrap_content"
               height="wrap_content"
               text={window.__S.DOWNLOADS}
+              visibility = {this.details.hasOwnProperty("content")&& this.details.content.hasOwnProperty("me_totalDownloads") ? "visible" : "gone"}
               style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
         </LinearLayout>

@@ -135,7 +135,9 @@ class ResourceContainer extends View {
       <LinearLayout
           height="match_parent"
           width="match_parent"
-          orientation="vertical">
+          orientation="vertical"
+          visibility = {this.props.data ? "visible" : "gone"}
+          >
 
           {this.getHeader()}
 
