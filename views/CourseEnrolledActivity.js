@@ -449,7 +449,7 @@ class CourseEnrolledActivity extends View {
 
     this.checkContentLocalStatus(this.baseIdentifier);
     console.log("this.enrolledCourses",this.enrolledCourses)
-    if(this.details.batchId || this.enrolledCourses.batchId){
+    if(this.details.batchId || this.enrolledCourses.batchId){ 
      var batchId = this.details.batchId ? this.details.batchId : this.enrolledCourses.batchId;
       var whatToSend = {
         "user_token" : window.__userToken,
@@ -457,7 +457,10 @@ class CourseEnrolledActivity extends View {
         "batch_id" : batchId
       }
       var event= { "tag": "API_Get_Batch_Details", contents: whatToSend };
-      window.__runDuiCallback(event);
+      if(JBridge.isNetworkAvailable())
+        window.__runDuiCallback(event);
+      else
+        JBridge.showSnackBar("Network Error, Batch details not found")
     }
   }
 
