@@ -461,7 +461,7 @@ class CourseEnrolledActivity extends View {
 
       var input = [{
                     type : "text",
-                    data : window.__deepLinkUrl+"/public/"+_this.baseIdentifier
+                    data : window.__deepLinkUrl+"/public/#!/course/"+_this.baseIdentifier
 
                   },{
                     type : "file",

@@ -308,7 +308,7 @@ class CourseInfoActivity extends View {
     var input = [
                  {
                     type : "text",
-                    data : window.__deepLinkUrl+"/public/"+_this.details.identifier
+                    data : window.__deepLinkUrl+"/public/#!/course/"+_this.details.identifier
                  }
                 ];
 
