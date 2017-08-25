@@ -327,7 +327,7 @@ class CourseEnrolledActivity extends View {
       var name = batch.name;
       this.batchName = batch.name;
       var whatToSend = {
-        "user_token" : window.__userToken,
+        "user_token" : batch.createdBy,
         "api_token" : window.__apiToken
       }
       var event= { "tag": "API_Get_Batch_Creator_name", contents: whatToSend };
