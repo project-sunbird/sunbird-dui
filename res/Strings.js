@@ -26,6 +26,7 @@ const stringsRes = {
 		CONTENT_FLAGGED_MSG : "Content flagged successfully",
 		CONTENT_FLAG_FAIL : "Content flagging failed",
 		CREATED_BY : "CREATED BY",
+		CREATED_BY_SMALL : "Created by",
 		DELETE : "Delete",
 		DESCRIPTION : "Description",
 		DONE : "done",

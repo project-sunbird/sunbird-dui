@@ -738,7 +738,7 @@ class UserActivity extends View {
             gravity="center"
             id={this.idSet.needAccHolder}
             onClick={this.toggleSignUpForm}
-            visibility={this.isLoginMode?"visible":"gone"}
+            visibility="gone"
             textFromHtml= {"<font color='#007AFF'><a href=''>"+window.__S.NO_ACC_YET+"</a></font>"}
             style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
 
