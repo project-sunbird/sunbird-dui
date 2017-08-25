@@ -822,7 +822,10 @@ class UserActivity extends View {
 
                 var output = JBridge.getFromSharedPrefs("intentLinkPath");
 
-                var identifier = output.substr(output.indexOf('do'),output.length);
+                console.log("FILE PATH GOT",output);
+
+                var identifier = output.substr(output.lastIndexOf("/")+1,output.length);
+                console.log("IDENTIFIER GOT",identifier);
                 _this.handleDeepLinkAction(identifier);
 
     }
