@@ -17,6 +17,8 @@ var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callba
 var Styles = require("../../res/Styles");
 let IconStyle = Styles.Params.IconStyle;
 
+var _this;
+
 class EducationPopUp extends View {
   constructor(props, childern) {
     super(props,childern);
@@ -32,10 +34,10 @@ class EducationPopUp extends View {
       "saveButtonParent",
       "saveButtonContainer"
     ]);
-
+    _this=this;
     window.__EducationPopUp = this;
     this.props = props;
-
+    this.responseCame=false;
     this.degree = "";
     this.yearOfPassing = "";
     this.percentage = "";
@@ -49,13 +51,11 @@ class EducationPopUp extends View {
 
 
   show = () => {
-    console.log(window.__EducationPopUp.data, "Data Education Popup");
     window.__patchCallback = this.getPatchCallback ;
+    this.responseCame=false;
     this.updateSaveButtonStatus(false);
-
     this.replaceChild(this.idSet.educationPopUpParent, this.getUi().render(),0);
     this.setVisibility("visible");
-
     this.initializeData();
     this.populateData();
   }
@@ -235,7 +235,7 @@ class EducationPopUp extends View {
   }
 
   handleSaveClick = () => {
-    console.log("Save Button Clicked");
+
 
     this.education = [];
     var json;
@@ -274,15 +274,37 @@ class EducationPopUp extends View {
       }
     }
 
-    console.log("whole body", JSON.stringify(body));
-
+    _this.responseCame=false;
     JBridge.patchApi(url, JSON.stringify(body), window.__userToken, window.__apiToken);
-    this.hide();
+    window.__LoaderDialog.show();
+     setTimeout(() => {
+         if(_this.responseCame){
+           console.log("Response Already Came")
+           return;
+         }
+         console.log("TIMEOUT")
+         JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION);
+         window.__LoaderDialog.hide();
+         _this.responseCame=false;
+     },window.__API_TIMEOUT);
   }
 
   getPatchCallback = (data) =>{
-   console.log("RESPONSE FOR DATA");
-   window.__BNavFlowRestart();
+    data=JSON.parse(data);
+    if(this.responseCame){
+      console.log("TIMEOUT")
+      return;
+    }
+
+   window.__LoaderDialog.hide();
+   this.responseCame=true;
+   console.log(data)
+   if(data.result.response=="SUCCESS"){
+     this.hide();
+     window.__BNavFlowRestart();
+   }else{
+     JBridge.showSnackBar(data.params.errmsg);
+   }
 
  }
 
@@ -301,7 +323,9 @@ class EducationPopUp extends View {
                   width="match_parent" >
 
                     {this.getBack()}
+
                     {this.getTitle()}
+
                 </LinearLayout>
             </LinearLayout>
 
@@ -373,6 +397,8 @@ class EducationPopUp extends View {
             height="wrap_content"
             id = {this.idSet.degreeText}
             onChange={this.setDegree}
+            singleLine="true"
+            maxLine="1"
             style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
             <LinearLayout
             height="34"
@@ -393,6 +419,8 @@ class EducationPopUp extends View {
             width="match_parent"
             height="wrap_content"
             inputType="numeric"
+            singleLine="true"
+            maxLine="1"
             onChange={this.setYearOfPassingText}
             id = {this.idSet.yearOfPassingText}
             style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
@@ -416,6 +444,8 @@ class EducationPopUp extends View {
             width="match_parent"
             height="wrap_content"
             inputType="numeric"
+            singleLine="true"
+            maxLine="1"
             onChange={this.setPercentage}
             id = {this.idSet.percentageText}
             style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
@@ -438,6 +468,8 @@ class EducationPopUp extends View {
             <EditText
             width="match_parent"
             height="wrap_content"
+            singleLine="true"
+            maxLine="1"
             onChange={this.setGrade}
             id = {this.idSet.gradeText}
             style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
@@ -460,6 +492,8 @@ class EducationPopUp extends View {
             <EditText
             width="match_parent"
             height="wrap_content"
+            singleLine="true"
+            maxLine="1"
             onChange={this.setInitution}
             id = {this.idSet.inititutionText}
             style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
@@ -482,6 +516,8 @@ class EducationPopUp extends View {
             <EditText
             width="match_parent"
             height="wrap_content"
+            singleLine="true"
+            maxLine="1"
             onChange={this.setBoardOrUniversity}
             id = {this.idSet.boardOrUniversityText}
             style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>

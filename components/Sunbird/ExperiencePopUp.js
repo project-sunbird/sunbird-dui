@@ -18,6 +18,7 @@ var Styles = require("../../res/Styles");
 let IconStyle = Styles.Params.IconStyle;
 
 
+var _this;
 
 class ExperiencePopUp extends View{
   constructor(props,childern){
@@ -40,7 +41,7 @@ class ExperiencePopUp extends View{
     ]);
     this.spinnerArray = ["Select","Hindi","English","Math","Physics","Chemistry","Economics"];
     this.array="Select,Hindi,English,Math,Physics,Chemistry,Economics";
-
+    _this=this;
     window.__ExperiencePopUp = this;
     this.props=props;
     this.subjects=[];
@@ -57,8 +58,8 @@ class ExperiencePopUp extends View{
  }
 
  show = () => {
-   console.log(window.__ExperiencePopUp.data , "data Experience Popup");
    window.__patchCallback = this.getPatchCallback ;
+   this.responseCame=false;
     var cmd=this.set({
      id: this.idSet.saveButtonParent,
      background: window.__Colors.FADE_BLUE
@@ -79,7 +80,6 @@ class ExperiencePopUp extends View{
    this.setVisibility("gone");
    this.subjects=[];
    window.__ExperiencePopUp.data=undefined;
-
 
  }
 
@@ -126,7 +126,7 @@ class ExperiencePopUp extends View{
    this.joiningDate=this.prevData.joiningDate;
    this.endDate=this.prevData.endDate;
 
-   console.log("populating");
+
    var cmd=this.set({
      id: this.idSet.jobText,
      text: this.prevData.jobName
@@ -571,8 +571,6 @@ getUi(){
 
      handleSpinnerItemClick = (...params) => {
 
-       console.log("SPINNER CLICKED",params);
-       console.log(this.spinnerArray[parseInt(params[2])] , "spinner val");
 
        if(parseInt(params[2])>0)
        this.addSubject(this.spinnerArray[parseInt(params[2])]);
@@ -608,7 +606,7 @@ getUi(){
        var _this = this;
        var callback = callbackMapper.map(
          function (data){
-             console.log(data[0],"calender");
+
                data[0]=_this.formatDate(data[0]);
 
               if(index==1){
@@ -694,6 +692,25 @@ getUi(){
        }
      }
 
+     getPatchCallback = (data) =>{
+       data=JSON.parse(data);
+       if(this.responseCame){
+
+         return;
+       }
+
+      window.__LoaderDialog.hide();
+      this.responseCame=true;
+      console.log(data)
+      if(data.result.response=="SUCCESS"){
+        this.hide();
+        window.__BNavFlowRestart();
+      }else{
+        JBridge.showSnackBar(data.params.errmsg);
+      }
+
+    }
+
      sendJSON = () => {
 
        if(window.__ExperiencePopUp.data==undefined){
@@ -709,7 +726,7 @@ getUi(){
         }
         else{
           var json=  window.__ExperiencePopUp.data;
-          console.log(json , "json");
+
 
           json.jobName=this.jobName;
           json.orgName=this.Organization;
@@ -724,37 +741,35 @@ getUi(){
 
         }
 
-          var url=window.__apiUrl + "/api/user/v1/update"
-          console.log("whole url" , url);
+        var url=window.__apiUrl + "/api/user/v1/update"
 
-          var body = {
-                    "id":"unique API ID",
-                    "ts":"response timestamp YYYY-MM-DDThh:mm:ss+/-nn:nn (timezone defaulted to +5.30)",
-                      "params": {
 
-                        },
-                    "request":{
-                      "userId":window.__userToken,
-                      "jobProfile": this.jobProfile
-                     }
-                    }
-          console.log("whole body",JSON.stringify(body) );
+        var body = {
+                  "id":"unique API ID",
+                  "ts":"response timestamp YYYY-MM-DDThh:mm:ss+/-nn:nn (timezone defaulted to +5.30)",
+                    "params": {
 
-          console.log("apiToken", window.__apiToken);
-          console.log("userToken", window.__userToken);
+                      },
+                  "request":{
+                    "userId":window.__userToken,
+                    "jobProfile": this.jobProfile
+                   }
+                  }
+        _this.responseCame=false;
+        JBridge.patchApi(url,JSON.stringify(body),window.__userToken,window.__apiToken);
+        window.__LoaderDialog.show();
 
-       JBridge.patchApi(url,JSON.stringify(body),window.__userToken,window.__apiToken);
-          console.log("JSON SENT");
-
-         this.hide();
-
+       setTimeout(() => {
+           if(_this.responseCame){
+             return;
+           }
+           JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION);
+           window.__LoaderDialog.hide();
+           _this.responseCame=false;
+       },window.__API_TIMEOUT);
      }
 
-     getPatchCallback = (data) =>{
-      console.log("RESPONSE FOR DATA");
-      window.__BNavFlowRestart();
 
-    }
 
      formatDate = (date) =>{
          date = date.substr(0,4)+"-"+date.substr(5);
@@ -787,13 +802,9 @@ getUi(){
       }
      }
 
-     doNothing = () =>{
-       console.log("Nothing");
-     }
-
      enableSaveButton = () =>{
-       console.log(this.subjects , "subs");
-       console.log(this.prevData.subjects, "prevsubs");
+
+
        this.saveButton =(
          <LinearLayout
           height="match_parent"

@@ -55,7 +55,7 @@ if (typeof window !== "undefined") {
   window.__THROTTELED_ACTIONS = [];
   window.__ALL_ONCLICKS = [];
 
-  window.__API_TIMEOUT=20000; //30 seconds for timeout
+  window.__API_TIMEOUT=20000; //20 seconds for timeout
 
   window.callUICallback = function() {
     var args = (arguments.length === 1 ? [arguments[0]] : Array.apply(null, arguments));
