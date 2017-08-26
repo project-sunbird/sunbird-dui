@@ -91,12 +91,26 @@ class BatchCard extends View {
                   height="wrap_content"
                   text={description}
                   style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULA_10}/>
- 
-                <TextView
-                  width="match_parent"
-                  height="wrap_content"
-                  text={window.__S.CREATED_BY + " " +utils.firstLeterCapital(this.props.batch.createdByName || "" )}
-                  style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULA_10}/>
+
+                  <LinearLayout
+                    width="match_parent"
+                    height = "wrap_content"
+                    orientation = "horizontal"
+                    visibility={this.props.batch.createdByName?"visible":"gone"}>
+
+                      <TextView
+                          width="wrap_content"
+                          height="wrap_content"
+                          text={window.__S.CREATED_BY_SMALL+"  "}
+                          style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULA_10}/>
+
+                       <TextView
+                        width="wrap_content"
+                        height="wrap_content"
+                        text={utils.firstLeterCapital(this.props.batch.createdByName || "" )}
+                        style={window.__TextStyle.textStyle.CARD.TITLE.DARK_14}/>
+
+                  </LinearLayout>
 
               </LinearLayout>
 

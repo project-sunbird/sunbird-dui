@@ -110,6 +110,10 @@ courseInfoActivity input whereFrom whatToSendBack = do
 enrolledCourseActivity input whereFrom whatToSendBack = do
 	event <- ui $ CourseEnrolledActivity {courseDetails : input}
 	case event of
+		API_Get_Batch_Creator_name {user_token:user_token,api_token:api_token} -> do
+			responseData <- getProfileDetail user_token api_token
+			_ <- sendUpdatedState {response : responseData, responseFor : "API_Get_Batch_Creator_name", screen:"asas"}
+			pure $ "handled"
   		OPEN_ModuleDetailsActivity {moduleName:output1,moduleDetails:output2} -> subModuleDetailActivity output1 output2 "EnrolledCourseActivity" input
   		BACK_CourseEnrolledActivity -> case whereFrom of
 			"ProfileFragment" -> profileFragment whatToSendBack "Terminate" input

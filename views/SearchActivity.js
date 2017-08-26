@@ -330,7 +330,7 @@ class SearchActivity extends View {
 
   handleClearClick = () => {
 
-    JBridge.showKeyboard();
+    // JBridge.showKeyboard();
 
     var cmd = "";
     cmd += _this.set({

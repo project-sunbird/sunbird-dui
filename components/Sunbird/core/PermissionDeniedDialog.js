@@ -28,7 +28,8 @@ class PermissionDeniedDialog extends View {
       "bodyWithMessageContainer",
       "bodyContainer",
       "permissionIconHolder",
-      "permissionTextHolder"
+      "permissionTextHolder",
+      "permissionSettingsMsg"
     ]);
     this.chosenItem;
     this.selectedList = [];
@@ -47,7 +48,12 @@ class PermissionDeniedDialog extends View {
 
     Android.runInUI(this.set({
       id: this.idSet.permissionTextHolder,
-      text : data
+      text : data + " "+window.__S.PERMISSION_DENIED
+    }),0);
+
+    Android.runInUI(this.set({
+      id: this.idSet.permissionSettingsMsg,
+      text : window.__S.PERMISSION_SETTING_MSG+" "+data
     }),0);
 
   }
@@ -94,7 +100,7 @@ class PermissionDeniedDialog extends View {
               orientation="vertical"
               height="0"
               id={this.idSet.featureContainer}
-              padding = "3,3,3,3"
+              padding = "16,0,16,16"
               cornerRadius="5"
               weight="1"
               gravity = "center">
@@ -102,13 +108,14 @@ class PermissionDeniedDialog extends View {
                     typeface = "bold"
                     clickable="true"
                     width = "match_parent"
-                    height = "56"
-                    stroke = {"3," + window.__Colors.WHITE}
+                    height = "50"
+                    cornerRadius="4"
+                    stroke = {"2," + window.__Colors.WHITE}
                     background = {window.__Colors.PRIMARY_ACCENT}
-                    text = "ASK PERMISSION"
+                    text = "OPEN SETTINGS"
                     buttonClick = {this.onConfirm}
                     textColor = {window.__Colors.WHITE}
-                    textSize = "18"/>
+                    textSize = "14"/>
             </LinearLayout>)
 
 
@@ -125,6 +132,7 @@ class PermissionDeniedDialog extends View {
 
 
   getBodyWithMessage = () => {
+
     return (<LinearLayout
               cornerRadius = "2"
               width = "match_parent"
@@ -140,39 +148,28 @@ class PermissionDeniedDialog extends View {
               <ImageView
                 width="87"
                 height="78"
-                margin="0,40,0,0"
+                margin="0,80,0,0"
                 gravity="center_horizontal"
                 id={this.idSet.permissionIconHolder}
-                imageUrl={"ic_flag_warning"}/>
+                imageUrl={"ic_warning_grey"}/>
 
                <TextView
                 width="wrap_content"
                 height="wrap_content"
+                id={this.idSet.permissionTextHolder}
                 text="PERMISSION NOT AVAILABLE"
                 margin="0,9,0,0"
                 gravity="center_horizontal"
-                style={window.__TextStyle.textStyle.HINT.REGULAR}/>
+                style={window.__TextStyle.textStyle.HINT.DULL}/>
 
 
               <TextView
                 width="260"
                 height="wrap_content"
-                margin="0,90,0,0"
+                margin="0,120,0,0"
                 gravity="center_horizontal"
-                id={this.idSet.permissionTextHolder}
-                style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
-
-
-              <TextView
-                width="wrap_content"
-                height="wrap_content"
-                margin="0,30,0,0"
-                gravity="center_horizontal"
-                onClick={this.handleDismissClick}
-                textFromHtml={"<font color='#007AFF'><a href=''>"+ window.__S.GO_BACK﻿ + "</a></font>"}
-                style={window.__TextStyle.textStyle.CARD.BODY.DARK.BLUE_R}/>
-
-
+                id={this.idSet.permissionSettingsMsg}
+                style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>
 
             </LinearLayout>)
   }
