@@ -51,17 +51,19 @@ class SearchResult extends View {
                 >
                   <TextView
                       height="wrap_content"
+                      width = "0"
                       padding = "10,10,0,0"
                       text= {item.name}
                       enableEllipse = "true"
+                      weight = "7"
                       style={window.__TextStyle.textStyle.CARD.HEADING}/>
                       <LinearLayout
                        width="0"
-                      weight="0.25" />
+                      weight="0.5" />
                     <TextView
                       height="wrap_content"
                       padding = "0,10,0,0"
-                      weight="0.75"
+                      weight="2"
                       gravity = "right"
                       width="0"
                       text= { item.hasOwnProperty("size") ? utils.formatBytes(item.size) : " "}
