@@ -161,7 +161,10 @@ const stringsRes = {
 		VIEW_UPCOMING_BATCHES : "View upcoming batches",
 		BATCHES_FOR_THIS_COURSE : "Batches for this course",
 		SHOW_BATCHES : "SHOW BATCHES",
-		USER_NAME_PROFILE : "username"
+		USER_NAME_PROFILE : "username",
+		STORAGE_DENIED:"STORAGE",
+		PERMISSION_DENIED:"PERMISSION DENIED",
+		PERMISSION_SETTING_MSG : "To provide permissions, open settings, go to app permissions and enable"
 	},
 	"hi_IN" : {
 	},

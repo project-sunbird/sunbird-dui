@@ -171,7 +171,8 @@ class SearchResult extends View {
       }
       if(data == "DeniedPermanently"){
         console.log("DENIED DeniedPermanently");
-        window.__PermissionDeniedDialog.show("ic_flag_warning","Cannot download content since permission is denied");
+        JBridge.hideKeyboard();
+        window.__PermissionDeniedDialog.show("ic_warning_grey",window.__S.STORAGE_DENIED);
       }
 
     });

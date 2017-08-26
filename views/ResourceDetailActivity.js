@@ -539,9 +539,28 @@ class ResourceDetailActivity extends View {
      if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
        window.__SharePopup.show();
      }else{
-        utils.setPermissions("android.permission.WRITE_EXTERNAL_STORAGE");
+        this.setPermissions();
       }
     }
+  }
+
+
+  setPermissions = () => {
+
+   var callback = callbackMapper.map(function(data) {
+
+      if (data == "android.permission.WRITE_EXTERNAL_STORAGE") {
+        JBridge.setKey("isPermissionSetWriteExternalStorage", "true");
+      }
+      if(data == "DeniedPermanently"){
+        console.log("DENIED DeniedPermanently");
+        window.__PermissionDeniedDialog.show("ic_warning_grey",window.__S.STORAGE_DENIED);
+      }
+
+    });
+
+    JBridge.setPermissions(callback,"android.permission.WRITE_EXTERNAL_STORAGE");
+
   }
 
 
