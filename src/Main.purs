@@ -97,6 +97,10 @@ viewBatchActivity input whereFrom whatToSendBack = do
 			responseData <- enrollInBatch details x token
 			_ <- sendUpdatedState {response : responseData, responseFor : "API_EnrollInBatch", screen:"asas"}
 			pure $ "apiDefault"
+		API_BatchCreator {user_token : x, api_token: token} -> do
+			responseData <- getProfileDetail x token
+			_ <- sendUpdatedState {response : responseData, responseFor : "API_BatchCreator", screen:"asas"}
+			pure $ "apiDefault"
 		BACK_ViewBatchActivity -> courseInfoActivity whatToSendBack "Deeplink" input
 		_ -> viewBatchActivity input whereFrom whatToSendBack
 
@@ -118,7 +122,7 @@ enrolledCourseActivity input whereFrom whatToSendBack = do
         API_Get_Batch_Details {user_token : user_token,api_token : api_token ,batch_id : batch_id} -> do
             responseData <- getBatchDetails user_token api_token batch_id
             _ <- sendUpdatedState {response : responseData, responseFor : "API_Get_Batch_Details", screen:"asas"}
-            pure $ "handled"    
+            pure $ "handled"
         OPEN_ModuleDetailsActivity {moduleName:output1,moduleDetails:output2} -> subModuleDetailActivity output1 output2 "DeepLinkCourseEnrolled" input
         BACK_CourseEnrolledActivity -> case whereFrom of
             "Deeplink" -> mainActivity "{}" "UserActivity" "{}"

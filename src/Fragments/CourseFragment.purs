@@ -33,6 +33,10 @@ viewBatchActivity input whereFrom whatToSendBack = do
 	event <- ui $ ViewBatchActivity {extras : input}
 	case event of
 		OPEN_EnrolledActivity_BATCH {course: output} -> enrolledCourseActivity output "CourseFragment" input
+		API_BatchCreator {user_token:x, api_token:y} -> do
+			resData <- getProfileDetail x y
+			_<- sendUpdatedState {response : resData, responseFor : "API_BatchCreator", screen:"ViewBatchActivity"}
+			pure $ "apiCalled"
 		API_Get_Batch_list {user_token : x, api_token: token , request : request } -> do
 			responseData <- getBatchList x token request
 			_ <- sendUpdatedState {response : responseData, responseFor : "API_Get_Batch_list", screen:"asas"}

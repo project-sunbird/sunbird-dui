@@ -304,7 +304,8 @@ data ViewBatchActivity = ViewBatchActivity { extras::String }
 data ViewBatchActivityAction = DummyViewBatchActivity |
   BACK_ViewBatchActivity |
   OPEN_EnrolledActivity_BATCH {course::String} |
-  API_EnrollInBatch {reqParams ::String , user_token::String ,api_token::String}  |
+  API_EnrollInBatch {reqParams ::String , user_token::String ,api_token::String} |
+  API_BatchCreator {user_token::String , api_token::String} |
   API_Get_Batch_list {user_token::String, api_token::String, request::String }
 
 instance viewBatchActivity :: UIScreen ViewBatchActivity ViewBatchActivityAction where

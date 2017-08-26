@@ -3,7 +3,7 @@ var Connector = require("@juspay/mystique-backend").connector;
 var callbackMapper = require("@juspay/mystique-backend").helpers.android.callbackMapper;
 var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 window.R = require("ramda");
-
+var debounce = require("debounce")
 
 var LinearLayout  = require("@juspay/mystique-backend").androidViews.LinearLayout ;
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
@@ -40,8 +40,7 @@ class ViewBatchActivity extends View {
         //set false to disable caching
         this.shouldCacheScreen = false
         this.searchId = this.extras.identifier
-        this.showChooser=true;
-
+        this.showChooser=false;
 
         setTimeout(() => {
             Android.runInUI(
@@ -49,6 +48,8 @@ class ViewBatchActivity extends View {
                 null
             );
         });
+
+        this.handleTypeChange = debounce(this.handleTypeChange, 100);
 
 
     }
@@ -77,7 +78,7 @@ class ViewBatchActivity extends View {
 
 
     handleTypeChange = (type)=> {
-      this.toggleBatchTypeChooser();
+        this.curentType=type;
       var cmd=this.set({
         id : this.idSet.batchTypeTextView,
         text : type
@@ -124,6 +125,41 @@ class ViewBatchActivity extends View {
      var event = { tag: 'BACK_ViewBatchActivity', contents: whatToSend }
 
      window.__runDuiCallback(event);
+    }
+
+    requestUserDetails = (userId) => {
+      var whatToSend = {
+        user_token: userId,
+        api_token: window.__apiToken
+       }
+      var event = { tag: "API_BatchCreator", contents: whatToSend}
+      if (JBridge.isNetworkAvailable()){
+        window.__runDuiCallback(event);
+      }
+    }
+
+    updateUserDetailsInBatchList = (user) => {
+      var oldList = this.batchList;
+      this.batchList = oldList.map((item)=>{
+        var batch=item;
+        if(batch.createdBy == user.id){
+          batch.createdByName= user.firstName + " " + ( user.lastName || "")
+        }
+        return batch;
+      })
+      this.upComingList=[];
+      this.ongoingList=[];
+      this.batchList.map((item)=>{
+        if(item.enrollmentType == "open"){
+          if(item.status==1){
+            this.ongoingList.push(item);
+          }else{
+            this.upComingList.push(item);
+          }
+        }
+      })
+      this.handleTypeChange(this.curentType);
+
     }
 
     handleStateChange = (state) => {
@@ -180,7 +216,7 @@ class ViewBatchActivity extends View {
               "status": 0
             }
             this.extras.batchId=this.courseDetails.batchId
-            
+
             window.__enrolledCourses.push(enrolledCourse);
             console.log("extras",this.extras)
             JBridge.showSnackBar(window.__S.COURSE_ENROLLED)
@@ -200,7 +236,7 @@ class ViewBatchActivity extends View {
           this.upComingList=[];
           this.ongoingList=[];
           this.batchList.map((item)=>{
-            if(item.enrollmentType == "open"){  
+            if(item.enrollmentType == "open"){
               if(item.status==1){
                 this.ongoingList.push(item);
               }else{
@@ -211,6 +247,10 @@ class ViewBatchActivity extends View {
 
           this.handleTypeChange(window.__S.VIEW_ONGOING_BATCHES);
 
+          break;
+
+        case "API_BatchCreator":
+          this.updateUserDetailsInBatchList(result.response)
           break;
 
         default:
@@ -306,7 +346,10 @@ class ViewBatchActivity extends View {
                           width="match_parent"
                           id={this.idSet.viewOnGoingContainer}
                           orientatio="vertical"
-                          onClick={()=>{_this.handleTypeChange(window.__S.VIEW_ONGOING_BATCHES)}}>
+                          onClick={()=>{
+                            _this.toggleBatchTypeChooser();
+                            _this.handleTypeChange(window.__S.VIEW_ONGOING_BATCHES)
+                          }}>
 
                       <TextView
                         height="wrap_content"
@@ -322,7 +365,10 @@ class ViewBatchActivity extends View {
                           width="match_parent"
                           orientatio="vertical"
                           id={this.idSet.viewUpComingContainer}
-                          onClick={()=>{_this.handleTypeChange(window.__S.VIEW_UPCOMING_BATCHES)}}>
+                          onClick={()=>{
+                            _this.toggleBatchTypeChooser();
+                            _this.handleTypeChange(window.__S.VIEW_UPCOMING_BATCHES)
+                          }}>
 
                       <TextView
                         height="wrap_content"
@@ -380,6 +426,7 @@ class ViewBatchActivity extends View {
                       width="match_parent"
                       batch={item}
                       batchStatus={batchStatus}
+                      onRequestCreator={this.requestUserDetails}
                       onEnrollClick={()=>{
                         this.handleBatchEnrollClick(item);
                       }}/>

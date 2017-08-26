@@ -18,7 +18,7 @@ var utils = require('../../utils/GenericFunctions');
 
 class BatchCard extends View {
   constructor(props, children) {
-    super(props, children);
+    super(props, children);``
     _this=this;
 
     this.setIds([
@@ -28,8 +28,10 @@ class BatchCard extends View {
   }
 
 
-  afterRender = () => {
-
+  requestCreatorDetails = () => {
+    if(this.props.batch.createdByName == undefined ){
+      this.props.onRequestCreator(this.props.batch.createdBy);
+    }
   }
 
 
@@ -39,6 +41,7 @@ class BatchCard extends View {
     return (<LinearLayout
       height="wrap_content"
       width="wrap_content"
+      afterRender={this.requestCreatorDetails}
       gravity="center_vertical"
       orientation="vertical">
 
@@ -57,7 +60,7 @@ class BatchCard extends View {
   }
 
   getBody= ()=>{
-    
+
     var description="";
     description+= utils.prettifyDate(this.props.batch.startDate);
     if(this.props.batch.endDate && this.props.batch.endDate!=null && this.props.batch.endDate!=undefined){
@@ -67,6 +70,7 @@ class BatchCard extends View {
     return (<LinearLayout
               margin="0,8,0,0"
               width="match_parent"
+              gravity="center_vertical"
               height="wrap_content">
 
               <LinearLayout
@@ -86,6 +90,12 @@ class BatchCard extends View {
                   width="match_parent"
                   height="wrap_content"
                   text={description}
+                  style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULA_10}/>
+ 
+                <TextView
+                  width="match_parent"
+                  height="wrap_content"
+                  text={window.__S.CREATED_BY + " " +utils.firstLeterCapital(this.props.batch.createdByName || "" )}
                   style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULA_10}/>
 
               </LinearLayout>
