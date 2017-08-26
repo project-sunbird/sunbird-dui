@@ -127,7 +127,7 @@ class CourseEnrolledActivity extends View {
   onStop = () =>{
     if( window.__SharePopup){
       window.__SharePopup.hide();
-    } 
+    }
     console.log("ON STOP IN ResourceDetailActivity")
   }
 
@@ -333,14 +333,17 @@ class CourseEnrolledActivity extends View {
       var event= { "tag": "API_Get_Batch_Creator_name", contents: whatToSend };
       window.__runDuiCallback(event);
       console.log("batch created token",batch.createdBy)
-      
+
     }else if(state.responseFor == "API_FlagCourse"){
 
         if(responseCode == 200){
-            window.__LoaderDialog.hide();
             if(response[0] == "successful"){
-              JBridge.showSnackBar(window.__S.CONTENT_FLAGGED_MSG)
-              _this.onBackPressed();
+              setTimeout(function(){
+                JBridge.showSnackBar(window.__S.CONTENT_FLAGGED_MSG)
+                window.__BNavFlowRestart();
+                _this.onBackPressed();
+                window.__LoaderDialog.hide();
+              }, 2000)
             }
         }
         else{
@@ -415,7 +418,7 @@ class CourseEnrolledActivity extends View {
   afterRender=()=>{
     console.log("details",this.details)
 
-    
+
 
     if((this.details.hasOwnProperty("contentType")) && (this.details.contentType.toLocaleLowerCase() == "collection" || this.details.contentType.toLocaleLowerCase() == "textbook")){
       var cmd = this.set({
@@ -426,7 +429,7 @@ class CourseEnrolledActivity extends View {
       Android.runInUI(cmd, 0);
     }
     if(!this.enrolledCourses.hasOwnProperty("lastReadContentId") || (this.enrolledCourses.hasOwnProperty("lastReadContentId") && this.enrolledCourses.lastReadContentId==null)){
-      
+
 
       var btn  = (<FeatureButton
                     clickable="true"
@@ -439,7 +442,7 @@ class CourseEnrolledActivity extends View {
                     style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
                     buttonClick = {this.handleResumeClick}
                     />)
-      
+
       this.replaceChild(this.idSet.featureButton,btn.render(),0)
         // Android.runInUI(cmd, 0);
 
@@ -711,7 +714,7 @@ class CourseEnrolledActivity extends View {
                 </LinearLayout>
 
 
-          </RelativeLayout>  
+          </RelativeLayout>
 
 
       </LinearLayout>

@@ -44,7 +44,7 @@ class ResourceDetailActivity extends View {
         {imageUrl:'ic_action_overflow'}
       ]
     }
-    this.popupMenu = window.__S.DELETE + "," + window.__S.FLAG 
+    this.popupMenu = window.__S.DELETE + "," + window.__S.FLAG
 
     this.shouldCacheScreen = false;
 
@@ -52,7 +52,7 @@ class ResourceDetailActivity extends View {
     this.details = JSON.parse(this.details);
     this.playContent = "";
     console.log("RDA",this.details)
-    
+
     this.localStatus = false;
 
     _this = this;
@@ -70,7 +70,7 @@ class ResourceDetailActivity extends View {
               <ProgressButton
                  width="match_parent"
                  isCourse = "false"
-                 playContent = {_this.playContent} 
+                 playContent = {_this.playContent}
                  contentDetail = {_this.details.content}
                  buttonText="PLAY"
                  localStatus = {_this.localStatus}
@@ -140,7 +140,7 @@ class ResourceDetailActivity extends View {
                               }];
 
         }
-                      
+
           var sharePopUp = (
             <SharePopup
             data = {input}/>
@@ -151,13 +151,13 @@ class ResourceDetailActivity extends View {
         });
 
         JBridge.exportEcar(this.details.identifier, shareCallback);
-      
+
   }
 
   afterRender = () => {
 
      this.checkLocalStatus(this.details);
-    
+
     if(this.details && this.details.content && this.details.content.me_averageRating){
     JBridge.setRating(this.idSet.ratingBar, this.details.content.me_averageRating);
     }else if(this.details.content.hasOwnProperty("contentData") && this.details.content.contentData.hasOwnProperty("me_averageRating")){
@@ -191,7 +191,7 @@ class ResourceDetailActivity extends View {
                           "versionKey": versionKey,
                           "flags": [comment]
                      }
-    
+
     var whatToSend = {
       "user_token" : window.__userToken,
       "api_token" : window.__apiToken,
@@ -242,19 +242,19 @@ class ResourceDetailActivity extends View {
                           padding="10,10,10,10"
                           stroke ={"3," + window.__Colors.PRIMARY_BLACK}
                           imageFromUrl = {item}/>
-                
+
                 </LinearLayout>)
     })
-  
+
     }
 
-    
+
     return (
     <LinearLayout
       height="wrap_content"
       width="match_parent"
       orientation="vertical">
-    
+
       <TextView
         margin="0,16,0,0"
         width="wrap_content"
@@ -277,8 +277,8 @@ class ResourceDetailActivity extends View {
 
         </LinearLayout>
 
-      </HorizontalScrollView>  
-        
+      </HorizontalScrollView>
+
     </LinearLayout>)
   }
 
@@ -455,21 +455,25 @@ class ResourceDetailActivity extends View {
     var responseCode = state.response.status[2]
     if(responseCode == 200){
       var callback = callbackMapper.map(function(response){
-        window.__LoaderDialog.hide();
 
         if(response[0] == "successful"){
-          JBridge.showSnackBar(window.__S.CONTENT_FLAGGED_MSG)
-          _this.onBackPressed();
+          setTimeout(function(){
+            JBridge.showSnackBar(window.__S.CONTENT_FLAGGED_MSG)
+            window.__BNavFlowRestart();
+            _this.onBackPressed();
+            window.__LoaderDialog.hide();
+          }, 2000)
+
         }
       });
       JBridge.deleteContent(this.details.identifier,callback);
-      
+
     }
     else{
       window.__LoaderDialog.hide();
       JBridge.showSnackBar(window.__S.CONTENT_FLAG_FAIL);
       _this.onBackPressed();
-      
+
     }
     console.log(response)
 
@@ -511,7 +515,7 @@ class ResourceDetailActivity extends View {
       var event= { "tag": "BACK_ResourceDetailActivity", contents: whatToSend };
       window.__runDuiCallback(event);
     }
-    
+
   }
 
   changeOverFlow = () =>{
@@ -614,7 +618,7 @@ class ResourceDetailActivity extends View {
        height="match_parent"
        id={this.idSet.sharePopupContainer}/>
 
-       
+
 
       </RelativeLayout>
     );
