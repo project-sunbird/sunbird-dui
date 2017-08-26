@@ -17,6 +17,7 @@ class ProfileExperiences extends View {
     ]);
     _this = this;
     this.isEditable = this.props.editable;
+    this.popUpType = this.props.popUpType;
 
     this.jobs = (this.props.data != undefined)? this.props.data : [];
 
@@ -42,8 +43,8 @@ class ProfileExperiences extends View {
               width="wrap_content"
               height="wrap_content"
               text="Add"
-              onClick = {window.__ExperiencePopUp.show}
-              visibility = "gone"
+              onClick = {this.props.popUpType == window.__PROFILE_POP_UP_TYPE.EXPERIENCE ? window.__ExperiencePopUp.show : window.__EducationPopUp.show}
+              visibility = {(this.isEditable == "true") ? "visible" : "gone"}
               style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
 
               </LinearLayout>)
@@ -58,7 +59,7 @@ class ProfileExperiences extends View {
   }
 
   getEditButton = (item) =>{
-    if(this.editable){
+    if(this.isEditable == "true"){
     return (
       <LinearLayout
       height="wrap_content"
@@ -86,13 +87,18 @@ class ProfileExperiences extends View {
   showPopUp = (item) =>{
     console.log(item, "showPopUp");
 
-    window.__ExperiencePopUp.data=item;
-    window.__ExperiencePopUp.show();
+    if (this.props.popUpType == window.__PROFILE_POP_UP_TYPE.EXPERIENCE) {
+      window.__ExperiencePopUp.data=item;
+      window.__ExperiencePopUp.show();
+    } else if (this.props.popUpType == window.__PROFILE_POP_UP_TYPE.EDUCATION) {
+      window.__EducationPopUp.data=item;
+      window.__EducationPopUp.show();
+    }
   }
 
   getBody(input) {
     var date = "";
-    if (this.props.heading == "Education"){
+    if (this.props.popUpType == window.__PROFILE_POP_UP_TYPE.EDUCATION){
       if (input.yearOfPassing)
         date = "Year of passing : " + input.yearOfPassing;
     } else {
@@ -158,6 +164,12 @@ class ProfileExperiences extends View {
 
   experienceBody = () => {
 
+   if(this.jobs.length <= 0){
+     return(
+       <LinearLayout
+       width="wrap_content"
+       height="wrap_content"/>);
+   }
     var cards = this.jobs.map((item, i) => {
       return (<LinearLayout
                 width="wrap_content"
@@ -198,7 +210,7 @@ class ProfileExperiences extends View {
                 height="match_parent"
                 margin="0,16,0,0"
                 orientation="vertical"
-                visibility = {(this.jobs.length > 0) ? "visible" : "gone"}>
+                >
 
                 {this.getLineSeperator()}
 

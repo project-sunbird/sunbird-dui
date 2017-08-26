@@ -198,7 +198,7 @@ class ProfileAdditionalInfo extends View {
   }
   handleEditProfileClick = () => {
 
-    var whatToSend = {}
+    var whatToSend = { "profile" : JSON.stringify(this.data)}
     var event ={ tag: "OPEN_EditProfileActivity", contents: whatToSend }
     window.__runDuiCallback(event);
 

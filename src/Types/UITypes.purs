@@ -92,7 +92,7 @@ data MainActivityAction = OPEN_HomeFragment |
   OPEN_CommunityInfoActivity {community::String} |
   OPEN_CommunityViewAllActivity |
   OPEN_NotificationActivity |
-  OPEN_EditProfileActivity |
+  OPEN_EditProfileActivity {profile::String} |
   OPEN_SearchActivity {filterDetails::String}|
   OPEN_CommProfSearchActivity {filterDetails::String}|
   API_ResourceFragment {user_token::String, api_token::String}|
@@ -318,7 +318,7 @@ instance decodeViewBatchActivityAction :: Decode ViewBatchActivityAction where d
 instance encodeViewBatchActivityAction :: Encode ViewBatchActivityAction where encode = defaultEncode
 
 
-data AdditionalInformationActivity = AdditionalInformationActivity
+data AdditionalInformationActivity = AdditionalInformationActivity {profile :: String}
 data AdditionalInformationActivityAction = DummyAdditionalInformationActivity |
   BACK_AdditionalInformationActivity
 

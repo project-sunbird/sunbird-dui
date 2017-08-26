@@ -31,7 +31,10 @@ class AdditionalInformationActivity extends View{
       "predictionLanguageLayout",
       "LanguageLayout",
       "HobbiesLayout",
-      "predictionHobbiesLayout"
+      "predictionHobbiesLayout",
+      "emailText",
+      "phoneText",
+      "locationText"
     ]);
     this.shouldCacheScreen = false;
     this.state=state;
@@ -40,8 +43,58 @@ class AdditionalInformationActivity extends View{
     this.selectedLanguages=[];
     this.hobbieDictionary=["cycling","swimming","singing","travelling","playing","dancing"];
     this.selectedHobbies=[];
+    this.email = "";
+    this.mobile = "";
+    this.location = "";
+
+
     console.log("cons");
+
+    this.data = JSON.parse(this.state.data.value0.profile);
+    console.log("Info State", this.data);
+
   }
+
+
+  initData = () => {
+    this.selectedLanguages=[];
+    // this.email = "";
+    // this.mobile = "";
+    // this.location = "";
+
+    this.email = this.data.email;
+    this.phone = this.data.phone;
+
+    this.location = this.data.location;
+
+    var cmd = this.set({
+      id: this.idSet.emailText,
+      text: this.email
+    })
+
+    cmd += this.set({
+      id: this.idSet.phoneText,
+      text: this.phone
+    })
+
+    cmd += this.set({
+      id: this.idSet.locationText,
+      text: this.location
+    })
+
+    Android.runInUI(cmd, 0);
+
+    for (var i = 0; i < this.data.language.length; i++) {
+      var value = this.data.language[i].toLowerCase();
+      this.selectLanguageItem(value);
+    }
+
+  }
+
+  afterRender = () => {
+    this.initData();
+  }
+
 
   render(){
     console.log("render");
@@ -51,13 +104,17 @@ class AdditionalInformationActivity extends View{
         root="true"
         background={window.__Colors.WHITE}
         width="match_parent"
-        height="match_parent">
+        height="match_parent"
+        afterRender={this.afterRender}>
 
          {this.getToolbar()}
+         <RelativeLayout
+         width="match_parent"
+         height="match_parent">
+             {this.getBody()}
 
-         {this.getBody()}
-
-         {this.getTail()}
+             {this.getTail()}
+         </RelativeLayout>
      </LinearLayout>
     );
 console.log("rendered");
@@ -107,7 +164,7 @@ console.log("rendered");
                   height="match_parent"
                   width="match_parent"
                   gravity="center_vertical"
-                  background="#ffffff"
+                  background={window.__Colors.WHITE}
                   text="Additional Information"
                   style={window.__TextStyle.textStyle.TOOLBAR.HEADING}/>
 
@@ -119,39 +176,53 @@ console.log("rendered");
   getTail = () => {
     return (
       <LinearLayout
+      height="match_parent"
       width="match_parent"
-      height="wrap_content"
-      padding="0,2,0,0"
-      background={window.__Colors.PRIMARY_BLACK_22}>
+      orientation="vertical">
+          <LinearLayout
+          height="match_parent"
+          width="match_parent"
+          weight="1"
+          orientation="vertical"/>
           <LinearLayout
           width="match_parent"
-          height="wrap_content"
-          padding="15,15,15,15"
-          weight="14"
-          background={window.__Colors.WHITE}>
+          height="match_parent"
+          padding="0,2,0,0"
+          weight="6"
+          orientation="vertical"
+          background={window.__Colors.PRIMARY_BLACK_22}>
               <LinearLayout
-              background="#FF0076FE"
-              height="50"
               width="match_parent"
-              cornerRadius="4,4,4,4"
-              gravity="center"
-              >
-              <TextView
-              text="FINISH EDITING"
-              style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
-              />
-
+              height="match_parent"
+              padding="8,8,8,8"
+              background={window.__Colors.WHITE}>
+                  <LinearLayout
+                  background={window.__Colors.LIGHT_BLUE}
+                  height="match_parent"
+                  width="match_parent"
+                  cornerRadius="4,4,4,4"
+                  gravity="center">
+                  <TextView
+                  text="FINISH EDITING"
+                  height="wrap_content"
+                  width="wrap_content"
+                  style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}/>
+                  </LinearLayout>
               </LinearLayout>
           </LinearLayout>
-      </LinearLayout>
+        </LinearLayout>
     );
   }
 
   getBody = () =>{
     return (
+    <LinearLayout
+    height="match_parent"
+    width="match_parent"
+    orientation="vertical">
       <ScrollView
        width="match_parent"
-       height="479"
+       height="match_parent"
        weight="1"
        padding="15,25,15,0">
         <LinearLayout
@@ -219,6 +290,7 @@ console.log("rendered");
                           width="match_parent"
                           />
                           <EditText
+                          id={this.idSet.emailText}
                           width="match_parent"
                           height="wrap_content"
                           maxLines="1"
@@ -248,6 +320,7 @@ console.log("rendered");
                            width="match_parent"
                            />
                            <EditText
+                             id={this.idSet.phoneText}
                            width="match_parent"
                            height="wrap_content"
                            maxLines="1"
@@ -277,6 +350,7 @@ console.log("rendered");
                             width="match_parent"
                             />
                             <EditText
+                            id = {this.idSet.locationText}
                             width="match_parent"
                             height="wrap_content"
                             maxLines="1"
@@ -291,59 +365,61 @@ console.log("rendered");
                           width="match_parent"
                           />
 
-                          <LinearLayout
-                          width="match_parent"
-                          height="wrap_content"
-                          orientation="vertical">
-                            <TextView
-                             width="match_parent"
-                             height="20"
-                             style={window.__TextStyle.textStyle.HINT.BOLD}
-                             text="HOBBIES"/>
-                             <LinearLayout
-                             height="8"
-                             orientation="horizontal"
-                             width="match_parent"
-                             />
-                             <EditText
-                             width="match_parent"
-                             height="wrap_content"
-                             maxLines="1"
-                             style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
-                             hint="Start typing to add a hobby"
-                             onChange={this.getHobbiePredictions}
-                             />
-                             <RelativeLayout
-                              width="match_parent"
-                              height="wrap_content">
-                                  <LinearLayout
-                                  height="wrap_content"
-                                  width="wrap_content"
-                                  orientation="horizontal"
-                                  id={this.idSet.HobbiesLayout}
-                                  margin="0,4,0,8"/>
-
-                                  <LinearLayout
-                                  height="wrap_content"
-                                  width="328"
-                                  background={window.__Colors.PRIMARY_BLACK_22}>
-                                     <ScrollView
-                                     height="wrap_content"
-                                     width="match_parent"
-                                     margin="2,0,2,0">
-                                         <LinearLayout
-                                         height="wrap_content"
-                                         width="match_parent"
-                                         margin="2,0,2,0"
-                                         id={this.idSet.predictionHobbiesLayout}
-                                         background="#ffffff">
-                                         </LinearLayout>
-                                     </ScrollView>
-                                  </LinearLayout>
-
-                             </RelativeLayout>
-
-                           </LinearLayout>
+                         {
+                          // <LinearLayout
+                          // width="match_parent"
+                          // height="wrap_content"
+                          // orientation="vertical">
+                          //   <TextView
+                          //    width="match_parent"
+                          //    height="20"
+                          //    style={window.__TextStyle.textStyle.HINT.BOLD}
+                          //    text="HOBBIES"/>
+                          //    <LinearLayout
+                          //    height="8"
+                          //    orientation="horizontal"
+                          //    width="match_parent"
+                          //    />
+                          //    <EditText
+                          //    width="match_parent"
+                          //    height="wrap_content"
+                          //    maxLines="1"
+                          //    style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
+                          //    hint="Start typing to add a hobby"
+                          //    onChange={this.getHobbiePredictions}
+                          //    />
+                          //    <RelativeLayout
+                          //     width="match_parent"
+                          //     height="wrap_content">
+                          //         <LinearLayout
+                          //         height="wrap_content"
+                          //         width="wrap_content"
+                          //         orientation="horizontal"
+                          //         id={this.idSet.HobbiesLayout}
+                          //         margin="0,4,0,8"/>
+                          //
+                          //         <LinearLayout
+                          //         height="wrap_content"
+                          //         width="328"
+                          //         background={window.__Colors.PRIMARY_BLACK_22}>
+                          //            <ScrollView
+                          //            height="wrap_content"
+                          //            width="match_parent"
+                          //            margin="2,0,2,0">
+                          //                <LinearLayout
+                          //                height="wrap_content"
+                          //                width="match_parent"
+                          //                margin="2,0,2,0"
+                          //                id={this.idSet.predictionHobbiesLayout}
+                          //                background="#ffffff">
+                          //                </LinearLayout>
+                          //            </ScrollView>
+                          //         </LinearLayout>
+                          //
+                          //    </RelativeLayout>
+                          //
+                          //  </LinearLayout>
+                         }
 
 
 
@@ -373,6 +449,11 @@ console.log("rendered");
 
         </LinearLayout>
        </ScrollView>
+       <LinearLayout
+       height="match_parent"
+       width="match_parent"
+       weight="6"/>
+      </LinearLayout>
     )
   }
 
@@ -441,7 +522,6 @@ console.log("rendered");
        </LinearLayout>);
 
     this.replaceChild(this.idSet.predictionLanguageLayout, this.predictLanguageLayout.render(), 0);
-
 
   }
 
@@ -546,10 +626,10 @@ console.log("rendered");
                 gravity="center"
                 />
                 <ImageView
-                margin="11,8,11,8"
+                margin="4,8,4,8"
                 height="match_parent"
                 width="match_parent"
-                imageFromUrl="https://ls.iu.edu/Images/close.png"
+                imageUrl="ic_action_close"
                 onClick={()=>{this.removeLanguage(item)}}
                 />
             </LinearLayout>
@@ -763,7 +843,7 @@ console.log("rendered");
                 margin="11,8,11,8"
                 height="match_parent"
                 width="match_parent"
-                imageFromUrl="https://ls.iu.edu/Images/close.png"
+                imageUrl="ic_action_close"
                 onClick={()=>{this.removeHobbie(item)}}
                 />
             </LinearLayout>

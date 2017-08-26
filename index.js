@@ -13,6 +13,11 @@ const purescriptChangeFlow = changeFlow;
 const purescriptTypeFlow = typeFlow;
 const purescriptUserActivityFlow = onBoardingFLow;
 
+const profilePopUpType = {
+  EXPERIENCE: 1,
+  EDUCATION: 2
+}
+
 // import lock from './lock';
 // require('es6-promise').polyfill();
 ext();
@@ -139,6 +144,9 @@ if (typeof window !== "undefined") {
       window.__CACHED_SCREENS[window.__CURR_SCREEN].screen.onActivityLifeCycleEvent(event);
     }
   }
+
+
+  window.__PROFILE_POP_UP_TYPE = profilePopUpType;
 }
 
 const duiShowScreen = (callback, state) => {
@@ -204,7 +212,7 @@ let purescriptInit = () => {
   window.__changePureScriptFlow = purescriptChangeFlow;
   window.__Logout = logoutUser
   window.__typeFlow = purescriptTypeFlow;
-  
+
   purescriptMain();
 };
 

@@ -266,18 +266,17 @@ class CourseEnrolledActivity extends View {
                 <LinearLayout
                   width="match_parent"
                   height = "wrap_content"
-                  orientation = "horizontal"
-                  >
+                  orientation = "horizontal">
                     <TextView
                         width="wrap_content"
                         height="wrap_content"
                         text={window.__S.CREATED_BY_SMALL+"  "}
                         style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULA_10}/>
                      <TextView
-                    width="wrap_content"
-                    height="wrap_content"
-                    text={createdBy}
-                    style={window.__TextStyle.textStyle.CARD.TITLE.DARK_14}/>
+                      width="wrap_content"
+                      height="wrap_content"
+                      text={createdBy}
+                      style={window.__TextStyle.textStyle.CARD.TITLE.DARK_14}/>
                 </LinearLayout>
             </LinearLayout>)
   }
@@ -452,7 +451,7 @@ class CourseEnrolledActivity extends View {
 
     this.checkContentLocalStatus(this.baseIdentifier);
     console.log("this.enrolledCourses",this.enrolledCourses)
-    if(this.details.batchId || this.enrolledCourses.batchId){ 
+    if(this.details.batchId || this.enrolledCourses.batchId){
      var batchId = this.details.batchId ? this.details.batchId : this.enrolledCourses.batchId;
       var whatToSend = {
         "user_token" : window.__userToken,

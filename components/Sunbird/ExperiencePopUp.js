@@ -13,6 +13,7 @@ var Spinner = require('../Sunbird/core/Spinner');
 var RadioButton = require('../Sunbird/core/RadioButton');
 var CheckBox = require("@juspay/mystique-backend").androidViews.CheckBox;
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
+var HorizontalScrollView = require("@juspay/mystique-backend").androidViews.HorizontalScrollView;
 var Styles = require("../../res/Styles");
 let IconStyle = Styles.Params.IconStyle;
 
@@ -32,9 +33,14 @@ class ExperiencePopUp extends View{
       "saveButtonParent",
       "jobText",
       "positionText",
-      "organizationText"
+      "organizationText",
+      "subjectContainer",
+      "spinnerContainer"
 
     ]);
+    this.spinnerArray = ["Select","Hindi","English","Math","Physics","Chemistry","Economics"];
+    this.array="Select,Hindi,English,Math,Physics,Chemistry,Economics";
+
     window.__ExperiencePopUp = this;
     this.props=props;
     this.subjects=[];
@@ -52,9 +58,8 @@ class ExperiencePopUp extends View{
 
  show = () => {
    console.log(window.__ExperiencePopUp.data , "data Experience Popup");
-
-
-   var cmd=this.set({
+   window.__patchCallback = this.getPatchCallback ;
+    var cmd=this.set({
      id: this.idSet.saveButtonParent,
      background: window.__Colors.FADE_BLUE
    })
@@ -63,17 +68,18 @@ class ExperiencePopUp extends View{
    this.replaceChild(this.idSet.experiencePopUpParent,this.getUi().render(),0);
    this.setVisibility("visible");
 
-
   this.initializeData();
   this.populateData();
-
-
  }
 
  hide = () => {
+   this.spinnerArray = ["Select","Hindi","English","Math","Physics","Chemistry","Economics"];
+   this.array="Select,Hindi,English,Math,Physics,Chemistry,Economics";
    JBridge.hideKeyboard();
    this.setVisibility("gone");
+   this.subjects=[];
    window.__ExperiencePopUp.data=undefined;
+
 
  }
 
@@ -92,8 +98,8 @@ class ExperiencePopUp extends View{
    this.prevData.jobName="";
    this.prevData.Organization="";
    this.prevData.Position="";
-   this.prevData.joiningDate="";
-   this.prevData.endDate="";
+   this.prevData.joiningDate=null;
+   this.prevData.endDate=null;
    this.jobProfile = [];
    if(window.__ExperiencePopUp.data!=undefined)
    {
@@ -109,7 +115,11 @@ class ExperiencePopUp extends View{
  }
 
  populateData = () =>{
-   this.subjects=this.prevData.subjects;
+   var subs=this.prevData.subjects.slice();
+   subs.map((item)=>{
+     this.addSubject(item);
+   });
+   this.prevData.subjects = this.subjects.slice();
    this.jobName=this.prevData.jobName;
    this.Organization=this.prevData.Organization;
    this.Position=this.prevData.Position;
@@ -211,100 +221,129 @@ class ExperiencePopUp extends View{
 
 
         <LinearLayout
-        height="wrap_content"
-        width="match_parent"
-        orientation="vertical">
-          <TextView
-           height="wrap_content"
-           width="wrap_content"
-           text=" JOB NAME"
-           textStyle={window.__TextStyle.textStyle.HINT.SEMI}
-           margin="0,0,0,3"/>
+          height="wrap_content"
+          width="match_parent"
+          orientation="vertical">
+            <TextView
+             height="wrap_content"
+             width="wrap_content"
+             text=" JOB NAME"
+             textStyle={window.__TextStyle.textStyle.HINT.SEMI}
+             margin="0,0,0,3"/>
+
            <EditText
-           width="match_parent"
-           height="wrap_content"
-           id = {this.idSet.jobText}
-           onChange={this.setJobName}
-           style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
+             width="match_parent"
+             height="wrap_content"
+             singleLine="true"
+             maxLine="1"
+             id = {this.idSet.jobText}
+             onChange={this.setJobName}
+             style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
+
            <LinearLayout
-           height="34"
-           width="1"/>
+             height="34"
+             width="1"/>
+
         </LinearLayout>
 
         <LinearLayout
-        height="wrap_content"
-        width="match_parent"
-        orientation="vertical">
+          height="wrap_content"
+          width="match_parent"
+          orientation="vertical">
+
           <TextView
            height="wrap_content"
            width="wrap_content"
            text=" ORGANIZATION"
            textStyle={window.__TextStyle.textStyle.HINT.SEMI}
            margin="0,0,0,3"/>
-           <EditText
+
+         <EditText
            width="match_parent"
            height="wrap_content"
+           singleLine="true"
+           maxLine="1"
            onChange={this.setOrganization}
            id = {this.idSet.organizationText}
            style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
-           <LinearLayout
+
+         <LinearLayout
            height="34"
            width="1"/>
+
         </LinearLayout>
 
         <LinearLayout
-        height="wrap_content"
-        width="match_parent"
-        orientation="vertical">
+          height="wrap_content"
+          width="match_parent"
+          orientation="vertical">
+
           <TextView
            height="wrap_content"
            width="wrap_content"
            text=" POSITION"
            textStyle={window.__TextStyle.textStyle.HINT.SEMI}
            margin="0,0,0,3"/>
-           <EditText
+
+         <EditText
            width="match_parent"
            height="wrap_content"
+           singleLine="true"
+           maxLine="1"
            onChange={this.setPosition}
            id = {this.idSet.positionText}
            style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
-           <LinearLayout
+
+         <LinearLayout
            height="34"
            width="1"/>
+
         </LinearLayout>
 
         <LinearLayout
-        height="wrap_content"
-        width="match_parent"
-        orientation="vertical">
+          height="wrap_content"
+          width="match_parent"
+          orientation="vertical">
+
           <TextView
            height="wrap_content"
            width="wrap_content"
            text="SUBJECTS"
            textStyle={window.__TextStyle.textStyle.HINT.SEMI}
            margin="0,0,0,3"/>
+
            <LinearLayout
-           width="match_parent"
-           height="wrap_content"
-           stroke={"2,"+window.__Colors.PRIMARY_BLACK_66}
-           padding="8,8,8,8"
-           cornerRadius="4,4,4,4">
-             {this.loadSpinner()}
+             width="match_parent"
+             height="wrap_content"
+             stroke={"2,"+window.__Colors.PRIMARY_BLACK_66}
+             padding="8,8,8,8"
+             cornerRadius="4,4,4,4"
+             id={this.idSet.spinnerContainer}>
+
+              {this.loadSpinner()}
+
            </LinearLayout>
+
+           <HorizontalScrollView
+             height = "wrap_content"
+             width = "match_parent"
+             id={this.idSet.subjectContainer}
+             margin = "0,10,0,0"/>
+
            <LinearLayout
-           height="34"
-           width="1"/>
+             height="24"
+             width="1"/>
         </LinearLayout>
 
         <LinearLayout
         height="wrap_content"
         width="match_parent">
             <TextView
-            height="wrap_content"
-            width="wrap_content"
-            margin="0,0,30,0"
-            style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
-            text="Is this your current job?"
+              height="wrap_content"
+              width="wrap_content"
+              margin="0,0,30,0"
+              style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
+              text="Is this your current job?"
             />
 
             <RadioButton
@@ -318,14 +357,14 @@ class ExperiencePopUp extends View{
         </LinearLayout>
 
         <LinearLayout
-        height="34"
-        width="1"/>
+          height="34"
+          width="1"/>
 
 
         <LinearLayout
-        height="wrap_content"
-        width="match_parent"
-        orientation="horizontal">
+          height="wrap_content"
+          width="match_parent"
+          orientation="horizontal">
 
                 <LinearLayout
                 height="wrap_content"
@@ -333,30 +372,34 @@ class ExperiencePopUp extends View{
                 orientation="vertical"
                 margin="0,0,20,0"
                 id={this.idSet.joiningDateLayout}>
+
                   <TextView
                    height="wrap_content"
                    width="wrap_content"
                    text="FROM"
                    textStyle={window.__TextStyle.textStyle.HINT.SEMI}
                    margin="0,0,0,4"/>
+
                    <LinearLayout
-                   width="match_parent"
-                   height="wrap_content"
-                   padding="4,18,12,12">
+                     width="match_parent"
+                     height="wrap_content"
+                     padding="4,18,12,12">
+
                        <ImageView
-                       height="16"
-                       width="16"
-                       gravity="center"
-                       margin="4,3,7,0"
-                       imageUrl="ic_action_calendar_grey"
-                       onClick={this.startCalendar}/>
+                         height="16"
+                         width="16"
+                         gravity="center"
+                         margin="4,3,7,0"
+                         imageUrl="ic_action_calendar_grey"
+                         onClick={this.startCalendar}/>
+
                        <TextView
-                       width="match_parent"
-                       height="wrap_content"
-                       id= {this.idSet.joiningDateText}
-                       style={window.__TextStyle.textStyle.CARD.BODY.DARK.FADED}
-                       text="Select Date"
-                       onClick={this.startCalendar}/>
+                         width="match_parent"
+                         height="wrap_content"
+                         id= {this.idSet.joiningDateText}
+                         style={window.__TextStyle.textStyle.CARD.BODY.DARK.FADED}
+                         text="Select Date"
+                         onClick={this.startCalendar}/>
 
                    </LinearLayout>
                    <LinearLayout
@@ -366,44 +409,51 @@ class ExperiencePopUp extends View{
                 </LinearLayout>
 
                 <ViewWidget
-                weight="1"
-                height="0"
-                width="0"/>
+                  weight="1"
+                  height="0"
+                  width="0"/>
 
                 <LinearLayout
-                height="wrap_content"
-                width="150"
-                orientation="vertical"
-                id={this.idSet.closingDateLayout}>
+                  height="wrap_content"
+                  width="150"
+                  orientation="vertical"
+                  id={this.idSet.closingDateLayout}>
+
                   <TextView
                    height="wrap_content"
                    width="wrap_content"
                    text="TO"
                    textStyle={window.__TextStyle.textStyle.HINT.SEMI}
                    margin="0,0,0,4"/>
+
                    <LinearLayout
-                   width="match_parent"
-                   height="wrap_content"
-                   padding="4,18,12,12">
+                     width="match_parent"
+                     height="wrap_content"
+                     padding="4,18,12,12">
+
                        <ImageView
-                       height="16"
-                       width="16"
-                       gravity="center"
-                       margin="4,3,7,0"
-                       imageUrl="ic_action_calendar_grey"
-                       onClick={this.endCalendar} />
+                         height="16"
+                         width="16"
+                         gravity="center"
+                         margin="4,3,7,0"
+                         imageUrl="ic_action_calendar_grey"
+                         onClick={this.endCalendar} />
+
                        <TextView
-                       width="match_parent"
-                       height="wrap_content"
-                       id= {this.idSet.closingDateText}
-                       onClick={this.endCalendar}
-                       text="Select Date"
-                       style={window.__TextStyle.textStyle.CARD.BODY.DARK.FADED}/>
+                         width="match_parent"
+                         height="wrap_content"
+                         id= {this.idSet.closingDateText}
+                         onClick={this.endCalendar}
+                         text="Select Date"
+                         style={window.__TextStyle.textStyle.CARD.BODY.DARK.FADED}/>
+
                    </LinearLayout>
+
                    <LinearLayout
                      width="match_parent"
                      height="1"
                      background={window.__Colors.PRIMARY_BLACK_66}/>
+
                  </LinearLayout>
 
          </LinearLayout>
@@ -412,13 +462,10 @@ class ExperiencePopUp extends View{
          height="34"
          width="1"/>
 
-
-
-
-
       </LinearLayout>
    );
  }
+
 getUi(){
   return(
     <LinearLayout
@@ -432,31 +479,41 @@ getUi(){
     height="match_parent"
     width="match_parent"
     background="#ffffff">
-      <ScrollView
-      height="479"
-      width="match_parent">
-           {this.getScrollView()}
-      </ScrollView>
-
+     <LinearLayout
+     height="match_parent"
+     width="match_parent"
+     orientation="vertical">
+          <ScrollView
+          height="match_parent"
+          width="match_parent"
+          weight="1">
+               {this.getScrollView()}
+          </ScrollView>
+          <LinearLayout
+          height="match_parent"
+          width="match_parent"
+          weight="6"/>
+      </LinearLayout>
        <LinearLayout
          height="match_parent"
          width="match_parent"
          orientation="vertical" >
             <LinearLayout
-            height="479"
+            height="match_parent"
             width="match_parent"
+            weight="1"
             />
             {this.getLineSeperator()}
 
             <LinearLayout
+            weight="6"
              height="match_parent"
              width="match_parent"
-             padding="12,12,12,12"
+             padding="6,6,6,6"
              background="#ffffff"
              orientation="horizontal"
              id={this.idSet.saveButtonParent}>
                 <LinearLayout
-                cornerRadius="5,5,5,5"
                 height="match_parent"
                 width="match_parent"
                 onClick={ this.sendJSON }>
@@ -464,7 +521,8 @@ getUi(){
                     height="match_parent"
                     width="match_parent"
                     gravity="center"
-                    background={window.__Colors.FADE_BLUE}
+                    cornerRadius="5"
+                    background={window.__Colors.LIGHT_BLUE_22}
                     id={this.idSet.saveButton}>
                         <TextView
                         text="Save"
@@ -485,14 +543,15 @@ getUi(){
  render(){
    this.layout=(
      <LinearLayout
-     orientation="vertical"
-     height="match_parent"
-     width="match_parent"
-     id={this.idSet.experiencePopUpParent}
-     visibility="gone"
-     gravity="center">
+       orientation="vertical"
+       height="match_parent"
+       width="match_parent"
+       id={this.idSet.experiencePopUpParent}
+       visibility="gone"
+       gravity="center">
 
-    {this.getUi()}
+      {this.getUi()}
+
     </LinearLayout>
 
      );
@@ -500,8 +559,6 @@ getUi(){
      }
 
      loadSpinner = () => {
-       this.spinnerArray = ["Select","Hindi","English","Math","Physics","Chemistry","Economics"];
-       this.array="Select,Hindi,English,Math,Physics,Chemistry,Economics";
        return(<Spinner
                width="match_parent"
                height="34"
@@ -516,11 +573,14 @@ getUi(){
 
        console.log("SPINNER CLICKED",params);
        console.log(this.spinnerArray[parseInt(params[2])] , "spinner val");
+
        if(parseInt(params[2])>0)
-       this.subjects.push(this.spinnerArray[parseInt(params[2])]);
+       this.addSubject(this.spinnerArray[parseInt(params[2])]);
+
        if(this.checkCompleteStatus())
-       {
-         this.enableSaveButton();
+          this.enableSaveButton();
+       else {
+         this.disableSaveButton();
        }
      }
 
@@ -549,6 +609,7 @@ getUi(){
        var callback = callbackMapper.map(
          function (data){
              console.log(data[0],"calender");
+               data[0]=_this.formatDate(data[0]);
 
               if(index==1){
                 _this.joiningDate=data[0];
@@ -573,8 +634,7 @@ getUi(){
               Android.runInUI(cmd, 0);
             }
 
-            if(_this.checkCompleteStatus())
-            {
+            if(_this.checkCompleteStatus()){
               _this.enableSaveButton();
             }else {
               _this.disableSaveButton();
@@ -583,12 +643,12 @@ getUi(){
 
 
        try{
-       JBridge.showCalender(callback);
+         JBridge.showCalender(callback,"","","");
        }
-       catch(err)
-       {
+       catch(err){
          console.log(err , "date err");
        }
+
      }
 
      handleRadioButtonClick = () =>{
@@ -599,7 +659,22 @@ getUi(){
            id: this.idSet.closingDateLayout,
            visibility: "gone"
          });
+         cmd += this.set({
+           id: this.idSet.closingDateText,
+           text : "Select Date"
+         });
          Android.runInUI(cmd, 0);
+         this.endDate=null;
+
+         if(this.checkCompleteStatus())
+         {
+           this.enableSaveButton();
+         }
+         else {
+           this.disableSaveButton();
+         }
+
+
        }
        else {
          var cmd = this.set({
@@ -607,6 +682,15 @@ getUi(){
            visibility: "visible"
          });
          Android.runInUI(cmd, 0);
+
+
+         if(this.checkCompleteStatus())
+         {
+           this.enableSaveButton();
+         }
+         else {
+           this.disableSaveButton();
+         }
        }
      }
 
@@ -619,13 +703,14 @@ getUi(){
             "role":this.Position,
             "joiningDate":this.joiningDate,
             "endDate":this.endDate,
-            "subject":this.subjects
-          }
-
+            "subject":this.subjects,
+            }
           this.jobProfile.push(this.json);
         }
         else{
           var json=  window.__ExperiencePopUp.data;
+          console.log(json , "json");
+
           json.jobName=this.jobName;
           json.orgName=this.Organization;
           json.role=this.Position;
@@ -633,6 +718,7 @@ getUi(){
           json.endDate=this.endDate;
           json.subject=this.subjects;
           json.userId= window.__userToken;
+          if(json.address!=undefined)
           json.address.userId= window.__userToken;
           this.jobProfile.push(json);
 
@@ -659,14 +745,46 @@ getUi(){
 
        JBridge.patchApi(url,JSON.stringify(body),window.__userToken,window.__apiToken);
           console.log("JSON SENT");
-          this.hide();
+
+         this.hide();
+
      }
+
+     getPatchCallback = (data) =>{
+      console.log("RESPONSE FOR DATA");
+      window.__BNavFlowRestart();
+
+    }
+
+     formatDate = (date) =>{
+         date = date.substr(0,4)+"-"+date.substr(5);
+         if(date.charAt(7)!='-'){
+            date = date.substr(0,5)+"0"+date.substr(5);
+          }
+
+         date = date.substr(0,7)+"-"+date.substr(8);
+         if(date.length<10)
+           date = date.substr(0,8)+"0"+date.substr(8);
+           return date;
+
+         }
+
      checkCompleteStatus = () =>{
-       if(this.jobName == this.prevData.jobName && this.Organization == this.prevData.Organization  && this.Position== this.prevData.Position && this.subjects==this.prevData.subjects && this.joiningDate == this.prevData.joiningDate )
+       if(window.__ExperiencePopUp.data != undefined)
        {
-         return false;
-       }
-       return true;
+         if(this.jobName == this.prevData.jobName && this.Organization == this.prevData.Organization  && this.Position== this.prevData.Position && JSON.stringify(this.subjects)==JSON.stringify(this.prevData.subjects) && this.joiningDate == this.prevData.joiningDate && this.endDate == this.prevData.endDate )
+         {
+           return false;
+         }
+         return true;
+      }
+      else {
+        if(this.jobName == this.prevData.jobName || this.Organization == this.prevData.Organization  || this.Position == this.prevData.Position || JSON.stringify(this.subjects)==JSON.stringify(this.prevData.subjects) || this.joiningDate == this.prevData.joiningDate || (window.__RadioButton.currentIndex!=0 && (this.endDate == this.prevData.endDate)) )
+        {
+          return false;
+        }
+        return true;
+      }
      }
 
      doNothing = () =>{
@@ -674,19 +792,8 @@ getUi(){
      }
 
      enableSaveButton = () =>{
-      //  var cmd = this.set({
-      //    id: this.idSet.saveButton,
-      //    clickable: "true"
-      //  })
-       //
-      //  var cmd=this.set({
-      //    id: this.idSet.saveButtonParent,
-      //    background: window.__Colors.LIGHT_BLUE,
-      //    gravity: "center"
-      //  })
-       //
-      //  Android.runInUI(cmd, 0)
-
+       console.log(this.subjects , "subs");
+       console.log(this.prevData.subjects, "prevsubs");
        this.saveButton =(
          <LinearLayout
           height="match_parent"
@@ -697,7 +804,6 @@ getUi(){
           orientation="horizontal"
           id={this.idSet.saveButtonParent}>
              <LinearLayout
-             cornerRadius="5,5,5,5"
              height="match_parent"
              width="match_parent"
              onClick={ this.sendJSON }
@@ -706,6 +812,7 @@ getUi(){
                  height="match_parent"
                  width="match_parent"
                  gravity="center"
+                 cornerRadius="5"
                  background={window.__Colors.LIGHT_BLUE}
                  id={this.idSet.saveButton}>
                      <TextView
@@ -722,19 +829,6 @@ getUi(){
      }
 
      disableSaveButton = () =>{
-      //  var cmd = this.set({
-      //    id: this.idSet.saveButton,
-      //    clickable: "false"
-      //  })
-       //
-      //  cmd+=this.set({
-      //    id: this.idSet.saveButtonParent,
-      //    background: window.__Colors.FADE_BLUE,
-      //    gravity: "center"
-      //  })
-       //
-       //
-      //  Android.runInUI(cmd, 0)
 
       this.saveButton =(
         <LinearLayout
@@ -746,7 +840,6 @@ getUi(){
          root ="true"
          id={this.idSet.saveButtonParent}>
             <LinearLayout
-            cornerRadius="5,5,5,5"
             height="match_parent"
             width="match_parent"
             onClick={ this.sendJSON }
@@ -755,6 +848,7 @@ getUi(){
                 height="match_parent"
                 width="match_parent"
                 gravity="center"
+                cornerRadius="5"
                 background={window.__Colors.LIGHT_BLUE_22}
                 id={this.idSet.saveButton}>
                     <TextView
@@ -801,6 +895,90 @@ getUi(){
          this.disableSaveButton();
        }
      }
+
+
+     removeSubject = (data) => {
+
+       this.subjects.splice(this.subjects.indexOf(data),1);
+       this.array=this.array+","+data;
+       this.spinnerArray.push(data);
+       this.spinnerLayout= (
+         <LinearLayout
+           root="true"
+           height="wrap_content"
+           width="match_parent">
+
+           {this.loadSpinner()}
+
+         </LinearLayout>);
+       this.replaceChild(this.idSet.spinnerContainer,this.spinnerLayout.render(),0);
+       this.showSelectedSubjects();
+     }
+
+     addSubject = (data) =>{
+       this.subjects.unshift(data);
+       if(this.array.indexOf(data+",")>-1){
+         this.array = this.array.replace(data+",","");
+       }else{
+         this.array = this.array.replace(","+data, "");
+       }
+       this.spinnerArray.splice(this.spinnerArray.indexOf(data),1);
+       this.spinnerLayout= (
+         <LinearLayout
+         root="true"
+         height="wrap_content"
+         width="match_parent">
+
+          {this.loadSpinner()}
+
+         </LinearLayout>);
+       this.replaceChild(this.idSet.spinnerContainer,this.spinnerLayout.render(),0);
+       this.showSelectedSubjects();
+     }
+
+     showSelectedSubjects = () =>{
+       var items = this.subjects.map((data)=>{
+           return(
+             <LinearLayout
+                height="wrap_content"
+                width="wrap_content"
+                padding="6,4,6,4"
+                margin="0,0,10,0"
+                cornerRadius="10,10,10,10"
+                background={window.__Colors.DARK_GRAY_44}
+                gravity="center">
+
+                 <TextView
+                   height="wrap_content"
+                   width="wrap_content"
+                   text={data}
+                   margin="0,0,4,0"
+                   textStyle={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
+
+                 <ImageView
+                   height="15"
+                   width="15"
+                   imageUrl="ic_action_close"
+                   margin="0,1,0,0"
+                   onClick={()=>{this.removeSubject(data)}}/>
+              </LinearLayout>
+           )
+       });
+
+
+    this.subjectCards =(
+      <LinearLayout
+        width="match_parent"
+        height="match_parent"
+        root="true">
+
+        {items}
+
+      </LinearLayout>
+    )
+
+    this.replaceChild(this.idSet.subjectContainer,this.subjectCards.render(),0);
+   }
 
   }
 
