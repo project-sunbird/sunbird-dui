@@ -42,23 +42,30 @@ class SearchResult extends View {
                 circularImageUrl={"0,"+ appIcon }/>
 
               <LinearLayout
-                width = "wrap_content"
+                width = "match_parent"
                 height = "wrap_content"
                 orientation = "vertical">
                 <LinearLayout
                 height = "wrap_content"
+                width="match_parent"
                 >
                   <TextView
                       height="wrap_content"
+                      width = "0"
                       padding = "10,10,0,0"
                       text= {item.name}
+                      enableEllipse = "true"
+                      weight = "7"
                       style={window.__TextStyle.textStyle.CARD.HEADING}/>
-                      <ViewWidget
-                          weight="1"
-                          height="0"/>
+                      <LinearLayout
+                       width="0"
+                      weight="0.5" />
                     <TextView
                       height="wrap_content"
-                      padding = "0,10,10,0"
+                      padding = "0,10,0,0"
+                      weight="2"
+                      gravity = "right"
+                      width="0"
                       text= { item.hasOwnProperty("size") ? utils.formatBytes(item.size) : " "}
                       style={window.__TextStyle.textStyle.HINT.SEMI}/>
                 </LinearLayout>
@@ -164,7 +171,8 @@ class SearchResult extends View {
       }
       if(data == "DeniedPermanently"){
         console.log("DENIED DeniedPermanently");
-        window.__PermissionDeniedDialog.show("ic_flag_warning","Cannot download content since permission is denied");
+        JBridge.hideKeyboard();
+        window.__PermissionDeniedDialog.show("ic_warning_grey",window.__S.STORAGE_DENIED);
       }
 
     });

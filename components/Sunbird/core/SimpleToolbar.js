@@ -56,7 +56,7 @@ getMenu = () =>{
 
   getBack = () => {
     if (this.props.hideBack != undefined && this.props.hideBack){
-      return( <Space 
+      return( <Space
                 width="0"/>)
     }
 
@@ -75,7 +75,7 @@ getMenu = () =>{
     if (!this.props.showBack && !this.props.logo)
       margin = "12,0,0,0";
 
-    return (<TextView 
+    return (<TextView
               margin={margin}
               style={window.__TextStyle.textStyle.TOOLBAR.HEADING}
               text={this.props.title}/>)
@@ -84,11 +84,11 @@ getMenu = () =>{
 
   getLogo = () => {
     if (!this.props.logo){
-      return (<Space 
+      return (<Space
                 width="0"/>)
     }
 
-    return ( <ImageView 
+    return ( <ImageView
       margin = "15,0,10,0"
       style = {
         {
@@ -96,12 +96,12 @@ getMenu = () =>{
           height: '32'
         }
       }
-      imageUrl = { this.props.logo }/> );
+      circularImageUrl = { "1," + this.props.logo }/> );
   }
 
   getIcons = () => {
     if (!this.props.icons){
-      return (<Space 
+      return (<Space
                 width="0"/>)
     }
 
@@ -137,21 +137,21 @@ getMenu = () =>{
           background={this.props.invert?window.__Colors.WHITE:window.__Colors.LIGHT_VIOLET}>
 
           {back}
-          
+
           {logo}
 
           {title}
 
-          <Space 
-            width="0" 
+          <Space
+            width="0"
             weight="1"/>
-          
+
           {icons}
-          
+
           {menu}
-         
+
          </LinearLayout>
-       
+
        </LinearLayout>
     )
 

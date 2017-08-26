@@ -100,7 +100,8 @@ data MainActivityAction = OPEN_HomeFragment |
   API_ProfileFragment {user_token::String, api_token::String}|
   API_UserEnrolledCourse {user_token::String, api_token::String} |
   API_FilterPage {user_token::String, api_token::String,filter_to_send::String} |
-  API_CreatedBy {user_token::String, api_token::String, sendBack::String, filters::String }
+  API_CreatedBy {user_token::String, api_token::String, sendBack::String, filters::String }|
+  API_Tenant {user_token::String, api_token::String, slug::String }
 
 instance homeActivity :: UIScreen MainActivity MainActivityAction where
   generateMockEvents _ = [BACK_HomeActivity , OPEN_HomeFragment , OPEN_CourseFragment , OPEN_ResourceFragment , OPEN_CommunityFragment , OPEN_ProfileFragment ]
@@ -124,12 +125,11 @@ instance decodeResourceDetailActivityAction :: Decode ResourceDetailActivityActi
 instance encodeResourceDetailActivityAction:: Encode ResourceDetailActivityAction where encode = defaultEncode
 
 data CourseInfoActivity = CourseInfoActivity {courseDetails::String}
-data CourseInfoActivityAction = BACK_CourseInfoActivity |
+data CourseInfoActivityAction = BACK_CourseInfoActivity | OPEN_ViewBatchActivity {course::String}|
   OPEN_EnrolledActivity {course::String} |
   API_EnrollCourse {user_token::String,reqParams ::String, api_token::String} |
   ShowModuleDetails {moduleName::String,moduleDetails::String} |
-  API_EnrolledCoursesList {user_token::String,api_token::String} |
-  API_Get_Batch_list {user_token::String, api_token::String, request::String }
+  API_EnrolledCoursesList {user_token::String,api_token::String}
 
 instance courseInfoScreen :: UIScreen CourseInfoActivity CourseInfoActivityAction where
   generateMockEvents _ = [BACK_CourseInfoActivity , OPEN_EnrolledActivity {course:"Dummy"} ]
@@ -145,7 +145,8 @@ data CourseEnrolledActivityAction = DummyCourseEnrolledActivityAction |
   OPEN_ModuleDetailsActivity {moduleName::String,moduleDetails::String} |
   API_GetContentState {courseId::String,user_token::String,api_token::String} |
   API_FlagCourse {user_token::String,api_token::String,requestBody::String,identifier::String} |
-  API_Get_Batch_Details{user_token::String,api_token::String,batch_id::String}
+  API_Get_Batch_Details{user_token::String,api_token::String,batch_id::String} |
+  API_Get_Batch_Creator_name {user_token::String,api_token::String}
 
 instance courseEnrolledActivity :: UIScreen CourseEnrolledActivity CourseEnrolledActivityAction where
   generateMockEvents _ = [DummyCourseEnrolledActivityAction , BACK_CourseEnrolledActivity]
@@ -299,6 +300,22 @@ instance filterActivity :: UIScreen FilterActivity FilterActivityAction where
 derive instance genericFilterActivityAction  :: Generic FilterActivityAction _
 instance decodeFilterActivityAction :: Decode FilterActivityAction where decode = defaultDecode
 instance encodeFilterActivityAction :: Encode FilterActivityAction where encode = defaultEncode
+
+data ViewBatchActivity = ViewBatchActivity { extras::String }
+data ViewBatchActivityAction = DummyViewBatchActivity |
+  BACK_ViewBatchActivity |
+  OPEN_EnrolledActivity_BATCH {course::String} |
+  API_EnrollInBatch {reqParams ::String , user_token::String ,api_token::String} |
+  API_BatchCreator {user_token::String , api_token::String} |
+  API_Get_Batch_list {user_token::String, api_token::String, request::String }
+
+instance viewBatchActivity :: UIScreen ViewBatchActivity ViewBatchActivityAction where
+  generateMockEvents _ = [ DummyViewBatchActivity , BACK_ViewBatchActivity ]
+  ui x = genericUI x (generateMockEvents x :: Array ViewBatchActivityAction)
+
+derive instance genericViewBatchActivity  :: Generic ViewBatchActivityAction _
+instance decodeViewBatchActivityAction :: Decode ViewBatchActivityAction where decode = defaultDecode
+instance encodeViewBatchActivityAction :: Encode ViewBatchActivityAction where encode = defaultEncode
 
 
 data AdditionalInformationActivity = AdditionalInformationActivity {profile :: String}

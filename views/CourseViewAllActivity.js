@@ -151,18 +151,51 @@ class CourseViewAllActivity extends View {
   }
 
   handleCourseClick = (content)=>{
-    var tmp = JSON.stringify(content)
-    
-    var whatToSend = {
-        "course": tmp 
-      };
-      if(this.totalDetails[0].courseId){
-       var event = { tag: 'OPEN_EnrolledCourseFlowFromCourseViewAll', contents: whatToSend };
-      }
-      else{
-       var event = { tag: 'OPEN_CourseInfoFlowFromCourseViewAll', contents: whatToSend }; 
-      }
-    window.__runDuiCallback(event);
+
+
+    if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
+        this.performCourseAction(content);
+    }else{
+        this.setPermissions();
+    }
+  }
+
+
+  setPermissions = () =>{
+    var callback = callbackMapper.map(function(data) {
+
+        if (data == "android.permission.WRITE_EXTERNAL_STORAGE") {
+              JBridge.setKey("isPermissionSetWriteExternalStorage", "true");
+
+        }
+        if(data == "DeniedPermanently"){
+          console.log("DENIED DeniedPermanently");
+          window.__PermissionDeniedDialog.show("ic_warning_grey", window.__S.STORAGE_DENIED);
+        }
+
+        });
+
+        JBridge.setPermissions(callback,"android.permission.WRITE_EXTERNAL_STORAGE");
+  }
+
+  performCourseAction = (content) =>{
+       var tmp = JSON.stringify(content)
+
+        var whatToSend = {
+          "course": tmp 
+          };
+          if(this.totalDetails[0].courseId){
+           var event = { tag: 'OPEN_EnrolledCourseFlowFromCourseViewAll', contents: whatToSend };
+          }
+          else{
+           var event = { tag: 'OPEN_CourseInfoFlowFromCourseViewAll', contents: whatToSend }; 
+          }
+        window.__runDuiCallback(event);
+  }
+
+
+  onStop = () =>{
+    window.__PermissionDeniedDialog.hide();
   }
 
 
@@ -175,9 +208,16 @@ class CourseViewAllActivity extends View {
   }
 
   onBackPressed = () => {
-    var whatToSend = []
-    var event = { tag: 'BACK_CourseViewAllActivity', contents: whatToSend }
-    window.__runDuiCallback(event);
+    
+    if(window.__PermissionDeniedDialog.getVisibility() == "visible"){
+      window.__PermissionDeniedDialog.hide();
+      return;
+    }else{
+      var whatToSend = []
+      var event = { tag: 'BACK_CourseViewAllActivity', contents: whatToSend }
+      window.__runDuiCallback(event);
+    }
+
   }
 
   changeViewMoreButtonStatus(status){

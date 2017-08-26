@@ -22,12 +22,34 @@ courseFragment input whereFrom whatToSendBack = do
 			responseData <- getUserEnrolledCourses x y
 	 		_ <- sendUpdatedState {response : responseData, responseFor : "API_UserEnrolledCourse", screen:"asas"}
 	  		pure $ "apiDefault"
-	  	API_FilterPage{user_token:user_token, api_token:api_key,filter_to_send:delta}  ->	do
+		API_FilterPage{user_token:user_token, api_token:api_key,filter_to_send:delta}  ->	do
 			responseData <- getCourcePageFilterApi user_token api_key delta
 			_ <- sendUpdatedState {response : responseData, responseFor : "API_FilterPage", screen:"asas" , filter_to_send:delta }
 			pure $ "handled"
 		_ -> courseFragment input whereFrom whatToSendBack
 
+
+viewBatchActivity input whereFrom whatToSendBack = do
+	event <- ui $ ViewBatchActivity {extras : input}
+	case event of
+		OPEN_EnrolledActivity_BATCH {course: output} -> enrolledCourseActivity output "CourseFragment" input
+		API_BatchCreator {user_token:x, api_token:y} -> do
+			resData <- getProfileDetail x y
+			_<- sendUpdatedState {response : resData, responseFor : "API_BatchCreator", screen:"ViewBatchActivity"}
+			pure $ "apiCalled"
+		API_Get_Batch_list {user_token : x, api_token: token , request : request } -> do
+			responseData <- getBatchList x token request
+			_ <- sendUpdatedState {response : responseData, responseFor : "API_Get_Batch_list", screen:"asas"}
+			pure $ "apiDefault"
+		API_EnrollInBatch {reqParams : details , user_token : x, api_token: token} -> do
+			responseData <- enrollInBatch details x token
+			_ <- sendUpdatedState {response : responseData, responseFor : "API_EnrollInBatch", screen:"asas"}
+			pure $ "apiDefault"
+		BACK_ViewBatchActivity -> case whereFrom of
+			"CourseInfoActivity" -> courseInfoActivity whatToSendBack "Terminate" input
+			"CourseViewAllActivity" -> courseViewAllActivity whatToSendBack "Terminate" input
+			_ -> courseFragment whatToSendBack "Terminate" input
+		_ -> viewBatchActivity input whereFrom whatToSendBack
 
 
 courseViewAllActivity input whereFrom whatToSendBack = do
@@ -44,15 +66,8 @@ courseViewAllActivity input whereFrom whatToSendBack = do
 courseInfoActivity input whereFrom whatToSendBack = do
 	event <- ui $ CourseInfoActivity {courseDetails : input}
 	case event of
+		OPEN_ViewBatchActivity {course: output}-> viewBatchActivity output "CourseInfoActivity" input
 		OPEN_EnrolledActivity {course: output} -> enrolledCourseActivity output "CourseFragment" input
-		API_Get_Batch_list {user_token : x, api_token: token , request : request } -> do
-				responseData <- getBatchList x token request 
-	  			_ <- sendUpdatedState {response : responseData, responseFor : "API_Get_Batch_list", screen:"asas"}
-				pure $ "apiDefault"
-		API_EnrollCourse {user_token : x, reqParams : details , api_token: token} -> do
-				responseData <- enrollCourse x details token
-	  			_ <- sendUpdatedState {response : responseData, responseFor : "API_EnrollCourse", screen:"asas"}
-				pure $ "apiDefault"
 		API_EnrolledCoursesList {user_token:x,api_token:y} -> do
 	            responseData <- getUserEnrolledCourses x y
 	            _ <- sendUpdatedState {response : responseData, responseFor : "API_EnrolledCoursesList", screen:"asas"}
@@ -73,6 +88,10 @@ enrolledCourseActivity input whereFrom whatToSendBack = do
 		API_FlagCourse {user_token: user_token,api_token: api_token,requestBody:request,identifier:identifier} -> do
 			responseData <- flagContent user_token api_token request identifier
 			_ <- sendUpdatedState {response : responseData, responseFor : "API_FlagCourse", screen:"asas"}
+			pure $ "handled"
+		API_Get_Batch_Creator_name {user_token:user_token,api_token:api_token} -> do
+			responseData <- getProfileDetail user_token api_token
+			_ <- sendUpdatedState {response : responseData, responseFor : "API_Get_Batch_Creator_name", screen:"asas"}
 			pure $ "handled"
 		API_Get_Batch_Details {user_token : user_token,api_token : api_token ,batch_id : batch_id} -> do
 			responseData <- getBatchDetails user_token api_token batch_id

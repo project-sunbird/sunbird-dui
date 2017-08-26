@@ -105,7 +105,7 @@ class ProgressButton extends View {
       textToShow = "DOWNLOADING " + data.downloadProgress + "%"
 
     }
-    if(!this.isCancelVisible){
+    if(!this.isCancelVisible && data.downloadProgress>0){
         this.setCancelButtonVisibility("visible");
         this.isCancelVisible=true;
 
@@ -138,7 +138,7 @@ class ProgressButton extends View {
         if (this.isDownloaded) {
           window.__getGenieEvents = this.checkTelemetry;
           // JBridge.playContent(this.props.identifier);
-          if(this.props.playContent!=null)
+          if(this.props.playContent!=null && this.props.playContent!=undefined)
             JBridge.playContent(JSON.stringify(this.props.playContent));
           else{
             var callback = callbackMapper.map(function(data){
@@ -248,7 +248,7 @@ class ProgressButton extends View {
       }
       if(data == "DeniedPermanently"){
         console.log("DENIED DeniedPermanently");
-        window.__PermissionDeniedDialog.show("ic_flag_warning","Cannot download content since permission is denied");
+        window.__PermissionDeniedDialog.show("ic_warning_grey",window.__S.STORAGE_DENIED);
       }
 
     });

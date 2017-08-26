@@ -92,7 +92,7 @@ class RootScreen extends View {
         <LoaderDialog/>
         <PageFilterPopup/>
         <ContentLoaderDialog/>
-
+        <PermissionDeniedDialog/>
         <ExperiencePopUp/>
         <EducationPopUp/>
         <PreviewImagePopup

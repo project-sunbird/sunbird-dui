@@ -72,7 +72,7 @@ class HomeFragment extends View {
 
     }
     if (url == "ic_action_search") {
-      
+
       var searchDetails = { filterDetails: "", searchType: "Combined" }
       var whatToSend = { filterDetails: JSON.stringify(searchDetails) }
       var event = { tag: "OPEN_SearchActivity", contents: whatToSend }
@@ -125,7 +125,7 @@ class HomeFragment extends View {
   handleRecommendedClick = (content) => {
     console.log("Recommended clicked :", content.downloadUrl)
 
-    
+
 
   }
   getLocalData = (data) => {
@@ -143,6 +143,10 @@ class HomeFragment extends View {
 
 
   render() {
+    var imgUrl = "ic_launcher";
+    if (JBridge.getFromSharedPrefs("logo_url") != "__failed" && JBridge.getFromSharedPrefs("logo_file_path") != "__failed"){
+      imgUrl = "file://" + JBridge.getFromSharedPrefs("logo_file_path");
+    }
     this.layout = (
 
       <LinearLayout
@@ -156,13 +160,13 @@ class HomeFragment extends View {
             title=""
             width="match_parent"
             showMenu="true"
-            logo="ic_launcher"
-            invert="true" 
-            hideBack="true" 
+            logo={imgUrl}
+            invert="true"
+            hideBack="true"
             menuData={this.menuData}
             onMenuItemClick={this.handleMenuClick}/>
 
-          
+
 
             <ScrollView
               height="0"
@@ -174,7 +178,7 @@ class HomeFragment extends View {
                   width="match_parent"
                   orientation="vertical">
 
-                  
+
                    <CourseInProgressContainer
                     transparent="true"
                     title={window.__S.TO_DO}
@@ -182,12 +186,12 @@ class HomeFragment extends View {
 
 
                    {this.getSpaceSeparator()}
-                  
+
                     <HomeRecommendedContainer
                          title= {window.__S.RECOMMENDED}
                          onCourseOpenClick = {this.handleCourseOpen}
                          onResourceOpenClick = {this.handleResourceOpen}/>
-                  
+
 
                </LinearLayout>
 

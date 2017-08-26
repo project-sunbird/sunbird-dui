@@ -162,6 +162,7 @@ class ProfileFragment extends View {
   }
 
   handleCreatedCardClick = (item) => {
+    item.isCreator = true;
     var itemDetails = JSON.stringify(item);
     if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook" || utils.checkEnrolledCourse(item.identifier)){
       if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
@@ -179,7 +180,8 @@ class ProfileFragment extends View {
       }else{
         this.setPermissions();
       }
-    } else {
+    }
+     else {
       var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");
       var resDetails = {};
       resDetails['imageUrl'] = item.appIcon;

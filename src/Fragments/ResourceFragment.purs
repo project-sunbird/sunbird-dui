@@ -17,6 +17,7 @@ resourceFragment input whereFrom whatToSendBack = do
 	case event of
 		OPEN_ResourceDetailActivity {resourceDetails:output} -> resourceDetailActivity output "ResourceFlow" input
 		OPEN_ResourceViewAllActivity {resourceDetails:output} -> resourceViewAllActivity output "ResourceFragmnet" input
+		OPEN_EnrolledCourseActivity {course:output} -> courseDetailActivity output "ResourceFragmnet" input
 		OPEN_SearchActivity {filterDetails: output} -> resourceSearchActivity output "ResourceFragmnet" input
 		OPEN_CourseInfoActivity {course : output} -> courseDetailActivity output "ResourceFragmnet" input
 		API_FilterPage{user_token:user_token, api_token:api_key,filter_to_send:delta}  ->	do
@@ -71,6 +72,14 @@ courseDetailActivity input whereFrom whatToSendBack = do
 			responseData <- flagContent user_token api_token request identifier
 			_ <- sendUpdatedState {response : responseData, responseFor : "API_FlagCourse", screen:"asas"}
 			pure $ "handled"
+		API_Get_Batch_Creator_name {user_token:user_token,api_token:api_token} -> do
+			responseData <- getProfileDetail user_token api_token
+			_ <- sendUpdatedState {response : responseData, responseFor : "API_Get_Batch_Creator_name", screen:"asas"}
+			pure $ "handled"
+		API_Get_Batch_Details {user_token : user_token,api_token : api_token ,batch_id : batch_id} -> do
+			responseData <- getBatchDetails user_token api_token batch_id
+			_ <- sendUpdatedState {response : responseData, responseFor : "API_Get_Batch_Details", screen:"asas"}
+			pure $ "handled"	
 		OPEN_ModuleDetailsActivity {moduleName : output1 , moduleDetails : output2} -> subModuleResourceDetailActivity output1 output2 "CourseEnrolledActivity" input
 		BACK_CourseEnrolledActivity -> case whereFrom of
 			"ResourceActivity" -> resourceSearchActivity whatToSendBack "Terminate" input

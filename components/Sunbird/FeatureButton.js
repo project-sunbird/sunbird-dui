@@ -37,7 +37,7 @@ class FeatureButton extends View {
         height={this.props.height || "wrap_content"}
         width={this.props.width || "wrap_content"}
         orientation="horizontal"
-        cornerRadius="2"
+        cornerRadius={this.props.cornerRadius || "2"}
         clickable={this.props.clickable||"true"}
         margin={this.props.margin||"0,0,0,0"}
         stroke={this.props.stroke||"3,"+this.props.background||"1,#000000"}

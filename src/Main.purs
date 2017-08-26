@@ -5,11 +5,11 @@ import Control.Monad.Aff
 
 import Utils
 
-import Fragments.CommunityFragment
-import Fragments.CourseFragment
-import Fragments.ProfileFragment
-import Fragments.ResourceFragment
-import Fragments.HomeFragment
+import Fragments.CommunityFragment ( communityFragment)
+import Fragments.CourseFragment ( courseFragment)
+import Fragments.ProfileFragment ( profileFragment)
+import Fragments.ResourceFragment ( resourceFragment)
+import Fragments.HomeFragment ( homeFragment )
 
 import Control.Monad.Eff (Eff)
 import Control.Monad.Aff (launchAff)
@@ -69,6 +69,7 @@ contentPreviewActivity input whereFrom whatToSendBack = do
 courseInfoActivity input whereFrom whatToSendBack= do
     event <- ui $ CourseInfoActivity {courseDetails:input}
     case event of
+        OPEN_ViewBatchActivity {course: output}-> viewBatchActivity output "CourseInfoActivity" input
         OPEN_EnrolledActivity {course:output} -> enrolledCourseActivity output "HomeFragment" input
         API_EnrollCourse {user_token:x,reqParams:details,api_token:token} -> do
             output <- enrollCourse x details token
@@ -84,6 +85,24 @@ courseInfoActivity input whereFrom whatToSendBack= do
                 _ -> pure $ "default"
         _ -> courseInfoActivity input whereFrom whatToSendBack
 
+viewBatchActivity input whereFrom whatToSendBack = do
+	event <- ui $ ViewBatchActivity {extras : input}
+	case event of
+		OPEN_EnrolledActivity_BATCH {course: output} -> enrolledCourseActivity output "CourseFragment" input
+		API_Get_Batch_list {user_token : x, api_token: token , request : request } -> do
+			responseData <- getBatchList x token request
+			_ <- sendUpdatedState {response : responseData, responseFor : "API_Get_Batch_list", screen:"asas"}
+			pure $ "apiDefault"
+		API_EnrollInBatch {reqParams : details , user_token : x, api_token: token} -> do
+			responseData <- enrollInBatch details x token
+			_ <- sendUpdatedState {response : responseData, responseFor : "API_EnrollInBatch", screen:"asas"}
+			pure $ "apiDefault"
+		API_BatchCreator {user_token : x, api_token: token} -> do
+			responseData <- getProfileDetail x token
+			_ <- sendUpdatedState {response : responseData, responseFor : "API_BatchCreator", screen:"asas"}
+			pure $ "apiDefault"
+		BACK_ViewBatchActivity -> courseInfoActivity whatToSendBack "Deeplink" input
+		_ -> viewBatchActivity input whereFrom whatToSendBack
 
 resourceDetailActivity input whereFrom whatToSendBack = do
     event <- ui $ ResourceDetailActivity {resourceDetails : input}
@@ -99,6 +118,14 @@ enrolledCourseActivity input whereFrom whatToSendBack = do
         API_FlagCourse {user_token: user_token,api_token: api_token,requestBody:request,identifier:identifier} -> do
             responseData <- flagContent user_token api_token request identifier
             _ <- sendUpdatedState {response : responseData, responseFor : "API_FlagCourse", screen:"asas"}
+            pure $ "handled"
+        API_Get_Batch_Creator_name {user_token:user_token,api_token:api_token} -> do
+            responseData <- getProfileDetail user_token api_token
+            _ <- sendUpdatedState {response : responseData, responseFor : "API_Get_Batch_Creator_name", screen:"asas"}
+            pure $ "handled"
+        API_Get_Batch_Details {user_token : user_token,api_token : api_token ,batch_id : batch_id} -> do
+            responseData <- getBatchDetails user_token api_token batch_id
+            _ <- sendUpdatedState {response : responseData, responseFor : "API_Get_Batch_Details", screen:"asas"}
             pure $ "handled"
         OPEN_ModuleDetailsActivity {moduleName:output1,moduleDetails:output2} -> subModuleDetailActivity output1 output2 "DeepLinkCourseEnrolled" input
         BACK_CourseEnrolledActivity -> case whereFrom of
@@ -137,8 +164,12 @@ mainActivity input whereFrom whatToSendBack = do
             responseData <- getProfileDetail x y
             _ <- sendUpdatedState {response : responseData, responseFor : "API_ProfileFragment", screen:"asas"}
             pure $ "handled"
+        API_Tenant {user_token:x, api_token:y, slug:z} -> do
+          responseData <- getTenantDetail x y z
+          _ <- sendUpdatedState {response : responseData, responseFor : "API_Tenant", screen:"asas"}
+          pure $ "apiDefault"
         _ -> mainActivity input whereFrom whatToSendBack
 
 
 changeFlow = void $ launchAff $ mainActivity "{}" "LogInScreen" "Nothing"
-onBoardingFLow = void $ launchAff $ userActivity "SplashScreenActivity" 
+onBoardingFLow = void $ launchAff $ userActivity "SplashScreenActivity"

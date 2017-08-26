@@ -128,7 +128,7 @@ class ProfileAdditionalInfo extends View {
               width="wrap_content"
               height="wrap_content"
               text="Edit"
-              visibility = "visible"
+              visibility = "gone"
               onClick={this.handleEditProfileClick}
               style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
 

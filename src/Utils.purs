@@ -55,7 +55,7 @@ foreign import ui' :: forall a c e. (Error -> Eff e Unit) -> (a -> Eff e Unit) -
 
 
 -- getEulerLocation = "https://qa.ekstep.in"
-getEulerLocation1 = "https://staging.open-sunbird.org/api"
+getEulerLocation1 = "https://staging.ntp.net.in/api"
 
 --getEulerLocation1 = "http://52.172.36.121:9000"
 -- getApiKey ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkMTc1MDIwNDdlODc0ODZjOTM0ZDQ1ODdlYTQ4MmM3MyJ9.7LWocwCn5rrCScFQYOne8_Op2EOo-xTCK5JCFarHKSs"
@@ -154,6 +154,16 @@ enrollCourse user_token courseId api_token =
                                                                                                           ])))
                                                    ]) in
  (post requestUrl headers payload)
+
+enrollInBatch bodyToSend user_token api_token =
+  let requestUrl = "/course/v1/enrol"
+      headers = (generateRequestHeaders user_token api_token)
+      payload = A.fromObject (StrMap.fromFoldable [ (Tuple "id" (A.fromString "unique API ID"))
+        ,(Tuple "ts" (A.fromString "2013/10/15 16:16:39"))
+        ,(Tuple "request" (getJsonFromString bodyToSend))
+        ]) in
+  (post requestUrl headers payload)
+
 
 
 getCoursesPageApi user_token api_token =
@@ -273,7 +283,10 @@ getProfileDetail user_token api_token =
       headers = (generateRequestHeaders user_token api_token) in
   (get requestUrl headers)
 
-
+getTenantDetail user_token api_token slug =
+  let requestUrl = "/org/v1/tenant/info/" <> slug
+      headers = (generateRequestHeaders user_token api_token) in
+  (get requestUrl headers)
 
 userSignup request api_token =
   let requestUrl = "/user/v1/create"

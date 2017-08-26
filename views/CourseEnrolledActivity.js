@@ -35,10 +35,12 @@ class CourseEnrolledActivity extends View {
       "pageOption",
       "descriptionContainer",
       "downloadProgressText",
+      "courseNotStartedOverLay",
       "sharePopupContainer",
       "contentLoaderContainer",
       "featureButton",
-      "simpleToolBarOverFlow"
+      "simpleToolBarOverFlow",
+      "batchDetailsContainer"
     ]);
     this.state = state;
     this.screenName = "CourseEnrolledActivity"
@@ -68,6 +70,8 @@ class CourseEnrolledActivity extends View {
     this.details = JSON.parse(state.data.value0.courseDetails);
 
     this.courseDetails  = "";
+    this.batchName = "";
+    this.batchDescription = "";
 
     this.popupMenu = window.__S.DELETE;
 
@@ -120,8 +124,10 @@ class CourseEnrolledActivity extends View {
     );
   }
 
-   onStop = () =>{
-    window.__SharePopup.hide();
+  onStop = () =>{
+    if( window.__SharePopup){
+      window.__SharePopup.hide();
+    }
     console.log("ON STOP IN ResourceDetailActivity")
   }
 
@@ -139,11 +145,11 @@ class CourseEnrolledActivity extends View {
 
     var request = {
                           "flagReasons":selectedList,
-                          "flaggedBy":"kiran",
+                          "flaggedBy": window.__userName,
                           "versionKey": versionKey,
                           "flags": [comment]
                      }
-    
+
     var whatToSend = {
       "user_token" : window.__userToken,
       "api_token" : window.__apiToken,
@@ -193,7 +199,7 @@ class CourseEnrolledActivity extends View {
 
 
   checkContentLocalStatus = (identifier) => {
-
+    console.log("local status")
     var callback = callbackMapper.map(function(data) {
       data = JSON.parse(data)
       _this.courseDetails = data;
@@ -235,22 +241,126 @@ class CourseEnrolledActivity extends View {
     window.__runDuiCallback(event);
 
   }
+
+  getBatchDetailSection = (name,description,createdBy) => {
+
+    return (<LinearLayout
+              width="match_parent"
+              height="wrap_content"
+              root="true"
+              padding="0,8,0,8"
+              orientation="vertical">
+
+              <TextView
+                width="match_parent"
+                height="wrap_content"
+                text={utils.firstLeterCapital(name)}
+                style={window.__TextStyle.textStyle.CARD.TITLE.DARK_16}/>
+
+              <TextView
+                width="match_parent"
+                height="wrap_content"
+                text={description}
+                style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULA_10}/>
+
+                <LinearLayout
+                  width="match_parent"
+                  height = "wrap_content"
+                  orientation = "horizontal"
+                  >
+                    <TextView
+                        width="wrap_content"
+                        height="wrap_content"
+                        text={window.__S.CREATED_BY_SMALL+"  "}
+                        style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULA_10}/>
+                     <TextView
+                    width="wrap_content"
+                    height="wrap_content"
+                    text={createdBy}
+                    style={window.__TextStyle.textStyle.CARD.TITLE.DARK_14}/>
+                </LinearLayout>
+            </LinearLayout>)
+  }
+
   handleStateChange = (state) =>{
-    var response = utils.decodeBase64(state.response.status[1])
+    console.log("STATE \n\n",state)
+    var response = JSON.parse(utils.decodeBase64(state.response.status[1]))
     var responseCode = state.response.status[2]
-    if(responseCode == 200){
-        window.__LoaderDialog.hide();
-        if(response[0] == "successful"){
-          JBridge.showSnackBar(window.__S.CONTENT_FLAGGED_MSG)
+
+    console.log("response \n\n",response)
+
+    if(responseCode == 501 || status === "failure" || status=="f") {
+      window.__LoaderDialog.hide();
+      JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION)
+      responseData=tmp;
+    }else  if (response.params && response.params.err) {
+      window.__LoaderDialog.hide();
+        if(state.responseFor == "API_FlagCourse"){
+            JBridge.showSnackBar(window.__S.CONTENT_FLAG_FAIL);
+            _this.onBackPressed();
+          }
+        else
+          JBridge.showSnackBar(window.__S.ERROR_SERVER_MESSAGE + response.params.errmsg)
+      return;
+    }
+
+    if (state.responseFor == "API_Get_Batch_Details") {
+      console.log("batch details",response);
+      var batch =response.result.response;
+      var curr_Date = new Date();
+      var start_date = new Date(batch.startDate);
+      if(start_date>curr_Date){
+        Android.runInUI(this.set({
+          id: this.idSet.courseNotStartedOverLay,
+          visibility : "visible"
+        }),0);
+
+      }
+      var description="";
+      description+= utils.prettifyDate(batch.startDate);
+
+      if(batch.endDate && batch.endDate!=null && batch.endDate!=undefined){
+        description+= " - ";
+        description+= utils.prettifyDate(batch.endDate);
+      }
+      this.batchDescription = description;
+      var name = batch.name;
+      this.batchName = batch.name;
+      var whatToSend = {
+        "user_token" : batch.createdBy,
+        "api_token" : window.__apiToken
+      }
+      var event= { "tag": "API_Get_Batch_Creator_name", contents: whatToSend };
+      window.__runDuiCallback(event);
+      console.log("batch created token",batch.createdBy)
+
+    }else if(state.responseFor == "API_FlagCourse"){
+
+        if(responseCode == 200){
+            if(response[0] == "successful"){
+              setTimeout(function(){
+                JBridge.showSnackBar(window.__S.CONTENT_FLAGGED_MSG)
+                window.__BNavFlowRestart();
+                _this.onBackPressed();
+                window.__LoaderDialog.hide();
+              }, 2000)
+            }
+        }
+        else{
+          window.__LoaderDialog.hide();
+          JBridge.showSnackBar(window.__S.CONTENT_FLAG_FAIL);
           _this.onBackPressed();
+
         }
     }
-    else{
-      window.__LoaderDialog.hide();
-      JBridge.showSnackBar(window.__S.CONTENT_FLAG_FAIL);
-      _this.onBackPressed();
-      
+    else if(state.responseFor == "API_Get_Batch_Creator_name"){
+      var user_details = response.result.response;
+      console.log("user details",user_details)
+      console.log(this.batchName,this.batchDescription)
+      this.replaceChild(_this.idSet.batchDetailsContainer,_this.getBatchDetailSection(this.batchName,this.batchDescription,user_details.firstName).render(),0);
     }
+
+
   }
 
 
@@ -295,6 +405,10 @@ class CourseEnrolledActivity extends View {
      window.__SharePopup.hide();
      return;
     }
+    if(window.__ContentLoaderDialog.getVisible()){
+     window.__ContentLoaderDialog.hide();
+     return;
+    }
 
    var whatToSend = []
    var event = { tag: 'BACK_CourseEnrolledActivity', contents: whatToSend }
@@ -303,6 +417,7 @@ class CourseEnrolledActivity extends View {
 
   afterRender=()=>{
     console.log("details",this.details)
+
 
 
     if((this.details.hasOwnProperty("contentType")) && (this.details.contentType.toLocaleLowerCase() == "collection" || this.details.contentType.toLocaleLowerCase() == "textbook")){
@@ -314,6 +429,8 @@ class CourseEnrolledActivity extends View {
       Android.runInUI(cmd, 0);
     }
     if(!this.enrolledCourses.hasOwnProperty("lastReadContentId") || (this.enrolledCourses.hasOwnProperty("lastReadContentId") && this.enrolledCourses.lastReadContentId==null)){
+
+
       var btn  = (<FeatureButton
                     clickable="true"
                     margin = "16,16,16,16"
@@ -325,12 +442,29 @@ class CourseEnrolledActivity extends View {
                     style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
                     buttonClick = {this.handleResumeClick}
                     />)
+
       this.replaceChild(this.idSet.featureButton,btn.render(),0)
-      // Android.runInUI(cmd, 0);
+        // Android.runInUI(cmd, 0);
+
+
     }
 
 
     this.checkContentLocalStatus(this.baseIdentifier);
+    console.log("this.enrolledCourses",this.enrolledCourses)
+    if(this.details.batchId || this.enrolledCourses.batchId){ 
+     var batchId = this.details.batchId ? this.details.batchId : this.enrolledCourses.batchId;
+      var whatToSend = {
+        "user_token" : window.__userToken,
+        "api_token" : window.__apiToken,
+        "batch_id" : batchId
+      }
+      var event= { "tag": "API_Get_Batch_Details", contents: whatToSend };
+      if(JBridge.isNetworkAvailable())
+        window.__runDuiCallback(event);
+      else
+        JBridge.showSnackBar("Network Error, Batch details not found")
+    }
   }
 
   overFlowCallback = (params) => {
@@ -365,7 +499,7 @@ class CourseEnrolledActivity extends View {
 
       var input = [{
                     type : "text",
-                    data : window.__deepLinkUrl+"/public/"+_this.baseIdentifier
+                    data : window.__deepLinkUrl+"/public/#!/course/"+_this.baseIdentifier
 
                   },{
                     type : "file",
@@ -476,63 +610,78 @@ class CourseEnrolledActivity extends View {
             totalProgress={this.data.totalProgress}
             visibility = {this.showProgress}/>
 
-            <LinearLayout
-              id={this.idSet.parentContainer}
+          <RelativeLayout
               height="match_parent"
-              width="match_parent"
-              orientation="vertical">
+              width="match_parent">
 
-              <ScrollView
-                  height="0"
-                  weight="1"
+              <LinearLayout
+                  id={this.idSet.parentContainer}
+                  height="match_parent"
                   width="match_parent"
-                  fillViewPort="true">
-                  <LinearLayout
-                    height="match_parent"
-                    width="match_parent"
-                    root="true"
-                    padding="16,24,16,16"
-                    orientation="vertical">
+                  orientation="vertical">
 
-                      <CourseProgress
-                        height="wrap_content"
-                        width="wrap_content"
-                        content={this.data}
-                        title={this.data.courseName || this.details.name || this.details.contentData.name}
-                        onResumeClick={this.handleCourseResume}
-                        visibility = {this.showProgress}/>
-
-                       <TextView
-                        width="wrap_content"
-                        height="wrap_content"
-                        margin="0,16,0,0"
-                        style={window.__TextStyle.textStyle.CARD.TITLE.DARK}
-                        text={window.__S.STRUCTURE}/> 
+                  <ScrollView
+                      height="0"
+                      weight="1"
+                      width="match_parent"
+                      fillViewPort="true">
                       <LinearLayout
-                        id={this.idSet.descriptionContainer}
                         height="match_parent"
                         width="match_parent"
-                        gravity="center"
                         root="true"
+                        padding="16,24,16,16"
                         orientation="vertical">
 
-                      <TextView
-                        margin="0,50,0,0"
-                        width="wrap_content"
-                        height="wrap_content"
-                        gravity="center"
-                        text={window.__S.LOADING_CONTENT}/>
+                          <CourseProgress
+                            height="wrap_content"
+                            width="wrap_content"
+                            content={this.data}
+                            title={this.data.courseName || this.details.name || this.details.contentData.name}
+                            onResumeClick={this.handleCourseResume}
+                            visibility = {this.showProgress}/>
 
-                      <ProgressBar
-                        margin="0,10,0,0"
-                        gravity="center"
-                        width="20"
-                        height="20"/>
+                          <LinearLayout
+                            id={this.idSet.batchDetailsContainer}
+                            height="match_parent"
+                            width="match_parent"
+                            orientation="vertical"/>
 
+
+
+                           <TextView
+                            width="wrap_content"
+                            height="wrap_content"
+                            margin="0,16,0,0"
+                            style={window.__TextStyle.textStyle.CARD.TITLE.DARK}
+                            text={window.__S.STRUCTURE}/>
+
+
+
+                          <LinearLayout
+                            id={this.idSet.descriptionContainer}
+                            height="match_parent"
+                            width="match_parent"
+                            gravity="center"
+                            root="true"
+                            orientation="vertical">
+
+                                <TextView
+                                  margin="0,50,0,0"
+                                  width="wrap_content"
+                                  height="wrap_content"
+                                  gravity="center"
+                                  text={window.__S.LOADING_CONTENT}/>
+
+                                <ProgressBar
+                                  margin="0,10,0,0"
+                                  gravity="center"
+                                  width="20"
+                                  height="20"/>
+
+                          </LinearLayout>
                       </LinearLayout>
-                  </LinearLayout>
-                </ScrollView>
-                <FeatureButton
+                  </ScrollView>
+                  <FeatureButton
                     clickable="true"
                     margin = "16,16,16,16"
                     width = "match_parent"
@@ -543,7 +692,29 @@ class CourseEnrolledActivity extends View {
                     style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
                     buttonClick = {this.handleResumeClick}
                     />
-          </LinearLayout>
+              </LinearLayout>
+
+
+               <LinearLayout
+                id={this.idSet.courseNotStartedOverLay}
+                height="match_parent"
+                width="match_parent"
+                visibility="gone"
+                clickable="true"
+                background={window.__Colors.WHITE_90}
+                gravity="center">
+
+                  <TextView
+                    gravity="center"
+                    width="match_parent"
+                    height="match_parent"
+                    style ={window.__TextStyle.textStyle.NOTHING}
+                    text="Batch not started"/>
+
+                </LinearLayout>
+
+
+          </RelativeLayout>
 
 
       </LinearLayout>

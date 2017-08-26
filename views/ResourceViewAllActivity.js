@@ -63,7 +63,7 @@ class ResourceViewAllActivity extends View {
 getRows = (data) =>{
 
     var rows = data.map((item,i) => {
-
+      console.log("item date",item.createdOn)
       if(item.contentType != "course"){
 
                 if(item.hasOwnProperty("contentData")){
@@ -88,7 +88,9 @@ getRows = (data) =>{
                    else{
                     var d = new Date();
                    }
-                  this.time = d.getDay() + "-" + d.getMonth()+ "-" + d.getUTCFullYear();
+
+                  this.time = utils.prettifyDate(d);
+                  console.log(this.time)
                 }
 
 

@@ -19,6 +19,11 @@ module.exports = function(action, payload, state) {
       localState.currScreen = "SplashScreenActivity";
       break;
 
+    case "ViewBatchActivity":
+      localState.isInit = false
+      localState.currScreen = "ViewBatchActivity";
+      break;
+
      case "CommunityInfoActivity":
       localState.isInit = false;
       localState.currScreen = "CommunityInfoActivity";

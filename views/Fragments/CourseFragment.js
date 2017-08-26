@@ -200,10 +200,12 @@ class CourseFragment extends View {
   addSwipeFunction = () => {
 
       var callbackRefresh = callbackMapper.map(function(params) {
-        window.__BNavFlowRestart();
+        if(JBridge.isNetworkAvailable())
+          window.__BNavFlowRestart();
+        else
+        JBridge.showSnackBar(window.__S.NO_INTERNET);
     });
-
-      JBridge.addSwipeRefreshScrollView(this.idSet.scrollViewContainerCourse,callbackRefresh);
+        JBridge.addSwipeRefreshScrollView(this.idSet.scrollViewContainerCourse,callbackRefresh);
   }
 
 

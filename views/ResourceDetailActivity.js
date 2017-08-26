@@ -44,7 +44,7 @@ class ResourceDetailActivity extends View {
         {imageUrl:'ic_action_overflow'}
       ]
     }
-    this.popupMenu = window.__S.DELETE + "," + window.__S.FLAG 
+    this.popupMenu = window.__S.DELETE + "," + window.__S.FLAG
 
     this.shouldCacheScreen = false;
 
@@ -52,7 +52,7 @@ class ResourceDetailActivity extends View {
     this.details = JSON.parse(this.details);
     this.playContent = "";
     console.log("RDA",this.details)
-    
+
     this.localStatus = false;
 
     _this = this;
@@ -70,7 +70,7 @@ class ResourceDetailActivity extends View {
               <ProgressButton
                  width="match_parent"
                  isCourse = "false"
-                 playContent = {_this.playContent} 
+                 playContent = {_this.playContent}
                  contentDetail = {_this.details.content}
                  buttonText="PLAY"
                  localStatus = {_this.localStatus}
@@ -125,7 +125,7 @@ class ResourceDetailActivity extends View {
         if(isContentLocallyAvailable){
                       input = [{
                         type : "text",
-                        data : window.__deepLinkUrl+"/public/"+_this.details.identifier
+                        data : window.__deepLinkUrl+"/public/#!/content/"+_this.details.identifier
 
                       },{
                         type : "file",
@@ -136,11 +136,11 @@ class ResourceDetailActivity extends View {
         }else{
                       input = [{
                                   type : "text",
-                                  data : window.__deepLinkUrl+"/public/"+_this.details.identifier
+                                  data : window.__deepLinkUrl+"/public/#!/content/"+_this.details.identifier
                               }];
 
         }
-                      
+
           var sharePopUp = (
             <SharePopup
             data = {input}/>
@@ -151,13 +151,13 @@ class ResourceDetailActivity extends View {
         });
 
         JBridge.exportEcar(this.details.identifier, shareCallback);
-      
+
   }
 
   afterRender = () => {
 
      this.checkLocalStatus(this.details);
-    
+
     if(this.details && this.details.content && this.details.content.me_averageRating){
     JBridge.setRating(this.idSet.ratingBar, this.details.content.me_averageRating);
     }else if(this.details.content.hasOwnProperty("contentData") && this.details.content.contentData.hasOwnProperty("me_averageRating")){
@@ -187,11 +187,11 @@ class ResourceDetailActivity extends View {
 
     var request = {
                           "flagReasons":selectedList,
-                          "flaggedBy":"kiran",
+                          "flaggedBy":window.__userName,
                           "versionKey": versionKey,
                           "flags": [comment]
                      }
-    
+
     var whatToSend = {
       "user_token" : window.__userToken,
       "api_token" : window.__apiToken,
@@ -242,19 +242,19 @@ class ResourceDetailActivity extends View {
                           padding="10,10,10,10"
                           stroke ={"3," + window.__Colors.PRIMARY_BLACK}
                           imageFromUrl = {item}/>
-                
+
                 </LinearLayout>)
     })
-  
+
     }
 
-    
+
     return (
     <LinearLayout
       height="wrap_content"
       width="match_parent"
       orientation="vertical">
-    
+
       <TextView
         margin="0,16,0,0"
         width="wrap_content"
@@ -277,13 +277,22 @@ class ResourceDetailActivity extends View {
 
         </LinearLayout>
 
-      </HorizontalScrollView>  
-        
+      </HorizontalScrollView>
+
     </LinearLayout>)
   }
 
 
   getBody = () => {
+    var description = "Not Available";
+    if(this.details.description)
+        description = this.details.description
+    else if(this.details.hasOwnProperty("content")){
+      if(this.details.content.hasOwnProperty("description"))
+          description  = this.details.content.description
+      else if(this.details.content.hasOwnProperty("contentData") && this.details.content.contentData.description)
+          description = this.details.content.contentData.description
+    }
 
     return (
       <LinearLayout
@@ -302,7 +311,7 @@ class ResourceDetailActivity extends View {
           margin="0,4,0,0"
           width="wrap_content"
           height="wrap_content"
-          text={this.details.description || this.details.content.contentData.description}
+          textFromHtml={description}
           style={window.__TextStyle.textStyle.CARD.TITLE.REGULAR_BLACK}/>
 
 
@@ -387,7 +396,8 @@ class ResourceDetailActivity extends View {
           <LinearLayout
           margin="0,12,0,0"
           width="match_parent"
-          height="wrap_content">
+          height="wrap_content"
+          >
 
             <TextView
             width="wrap_content"
@@ -403,6 +413,7 @@ class ResourceDetailActivity extends View {
             <TextView
             width="wrap_content"
             height="wrap_content"
+            visibility = {this.details.hasOwnProperty("content")&& this.details.content.hasOwnProperty("me_totalDownloads") ? "visible" : "gone"}
             text={this.details.hasOwnProperty("content")&& this.details.content.hasOwnProperty("me_totalDownloads") ? this.details.content.me_totalDownloads : "0"}
             style={window.__TextStyle.textStyle.HINT.DULL}/>
 
@@ -430,6 +441,7 @@ class ResourceDetailActivity extends View {
               width="wrap_content"
               height="wrap_content"
               text={window.__S.DOWNLOADS}
+              visibility = {this.details.hasOwnProperty("content")&& this.details.content.hasOwnProperty("me_totalDownloads") ? "visible" : "gone"}
               style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
         </LinearLayout>
@@ -443,21 +455,25 @@ class ResourceDetailActivity extends View {
     var responseCode = state.response.status[2]
     if(responseCode == 200){
       var callback = callbackMapper.map(function(response){
-        window.__LoaderDialog.hide();
 
         if(response[0] == "successful"){
-          JBridge.showSnackBar(window.__S.CONTENT_FLAGGED_MSG)
-          _this.onBackPressed();
+          setTimeout(function(){
+            JBridge.showSnackBar(window.__S.CONTENT_FLAGGED_MSG)
+            window.__BNavFlowRestart();
+            _this.onBackPressed();
+            window.__LoaderDialog.hide();
+          }, 2000)
+
         }
       });
       JBridge.deleteContent(this.details.identifier,callback);
-      
+
     }
     else{
       window.__LoaderDialog.hide();
       JBridge.showSnackBar(window.__S.CONTENT_FLAG_FAIL);
       _this.onBackPressed();
-      
+
     }
     console.log(response)
 
@@ -499,7 +515,7 @@ class ResourceDetailActivity extends View {
       var event= { "tag": "BACK_ResourceDetailActivity", contents: whatToSend };
       window.__runDuiCallback(event);
     }
-    
+
   }
 
   changeOverFlow = () =>{
@@ -523,9 +539,28 @@ class ResourceDetailActivity extends View {
      if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
        window.__SharePopup.show();
      }else{
-        utils.setPermissions("android.permission.WRITE_EXTERNAL_STORAGE");
+        this.setPermissions();
       }
     }
+  }
+
+
+  setPermissions = () => {
+
+   var callback = callbackMapper.map(function(data) {
+
+      if (data == "android.permission.WRITE_EXTERNAL_STORAGE") {
+        JBridge.setKey("isPermissionSetWriteExternalStorage", "true");
+      }
+      if(data == "DeniedPermanently"){
+        console.log("DENIED DeniedPermanently");
+        window.__PermissionDeniedDialog.show("ic_warning_grey",window.__S.STORAGE_DENIED);
+      }
+
+    });
+
+    JBridge.setPermissions(callback,"android.permission.WRITE_EXTERNAL_STORAGE");
+
   }
 
 
@@ -602,7 +637,7 @@ class ResourceDetailActivity extends View {
        height="match_parent"
        id={this.idSet.sharePopupContainer}/>
 
-       
+
 
       </RelativeLayout>
     );

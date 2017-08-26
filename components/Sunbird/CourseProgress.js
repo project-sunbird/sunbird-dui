@@ -37,7 +37,7 @@ class CourseProgress extends View {
             visibility = {this.props.visibility}
             width="match_parent"
             margin="0,0,0,0">
-               
+
                 <TextView
                   style={window.__TextStyle.textStyle.HINT.REGULAR}
                   id ={this.idSet.completedTextView}
@@ -68,8 +68,8 @@ class CourseProgress extends View {
             background={window.__Colors.PRIMARY_ACCENT}
             cornerRadius="2"
             gravity="center">
-          
-            <TextView 
+
+            <TextView
               width="wrap_content"
               height="wrap_content"
               text="RESUME"
@@ -103,15 +103,15 @@ class CourseProgress extends View {
 
             {this.getProgressStatus()}
 
-           
-         
+
+
         </LinearLayout>
         <LinearLayout
           height="match_parent"
           margin="24,0,0,0"
           window="wrap_content"
-          gravity="center"> 
-           
+          gravity="center">
+
          </LinearLayout>
       </LinearLayout>
     )

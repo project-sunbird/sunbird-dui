@@ -21,8 +21,8 @@ class SplashScreenActivity extends View {
     this.getUserToken()
     window.__pressedLoggedOut=false;
 
-    
-    
+    this.icon = JBridge.getFromSharedPrefs("logo_url") == "__failed" ? "ic_launcher" : JBridge.getFromSharedPrefs("logo_url");
+
   }
 
   onPop = () => {
@@ -41,37 +41,46 @@ class SplashScreenActivity extends View {
 
     JBridge.getApiToken(callback);
 
-    
+
   }
 
   afterRender = () => {
     JBridge.syncTelemetry();
-    
+
     // JBridge.setInSharedPrefs("logged_in","YES");
     // JBridge.setInSharedPrefs("user_id", "029c72b5-4691-4bf2-a6de-72b18df0b748");
     // JBridge.setInSharedPrefs("user_name", "vinay");
     // JBridge.setInSharedPrefs("user_token", "029c72b5-4691-4bf2-a6de-72b18df0b748");
-    
-    window.__loginUrl = "https://staging.open-sunbird.org";
 
-    window.__apiUrl = "https://staging.open-sunbird.org";
+    window.__loginUrl = "https://staging.ntp.net.in";
 
-    window.__deepLinkUrl = "staging.open-sunbird.org";
-    
+    window.__apiUrl = "https://staging.ntp.net.in";
+
+    window.__deepLinkUrl = "staging.ntp.net.in";
+
 
     setTimeout(() => {
-      var whatToSend = [] 
+      var whatToSend = []
       var event = { tag: "OPEN_UserActivity", contents: whatToSend}
       window.__runDuiCallback(event);
     }, 1000);
   }
 
-  
+
   handleStateChange = () => {
     return true;
   }
 
   render() {
+    var imgUrl = "ic_launcher";
+    var textToDisplay = window.__S.SPLASH_MESSAGE;
+    if (JBridge.getFromSharedPrefs("logo_url") != "__failed" && JBridge.getFromSharedPrefs("logo_file_path") != "__failed"){
+      imgUrl = "file://" + JBridge.getFromSharedPrefs("logo_file_path");
+    }
+    if (JBridge.getFromSharedPrefs("orgName") != "__failed"){
+      textToDisplay = JBridge.getFromSharedPrefs("orgName");
+    }
+
     this.layout = (
       <LinearLayout
         root="true"
@@ -85,9 +94,9 @@ class SplashScreenActivity extends View {
             height="250"
             width="250"
             layout_gravity="center"
-            imageUrl="ic_launcher"/>
+            circularImageUrl = {"1," + imgUrl}/>
           <TextView
-            text={window.__S.SPLASH_MESSAGE}
+            text={textToDisplay}
             margin="20,120,20,20"
             layout_gravity="center"
             height="wrap_content"/>

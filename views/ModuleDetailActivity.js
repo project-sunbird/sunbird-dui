@@ -15,6 +15,7 @@ var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
 var CropParagraph = require('../components/Sunbird/CropParagraph');
 var ProgressButton = require('../components/Sunbird/core/ProgressButton');
 var CourseCurriculum = require('../components/Sunbird/CourseCurriculum');
+var utils = require('../utils/GenericFunctions');
 
 
 var _this;
@@ -51,6 +52,7 @@ class ModuleDetailActivity extends View {
         this.localStatus = this.module.isAvailableLocally;
         this.localContent = null;
         _this = this;
+        this.downloadList=[];
 
         //stack to maintain child traversal
         this.stack = [];
@@ -111,7 +113,7 @@ class ModuleDetailActivity extends View {
         var data = JSON.parse(pValue);
         if (data.identifier != this.module.identifier)
             return;
-
+        console.log("data in download",data)
         var textToShow = "";
         if(data.status == "NOT_FOUND"){
           window.__ContentLoaderDialog.hide();
@@ -123,7 +125,17 @@ class ModuleDetailActivity extends View {
         var downloadedPercent = data.downloadProgress;
         downloadedPercent = downloadedPercent < 0 ? 0 : downloadedPercent;
         if (downloadedPercent == 100) {
-            this.checkContentLocalStatus(this.module);
+            if(this.downloadList.indexOf(data.identifier) == -1){
+                this.downloadList.push(data.identifier)
+                this.checkContentLocalStatus(this.module);
+            }
+            else{
+                JBridge.showSnackBar(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
+                this.onBackPressed();
+                return;
+            }
+
+            
         } else {
             var cmd = this.set({
                 id: this.idSet.downloadProgressText,
@@ -136,16 +148,26 @@ class ModuleDetailActivity extends View {
     checkContentLocalStatus = (module) => {
         _this = this;
         var callback = callbackMapper.map(function(data) {
-            _this.localContent = JSON.parse(data[0])
+            _this.localContent = JSON.parse(utils.jsonifyData(data[0]))
+            console.log("local status",data[0])
             if (_this.localContent.isAvailableLocally == true) {
                 var callback1 = callbackMapper.map(function(data) {
                     _this.module = JSON.parse(data);
                     _this.renderModuleChildren(_this.module)
                 });
                 JBridge.getChildContent(module.identifier, callback1)
-            } else {
+            }
+             else {
               if (JBridge.isNetworkAvailable()){
-                JBridge.importCourse(module.identifier, "true")
+                // var callback22 = callbackMapper.map(function(data){
+                //     var tmp = JSON.parse(data[0]);
+                //     if(tmp.status == "NOT_FOUND")
+                        JBridge.importCourse(module.identifier, "true")    
+                //     else
+                //         JBridge.showSnackBar(window.__S.ERROR_CONTENT_NOT_AVAILABLE)
+                // });
+                // JBridge.getContentImportStatus(module.identifier,callback22)
+                
               }
               else
                 JBridge.showSnackBar(window.__S.NO_INTERNET)
@@ -170,6 +192,7 @@ class ModuleDetailActivity extends View {
     }
 
     reRender = (moduleName, module) => {
+      console.log("inside reRender, index : " + module.index);
       this.moduleName = moduleName;
       this.module = module;
        var layout = (
@@ -198,6 +221,7 @@ class ModuleDetailActivity extends View {
                 root = "true"
                 margin = "0,0,0,12"
                 brief = { true } title = ""
+                currIndex = {module.index}
                 onClick = { this.handleModuleClick }
                 content = { module.children }  />
             )
