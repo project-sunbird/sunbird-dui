@@ -72,6 +72,10 @@ courseDetailActivity input whereFrom whatToSendBack = do
 			responseData <- flagContent user_token api_token request identifier
 			_ <- sendUpdatedState {response : responseData, responseFor : "API_FlagCourse", screen:"asas"}
 			pure $ "handled"
+		API_Get_Batch_Creator_name {user_token:user_token,api_token:api_token} -> do
+			responseData <- getProfileDetail user_token api_token
+			_ <- sendUpdatedState {response : responseData, responseFor : "API_Get_Batch_Creator_name", screen:"asas"}
+			pure $ "handled"
 		API_Get_Batch_Details {user_token : user_token,api_token : api_token ,batch_id : batch_id} -> do
 			responseData <- getBatchDetails user_token api_token batch_id
 			_ <- sendUpdatedState {response : responseData, responseFor : "API_Get_Batch_Details", screen:"asas"}

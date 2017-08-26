@@ -70,6 +70,8 @@ class CourseEnrolledActivity extends View {
     this.details = JSON.parse(state.data.value0.courseDetails);
 
     this.courseDetails  = "";
+    this.batchName = "";
+    this.batchDescription = "";
 
     this.popupMenu = window.__S.DELETE;
 
@@ -240,7 +242,7 @@ class CourseEnrolledActivity extends View {
 
   }
 
-  getBatchDetailSection = (name,description) => {
+  getBatchDetailSection = (name,description,createdBy) => {
 
     return (<LinearLayout
               width="match_parent"
@@ -261,6 +263,22 @@ class CourseEnrolledActivity extends View {
                 text={description}
                 style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULA_10}/>
 
+                <LinearLayout
+                  width="match_parent"
+                  height = "wrap_content"
+                  orientation = "horizontal"
+                  >
+                    <TextView
+                        width="wrap_content"
+                        height="wrap_content"
+                        text={window.__S.CREATED_BY_SMALL+"  "}
+                        style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULA_10}/>
+                     <TextView
+                    width="wrap_content"
+                    height="wrap_content"
+                    text={createdBy}
+                    style={window.__TextStyle.textStyle.CARD.TITLE.DARK_14}/>
+                </LinearLayout>
             </LinearLayout>)
   }
 
@@ -300,13 +318,21 @@ class CourseEnrolledActivity extends View {
       }
       var description="";
       description+= utils.prettifyDate(batch.startDate);
+
       if(batch.endDate && batch.endDate!=null && batch.endDate!=undefined){
         description+= " - ";
         description+= utils.prettifyDate(batch.endDate);
       }
+      this.batchDescription = description;
       var name = batch.name;
-      this.replaceChild(_this.idSet.batchDetailsContainer,_this.getBatchDetailSection(name,description).render(),0);
-
+      this.batchName = batch.name;
+      var whatToSend = {
+        "user_token" : batch.createdBy,
+        "api_token" : window.__apiToken
+      }
+      var event= { "tag": "API_Get_Batch_Creator_name", contents: whatToSend };
+      window.__runDuiCallback(event);
+      console.log("batch created token",batch.createdBy)
 
     }else if(state.responseFor == "API_FlagCourse"){
 
@@ -326,6 +352,12 @@ class CourseEnrolledActivity extends View {
           _this.onBackPressed();
 
         }
+    }
+    else if(state.responseFor == "API_Get_Batch_Creator_name"){
+      var user_details = response.result.response;
+      console.log("user details",user_details)
+      console.log(this.batchName,this.batchDescription)
+      this.replaceChild(_this.idSet.batchDetailsContainer,_this.getBatchDetailSection(this.batchName,this.batchDescription,user_details.firstName).render(),0);
     }
 
 
@@ -420,7 +452,7 @@ class CourseEnrolledActivity extends View {
 
     this.checkContentLocalStatus(this.baseIdentifier);
     console.log("this.enrolledCourses",this.enrolledCourses)
-    if(this.details.batchId || this.enrolledCourses.batchId){
+    if(this.details.batchId || this.enrolledCourses.batchId){ 
      var batchId = this.details.batchId ? this.details.batchId : this.enrolledCourses.batchId;
       var whatToSend = {
         "user_token" : window.__userToken,
@@ -428,7 +460,10 @@ class CourseEnrolledActivity extends View {
         "batch_id" : batchId
       }
       var event= { "tag": "API_Get_Batch_Details", contents: whatToSend };
-      window.__runDuiCallback(event);
+      if(JBridge.isNetworkAvailable())
+        window.__runDuiCallback(event);
+      else
+        JBridge.showSnackBar("Network Error, Batch details not found")
     }
   }
 
