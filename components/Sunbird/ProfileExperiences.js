@@ -43,6 +43,7 @@ class ProfileExperiences extends View {
               width="wrap_content"
               height="wrap_content"
               text="Add"
+              padding = "8,8,8,8"
               onClick = {this.props.popUpType == window.__PROFILE_POP_UP_TYPE.EXPERIENCE ? window.__ExperiencePopUp.show : window.__EducationPopUp.show}
               visibility = {(this.isEditable == "true") ? "visible" : "gone"}
               style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
@@ -64,6 +65,7 @@ class ProfileExperiences extends View {
       <LinearLayout
       height="wrap_content"
       width="wrap_content"
+      padding = "8,8,8,8"
       gravity="center">
       <ViewWidget
         height="0"
