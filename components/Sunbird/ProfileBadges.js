@@ -18,19 +18,7 @@ class ProfileBadges extends View {
 
     this.showMore = false;
 
-    this.data = [{
-      badgeName: "First finisher in 4 courses",
-
-    }, {
-      badgeName: "Created 5 courses",
-
-    }, {
-      badgeName: "First finisher in 10 courses",
-
-    }, {
-      badgeName: "Created 10 courses",
-
-    }, {
+    this.data = [ {
       badgeName: "First finisher in 20 courses",
 
     }, {
@@ -85,7 +73,7 @@ class ProfileBadges extends View {
     return (<LinearLayout
             width="wrap_content"
             height="wrap_content"
-            margin="0,24,0,0"
+            margin="0,16,0,0"
             root="true"
             layoutTransition="true"
             id={this.idSet.badgeContainer}

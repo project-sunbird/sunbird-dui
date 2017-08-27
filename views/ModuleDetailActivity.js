@@ -125,15 +125,17 @@ class ModuleDetailActivity extends View {
         var downloadedPercent = data.downloadProgress;
         downloadedPercent = downloadedPercent < 0 ? 0 : downloadedPercent;
         if (downloadedPercent == 100) {
-            if(this.downloadList.indexOf(data.identifier) == -1){
-                this.downloadList.push(data.identifier)
+            // if(this.downloadList.indexOf(data.identifier) != -1){
+            //     console.log("download success",this.downloadList)
+            //     JBridge.showSnackBar(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
+            //     this.onBackPressed();
+            //     return;
+            // }
+            // else{
+            //     console.log("second time download",this.downloadList)
+            //     this.downloadList.push(data.identifier)
                 this.checkContentLocalStatus(this.module);
-            }
-            else{
-                JBridge.showSnackBar(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
-                this.onBackPressed();
-                return;
-            }
+            // }
 
             
         } else {
@@ -159,14 +161,17 @@ class ModuleDetailActivity extends View {
             }
              else {
               if (JBridge.isNetworkAvailable()){
-                // var callback22 = callbackMapper.map(function(data){
-                //     var tmp = JSON.parse(data[0]);
-                //     if(tmp.status == "NOT_FOUND")
-                        JBridge.importCourse(module.identifier, "true")    
-                //     else
-                //         JBridge.showSnackBar(window.__S.ERROR_CONTENT_NOT_AVAILABLE)
-                // });
-                // JBridge.getContentImportStatus(module.identifier,callback22)
+                        if(_this.downloadList.indexOf(module.identifier)== -1){
+                            _this.downloadList.push(module.identifier)
+                            JBridge.importCourse(module.identifier, "true")        
+                        }
+                        else{
+                                JBridge.showSnackBar(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
+                                _this.onBackPressed();
+                                return;
+                        }
+                        
+                
                 
               }
               else

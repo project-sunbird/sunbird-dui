@@ -259,6 +259,7 @@ class ProfileFragment extends View {
                   editable = {this.editable}
                   onCardClick = {this.handleCreatedCardClick}/>
 
+
                 <ProfileAdditionalInfo
                   data={this.details}
                   editable = {this.isEditable}/>
