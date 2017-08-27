@@ -142,6 +142,7 @@ class ProgressButton extends View {
             JBridge.playContent(JSON.stringify(this.props.playContent));
           else{
             var callback = callbackMapper.map(function(data){
+              console.log("data from progress",JSON.parse(data[0]))
               JBridge.playContent(data[0]);
             });
             JBridge.getContentDetails(_this.props.identifier,callback);
