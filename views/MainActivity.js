@@ -122,7 +122,14 @@ class MainActivity extends View {
 
   onBackPressed = () => {
 
-
+    if(window.__EducationPopUp.getVisibility()){
+      window.__EducationPopUp.hide();
+      return;
+    }
+    if(window.__ExperiencePopUp.getVisibility()){
+      window.__ExperiencePopUp.hide();
+      return;
+    }
     if(window.__PageFilterChooser.getVisibility()){
       window.__PageFilterChooser.hide();
       return;

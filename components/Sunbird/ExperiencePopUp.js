@@ -39,6 +39,7 @@ class ExperiencePopUp extends View{
       "spinnerContainer"
 
     ]);
+    this.isVisible = false;
     this.spinnerArray = ["Select","Hindi","English","Math","Physics","Chemistry","Economics"];
     this.array="Select,Hindi,English,Math,Physics,Chemistry,Economics";
     _this=this;
@@ -58,6 +59,7 @@ class ExperiencePopUp extends View{
  }
 
  show = () => {
+   this.isVisible = true;
    window.__patchCallback = this.getPatchCallback ;
    this.responseCame=false;
     var cmd=this.set({
@@ -74,6 +76,7 @@ class ExperiencePopUp extends View{
  }
 
  hide = () => {
+   this.isVisible = false;
    this.spinnerArray = ["Select","Hindi","English","Math","Physics","Chemistry","Economics"];
    this.array="Select,Hindi,English,Math,Physics,Chemistry,Economics";
    JBridge.hideKeyboard();
@@ -81,6 +84,10 @@ class ExperiencePopUp extends View{
    this.subjects=[];
    window.__ExperiencePopUp.data=undefined;
 
+ }
+
+ getVisibility = (data) => {
+   return this.isVisible;
  }
 
  setVisibility = (data) => {

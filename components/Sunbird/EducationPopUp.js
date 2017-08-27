@@ -35,6 +35,7 @@ class EducationPopUp extends View {
       "saveButtonContainer"
     ]);
     _this=this;
+    this.isVisible=false;
     window.__EducationPopUp = this;
     this.props = props;
     this.responseCame=false;
@@ -51,6 +52,7 @@ class EducationPopUp extends View {
 
 
   show = () => {
+    this.isVisible=true;;
     window.__patchCallback = this.getPatchCallback ;
     this.responseCame=false;
     this.updateSaveButtonStatus(false);
@@ -61,9 +63,14 @@ class EducationPopUp extends View {
   }
 
   hide = () => {
+    this.isVisible=false;
     JBridge.hideKeyboard();
     this.setVisibility("gone");
     window.__EducationPopUp.data=undefined;
+  }
+
+  getVisibility = (data) => {
+    return this.isVisible;
   }
 
   setVisibility = (data) => {
@@ -71,7 +78,6 @@ class EducationPopUp extends View {
       id: this.idSet.educationPopUpParent,
       visibility: data
     })
-
     Android.runInUI(cmd, 0)
   }
 
