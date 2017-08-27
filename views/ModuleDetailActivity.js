@@ -152,7 +152,7 @@ class ModuleDetailActivity extends View {
             console.log("local status",data[0])
             if (_this.localContent.isAvailableLocally == true) {
                 var callback1 = callbackMapper.map(function(data) {
-                    _this.module = JSON.parse(data);
+                    _this.module = JSON.parse(utils.jsonifyData(data[0]));
                     _this.renderModuleChildren(_this.module)
                 });
                 JBridge.getChildContent(module.identifier, callback1)

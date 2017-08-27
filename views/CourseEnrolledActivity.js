@@ -78,8 +78,10 @@ class CourseEnrolledActivity extends View {
     this.popupMenu = window.__S.DELETE + "," + window.__S.FLAG;
     //to get geneie callback for download of spine
     window.__getDownloadStatus = this.getSpineStatus;
+    console.log("details in CEA",this.details)
+    this.showProgress = this.details.hasOwnProperty("contentType") && this.details.contentType == "Collection" || this.details.contentType == "collection" || this.details.contentType == "textbook" || this.details.contentType == "TextBook" ? "gone" : "visible";
 
-    this.showProgress = this.details.hasOwnProperty("contentType") && this.details.contentType == "collection" || this.details.contentType == "TextBook" ? "gone" : "visible";
+
 
     if(this.details.hasOwnProperty("courseId")){
       this.baseIdentifier = this.details.courseId
@@ -201,7 +203,7 @@ class CourseEnrolledActivity extends View {
   checkContentLocalStatus = (identifier) => {
     console.log("local status")
     var callback = callbackMapper.map(function(data) {
-      data = JSON.parse(data)
+      data = JSON.parse(utils.jsonifyData(data[0]))
       _this.courseDetails = data;
       console.log("data",data)
       if (data.isAvailableLocally == true) {
@@ -356,7 +358,8 @@ class CourseEnrolledActivity extends View {
       var user_details = response.result.response;
       console.log("user details",user_details)
       console.log(this.batchName,this.batchDescription)
-      this.replaceChild(_this.idSet.batchDetailsContainer,_this.getBatchDetailSection(this.batchName,this.batchDescription,user_details.firstName).render(),0);
+      var userName = user_details.firstName + " " + (user_details.lastName || " ")
+      this.replaceChild(_this.idSet.batchDetailsContainer,_this.getBatchDetailSection(this.batchName,this.batchDescription,userName).render(),0);
     }
 
 
