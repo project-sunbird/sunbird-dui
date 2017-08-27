@@ -32,7 +32,7 @@ class ProfileHeader extends View {
         this.orgEmail=this.props.data.rootOrg.contactDetail[0].email?this.props.data.rootOrg.contactDetail[0].email:"sunbird@test.com";
       }
     else{
-      this.orgEmail = "sunbird@test.com"
+      this.orgEmail = ""
     }
   }
 
@@ -43,6 +43,9 @@ class ProfileHeader extends View {
       {
         JBridge.sendEmail(this.orgEmail);
       }
+    else{
+      JBridge.showSnackBar("No email found for this organisation")
+    }
   }
 
   getUserName = () =>{
@@ -74,7 +77,7 @@ class ProfileHeader extends View {
         background="#e8e8e8"
         cornerRadius="5"
         padding="5,5,5,5"
-        visibility = {this.orgName==null || this.orgName == undefined || this.orgName == "" ? "gone" : "visible"}
+        visibility = {this.orgName==null || this.orgName == undefined || this.orgName == "" || this.orgEmail=="" ? "gone" : "visible"}
         margin="0,5,0,0">
         <LinearLayout
           width="match_parent"
