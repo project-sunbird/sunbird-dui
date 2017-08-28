@@ -190,28 +190,12 @@ class EducationPopUp extends View {
   isValid = () => {
     if (this.degree == undefined || this.degree.length == 0 ) {
       return false;
+  
     }
-
-    if (this.yearOfPassing == undefined || this.yearOfPassing.length == 0 ) {
-      return false;
-    }
-
-    if (this.percentage == undefined || this.percentage.length == 0 ) {
-      return false;
-    }
-
-    if (this.grade == undefined || this.grade.length == 0 ) {
-      return false;
-    }
-
     if (this.inititution == undefined || this.inititution.length == 0 ) {
       return false;
     }
-
-    if (this.boardOrUniversity == undefined || this.boardOrUniversity.length == 0 ) {
-      return false;
-    }
-
+    
     return true;
   }
 
@@ -391,13 +375,24 @@ class EducationPopUp extends View {
          height="wrap_content"
          width="match_parent"
          orientation="vertical">
-           <TextView
-            height="wrap_content"
-            width="wrap_content"
-            text="Degree"
-            textAllCaps="true"
-            textStyle={window.__TextStyle.textStyle.HINT.SEMI}
-            margin="0,0,0,3"/>
+           <LinearLayout
+           height="wrap_content"
+           width="match_parent"
+           orientation="horizontal">
+              <TextView
+              height="wrap_content"
+              width="wrap_content"
+              text="Degree"
+              textAllCaps="true"
+              textStyle={window.__TextStyle.textStyle.HINT.SEMI}
+              margin="0,0,0,3"/>
+              <TextView
+              height="wrap_content"
+              width="wrap_content"
+              text=" *"
+              color="#FF0000"
+              margin="0,0,0,3"/>
+            </LinearLayout>
             <EditText
             width="match_parent"
             height="wrap_content"
@@ -427,6 +422,7 @@ class EducationPopUp extends View {
             inputType="numeric"
             singleLine="true"
             maxLine="1"
+            hint="(Optional)"
             onChange={this.setYearOfPassingText}
             id = {this.idSet.yearOfPassingText}
             style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
@@ -452,6 +448,7 @@ class EducationPopUp extends View {
             inputType="numeric"
             singleLine="true"
             maxLine="1"
+            hint="(Optional)"
             onChange={this.setPercentage}
             id = {this.idSet.percentageText}
             style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
@@ -476,6 +473,7 @@ class EducationPopUp extends View {
             height="wrap_content"
             singleLine="true"
             maxLine="1"
+            hint="(Optional)"
             onChange={this.setGrade}
             id = {this.idSet.gradeText}
             style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
@@ -488,13 +486,23 @@ class EducationPopUp extends View {
          height="wrap_content"
          width="match_parent"
          orientation="vertical">
-           <TextView
+         <LinearLayout
+         height="wrap_content"
+         width="match_parent"
+         orientation="horizontal">
+            <TextView
             height="wrap_content"
             width="wrap_content"
-            text="Institution Name"
-            textAllCaps="true"
+            text="Instution Name"
             textStyle={window.__TextStyle.textStyle.HINT.SEMI}
             margin="0,0,0,3"/>
+            <TextView
+            height="wrap_content"
+            width="wrap_content"
+            text=" *"
+            color="#FF0000"
+            margin="0,0,0,3"/>
+          </LinearLayout>
             <EditText
             width="match_parent"
             height="wrap_content"
