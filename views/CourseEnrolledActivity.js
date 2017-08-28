@@ -535,7 +535,7 @@ class CourseEnrolledActivity extends View {
     console.log(this.details)
     var callback = callbackMapper.map(function(data){
       console.log("local content details",data)
-      data[0] = JSON.parse(data[0])
+      data[0] = JSON.parse(utils.jsonifyData(data[0]))
       _this.handleModuleClick(data[0].contentData.name,data[0])
     });
     var id;

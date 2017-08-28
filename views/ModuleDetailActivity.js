@@ -72,7 +72,7 @@ class ModuleDetailActivity extends View {
         if (this.stack.length == 1)
           this.stack.splice(0, 1);
         else
-          this.stack = this.stack.splice(0, 1);
+          this.stack.splice(0, 1);
         return top;
       } else {
         return null;
