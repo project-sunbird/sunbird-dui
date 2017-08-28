@@ -73,8 +73,10 @@ class ProfileExperiences extends View {
         height="0"
         weight="1"/>
         <ImageView
-        width="18"
-        height="18"
+        width="28"
+        height="28"
+        margin = "5,5,5,5"
+        padding = "5,5,5,5"
         imageUrl="ic_action_edit_blue"
         onClick={()=>{this.showPopUp(item)}}/>
       </LinearLayout>
