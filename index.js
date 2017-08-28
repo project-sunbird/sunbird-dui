@@ -15,7 +15,8 @@ const purescriptUserActivityFlow = onBoardingFLow;
 
 const profilePopUpType = {
   EXPERIENCE: 1,
-  EDUCATION: 2
+  EDUCATION: 2,
+  ADDRESS: 3
 }
 
 // import lock from './lock';

@@ -44,7 +44,7 @@ class ProfileExperiences extends View {
               height="wrap_content"
               text="Add"
               padding = "8,8,8,8"
-              onClick = {this.props.popUpType == window.__PROFILE_POP_UP_TYPE.EXPERIENCE ? window.__ExperiencePopUp.show : window.__EducationPopUp.show}
+              onClick = {() => this.showPopUp()}
               visibility = {(this.isEditable == "true") ? "visible" : "gone"}
               style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
 
@@ -95,15 +95,21 @@ class ProfileExperiences extends View {
     } else if (this.props.popUpType == window.__PROFILE_POP_UP_TYPE.EDUCATION) {
       window.__EducationPopUp.data=item;
       window.__EducationPopUp.show();
+    } else if (this.props.popUpType == window.__PROFILE_POP_UP_TYPE.ADDRESS) {
+      window.__AddressPopUp.data=item;
+      window.__AddressPopUp.show();
     }
   }
 
   getBody(input) {
     var date = "";
+    var title = input.jobName ? input.jobName : input.name;
+    var address = "";
+
     if (this.props.popUpType == window.__PROFILE_POP_UP_TYPE.EDUCATION){
       if (input.yearOfPassing)
         date = "Year of passing : " + input.yearOfPassing;
-    } else {
+    } else if (this.props.popUpType == window.__PROFILE_POP_UP_TYPE.EXPERIENCE) {
       var dateOptions = {month: "short", year: "2-digit"};
       var joiningDate = new Date(input.joiningDate);
       var joiningDateString = joiningDate.toLocaleDateString("en-us", dateOptions);
@@ -121,19 +127,31 @@ class ProfileExperiences extends View {
         var noOfYears = "";
         date = date + " - Present";
       }
-    }
+    } else {
+      title = input.addType;
+      address = input.addressLine1 + ", " + input.addressLine2;
 
-    var address = "";
-    if(input.hasOwnProperty("address")){
-      if(input.address.hasOwnProperty("city")){
-        address = input.address.city ? input.address.city : "";
+      if(input.hasOwnProperty("city")){
+        date = input.city ? input.city : "";
       }
-      if(input.address.hasOwnProperty("country")){
-        if (input.address.country)
-          address  = (address == "") ? input.address.country : address + "," +input.address.country;
+      if(input.hasOwnProperty("state")){
+        if (input.state)
+          date  = (date == "") ? input.state : date + ", "
+            + input.state;
+      }
+
+      if(input.hasOwnProperty("country")){
+        if (input.country)
+          date  = (date == "") ? input.country : date + ", "
+            + input.country;
+      }
+
+      if(input.hasOwnProperty("zipcode")){
+        if (input.zipcode)
+          date  = (date == "") ? input.zipcode : date + ", "
+            + input.zipcode;
       }
     }
-
 
 
     return (<LinearLayout
@@ -145,7 +163,7 @@ class ProfileExperiences extends View {
                     <TextView
                     width="wrap_content"
                     height="wrap_content"
-                    text={input.jobName ? input.jobName : input.name}
+                    text={title}
                     style={window.__TextStyle.textStyle.CARD.HEADING}/>
 
                     <TextView
