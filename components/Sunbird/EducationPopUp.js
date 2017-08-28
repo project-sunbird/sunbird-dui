@@ -247,6 +247,8 @@ class EducationPopUp extends View {
       json.percentage = parseFloat(this.percentage);
       json.grade = this.grade;
       json.boardOrUniversity = this.boardOrUniversity;
+      json.isDeleted = this.delete ? this.delete : null;
+      this.delete = false;
     }
 
     this.education.push(json);
@@ -591,30 +593,12 @@ class EducationPopUp extends View {
                       {this.getLineSeperator()}
 
                       <LinearLayout
-                       height="match_parent"
-                       width="match_parent"
-                       padding="6, 6, 6, 6"
-                       background="#ffffff"
-                       orientation="horizontal"
-                       id={this.idSet.saveButtonParent}>
-                          <LinearLayout
-                          height="match_parent"
-                          width="match_parent"
-                          id={this.idSet.saveButtonContainer}
-                          onClick={ this.handleSaveClick }>
-                              <LinearLayout
-                              height="match_parent"
-                              width="match_parent"
-                              gravity="center"
-                              cornerRadius="5,5,5,5"
-                              background={window.__Colors.FADE_BLUE}
-                              id={this.idSet.saveButton}>
-                                  <TextView
-                                  text="Save"
-                                  gravity="center"
-                                  style={window.__TextStyle.textStyle.CARD.TITLE.LIGHT}/>
-                              </LinearLayout>
-                          </LinearLayout>
+                        width = "match_parent"
+                        height = "match_parent"
+                        orientation = "horizontal">
+
+                        {this.getSaveBtn()}
+                        {this.getDelBtn()}
                       </LinearLayout>
                     </LinearLayout>
               </LinearLayout>
@@ -623,6 +607,74 @@ class EducationPopUp extends View {
             </RelativeLayout>
       </LinearLayout>
     )
+  }
+
+  getSaveBtn = () => {
+    return (
+      <LinearLayout
+        weight = "1"
+       height="match_parent"
+       width="0"
+       padding="6, 6, 6, 6"
+       background="#ffffff"
+       orientation="horizontal"
+       id={this.idSet.saveButtonParent}>
+          <LinearLayout
+          height="match_parent"
+          width="match_parent"
+          id={this.idSet.saveButtonContainer}
+          clickable = "false"
+          onClick={ this.handleSaveClick }>
+              <LinearLayout
+              height="match_parent"
+              width="match_parent"
+              gravity="center"
+              cornerRadius="5,5,5,5"
+              background={window.__Colors.FADE_BLUE}
+              id={this.idSet.saveButton}>
+                  <TextView
+                  text="Save"
+                  gravity="center"
+                  style={window.__TextStyle.textStyle.CARD.TITLE.LIGHT}/>
+              </LinearLayout>
+          </LinearLayout>
+      </LinearLayout>
+    );
+  }
+
+  getDelBtn = () => {
+    return (
+      <LinearLayout
+       visibility = {window.__EducationPopUp.data ? "visible" : "gone"}
+       weight = "1"
+       height="match_parent"
+       width="0"
+       padding="6, 6, 6, 6"
+       background="#ffffff"
+       orientation="horizontal">
+          <LinearLayout
+          height="match_parent"
+          width="match_parent"
+          onClick={ this.handleDelClick }>
+              <LinearLayout
+              height="match_parent"
+              width="match_parent"
+              gravity="center"
+              cornerRadius="5,5,5,5"
+              background={window.__Colors.ERROR_RED}>
+                  <TextView
+                  text="Delete"
+                  gravity="center"
+                  style={window.__TextStyle.textStyle.CARD.TITLE.LIGHT}/>
+              </LinearLayout>
+          </LinearLayout>
+      </LinearLayout>
+    );
+  }
+
+  handleDelClick = () => {
+    this.delete = true;
+    this.handleSaveClick();
   }
 
   render() {

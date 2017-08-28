@@ -36,8 +36,9 @@ class ExperiencePopUp extends View{
       "positionText",
       "organizationText",
       "subjectContainer",
-      "spinnerContainer"
-
+      "spinnerContainer",
+      "delButton",
+      "delButtonParent"
     ]);
     this.isVisible = false;
     this.spinnerArray = ["Select","Hindi","English","Math","Physics","Chemistry","Economics"];
@@ -55,6 +56,7 @@ class ExperiencePopUp extends View{
     this.jobProfile=[];
 
     this.prevData={};
+    this.delete = false;
 
  }
 
@@ -491,80 +493,137 @@ class ExperiencePopUp extends View{
    );
  }
 
-getUi(){
-  return(
-    <LinearLayout
-    height="match_parent"
-    width="match_parent"
-    root="true"
-    orientation="vertical">
-    {this.getToolbar()}
+  getUi(){
+    return(
+      <LinearLayout
+        height="match_parent"
+        width="match_parent"
+        root="true"
+        orientation="vertical">
+        {this.getToolbar()}
 
-    <RelativeLayout
-    height="match_parent"
-    width="match_parent"
-    background="#ffffff">
-     <LinearLayout
-     height="match_parent"
-     width="match_parent"
-     orientation="vertical">
-          <ScrollView
+        <RelativeLayout
           height="match_parent"
           width="match_parent"
-          weight="1">
-               {this.getScrollView()}
-          </ScrollView>
+          background="#ffffff">
+
           <LinearLayout
-          height="match_parent"
-          width="match_parent"
-          weight="6"/>
-      </LinearLayout>
-       <LinearLayout
-         height="match_parent"
-         width="match_parent"
-         orientation="vertical" >
+            height="match_parent"
+            width="match_parent"
+            orientation="vertical">
+
+            <ScrollView
+              height="match_parent"
+              width="match_parent"
+              weight="1">
+
+              {this.getScrollView()}
+            </ScrollView>
+
+            <LinearLayout
+              height="match_parent"
+              width="match_parent"
+              weight="6"/>
+          </LinearLayout>
+
+          <LinearLayout
+            height="match_parent"
+            width="match_parent"
+            orientation="vertical" >
+
             <LinearLayout
             height="match_parent"
             width="match_parent"
             weight="1"
             />
+
             {this.getLineSeperator()}
 
             <LinearLayout
-            weight="6"
-             height="match_parent"
-             width="match_parent"
-             padding="6,6,6,6"
-             background="#ffffff"
-             orientation="horizontal"
-             id={this.idSet.saveButtonParent}>
-                <LinearLayout
-                height="match_parent"
-                width="match_parent"
-                onClick={ this.sendJSON }>
-                    <LinearLayout
-                    height="match_parent"
-                    width="match_parent"
-                    gravity="center"
-                    cornerRadius="5"
-                    background={window.__Colors.LIGHT_BLUE_22}
-                    id={this.idSet.saveButton}>
-                        <TextView
-                        text="Save"
-                        gravity="center"
-                        style={window.__TextStyle.textStyle.CARD.TITLE.LIGHT}/>
-                    </LinearLayout>
-                </LinearLayout>
-              </LinearLayout>
+              weight = "6"
+              height = "match_parent"
+              width = "match_parent"
+              orientation = "horizontal">
 
-
+                {this.getSaveBtn()}
+                {this.getDelBtn()}
             </LinearLayout>
+          </LinearLayout>
+        </RelativeLayout>
+      </LinearLayout>
+    )
+  }
 
-
-    </RelativeLayout>
-  </LinearLayout>
-  )
+getSaveBtn = () => {
+  return (
+    <LinearLayout
+    weight="1"
+     height="match_parent"
+     width="0"
+     padding="6,6,6,6"
+     background="#ffffff"
+     orientation="horizontal"
+     id={this.idSet.saveButtonParent}>
+        <LinearLayout
+        height="match_parent"
+        width="match_parent"
+        clickable="false"
+        onClick={ this.sendJSON }>
+            <LinearLayout
+            height="match_parent"
+            width="match_parent"
+            gravity="center"
+            cornerRadius="5"
+            background={window.__Colors.LIGHT_BLUE_22}
+            id={this.idSet.saveButton}>
+                <TextView
+                text="Save"
+                gravity="center"
+                style={window.__TextStyle.textStyle.CARD.TITLE.LIGHT}/>
+            </LinearLayout>
+        </LinearLayout>
+      </LinearLayout>
+  );
 }
+
+getDelBtn = () => {
+  return (
+    <LinearLayout
+    weight="1"
+
+     height="match_parent"
+     width="0"
+     padding="6,6,6,6"
+     background="#ffffff"
+     orientation="horizontal"
+     visibility = {window.__ExperiencePopUp.data ? "visible" : "gone"}
+     id={this.idSet.delButtonParent}>
+        <LinearLayout
+        height="match_parent"
+        width="match_parent"
+        onClick={ this.del }>
+            <LinearLayout
+            height="match_parent"
+            width="match_parent"
+            gravity="center"
+            cornerRadius="5"
+            background={window.__Colors.ERROR_RED}
+            id={this.idSet.delButton}>
+                <TextView
+                text="Delete"
+                gravity="center"
+                style={window.__TextStyle.textStyle.CARD.TITLE.LIGHT}/>
+            </LinearLayout>
+        </LinearLayout>
+      </LinearLayout>
+  );
+}
+
+del = () => {
+  this.delete = true;
+  this.sendJSON();
+}
+
  render(){
    this.layout=(
      <LinearLayout
@@ -760,9 +819,11 @@ getUi(){
           json.endDate=this.endDate;
           json.subject=this.subjects;
           json.userId= window.__userToken;
+          json.isDeleted = this.delete ? this.delete : null;
           if(json.address!=undefined)
           json.address.userId= window.__userToken;
           this.jobProfile.push(json);
+          this.delete = false;
 
         }
 
