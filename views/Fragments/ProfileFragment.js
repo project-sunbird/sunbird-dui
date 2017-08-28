@@ -9,7 +9,7 @@ var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
-
+var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 var SimpleToolbar = require('../../components/Sunbird/core/SimpleToolbar');
 var ProfileHeader = require('../../components/Sunbird/ProfileHeader');
 var ComingSoonComponent = require('../../components/Sunbird/ComingSoonComponent');
@@ -147,6 +147,24 @@ class ProfileFragment extends View {
         </LinearLayout>
       )
     }
+
+  }
+
+  setPermissions = () => {
+
+   var callback = callbackMapper.map(function(data) {
+
+      if (data == "android.permission.WRITE_EXTERNAL_STORAGE") {
+        JBridge.setKey("isPermissionSetWriteExternalStorage", "true");
+      }
+      if(data == "DeniedPermanently"){
+        console.log("DENIED DeniedPermanently");
+        window.__PermissionDeniedDialog.show("ic_warning_grey",window.__S.STORAGE_DENIED);
+      }
+
+    });
+
+    JBridge.setPermissions(callback,"android.permission.WRITE_EXTERNAL_STORAGE");
 
   }
 
