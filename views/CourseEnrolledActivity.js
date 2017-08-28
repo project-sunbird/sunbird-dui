@@ -285,84 +285,90 @@ class CourseEnrolledActivity extends View {
 
   handleStateChange = (state) =>{
     console.log("STATE \n\n",state)
-    var response = JSON.parse(utils.decodeBase64(state.response.status[1]))
-    var responseCode = state.response.status[2]
+    if(state.response.statusCode != 504){
+      
+        
+        var response = JSON.parse(utils.decodeBase64(state.response.status[1]))
+        var responseCode = state.response.status[2]
 
-    console.log("response \n\n",response)
+        console.log("response \n\n",response)
 
-    if(responseCode == 501 || status === "failure" || status=="f") {
-      window.__LoaderDialog.hide();
-      JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION)
-      responseData=tmp;
-    }else  if (response.params && response.params.err) {
-      window.__LoaderDialog.hide();
-        if(state.responseFor == "API_FlagCourse"){
-            JBridge.showSnackBar(window.__S.CONTENT_FLAG_FAIL);
-            _this.onBackPressed();
-          }
-        else
-          JBridge.showSnackBar(window.__S.ERROR_SERVER_MESSAGE + response.params.errmsg)
-      return;
-    }
-
-    if (state.responseFor == "API_Get_Batch_Details") {
-      console.log("batch details",response);
-      var batch =response.result.response;
-      var curr_Date = new Date();
-      var start_date = new Date(batch.startDate);
-      if(start_date>curr_Date){
-        Android.runInUI(this.set({
-          id: this.idSet.courseNotStartedOverLay,
-          visibility : "visible"
-        }),0);
-
-      }
-      var description="";
-      description+= utils.prettifyDate(batch.startDate);
-
-      if(batch.endDate && batch.endDate!=null && batch.endDate!=undefined){
-        description+= " - ";
-        description+= utils.prettifyDate(batch.endDate);
-      }
-      this.batchDescription = description;
-      var name = batch.name;
-      this.batchName = batch.name;
-      var whatToSend = {
-        "user_token" : batch.createdBy,
-        "api_token" : window.__apiToken
-      }
-      var event= { "tag": "API_Get_Batch_Creator_name", contents: whatToSend };
-      window.__runDuiCallback(event);
-      console.log("batch created token",batch.createdBy)
-
-    }else if(state.responseFor == "API_FlagCourse"){
-
-        if(responseCode == 200){
-            if(response[0] == "successful"){
-              setTimeout(function(){
-                JBridge.showSnackBar(window.__S.CONTENT_FLAGGED_MSG)
-                window.__BNavFlowRestart();
+        if(responseCode == 501 || state.response.status === "failure" || state.response.status=="f") {
+          window.__LoaderDialog.hide();
+          JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION)
+          responseData=tmp;
+        }else  if (response.params && response.params.err) {
+          window.__LoaderDialog.hide();
+            if(state.responseFor == "API_FlagCourse"){
+                JBridge.showSnackBar(window.__S.CONTENT_FLAG_FAIL);
                 _this.onBackPressed();
-                window.__LoaderDialog.hide();
-              }, 2000)
+              }
+            else
+              JBridge.showSnackBar(window.__S.ERROR_SERVER_MESSAGE + response.params.errmsg)
+          return;
+        }
+
+        if (state.responseFor == "API_Get_Batch_Details") {
+          console.log("batch details",response);
+          var batch =response.result.response;
+          var curr_Date = new Date();
+          var start_date = new Date(batch.startDate);
+          if(start_date>curr_Date){
+            Android.runInUI(this.set({
+              id: this.idSet.courseNotStartedOverLay,
+              visibility : "visible"
+            }),0);
+
+          }
+          var description="";
+          description+= utils.prettifyDate(batch.startDate);
+
+          if(batch.endDate && batch.endDate!=null && batch.endDate!=undefined){
+            description+= " - ";
+            description+= utils.prettifyDate(batch.endDate);
+          }
+          this.batchDescription = description;
+          var name = batch.name;
+          this.batchName = batch.name;
+          var whatToSend = {
+            "user_token" : batch.createdBy,
+            "api_token" : window.__apiToken
+          }
+          var event= { "tag": "API_Get_Batch_Creator_name", contents: whatToSend };
+          window.__runDuiCallback(event);
+          console.log("batch created token",batch.createdBy)
+
+        }else if(state.responseFor == "API_FlagCourse"){
+
+            if(responseCode == 200){
+                if(response[0] == "successful"){
+                  setTimeout(function(){
+                    JBridge.showSnackBar(window.__S.CONTENT_FLAGGED_MSG)
+                    window.__BNavFlowRestart();
+                    _this.onBackPressed();
+                    window.__LoaderDialog.hide();
+                  }, 2000)
+                }
+            }
+            else{
+              window.__LoaderDialog.hide();
+              JBridge.showSnackBar(window.__S.CONTENT_FLAG_FAIL);
+              _this.onBackPressed();
+
             }
         }
-        else{
-          window.__LoaderDialog.hide();
-          JBridge.showSnackBar(window.__S.CONTENT_FLAG_FAIL);
-          _this.onBackPressed();
-
+        else if(state.responseFor == "API_Get_Batch_Creator_name"){
+          var user_details = response.result.response;
+          console.log("user details",user_details)
+          console.log(this.batchName,this.batchDescription)
+          var userName = user_details.firstName + " " + (user_details.lastName || " ")
+          this.replaceChild(_this.idSet.batchDetailsContainer,_this.getBatchDetailSection(this.batchName,this.batchDescription,userName).render(),0);
         }
     }
-    else if(state.responseFor == "API_Get_Batch_Creator_name"){
-      var user_details = response.result.response;
-      console.log("user details",user_details)
-      console.log(this.batchName,this.batchDescription)
-      var userName = user_details.firstName + " " + (user_details.lastName || " ")
-      this.replaceChild(_this.idSet.batchDetailsContainer,_this.getBatchDetailSection(this.batchName,this.batchDescription,userName).render(),0);
+    else{
+      window.__LoaderDialog.hide();
+      JBridge.showSnackBar(window.__S.TIME_OUT)
     }
-
-
   }
 
 

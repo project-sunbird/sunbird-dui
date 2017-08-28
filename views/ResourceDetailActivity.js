@@ -451,31 +451,41 @@ class ResourceDetailActivity extends View {
 
   }
   handleStateChange = (state) =>{
-    var response = utils.decodeBase64(state.response.status[1])
-    var responseCode = state.response.status[2]
-    if(responseCode == 200){
-      var callback = callbackMapper.map(function(response){
+    console.log(state)
+    // var responseData = JSON.parse(state.response);
+    if(state.response.statusCode!=504){
+        var response = utils.decodeBase64(state.response.status[1] || "")
+        var responseCode = state.response.status[2]
+        if(responseCode == 200){
+          var callback = callbackMapper.map(function(response){
 
-        if(response[0] == "successful"){
-          setTimeout(function(){
-            JBridge.showSnackBar(window.__S.CONTENT_FLAGGED_MSG)
-            window.__BNavFlowRestart();
-            _this.onBackPressed();
-            window.__LoaderDialog.hide();
-          }, 2000)
+            if(response[0] == "successful"){
+              setTimeout(function(){
+                JBridge.showSnackBar(window.__S.CONTENT_FLAGGED_MSG)
+                window.__BNavFlowRestart();
+                _this.onBackPressed();
+                window.__LoaderDialog.hide();
+              }, 2000)
+
+            }
+          });
+          JBridge.deleteContent(this.details.identifier,callback);
 
         }
-      });
-      JBridge.deleteContent(this.details.identifier,callback);
+        else{
+          window.__LoaderDialog.hide();
+          JBridge.showSnackBar(window.__S.CONTENT_FLAG_FAIL);
+          _this.onBackPressed();
 
+        }
+        console.log(response)
     }
     else{
       window.__LoaderDialog.hide();
-      JBridge.showSnackBar(window.__S.CONTENT_FLAG_FAIL);
+      JBridge.showSnackBar(window.__S.TIME_OUT)
       _this.onBackPressed();
 
     }
-    console.log(response)
 
   }
 
