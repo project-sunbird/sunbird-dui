@@ -125,7 +125,7 @@ class CommProfSearchActivity extends View {
   afterRender = () => {
     console.log("afterRender - CommProfSearchActivity");
     if(this.filterData!=undefined && this.filterData.length != 0){
-      JBridge.showSnackBar(window.__S.SEARCH_LOADING_MESSAGE)
+      // JBridge.showSnackBar(window.__S.SEARCH_LOADING_MESSAGE)
 
       var cmd = "";
       cmd += _this.set({

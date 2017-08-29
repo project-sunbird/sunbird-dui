@@ -165,7 +165,7 @@ class ProfileExperiences extends View {
 
     if(input.hasOwnProperty("city")){
       if (input.city)
-        address  = (address == "") ? input.city : address +
+        address  = (address == "") ? input.city : address
           + input.city;
     }
 
