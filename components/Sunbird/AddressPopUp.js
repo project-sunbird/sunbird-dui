@@ -16,6 +16,7 @@ var CheckBox = require("@juspay/mystique-backend").androidViews.CheckBox;
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 var Styles = require("../../res/Styles");
 let IconStyle = Styles.Params.IconStyle;
+var FeatureButton = require('../../components/Sunbird/FeatureButton');
 
 var _this;
 
@@ -99,7 +100,7 @@ class AddressPopUp extends View {
       this.prevData.city = window.__AddressPopUp.data.city;
       this.prevData.state = window.__AddressPopUp.data.state;
       this.prevData.country = window.__AddressPopUp.data.country;
-      this.prevData.pincode = window.__AddressPopUp.data.zipcode;
+      this.prevData.pincode = window.__AddressPopUp.data.zipcode ? window.__AddressPopUp.data.zipcode : "";
       this.prevData.addressType = window.__AddressPopUp.data.addType;
     }
   }
@@ -271,7 +272,17 @@ class AddressPopUp extends View {
     Android.runInUI(cmd, 0);
   }
 
+  handleDelClick = () => {
+    this.delete = true;
+    this.handleSaveClick();
+  }
+
+
   handleSaveClick = () => {
+    if(!JBridge.isNetworkAvailable()) {
+      JBridge.showSnackBar(window.__S.NO_INTERNET);
+      return;
+    }
 
 
     this.address = [];
@@ -298,6 +309,8 @@ class AddressPopUp extends View {
       json.country = this.country;
       json.zipcode = this.pincode;
       json.addType = this.addressType;
+      json.isDeleted = this.delete ? this.delete : null;
+      this.delete = false;
     }
 
     this.address.push(json);
@@ -451,6 +464,54 @@ class AddressPopUp extends View {
             background={window.__Colors.PRIMARY_BLACK_22}/>)
   }
 
+
+  getBody = () => {
+    return (
+      <LinearLayout
+        width = "match_parent"
+        height = "match_parent"
+        orientation = "vertical"
+        backgroundColor = "#ffffff">
+
+        {this.getToolbar()}
+        <LinearLayout
+          width="match_parent"
+          height="match_parent"
+          orientation="vertical"
+          padding = "0,0,0,60">
+            <ScrollView
+            height="match_parent"
+            width="match_parent"
+            weight="1">
+                 {this.getScrollView()}
+            </ScrollView>
+          </LinearLayout>
+      </LinearLayout>
+    );
+  }
+
+  getFooter = () => {
+    return (
+      <LinearLayout
+        width = "match_parent"
+        height = "wrap_content"
+        orientation = "vertical"
+        background = "#ffffff"
+        alignParentBottom = "true, -1">
+
+        {this.getLineSeperator()}
+        <LinearLayout
+          width = "match_parent"
+          height = "match_parent"
+          orientation = "horizontal"
+            margin = "16, 8, 0, 8">
+          {this.getBtn(this.idSet.delButton, "neg", "DELETE", this.handleDelClick, window.__AddressPopUp.data ? "visible" : "gone")}
+          {this.getBtn(this.idSet.saveButton, "pos", "SAVE", this.handleSaveClick, "visible")}
+        </LinearLayout>
+      </LinearLayout>
+    );
+  }
+
   getScrollView(){
     return(
       <LinearLayout
@@ -465,255 +526,194 @@ class AddressPopUp extends View {
         id={this.setIds.addressTypeRadioContainer}
         height="wrap_content"
         width="match_parent"
-        orientation="vertical">
-          <TextView
-           height="wrap_content"
-           width="wrap_content"
-           text="Select Address Type"
-           textAllCaps="true"
-           textStyle={window.__TextStyle.textStyle.HINT.SEMI}
-           margin="0,0,0,3"/>
+        orientation="vertical"
+        padding = "4,0,0,0"
+        margin = "0,0,0,12">
+
+          <LinearLayout
+            height="wrap_content"
+            width="match_parent"
+            orientation="horizontal"
+            margin = "0,0,0,10">
+            <TextView
+               height="wrap_content"
+               width="wrap_content"
+               text="Select Address Type"
+               textAllCaps="true"
+               textStyle={window.__TextStyle.textStyle.HINT.SEMI}
+               />
+            <TextView
+                height="wrap_content"
+                width="wrap_content"
+                text=" *"
+                color="#FF0000"/>
+          </LinearLayout>
+
            <RadioButton
              id={this.idSet.addressTypeRadio}
             height="wrap_content"
             width="wrap_content"
             gravity="center_vertical"
-            margin="0, 10, 0, 0"
+            padding = "4,0,0,0"
             items={[{name:"Permanent",select:"0",icon:"ic_check_circle"},{name:"Current",select:"0",icon:"ic_check_circle"}]}
             onClick={this.handleRadioButtonClick}/>
-           <LinearLayout
-           height="34"
-           width="1"/>
         </LinearLayout>
 
-         <LinearLayout
-         height="wrap_content"
-         width="match_parent"
-         orientation="vertical">
-           <TextView
-            height="wrap_content"
-            width="wrap_content"
-            text="Address Line 1"
-            textAllCaps="true"
-            textStyle={window.__TextStyle.textStyle.HINT.SEMI}
-            margin="0,0,0,3"/>
-            <EditText
-            width="match_parent"
-            height="wrap_content"
-            id = {this.idSet.addressLine1Text}
-            onChange={this.setAddressLine1}
-            singleLine="true"
-            maxLine="1"
-            style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
-            <LinearLayout
-            height="34"
-            width="1"/>
-         </LinearLayout>
+        {this.getEditTextView(this.idSet.addressLine1Text, "Address Line 1", false, this.setAddressLine1)}
+        {this.getEditTextView(this.idSet.addressLine2Text, "Address Line 2", true, this.setAddressLine2)}
+        {this.getEditTextView(this.idSet.cityText, "City", false, this.setCity)}
+        {this.getEditTextView(this.idSet.stateText, "State", true, this.setState)}
+        {this.getEditTextView(this.idSet.countryText, "Country", true, this.setCountry)}
+        {this.getEditTextView(this.idSet.pincodeText, "Pincode", true, this.setPincode, "numeric")}
 
-         <LinearLayout
-         height="wrap_content"
-         width="match_parent"
-         orientation="vertical">
-           <TextView
-            height="wrap_content"
-            width="wrap_content"
-            text="Address Line 2"
-            textStyle={window.__TextStyle.textStyle.HINT.SEMI}
-            margin="0,0,0,3"/>
-            <EditText
-            width="match_parent"
-            height="wrap_content"
-            singleLine="true"
-            maxLine="1"
-            onChange={this.setAddressLine2}
-            id = {this.idSet.addressLine2Text}
-            style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
-            <LinearLayout
-            height="34"
-            width="1"/>
-         </LinearLayout>
-
-         <LinearLayout
-         height="wrap_content"
-         width="match_parent"
-         orientation="vertical">
-           <TextView
-            height="wrap_content"
-            width="wrap_content"
-            text="City"
-            textAllCaps="true"
-            textStyle={window.__TextStyle.textStyle.HINT.SEMI}
-            margin="0,0,0,3"/>
-            <EditText
-            width="match_parent"
-            height="wrap_content"
-            singleLine="true"
-            maxLine="1"
-            onChange={this.setCity}
-            id = {this.idSet.cityText}
-            style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
-            <LinearLayout
-            height="34"
-            width="1"/>
-         </LinearLayout>
-
-         <LinearLayout
-         height="wrap_content"
-         width="match_parent"
-         orientation="vertical">
-           <TextView
-            height="wrap_content"
-            width="wrap_content"
-            text="State"
-            textAllCaps="true"
-            textStyle={window.__TextStyle.textStyle.HINT.SEMI}
-            margin="0,0,0,3"/>
-            <EditText
-            width="match_parent"
-            height="wrap_content"
-            singleLine="true"
-            maxLine="1"
-            onChange={this.setState}
-            id = {this.idSet.stateText}
-            style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
-            <LinearLayout
-            height="34"
-            width="1"/>
-         </LinearLayout>
-
-         <LinearLayout
-         height="wrap_content"
-         width="match_parent"
-         orientation="vertical">
-           <TextView
-            height="wrap_content"
-            width="wrap_content"
-            text="Country"
-            textAllCaps="true"
-            textStyle={window.__TextStyle.textStyle.HINT.SEMI}
-            margin="0,0,0,3"/>
-            <EditText
-            width="match_parent"
-            height="wrap_content"
-            singleLine="true"
-            maxLine="1"
-            onChange={this.setCountry}
-            id = {this.idSet.countryText}
-            style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
-            <LinearLayout
-            height="34"
-            width="1"/>
-         </LinearLayout>
-
-         <LinearLayout
-         height="wrap_content"
-         width="match_parent"
-         orientation="vertical">
-           <TextView
-            height="wrap_content"
-            width="wrap_content"
-            text="Pincode"
-            textAllCaps="true"
-            textStyle={window.__TextStyle.textStyle.HINT.SEMI}
-            margin="0,0,0,3"/>
-            <EditText
-            width="match_parent"
-            height="wrap_content"
-            inputType="numeric"
-            singleLine="true"
-            maxLine="1"
-            onChange={this.setPincode}
-            id = {this.idSet.pincodeText}
-            style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
-            <LinearLayout
-            height="34"
-            width="1"/>
-         </LinearLayout>
        </LinearLayout>
     );
   }
 
-  getUi() {
+  getEditTextView = (id, label, optional,onChange, inputType) => {
     return (
       <LinearLayout
+        height="wrap_content"
+        width="match_parent"
+        orientation="vertical"
+        margin = "0,0,0,12">
+        <LinearLayout
+          height="wrap_content"
+          width="match_parent"
+          orientation="horizontal"
+          margin = "0,0,0,-5"
+          padding = "4,0,0,0">
+          <TextView
+            height="wrap_content"
+            width="wrap_content"
+            text={label}
+            textAllCaps="true"
+            textStyle={window.__TextStyle.textStyle.HINT.SEMI}/>
+          <TextView
+            height="wrap_content"
+            width="wrap_content"
+            text=" *"
+            color="#FF0000"
+            visibility = {optional ? "gone" : "visible"}/>
+        </LinearLayout>
+        <EditText
+          width="match_parent"
+          height="wrap_content"
+          id = {id}
+          onChange={onChange}
+          singleLine="true"
+          maxLine="1"
+          inputType = {inputType ? inputType : "text"}
+          hint = {optional ? "(Optional)" : ""}
+          style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
+    </LinearLayout>
+    );
+  }
+
+
+  getBtn = (id, type, label, onClick, visibility) => {
+    return (
+      <LinearLayout
+        width = "0"
+        weight = "1"
+        height = "wrap_content"
+        visibility = {visibility}
+        margin = "0, 0, 16, 0">
+
+        <FeatureButton
+          weight = "1"
+          id = {id}
+          clickable="false"
+          width = "match_parent"
+          height = "match_parent"
+          stroke = {type == "pos" ? "1," + window.__Colors.WHITE : "3," + window.__Colors.PRIMARY_DARK}
+          background = {type == "pos" ? window.__Colors.PRIMARY_DARK : window.__Colors.WHITE}
+          text = {label}
+          buttonClick = {onClick}
+          textColor = {type == "pos" ? window.__Colors.WHITE : window.__Colors.PRIMARY_DARK}
+          textStyle = {window.__TextStyle.textStyle.CARD.ACTION.LIGHT}/>
+      </LinearLayout>
+    );
+  }
+
+  getSaveBtn() {
+    return (
+      <LinearLayout
+       height="match_parent"
+       weight="1"
+        height="match_parent"
+        width="0"
+       padding="6, 6, 6, 6"
+       background="#ffffff"
+       orientation="horizontal"
+       id={this.idSet.saveButtonParent}>
+          <LinearLayout
+          height="match_parent"
+          width="match_parent"
+          id={this.idSet.saveButtonContainer}
+          onClick={ this.handleSaveClick }>
+              <LinearLayout
+              height="match_parent"
+              width="match_parent"
+              gravity="center"
+              cornerRadius="5,5,5,5"
+              background={window.__Colors.FADE_BLUE}
+              id={this.idSet.saveButton}>
+                  <TextView
+                  text="Save"
+                  gravity="center"
+                  style={window.__TextStyle.textStyle.CARD.TITLE.LIGHT}/>
+              </LinearLayout>
+          </LinearLayout>
+      </LinearLayout>
+    );
+  }
+
+
+
+  getDelBtn = () => {
+    return (
+      <LinearLayout
+       visibility = {window.__AddressPopUp.data ? "visible" : "gone"}
+       weight = "1"
+       height="match_parent"
+       width="0"
+       padding="6, 6, 6, 6"
+       background="#ffffff"
+       orientation="horizontal">
+          <LinearLayout
+          height="match_parent"
+          width="match_parent"
+          onClick={ this.handleDelClick }>
+              <LinearLayout
+              height="match_parent"
+              width="match_parent"
+              gravity="center"
+              cornerRadius="5,5,5,5"
+              background={window.__Colors.ERROR_RED}>
+                  <TextView
+                  text="Delete"
+                  gravity="center"
+                  style={window.__TextStyle.textStyle.CARD.TITLE.LIGHT}/>
+              </LinearLayout>
+          </LinearLayout>
+      </LinearLayout>
+    );
+  }
+
+
+  getUi = () => {
+    return (
+      <RelativeLayout
         width="match_parent"
         height="match_parent"
-        root="true"
-        orientation="vertical">
-            {this.getToolbar()}
-
-            <RelativeLayout
-            height="match_parent"
-            width="match_parent"
-            orientation="vertical"
-            background="#ffffff">
-              <LinearLayout
-                width="match_parent"
-                height="match_parent"
-                orientation="vertical">
-                  <ScrollView
-                  height="match_parent"
-                  width="match_parent"
-                  weight="1">
-                       {this.getScrollView()}
-                  </ScrollView>
-                  <LinearLayout
-                  height="match_parent"
-                  width="match_parent"
-                  weight="6"/>
-              </LinearLayout>
-              <LinearLayout
-                width="match_parent"
-                height="match_parent"
-                orientation="vertical">
-                <LinearLayout
-                  width="match_parent"
-                  height="match_parent"
-                  weight="1" />
-                <LinearLayout
-                   height="match_parent"
-                   width="match_parent"
-                   weight="6"
-                   orientation="vertical" >
-                    <LinearLayout
-                      height="wrap_content"
-                      width="match_parent" />
-                      {this.getLineSeperator()}
-
-                      <LinearLayout
-                       height="match_parent"
-                       width="match_parent"
-                       padding="6, 6, 6, 6"
-                       background="#ffffff"
-                       orientation="horizontal"
-                       id={this.idSet.saveButtonParent}>
-                          <LinearLayout
-                          height="match_parent"
-                          width="match_parent"
-                          id={this.idSet.saveButtonContainer}
-                          onClick={ this.handleSaveClick }>
-                              <LinearLayout
-                              height="match_parent"
-                              width="match_parent"
-                              gravity="center"
-                              cornerRadius="5,5,5,5"
-                              background={window.__Colors.FADE_BLUE}
-                              id={this.idSet.saveButton}>
-                                  <TextView
-                                  text="Save"
-                                  gravity="center"
-                                  style={window.__TextStyle.textStyle.CARD.TITLE.LIGHT}/>
-                              </LinearLayout>
-                          </LinearLayout>
-                      </LinearLayout>
-                    </LinearLayout>
-              </LinearLayout>
-
-
-            </RelativeLayout>
-      </LinearLayout>
-    )
+        gravity="center">
+            {this.getBody()}
+            {this.getFooter()}
+      </RelativeLayout>
+    );
   }
+
 
   render() {
     this.layout = (

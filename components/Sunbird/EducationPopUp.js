@@ -14,6 +14,7 @@ var Spinner = require('../Sunbird/core/Spinner');
 var RadioButton = require('../Sunbird/core/RadioButton');
 var CheckBox = require("@juspay/mystique-backend").androidViews.CheckBox;
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
+var FeatureButton = require('../../components/Sunbird/FeatureButton');
 var Styles = require("../../res/Styles");
 let IconStyle = Styles.Params.IconStyle;
 
@@ -31,6 +32,7 @@ class EducationPopUp extends View {
       "inititutionText",
       "boardOrUniversityText",
       "saveButton",
+      "delButton",
       "saveButtonParent",
       "saveButtonContainer"
     ]);
@@ -48,6 +50,18 @@ class EducationPopUp extends View {
 
 
     this.prevData = {};
+  }
+
+  getUi = () => {
+    return (
+      <RelativeLayout
+        width="match_parent"
+        height="match_parent"
+        gravity="center">
+            {this.getBody()}
+            {this.getFooter()}
+      </RelativeLayout>
+    );
   }
 
 
@@ -92,8 +106,8 @@ class EducationPopUp extends View {
 
     if (window.__EducationPopUp.data != undefined) {
       this.prevData.degree = window.__EducationPopUp.data.degree;
-      this.prevData.yearOfPassing = window.__EducationPopUp.data.yearOfPassing;
-      this.prevData.percentage = window.__EducationPopUp.data.percentage;
+      this.prevData.yearOfPassing = window.__EducationPopUp.data.yearOfPassing ? window.__EducationPopUp.data.yearOfPassing : "";
+      this.prevData.percentage = window.__EducationPopUp.data.percentage ? window.__EducationPopUp.data.percentage : "";
       this.prevData.inititution = window.__EducationPopUp.data.name;
       this.prevData.boardOrUniversity = window.__EducationPopUp.data.boardOrUniversity;
       this.prevData.grade = window.__EducationPopUp.data.grade;
@@ -174,13 +188,15 @@ class EducationPopUp extends View {
 
   checkDataChanged = () => {
     var isChanged = true;
-
+    console.log("this.prevData", this.prevData);
+    console.log("this", this);
     if (this.degree == this.prevData.degree
       && this.yearOfPassing == this.prevData.yearOfPassing
       && this.percentage == this.prevData.percentage
       && this.grade == this.prevData.grade
       && this.inititution == this.prevData.inititution
       && this.boardOrUniversity == this.prevData.boardOrUniversity) {
+        console.log("isChanged is false");
          isChanged = false;
       }
 
@@ -190,12 +206,10 @@ class EducationPopUp extends View {
   isValid = () => {
     if (this.degree == undefined || this.degree.length == 0 ) {
       return false;
-  
     }
     if (this.inititution == undefined || this.inititution.length == 0 ) {
       return false;
     }
-    
     return true;
   }
 
@@ -213,11 +227,7 @@ class EducationPopUp extends View {
 
     var cmd = this.set({
       id: this.idSet.saveButton,
-      background: backgroundColor
-    })
-
-    cmd += this.set({
-      id: this.idSet.saveButtonContainer,
+      background: backgroundColor,
       clickable: isClickable
     })
 
@@ -225,7 +235,10 @@ class EducationPopUp extends View {
   }
 
   handleSaveClick = () => {
-
+    if(!JBridge.isNetworkAvailable()) {
+      JBridge.showSnackBar(window.__S.NO_INTERNET);
+      return;
+    }
 
     this.education = [];
     var json;
@@ -247,6 +260,8 @@ class EducationPopUp extends View {
       json.percentage = parseFloat(this.percentage);
       json.grade = this.grade;
       json.boardOrUniversity = this.boardOrUniversity;
+      json.isDeleted = this.delete ? this.delete : null;
+      this.delete = false;
     }
 
     this.education.push(json);
@@ -363,278 +378,157 @@ class EducationPopUp extends View {
   getScrollView(){
     return(
       <LinearLayout
-      height = "match_parent"
-      width = "match_parent"
-      orientation="vertical"
-      background="#ffffff"
-      id={this.idSet.scrollView}
-      padding="15,15,15,15">
+        height = "match_parent"
+        width = "match_parent"
+        orientation="vertical"
+        background="#ffffff"
+        id={this.idSet.scrollView}
+        padding="15,15,15,15">
 
+        {this.getEditTextView(this.idSet.degreeText, "Degree", false, this.setDegree)}
+        {this.getEditTextView(this.idSet.inititutionText, "Institution Name", false, this.setInitution)}
+        {this.getEditTextView(this.idSet.yearOfPassingText, "Year of Passing", true, this.setYearOfPassingText, "numeric")}
+        {this.getEditTextView(this.idSet.percentageText, "Percentage", true, this.setPercentage, "numeric")}
+        {this.getEditTextView(this.idSet.gradeText, "Grade", true, this.setGrade)}
+        {this.getEditTextView(this.idSet.boardOrUniversityText, "Board//University", true, this.setBoardOrUniversity)}
 
-         <LinearLayout
-         height="wrap_content"
-         width="match_parent"
-         orientation="vertical">
-           <LinearLayout
-           height="wrap_content"
-           width="match_parent"
-           orientation="horizontal">
-              <TextView
-              height="wrap_content"
-              width="wrap_content"
-              text="Degree"
-              textAllCaps="true"
-              textStyle={window.__TextStyle.textStyle.HINT.SEMI}
-              margin="0,0,0,3"/>
-              <TextView
-              height="wrap_content"
-              width="wrap_content"
-              text=" *"
-              color="#FF0000"
-              margin="0,0,0,3"/>
-            </LinearLayout>
-            <EditText
-            width="match_parent"
-            height="wrap_content"
-            id = {this.idSet.degreeText}
-            onChange={this.setDegree}
-            singleLine="true"
-            maxLine="1"
-            style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
-            <LinearLayout
-            height="34"
-            width="1"/>
-         </LinearLayout>
+      </LinearLayout>
+    );
+  }
 
-         <LinearLayout
-         height="wrap_content"
-         width="match_parent"
-         orientation="vertical">
-           <TextView
+  getEditTextView = (id, label, optional,onChange, inputType) => {
+    return (
+      <LinearLayout
+        height="wrap_content"
+        width="match_parent"
+        orientation="vertical"
+        margin = "0,0,0,12">
+        <LinearLayout
+          height="wrap_content"
+          width="match_parent"
+          orientation="horizontal"
+          margin = "0,0,0,-5"
+          padding = "4,0,0,0">
+          <TextView
             height="wrap_content"
             width="wrap_content"
-            text="Year Of Passing"
-            textStyle={window.__TextStyle.textStyle.HINT.SEMI}
-            margin="0,0,0,3"/>
-            <EditText
-            width="match_parent"
-            height="wrap_content"
-            inputType="numeric"
-            singleLine="true"
-            maxLine="1"
-            hint="(Optional)"
-            onChange={this.setYearOfPassingText}
-            id = {this.idSet.yearOfPassingText}
-            style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
-            <LinearLayout
-            height="34"
-            width="1"/>
-         </LinearLayout>
-
-         <LinearLayout
-         height="wrap_content"
-         width="match_parent"
-         orientation="vertical">
-           <TextView
-            height="wrap_content"
-            width="wrap_content"
-            text="Percentage"
+            text={label}
             textAllCaps="true"
-            textStyle={window.__TextStyle.textStyle.HINT.SEMI}
-            margin="0,0,0,3"/>
-            <EditText
-            width="match_parent"
-            height="wrap_content"
-            inputType="numeric"
-            singleLine="true"
-            maxLine="1"
-            hint="(Optional)"
-            onChange={this.setPercentage}
-            id = {this.idSet.percentageText}
-            style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
-            <LinearLayout
-            height="34"
-            width="1"/>
-         </LinearLayout>
-
-         <LinearLayout
-         height="wrap_content"
-         width="match_parent"
-         orientation="vertical">
-           <TextView
-            height="wrap_content"
-            width="wrap_content"
-            text="Grade"
-            textAllCaps="true"
-            textStyle={window.__TextStyle.textStyle.HINT.SEMI}
-            margin="0,0,0,3"/>
-            <EditText
-            width="match_parent"
-            height="wrap_content"
-            singleLine="true"
-            maxLine="1"
-            hint="(Optional)"
-            onChange={this.setGrade}
-            id = {this.idSet.gradeText}
-            style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
-            <LinearLayout
-            height="34"
-            width="1"/>
-         </LinearLayout>
-
-         <LinearLayout
-         height="wrap_content"
-         width="match_parent"
-         orientation="vertical">
-         <LinearLayout
-         height="wrap_content"
-         width="match_parent"
-         orientation="horizontal">
-            <TextView
-            height="wrap_content"
-            width="wrap_content"
-            text="Instution Name"
-            textStyle={window.__TextStyle.textStyle.HINT.SEMI}
-            margin="0,0,0,3"/>
-            <TextView
+            textStyle={window.__TextStyle.textStyle.HINT.SEMI}/>
+          <TextView
             height="wrap_content"
             width="wrap_content"
             text=" *"
             color="#FF0000"
-            margin="0,0,0,3"/>
-          </LinearLayout>
-            <EditText
-            width="match_parent"
-            height="wrap_content"
-            singleLine="true"
-            maxLine="1"
-            onChange={this.setInitution}
-            id = {this.idSet.inititutionText}
-            style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
-            <LinearLayout
-            height="34"
-            width="1"/>
-         </LinearLayout>
-
-         <LinearLayout
-         height="wrap_content"
-         width="match_parent"
-         orientation="vertical">
-           <TextView
-            height="wrap_content"
-            width="wrap_content"
-            text="Board/University"
-            textAllCaps="true"
-            textStyle={window.__TextStyle.textStyle.HINT.SEMI}
-            margin="0,0,0,3"/>
-            <EditText
-            width="match_parent"
-            height="wrap_content"
-            singleLine="true"
-            maxLine="1"
-            onChange={this.setBoardOrUniversity}
-            id = {this.idSet.boardOrUniversityText}
-            style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
-            <LinearLayout
-            height="34"
-            width="1"/>
-         </LinearLayout>
-       </LinearLayout>
+            visibility = {optional ? "gone" : "visible"}/>
+        </LinearLayout>
+        <EditText
+          width="match_parent"
+          height="wrap_content"
+          id = {id}
+          onChange={onChange}
+          singleLine="true"
+          maxLine="1"
+          hint = {optional ? "(Optional)" : ""}
+          inputType = {inputType ? inputType : "text"}
+          style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
+    </LinearLayout>
     );
   }
 
-  getUi() {
+  getBody = () => {
     return (
       <LinearLayout
-        width="match_parent"
-        height="match_parent"
-        root="true"
-        orientation="vertical">
-            {this.getToolbar()}
+        width = "match_parent"
+        height = "match_parent"
+        orientation = "vertical"
+        backgroundColor = "#ffffff">
 
-            <RelativeLayout
+        {this.getToolbar()}
+        <LinearLayout
+          width="match_parent"
+          height="match_parent"
+          orientation="vertical"
+          padding = "0,0,0,60">
+            <ScrollView
             height="match_parent"
             width="match_parent"
-            orientation="vertical"
-            background="#ffffff">
-              <LinearLayout
-                width="match_parent"
-                height="match_parent"
-                orientation="vertical">
-                  <ScrollView
-                  height="match_parent"
-                  width="match_parent"
-                  weight="1">
-                       {this.getScrollView()}
-                  </ScrollView>
-                  <LinearLayout
-                  height="match_parent"
-                  width="match_parent"
-                  weight="6"/>
-              </LinearLayout>
-              <LinearLayout
-                width="match_parent"
-                height="match_parent"
-                orientation="vertical">
-                <LinearLayout
-                  width="match_parent"
-                  height="match_parent"
-                  weight="1" />
-                <LinearLayout
-                   height="match_parent"
-                   width="match_parent"
-                   weight="6"
-                   orientation="vertical" >
-                    <LinearLayout
-                      height="wrap_content"
-                      width="match_parent" />
-                      {this.getLineSeperator()}
-
-                      <LinearLayout
-                       height="match_parent"
-                       width="match_parent"
-                       padding="6, 6, 6, 6"
-                       background="#ffffff"
-                       orientation="horizontal"
-                       id={this.idSet.saveButtonParent}>
-                          <LinearLayout
-                          height="match_parent"
-                          width="match_parent"
-                          id={this.idSet.saveButtonContainer}
-                          onClick={ this.handleSaveClick }>
-                              <LinearLayout
-                              height="match_parent"
-                              width="match_parent"
-                              gravity="center"
-                              cornerRadius="5,5,5,5"
-                              background={window.__Colors.FADE_BLUE}
-                              id={this.idSet.saveButton}>
-                                  <TextView
-                                  text="Save"
-                                  gravity="center"
-                                  style={window.__TextStyle.textStyle.CARD.TITLE.LIGHT}/>
-                              </LinearLayout>
-                          </LinearLayout>
-                      </LinearLayout>
-                    </LinearLayout>
-              </LinearLayout>
-
-
-            </RelativeLayout>
+            weight="1">
+                 {this.getScrollView()}
+            </ScrollView>
+          </LinearLayout>
       </LinearLayout>
-    )
+    );
+  }
+
+  getFooter = () => {
+    return (
+      <LinearLayout
+        width = "match_parent"
+        height = "wrap_content"
+        orientation = "vertical"
+        background = "#ffffff"
+        alignParentBottom = "true, -1">
+
+        {this.getLineSeperator()}
+        <LinearLayout
+          width = "match_parent"
+          height = "match_parent"
+          orientation = "horizontal"
+            margin = "16, 8, 0, 8">
+          {this.getBtn(this.idSet.delButton, "neg", "DELETE", this.handleDelClick, window.__EducationPopUp.data ? "visible" : "gone")}
+          {this.getBtn(this.idSet.saveButton, "pos", "SAVE", this.handleSaveClick, "visible")}
+        </LinearLayout>
+      </LinearLayout>
+    );
+  }
+
+  getBtn = (id, type, label, onClick, visibility) => {
+    return (
+      <LinearLayout
+        width = "0"
+        weight = "1"
+        height = "wrap_content"
+        visibility = {visibility}
+        margin = "0, 0, 16, 0">
+
+        <FeatureButton
+          weight = "1"
+          id = {id}
+          clickable="false"
+          width = "match_parent"
+          height = "match_parent"
+          stroke = {type == "pos" ? "1," + window.__Colors.WHITE : "3," + window.__Colors.PRIMARY_DARK}
+          background = {type == "pos" ? window.__Colors.PRIMARY_DARK : window.__Colors.WHITE}
+          text = {label}
+          buttonClick = {onClick}
+          textColor = {type == "pos" ? window.__Colors.WHITE : window.__Colors.PRIMARY_DARK}
+          textStyle = {window.__TextStyle.textStyle.CARD.ACTION.LIGHT}/>
+      </LinearLayout>
+    );
+  }
+
+  handleDelClick = () => {
+    this.delete = true;
+    this.handleSaveClick();
   }
 
   render() {
     this.layout = (
       <LinearLayout
-        orientation="vertical"
-        width="match_parent"
-        height="match_parent"
+        width = "match_parent"
+        height = "match_parent"
+        root = "true"
         id={this.idSet.educationPopUpParent}
-        visibility="gone"
-        gravity="center">
-            {this.getUi()}
+        background = "#ffffff"
+        visibility="gone">
+        <RelativeLayout
+          width="match_parent"
+          height="match_parent"
+          gravity="center">
+              {this.getBody()}
+              {this.getFooter()}
+        </RelativeLayout>
       </LinearLayout>
     );
 

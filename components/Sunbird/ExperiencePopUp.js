@@ -13,6 +13,7 @@ var Spinner = require('../Sunbird/core/Spinner');
 var RadioButton = require('../Sunbird/core/RadioButton');
 var CheckBox = require("@juspay/mystique-backend").androidViews.CheckBox;
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
+var FeatureButton = require('../../components/Sunbird/FeatureButton');
 var HorizontalScrollView = require("@juspay/mystique-backend").androidViews.HorizontalScrollView;
 var Styles = require("../../res/Styles");
 let IconStyle = Styles.Params.IconStyle;
@@ -36,12 +37,13 @@ class ExperiencePopUp extends View{
       "positionText",
       "organizationText",
       "subjectContainer",
-      "spinnerContainer"
-
+      "spinnerContainer",
+      "delButton",
+      "delButtonParent"
     ]);
     this.isVisible = false;
-    this.spinnerArray = ["Select","Hindi","English","Math","Physics","Chemistry","Economics"];
-    this.array="Select,Hindi,English,Math,Physics,Chemistry,Economics";
+    this.spinnerArray = ["Select","Bengali","English","Gujarati","Hindi","Kannada","Marathi","Punjabi","Tamil"];;
+    this.array="Select,Bengali,English,Gujarati,Hindi,Kannada,Marathi,Punjabi,Tamil";
     _this=this;
     window.__ExperiencePopUp = this;
     this.props=props;
@@ -55,6 +57,7 @@ class ExperiencePopUp extends View{
     this.jobProfile=[];
 
     this.prevData={};
+    this.delete = false;
 
  }
 
@@ -63,7 +66,7 @@ class ExperiencePopUp extends View{
    window.__patchCallback = this.getPatchCallback ;
    this.responseCame=false;
     var cmd=this.set({
-     id: this.idSet.saveButtonParent,
+     id: this.idSet.saveButton,
      background: window.__Colors.FADE_BLUE
    })
    Android.runInUI(cmd, 0)
@@ -77,8 +80,8 @@ class ExperiencePopUp extends View{
 
  hide = () => {
    this.isVisible = false;
-   this.spinnerArray = ["Select","Hindi","English","Math","Physics","Chemistry","Economics"];
-   this.array="Select,Hindi,English,Math,Physics,Chemistry,Economics";
+   this.spinnerArray = ["Select","Bengali","English","Gujarati","Hindi","Kannada","Marathi","Punjabi","Tamil"];
+   this.array="Select,Bengali,English,Gujarati,Hindi,Kannada,Marathi,Punjabi,Tamil";
    JBridge.hideKeyboard();
    this.setVisibility("gone");
    this.subjects=[];
@@ -227,358 +230,330 @@ class ExperiencePopUp extends View{
      padding="15,15,15,15">
 
 
-        <LinearLayout
-          height="wrap_content"
-          width="match_parent"
-          orientation="vertical">
-            <LinearLayout
-            height="wrap_content"
-            width="match_parent"
-            orientation="horizontal">
-              <TextView
-              height="wrap_content"
-              width="wrap_content"
-              text=" JOB NAME"
-              textStyle={window.__TextStyle.textStyle.HINT.SEMI}
-              margin="0,0,0,3"/>
-              <TextView
-              height="wrap_content"
-              width="wrap_content"
-              text=" *"
-              color="#FF0000"/>
-              </LinearLayout>
-           <EditText
-             width="match_parent"
+      {this.getEditTextView(this.idSet.jobText, "Job Name", false, this.setJobName)}
+      {this.getEditTextView(this.idSet.organizationText, "Organization", false, this.setOrganization)}
+      {this.getEditTextView(this.idSet.positionText, "Position", true, this.setPosition)}
+
+      {this.getSpinner()}
+      {this.getJobStatus()}
+      {this.getDatePickers()}
+    </LinearLayout>
+   );
+ }
+
+ getDatePickers = () => {
+   return (
+     <LinearLayout
+       height="wrap_content"
+       width="match_parent"
+       orientation="horizontal"
+       padding = "4,0,0,0"
+       margin = "0,0,0,12">
+
+             <LinearLayout
              height="wrap_content"
-             singleLine="true"
-             maxLine="1"
-             id = {this.idSet.jobText}
-             onChange={this.setJobName}
-             style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
+             width="0"
+             weight="1"
+             orientation="vertical"
+             id={this.idSet.joiningDateLayout}>
 
-           <LinearLayout
-             height="34"
-             width="1"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-          height="wrap_content"
-          width="match_parent"
-          orientation="vertical">
-          <LinearLayout
-          height="wrap_content"
-          width="match_parent"
-          orientation="horizontal">
-            <TextView
-            height="wrap_content"
-            width="wrap_content"
-            text="Organization"
-            textStyle={window.__TextStyle.textStyle.HINT.SEMI}
-            margin="0,0,0,3"/>
-            <TextView
-            height="wrap_content"
-            width="wrap_content"
-            text=" *"
-            color="#FF0000"/>
-            </LinearLayout>
-         <EditText
-           width="match_parent"
-           height="wrap_content"
-           singleLine="true"
-           maxLine="1"
-           onChange={this.setOrganization}
-           id = {this.idSet.organizationText}
-           style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
-
-         <LinearLayout
-           height="34"
-           width="1"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-          height="wrap_content"
-          width="match_parent"
-          orientation="vertical">
-
-          <TextView
-           height="wrap_content"
-           width="wrap_content"
-           text=" POSITION"
-           textStyle={window.__TextStyle.textStyle.HINT.SEMI}
-           margin="0,0,0,3"/>
-
-         <EditText
-           width="match_parent"
-           height="wrap_content"
-           singleLine="true"
-           maxLine="1"
-           hint  ="(Optional)"
-           onChange={this.setPosition}
-           id = {this.idSet.positionText}
-           style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
-
-         <LinearLayout
-           height="34"
-           width="1"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-          height="wrap_content"
-          width="match_parent"
-          orientation="vertical">
-
-          <TextView
-           height="wrap_content"
-           width="wrap_content"
-           text="SUBJECTS"
-           textStyle={window.__TextStyle.textStyle.HINT.SEMI}
-           margin="0,0,0,3"/>
-
-           <LinearLayout
-             width="match_parent"
-             height="wrap_content"
-             stroke={"2,"+window.__Colors.PRIMARY_BLACK_66}
-             padding="8,8,8,8"
-             cornerRadius="4,4,4,4"
-             id={this.idSet.spinnerContainer}>
-
-              {this.loadSpinner()}
-
-           </LinearLayout>
-
-           <HorizontalScrollView
-             height = "wrap_content"
-             width = "match_parent"
-             id={this.idSet.subjectContainer}
-             margin = "0,10,0,0"/>
-
-           <LinearLayout
-             height="24"
-             width="1"/>
-        </LinearLayout>
-
-        <LinearLayout
-        height="wrap_content"
-        width="match_parent">
-            <TextView
-              height="wrap_content"
-              width="wrap_content"
-              margin="0,0,30,0"
-              style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
-              text="Is this your current job?"
-            />
-
-            <RadioButton
-             height="wrap_content"
-             width="wrap_content"
-             gravity="center_vertical"
-             items={[{name:"Yes",select:"0",icon:"ic_check_circle"},{name:"No",select:"0",icon:"ic_check_circle"}]}
-             onClick={this.handleRadioButtonClick}/>
-
-
-        </LinearLayout>
-
-        <LinearLayout
-          height="34"
-          width="1"/>
-
-
-        <LinearLayout
-          height="wrap_content"
-          width="match_parent"
-          orientation="horizontal">
+               <TextView
+                height="wrap_content"
+                width="wrap_content"
+                text="FROM"
+                textStyle={window.__TextStyle.textStyle.HINT.SEMI}
+                margin="0,0,0,4"/>
 
                 <LinearLayout
+                  width="match_parent"
+                  height="wrap_content"
+                  padding="4,18,12,12">
+
+                    <ImageView
+                      height="16"
+                      width="16"
+                      gravity="center"
+                      margin="4,3,7,0"
+                      imageUrl="ic_action_calendar_grey"
+                      onClick={this.startCalendar}/>
+
+                    <TextView
+                      width="match_parent"
+                      height="wrap_content"
+                      id= {this.idSet.joiningDateText}
+                      style={window.__TextStyle.textStyle.CARD.BODY.DARK.FADED}
+                      text="Select Date"
+                      onClick={this.startCalendar}/>
+
+                </LinearLayout>
+                <LinearLayout
+                  width="match_parent"
+                  height="1"
+                  background={window.__Colors.PRIMARY_BLACK_66}/>
+             </LinearLayout>
+
+             <LinearLayout
+               weight="0.25"
+               height="0"
+               width="0"/>
+
+             <LinearLayout
+               height="wrap_content"
+               width="0"
+               weight="1"
+               orientation="vertical"
+               id={this.idSet.closingDateLayout}>
+
+               <TextView
                 height="wrap_content"
-                width="150"
-                orientation="vertical"
-                margin="0,0,20,0"
-                id={this.idSet.joiningDateLayout}>
+                width="wrap_content"
+                text="TO"
+                textStyle={window.__TextStyle.textStyle.HINT.SEMI}
+                margin="0,0,0,4"/>
 
-                  <TextView
-                   height="wrap_content"
-                   width="wrap_content"
-                   text="FROM"
-                   textStyle={window.__TextStyle.textStyle.HINT.SEMI}
-                   margin="0,0,0,4"/>
+                <LinearLayout
+                  width="match_parent"
+                  height="wrap_content"
+                  padding="4,18,12,12">
 
-                   <LinearLayout
-                     width="match_parent"
-                     height="wrap_content"
-                     padding="4,18,12,12">
+                    <ImageView
+                      height="16"
+                      width="16"
+                      gravity="center"
+                      margin="4,3,7,0"
+                      imageUrl="ic_action_calendar_grey"
+                      onClick={this.endCalendar} />
 
-                       <ImageView
-                         height="16"
-                         width="16"
-                         gravity="center"
-                         margin="4,3,7,0"
-                         imageUrl="ic_action_calendar_grey"
-                         onClick={this.startCalendar}/>
+                    <TextView
+                      width="match_parent"
+                      height="wrap_content"
+                      id= {this.idSet.closingDateText}
+                      onClick={this.endCalendar}
+                      text="Select Date"
+                      style={window.__TextStyle.textStyle.CARD.BODY.DARK.FADED}/>
 
-                       <TextView
-                         width="match_parent"
-                         height="wrap_content"
-                         id= {this.idSet.joiningDateText}
-                         style={window.__TextStyle.textStyle.CARD.BODY.DARK.FADED}
-                         text="Select Date"
-                         onClick={this.startCalendar}/>
-
-                   </LinearLayout>
-                   <LinearLayout
-                     width="match_parent"
-                     height="1"
-                     background={window.__Colors.PRIMARY_BLACK_66}/>
                 </LinearLayout>
 
-                <ViewWidget
-                  weight="1"
-                  height="0"
-                  width="0"/>
-
                 <LinearLayout
-                  height="wrap_content"
-                  width="150"
-                  orientation="vertical"
-                  id={this.idSet.closingDateLayout}>
+                  width="match_parent"
+                  height="1"
+                  background={window.__Colors.PRIMARY_BLACK_66}/>
 
-                  <TextView
-                   height="wrap_content"
-                   width="wrap_content"
-                   text="TO"
-                   textStyle={window.__TextStyle.textStyle.HINT.SEMI}
-                   margin="0,0,0,4"/>
-
-                   <LinearLayout
-                     width="match_parent"
-                     height="wrap_content"
-                     padding="4,18,12,12">
-
-                       <ImageView
-                         height="16"
-                         width="16"
-                         gravity="center"
-                         margin="4,3,7,0"
-                         imageUrl="ic_action_calendar_grey"
-                         onClick={this.endCalendar} />
-
-                       <TextView
-                         width="match_parent"
-                         height="wrap_content"
-                         id= {this.idSet.closingDateText}
-                         onClick={this.endCalendar}
-                         text="Select Date"
-                         style={window.__TextStyle.textStyle.CARD.BODY.DARK.FADED}/>
-
-                   </LinearLayout>
-
-                   <LinearLayout
-                     width="match_parent"
-                     height="1"
-                     background={window.__Colors.PRIMARY_BLACK_66}/>
-
-                 </LinearLayout>
-
-         </LinearLayout>
-
-         <LinearLayout
-         height="34"
-         width="1"/>
+              </LinearLayout>
 
       </LinearLayout>
    );
  }
 
-getUi(){
-  return(
-    <LinearLayout
-    height="match_parent"
-    width="match_parent"
-    root="true"
-    orientation="vertical">
-    {this.getToolbar()}
-
-    <RelativeLayout
-    height="match_parent"
-    width="match_parent"
-    background="#ffffff">
+ getJobStatus = () => {
+   return (
      <LinearLayout
-     height="match_parent"
+     height="wrap_content"
      width="match_parent"
-     orientation="vertical">
-          <ScrollView
-          height="match_parent"
+     padding = "4,0,0,0"
+     margin = "0,0,0,12">
+         <TextView
+           height="wrap_content"
+           width="wrap_content"
+           margin="0,0,16,0"
+           style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
+           text="Is this your current job?"
+         />
+
+         <RadioButton
+          height="wrap_content"
+          width="wrap_content"
+          gravity="center_vertical"
+          items={[{name:"Yes",select:"0",icon:"ic_check_circle"},{name:"No",select:"0",icon:"ic_check_circle"}]}
+          onClick={this.handleRadioButtonClick}/>
+     </LinearLayout>
+   );
+ }
+
+ getSpinner = () => {
+   return(
+     <LinearLayout
+       height="wrap_content"
+       width="match_parent"
+       orientation="vertical"
+       padding = "4,0,0,0"
+       margin = "0,0,0,12">
+
+       <TextView
+        height="wrap_content"
+        width="wrap_content"
+        text="SUBJECTS"
+        textStyle={window.__TextStyle.textStyle.HINT.SEMI}
+        margin="0,0,0,3"/>
+
+        <LinearLayout
           width="match_parent"
-          weight="1">
-               {this.getScrollView()}
-          </ScrollView>
-          <LinearLayout
-          height="match_parent"
-          width="match_parent"
-          weight="6"/>
-      </LinearLayout>
+          height="wrap_content"
+          stroke={"2,"+window.__Colors.PRIMARY_BLACK_66}
+          padding="8,8,8,8"
+          cornerRadius="4,4,4,4"
+          id={this.idSet.spinnerContainer}>
+
+           {this.loadSpinner()}
+
+        </LinearLayout>
+
+        <HorizontalScrollView
+          height = "wrap_content"
+          width = "match_parent"
+          id={this.idSet.subjectContainer}
+          margin = "0,10,0,0"/>
+     </LinearLayout>
+   );
+ }
+
+ getBody = () => {
+   return (
+     <LinearLayout
+       width = "match_parent"
+       height = "match_parent"
+       orientation = "vertical"
+       backgroundColor = "#ffffff">
+
+       {this.getToolbar()}
        <LinearLayout
-         height="match_parent"
          width="match_parent"
-         orientation="vertical" >
-            <LinearLayout
-            height="match_parent"
-            width="match_parent"
-            weight="1"
-            />
-            {this.getLineSeperator()}
+         height="match_parent"
+         orientation="vertical"
+         padding = "0,0,0,60">
+           <ScrollView
+           height="match_parent"
+           width="match_parent"
+           weight="1">
+                {this.getScrollView()}
+           </ScrollView>
+         </LinearLayout>
+     </LinearLayout>
+   );
+ }
 
-            <LinearLayout
-            weight="6"
-             height="match_parent"
-             width="match_parent"
-             padding="6,6,6,6"
-             background="#ffffff"
-             orientation="horizontal"
-             id={this.idSet.saveButtonParent}>
-                <LinearLayout
-                height="match_parent"
-                width="match_parent"
-                onClick={ this.sendJSON }>
-                    <LinearLayout
-                    height="match_parent"
-                    width="match_parent"
-                    gravity="center"
-                    cornerRadius="5"
-                    background={window.__Colors.LIGHT_BLUE_22}
-                    id={this.idSet.saveButton}>
-                        <TextView
-                        text="Save"
-                        gravity="center"
-                        style={window.__TextStyle.textStyle.CARD.TITLE.LIGHT}/>
-                    </LinearLayout>
-                </LinearLayout>
-              </LinearLayout>
+ getUi = () => {
+   return (
+     <RelativeLayout
+       width="match_parent"
+       height="match_parent"
+       gravity="center">
+           {this.getBody()}
+           {this.getFooter()}
+     </RelativeLayout>
+   );
+ }
 
 
-            </LinearLayout>
+  getEditTextView = (id, label, optional,onChange, inputType) => {
+    return (
+      <LinearLayout
+        height="wrap_content"
+        width="match_parent"
+        orientation="vertical"
+        margin = "0,0,0,12">
+        <LinearLayout
+          height="wrap_content"
+          width="match_parent"
+          orientation="horizontal"
+          margin = "0,0,0,-5"
+          padding = "4,0,0,0">
+          <TextView
+            height="wrap_content"
+            width="wrap_content"
+            text={label}
+            textAllCaps="true"
+            textStyle={window.__TextStyle.textStyle.HINT.SEMI}/>
+          <TextView
+            height="wrap_content"
+            width="wrap_content"
+            text=" *"
+            color="#FF0000"
+            visibility = {optional ? "gone" : "visible"}/>
+        </LinearLayout>
+        <EditText
+          width="match_parent"
+          height="wrap_content"
+          id = {id}
+          onChange={onChange}
+          singleLine="true"
+          maxLine="1"
+          inputType = {inputType ? inputType : "text"}
+          hint = {optional ? "(Optional)" : ""}
+          style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
+    </LinearLayout>
+    );
+  }
 
+  getBtn = (id, type, label, onClick, visibility) => {
+    return (
+      <LinearLayout
+        width = "0"
+        weight = "1"
+        height = "wrap_content"
+        visibility = {visibility}
+        margin = "0, 0, 16, 0">
 
-    </RelativeLayout>
-  </LinearLayout>
-  )
+        <FeatureButton
+          weight = "1"
+          id = {id}
+          clickable="false"
+          width = "match_parent"
+          height = "match_parent"
+          stroke = {type == "pos" ? "1," + window.__Colors.WHITE : "3," + window.__Colors.PRIMARY_DARK}
+          background = {type == "pos" ? window.__Colors.PRIMARY_DARK : window.__Colors.WHITE}
+          text = {label}
+          buttonClick = {onClick}
+          textColor = {type == "pos" ? window.__Colors.WHITE : window.__Colors.PRIMARY_DARK}
+          textStyle = {window.__TextStyle.textStyle.CARD.ACTION.LIGHT}/>
+      </LinearLayout>
+    );
+  }
+
+  getFooter = () => {
+    return (
+      <LinearLayout
+        width = "match_parent"
+        height = "wrap_content"
+        orientation = "vertical"
+        background = "#ffffff"
+        alignParentBottom = "true, -1">
+
+        {this.getLineSeperator()}
+        <LinearLayout
+          width = "match_parent"
+          height = "match_parent"
+          orientation = "horizontal"
+            margin = "16, 8, 0, 8">
+          {this.getBtn(this.idSet.delButton, "neg", "DELETE", this.del, window.__ExperiencePopUp.data ? "visible" : "gone")}
+          {this.getBtn(this.idSet.saveButton, "pos", "SAVE", this.sendJSON, "visible")}
+        </LinearLayout>
+      </LinearLayout>
+    );
+  }
+
+del = () => {
+  this.delete = true;
+  this.sendJSON();
 }
+
  render(){
    this.layout=(
      <LinearLayout
-       orientation="vertical"
-       height="match_parent"
-       width="match_parent"
+       width = "match_parent"
+       height = "match_parent"
+       root = "true"
        id={this.idSet.experiencePopUpParent}
-       visibility="gone"
-       gravity="center">
-
-      {this.getUi()}
-
-    </LinearLayout>
-
+       background = "#ffffff"
+       visibility="gone">
+       <RelativeLayout
+         width="match_parent"
+         height="match_parent"
+         gravity="center">
+             {this.getBody()}
+             {this.getFooter()}
+       </RelativeLayout>
+     </LinearLayout>
      );
         return this.layout.render();
      }
@@ -766,9 +741,11 @@ getUi(){
           json.endDate=this.endDate;
           json.subject=this.subjects;
           json.userId= window.__userToken;
+          json.isDeleted = this.delete ? this.delete : null;
           if(json.address!=undefined)
           json.address.userId= window.__userToken;
           this.jobProfile.push(json);
+          this.delete = false;
 
         }
 
@@ -836,73 +813,23 @@ getUi(){
      enableSaveButton = () =>{
 
 
-       this.saveButton =(
-         <LinearLayout
-          height="match_parent"
-          width="match_parent"
-          padding="4,4,4,4"
-          background="#ffffff"
-          root="true"
-          orientation="horizontal"
-          id={this.idSet.saveButtonParent}>
-             <LinearLayout
-             height="match_parent"
-             width="match_parent"
-             onClick={ this.sendJSON }
-             clickable="true">
-                 <LinearLayout
-                 height="match_parent"
-                 width="match_parent"
-                 gravity="center"
-                 cornerRadius="5"
-                 background={window.__Colors.LIGHT_BLUE}
-                 id={this.idSet.saveButton}>
-                     <TextView
-                     text="Save"
-                     gravity="center"
-                     style={window.__TextStyle.textStyle.CARD.TITLE.LIGHT}/>
-                 </LinearLayout>
-             </LinearLayout>
-           </LinearLayout>)
+       var cmd = this.set({
+         id: this.idSet.saveButton,
+         background: window.__Colors.PRIMARY_DARK,
+         clickable: "true"
+       })
 
-       this.replaceChild(this.idSet.saveButtonParent, this.saveButton.render(), 0);
-
-
+       Android.runInUI(cmd, 0);
      }
 
      disableSaveButton = () =>{
+       var cmd = this.set({
+         id: this.idSet.saveButton,
+         background: window.__Colors.FADE_BLUE,
+         clickable: "false"
+       })
 
-      this.saveButton =(
-        <LinearLayout
-         height="match_parent"
-         width="match_parent"
-         padding="4,4,4,4"
-         background="#ffffff"
-         orientation="horizontal"
-         root ="true"
-         id={this.idSet.saveButtonParent}>
-            <LinearLayout
-            height="match_parent"
-            width="match_parent"
-            onClick={ this.sendJSON }
-            clickable="false">
-                <LinearLayout
-                height="match_parent"
-                width="match_parent"
-                gravity="center"
-                cornerRadius="5"
-                background={window.__Colors.LIGHT_BLUE_22}
-                id={this.idSet.saveButton}>
-                    <TextView
-                    text="Save"
-                    gravity="center"
-                    style={window.__TextStyle.textStyle.CARD.TITLE.LIGHT}/>
-                </LinearLayout>
-            </LinearLayout>
-          </LinearLayout>)
-
-      this.replaceChild(this.idSet.saveButtonParent, this.saveButton.render(), 0);
-
+       Android.runInUI(cmd, 0);
      }
 
      setJobName = (data) => {
