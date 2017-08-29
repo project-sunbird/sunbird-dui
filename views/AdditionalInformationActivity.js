@@ -10,7 +10,9 @@ var EditText = require('@juspay/mystique-backend').androidViews.EditText;
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
+var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 
+var Spinner = require('../components/Sunbird/core/Spinner');
 var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
 var ProfileHeader = require('../components/Sunbird/ProfileHeader');
 var ComingSoonComponent = require('../components/Sunbird/ComingSoonComponent');
@@ -25,6 +27,7 @@ var Styles = require("../res/Styles");
 let IconStyle = Styles.Params.IconStyle;
 
 class AdditionalInformationActivity extends View{
+
   constructor(props, children,state) {
     super(props, children,state);
     this.setIds([
@@ -32,9 +35,18 @@ class AdditionalInformationActivity extends View{
       "LanguageLayout",
       "HobbiesLayout",
       "predictionHobbiesLayout",
+      "languageSpinner",
+      "genderSpinner",
+      "saveButton",
+      "saveButtonContainer",
       "emailText",
       "phoneText",
-      "locationText"
+      "locationText",
+      "dobText",
+      "gradeSpinnerContainer",
+      "gradeContainer",
+      "nameText",
+      "adharText"
     ]);
     this.shouldCacheScreen = false;
     this.state=state;
@@ -43,29 +55,42 @@ class AdditionalInformationActivity extends View{
     this.selectedLanguages=[];
     this.hobbieDictionary=["cycling","swimming","singing","travelling","playing","dancing"];
     this.selectedHobbies=[];
-    this.email = "";
-    this.mobile = "";
-    this.location = "";
+    this.email = null;
+    this.mobile = null;
+    this.location = null;
+    this.grade=null;
+    this.name= null;
+    this.language=null;
+    this.adhar=null;
+    this.gender=null;
+    this.dob=null;
+    this.responseCame=false;
 
-
-    console.log("cons");
+    this.genderArray= "Select,Male,Female,Transgender";
+    this.GenderArray=["Select","Male","Female","Transgender"];
+    this.languageArray= "Select,Bengali,English,Gujarati,Hindi,Kannada,Marathi,Punjabi,Tamil";
+    this.LanguageArray=["Select","Bengali","English","Gujarati","Hindi","Kannada","Marathi","Punjabi","Tamil"];
+    this.gradeArray= "Select,Kindergarten,Grade 1,Grade 2,Grade 3,Grade 4,Grade 5,Grade 6,Grade 7";
+    this.GradeArray=["Select","Kindergarten","Grade 1","Grade 2","Grade 3","Grade 4","Grade 5","Grade 6","Grade 7"];
 
     this.data = JSON.parse(this.state.data.value0.profile);
     console.log("Info State", this.data);
-
   }
 
 
   initData = () => {
-    this.selectedLanguages=[];
-    // this.email = "";
-    // this.mobile = "";
-    // this.location = "";
+
+    console.log(this.data, "jsontosens");
+    window.__patchCallback = this.getPatchCallback ;
 
     this.email = this.data.email;
     this.phone = this.data.phone;
-
+    this.name = this.data.firstName;
+    this.adhar = this.data.aadhaarNo;
     this.location = this.data.location;
+    this.language = this.data.language;
+    this.dob = this.data.dob;
+    this.gender = this.data.gender;
 
     var cmd = this.set({
       id: this.idSet.emailText,
@@ -82,96 +107,45 @@ class AdditionalInformationActivity extends View{
       text: this.location
     })
 
+    cmd += this.set({
+      id: this.idSet.nameText,
+      text: this.name
+    })
+
+    cmd += this.set({
+      id: this.idSet.dobText,
+      text: this.dob
+    })
+
+    cmd += this.set({
+      id: this.idSet.adharText,
+      text: this.adhar
+    })
+
     Android.runInUI(cmd, 0);
 
-    for (var i = 0; i < this.data.language.length; i++) {
-      var value = this.data.language[i].toLowerCase();
+    for (var i = 0; i < this.data.subject.length; i++) {
+      var value = this.data.subject[i].toLowerCase();
       this.selectLanguageItem(value);
     }
 
+    this.data.grade.map((data)=>{
+      this.addGrade(data);
+    });
+
+    JBridge.selectSpinnerItem(this.idSet.languageSpinner,this.LanguageArray.indexOf(this.language[0]));
+    var gender = this.gender.substr(0,1).toUpperCase()+this.gender.substr(1);
+    JBridge.selectSpinnerItem(this.idSet.genderSpinner,gender);
+
   }
+
 
   afterRender = () => {
     this.initData();
+    this.updateSaveButtonStatus(this.checkCompleteStatus());
   }
 
 
-  render(){
-    console.log("render");
-    this.layout=(
-      <LinearLayout
-        orientation="vertical"
-        root="true"
-        background={window.__Colors.WHITE}
-        width="match_parent"
-        height="match_parent"
-        afterRender={this.afterRender}>
-
-         {this.getToolbar()}
-         <RelativeLayout
-         width="match_parent"
-         height="match_parent">
-             {this.getBody()}
-
-             {this.getTail()}
-         </RelativeLayout>
-     </LinearLayout>
-    );
-console.log("rendered");
-    return this.layout.render();
-  }
-
-  getToolbar  = () =>{
-    return( <LinearLayout
-            height="56"
-            padding="0,0,0,2"
-            gravity="center_vertical"
-            background={window.__Colors.PRIMARY_BLACK_22}
-            width="match_parent" >
-                <LinearLayout
-                  height="56"
-                  padding="0,0,0,0"
-                  gravity="center_vertical"
-                  background={window.__Colors.WHITE}
-                  width="match_parent" >
-
-                    {this.getBack()}
-                    {this.getTitle()}
-                </LinearLayout>
-            </LinearLayout>
-
-      );
-  }
-
-  getBack = () => {
-    return (
-      <ImageView
-      margin="0,0,10,0"
-      style={IconStyle}
-      height="48"
-      width="48"
-      onClick={this.onBackPressed}
-      imageUrl = {"ic_action_arrow_left"}/>);
-  }
-
-  getTitle = () => {
-    return (<LinearLayout
-            height="match_parent"
-            width="wrap_content"
-            gravity="center_vertical">
-
-              <TextView
-                  height="match_parent"
-                  width="match_parent"
-                  gravity="center_vertical"
-                  background={window.__Colors.WHITE}
-                  text="Additional Information"
-                  style={window.__TextStyle.textStyle.TOOLBAR.HEADING}/>
-
-
-          </LinearLayout>);
-
-  }
 
   getTail = () => {
     return (
@@ -197,21 +171,104 @@ console.log("rendered");
               padding="8,8,8,8"
               background={window.__Colors.WHITE}>
                   <LinearLayout
-                  background={window.__Colors.LIGHT_BLUE}
+                  onClick={this.handleSaveClick}
                   height="match_parent"
                   width="match_parent"
                   cornerRadius="4,4,4,4"
-                  gravity="center">
-                  <TextView
-                  text="FINISH EDITING"
-                  height="wrap_content"
-                  width="wrap_content"
-                  style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}/>
+                  gravity="center"
+                  id={this.idSet.saveButtonContainer}>
+                      <LinearLayout
+                      height="match_parent"
+                      width="match_parent"
+                      gravity="center"
+                      background={window.__Colors.LIGHT_BLUE}
+                      id={this.idSet.saveButton}>
+                          <TextView
+                          text="FINISH EDITING"
+                          height="wrap_content"
+                          width="wrap_content"
+                          style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}/>
+                      </LinearLayout>
                   </LinearLayout>
               </LinearLayout>
           </LinearLayout>
         </LinearLayout>
     );
+  }
+
+  getSingleSelectSpinner = (id,label,optional,callSpinner) => {
+    return(
+      <LinearLayout
+      width="match_parent"
+      height="wrap_content"
+      orientation="vertical"
+      margin="0,0,0,17">
+
+       {this.getLabel(label,optional)}
+         <LinearLayout
+           width="match_parent"
+           height="wrap_content"
+           stroke={"2,"+window.__Colors.PRIMARY_BLACK_66}
+           padding="8,8,8,8"
+           cornerRadius="4,4,4,4"
+           id={id}>
+            {callSpinner()}
+         </LinearLayout>
+       </LinearLayout>
+    )
+  }
+
+  getEditTextView = (id, label, hint , optional , onChange, inputType) =>{
+    return(
+      <LinearLayout
+      width="match_parent"
+      height="wrap_content"
+      orientation="vertical"
+      margin="0,0,0,17">
+         {this.getLabel(label,optional)}
+         <EditText
+         id={id}
+         width="match_parent"
+         height="wrap_content"
+         maxLines="1"
+         style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
+         onChange={onChange}
+         inputType = {inputType ? inputType : "text"}
+         hint={hint + (optional)? "(optional)" : ""}
+         />
+       </LinearLayout>
+    )
+  }
+
+  getLabel = (label,optional) =>{
+     if(optional)
+         return(
+           <TextView
+          width="match_parent"
+          height="20"
+          style={window.__TextStyle.textStyle.HINT.BOLD}
+          text={label}
+          margin="0,0,0,8"/>
+         );
+
+     return (
+       <LinearLayout
+       height="wrap_content"
+       width="wrap_content"
+       orientation="horizontal"
+       margin ="0,0,0,8">
+       <TextView
+        width="match_parent"
+        height="20"
+        style={window.__TextStyle.textStyle.HINT.BOLD}
+        text={label}/>
+       <TextView
+       height="wrap_content"
+       width="wrap_content"
+       text=" *"
+       color="#FF0000"/>
+       </LinearLayout>
+     );
   }
 
   getBody = () =>{
@@ -233,26 +290,25 @@ console.log("rendered");
                width="match_parent"
                height="wrap_content"
                orientation="vertical">
+
+                  {this.getEditTextView(this.idSet.nameText,"NAME","Enter your name",false,this.setName)}
+                  {this.getSingleSelectSpinner(this.idSet.languageSpinnerContainer,"LANGUAGE",false,this.loadLanguageSpinner)}
+
                  <TextView
                   width="match_parent"
                   height="20"
                   style={window.__TextStyle.textStyle.HINT.BOLD}
-                  text="LANGUAGES"/>
-                  <LinearLayout
-                  height="8"
-                  orientation="horizontal"
-                  width="match_parent"
-                  />
+                  text="SUBJECTS"
+                  margin="0,0,0,8"/>
                   <EditText
                   width="match_parent"
                   height="wrap_content"
                   maxLines="1"
                   style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
                   onChange={this.getLanguagePredictions}
-                  hint="Start typing to add a language"
+                  hint="Start typing to add a subject"
                   />
-
-                </LinearLayout>
+              </LinearLayout>
 
                 <RelativeLayout
                  width="match_parent"
@@ -267,103 +323,74 @@ console.log("rendered");
                         width="wrap_content"
                         orientation="horizontal"
                         id={this.idSet.LanguageLayout}
-                        margin="0,4,0,0"/>
+                        margin="0,4,0,17"/>
 
-                       <LinearLayout
-                       height="17"
-                       orientation="horizontal"
-                       width="match_parent"
-                       />
+                       {this.getEditTextView(this.idSet.emailText,"E-MAIL","Enter your email",false,this.setEmail)}
+                       {this.getEditTextView(this.idSet.phoneText,"PHONE","Enter your phone number",false,this.setPhone,"number")}
+                       {this.getSingleSelectSpinner(this.idSet.spinnerContainer,"GENDER",true,this.loadGenderSpinner)}
 
                        <LinearLayout
                        width="match_parent"
                        height="wrap_content"
-                       orientation="vertical">
+                       orientation="vertical"
+                       margin="0,0,0,17">
                          <TextView
                           width="match_parent"
                           height="20"
                           style={window.__TextStyle.textStyle.HINT.BOLD}
-                          text="E-MAIL"/>
+                          text="DATE OF BIRTH"/>
                           <LinearLayout
-                          height="8"
-                          orientation="horizontal"
-                          width="match_parent"
-                          />
-                          <EditText
-                          id={this.idSet.emailText}
-                          width="match_parent"
-                          height="wrap_content"
-                          maxLines="1"
-                          style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
-                          hint="Enter your email"
-                          />
+                            width="match_parent"
+                            height="wrap_content"
+                            padding="4,18,12,12">
+
+                              <ImageView
+                                height="16"
+                                width="16"
+                                gravity="center"
+                                margin="4,3,7,0"
+                                imageUrl="ic_action_calendar_grey"
+                                onClick={this.showCalendar}/>
+
+                              <TextView
+                                width="match_parent"
+                                height="wrap_content"
+                                id= {this.idSet.dobText}
+                                style={window.__TextStyle.textStyle.CARD.BODY.DARK.FADED}
+                                text="Select Date"
+                                onClick={this.showCalendar}/>
+
+                          </LinearLayout>
                         </LinearLayout>
-
-                        <LinearLayout
-                        height="17"
-                        orientation="horizontal"
-                        width="match_parent"
-                        />
-
-                        <LinearLayout
-                        width="match_parent"
-                        height="wrap_content"
-                        orientation="vertical">
-                          <TextView
-                           width="match_parent"
-                           height="20"
-                           style={window.__TextStyle.textStyle.HINT.BOLD}
-                           text="PHONE"/>
-                           <LinearLayout
-                           height="8"
-                           orientation="horizontal"
-                           width="match_parent"
-                           />
-                           <EditText
-                             id={this.idSet.phoneText}
-                           width="match_parent"
-                           height="wrap_content"
-                           maxLines="1"
-                           style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
-                           hint="Enter your phone number"
-                           />
-                         </LinearLayout>
-
-                         <LinearLayout
-                         height="17"
-                         orientation="horizontal"
-                         width="match_parent"
-                         />
+                        {this.getEditTextView(this.idSet.adharText,"ADHAR NUMBER","",true,this.setAdhar,"number")}
+                        {this.getEditTextView(this.idSet.locationText,"CURRENT LOCATION","Enter your location",true,this.setLocation)}
 
                          <LinearLayout
                          width="match_parent"
                          height="wrap_content"
-                         orientation="vertical">
+                         orientation="vertical"
+                         margin="0,0,0,17">
                            <TextView
                             width="match_parent"
                             height="20"
                             style={window.__TextStyle.textStyle.HINT.BOLD}
-                            text="CURRENT LOCATION"/>
+                            text="GRADES"
+                            margin="0,0,0,8"/>
                             <LinearLayout
-                            height="8"
-                            orientation="horizontal"
-                            width="match_parent"
-                            />
-                            <EditText
-                            id = {this.idSet.locationText}
-                            width="match_parent"
-                            height="wrap_content"
-                            maxLines="1"
-                            style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
-                            hint="Enter your location"
-                            />
+                              width="match_parent"
+                              height="wrap_content"
+                              stroke={"2,"+window.__Colors.PRIMARY_BLACK_66}
+                              padding="8,8,8,8"
+                              cornerRadius="4,4,4,4"
+                              id={this.idSet.gradeSpinnerContainer}>
+                               {this.loadGradeSpinner()}
+                            </LinearLayout>
+                            <HorizontalScrollView
+                              height = "wrap_content"
+                              width = "match_parent"
+                              id={this.idSet.gradeContainer}
+                              margin = "0,10,0,0"/>
                           </LinearLayout>
-
-                          <LinearLayout
-                          height="17"
-                          orientation="horizontal"
-                          width="match_parent"
-                          />
 
                          {
                           // <LinearLayout
@@ -420,13 +447,7 @@ console.log("rendered");
                           //
                           //  </LinearLayout>
                          }
-
-
-
-
-
                     </LinearLayout>
-
                     <LinearLayout
                     height="wrap_content"
                     width="328"
@@ -445,8 +466,6 @@ console.log("rendered");
                        </ScrollView>
                     </LinearLayout>
                  </RelativeLayout>
-
-
         </LinearLayout>
        </ScrollView>
        <LinearLayout
@@ -456,6 +475,256 @@ console.log("rendered");
       </LinearLayout>
     )
   }
+
+  getBack = () => {
+    return (
+      <ImageView
+      margin="0,0,10,0"
+      style={IconStyle}
+      height="48"
+      width="48"
+      onClick={this.onBackPressed}
+      imageUrl = {"ic_action_arrow_left"}/>);
+  }
+
+  getTitle = () => {
+    return (<LinearLayout
+            height="match_parent"
+            width="wrap_content"
+            gravity="center_vertical">
+
+              <TextView
+                  height="match_parent"
+                  width="match_parent"
+                  gravity="center_vertical"
+                  background={window.__Colors.WHITE}
+                  text="Additional Information"
+                  style={window.__TextStyle.textStyle.TOOLBAR.HEADING}/>
+
+
+          </LinearLayout>);
+
+  }
+
+  getToolbar  = () =>{
+    return( <LinearLayout
+            height="56"
+            padding="0,0,0,2"
+            gravity="center_vertical"
+            background={window.__Colors.PRIMARY_BLACK_22}
+            width="match_parent" >
+                <LinearLayout
+                  height="56"
+                  padding="0,0,0,0"
+                  gravity="center_vertical"
+                  background={window.__Colors.WHITE}
+                  width="match_parent" >
+
+                    {this.getBack()}
+                    {this.getTitle()}
+                </LinearLayout>
+            </LinearLayout>
+
+      );
+  }
+
+
+  render(){
+      console.log("render");
+      this.layout=(
+        <LinearLayout
+          orientation="vertical"
+          root="true"
+          background={window.__Colors.WHITE}
+          width="match_parent"
+          height="match_parent">
+
+           {this.getToolbar()}
+           <RelativeLayout
+           width="match_parent"
+           height="match_parent">
+               {this.getBody()}
+               {this.getTail()}
+           </RelativeLayout>
+       </LinearLayout>
+      );
+    return this.layout.render();
+  }
+
+  loadGradeSpinner = () => {
+      return(<Spinner
+              width="match_parent"
+              height="34"
+              style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
+              margin="0,0,5,6"
+              onItemClick = {this.handleGradeSpinnerItemClick}
+              values={this.gradeArray}
+              />)
+    }
+
+    handleGradeSpinnerItemClick = (...params) => {
+
+      if(parseInt(params[2])>0)
+      this.addGrade(this.GradeArray[parseInt(params[2])]);
+
+    }
+
+    removeGrade = (data) => {
+         this.grade.splice(this.grade.indexOf(data),1);
+           this.gradeArray=this.gradeArray+","+data;
+           this.GradeArray.push(data);
+           this.gradeSpinnerLayout= (
+             <LinearLayout
+               root="true"
+               height="wrap_content"
+               width="match_parent">
+
+               {this.loadGradeSpinner()}
+
+             </LinearLayout>);
+           this.replaceChild(this.idSet.gradeSpinnerContainer,this.gradeSpinnerLayout.render(),0);
+           this.showSelectedGrades();
+         }
+
+         addGrade = (data) =>{
+           if(this.grade==null)
+           this.grade=[];
+           this.grade.unshift(data);
+           if(this.gradeArray.indexOf(data+",")>-1){
+             this.gradeArray = this.gradeArray.replace(data+",","");
+           }else{
+             this.gradeArray = this.gradeArray.replace(","+data, "");
+           }
+           this.GradeArray.splice(this.GradeArray.indexOf(data),1);
+           this.gradeSpinnerLayout= (
+             <LinearLayout
+             root="true"
+             height="wrap_content"
+             width="match_parent">
+
+              {this.loadGradeSpinner()}
+
+             </LinearLayout>);
+           this.replaceChild(this.idSet.gradeSpinnerContainer,this.gradeSpinnerLayout.render(),0);
+           this.showSelectedGrades();
+         }
+
+         showSelectedGrades = () =>{
+           var items = this.grade.map((data)=>{
+               return(
+                 <LinearLayout
+                    height="wrap_content"
+                    width="wrap_content"
+                    padding="6,4,6,4"
+                    margin="0,0,10,0"
+                    cornerRadius="10,10,10,10"
+                    background={window.__Colors.DARK_GRAY_44}
+                    gravity="center">
+
+                     <TextView
+                       height="wrap_content"
+                       width="wrap_content"
+                       text={data}
+                       margin="0,0,4,0"
+                       textStyle={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
+
+                     <ImageView
+                       height="15"
+                       width="15"
+                       imageUrl="ic_action_close"
+                       margin="0,1,0,0"
+                       onClick={()=>{this.removeGrade(data)}}/>
+                  </LinearLayout>
+               )
+           });
+
+
+        this.gradeCards =(
+          <LinearLayout
+            width="match_parent"
+            height="match_parent"
+            root="true">
+
+            {items}
+
+          </LinearLayout>
+        )
+
+        this.replaceChild(this.idSet.gradeContainer,this.gradeCards.render(),0);
+       }
+
+
+   loadLanguageSpinner = () => {
+     return(<Spinner
+             width="match_parent"
+             height="34"
+             style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
+             margin="0,0,5,6"
+             id={this.idSet.languageSpinner}
+             onItemClick = {this.handleLanguageSpinnerItemClick}
+             values={this.languageArray}
+             />)
+   }
+
+   handleLanguageSpinnerItemClick = (...params) => {
+        console.log("12345");
+
+        if(params[2]>0)
+        {this.language=[this.LanguageArray[params[2]]]}
+   }
+
+  loadGenderSpinner = () => {
+    return(<Spinner
+            width="match_parent"
+            height="34"
+            style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
+            margin="0,0,5,6"
+            onItemClick = {this.handleGenderSpinnerItemClick}
+            id={this.idSet.genderSpinner}
+            values={this.genderArray}
+            />)
+  }
+
+  handleGenderSpinnerItemClick = (...params) => {
+       if(params[2]>0)
+       {this.gender=this.GenderArray[params[2]]}
+  }
+
+  showCalendar = () =>{
+    var _this = this;
+    var callback = callbackMapper.map(
+      function (data){
+
+            data[0]=_this.formatDate(data[0]);
+
+             _this.dob=data[0];
+
+              var cmd = _this.set({
+                id: _this.idSet.dobText,
+                text: data[0],
+                style: window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK
+              });
+              Android.runInUI(cmd, 0);
+    });
+
+
+      JBridge.showCalender(callback,"","","");
+
+  }
+
+  formatDate = (date) =>{
+      date = date.substr(0,4)+"-"+date.substr(5);
+      if(date.charAt(7)!='-'){
+         date = date.substr(0,5)+"0"+date.substr(5);
+       }
+
+      date = date.substr(0,7)+"-"+date.substr(8);
+      if(date.length<10)
+        date = date.substr(0,8)+"0"+date.substr(8);
+        return date;
+
+      }
+
 
   getLanguagePredictions = (data) => {
 
@@ -627,8 +896,8 @@ console.log("rendered");
                 />
                 <ImageView
                 margin="4,8,4,8"
-                height="match_parent"
-                width="match_parent"
+                height="12"
+                width="12"
                 imageUrl="ic_action_close"
                 onClick={()=>{this.removeLanguage(item)}}
                 />
@@ -889,6 +1158,163 @@ console.log("rendered");
     window.__runDuiCallback(event);
   }
 
+  handleSaveClick = () => {
+    var json=  {};
+
+
+    json.firstName=this.name;
+    json.language=this.language;
+    json.email=this.email;
+    json.phone=this.mobile;
+
+    if(this.adhar!=null)
+    json.location=this.location;
+
+    if(this.adhar!=null)
+    json.aadhaarNo=this.adhar;
+
+    if(this.dob!=null)
+    json.dob= this.dob;
+
+    if(this.grade!=null && this.grade!=[] )
+    json.grade=this.grade;
+
+    if(this.gender!=null)
+      json.gender=this.gender.toLowerCase();
+
+      json.subject=this.selectedLanguages.length>0 ? this.selectedLanguages : null;
+
+
+   json.userId=window.__userToken;
+
+   var url=window.__apiUrl + "/api/user/v1/update"
+
+
+   var body = {
+             "id":"unique API ID",
+             "ts":"response timestamp YYYY-MM-DDThh:mm:ss+/-nn:nn (timezone defaulted to +5.30)",
+               "params": {
+
+                 },
+             "request":json
+             }
+
+  console.log(JSON.stringify(body),"sendingJson");
+
+  this.responseCame=false;
+
+  if(JBridge.isNetworkAvailable()){
+      JBridge.patchApi(url,JSON.stringify(body),window.__userToken,window.__apiToken);
+      window.__LoaderDialog.show();
+
+     setTimeout(() => {
+         if(this.responseCame){
+           return;
+         }
+         JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION);
+         window.__LoaderDialog.hide();
+         this.responseCame=false;
+     },window.__API_TIMEOUT);
+ }else {
+   JBridge.showSnackBar(window.__S.NO_INTERNET);
+ }
+
+ //  window.__LoaderDialog.show();
+ //
+ // setTimeout(() => {
+ //     if(_this.responseCame){
+ //       return;
+ //     }
+ //     JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION);
+ //     window.__LoaderDialog.hide();
+ //     _this.responseCame=false;
+ // },window.__API_TIMEOUT);
+
+  }
+
+  getPatchCallback = (data) =>{
+    data=JSON.parse(data);
+    if(this.responseCame){
+
+      return;
+    }
+
+   window.__LoaderDialog.hide();
+   this.responseCame=true;
+   console.log(data)
+   if(data.result.response=="SUCCESS"){
+     window.__BNavFlowRestart();
+     this.onBackPressed();
+   }else{
+     JBridge.showSnackBar(data.params.errmsg);
+   }
+
+  }
+
+  checkCompleteStatus = () =>{
+
+    if(this.name==null || this.language==null || this.email==null || this.mobile==null)
+      {console.log(this.name + " "+ this.language + " " + this.email + " " + this.mobile);
+      return false;
+      }
+    return true;
+  }
+
+  updateSaveButtonStatus = (enabled) => {
+    var backgroundColor;
+    var isClickable;
+
+    if (enabled) {
+      backgroundColor = window.__Colors.LIGHT_BLUE;
+      isClickable = "true"
+    } else {
+      backgroundColor = window.__Colors.FADE_BLUE;
+      isClickable = "false"
+    }
+
+    var cmd = this.set({
+      id: this.idSet.saveButton,
+      background: backgroundColor
+    })
+
+    cmd += this.set({
+      id: this.idSet.saveButtonContainer,
+      clickable: isClickable
+    })
+
+    Android.runInUI(cmd, 0);
+  }
+
+  setName = (data) =>{
+    this.name= data=="" ? null : data;
+    this.updateSaveButtonStatus(this.checkCompleteStatus());
+  }
+
+  setLanuage = (data) =>{
+    this.language=data;
+    this.updateSaveButtonStatus(this.checkCompleteStatus());
+
+  }
+
+  setEmail = (data) =>{
+    this.email=data=="" ? null : data;
+    this.updateSaveButtonStatus(this.checkCompleteStatus());
+
+  }
+  setPhone = (data) =>{
+    this.mobile=data=="" ? null : data;
+    this.updateSaveButtonStatus(this.checkCompleteStatus());
+
+  }
+
+  setAdhar= (data) => {
+    this.adhar=data=="" ? null :data;
+  }
+
+  setLocation = (data) => {
+    this.location=data=="" ? null :data;
+
+  }
 
 
 }

@@ -42,8 +42,8 @@ class ExperiencePopUp extends View{
       "delButtonParent"
     ]);
     this.isVisible = false;
-    this.spinnerArray = ["Select","Hindi","English","Math","Physics","Chemistry","Economics"];
-    this.array="Select,Hindi,English,Math,Physics,Chemistry,Economics";
+    this.spinnerArray = ["Select","Bengali","English","Gujarati","Hindi","Kannada","Marathi","Punjabi","Tamil"];;
+    this.array="Select,Bengali,English,Gujarati,Hindi,Kannada,Marathi,Punjabi,Tamil";
     _this=this;
     window.__ExperiencePopUp = this;
     this.props=props;
@@ -80,8 +80,8 @@ class ExperiencePopUp extends View{
 
  hide = () => {
    this.isVisible = false;
-   this.spinnerArray = ["Select","Hindi","English","Math","Physics","Chemistry","Economics"];
-   this.array="Select,Hindi,English,Math,Physics,Chemistry,Economics";
+   this.spinnerArray = ["Select","Bengali","English","Gujarati","Hindi","Kannada","Marathi","Punjabi","Tamil"];
+   this.array="Select,Bengali,English,Gujarati,Hindi,Kannada,Marathi,Punjabi,Tamil";
    JBridge.hideKeyboard();
    this.setVisibility("gone");
    this.subjects=[];
