@@ -666,7 +666,13 @@ getUi(){
 
 
        try{
-         JBridge.showCalender(callback,this.joiningDate,this.endDate,"");
+        if (index==1){
+          JBridge.showCalender(callback,"",this.endDate,"");
+        }
+        else
+        {
+          JBridge.showCalender(callback,this.joiningDate,"","");
+        }
        }
        catch(err){
          console.log(err , "date err");

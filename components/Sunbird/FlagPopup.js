@@ -42,7 +42,6 @@ class FlagPopup extends View {
   show = () => {
     this.resetPopup()
     this.showBodyWithOptions();
-    this.hideBodyWithMessage();
     this.setVisibility("visible");
   }
 
@@ -78,23 +77,7 @@ class FlagPopup extends View {
     Android.runInUI(cmd, 0)
   }
 
-  showBodyWithMessage = () =>{
-    var cmd = this.set({
-      id: this.idSet.bodyWithMessageContainer,
-      visibility: "visible"
-    })
-
-    Android.runInUI(cmd, 0)
-  }
-
-  hideBodyWithMessage = () =>{
-    var cmd = this.set({
-      id: this.idSet.bodyWithMessageContainer,
-      visibility: "gone"
-    })
-
-    Android.runInUI(cmd, 0)
-  }
+  
 
 
   onConfirm = () =>{
@@ -105,7 +88,6 @@ class FlagPopup extends View {
         }
 
         this.hideBodyWithOptions();
-        // this.showBodyWithMessage();
         console.log(this.comment,this.selectedList)
         this.props.onConfirm(this.comment,this.selectedList)
 
@@ -301,59 +283,6 @@ class FlagPopup extends View {
   }
 
 
-  getBodyWithMessage = () => {
-    return (<LinearLayout
-              cornerRadius = "2"
-              width = "match_parent"
-              height = "450"
-              id={this.idSet.bodyWithMessageContainer}
-              root="true"
-              visibility="gone"
-              gravity="center_horizontal"
-              orientation= "vertical"
-              clickable = "true"
-              padding="16,18,16,16"
-              background="#ffffff">
-
-              <ImageView
-                width="87"
-                height="78"
-                margin="0,100,0,0"
-                gravity="center_horizontal"
-                imageUrl="ic_flag_warning"/>
-
-               <TextView
-                width="wrap_content"
-                height="wrap_content"
-                text={window.__S.FLAGGED_CONTENT﻿}
-                margin="0,9,0,0"
-                gravity="center_horizontal"
-                style={window.__TextStyle.textStyle.HINT.REGULAR}/>
-
-
-              <TextView
-                width="260"
-                height="wrap_content"
-                margin="0,90,0,0"
-                gravity="center_horizontal"
-                text={window.__S.FLAGGED_CONTENT_MESSAGE}
-                style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
-
-
-              <TextView
-                width="wrap_content"
-                height="wrap_content"
-                margin="0,30,0,0"
-                gravity="center_horizontal"
-                onClick={this.handleDismissClick}
-                textFromHtml={"<font color='#007AFF'><a href=''>"+ window.__S.GO_BACK﻿ + "</a></font>"}
-                style={window.__TextStyle.textStyle.CARD.BODY.DARK.BLUE_R}/>
-
-
-
-            </LinearLayout>)
-  }
-
 
 
 
@@ -399,8 +328,6 @@ class FlagPopup extends View {
             orientation="vertical">
 
             {this.getBodyWithOptions()}
-
-            {this.getBodyWithMessage()}
 
           </LinearLayout>)
   }
