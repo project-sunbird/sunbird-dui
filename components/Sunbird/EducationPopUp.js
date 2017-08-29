@@ -106,8 +106,8 @@ class EducationPopUp extends View {
 
     if (window.__EducationPopUp.data != undefined) {
       this.prevData.degree = window.__EducationPopUp.data.degree;
-      this.prevData.yearOfPassing = window.__EducationPopUp.data.yearOfPassing;
-      this.prevData.percentage = window.__EducationPopUp.data.percentage;
+      this.prevData.yearOfPassing = window.__EducationPopUp.data.yearOfPassing ? window.__EducationPopUp.data.yearOfPassing : "";
+      this.prevData.percentage = window.__EducationPopUp.data.percentage ? window.__EducationPopUp.data.percentage : "";
       this.prevData.inititution = window.__EducationPopUp.data.name;
       this.prevData.boardOrUniversity = window.__EducationPopUp.data.boardOrUniversity;
       this.prevData.grade = window.__EducationPopUp.data.grade;
@@ -188,13 +188,15 @@ class EducationPopUp extends View {
 
   checkDataChanged = () => {
     var isChanged = true;
-
+    console.log("this.prevData", this.prevData);
+    console.log("this", this);
     if (this.degree == this.prevData.degree
       && this.yearOfPassing == this.prevData.yearOfPassing
       && this.percentage == this.prevData.percentage
       && this.grade == this.prevData.grade
       && this.inititution == this.prevData.inititution
       && this.boardOrUniversity == this.prevData.boardOrUniversity) {
+        console.log("isChanged is false");
          isChanged = false;
       }
 
@@ -204,12 +206,10 @@ class EducationPopUp extends View {
   isValid = () => {
     if (this.degree == undefined || this.degree.length == 0 ) {
       return false;
-
     }
     if (this.inititution == undefined || this.inititution.length == 0 ) {
       return false;
     }
-
     return true;
   }
 
@@ -491,16 +491,15 @@ class EducationPopUp extends View {
         <FeatureButton
           weight = "1"
           id = {id}
-          typeface = "bold"
           clickable="false"
           width = "match_parent"
           height = "match_parent"
-          stroke = {"3," + window.__Colors.WHITE}
-          background = {type == "pos" ? window.__Colors.FADE_BLUE : window.__Colors.ERROR_RED}
+          stroke = {type == "pos" ? "1," + window.__Colors.WHITE : "3," + window.__Colors.PRIMARY_DARK}
+          background = {type == "pos" ? window.__Colors.PRIMARY_DARK : window.__Colors.WHITE}
           text = {label}
           buttonClick = {onClick}
-          textColor = {window.__Colors.WHITE}
-          textSize = "18"/>
+          textColor = {type == "pos" ? window.__Colors.WHITE : window.__Colors.PRIMARY_DARK}
+          textStyle = {window.__TextStyle.textStyle.CARD.ACTION.LIGHT}/>
       </LinearLayout>
     );
   }
