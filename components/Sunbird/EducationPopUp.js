@@ -14,6 +14,7 @@ var Spinner = require('../Sunbird/core/Spinner');
 var RadioButton = require('../Sunbird/core/RadioButton');
 var CheckBox = require("@juspay/mystique-backend").androidViews.CheckBox;
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
+var FeatureButton = require('../../components/Sunbird/FeatureButton');
 var Styles = require("../../res/Styles");
 let IconStyle = Styles.Params.IconStyle;
 
@@ -31,6 +32,7 @@ class EducationPopUp extends View {
       "inititutionText",
       "boardOrUniversityText",
       "saveButton",
+      "delButton",
       "saveButtonParent",
       "saveButtonContainer"
     ]);
@@ -48,6 +50,18 @@ class EducationPopUp extends View {
 
 
     this.prevData = {};
+  }
+
+  getUi = () => {
+    return (
+      <RelativeLayout
+        width="match_parent"
+        height="match_parent"
+        gravity="center">
+            {this.getBody()}
+            {this.getFooter()}
+      </RelativeLayout>
+    );
   }
 
 
@@ -190,12 +204,12 @@ class EducationPopUp extends View {
   isValid = () => {
     if (this.degree == undefined || this.degree.length == 0 ) {
       return false;
-  
+
     }
     if (this.inititution == undefined || this.inititution.length == 0 ) {
       return false;
     }
-    
+
     return true;
   }
 
@@ -213,11 +227,7 @@ class EducationPopUp extends View {
 
     var cmd = this.set({
       id: this.idSet.saveButton,
-      background: backgroundColor
-    })
-
-    cmd += this.set({
-      id: this.idSet.saveButtonContainer,
+      background: backgroundColor,
       clickable: isClickable
     })
 
@@ -422,129 +432,75 @@ class EducationPopUp extends View {
     );
   }
 
-  getUi() {
+  getBody = () => {
     return (
       <LinearLayout
-        width="match_parent"
-        height="match_parent"
-        root="true"
-        orientation="vertical">
-            {this.getToolbar()}
+        width = "match_parent"
+        height = "match_parent"
+        orientation = "vertical"
+        backgroundColor = "#ffffff">
 
-            <RelativeLayout
+        {this.getToolbar()}
+        <LinearLayout
+          width="match_parent"
+          height="match_parent"
+          orientation="vertical"
+          padding = "0,0,0,60">
+            <ScrollView
             height="match_parent"
             width="match_parent"
-            orientation="vertical"
-            background="#ffffff">
-              <LinearLayout
-                width="match_parent"
-                height="match_parent"
-                orientation="vertical">
-                  <ScrollView
-                  height="match_parent"
-                  width="match_parent"
-                  weight="1">
-                       {this.getScrollView()}
-                  </ScrollView>
-                  <LinearLayout
-                  height="match_parent"
-                  width="match_parent"
-                  weight="6"/>
-              </LinearLayout>
-              <LinearLayout
-                width="match_parent"
-                height="match_parent"
-                orientation="vertical">
-                <LinearLayout
-                  width="match_parent"
-                  height="match_parent"
-                  weight="1" />
-                <LinearLayout
-                   height="match_parent"
-                   width="match_parent"
-                   weight="6"
-                   orientation="vertical" >
-                    <LinearLayout
-                      height="wrap_content"
-                      width="match_parent" />
-                      {this.getLineSeperator()}
-
-                      <LinearLayout
-                        width = "match_parent"
-                        height = "match_parent"
-                        orientation = "horizontal">
-
-                        {this.getSaveBtn()}
-                        {this.getDelBtn()}
-                      </LinearLayout>
-                    </LinearLayout>
-              </LinearLayout>
-
-
-            </RelativeLayout>
-      </LinearLayout>
-    )
-  }
-
-  getSaveBtn = () => {
-    return (
-      <LinearLayout
-        weight = "1"
-       height="match_parent"
-       width="0"
-       padding="6, 6, 6, 6"
-       background="#ffffff"
-       orientation="horizontal"
-       id={this.idSet.saveButtonParent}>
-          <LinearLayout
-          height="match_parent"
-          width="match_parent"
-          id={this.idSet.saveButtonContainer}
-          clickable = "false"
-          onClick={ this.handleSaveClick }>
-              <LinearLayout
-              height="match_parent"
-              width="match_parent"
-              gravity="center"
-              cornerRadius="5,5,5,5"
-              background={window.__Colors.FADE_BLUE}
-              id={this.idSet.saveButton}>
-                  <TextView
-                  text="Save"
-                  gravity="center"
-                  style={window.__TextStyle.textStyle.CARD.TITLE.LIGHT}/>
-              </LinearLayout>
+            weight="1">
+                 {this.getScrollView()}
+            </ScrollView>
           </LinearLayout>
       </LinearLayout>
     );
   }
 
-  getDelBtn = () => {
+  getFooter = () => {
     return (
       <LinearLayout
-       visibility = {window.__EducationPopUp.data ? "visible" : "gone"}
-       weight = "1"
-       height="match_parent"
-       width="0"
-       padding="6, 6, 6, 6"
-       background="#ffffff"
-       orientation="horizontal">
-          <LinearLayout
-          height="match_parent"
-          width="match_parent"
-          onClick={ this.handleDelClick }>
-              <LinearLayout
-              height="match_parent"
-              width="match_parent"
-              gravity="center"
-              cornerRadius="5,5,5,5"
-              background={window.__Colors.ERROR_RED}>
-                  <TextView
-                  text="Delete"
-                  gravity="center"
-                  style={window.__TextStyle.textStyle.CARD.TITLE.LIGHT}/>
-              </LinearLayout>
-          </LinearLayout>
+        width = "match_parent"
+        height = "wrap_content"
+        orientation = "vertical"
+        background = "#ffffff"
+        alignParentBottom = "true, -1">
+
+        {this.getLineSeperator()}
+        <LinearLayout
+          width = "match_parent"
+          height = "match_parent"
+          orientation = "horizontal"
+            margin = "16, 8, 0, 8">
+          {this.getBtn(this.idSet.delButton, "neg", "DELETE", this.handleDelClick, window.__EducationPopUp.data ? "visible" : "gone")}
+          {this.getBtn(this.idSet.saveButton, "pos", "SAVE", this.handleSaveClick, "visible")}
+        </LinearLayout>
+      </LinearLayout>
+    );
+  }
+
+  getBtn = (id, type, label, onClick, visibility) => {
+    return (
+      <LinearLayout
+        width = "0"
+        weight = "1"
+        height = "wrap_content"
+        visibility = {visibility}
+        margin = "0, 0, 16, 0">
+
+        <FeatureButton
+          weight = "1"
+          id = {id}
+          typeface = "bold"
+          clickable="false"
+          width = "match_parent"
+          height = "match_parent"
+          stroke = {"3," + window.__Colors.WHITE}
+          background = {type == "pos" ? window.__Colors.FADE_BLUE : window.__Colors.ERROR_RED}
+          text = {label}
+          buttonClick = {onClick}
+          textColor = {window.__Colors.WHITE}
+          textSize = "18"/>
       </LinearLayout>
     );
   }
@@ -557,13 +513,19 @@ class EducationPopUp extends View {
   render() {
     this.layout = (
       <LinearLayout
-        orientation="vertical"
-        width="match_parent"
-        height="match_parent"
+        width = "match_parent"
+        height = "match_parent"
+        root = "true"
         id={this.idSet.educationPopUpParent}
-        visibility="gone"
-        gravity="center">
-            {this.getUi()}
+        background = "#ffffff"
+        visibility="gone">
+        <RelativeLayout
+          width="match_parent"
+          height="match_parent"
+          gravity="center">
+              {this.getBody()}
+              {this.getFooter()}
+        </RelativeLayout>
       </LinearLayout>
     );
 
