@@ -218,26 +218,27 @@ class AddressPopUp extends View {
       return false;
     }
 
-    if (this.addressLine2 == undefined || this.addressLine2.length == 0 ) {
-      return false;
-    }
+    // if (this.addressLine2 == undefined || this.addressLine2.length == 0 ) {
+    //   return false;
+    // }
 
     if (this.city == undefined || this.city.length == 0 ) {
       return false;
     }
 
-    if (this.state == undefined || this.state.length == 0 ) {
-      return false;
-    }
+    // if (this.state == undefined || this.state.length == 0 ) {
+    //   return false;
+    // }
 
-    if (this.country == undefined || this.country.length == 0 ) {
-      return false;
-    }
-
-    if (this.pincode == undefined || this.pincode.length == 0 ) {
-      return false;
-    }
-
+    // if (this.country == undefined || this.country.length == 0 ) {
+    //   return false;
+    // }
+    //
+    // if (this.pincode == undefined || this.pincode.length == 0 ) {
+    //   return false;
+    // }
+    //
+    
     if (this.addressType == undefined || this.addressType.length == 0) {
       return false;
     }
