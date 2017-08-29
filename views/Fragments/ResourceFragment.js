@@ -168,7 +168,7 @@ handleResourceViewAllClick= (data,title,searchQuery,visibility) =>{
           background={window.__Colors.WHITE}
           height="400"
           width="match_parent"
-          alpha="0.9"
+          alpha="0.55"
           weight="1"
           orientation="vertical"
           gravity="center_horizontal"
@@ -316,11 +316,31 @@ handleResourceViewAllClick= (data,title,searchQuery,visibility) =>{
       _this.data = JSON.parse(params[0]);
       console.log("local data",_this.data)
 
-         var layout = (<OfflineResourceContainer
+         var layout = (
+
+                      <LinearLayout
+                      width="match_parent"
+                      height="wrap_content"
+                      orientation="vertical">
+
+
+                        <OfflineResourceContainer
                          onResourceOpenClick = {_this.handleResourceOpen}
                          data = {_this.data}
                          title="Saved Resources"
-                         onViewAllClick = {_this.handleResourceViewAllClick}/>)
+                         onViewAllClick = {_this.handleResourceViewAllClick}/>
+
+                         <LinearLayout
+                         width="match_parent"
+                         height="10"
+                         background={window.__Colors.WHITE_F2}/>
+
+                        {_this.getNoInternetLayout()}
+
+
+
+                      </LinearLayout>
+                         )
 
         _this.replaceChild(_this.idSet.offlineContainer,layout.render(),0);
 
