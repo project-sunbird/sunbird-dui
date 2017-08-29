@@ -116,10 +116,11 @@ class RadioItem extends View {
     return this.layout.render();
   }
 }
-
-
+var _this;
 
 class RadioButton extends View {
+
+
   constructor(props, children) {
     super(props, children);
     this.displayName = "radio_button";
@@ -127,17 +128,20 @@ class RadioButton extends View {
       "itemContainer"
     ]);
 
-    this.itemList = this.props.items;
+    this.itemList = props.items;
     this.currentIndex = (this.props.defaultIndex === undefined ? -1 : this.props.defaultIndex)
+    this.onClickCallback = props.onClick;
+
+    _this = this;
     window.__RadioButton=this;
 
   }
 
   handleItemClick =  (index) =>{
-    if (this.currentIndex == index) {
+    if (_this.currentIndex == index) {
       return;
     }
-    this.currentIndex = index;
+    _this.currentIndex = index;
     var cmd;
     for (var i = 0; i < this.itemList.length; i++) {
       if (i == index) {
@@ -148,15 +152,15 @@ class RadioButton extends View {
     }
     Android.runInUI(cmd, 0);
 
-    this.props.onClick();
+    _this.onClickCallback();
   }
 
   renderItems = () =>{
-    var items = this.itemList.map((item,i)=>{
+    var items = _this.itemList.map((data,i)=>{
       return(
 
         <RadioItem
-        item={item}
+        item={data}
         _onClick={this.handleItemClick}
         index = {i} />
       )
@@ -181,7 +185,7 @@ class RadioButton extends View {
       id={this.idSet.itemContainer}
       afterRender={this.renderItems}
       background={window.__Colors.WHITE}
-      onClick = {this.props.onClick}>
+      onClick = {_this.props.onClick}>
       </LinearLayout>);
     return this.layout.render();
 

@@ -46,7 +46,7 @@ class ProfileExperiences extends View {
               height="wrap_content"
               text="Add"
               padding = "8,8,8,8"
-              onClick = {this.props.popUpType == window.__PROFILE_POP_UP_TYPE.EXPERIENCE ? window.__ExperiencePopUp.show : window.__EducationPopUp.show}
+              onClick = {() => this.showPopUp()}
               visibility = {(this.isEditable == "true") ? "visible" : "gone"}
               style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
 
@@ -99,15 +99,27 @@ class ProfileExperiences extends View {
     } else if (this.props.popUpType == window.__PROFILE_POP_UP_TYPE.EDUCATION) {
       window.__EducationPopUp.data=item;
       window.__EducationPopUp.show();
+    } else if (this.props.popUpType == window.__PROFILE_POP_UP_TYPE.ADDRESS) {
+      window.__AddressPopUp.data=item;
+      window.__AddressPopUp.show();
     }
+  }
+
+  getTitle = (input) => {
+    var title = input.jobName ? input.jobName : input.name;
+    if (this.props.popUpType == window.__PROFILE_POP_UP_TYPE.ADDRESS) {
+      title = input.addType;
+    }
+    return title;
   }
 
   getDate = (input) => {
     var date = "";
+
     if (this.props.popUpType == window.__PROFILE_POP_UP_TYPE.EDUCATION){
       if (input.yearOfPassing)
         date = "Year of passing : " + input.yearOfPassing;
-    } else {
+    } else if (this.props.popUpType == window.__PROFILE_POP_UP_TYPE.EXPERIENCE) {
       var dateOptions = {month: "short", year: "2-digit"};
       if(input.hasOwnProperty("joiningDate") && input.joiningDate && input.joiningDate != ""){
         var joiningDate = new Date(input.joiningDate);
@@ -133,15 +145,45 @@ class ProfileExperiences extends View {
 
   getAddress = (input) => {
     var address = "";
-    if(input.hasOwnProperty("address")){
-      if(input.address.hasOwnProperty("city")){
-        address = input.address.city ? input.address.city : "";
-      }
-      if(input.address.hasOwnProperty("country")){
-        if (input.address.country)
-          address  = (address == "") ? input.address.country : address + "," +input.address.country;
-      }
+
+    if (input.hasOwnProperty("addressLine1")) {
+      address = input.addressLine1 ? input.addressLine1 : "";
     }
+
+    if (input.hasOwnProperty("addressLine2")) {
+      if (input.addressLine2)
+        address  = (address == "") ? input.addressLine2 : address + ", "
+          + input.addressLine2;
+    }
+
+    if (address.length > 0) {
+      address = address + "\n";
+    }
+
+    if(input.hasOwnProperty("city")){
+      if (input.city)
+        address  = (address == "") ? input.city : address +
+          + input.city;
+    }
+
+    if(input.hasOwnProperty("state")){
+      if (input.state)
+        address  = (address == "") ? input.state : address + ", "
+          + input.state;
+    }
+
+    if(input.hasOwnProperty("country")){
+      if (input.country)
+        address  = (address == "") ? input.country : address + ", "
+          + input.country;
+    }
+
+    if(input.hasOwnProperty("zipcode")){
+      if (input.zipcode)
+        address  = (address == "") ? input.zipcode : address + ", "
+          + input.zipcode;
+    }
+
     return address;
   }
 
@@ -198,13 +240,15 @@ class ProfileExperiences extends View {
 
   getDetails = (input) => {
     var det = "";
-    if (input.jobName) {
+    if (this.props.popUpType == window.__PROFILE_POP_UP_TYPE.EXPERIENCE) {
       det = this.getPosition(input) + this.getOrg(input) +
         this.getSubjects(input) + this.getDate(input);
-    } else {
+    } else if (this.props.popUpType == window.__PROFILE_POP_UP_TYPE.EDUCATION) {
       det = this.getDegree(input) + this.getDate(input) +
         this.getGrade(input) +
         this.getUniv(input);
+    } else {
+      det = this.getAddress(input);
     }
     return det;
   }
@@ -219,7 +263,7 @@ class ProfileExperiences extends View {
                     <TextView
                     width="wrap_content"
                     height="wrap_content"
-                    text={input.jobName ? input.jobName : input.name}
+                    text={this.getTitle(input)}
                     style={window.__TextStyle.textStyle.CARD.HEADING}/>
 
                       <TextView
