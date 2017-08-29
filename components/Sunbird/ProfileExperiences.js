@@ -72,13 +72,16 @@ class ProfileExperiences extends View {
       <ViewWidget
         height="0"
         weight="1"/>
-        <ImageView
-        width="28"
-        height="28"
-        margin = "5,5,5,5"
-        padding = "5,5,5,5"
-        imageUrl="ic_action_edit_blue"
-        onClick={()=>{this.showPopUp(item)}}/>
+        <LinearLayout
+          width = "wrap_content"
+          height = "wrap_content"
+          padding = "10,10,0,10"
+          onClick={()=>{this.showPopUp(item)}}>
+          <ImageView
+          width="18"
+          height="18"
+          imageUrl="ic_action_edit_blue"/>
+        </LinearLayout>
       </LinearLayout>
     )
    }
@@ -287,11 +290,12 @@ class ProfileExperiences extends View {
       return (<LinearLayout
                 width="wrap_content"
                 height="wrap_content"
-                gravity="center_vertical"
-                margin="0,16,0,0">
+                gravity="top"
+                margin="0,16,0,16">
 
                 <LinearLayout
                   background={window.__Colors.WHITE_F4}
+                  margin = "0, 5, 0, 0"
                   width="44"
                   height="44"/>
 
