@@ -504,31 +504,41 @@ class CourseEnrolledActivity extends View {
 
     var callback = callbackMapper.map(function(data) {
 
-
-      var input = [{
-                    type : "text",
-                    data : window.__deepLinkUrl+"/public/#!/course/"+_this.baseIdentifier
-
-                  },{
-                    type : "file",
-                    data : "file://"+data[0]
-
-                  }];
-
-      var sharePopUp = (
-        <SharePopup
-        data = {input}/>
-        )
+    window.__LoaderDialog.hide();
 
 
-    _this.replaceChild(_this.idSet.sharePopupContainer,sharePopUp.render(),0);
+      if(data[0]!="failure"){
+            var input = [{
+                        type : "text",
+                        data : window.__deepLinkUrl+"/public/#!/course/"+_this.baseIdentifier
 
-     setTimeout(function() {
-      window.__SharePopup.show();
-    }, 200);
+                      },{
+                        type : "file",
+                        data : "file://"+data[0]
+
+                      }];
+
+          var sharePopUp = (
+            <SharePopup
+            data = {input}/>
+            )
+
+
+        _this.replaceChild(_this.idSet.sharePopupContainer,sharePopUp.render(),0);
+
+         setTimeout(function() {
+          window.__SharePopup.show();
+        }, 200);
+       }else{
+
+          JBridge.showToast("Can't share. Try Again!","short");
+
+       }
 
     });
     JBridge.exportEcar(this.baseIdentifier, callback);
+    window.__LoaderDialog.show();
+
 
   }
 }

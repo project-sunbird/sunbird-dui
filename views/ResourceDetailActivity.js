@@ -121,36 +121,46 @@ class ResourceDetailActivity extends View {
 
 
         var shareCallback = callbackMapper.map(function(data) {
-        var input;
-        if(isContentLocallyAvailable){
-                      input = [{
-                        type : "text",
-                        data : window.__deepLinkUrl+"/public/#!/content/"+_this.details.identifier
 
-                      },{
-                        type : "file",
-                        data : "file://"+data[0]
+          if(data[0]!="failure"){
+            var input;
 
-                      }];
+              console.log("SHARE CALLBACK DATA", data[0]);
+              if(isContentLocallyAvailable){
+                            input = [{
+                              type : "text",
+                              data : window.__deepLinkUrl+"/public/#!/content/"+_this.details.identifier
 
-        }else{
-                      input = [{
-                                  type : "text",
-                                  data : window.__deepLinkUrl+"/public/#!/content/"+_this.details.identifier
-                              }];
+                            },{
+                              type : "file",
+                              data : "file://"+data[0]
 
-        }
+                            }];
 
-          var sharePopUp = (
-            <SharePopup
-            data = {input}/>
-            )
+              }else{
+                            input = [{
+                                        type : "text",
+                                        data : window.__deepLinkUrl+"/public/#!/content/"+_this.details.identifier
+                                    }];
 
-        _this.replaceChild(_this.idSet.sharePopupContainer,sharePopUp.render(),0);
+              }
+
+                var sharePopUp = (
+                  <SharePopup
+                  data = {input}/>
+                  )
+
+              _this.replaceChild(_this.idSet.sharePopupContainer,sharePopUp.render(),0);
+          }else{
+
+              JBridge.showToast("Can't share. Try Again!","short");
+
+           }
 
         });
 
         JBridge.exportEcar(this.details.identifier, shareCallback);
+
 
   }
 
