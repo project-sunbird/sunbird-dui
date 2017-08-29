@@ -6,6 +6,8 @@ var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 var TextView = require("@juspay/mystique-backend").androidViews.TextView;
 var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
+var CropParagraph = require('../../components/Sunbird/CropParagraph');
+
 
 var _this;
 class ProfileExperiences extends View {
@@ -71,8 +73,10 @@ class ProfileExperiences extends View {
         height="0"
         weight="1"/>
         <ImageView
-        width="18"
-        height="18"
+        width="28"
+        height="28"
+        margin = "5,5,5,5"
+        padding = "5,5,5,5"
         imageUrl="ic_action_edit_blue"
         onClick={()=>{this.showPopUp(item)}}/>
       </LinearLayout>
@@ -101,59 +105,155 @@ class ProfileExperiences extends View {
     }
   }
 
-  getBody(input) {
-    var date = "";
+  getTitle = (input) => {
     var title = input.jobName ? input.jobName : input.name;
-    var address = "";
+    if (this.props.popUpType == window.__PROFILE_POP_UP_TYPE.ADDRESS) {
+      title = input.addType;
+    }
+    return title;
+  }
+
+  getDate = (input) => {
+    var date = "";
 
     if (this.props.popUpType == window.__PROFILE_POP_UP_TYPE.EDUCATION){
       if (input.yearOfPassing)
         date = "Year of passing : " + input.yearOfPassing;
     } else if (this.props.popUpType == window.__PROFILE_POP_UP_TYPE.EXPERIENCE) {
       var dateOptions = {month: "short", year: "2-digit"};
-      var joiningDate = new Date(input.joiningDate);
-      var joiningDateString = joiningDate.toLocaleDateString("en-us", dateOptions);
-      date = joiningDateString;
-      if(input.hasOwnProperty("endDate") && input.endDate && input.endDate != ""){
-        var endDate = new Date(input.endDate);
-        var endDateString = endDate.toLocaleDateString("en-us", dateOptions);
-        var val = Math.abs(joiningDate.getUTCFullYear() - endDate.getUTCFullYear());
-        if (val == 0)
+      if(input.hasOwnProperty("joiningDate") && input.joiningDate && input.joiningDate != ""){
+        var joiningDate = new Date(input.joiningDate);
+        var joiningDateString = joiningDate.toLocaleDateString("en-us", dateOptions);
+        date = joiningDateString;
+        if(input.hasOwnProperty("endDate") && input.endDate && input.endDate != ""){
+          var endDate = new Date(input.endDate);
+          var endDateString = endDate.toLocaleDateString("en-us", dateOptions);
+          var val = Math.abs(joiningDate.getUTCFullYear() - endDate.getUTCFullYear());
+          if (val == 0)
+            var noOfYears = "";
+          else
+            var noOfYears = " (" + val + " YRS)";
+          date = date + " - " + endDateString + noOfYears;
+        } else {
           var noOfYears = "";
-        else
-          var noOfYears = " (" + val + " YRS)";
-        date = date + " - " + endDateString + noOfYears;
-      } else {
-        var noOfYears = "";
-        date = date + " - Present";
-      }
-    } else {
-      title = input.addType;
-      address = input.addressLine1 + ", " + input.addressLine2;
-
-      if(input.hasOwnProperty("city")){
-        date = input.city ? input.city : "";
-      }
-      if(input.hasOwnProperty("state")){
-        if (input.state)
-          date  = (date == "") ? input.state : date + ", "
-            + input.state;
-      }
-
-      if(input.hasOwnProperty("country")){
-        if (input.country)
-          date  = (date == "") ? input.country : date + ", "
-            + input.country;
-      }
-
-      if(input.hasOwnProperty("zipcode")){
-        if (input.zipcode)
-          date  = (date == "") ? input.zipcode : date + ", "
-            + input.zipcode;
+          date = date + " - Present";
+        }
       }
     }
+    return (date == "") ? date : date + "\n";
+  }
 
+  getAddress = (input) => {
+    var address = "";
 
+    if (input.hasOwnProperty("addressLine1")) {
+      address = input.addressLine1 ? input.addressLine1 : "";
+    }
+
+    if (input.hasOwnProperty("addressLine2")) {
+      if (input.addressLine2)
+        address  = (address == "") ? input.addressLine2 : address + ", "
+          + input.addressLine2;
+    }
+
+    if (address.length > 0) {
+      address = address + "\n";
+    }
+
+    if(input.hasOwnProperty("city")){
+      if (input.city)
+        address  = (address == "") ? input.city : address +
+          + input.city;
+    }
+
+    if(input.hasOwnProperty("state")){
+      if (input.state)
+        address  = (address == "") ? input.state : address + ", "
+          + input.state;
+    }
+
+    if(input.hasOwnProperty("country")){
+      if (input.country)
+        address  = (address == "") ? input.country : address + ", "
+          + input.country;
+    }
+
+    if(input.hasOwnProperty("zipcode")){
+      if (input.zipcode)
+        address  = (address == "") ? input.zipcode : address + ", "
+          + input.zipcode;
+    }
+
+    return address;
+  }
+
+  getSubjects = (input) => {
+    var sub = "";
+    if (input.subject && input.subject.length > 0){
+      input.subject.map((item, i) => {
+        if (i == input.subject.length - 1)
+          sub = sub + item;
+        else
+          sub = sub + ", " + item;
+      });
+      sub = "Subjects : " + sub;
+    }
+    return (sub == "") ? sub : sub + "\n";
+  }
+
+  getOrg = (input) => {
+    if (input.orgName && input.orgName != "")
+      return input.orgName + "\n";
+    else
+      return "";
+  }
+
+  getPosition = (input) => {
+    if (input.role && input.role != "")
+      return input.role + ", ";
+    else
+      return "";
+  }
+
+  getDegree = (input) => {
+    if (input.degree && input.degree != "")
+      return input.degree + "\n"
+    else
+      return "";
+  }
+
+  getGrade = (input) => {
+    var grade = "";
+    if (input.grade && input.grade != "")
+      grade = grade + input.grade + " ";
+    if (input.percentage && input.percentage != "")
+      grade = grade + "(" + input.percentage + "%)"
+    return (grade == "") ? grade : "Grade : " + grade + "\n";
+  }
+
+  getUniv = (input) => {
+    if (input.boardOrUniversity && input.boardOrUniversity != "")
+      return input.boardOrUniversity;
+    else
+      return "";
+  }
+
+  getDetails = (input) => {
+    var det = "";
+    if (this.props.popUpType == window.__PROFILE_POP_UP_TYPE.EXPERIENCE) {
+      det = this.getPosition(input) + this.getOrg(input) +
+        this.getSubjects(input) + this.getDate(input);
+    } else if (this.props.popUpType == window.__PROFILE_POP_UP_TYPE.EDUCATION) {
+      det = this.getDegree(input) + this.getDate(input) +
+        this.getGrade(input) +
+        this.getUniv(input);
+    } else {
+      det = this.getAddress(input);
+    }
+    return det;
+  }
+
+  getBody(input) {
     return (<LinearLayout
               width="wrap_content"
               height="wrap_content"
@@ -163,21 +263,14 @@ class ProfileExperiences extends View {
                     <TextView
                     width="wrap_content"
                     height="wrap_content"
-                    text={title}
+                    text={this.getTitle(input)}
                     style={window.__TextStyle.textStyle.CARD.HEADING}/>
 
-                    <TextView
-                    width="wrap_content"
-                    height="wrap_content"
-                    visibility = {address == "" ? "gone" : "visible"}
-                    text={address}
-                    style={window.__TextStyle.textStyle.HINT.REGULAR}/>
-
-                    <TextView
-                    width="wrap_content"
-                    height="wrap_content"
-                    text={date}
-                    style={window.__TextStyle.textStyle.HINT.REGULAR}/>
+                      <TextView
+                      width="wrap_content"
+                      height="wrap_content"
+                      text={this.getDetails(input)}
+                      style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
                 </LinearLayout>)
   }
@@ -225,7 +318,7 @@ class ProfileExperiences extends View {
   render() {
     this.layout = (
 
-      <LinearLayout
+              <LinearLayout
                 width="wrap_content"
                 height="match_parent"
                 margin="0,16,0,0"

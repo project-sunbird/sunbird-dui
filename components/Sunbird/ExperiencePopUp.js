@@ -231,13 +231,22 @@ class ExperiencePopUp extends View{
           height="wrap_content"
           width="match_parent"
           orientation="vertical">
-            <TextView
-             height="wrap_content"
-             width="wrap_content"
-             text=" JOB NAME"
-             textStyle={window.__TextStyle.textStyle.HINT.SEMI}
-             margin="0,0,0,3"/>
-
+            <LinearLayout
+            height="wrap_content"
+            width="match_parent"
+            orientation="horizontal">
+              <TextView
+              height="wrap_content"
+              width="wrap_content"
+              text=" JOB NAME"
+              textStyle={window.__TextStyle.textStyle.HINT.SEMI}
+              margin="0,0,0,3"/>
+              <TextView
+              height="wrap_content"
+              width="wrap_content"
+              text=" *"
+              color="#FF0000"/>
+              </LinearLayout>
            <EditText
              width="match_parent"
              height="wrap_content"
@@ -257,14 +266,22 @@ class ExperiencePopUp extends View{
           height="wrap_content"
           width="match_parent"
           orientation="vertical">
-
-          <TextView
-           height="wrap_content"
-           width="wrap_content"
-           text=" ORGANIZATION"
-           textStyle={window.__TextStyle.textStyle.HINT.SEMI}
-           margin="0,0,0,3"/>
-
+          <LinearLayout
+          height="wrap_content"
+          width="match_parent"
+          orientation="horizontal">
+            <TextView
+            height="wrap_content"
+            width="wrap_content"
+            text="Organization"
+            textStyle={window.__TextStyle.textStyle.HINT.SEMI}
+            margin="0,0,0,3"/>
+            <TextView
+            height="wrap_content"
+            width="wrap_content"
+            text=" *"
+            color="#FF0000"/>
+            </LinearLayout>
          <EditText
            width="match_parent"
            height="wrap_content"
@@ -297,6 +314,7 @@ class ExperiencePopUp extends View{
            height="wrap_content"
            singleLine="true"
            maxLine="1"
+           hint  ="(Optional)"
            onChange={this.setPosition}
            id = {this.idSet.positionText}
            style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
@@ -648,7 +666,7 @@ getUi(){
 
 
        try{
-         JBridge.showCalender(callback,"","","");
+         JBridge.showCalender(callback,this.joiningDate,this.endDate,"");
        }
        catch(err){
          console.log(err , "date err");
@@ -801,7 +819,7 @@ getUi(){
          return true;
       }
       else {
-        if(this.jobName == this.prevData.jobName || this.Organization == this.prevData.Organization  || this.Position == this.prevData.Position || JSON.stringify(this.subjects)==JSON.stringify(this.prevData.subjects) || this.joiningDate == this.prevData.joiningDate || (window.__RadioButton.currentIndex!=0 && (this.endDate == this.prevData.endDate)) )
+        if(this.jobName == this.prevData.jobName || this.Organization == this.prevData.Organization)
         {
           return false;
         }
