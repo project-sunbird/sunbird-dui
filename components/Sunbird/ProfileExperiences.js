@@ -197,7 +197,7 @@ class ProfileExperiences extends View {
         if (i == input.subject.length - 1)
           sub = sub + item;
         else
-          sub = sub + ", " + item;
+          sub = sub + item + ", ";
       });
       sub = "Subjects : " + sub;
     }
