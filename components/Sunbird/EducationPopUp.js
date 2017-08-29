@@ -235,7 +235,10 @@ class EducationPopUp extends View {
   }
 
   handleSaveClick = () => {
-
+    if(!JBridge.isNetworkAvailable()) {
+      JBridge.showSnackBar(window.__S.NO_INTERNET);
+      return;
+    }
 
     this.education = [];
     var json;

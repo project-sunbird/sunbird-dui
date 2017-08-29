@@ -16,6 +16,7 @@ var CheckBox = require("@juspay/mystique-backend").androidViews.CheckBox;
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 var Styles = require("../../res/Styles");
 let IconStyle = Styles.Params.IconStyle;
+var FeatureButton = require('../../components/Sunbird/FeatureButton');
 
 var _this;
 
@@ -99,7 +100,7 @@ class AddressPopUp extends View {
       this.prevData.city = window.__AddressPopUp.data.city;
       this.prevData.state = window.__AddressPopUp.data.state;
       this.prevData.country = window.__AddressPopUp.data.country;
-      this.prevData.pincode = window.__AddressPopUp.data.zipcode;
+      this.prevData.pincode = window.__AddressPopUp.data.zipcode ? window.__AddressPopUp.data.zipcode : "";
       this.prevData.addressType = window.__AddressPopUp.data.addType;
     }
   }
@@ -278,6 +279,10 @@ class AddressPopUp extends View {
 
 
   handleSaveClick = () => {
+    if(!JBridge.isNetworkAvailable()) {
+      JBridge.showSnackBar(window.__S.NO_INTERNET);
+      return;
+    }
 
 
     this.address = [];
@@ -459,6 +464,54 @@ class AddressPopUp extends View {
             background={window.__Colors.PRIMARY_BLACK_22}/>)
   }
 
+
+  getBody = () => {
+    return (
+      <LinearLayout
+        width = "match_parent"
+        height = "match_parent"
+        orientation = "vertical"
+        backgroundColor = "#ffffff">
+
+        {this.getToolbar()}
+        <LinearLayout
+          width="match_parent"
+          height="match_parent"
+          orientation="vertical"
+          padding = "0,0,0,60">
+            <ScrollView
+            height="match_parent"
+            width="match_parent"
+            weight="1">
+                 {this.getScrollView()}
+            </ScrollView>
+          </LinearLayout>
+      </LinearLayout>
+    );
+  }
+
+  getFooter = () => {
+    return (
+      <LinearLayout
+        width = "match_parent"
+        height = "wrap_content"
+        orientation = "vertical"
+        background = "#ffffff"
+        alignParentBottom = "true, -1">
+
+        {this.getLineSeperator()}
+        <LinearLayout
+          width = "match_parent"
+          height = "match_parent"
+          orientation = "horizontal"
+            margin = "16, 8, 0, 8">
+          {this.getBtn(this.idSet.delButton, "neg", "DELETE", this.handleDelClick, window.__AddressPopUp.data ? "visible" : "gone")}
+          {this.getBtn(this.idSet.saveButton, "pos", "SAVE", this.handleSaveClick, "visible")}
+        </LinearLayout>
+      </LinearLayout>
+    );
+  }
+
   getScrollView(){
     return(
       <LinearLayout
@@ -557,6 +610,32 @@ class AddressPopUp extends View {
     );
   }
 
+
+  getBtn = (id, type, label, onClick, visibility) => {
+    return (
+      <LinearLayout
+        width = "0"
+        weight = "1"
+        height = "wrap_content"
+        visibility = {visibility}
+        margin = "0, 0, 16, 0">
+
+        <FeatureButton
+          weight = "1"
+          id = {id}
+          clickable="false"
+          width = "match_parent"
+          height = "match_parent"
+          stroke = {type == "pos" ? "1," + window.__Colors.WHITE : "3," + window.__Colors.PRIMARY_DARK}
+          background = {type == "pos" ? window.__Colors.PRIMARY_DARK : window.__Colors.WHITE}
+          text = {label}
+          buttonClick = {onClick}
+          textColor = {type == "pos" ? window.__Colors.WHITE : window.__Colors.PRIMARY_DARK}
+          textStyle = {window.__TextStyle.textStyle.CARD.ACTION.LIGHT}/>
+      </LinearLayout>
+    );
+  }
+
   getSaveBtn() {
     return (
       <LinearLayout
@@ -623,70 +702,18 @@ class AddressPopUp extends View {
   }
 
 
-  getUi() {
+  getUi = () => {
     return (
-      <LinearLayout
+      <RelativeLayout
         width="match_parent"
         height="match_parent"
-        root="true"
-        orientation="vertical">
-            {this.getToolbar()}
-
-            <RelativeLayout
-            height="match_parent"
-            width="match_parent"
-            orientation="vertical"
-            background="#ffffff">
-              <LinearLayout
-                width="match_parent"
-                height="match_parent"
-                orientation="vertical">
-                  <ScrollView
-                  height="match_parent"
-                  width="match_parent"
-                  weight="1">
-                       {this.getScrollView()}
-                  </ScrollView>
-                  <LinearLayout
-                  height="match_parent"
-                  width="match_parent"
-                  weight="6"/>
-              </LinearLayout>
-              <LinearLayout
-                width="match_parent"
-                height="match_parent"
-                orientation="vertical">
-                <LinearLayout
-                  width="match_parent"
-                  height="match_parent"
-                  weight="1" />
-                <LinearLayout
-                   height="match_parent"
-                   width="match_parent"
-                   weight="6"
-                   orientation="vertical" >
-                    <LinearLayout
-                      height="wrap_content"
-                      width="match_parent" />
-                      {this.getLineSeperator()}
-
-                      <LinearLayout
-                        width = "match_parent"
-                        height = "match_parent"
-                        orientation = "horizontal">
-
-                        {this.getSaveBtn()}
-                        {this.getDelBtn()}
-                      </LinearLayout>
-
-                    </LinearLayout>
-              </LinearLayout>
-
-
-            </RelativeLayout>
-      </LinearLayout>
-    )
+        gravity="center">
+            {this.getBody()}
+            {this.getFooter()}
+      </RelativeLayout>
+    );
   }
+
 
   render() {
     this.layout = (
