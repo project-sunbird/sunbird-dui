@@ -40,14 +40,31 @@ class CourseContainer extends View {
     });
 
     var layout=(<LinearLayout
-        height="wrap_content"
-        width="match_parent">
+                  orientation="vertical"
+                  height="wrap_content"
+                  width="match_parent">
+                  
+                  {this.getHeader()}
 
-          {rows}
+                  
+                  <HorizontalScrollView
+                   width = "wrap_content"
+                   height = "wrap_content"
+                   scrollBarX="false">
 
-        </LinearLayout>)
+                   <LinearLayout
+                     padding="0,0,16,0"
+                     width="match_parent"
+                     height="wrap_content">
 
-    this.appendChild(this.idSet.parentContainer,this.getHeader().render(),0);
+                    {rows}
+
+                    </LinearLayout>
+
+                  </HorizontalScrollView>
+
+                  </LinearLayout>)
+
     this.replaceChild(this.idSet.courseContainer,layout.render(),0)
 
   }
@@ -67,9 +84,6 @@ class CourseContainer extends View {
 
 
   geCardLayout = (item) => {
-
-    
-
 
     var size = item.hasOwnProperty("size") ? "  "+window.__S.FILE_SIZE.format(utils.formatBytes(item.size)) : "";
 
@@ -98,7 +112,7 @@ class CourseContainer extends View {
     return (<LinearLayout
               width="match_parent"
               height="wrap_content"
-              padding="16,16,16,16"
+              padding="16,16,0,16"
               orientation="horizontal">
 
               <TextView
@@ -172,26 +186,17 @@ class CourseContainer extends View {
         id={this.idSet.parentContainer}
         height="match_parent"
         width="match_parent"
+        afterRender={this.afterRender}
         background={this.props.transparent?window.__Colors.WHITE_F2:window.__Colors.WHITE}
         root="true"
-        orientation="vertical">
-
-      
-
-          <HorizontalScrollView
-           width = "wrap_content"
-           height = "wrap_content"
-           scrollBarX="false"
-           fillViewport="true">
+        orientation="vertical">          
 
            <LinearLayout
             id={this.idSet.courseContainer}
-            padding="0,0,16,0"
+            padding="0,0,0,0"
             height="wrap_content"
-            width="match_parent"
-            afterRender={this.afterRender}/>
+            width="match_parent"/>
       
-          </HorizontalScrollView>
 
          </LinearLayout>
     )

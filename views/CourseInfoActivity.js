@@ -305,7 +305,12 @@ class CourseInfoActivity extends View {
     console.log("SHARE POP UP CALLED")
 
     var shareCallback = callbackMapper.map(function(data) {
-    var input = [
+
+    window.__LoaderDialog.hide();
+
+
+      if(data[0]!="failure"){
+          var input = [
                  {
                     type : "text",
                     data : window.__deepLinkUrl+"/public/#!/course/"+_this.details.identifier
@@ -313,21 +318,27 @@ class CourseInfoActivity extends View {
                 ];
 
 
-      var sharePopUp = (
-        <SharePopup
-        data = {input}/>
-        )
+            var sharePopUp = (
+                              <SharePopup
+                              data = {input}/>
+                              )
 
-    _this.replaceChild(_this.idSet.sharePopupContainer,sharePopUp.render(),0);
+            _this.replaceChild(_this.idSet.sharePopupContainer,sharePopUp.render(),0);
 
-        setTimeout(function() {
-           window.__SharePopup.show();
-        }, 200);
+            setTimeout(function() {
+               window.__SharePopup.show();
+            }, 200);
+      }else{
 
+          JBridge.showToast("Can't share. Try Again!","short");
+
+       }
 
     });
 
     JBridge.exportEcar(this.details.identifier, shareCallback);
+    window.__LoaderDialog.show();
+
   }
 
 
