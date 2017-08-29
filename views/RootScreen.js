@@ -19,6 +19,7 @@ var ContentLoaderDialog = require('../components/Sunbird/core/ContentLoaderDialo
 var PermissionDeniedDialog = require('../components/Sunbird/core/PermissionDeniedDialog');
 var ExperiencePopUp = require('../components/Sunbird/ExperiencePopUp');
 var EducationPopUp = require('../components/Sunbird/EducationPopUp');
+var AddressPopUp = require("../components/Sunbird/AddressPopUp");
 
 
 const Str = require("../res/Strings") ;
@@ -95,6 +96,7 @@ class RootScreen extends View {
         <PermissionDeniedDialog/>
         <ExperiencePopUp/>
         <EducationPopUp/>
+        <AddressPopUp />
         <PreviewImagePopup
           defaultImage="https://pbs.twimg.com/media/CRafzhtWIAEQ2c9.png"/>
       </RelativeLayout>
