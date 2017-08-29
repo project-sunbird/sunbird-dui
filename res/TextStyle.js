@@ -172,7 +172,12 @@ exports.textStyle = {
         color: Colors.PRIMARY_ACCENT,
         textSize: Font.fontSize.FONT_13,
         fontStyle: Font.fontStyle.BOLD
-      }
+      },
+      DARK: {
+        color: Colors.PRIMARY_ACCENT,
+        textSize: Font.fontSize.FONT_14,
+        fontStyle: Font.fontStyle.BOLD
+      },
     },
     HEADING: {
       color: Colors.PRIMARY_BLACK,

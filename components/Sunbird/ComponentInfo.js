@@ -170,7 +170,39 @@
 
 
 
+6. SimplePopup
 
+
+    <SimplePopup
+       buttonClick={this.onSimplePopClick}
+       data={this.simpleData}
+       />
+
+
+       this.simpleData={
+          title:"Content not available",
+          content:"File size: 3 MB",
+          negButtonText : "DISMISS",
+          posButtonText : "DOWNLOAD"
+    }
+
+    //To show
+
+    window.__SimplePopup.show();
+
+    //To hide
+
+    window.__SimplePopup.hide();
+
+
+    onSimplePopClick=(type)=>{
+
+      if(type=="negative"){
+        //do something 
+      }else if(type =="positive"){
+        //do something
+      }
+    }
 
 
 

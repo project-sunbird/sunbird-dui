@@ -55,6 +55,7 @@ class ResourceDetailActivity extends View {
 
     this.localStatus = false;
 
+
     _this = this;
 
 
@@ -565,6 +566,7 @@ class ResourceDetailActivity extends View {
   }
 
 
+
   setPermissions = () => {
 
    var callback = callbackMapper.map(function(data) {
@@ -656,7 +658,6 @@ class ResourceDetailActivity extends View {
        width="match_parent"
        height="match_parent"
        id={this.idSet.sharePopupContainer}/>
-
 
 
       </RelativeLayout>
