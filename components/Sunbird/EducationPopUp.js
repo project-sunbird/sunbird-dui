@@ -365,183 +365,60 @@ class EducationPopUp extends View {
   getScrollView(){
     return(
       <LinearLayout
-      height = "match_parent"
-      width = "match_parent"
-      orientation="vertical"
-      background="#ffffff"
-      id={this.idSet.scrollView}
-      padding="15,15,15,15">
+        height = "match_parent"
+        width = "match_parent"
+        orientation="vertical"
+        background="#ffffff"
+        id={this.idSet.scrollView}
+        padding="15,15,15,15">
 
+        {this.getEditTextView(this.idSet.degreeText, "Degree", false, this.setDegree)}
+        {this.getEditTextView(this.idSet.inititutionText, "Institution Name", false, this.setInitution)}
+        {this.getEditTextView(this.idSet.yearOfPassingText, "Year of Passing", true, this.setYearOfPassingText)}
+        {this.getEditTextView(this.idSet.percentageText, "Percentage", true, this.setPercentage)}
+        {this.getEditTextView(this.idSet.gradeText, "Grade", true, this.setGrade)}
+        {this.getEditTextView(this.idSet.boardOrUniversityText, "Board//University", true, this.setBoardOrUniversity)}
 
-         <LinearLayout
-         height="wrap_content"
-         width="match_parent"
-         orientation="vertical">
-           <LinearLayout
-           height="wrap_content"
-           width="match_parent"
-           orientation="horizontal">
-              <TextView
-              height="wrap_content"
-              width="wrap_content"
-              text="Degree"
-              textAllCaps="true"
-              textStyle={window.__TextStyle.textStyle.HINT.SEMI}
-              margin="0,0,0,3"/>
-              <TextView
-              height="wrap_content"
-              width="wrap_content"
-              text=" *"
-              color="#FF0000"
-              margin="0,0,0,3"/>
-            </LinearLayout>
-            <EditText
-            width="match_parent"
-            height="wrap_content"
-            id = {this.idSet.degreeText}
-            onChange={this.setDegree}
-            singleLine="true"
-            maxLine="1"
-            style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
-            <LinearLayout
-            height="34"
-            width="1"/>
-         </LinearLayout>
+      </LinearLayout>
+    );
+  }
 
-         <LinearLayout
-         height="wrap_content"
-         width="match_parent"
-         orientation="vertical">
-           <TextView
+  getEditTextView = (id, label, optional,onChange) => {
+    return (
+      <LinearLayout
+        height="wrap_content"
+        width="match_parent"
+        orientation="vertical"
+        margin = "0,0,0,12">
+        <LinearLayout
+          height="wrap_content"
+          width="match_parent"
+          orientation="horizontal"
+          margin = "0,0,0,-5"
+          padding = "4,0,0,0">
+          <TextView
             height="wrap_content"
             width="wrap_content"
-            text="Year Of Passing"
-            textStyle={window.__TextStyle.textStyle.HINT.SEMI}
-            margin="0,0,0,3"/>
-            <EditText
-            width="match_parent"
-            height="wrap_content"
-            inputType="numeric"
-            singleLine="true"
-            maxLine="1"
-            hint="(Optional)"
-            onChange={this.setYearOfPassingText}
-            id = {this.idSet.yearOfPassingText}
-            style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
-            <LinearLayout
-            height="34"
-            width="1"/>
-         </LinearLayout>
-
-         <LinearLayout
-         height="wrap_content"
-         width="match_parent"
-         orientation="vertical">
-           <TextView
-            height="wrap_content"
-            width="wrap_content"
-            text="Percentage"
+            text={label}
             textAllCaps="true"
-            textStyle={window.__TextStyle.textStyle.HINT.SEMI}
-            margin="0,0,0,3"/>
-            <EditText
-            width="match_parent"
-            height="wrap_content"
-            inputType="numeric"
-            singleLine="true"
-            maxLine="1"
-            hint="(Optional)"
-            onChange={this.setPercentage}
-            id = {this.idSet.percentageText}
-            style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
-            <LinearLayout
-            height="34"
-            width="1"/>
-         </LinearLayout>
-
-         <LinearLayout
-         height="wrap_content"
-         width="match_parent"
-         orientation="vertical">
-           <TextView
-            height="wrap_content"
-            width="wrap_content"
-            text="Grade"
-            textAllCaps="true"
-            textStyle={window.__TextStyle.textStyle.HINT.SEMI}
-            margin="0,0,0,3"/>
-            <EditText
-            width="match_parent"
-            height="wrap_content"
-            singleLine="true"
-            maxLine="1"
-            hint="(Optional)"
-            onChange={this.setGrade}
-            id = {this.idSet.gradeText}
-            style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
-            <LinearLayout
-            height="34"
-            width="1"/>
-         </LinearLayout>
-
-         <LinearLayout
-         height="wrap_content"
-         width="match_parent"
-         orientation="vertical">
-         <LinearLayout
-         height="wrap_content"
-         width="match_parent"
-         orientation="horizontal">
-            <TextView
-            height="wrap_content"
-            width="wrap_content"
-            text="Instution Name"
-            textStyle={window.__TextStyle.textStyle.HINT.SEMI}
-            margin="0,0,0,3"/>
-            <TextView
+            textStyle={window.__TextStyle.textStyle.HINT.SEMI}/>
+          <TextView
             height="wrap_content"
             width="wrap_content"
             text=" *"
             color="#FF0000"
-            margin="0,0,0,3"/>
-          </LinearLayout>
-            <EditText
-            width="match_parent"
-            height="wrap_content"
-            singleLine="true"
-            maxLine="1"
-            onChange={this.setInitution}
-            id = {this.idSet.inititutionText}
-            style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
-            <LinearLayout
-            height="34"
-            width="1"/>
-         </LinearLayout>
-
-         <LinearLayout
-         height="wrap_content"
-         width="match_parent"
-         orientation="vertical">
-           <TextView
-            height="wrap_content"
-            width="wrap_content"
-            text="Board/University"
-            textAllCaps="true"
-            textStyle={window.__TextStyle.textStyle.HINT.SEMI}
-            margin="0,0,0,3"/>
-            <EditText
-            width="match_parent"
-            height="wrap_content"
-            singleLine="true"
-            maxLine="1"
-            onChange={this.setBoardOrUniversity}
-            id = {this.idSet.boardOrUniversityText}
-            style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
-            <LinearLayout
-            height="34"
-            width="1"/>
-         </LinearLayout>
-       </LinearLayout>
+            visibility = {optional ? "gone" : "visible"}/>
+        </LinearLayout>
+        <EditText
+          width="match_parent"
+          height="wrap_content"
+          id = {id}
+          onChange={onChange}
+          singleLine="true"
+          maxLine="1"
+          hint = {optional ? "(Optional)" : ""}
+          style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
+    </LinearLayout>
     );
   }
 
