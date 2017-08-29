@@ -155,7 +155,7 @@ class AddressPopUp extends View {
       addressTypeValue[0].select = "1";
       addressTypeValue[1].select = "0";
       index = 0;
-    } else {
+    } else if (this.prevData.addressType == "current") {
       addressTypeValue[0].select = "0";
       addressTypeValue[1].select = "1";
       index = 1;
@@ -364,8 +364,8 @@ class AddressPopUp extends View {
     if (window.__RadioButton != undefined
       && window.__RadioButton.currentIndex > -1) {
         console.log("Radio Button click");
-      this.addressType = ADDRESS_TYPE[window.__RadioButton.currentIndex];
-      this.checkDataChanged();
+      _this.addressType = ADDRESS_TYPE[window.__RadioButton.currentIndex];
+      _this.checkDataChanged();
     }
   }
 
