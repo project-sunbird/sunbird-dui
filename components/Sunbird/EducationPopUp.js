@@ -387,8 +387,8 @@ class EducationPopUp extends View {
 
         {this.getEditTextView(this.idSet.degreeText, "Degree", false, this.setDegree)}
         {this.getEditTextView(this.idSet.inititutionText, "Institution Name", false, this.setInitution)}
-        {this.getEditTextView(this.idSet.yearOfPassingText, "Year of Passing", true, this.setYearOfPassingText)}
-        {this.getEditTextView(this.idSet.percentageText, "Percentage", true, this.setPercentage)}
+        {this.getEditTextView(this.idSet.yearOfPassingText, "Year of Passing", true, this.setYearOfPassingText, "numeric")}
+        {this.getEditTextView(this.idSet.percentageText, "Percentage", true, this.setPercentage, "numeric")}
         {this.getEditTextView(this.idSet.gradeText, "Grade", true, this.setGrade)}
         {this.getEditTextView(this.idSet.boardOrUniversityText, "Board//University", true, this.setBoardOrUniversity)}
 
@@ -396,7 +396,7 @@ class EducationPopUp extends View {
     );
   }
 
-  getEditTextView = (id, label, optional,onChange) => {
+  getEditTextView = (id, label, optional,onChange, inputType) => {
     return (
       <LinearLayout
         height="wrap_content"
@@ -430,6 +430,7 @@ class EducationPopUp extends View {
           singleLine="true"
           maxLine="1"
           hint = {optional ? "(Optional)" : ""}
+          inputType = {inputType ? inputType : "text"}
           style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
     </LinearLayout>
     );
