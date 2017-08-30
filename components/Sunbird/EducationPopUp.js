@@ -390,7 +390,7 @@ class EducationPopUp extends View {
         {this.getEditTextView(this.idSet.yearOfPassingText, "Year of Passing", true, this.setYearOfPassingText, "numeric")}
         {this.getEditTextView(this.idSet.percentageText, "Percentage", true, this.setPercentage, "numeric")}
         {this.getEditTextView(this.idSet.gradeText, "Grade", true, this.setGrade)}
-        {this.getEditTextView(this.idSet.boardOrUniversityText, "Board//University", true, this.setBoardOrUniversity)}
+        {this.getEditTextView(this.idSet.boardOrUniversityText, "Board/University", true, this.setBoardOrUniversity)}
 
       </LinearLayout>
     );

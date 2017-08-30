@@ -12,6 +12,7 @@ var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 
+var TextInputView = require('../components/Sunbird/core/TextInputView');
 var Spinner = require('../components/Sunbird/core/Spinner');
 var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
 var ProfileHeader = require('../components/Sunbird/ProfileHeader');
@@ -220,23 +221,18 @@ class AdditionalInformationActivity extends View{
 
   getEditTextView = (id, label, hint , optional , onChange, inputType) =>{
     return(
-      <LinearLayout
-      width="match_parent"
-      height="wrap_content"
-      orientation="vertical"
-      margin="0,0,0,17">
-         {this.getLabel(label,optional)}
-         <EditText
-         id={id}
-         width="match_parent"
-         height="wrap_content"
-         maxLines="1"
-         style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
-         onChange={onChange}
-         inputType = {inputType ? inputType : "text"}
-         hint={hint + (optional)? "(optional)" : ""}
-         />
-       </LinearLayout>
+      <TextInputView
+        id = {id}
+        height="wrap_content"
+        width="match_parent"
+        hintText={hint + (optional ? " (Optional)" : "")}
+        labelText={label + " <font color = 'red'>" + (optional ? "" : "*") + "</font>"}
+        margin = "0,0,0,12"
+        _onChange={onChange}
+        text = ""
+        textStyle = {window.__TextStyle.textStyle.HINT.SEMI}
+        editTextStyle = {window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
+        inputType = {inputType ? inputType : "text"}/>
     )
   }
 
