@@ -146,8 +146,8 @@ class AddressPopUp extends View {
     })
 
     var addressTypeValue = [
-      {name:"Permanent",select:"0",icon:"ic_check_circle"},
-      {name:"Current",select:"0",icon:"ic_check_circle"}
+      {name:"Permanent",select:"0",icon:"ic_action_radio"},
+      {name:"Current",select:"0",icon:"ic_action_radio"}
     ];
 
     var index;
@@ -555,7 +555,7 @@ class AddressPopUp extends View {
             width="wrap_content"
             gravity="center_vertical"
             padding = "4,0,0,0"
-            items={[{name:"Permanent",select:"0",icon:"ic_check_circle"},{name:"Current",select:"0",icon:"ic_check_circle"}]}
+            items={[{name:"Permanent",select:"0",icon:"ic_action_radio"},{name:"Current",select:"0",icon:"ic_action_radio"}]}
             onClick={this.handleRadioButtonClick}/>
         </LinearLayout>
 
