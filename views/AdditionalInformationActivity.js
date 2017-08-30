@@ -23,6 +23,7 @@ var ProfileAccomplishments = require('../components/Sunbird/ProfileAccomplishmen
 var ProfileCreations = require('../components/Sunbird/ProfileCreations');
 var ProfileBadges = require('../components/Sunbird/ProfileBadges');
 var ProfileAdditionalInfo = require('../components/Sunbird/ProfileAdditionalInfo');
+var MultiSelectSpinner = require('../components/Sunbird/MultiSelectSpinner');
 var Styles = require("../res/Styles");
 let IconStyle = Styles.Params.IconStyle;
 
@@ -128,15 +129,41 @@ class AdditionalInformationActivity extends View{
       var value = this.data.subject[i].toLowerCase();
       this.selectLanguageItem(value);
     }
-
-    this.data.grade.map((data)=>{
-      this.addGrade(data);
-    });
+    this.populateGrade(this.data.grade);
 
     JBridge.selectSpinnerItem(this.idSet.languageSpinner,this.LanguageArray.indexOf(this.language[0]));
     var gender = this.gender.substr(0,1).toUpperCase()+this.gender.substr(1);
     JBridge.selectSpinnerItem(this.idSet.genderSpinner,gender);
 
+  }
+
+  populateGrade = (items) => {
+    console.log("populateGrade", items);
+
+    var itemsListView = (
+      <LinearLayout
+        width="match_parent"
+        height="wrap_content"
+        orientation="vertical"
+        id={this.idSet.gradeSpinnerContainer}
+        margin="0,0,0,17">
+          <TextView
+           width="match_parent"
+           height="20"
+           style={window.__TextStyle.textStyle.HINT.BOLD}
+           text="GRADES"
+           margin="0,0,0,8"/>
+          <MultiSelectSpinner
+            width="match_parent"
+            height="wrap_content"
+            data={this.GradeArray}
+            selectedData={items}
+            onItemChange={this.onMultiSelectItemChange}
+           />
+      </LinearLayout>
+    );
+
+    this.replaceChild(this.idSet.gradeSpinnerContainer, itemsListView.render(), 0);
   }
 
 
@@ -365,32 +392,27 @@ class AdditionalInformationActivity extends View{
                         {this.getEditTextView(this.idSet.adharText,"ADHAR NUMBER","",true,this.setAdhar,"number")}
                         {this.getEditTextView(this.idSet.locationText,"CURRENT LOCATION","Enter your location",true,this.setLocation)}
 
-                         <LinearLayout
-                         width="match_parent"
-                         height="wrap_content"
-                         orientation="vertical"
-                         margin="0,0,0,17">
-                           <TextView
-                            width="match_parent"
-                            height="20"
-                            style={window.__TextStyle.textStyle.HINT.BOLD}
-                            text="GRADES"
-                            margin="0,0,0,8"/>
-                            <LinearLayout
+
+                        <LinearLayout
+                          width="match_parent"
+                          height="wrap_content"
+                          orientation="vertical"
+                          id={this.idSet.gradeSpinnerContainer}
+                          margin="0,0,0,17">
+                            <TextView
+                             width="match_parent"
+                             height="20"
+                             style={window.__TextStyle.textStyle.HINT.BOLD}
+                             text="GRADES"
+                             margin="0,0,0,8"/>
+                            <MultiSelectSpinner
                               width="match_parent"
                               height="wrap_content"
-                              stroke={"2,"+window.__Colors.PRIMARY_BLACK_66}
-                              padding="8,8,8,8"
-                              cornerRadius="4,4,4,4"
-                              id={this.idSet.gradeSpinnerContainer}>
-                               {this.loadGradeSpinner()}
-                            </LinearLayout>
-                            <HorizontalScrollView
-                              height = "wrap_content"
-                              width = "match_parent"
-                              id={this.idSet.gradeContainer}
-                              margin = "0,10,0,0"/>
-                          </LinearLayout>
+                              data={this.GradeArray}
+                              selectedData={this.grade}
+                              onItemChange={this.onMultiSelectItemChange}
+                             />
+                        </LinearLayout>
 
                          {
                           // <LinearLayout
@@ -448,6 +470,8 @@ class AdditionalInformationActivity extends View{
                           //  </LinearLayout>
                          }
                     </LinearLayout>
+
+
                     <LinearLayout
                     height="wrap_content"
                     width="328"
@@ -528,6 +552,10 @@ class AdditionalInformationActivity extends View{
       );
   }
 
+  onMultiSelectItemChange = (selectedArray) => {
+    this.grade = selectedArray;
+  }
+
 
   render(){
       console.log("render");
@@ -550,109 +578,6 @@ class AdditionalInformationActivity extends View{
       );
     return this.layout.render();
   }
-
-  loadGradeSpinner = () => {
-      return(<Spinner
-              width="match_parent"
-              height="34"
-              style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
-              margin="0,0,5,6"
-              onItemClick = {this.handleGradeSpinnerItemClick}
-              values={this.gradeArray}
-              />)
-    }
-
-    handleGradeSpinnerItemClick = (...params) => {
-
-      if(parseInt(params[2])>0)
-      this.addGrade(this.GradeArray[parseInt(params[2])]);
-
-    }
-
-    removeGrade = (data) => {
-         this.grade.splice(this.grade.indexOf(data),1);
-           this.gradeArray=this.gradeArray+","+data;
-           this.GradeArray.push(data);
-           this.gradeSpinnerLayout= (
-             <LinearLayout
-               root="true"
-               height="wrap_content"
-               width="match_parent">
-
-               {this.loadGradeSpinner()}
-
-             </LinearLayout>);
-           this.replaceChild(this.idSet.gradeSpinnerContainer,this.gradeSpinnerLayout.render(),0);
-           this.showSelectedGrades();
-         }
-
-         addGrade = (data) =>{
-           if(this.grade==null)
-           this.grade=[];
-           this.grade.unshift(data);
-           if(this.gradeArray.indexOf(data+",")>-1){
-             this.gradeArray = this.gradeArray.replace(data+",","");
-           }else{
-             this.gradeArray = this.gradeArray.replace(","+data, "");
-           }
-           this.GradeArray.splice(this.GradeArray.indexOf(data),1);
-           this.gradeSpinnerLayout= (
-             <LinearLayout
-             root="true"
-             height="wrap_content"
-             width="match_parent">
-
-              {this.loadGradeSpinner()}
-
-             </LinearLayout>);
-           this.replaceChild(this.idSet.gradeSpinnerContainer,this.gradeSpinnerLayout.render(),0);
-           this.showSelectedGrades();
-         }
-
-         showSelectedGrades = () =>{
-           var items = this.grade.map((data)=>{
-               return(
-                 <LinearLayout
-                    height="wrap_content"
-                    width="wrap_content"
-                    padding="6,4,6,4"
-                    margin="0,0,10,0"
-                    cornerRadius="10,10,10,10"
-                    background={window.__Colors.DARK_GRAY_44}
-                    gravity="center">
-
-                     <TextView
-                       height="wrap_content"
-                       width="wrap_content"
-                       text={data}
-                       margin="0,0,4,0"
-                       textStyle={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
-
-                     <ImageView
-                       height="15"
-                       width="15"
-                       imageUrl="ic_action_close"
-                       margin="0,1,0,0"
-                       onClick={()=>{this.removeGrade(data)}}/>
-                  </LinearLayout>
-               )
-           });
-
-
-        this.gradeCards =(
-          <LinearLayout
-            width="match_parent"
-            height="match_parent"
-            root="true">
-
-            {items}
-
-          </LinearLayout>
-        )
-
-        this.replaceChild(this.idSet.gradeContainer,this.gradeCards.render(),0);
-       }
-
 
    loadLanguageSpinner = () => {
      return(<Spinner
@@ -1176,8 +1101,10 @@ class AdditionalInformationActivity extends View{
     if(this.dob!=null)
     json.dob= this.dob;
 
-    if(this.grade!=null && this.grade!=[] )
-    json.grade=this.grade;
+    if(this.grade!=null && this.grade.length > 0 ) {
+      json.grade=this.grade;
+    }
+
 
     if(this.gender!=null)
       json.gender=this.gender.toLowerCase();
