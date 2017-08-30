@@ -130,6 +130,10 @@ class MainActivity extends View {
       window.__ExperiencePopUp.hide();
       return;
     }
+    if(window.__AddressPopUp.getVisibility()){
+      window.__AddressPopUp.hide();
+      return;
+    }
     if(window.__PageFilterChooser.getVisibility()){
       window.__PageFilterChooser.hide();
       return;

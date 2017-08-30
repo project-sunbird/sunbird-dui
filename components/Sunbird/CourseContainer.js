@@ -112,7 +112,7 @@ class CourseContainer extends View {
     return (<LinearLayout
               width="match_parent"
               height="wrap_content"
-              padding="16,16,0,16"
+              padding="16,16,16,16"
               orientation="horizontal">
 
               <TextView
