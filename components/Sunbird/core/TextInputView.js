@@ -29,7 +29,7 @@ class TextInputView extends View {
   }
 
   afterRender = () =>{
-    JBridge.changeFontStylePassword(this.idSet.editText);
+    JBridge.changeFontStylePassword(this.props.id ? this.props.id : this.idSet.editText);
   }
 
   render() {
@@ -45,26 +45,28 @@ class TextInputView extends View {
         orientation="vertical">
 
         <TextView
-          text={this.props.labelText}
+          textFromHtml={this.props.labelText}
           padding="4,0,0,0"
-          style={window.__TextStyle.textStyle.BOTTOMBAR.DEFAULT}
+          textAllCaps = "true"
+          style={this.props.textStyle ? this.props.textStyle : window.__TextStyle.textStyle.BOTTOMBAR.DEFAULT}
           width="match_parent"
           height="wrap_content"/>
 
 
-            <EditText
-              margin="0,0,0,0"
-              padding="4,4,0,10"
-              width="match_parent"
-              height="wrap_content"
-              id={this.idSet.editText}
-              singleLine="true"
-              maxLine="1"
-              inputType={this.props.inputType?this.props.inputType:"text"}
-              color={this.props.color}
-              hint={this.props.hintText}
-              text={this.props.text?this.props.text:""}
-              onChange={this.handleOnChange}/>
+        <EditText
+          margin="0,0,0,0"
+          padding="4,4,0,10"
+          width="match_parent"
+          height="wrap_content"
+          id={this.props.id ? this.props.id : this.idSet.editText}
+          singleLine="true"
+          maxLine="1"
+          style = {this.props.editTextStyle ? this.props.editTextStyle : ""}
+          inputType={this.props.inputType?this.props.inputType:"text"}
+          color={this.props.color}
+          hint={this.props.hintText}
+          text={this.props.text?this.props.text:""}
+          onChange={this.handleOnChange}/>
 
       </LinearLayout>
     )
