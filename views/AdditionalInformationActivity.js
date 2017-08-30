@@ -11,12 +11,8 @@ var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
-<<<<<<< Updated upstream
-
 var TextInputView = require('../components/Sunbird/core/TextInputView');
-=======
 var FeatureButton = require('../components/Sunbird/FeatureButton');
->>>>>>> Stashed changes
 var Spinner = require('../components/Sunbird/core/Spinner');
 var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
 var ProfileHeader = require('../components/Sunbird/ProfileHeader');
@@ -229,7 +225,6 @@ class AdditionalInformationActivity extends View{
 
   getEditTextView = (id, label, hint , optional , onChange, inputType) =>{
     return(
-<<<<<<< Updated upstream
       <TextInputView
         id = {id}
         height="wrap_content"
@@ -242,24 +237,6 @@ class AdditionalInformationActivity extends View{
         textStyle = {window.__TextStyle.textStyle.HINT.SEMI}
         editTextStyle = {window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
         inputType = {inputType ? inputType : "text"}/>
-=======
-      <LinearLayout
-      width="match_parent"
-      height="wrap_content"
-      orientation="vertical"
-      margin="0,0,0,17">
-         {this.getLabel(label,optional)}
-         <EditText
-         id={id}
-         width="match_parent"
-         height="wrap_content"
-         maxLines="1"
-         style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
-         onChange={onChange}
-         inputType = {inputType ? inputType : "text"}
-         hint={hint}/>
-       </LinearLayout>
->>>>>>> Stashed changes
     )
   }
 
