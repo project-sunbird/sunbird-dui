@@ -49,6 +49,8 @@ class EducationPopUp extends View {
     this.inititution = "";
     this.boardOrUniversity = "";
     this.prevData = {};
+    this.delete = false;
+    this.canSave = false;
 
     this.delBtnState = {
       text : "DELETE",
@@ -81,6 +83,7 @@ class EducationPopUp extends View {
 
 
   show = () => {
+    this.canSave = false;
     this.isVisible=true;;
     window.__patchCallback = this.getPatchCallback ;
     this.responseCame=false;
@@ -97,6 +100,7 @@ class EducationPopUp extends View {
   }
 
   hide = () => {
+    this.canSave = false;
     this.isVisible=false;
     JBridge.hideKeyboard();
     this.setVisibility("gone");
@@ -239,10 +243,12 @@ class EducationPopUp extends View {
 
     if (enabled) {
       alpha = "1";
-      isClickable = "true"
+      isClickable = "true";
+      this.canSave = true;
     } else {
       alpha = "0.5";
-      isClickable = "false"
+      isClickable = "false";
+      this.canSave = false;
     }
 
     var cmd = this.set({
@@ -255,6 +261,15 @@ class EducationPopUp extends View {
   }
 
   handleSaveClick = () => {
+
+    if (!this.canSave && !this.delete){
+      if (window.__EducationPopUp.data)
+        JBridge.showSnackBar("Please make some changes");
+      else
+        JBridge.showSnackBar("Please add mandatory details");
+      return;
+    }
+
     if(!JBridge.isNetworkAvailable()) {
       JBridge.showSnackBar(window.__S.NO_INTERNET);
       return;
