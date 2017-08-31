@@ -59,8 +59,6 @@ class SearchActivity extends View {
 
   afterRender = () => {
 
-
-
     if(this.filterData!=undefined && this.filterData.length != 0){
       console.log(this.filterData, "filterinsearch");
       var flag=false;
@@ -116,6 +114,8 @@ class SearchActivity extends View {
       _this.handleSearchClick(data);
 
     });
+
+    console.log("VISIBILITY IN AFTERRENDER",window.__LoaderDialog.visibility);
 
     JBridge.handleImeAction(this.idSet.searchHolder, callback);
 
@@ -248,8 +248,9 @@ class SearchActivity extends View {
   }
 
   getSearchList=(searchText,flag)=> {
+    
     if(searchText == ""){
-      window.__LoaderDialog.hide();
+      console.log("empty text"+window.__LoaderDialog.visibility);
       this.renderNoResult();
     }
     else
@@ -260,7 +261,7 @@ class SearchActivity extends View {
           _this.filterData = data[1];
                 if (searchText == "" || data[0] == "[]") {
                   _this.renderNoResult();
-                  window.__LoaderDialog.hide();
+                  
                 } else {
                   var s = data[0];
                   s = s.replace(/\\n/g, "\\n")
@@ -273,9 +274,12 @@ class SearchActivity extends View {
                     .replace(/\\f/g, "\\f");
                   s = s.replace(/[\u0000-\u0019]+/g, "");
                   _this.renderResult(JSON.parse(s));
-                  window.__LoaderDialog.hide();
+                  
                 }
         });
+
+        console.log("TOP OF HIDE\n\n\n\n\n\n");
+        window.__LoaderDialog.hide();
 
 
           if (this.filterData!=undefined && this.filterData.length == 0) {
@@ -324,8 +328,12 @@ class SearchActivity extends View {
 
   handleSearchClick = (searchText) => {
     JBridge.hideKeyboard();
-    this.getSearchList(searchText[0],"false");
+    this.filterData = "";
     window.__LoaderDialog.show();
+
+    this.getSearchList(searchText[0],"false");
+
+
   }
 
   handleClearClick = () => {
