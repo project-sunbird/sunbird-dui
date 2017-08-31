@@ -65,39 +65,30 @@ class MultiSelectSpinner extends View {
     var itemListView = this.selectedData.map((item) => {
       return (
         <LinearLayout
-          width="wrap_content"
-          height="wrap_content"
-          background="#66D8D8D8"
-          margin="4, 4, 4, 4"
-          cornerRadius="8, 8, 8, 8">
-          <LinearLayout
-            width="wrap_content"
-            height="wrap_content"
-            orientation="horizontal"
-            padding="2, 2, 2, 2">
+           height="wrap_content"
+           width="wrap_content"
+           padding="6,4,6,4"
+           margin="0,0,10,0"
+           cornerRadius="10,10,10,10"
+           background={window.__Colors.DARK_GRAY_44}
+           gravity="center">
 
             <TextView
+              height="wrap_content"
               width="wrap_content"
-              height="24"
-              gravity="center"
-              padding="6, 0, 0, 0"
-              textStyle={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
-              text={item} />
+              text={item}
+              margin="0,0,4,0"
+              textStyle={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
 
-            <LinearLayout
-              width="24"
-              height="24"
-              padding="6, 6, 6, 6"
-              gravity="center"
-              onClick={()=>{this.handleRemoveClick(item)}}>
-              <ImageView
-                width="18"
-                height="18"
-                imageUrl="ic_action_close" />
-            </LinearLayout>
+            <ImageView
+              height="15"
+              width="15"
+              imageUrl="ic_action_close"
+              margin="0,1,0,0"
+              onClick={()=>{this.handleRemoveClick(item)}}
+              />
+         </LinearLayout>
 
-          </LinearLayout>
-        </LinearLayout>
       )
     });
 
@@ -112,12 +103,14 @@ class MultiSelectSpinner extends View {
         width="match_parent"
         height="wrap_content"
         cornerRadius="4"
+        padding="0,8,8,8"
         stroke={"2,"+window.__Colors.PRIMARY_BLACK_66}>
 
         <Spinner
           id={this.idSet.spinner}
           width="match_parent"
-          height="wrap_content"
+          height="24"
+          margin="0,0,5,6"
           values={spinnerItem}
           onItemClick={this.handleItemClick}
           />
