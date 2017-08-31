@@ -64,6 +64,7 @@ class ExperiencePopUp extends View{
 
     this.prevData={};
     this.delete = false;
+    this.canSave = false;
 
     this.delBtnState = {
       text : "DELETE",
@@ -84,6 +85,7 @@ class ExperiencePopUp extends View{
  }
 
  show = () => {
+   this.canSave = false;
    this.isVisible = true;
    window.__patchCallback = this.getPatchCallback ;
    this.responseCame=false;
@@ -107,6 +109,7 @@ class ExperiencePopUp extends View{
  }
 
  hide = () => {
+   this.canSave = false;
    this.isVisible = false;
    this.spinnerArray = ["Select","Bengali","English","Gujarati","Hindi","Kannada","Marathi","Punjabi","Tamil"];
    this.array="Select,Bengali,English,Gujarati,Hindi,Kannada,Marathi,Punjabi,Tamil";
@@ -723,6 +726,14 @@ del = () => {
 
      sendJSON = () => {
 
+       if (!this.canSave && !this.delete) {
+         if (window.__ExperiencePopUp.data)
+           JBridge.showSnackBar("Please make some changes");
+         else
+           JBridge.showSnackBar("Please add mandatory details");
+         return;
+       }
+
        if(window.__ExperiencePopUp.data==undefined){
           this.json ={
             "jobName":this.jobName,
@@ -822,6 +833,7 @@ del = () => {
         alpha: "1"
       });
       Android.runInUI(cmd, 0);
+      this.canSave = true;
      }
 
      disableSaveButton = () =>{
@@ -831,6 +843,7 @@ del = () => {
          alpha: "0.5"
        });
        Android.runInUI(cmd, 0);
+       this.canSave = false;
      }
 
      setJobName = (data) => {

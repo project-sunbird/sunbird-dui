@@ -76,6 +76,7 @@ class AddressPopUp extends View {
 
 
   show = () => {
+    this.canSave = false;
     this.isVisible=true;;
     window.__patchCallback = this.getPatchCallback ;
     this.responseCame=false;
@@ -98,6 +99,7 @@ class AddressPopUp extends View {
   }
 
   hide = () => {
+    this.canSave = false;
     this.isVisible=false;
     JBridge.hideKeyboard();
     this.setVisibility("gone");
@@ -326,7 +328,10 @@ class AddressPopUp extends View {
 
   handleSaveClick = () => {
     if (!this.canSave && !this.delete) {
-      JBridge.showSnackBar("Please make some changes");
+      if (window.__AddressPopUp.data)
+        JBridge.showSnackBar("Please make some changes");
+      else
+        JBridge.showSnackBar("Please add mandatory details");
       return;
     }
 
