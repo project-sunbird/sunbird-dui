@@ -52,11 +52,11 @@ class SplashScreenActivity extends View {
     // JBridge.setInSharedPrefs("user_name", "vinay");
     // JBridge.setInSharedPrefs("user_token", "029c72b5-4691-4bf2-a6de-72b18df0b748");
 
-    window.__loginUrl = "https://staging.ntp.net.in";
+    window.__loginUrl = "https://ntp.net.in";
 
-    window.__apiUrl = "https://staging.ntp.net.in";
+    window.__apiUrl = "https://ntp.net.in";
 
-    window.__deepLinkUrl = "staging.ntp.net.in";
+    window.__deepLinkUrl = "ntp.net.in";
 
 
     setTimeout(() => {
