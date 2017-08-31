@@ -42,7 +42,7 @@ class FilterActivity extends View {
         }
       }
     }
-    
+
 
   }
 
@@ -59,23 +59,23 @@ class FilterActivity extends View {
                     padding="0,16,0,25"
                     background={window.__Colors.WHITE}
                     orientation="vertical">
-                    
+
                       <LinearLayout
                         width="match_parent"
                         height="wrap_content">
-                      
+
                           <ImageView
                           width="26"
                           height="21"
                           weight="1"
                           imageUrl="ic_star_ratings_blue"/>
-                          
+
                           <ImageView
                           width="32"
                           height="27"
                           weight="1"
                           imageUrl="ic_action_done"/>
-                          
+
                           <ImageView
                           width="26"
                           height="25"
@@ -88,7 +88,7 @@ class FilterActivity extends View {
                         height="wrap_content"
                         gravity="center_horizontal"
                         margin="0,10,0,0">
-                        
+
                           <TextView
                           width="match_parent"
                           height="wrap_content"
@@ -96,7 +96,7 @@ class FilterActivity extends View {
                           gravity="center_horizontal"
                           style={window.__TextStyle.textStyle.FILTER.REGULAR_BLUE}
                           weight="1"/>
-                        
+
                           <TextView
                           width="match_parent"
                           height="wrap_content"
@@ -104,7 +104,7 @@ class FilterActivity extends View {
                           gravity="center_horizontal"
                           style={window.__TextStyle.textStyle.FILTER.REGULAR_BLACK}
                           weight="1"/>
-                          
+
                           <TextView
                           width="match_parent"
                           height="wrap_content"
@@ -141,12 +141,16 @@ class FilterActivity extends View {
         "filterData" : JSON.stringify(data)
       };
 
-    window.__runDuiCallback({ "tag": "OPEN_SearchActivity_FILTER", contents: whatToSend });   
+    window.__runDuiCallback({ "tag": "OPEN_SearchActivity_FILTER", contents: whatToSend });
   }
 
 
   render() {
-    var buttonList = [window.__S.APPLY_FILTER];
+    var btn = {
+      text : window.__S.APPLY_FILTER,
+      onClick : this.handleFilterClick
+    }
+    var buttonList = [btn];
     this.layout = (
       <RelativeLayout
       root="true"
@@ -172,13 +176,13 @@ class FilterActivity extends View {
           onBackPress={this.onBackPressed}
           invert="true"
           width="match_parent"/>
-        
+
             <ScrollView
               height="0"
               weight="1"
               width="match_parent"
               fillViewPort="true">
-        
+
                 <LinearLayout
                   height="match_parent"
                   width="match_parent"
@@ -204,8 +208,8 @@ class FilterActivity extends View {
                       {this.getSortCard()}
 
                   </LinearLayout>
-                      
-                        
+
+
                       <TextView
                       width="match_parent"
                       gravity="center_vertical"
@@ -219,15 +223,14 @@ class FilterActivity extends View {
                       onItemClick={this.showPopup}
                       onFilterUpdate={this.handleFilterChange}/>
 
-                    
+
                </LinearLayout>
             </ScrollView>
 
 
           <PageOption
              width="match_parent"
-             buttonItems={buttonList}
-             onButtonClick={this.handleFilterClick}/>
+             buttonItems={buttonList}/>
 
       </LinearLayout>
 

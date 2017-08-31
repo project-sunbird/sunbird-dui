@@ -258,10 +258,10 @@ class AdditionalInformationActivity extends View{
         width="match_parent"
         hintText={hint + (optional ? " (Optional)" : "")}
         labelText={label + " <font color = 'red'>" + (optional ? "" : "*") + "</font>"}
-        margin = "0,0,0,12"
+        margin = "0,0,0,18"
         _onChange={onChange}
         text = ""
-        textStyle = {window.__TextStyle.textStyle.HINT.SEMI}
+        textStyle = {window.__TextStyle.textStyle.HINT.BOLD}
         editTextStyle = {window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
         inputType = {inputType ? inputType : "text"}/>
     )

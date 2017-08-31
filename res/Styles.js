@@ -42,6 +42,11 @@ exports.Params = {
       stroke: "2," + Colors.PRIMARY_LIGHT,
       style: BaseParams.BigButton
     },
+    "Primary_DB_Layout_Stroke": {
+      background: Colors.PRIMARY_LIGHT,
+      stroke: "2," + Colors.PRIMARY_DARK,
+      style: BaseParams.BigButton
+    },
     "Secondary_WB_Layout": {
       background: Colors.PRIMARY_LIGHT,
       stroke: "2," + Colors.PRIMARY_DARK,

@@ -15,6 +15,7 @@ var RadioButton = require('../Sunbird/core/RadioButton');
 var CheckBox = require("@juspay/mystique-backend").androidViews.CheckBox;
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 var FeatureButton = require('../../components/Sunbird/FeatureButton');
+var PageOption = require('../../components/Sunbird/core/PageOption')
 var Styles = require("../../res/Styles");
 let IconStyle = Styles.Params.IconStyle;
 
@@ -47,9 +48,23 @@ class EducationPopUp extends View {
     this.grade = "";
     this.inititution = "";
     this.boardOrUniversity = "";
-
-
     this.prevData = {};
+
+    this.delBtnState = {
+      text : "DELETE",
+      id : this.idSet.delButton,
+      isClickable : "true",
+      onClick : this.handleDelClick,
+      visibility : window.__EducationPopUp.data ? "visible" : "gone"
+    };
+
+    this.saveBtnState = {
+      text : "SAVE",
+      id : this.idSet.saveButton,
+      isClickable : "false",
+      onClick : this.handleSaveClick,
+      alpha : "0.5"
+    }
   }
 
   getUi = () => {
@@ -74,6 +89,11 @@ class EducationPopUp extends View {
     this.setVisibility("visible");
     this.initializeData();
     this.populateData();
+    var cmd = this.set({
+      id: this.idSet.delButton,
+      visibility: window.__EducationPopUp.data ? "visible" : "gone"
+    });
+    Android.runInUI(cmd, 0)
   }
 
   hide = () => {
@@ -214,20 +234,20 @@ class EducationPopUp extends View {
   }
 
   updateSaveButtonStatus = (enabled) => {
-    var backgroundColor;
+    var alpha;
     var isClickable;
 
     if (enabled) {
-      backgroundColor = window.__Colors.LIGHT_BLUE;
+      alpha = "1";
       isClickable = "true"
     } else {
-      backgroundColor = window.__Colors.FADE_BLUE;
+      alpha = "0.5";
       isClickable = "false"
     }
 
     var cmd = this.set({
       id: this.idSet.saveButton,
-      background: backgroundColor,
+      alpha: alpha,
       clickable: isClickable
     })
 
@@ -404,10 +424,10 @@ class EducationPopUp extends View {
         width="match_parent"
         hintText={optional ? "(Optional)" : ""}
         labelText={label + " <font color = 'red'>" + (optional ? "" : "*") + "</font>"}
-        margin = "0,0,0,12"
+        margin = "0,0,0,18"
         _onChange={onChange}
         text = ""
-        textStyle = {window.__TextStyle.textStyle.HINT.SEMI}
+        textStyle = {window.__TextStyle.textStyle.HINT.BOLD}
         editTextStyle = {window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
         inputType = {inputType ? inputType : "text"}/>
     );
@@ -419,7 +439,8 @@ class EducationPopUp extends View {
         width = "match_parent"
         height = "match_parent"
         orientation = "vertical"
-        backgroundColor = "#ffffff">
+        backgroundColor = "#ffffff"
+        margin = "0,0,0,24">
 
         {this.getToolbar()}
         <LinearLayout
@@ -446,16 +467,28 @@ class EducationPopUp extends View {
         orientation = "vertical"
         background = "#ffffff"
         alignParentBottom = "true, -1">
-
-        {this.getLineSeperator()}
         <LinearLayout
           width = "match_parent"
           height = "match_parent"
-          orientation = "horizontal"
-            margin = "16, 8, 0, 8">
-          {this.getBtn(this.idSet.delButton, "neg", "DELETE", this.handleDelClick, window.__EducationPopUp.data ? "visible" : "gone")}
-          {this.getBtn(this.idSet.saveButton, "pos", "SAVE", this.handleSaveClick, "visible")}
+          orientation = "horizontal">
+          {this.getButtons()}
         </LinearLayout>
+      </LinearLayout>
+    );
+  }
+
+  getButtons = () => {
+      var buttonList = [this.delBtnState, this.saveBtnState];
+
+    return (
+      <LinearLayout
+        width = "match_parent"
+        height = "wrap_content"
+        visibility = {"visible"}>
+        <PageOption
+            width="match_parent"
+            buttonItems={buttonList}
+            hideDivider={false}/>
       </LinearLayout>
     );
   }
