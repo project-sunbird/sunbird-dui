@@ -520,8 +520,7 @@ class ExperiencePopUp extends View{
         <PageOption
             width="match_parent"
             buttonItems={buttonList}
-            hideDivider={false}
-            onButtonClick={this.handlePageOption}/>
+            hideDivider={false}/>
       </LinearLayout>
     );
   }

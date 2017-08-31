@@ -403,7 +403,11 @@ class CourseInfoActivity extends View {
 
 
   getBody = () =>{
-    var buttonList = [window.__S.ENROLL_COURSE];
+    var btn = {
+      text : window.__S.ENROLL_COURSE,
+      onClick : this.handleEnrollClick
+    }
+    var buttonList = [btn];
     return (
 
       <LinearLayout
@@ -493,8 +497,7 @@ class CourseInfoActivity extends View {
                   id = {this.idSet.enrollButtonId}>
                        <PageOption
                        width="match_parent"
-                       buttonItems={buttonList}
-                       onButtonClick={this.handleEnrollClick}/>
+                       buttonItems={buttonList}/>
                  </LinearLayout>
             </LinearLayout>
             </LinearLayout>);

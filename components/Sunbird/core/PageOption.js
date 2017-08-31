@@ -45,6 +45,7 @@ class PageOption extends View {
         );
       });
     } else {
+      var item = this.props.buttonItems[0];
       return (
         <LinearLayout
           width = "0"
@@ -57,7 +58,7 @@ class PageOption extends View {
           <Button
             type="BigButton_Primary_WB"
             margin="10,0,10,0"
-            text={this.props.buttonItems[0].text}
+            text={item.text}
             onClick={item.onClick}/>
         </LinearLayout>
       )
