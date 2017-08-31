@@ -166,7 +166,10 @@ const stringsRes = {
 		STORAGE_DENIED:"STORAGE",
 		PERMISSION_DENIED:"PERMISSION DENIED",
 		PERMISSION_SETTING_MSG : "To provide permissions, open settings, go to app permissions and enable",
-		TIME_OUT :  "Server timeout, please try again later"
+		TIME_OUT :  "Server timeout, please try again later",
+		DOWNLOAD_CONFIRMATION_TEXT : "Do you want to download?",
+		YES : "YES",
+		NO : "NO"
 	},
 	"hi_IN" : {
 	},

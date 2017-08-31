@@ -196,7 +196,7 @@ class CourseInfoActivity extends View {
       this.replaceChild(this.idSet.totalContainer,this.getBody().render(),0);
       var enrolledIds = window.__enrolledCourses;
       enrolledIds.map((item)=>{
-      if(item.courseId == this.details.identifier){
+      if(item.courseId == this.details.identifier && !this.details.isCreator){
           var whatToSend = { "course": this.state.data.value0.courseDetails }
           var event = { tag: 'OPEN_EnrolledActivity', contents: whatToSend }
           window.__runDuiCallback(event);

@@ -127,7 +127,8 @@ class ProfileAdditionalInfo extends View {
               <TextView
               width="wrap_content"
               height="wrap_content"
-              text="Edit"
+              text={window.__S.EDIT}
+              padding = "8,8,8,8"
               visibility = "visible"
               onClick={this.handleEditProfileClick}
               style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>

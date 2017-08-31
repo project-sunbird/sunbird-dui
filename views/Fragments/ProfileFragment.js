@@ -183,7 +183,7 @@ class ProfileFragment extends View {
   handleCreatedCardClick = (item) => {
     item.isCreator = true;
     var itemDetails = JSON.stringify(item);
-    if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook" || utils.checkEnrolledCourse(item.identifier)){
+    if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook"){
       if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
         var whatToSend={course:itemDetails};
         var event={tag:"OPEN_EnrolledCourseActivity",contents:whatToSend}
