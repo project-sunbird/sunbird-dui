@@ -1101,7 +1101,7 @@ class AdditionalInformationActivity extends View{
     if(this.dob!=null)
     json.dob= this.dob;
 
-    if(this.grade!=null && this.grade.length > 0 ) {
+    if(this.grade!=null && this.grade.length >= 0 ) {
       json.grade=this.grade;
     }
 
