@@ -97,6 +97,24 @@ class ProfileActivity extends View {
             background={window.__Colors.PRIMARY_BLACK_22}/>)
   }
 
+  setPermissions = () => {
+
+   var callback = callbackMapper.map(function(data) {
+
+      if (data == "android.permission.WRITE_EXTERNAL_STORAGE") {
+        JBridge.setKey("isPermissionSetWriteExternalStorage", "true");
+      }
+      if(data == "DeniedPermanently"){
+        console.log("DENIED DeniedPermanently");
+        window.__PermissionDeniedDialog.show("ic_warning_grey",window.__S.STORAGE_DENIED);
+      }
+
+    });
+
+    JBridge.setPermissions(callback,"android.permission.WRITE_EXTERNAL_STORAGE");
+
+  }
+
   overFlowCallback = (params) => {
     if(params == 0){
       this.logout();
