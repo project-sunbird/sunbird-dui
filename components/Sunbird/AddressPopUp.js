@@ -632,7 +632,8 @@ class AddressPopUp extends View {
         height="wrap_content"
         width="match_parent"
         hintText={optional ? "(Optional)" : ""}
-        labelText={label + " <font color = 'red'>" + (optional ? "" : "*") + "</font>"}
+        labelText={label}
+        mandatory = {optional ? "false" : "true"}
         margin = "0,0,0,16"
         _onChange={onChange}
         text = ""

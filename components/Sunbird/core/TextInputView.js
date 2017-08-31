@@ -44,14 +44,26 @@ class TextInputView extends View {
         margin={this.props.margin}
         orientation="vertical">
 
-        <TextView
-          textFromHtml={this.props.labelText}
-          padding="4,0,0,0"
-          textAllCaps = "true"
-          style={this.props.textStyle ? this.props.textStyle : window.__TextStyle.textStyle.BOTTOMBAR.DEFAULT}
+        <LinearLayout
+          height="wrap_content"
           width="match_parent"
-          height="wrap_content"/>
+          orientation="horizontal">
 
+          <TextView
+            textFromHtml={this.props.labelText}
+            padding="4,0,0,0"
+            textAllCaps = "true"
+            style={this.props.textStyle ? this.props.textStyle : window.__TextStyle.textStyle.BOTTOMBAR.DEFAULT}
+            width="wrap_content"
+            height="wrap_content"/>
+
+          <TextView
+            height="wrap_content"
+            width="wrap_content"
+            text=" *"
+            visibility = {(this.props.mandatory && this.props.mandatory == "true") ? "visible" : "gone"}
+            color= {window.__Colors.ERROR_RED}/>
+        </LinearLayout>
 
         <EditText
           margin="0,0,0,0"
