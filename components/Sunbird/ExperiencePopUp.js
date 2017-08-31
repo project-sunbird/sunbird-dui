@@ -16,6 +16,7 @@ var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callba
 var FeatureButton = require('../../components/Sunbird/FeatureButton');
 var HorizontalScrollView = require("@juspay/mystique-backend").androidViews.HorizontalScrollView;
 var Styles = require("../../res/Styles");
+var MultiSelectSpinner = require('./MultiSelectSpinner');
 let IconStyle = Styles.Params.IconStyle;
 
 
@@ -39,10 +40,14 @@ class ExperiencePopUp extends View{
       "subjectContainer",
       "spinnerContainer",
       "delButton",
-      "delButtonParent"
+      "delButtonParent",
+      "subjectSpinner",
+      "subjectSpinnerContainer"
     ]);
     this.isVisible = false;
-    this.spinnerArray = ["Select","Bengali","English","Gujarati","Hindi","Kannada","Marathi","Punjabi","Tamil"];;
+    this.spinnerArray = ["Select","Bengali","English","Gujarati","Hindi","Kannada","Marathi","Punjabi","Tamil"];
+    this.subjectArray = ["Select","Bengali","English","Gujarati","Hindi","Kannada","Marathi","Punjabi","Tamil"];
+    this.selecteSubject = [];
     this.array="Select,Bengali,English,Gujarati,Hindi,Kannada,Marathi,Punjabi,Tamil";
     _this=this;
     window.__ExperiencePopUp = this;
@@ -125,10 +130,14 @@ class ExperiencePopUp extends View{
  }
 
  populateData = () =>{
-   var subs=this.prevData.subjects.slice();
-   subs.map((item)=>{
-     this.addSubject(item);
-   });
+  //  var subs=this.prevData.subjects.slice();
+  //  subs.map((item)=>{
+  //    this.addSubject(item);
+  //  });
+
+   this.subjects = this.prevData.subjects.slice();
+
+
    this.prevData.subjects = this.subjects.slice();
    this.jobName=this.prevData.jobName;
    this.Organization=this.prevData.Organization;
@@ -162,6 +171,7 @@ class ExperiencePopUp extends View{
      text: this.prevData.endDate
    })
 
+   this.replaceChild(this.idSet.subjectSpinnerContainer, this.getSpinner().render(), 0);
 
    Android.runInUI(cmd, 0)
  }
@@ -374,6 +384,7 @@ class ExperiencePopUp extends View{
  getSpinner = () => {
    return(
      <LinearLayout
+       id={this.idSet.subjectSpinnerContainer}
        height="wrap_content"
        width="match_parent"
        orientation="vertical"
@@ -387,25 +398,26 @@ class ExperiencePopUp extends View{
         textStyle={window.__TextStyle.textStyle.HINT.SEMI}
         margin="0,0,0,3"/>
 
-        <LinearLayout
+        <MultiSelectSpinner
+          id={this.idSet.subjectSpinner}
           width="match_parent"
           height="wrap_content"
-          stroke={"2,"+window.__Colors.PRIMARY_BLACK_66}
-          padding="8,8,8,8"
-          cornerRadius="4,4,4,4"
-          id={this.idSet.spinnerContainer}>
-
-           {this.loadSpinner()}
-
-        </LinearLayout>
-
-        <HorizontalScrollView
-          height = "wrap_content"
-          width = "match_parent"
-          id={this.idSet.subjectContainer}
-          margin = "0,10,0,0"/>
+          data={this.subjectArray}
+          selectedData={this.subjects}
+          onItemChange={this.onMultiSelectItemChange}
+         />
      </LinearLayout>
    );
+ }
+
+
+ onMultiSelectItemChange = (data) => {
+   this.subjects = data;
+   if (this.checkCompleteStatus()) {
+     this.enableSaveButton();
+   } else {
+     this.disableSaveButton();
+   }
  }
 
  getBody = () => {
@@ -842,90 +854,6 @@ del = () => {
          this.disableSaveButton();
        }
      }
-
-
-     removeSubject = (data) => {
-
-       this.subjects.splice(this.subjects.indexOf(data),1);
-       this.array=this.array+","+data;
-       this.spinnerArray.push(data);
-       this.spinnerLayout= (
-         <LinearLayout
-           root="true"
-           height="wrap_content"
-           width="match_parent">
-
-           {this.loadSpinner()}
-
-         </LinearLayout>);
-       this.replaceChild(this.idSet.spinnerContainer,this.spinnerLayout.render(),0);
-       this.showSelectedSubjects();
-     }
-
-     addSubject = (data) =>{
-       this.subjects.unshift(data);
-       if(this.array.indexOf(data+",")>-1){
-         this.array = this.array.replace(data+",","");
-       }else{
-         this.array = this.array.replace(","+data, "");
-       }
-       this.spinnerArray.splice(this.spinnerArray.indexOf(data),1);
-       this.spinnerLayout= (
-         <LinearLayout
-         root="true"
-         height="wrap_content"
-         width="match_parent">
-
-          {this.loadSpinner()}
-
-         </LinearLayout>);
-       this.replaceChild(this.idSet.spinnerContainer,this.spinnerLayout.render(),0);
-       this.showSelectedSubjects();
-     }
-
-     showSelectedSubjects = () =>{
-       var items = this.subjects.map((data)=>{
-           return(
-             <LinearLayout
-                height="wrap_content"
-                width="wrap_content"
-                padding="6,4,6,4"
-                margin="0,0,10,0"
-                cornerRadius="10,10,10,10"
-                background={window.__Colors.DARK_GRAY_44}
-                gravity="center">
-
-                 <TextView
-                   height="wrap_content"
-                   width="wrap_content"
-                   text={data}
-                   margin="0,0,4,0"
-                   textStyle={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
-
-                 <ImageView
-                   height="15"
-                   width="15"
-                   imageUrl="ic_action_close"
-                   margin="0,1,0,0"
-                   onClick={()=>{this.removeSubject(data)}}/>
-              </LinearLayout>
-           )
-       });
-
-
-    this.subjectCards =(
-      <LinearLayout
-        width="match_parent"
-        height="match_parent"
-        root="true">
-
-        {items}
-
-      </LinearLayout>
-    )
-
-    this.replaceChild(this.idSet.subjectContainer,this.subjectCards.render(),0);
-   }
 
   }
 
