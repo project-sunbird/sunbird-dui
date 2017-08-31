@@ -58,6 +58,7 @@ class ProfileActivity extends View {
     this.createdBy = this.data.creatorOfData.result;
     console.log("this.profileData", this.profileData);
     console.log("this.createdBy", this.createdBy);
+    this.isEditable = "false"
   }
 
   isAllFeildsPresent = () => {
@@ -244,8 +245,8 @@ class ProfileActivity extends View {
               <LinearLayout
                 height="match_parent"
                 width="match_parent"
-                padding={"0,0,0,50"}
-                padding="16,16,16,0"
+                padding="16,16,16,16"
+                margin = "0,0,0,64"
                 orientation="vertical">
 
                 <ProfileHeader
