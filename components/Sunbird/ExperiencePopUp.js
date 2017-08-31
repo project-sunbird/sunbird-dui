@@ -262,12 +262,12 @@ class ExperiencePopUp extends View{
                 width="wrap_content"
                 text="FROM"
                 textStyle={window.__TextStyle.textStyle.HINT.SEMI}
-                margin="0,0,0,4"/>
+                margin="0,0,0,10"/>
 
                 <LinearLayout
                   width="match_parent"
                   height="wrap_content"
-                  padding="4,18,12,12">
+                  padding="4,0,12,12">
 
                     <ImageView
                       height="16"
@@ -309,12 +309,12 @@ class ExperiencePopUp extends View{
                 width="wrap_content"
                 text="TO"
                 textStyle={window.__TextStyle.textStyle.HINT.SEMI}
-                margin="0,0,0,4"/>
+                margin="0,0,0,10"/>
 
                 <LinearLayout
                   width="match_parent"
                   height="wrap_content"
-                  padding="4,18,12,12">
+                  padding="4,0,12,12">
 
                     <ImageView
                       height="16"
@@ -351,20 +351,21 @@ class ExperiencePopUp extends View{
      height="wrap_content"
      width="match_parent"
      padding = "4,0,0,0"
-     margin = "0,0,0,12">
+     margin = "0,0,0,12"
+     orientation="vertical">
          <TextView
            height="wrap_content"
            width="wrap_content"
-           margin="0,0,16,0"
-           style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
-           text="Is this your current job?"
-         />
+           margin="0,0,16,10"
+           textStyle={window.__TextStyle.textStyle.HINT.SEMI}
+           textAllCaps="true"
+           text="Is this your current job?"/>
 
          <RadioButton
           height="wrap_content"
           width="wrap_content"
           gravity="center_vertical"
-          items={[{name:"Yes",select:"0",icon:"ic_check_circle"},{name:"No",select:"0",icon:"ic_check_circle"}]}
+          items={[{name:"Yes",select:"0",icon:"ic_action_radio"},{name:"No",select:"0",icon:"ic_action_radio"}]}
           onClick={this.handleRadioButtonClick}/>
      </LinearLayout>
    );
@@ -447,41 +448,18 @@ class ExperiencePopUp extends View{
 
   getEditTextView = (id, label, optional,onChange, inputType) => {
     return (
-      <LinearLayout
+
+      <TextInputView
+        id = {id}
         height="wrap_content"
         width="match_parent"
-        orientation="vertical"
-        margin = "0,0,0,12">
-        <LinearLayout
-          height="wrap_content"
-          width="match_parent"
-          orientation="horizontal"
-          margin = "0,0,0,-5"
-          padding = "4,0,0,0">
-          <TextView
-            height="wrap_content"
-            width="wrap_content"
-            text={label}
-            textAllCaps="true"
-            textStyle={window.__TextStyle.textStyle.HINT.SEMI}/>
-          <TextView
-            height="wrap_content"
-            width="wrap_content"
-            text=" *"
-            color="#FF0000"
-            visibility = {optional ? "gone" : "visible"}/>
-        </LinearLayout>
-        <EditText
-          width="match_parent"
-          height="wrap_content"
-          id = {id}
-          onChange={onChange}
-          singleLine="true"
-          maxLine="1"
-          inputType = {inputType ? inputType : "text"}
-          hint = {optional ? "(Optional)" : ""}
-          style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
-    </LinearLayout>
+        hintText={optional ? "(Optional)" : ""}
+        labelText={label + " <font color = '#FF0000'>" + (optional ? "" : "*") + "</font>"}
+        margin = "0,0,0,12"
+        _onChange={onChange}
+        textStyle = {window.__TextStyle.textStyle.HINT.SEMI}
+        editTextStyle = {window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
+        inputType = {inputType ? inputType : "text"}/>
     );
   }
 

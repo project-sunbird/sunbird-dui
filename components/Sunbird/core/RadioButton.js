@@ -79,19 +79,19 @@ class RadioItem extends View {
               <ImageView
                 height="14"
                 width="14"
-                margin="0,0,6,0"
+                margin="0,2,6,0"
                 gravity="center"
                 id = {this.idSet.imageSelected}
-                imageUrl={this.props.item.icon}
+                imageUrl={this.props.item.icon+"_blue"}
                 visibility={this.props.item.select=="1"?"visible":"gone"} />
 
               <ImageView
                 height="14"
                 width="14"
-                margin="0,0,6,0"
+                margin="0,2,6,0"
                 gravity="center"
                 id = {this.idSet.imageUnSelected}
-                imageUrl={this.props.item.icon+"_blue"}
+                imageUrl={this.props.item.icon}
                 visibility={this.props.item.select=="0"?"visible":"gone"} />
         </RelativeLayout>
 

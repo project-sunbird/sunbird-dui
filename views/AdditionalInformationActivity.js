@@ -11,7 +11,8 @@ var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
-
+var TextInputView = require('../components/Sunbird/core/TextInputView');
+var FeatureButton = require('../components/Sunbird/FeatureButton');
 var Spinner = require('../components/Sunbird/core/Spinner');
 var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
 var ProfileHeader = require('../components/Sunbird/ProfileHeader');
@@ -133,7 +134,7 @@ class AdditionalInformationActivity extends View{
 
     JBridge.selectSpinnerItem(this.idSet.languageSpinner,this.LanguageArray.indexOf(this.language[0]));
     var gender = this.gender.substr(0,1).toUpperCase()+this.gender.substr(1);
-    JBridge.selectSpinnerItem(this.idSet.genderSpinner,gender);
+    JBridge.selectSpinnerItem(this.idSet.genderSpinner,this.GenderArray.indexOf(gender));
 
   }
 
@@ -172,54 +173,58 @@ class AdditionalInformationActivity extends View{
     this.updateSaveButtonStatus(this.checkCompleteStatus());
   }
 
+  getLineSeperator = () => {
+    return (<LinearLayout
+            width="match_parent"
+            height="2"
+            margin="0,0,0,0"
+            background={window.__Colors.PRIMARY_BLACK_22}/>)
+  }
 
+
+  getBtn = (id, type, label, onClick, visibility) => {
+    return (
+      <LinearLayout
+        width = "0"
+        weight = "1"
+        height = "wrap_content"
+        visibility = {visibility}
+        margin = "0, 0, 16, 0">
+
+        <FeatureButton
+          weight = "1"
+          id = {id}
+          clickable="false"
+          width = "match_parent"
+          height = "match_parent"
+          stroke = {type == "pos" ? "1," + window.__Colors.WHITE : "3," + window.__Colors.PRIMARY_DARK}
+          background = {type == "pos" ? window.__Colors.PRIMARY_DARK : window.__Colors.WHITE}
+          text = {label}
+          buttonClick = {onClick}
+          textColor = {type == "pos" ? window.__Colors.WHITE : window.__Colors.PRIMARY_DARK}
+          textStyle = {window.__TextStyle.textStyle.CARD.ACTION.LIGHT}/>
+      </LinearLayout>
+    );
+  }
 
   getTail = () => {
     return (
       <LinearLayout
-      height="match_parent"
-      width="match_parent"
-      orientation="vertical">
-          <LinearLayout
-          height="match_parent"
-          width="match_parent"
-          weight="1"
-          orientation="vertical"/>
-          <LinearLayout
-          width="match_parent"
-          height="match_parent"
-          padding="0,2,0,0"
-          weight="6"
-          orientation="vertical"
-          background={window.__Colors.PRIMARY_BLACK_22}>
-              <LinearLayout
-              width="match_parent"
-              height="match_parent"
-              padding="8,8,8,8"
-              background={window.__Colors.WHITE}>
-                  <LinearLayout
-                  onClick={this.handleSaveClick}
-                  height="match_parent"
-                  width="match_parent"
-                  cornerRadius="4,4,4,4"
-                  gravity="center"
-                  id={this.idSet.saveButtonContainer}>
-                      <LinearLayout
-                      height="match_parent"
-                      width="match_parent"
-                      gravity="center"
-                      background={window.__Colors.LIGHT_BLUE}
-                      id={this.idSet.saveButton}>
-                          <TextView
-                          text="FINISH EDITING"
-                          height="wrap_content"
-                          width="wrap_content"
-                          style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}/>
-                      </LinearLayout>
-                  </LinearLayout>
-              </LinearLayout>
-          </LinearLayout>
+        width = "match_parent"
+        height = "wrap_content"
+        orientation = "vertical"
+        background = "#ffffff"
+        alignParentBottom = "true, -1">
+
+        {this.getLineSeperator()}
+        <LinearLayout
+          width = "match_parent"
+          height = "match_parent"
+          orientation = "horizontal"
+            margin = "16, 8, 0, 8">
+          {this.getBtn(this.idSet.saveButton, "pos", "SAVE", this.handleSaveClick, "visible")}
         </LinearLayout>
+      </LinearLayout>
     );
   }
 
@@ -247,23 +252,18 @@ class AdditionalInformationActivity extends View{
 
   getEditTextView = (id, label, hint , optional , onChange, inputType) =>{
     return(
-      <LinearLayout
-      width="match_parent"
-      height="wrap_content"
-      orientation="vertical"
-      margin="0,0,0,17">
-         {this.getLabel(label,optional)}
-         <EditText
-         id={id}
-         width="match_parent"
-         height="wrap_content"
-         maxLines="1"
-         style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
-         onChange={onChange}
-         inputType = {inputType ? inputType : "text"}
-         hint={hint + (optional)? "(optional)" : ""}
-         />
-       </LinearLayout>
+      <TextInputView
+        id = {id}
+        height="wrap_content"
+        width="match_parent"
+        hintText={hint + (optional ? " (Optional)" : "")}
+        labelText={label + " <font color = 'red'>" + (optional ? "" : "*") + "</font>"}
+        margin = "0,0,0,12"
+        _onChange={onChange}
+        text = ""
+        textStyle = {window.__TextStyle.textStyle.HINT.SEMI}
+        editTextStyle = {window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
+        inputType = {inputType ? inputType : "text"}/>
     )
   }
 
@@ -275,7 +275,7 @@ class AdditionalInformationActivity extends View{
           height="20"
           style={window.__TextStyle.textStyle.HINT.BOLD}
           text={label}
-          margin="0,0,0,8"/>
+          margin="4,0,0,8"/>
          );
 
      return (
@@ -283,7 +283,7 @@ class AdditionalInformationActivity extends View{
        height="wrap_content"
        width="wrap_content"
        orientation="horizontal"
-       margin ="0,0,0,8">
+       margin ="4,0,0,8">
        <TextView
         width="match_parent"
         height="20"
@@ -303,7 +303,8 @@ class AdditionalInformationActivity extends View{
     <LinearLayout
     height="match_parent"
     width="match_parent"
-    orientation="vertical">
+    orientation="vertical"
+    padding="0,0,0,60">
       <ScrollView
        width="match_parent"
        height="match_parent"
@@ -326,7 +327,7 @@ class AdditionalInformationActivity extends View{
                   height="20"
                   style={window.__TextStyle.textStyle.HINT.BOLD}
                   text="SUBJECTS"
-                  margin="0,0,0,8"/>
+                  margin="4,0,0,0"/>
                   <EditText
                   width="match_parent"
                   height="wrap_content"
@@ -360,7 +361,7 @@ class AdditionalInformationActivity extends View{
                        width="match_parent"
                        height="wrap_content"
                        orientation="vertical"
-                       margin="0,0,0,17">
+                       margin="4,0,0,17">
                          <TextView
                           width="match_parent"
                           height="20"
@@ -492,10 +493,6 @@ class AdditionalInformationActivity extends View{
                  </RelativeLayout>
         </LinearLayout>
        </ScrollView>
-       <LinearLayout
-       height="match_parent"
-       width="match_parent"
-       weight="6"/>
       </LinearLayout>
     )
   }
@@ -692,8 +689,7 @@ class AdditionalInformationActivity extends View{
        height="match_parent"
        width="wrap_content"
        orientation="vertical"
-       margin="16,0,16,0"
-       >
+       margin="16,0,16,0">
 
          {predictionContent}
          <LinearLayout
@@ -1083,20 +1079,57 @@ class AdditionalInformationActivity extends View{
     window.__runDuiCallback(event);
   }
 
+  checkEmailFormat = (data) =>{
+    if(!(data.indexOf("@") !== -1) || !(data.indexOf(".") !== -1))
+        return false
+    return true
+  }
+
+  checkPhoneFormat = (data) =>{
+    if(data.length == 10 && /^\d+$/.test(data))
+       return true
+    return false;
+  }
+
+  checkAdharFormat = (data) =>{
+    if(data.length == 12 && /^\d+$/.test(data))
+       return true
+    return false;
+  }
+
   handleSaveClick = () => {
     var json=  {};
 
 
     json.firstName=this.name;
     json.language=this.language;
-    json.email=this.email;
-    json.phone=this.mobile;
 
-    if(this.adhar!=null)
+    if(this.checkEmailFormat(this.email))
+        json.email=this.email;
+    else {
+      JBridge.showSnackBar(window.__S.ERROR_EMAIL_FORMAT)
+      return;
+    }
+
+
+    if(this.checkPhoneFormat(this.mobile))
+        json.phone=this.mobile;
+    else {
+      JBridge.showSnackBar("Invalid Phone Number")
+      return;
+    }
+
+
+    if(this.location!=null)
     json.location=this.location;
 
     if(this.adhar!=null)
-    json.aadhaarNo=this.adhar;
+      if(this.checkAdharFormat(this.adhar))
+           json.aadhaarNo=this.adhar;
+      else {
+        JBridge.showSnackBar("Invalid Aadhaar Number")
+        return;
+      }
 
     if(this.dob!=null)
     json.dob= this.dob;

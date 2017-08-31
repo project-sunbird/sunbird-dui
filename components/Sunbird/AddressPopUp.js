@@ -146,8 +146,8 @@ class AddressPopUp extends View {
     })
 
     var addressTypeValue = [
-      {name:"Permanent",select:"0",icon:"ic_check_circle"},
-      {name:"Current",select:"0",icon:"ic_check_circle"}
+      {name:"Permanent",select:"0",icon:"ic_action_radio"},
+      {name:"Current",select:"0",icon:"ic_action_radio"}
     ];
 
     var index;
@@ -239,7 +239,7 @@ class AddressPopUp extends View {
     //   return false;
     // }
     //
-    
+
     if (this.addressType == undefined || this.addressType.length == 0) {
       return false;
     }
@@ -555,7 +555,7 @@ class AddressPopUp extends View {
             width="wrap_content"
             gravity="center_vertical"
             padding = "4,0,0,0"
-            items={[{name:"Permanent",select:"0",icon:"ic_check_circle"},{name:"Current",select:"0",icon:"ic_check_circle"}]}
+            items={[{name:"Permanent",select:"0",icon:"ic_action_radio"},{name:"Current",select:"0",icon:"ic_action_radio"}]}
             onClick={this.handleRadioButtonClick}/>
         </LinearLayout>
 
@@ -572,41 +572,18 @@ class AddressPopUp extends View {
 
   getEditTextView = (id, label, optional,onChange, inputType) => {
     return (
-      <LinearLayout
+      <TextInputView
+        id = {id}
         height="wrap_content"
         width="match_parent"
-        orientation="vertical"
-        margin = "0,0,0,12">
-        <LinearLayout
-          height="wrap_content"
-          width="match_parent"
-          orientation="horizontal"
-          margin = "0,0,0,-5"
-          padding = "4,0,0,0">
-          <TextView
-            height="wrap_content"
-            width="wrap_content"
-            text={label}
-            textAllCaps="true"
-            textStyle={window.__TextStyle.textStyle.HINT.SEMI}/>
-          <TextView
-            height="wrap_content"
-            width="wrap_content"
-            text=" *"
-            color="#FF0000"
-            visibility = {optional ? "gone" : "visible"}/>
-        </LinearLayout>
-        <EditText
-          width="match_parent"
-          height="wrap_content"
-          id = {id}
-          onChange={onChange}
-          singleLine="true"
-          maxLine="1"
-          inputType = {inputType ? inputType : "text"}
-          hint = {optional ? "(Optional)" : ""}
-          style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
-    </LinearLayout>
+        hintText={optional ? "(Optional)" : ""}
+        labelText={label + " <font color = 'red'>" + (optional ? "" : "*") + "</font>"}
+        margin = "0,0,0,16"
+        _onChange={onChange}
+        text = ""
+        textStyle = {window.__TextStyle.textStyle.HINT.SEMI}
+        editTextStyle = {window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
+        inputType = {inputType ? inputType : "text"}/>
     );
   }
 
@@ -723,7 +700,8 @@ class AddressPopUp extends View {
         height="match_parent"
         id={this.idSet.addressPopUpParent}
         visibility="gone"
-        gravity="center">
+        gravity="center"
+        background = "#ffffff">
             {this.getUi()}
       </LinearLayout>
     );
