@@ -16,6 +16,7 @@ var CheckBox = require("@juspay/mystique-backend").androidViews.CheckBox;
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 var Styles = require("../../res/Styles");
 let IconStyle = Styles.Params.IconStyle;
+var PageOption = require('../../components/Sunbird/core/PageOption')
 var FeatureButton = require('../../components/Sunbird/FeatureButton');
 
 var _this;
@@ -40,7 +41,9 @@ class AddressPopUp extends View {
       "pincodeText",
       "saveButton",
       "saveButtonParent",
-      "saveButtonContainer"
+      "saveButtonContainer",
+      "delButton",
+      "btnsHolder"
     ]);
     _this=this;
     this.isVisible=false;
@@ -48,9 +51,27 @@ class AddressPopUp extends View {
     this.props = props;
     this.responseCame=false;
 
-
+    this.delete = false;
+    this.canSave = false;
 
     this.prevData = {};
+
+
+    this.delBtnState = {
+      text : "DELETE",
+      id : this.idSet.delButton,
+      isClickable : "true",
+      onClick : this.handleDelClick,
+      visibility : window.__AddressPopUp.data ? "visible" : "gone"
+    };
+
+    this.saveBtnState = {
+      text : "SAVE",
+      id : this.idSet.saveButton,
+      isClickable : "false",
+      onClick : this.handleSaveClick,
+      alpha : "0.5"
+    }
   }
 
 
@@ -63,6 +84,17 @@ class AddressPopUp extends View {
     this.setVisibility("visible");
     this.initializeData();
     this.populateData();
+
+    var cmd = this.set({
+     id : this.idSet.saveButton,
+     alpha : "0.5",
+     clickable : "false"
+    });
+    cmd += this.set({
+      id: this.idSet.delButton,
+      visibility: window.__AddressPopUp.data ? "visible" : "gone"
+    });
+    Android.runInUI(cmd, 0)
   }
 
   hide = () => {
@@ -248,28 +280,42 @@ class AddressPopUp extends View {
   }
 
   updateSaveButtonStatus = (enabled) => {
-    var backgroundColor;
-    var isClickable;
+    var cmd;
+
+    this.canSave = enabled;
 
     if (enabled) {
-      backgroundColor = window.__Colors.LIGHT_BLUE;
-      isClickable = "true"
+      cmd = this.set({
+        id: this.idSet.saveButton,
+        clickable: "true",
+        alpha: "1"
+      });
     } else {
-      backgroundColor = window.__Colors.FADE_BLUE;
-      isClickable = "false"
+      cmd = this.set({
+        id: this.idSet.saveButton,
+        clickable: "false",
+        alpha: "0.5"
+      });
     }
 
-    var cmd = this.set({
-      id: this.idSet.saveButton,
-      background: backgroundColor
-    })
-
-    cmd += this.set({
-      id: this.idSet.saveButtonContainer,
-      clickable: isClickable
-    })
-
     Android.runInUI(cmd, 0);
+  }
+
+  getButtons = () => {
+      var buttonList = [this.delBtnState, this.saveBtnState];
+
+    return (
+      <LinearLayout
+        width = "match_parent"
+        height = "wrap_content"
+        visibility = {"visible"}>
+        <PageOption
+            width="match_parent"
+            buttonItems={buttonList}
+            hideDivider={false}
+            onButtonClick={this.handlePageOption}/>
+      </LinearLayout>
+    );
   }
 
   handleDelClick = () => {
@@ -279,8 +325,14 @@ class AddressPopUp extends View {
 
 
   handleSaveClick = () => {
+    if (!this.canSave && !this.delete) {
+      JBridge.showSnackBar("Please make some changes");
+      return;
+    }
+
     if(!JBridge.isNetworkAvailable()) {
       JBridge.showSnackBar(window.__S.NO_INTERNET);
+      this.delete = false;
       return;
     }
 
@@ -504,10 +556,9 @@ class AddressPopUp extends View {
           width = "match_parent"
           height = "match_parent"
           orientation = "horizontal"
-            margin = "16, 8, 0, 8">
-          {this.getBtn(this.idSet.delButton, "neg", "DELETE", this.handleDelClick, window.__AddressPopUp.data ? "visible" : "gone")}
-          {this.getBtn(this.idSet.saveButton, "pos", "SAVE", this.handleSaveClick, "visible")}
-        </LinearLayout>
+          id = {this.idSet.btnsHolder}>
+          {this.getButtons()}
+          </LinearLayout>
       </LinearLayout>
     );
   }
