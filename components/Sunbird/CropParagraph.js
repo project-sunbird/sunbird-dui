@@ -23,19 +23,33 @@ class CropParagraph extends View {
     // console.log("inside CropParagraph, content : " + this.str);
     this.len = 50;
     if(this.str.length > this.len) this.str = this.str.substring(0,this.len) + "...";
+
+    this.max = false;
   }
 
   handleMoreClick = (data) => {
-    var cmd = this.set({
-      id: this.idSet.showMoreButton,
-      visibility: "gone"
-    })
-    cmd += this.set({
-      id: this.idSet.paraContainerCroped,
-      text: this.props.contentText
-    })
-
-    Android.runInUI(cmd, 0);
+    if (!this.max){
+      var cmd = this.set({
+        id: this.idSet.showMoreButton,
+        text: "Read Less"
+      })
+      cmd += this.set({
+        id: this.idSet.paraContainerCroped,
+        text: this.props.contentText
+      });
+      Android.runInUI(cmd, 0);
+    } else {
+      var cmd = this.set({
+        id: this.idSet.showMoreButton,
+        text: "Read More"
+      })
+      cmd += this.set({
+        id: this.idSet.paraContainerCroped,
+        text: this.str
+      });
+      Android.runInUI(cmd, 0);
+    }
+    this.max = !this.max
   }
 
 
@@ -80,9 +94,10 @@ class CropParagraph extends View {
           <LinearLayout
             orientation = "vertical"
             width = "match_parent"
-            height = "wrap_content">
+            height = "wrap_content"
+            layoutTransition="true">
 
-          <TextView
+            <TextView
               id={this.idSet.paraContainerCroped}
               text = {this.str}
               width="wrap_content"
@@ -90,20 +105,19 @@ class CropParagraph extends View {
               layoutTransition="true"
               style= {window.__TextStyle.textStyle.CARD.BODY.REGULAR}/>
 
-              <TextView
-               margin="0,0,8,0"
-               id={this.idSet.showMoreButton}
-               visibility={this.str.length > this.len ? "visible" : "gone"}
-               text="Read more"
-               gravity = "right"
-               width = "wrap_content"
-               height = "wrap_content"
-               layoutTransition="true"
-               onClick={this.handleMoreClick}
-               style = {window.__TextStyle.textStyle.CARD.BODY.BLUE_R}
-               color={window.__Colors.PRIMARY_ACCENT} />
+            <TextView
+              margin="0,0,8,0"
+              id={this.idSet.showMoreButton}
+              visibility={this.str.length > this.len ? "visible" : "gone"}
+              text="Read more"
+              gravity = "right"
+              width = "wrap_content"
+              height = "wrap_content"
+              layoutTransition="true"
+              onClick={this.handleMoreClick}
+              style = {window.__TextStyle.textStyle.CARD.BODY.BLUE_R}
+              color={window.__Colors.PRIMARY_ACCENT} />
           </LinearLayout>
-
       </LinearLayout>
     )
 
