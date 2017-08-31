@@ -523,7 +523,8 @@ class AddressPopUp extends View {
         width = "match_parent"
         height = "match_parent"
         orientation = "vertical"
-        backgroundColor = "#ffffff">
+        backgroundColor = "#ffffff"
+        margin = "0,0,0,24">
 
         {this.getToolbar()}
         <LinearLayout

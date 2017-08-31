@@ -437,6 +437,7 @@ class ExperiencePopUp extends View{
        width = "match_parent"
        height = "match_parent"
        orientation = "vertical"
+       margin = "0,0,0,24"
        backgroundColor = "#ffffff">
 
        {this.getToolbar()}
@@ -494,8 +495,6 @@ class ExperiencePopUp extends View{
         orientation = "vertical"
         background = "#ffffff"
         alignParentBottom = "true, -1">
-
-        {this.getLineSeperator()}
         <LinearLayout
           width = "match_parent"
           height = "match_parent"
