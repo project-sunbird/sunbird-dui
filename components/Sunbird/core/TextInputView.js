@@ -29,7 +29,7 @@ class TextInputView extends View {
   }
 
   afterRender = () =>{
-    JBridge.changeFontStylePassword(this.idSet.editText);
+    JBridge.changeFontStylePassword(this.props.id ? this.props.id : this.idSet.editText);
   }
 
   render() {
@@ -44,27 +44,41 @@ class TextInputView extends View {
         margin={this.props.margin}
         orientation="vertical">
 
-        <TextView
-          text={this.props.labelText}
-          padding="4,0,0,0"
-          style={window.__TextStyle.textStyle.BOTTOMBAR.DEFAULT}
+        <LinearLayout
+          height="wrap_content"
           width="match_parent"
-          height="wrap_content"/>
+          orientation="horizontal">
 
+          <TextView
+            textFromHtml={this.props.labelText}
+            padding="4,0,0,0"
+            textAllCaps = "true"
+            style={this.props.textStyle ? this.props.textStyle : window.__TextStyle.textStyle.BOTTOMBAR.DEFAULT}
+            width="wrap_content"
+            height="wrap_content"/>
 
-            <EditText
-              margin="0,0,0,0"
-              padding="4,4,0,10"
-              width="match_parent"
-              height="wrap_content"
-              id={this.idSet.editText}
-              singleLine="true"
-              maxLine="1"
-              inputType={this.props.inputType?this.props.inputType:"text"}
-              color={this.props.color}
-              hint={this.props.hintText}
-              text={this.props.text?this.props.text:""}
-              onChange={this.handleOnChange}/>
+          <TextView
+            height="wrap_content"
+            width="wrap_content"
+            text=" *"
+            visibility = {(this.props.mandatory && this.props.mandatory == "true") ? "visible" : "gone"}
+            color= {window.__Colors.ERROR_RED}/>
+        </LinearLayout>
+
+        <EditText
+          margin="0,0,0,0"
+          padding="4,4,0,10"
+          width="match_parent"
+          height="wrap_content"
+          id={this.props.id ? this.props.id : this.idSet.editText}
+          singleLine="true"
+          maxLine="1"
+          style = {this.props.editTextStyle ? this.props.editTextStyle : ""}
+          inputType={this.props.inputType?this.props.inputType:"text"}
+          color={this.props.color}
+          hint={this.props.hintText}
+          text={this.props.text?this.props.text:""}
+          onChange={this.handleOnChange}/>
 
       </LinearLayout>
     )

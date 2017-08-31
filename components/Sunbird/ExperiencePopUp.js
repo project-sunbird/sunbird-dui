@@ -14,8 +14,10 @@ var RadioButton = require('../Sunbird/core/RadioButton');
 var CheckBox = require("@juspay/mystique-backend").androidViews.CheckBox;
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 var FeatureButton = require('../../components/Sunbird/FeatureButton');
+var PageOption = require('../../components/Sunbird/core/PageOption')
 var HorizontalScrollView = require("@juspay/mystique-backend").androidViews.HorizontalScrollView;
 var Styles = require("../../res/Styles");
+var MultiSelectSpinner = require('./MultiSelectSpinner');
 let IconStyle = Styles.Params.IconStyle;
 
 
@@ -39,10 +41,14 @@ class ExperiencePopUp extends View{
       "subjectContainer",
       "spinnerContainer",
       "delButton",
-      "delButtonParent"
+      "delButtonParent",
+      "subjectSpinner",
+      "subjectSpinnerContainer"
     ]);
     this.isVisible = false;
-    this.spinnerArray = ["Select","Bengali","English","Gujarati","Hindi","Kannada","Marathi","Punjabi","Tamil"];;
+    this.spinnerArray = ["Select","Bengali","English","Gujarati","Hindi","Kannada","Marathi","Punjabi","Tamil"];
+    this.subjectArray = ["Select","Bengali","English","Gujarati","Hindi","Kannada","Marathi","Punjabi","Tamil"];
+    this.selecteSubject = [];
     this.array="Select,Bengali,English,Gujarati,Hindi,Kannada,Marathi,Punjabi,Tamil";
     _this=this;
     window.__ExperiencePopUp = this;
@@ -58,17 +64,36 @@ class ExperiencePopUp extends View{
 
     this.prevData={};
     this.delete = false;
+    this.canSave = false;
+
+    this.delBtnState = {
+      text : "DELETE",
+      id : this.idSet.delButton,
+      isClickable : "true",
+      onClick : this.del,
+      visibility : window.__ExperiencePopUp.data ? "visible" : "gone"
+    };
+
+    this.saveBtnState = {
+      text : "SAVE",
+      id : this.idSet.saveButton,
+      isClickable : "false",
+      onClick : this.sendJSON,
+      alpha : "0.5"
+    }
 
  }
 
  show = () => {
+   this.canSave = false;
    this.isVisible = true;
    window.__patchCallback = this.getPatchCallback ;
    this.responseCame=false;
     var cmd=this.set({
-     id: this.idSet.saveButton,
-     background: window.__Colors.FADE_BLUE
-   })
+     id : this.idSet.saveButton,
+     alpha : "0.5",
+     clickable : "false"
+   });
    Android.runInUI(cmd, 0)
 
    this.replaceChild(this.idSet.experiencePopUpParent,this.getUi().render(),0);
@@ -76,9 +101,15 @@ class ExperiencePopUp extends View{
 
   this.initializeData();
   this.populateData();
+  cmd = this.set({
+    id: this.idSet.delButton,
+    visibility: window.__ExperiencePopUp.data ? "visible" : "gone"
+  });
+  Android.runInUI(cmd, 0)
  }
 
  hide = () => {
+   this.canSave = false;
    this.isVisible = false;
    this.spinnerArray = ["Select","Bengali","English","Gujarati","Hindi","Kannada","Marathi","Punjabi","Tamil"];
    this.array="Select,Bengali,English,Gujarati,Hindi,Kannada,Marathi,Punjabi,Tamil";
@@ -125,10 +156,14 @@ class ExperiencePopUp extends View{
  }
 
  populateData = () =>{
-   var subs=this.prevData.subjects.slice();
-   subs.map((item)=>{
-     this.addSubject(item);
-   });
+  //  var subs=this.prevData.subjects.slice();
+  //  subs.map((item)=>{
+  //    this.addSubject(item);
+  //  });
+
+   this.subjects = this.prevData.subjects.slice();
+
+
    this.prevData.subjects = this.subjects.slice();
    this.jobName=this.prevData.jobName;
    this.Organization=this.prevData.Organization;
@@ -162,6 +197,7 @@ class ExperiencePopUp extends View{
      text: this.prevData.endDate
    })
 
+   this.replaceChild(this.idSet.subjectSpinnerContainer, this.getSpinner().render(), 0);
 
    Android.runInUI(cmd, 0)
  }
@@ -262,12 +298,12 @@ class ExperiencePopUp extends View{
                 width="wrap_content"
                 text="FROM"
                 textStyle={window.__TextStyle.textStyle.HINT.SEMI}
-                margin="0,0,0,4"/>
+                margin="0,0,0,10"/>
 
                 <LinearLayout
                   width="match_parent"
                   height="wrap_content"
-                  padding="4,18,12,12">
+                  padding="4,0,12,12">
 
                     <ImageView
                       height="16"
@@ -309,12 +345,12 @@ class ExperiencePopUp extends View{
                 width="wrap_content"
                 text="TO"
                 textStyle={window.__TextStyle.textStyle.HINT.SEMI}
-                margin="0,0,0,4"/>
+                margin="0,0,0,10"/>
 
                 <LinearLayout
                   width="match_parent"
                   height="wrap_content"
-                  padding="4,18,12,12">
+                  padding="4,0,12,12">
 
                     <ImageView
                       height="16"
@@ -351,20 +387,21 @@ class ExperiencePopUp extends View{
      height="wrap_content"
      width="match_parent"
      padding = "4,0,0,0"
-     margin = "0,0,0,12">
+     margin = "0,0,0,12"
+     orientation="vertical">
          <TextView
            height="wrap_content"
            width="wrap_content"
-           margin="0,0,16,0"
-           style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
-           text="Is this your current job?"
-         />
+           margin="0,0,16,10"
+           textStyle={window.__TextStyle.textStyle.HINT.SEMI}
+           textAllCaps="true"
+           text="Is this your current job?"/>
 
          <RadioButton
           height="wrap_content"
           width="wrap_content"
           gravity="center_vertical"
-          items={[{name:"Yes",select:"0",icon:"ic_check_circle"},{name:"No",select:"0",icon:"ic_check_circle"}]}
+          items={[{name:"Yes",select:"0",icon:"ic_action_radio"},{name:"No",select:"0",icon:"ic_action_radio"}]}
           onClick={this.handleRadioButtonClick}/>
      </LinearLayout>
    );
@@ -373,6 +410,7 @@ class ExperiencePopUp extends View{
  getSpinner = () => {
    return(
      <LinearLayout
+       id={this.idSet.subjectSpinnerContainer}
        height="wrap_content"
        width="match_parent"
        orientation="vertical"
@@ -386,25 +424,26 @@ class ExperiencePopUp extends View{
         textStyle={window.__TextStyle.textStyle.HINT.SEMI}
         margin="0,0,0,3"/>
 
-        <LinearLayout
+        <MultiSelectSpinner
+          id={this.idSet.subjectSpinner}
           width="match_parent"
           height="wrap_content"
-          stroke={"2,"+window.__Colors.PRIMARY_BLACK_66}
-          padding="8,8,8,8"
-          cornerRadius="4,4,4,4"
-          id={this.idSet.spinnerContainer}>
-
-           {this.loadSpinner()}
-
-        </LinearLayout>
-
-        <HorizontalScrollView
-          height = "wrap_content"
-          width = "match_parent"
-          id={this.idSet.subjectContainer}
-          margin = "0,10,0,0"/>
+          data={this.subjectArray}
+          selectedData={this.subjects}
+          onItemChange={this.onMultiSelectItemChange}
+         />
      </LinearLayout>
    );
+ }
+
+
+ onMultiSelectItemChange = (data) => {
+   this.subjects = data;
+   if (this.checkCompleteStatus()) {
+     this.enableSaveButton();
+   } else {
+     this.disableSaveButton();
+   }
  }
 
  getBody = () => {
@@ -413,6 +452,7 @@ class ExperiencePopUp extends View{
        width = "match_parent"
        height = "match_parent"
        orientation = "vertical"
+       margin = "0,0,0,24"
        backgroundColor = "#ffffff">
 
        {this.getToolbar()}
@@ -447,66 +487,19 @@ class ExperiencePopUp extends View{
 
   getEditTextView = (id, label, optional,onChange, inputType) => {
     return (
-      <LinearLayout
+
+      <TextInputView
+        id = {id}
         height="wrap_content"
         width="match_parent"
-        orientation="vertical"
-        margin = "0,0,0,12">
-        <LinearLayout
-          height="wrap_content"
-          width="match_parent"
-          orientation="horizontal"
-          margin = "0,0,0,-5"
-          padding = "4,0,0,0">
-          <TextView
-            height="wrap_content"
-            width="wrap_content"
-            text={label}
-            textAllCaps="true"
-            textStyle={window.__TextStyle.textStyle.HINT.SEMI}/>
-          <TextView
-            height="wrap_content"
-            width="wrap_content"
-            text=" *"
-            color="#FF0000"
-            visibility = {optional ? "gone" : "visible"}/>
-        </LinearLayout>
-        <EditText
-          width="match_parent"
-          height="wrap_content"
-          id = {id}
-          onChange={onChange}
-          singleLine="true"
-          maxLine="1"
-          inputType = {inputType ? inputType : "text"}
-          hint = {optional ? "(Optional)" : ""}
-          style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
-    </LinearLayout>
-    );
-  }
-
-  getBtn = (id, type, label, onClick, visibility) => {
-    return (
-      <LinearLayout
-        width = "0"
-        weight = "1"
-        height = "wrap_content"
-        visibility = {visibility}
-        margin = "0, 0, 16, 0">
-
-        <FeatureButton
-          weight = "1"
-          id = {id}
-          clickable="false"
-          width = "match_parent"
-          height = "match_parent"
-          stroke = {type == "pos" ? "1," + window.__Colors.WHITE : "3," + window.__Colors.PRIMARY_DARK}
-          background = {type == "pos" ? window.__Colors.PRIMARY_DARK : window.__Colors.WHITE}
-          text = {label}
-          buttonClick = {onClick}
-          textColor = {type == "pos" ? window.__Colors.WHITE : window.__Colors.PRIMARY_DARK}
-          textStyle = {window.__TextStyle.textStyle.CARD.ACTION.LIGHT}/>
-      </LinearLayout>
+        hintText={optional ? "(Optional)" : ""}
+        labelText={label}
+        mandatory = {optional ? "false" : "true"}
+        margin = "0,0,0,18"
+        _onChange={onChange}
+        textStyle = {window.__TextStyle.textStyle.HINT.BOLD}
+        editTextStyle = {window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
+        inputType = {inputType ? inputType : "text"}/>
     );
   }
 
@@ -518,16 +511,31 @@ class ExperiencePopUp extends View{
         orientation = "vertical"
         background = "#ffffff"
         alignParentBottom = "true, -1">
-
-        {this.getLineSeperator()}
         <LinearLayout
           width = "match_parent"
           height = "match_parent"
           orientation = "horizontal"
-            margin = "16, 8, 0, 8">
-          {this.getBtn(this.idSet.delButton, "neg", "DELETE", this.del, window.__ExperiencePopUp.data ? "visible" : "gone")}
-          {this.getBtn(this.idSet.saveButton, "pos", "SAVE", this.sendJSON, "visible")}
-        </LinearLayout>
+          id = {this.idSet.btnsHolder}>
+          {this.getButtons()}
+          </LinearLayout>
+
+
+      </LinearLayout>
+    );
+  }
+
+  getButtons = () => {
+      var buttonList = [this.delBtnState, this.saveBtnState];
+
+    return (
+      <LinearLayout
+        width = "match_parent"
+        height = "wrap_content"
+        visibility = {"visible"}>
+        <PageOption
+            width="match_parent"
+            buttonItems={buttonList}
+            hideDivider={false}/>
       </LinearLayout>
     );
   }
@@ -719,6 +727,14 @@ del = () => {
 
      sendJSON = () => {
 
+       if (!this.canSave && !this.delete) {
+         if (window.__ExperiencePopUp.data)
+           JBridge.showSnackBar("Please make some changes");
+         else
+           JBridge.showSnackBar("Please add mandatory details");
+         return;
+       }
+
        if(window.__ExperiencePopUp.data==undefined){
           this.json ={
             "jobName":this.jobName,
@@ -811,25 +827,24 @@ del = () => {
      }
 
      enableSaveButton = () =>{
-
-
-       var cmd = this.set({
-         id: this.idSet.saveButton,
-         background: window.__Colors.PRIMARY_DARK,
-         clickable: "true"
-       })
-
-       Android.runInUI(cmd, 0);
+       console.log("enableSaveButton");
+      var cmd = this.set({
+        id: this.idSet.saveButton,
+        clickable: "true",
+        alpha: "1"
+      });
+      Android.runInUI(cmd, 0);
+      this.canSave = true;
      }
 
      disableSaveButton = () =>{
        var cmd = this.set({
          id: this.idSet.saveButton,
-         background: window.__Colors.FADE_BLUE,
-         clickable: "false"
-       })
-
+         clickable: "false",
+         alpha: "0.5"
+       });
        Android.runInUI(cmd, 0);
+       this.canSave = false;
      }
 
      setJobName = (data) => {
@@ -864,90 +879,6 @@ del = () => {
          this.disableSaveButton();
        }
      }
-
-
-     removeSubject = (data) => {
-
-       this.subjects.splice(this.subjects.indexOf(data),1);
-       this.array=this.array+","+data;
-       this.spinnerArray.push(data);
-       this.spinnerLayout= (
-         <LinearLayout
-           root="true"
-           height="wrap_content"
-           width="match_parent">
-
-           {this.loadSpinner()}
-
-         </LinearLayout>);
-       this.replaceChild(this.idSet.spinnerContainer,this.spinnerLayout.render(),0);
-       this.showSelectedSubjects();
-     }
-
-     addSubject = (data) =>{
-       this.subjects.unshift(data);
-       if(this.array.indexOf(data+",")>-1){
-         this.array = this.array.replace(data+",","");
-       }else{
-         this.array = this.array.replace(","+data, "");
-       }
-       this.spinnerArray.splice(this.spinnerArray.indexOf(data),1);
-       this.spinnerLayout= (
-         <LinearLayout
-         root="true"
-         height="wrap_content"
-         width="match_parent">
-
-          {this.loadSpinner()}
-
-         </LinearLayout>);
-       this.replaceChild(this.idSet.spinnerContainer,this.spinnerLayout.render(),0);
-       this.showSelectedSubjects();
-     }
-
-     showSelectedSubjects = () =>{
-       var items = this.subjects.map((data)=>{
-           return(
-             <LinearLayout
-                height="wrap_content"
-                width="wrap_content"
-                padding="6,4,6,4"
-                margin="0,0,10,0"
-                cornerRadius="10,10,10,10"
-                background={window.__Colors.DARK_GRAY_44}
-                gravity="center">
-
-                 <TextView
-                   height="wrap_content"
-                   width="wrap_content"
-                   text={data}
-                   margin="0,0,4,0"
-                   textStyle={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
-
-                 <ImageView
-                   height="15"
-                   width="15"
-                   imageUrl="ic_action_close"
-                   margin="0,1,0,0"
-                   onClick={()=>{this.removeSubject(data)}}/>
-              </LinearLayout>
-           )
-       });
-
-
-    this.subjectCards =(
-      <LinearLayout
-        width="match_parent"
-        height="match_parent"
-        root="true">
-
-        {items}
-
-      </LinearLayout>
-    )
-
-    this.replaceChild(this.idSet.subjectContainer,this.subjectCards.render(),0);
-   }
 
   }
 

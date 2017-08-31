@@ -15,6 +15,7 @@ var RadioButton = require('../Sunbird/core/RadioButton');
 var CheckBox = require("@juspay/mystique-backend").androidViews.CheckBox;
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 var FeatureButton = require('../../components/Sunbird/FeatureButton');
+var PageOption = require('../../components/Sunbird/core/PageOption')
 var Styles = require("../../res/Styles");
 let IconStyle = Styles.Params.IconStyle;
 
@@ -47,9 +48,25 @@ class EducationPopUp extends View {
     this.grade = "";
     this.inititution = "";
     this.boardOrUniversity = "";
-
-
     this.prevData = {};
+    this.delete = false;
+    this.canSave = false;
+
+    this.delBtnState = {
+      text : "DELETE",
+      id : this.idSet.delButton,
+      isClickable : "true",
+      onClick : this.handleDelClick,
+      visibility : window.__EducationPopUp.data ? "visible" : "gone"
+    };
+
+    this.saveBtnState = {
+      text : "SAVE",
+      id : this.idSet.saveButton,
+      isClickable : "false",
+      onClick : this.handleSaveClick,
+      alpha : "0.5"
+    }
   }
 
   getUi = () => {
@@ -66,6 +83,7 @@ class EducationPopUp extends View {
 
 
   show = () => {
+    this.canSave = false;
     this.isVisible=true;;
     window.__patchCallback = this.getPatchCallback ;
     this.responseCame=false;
@@ -74,9 +92,15 @@ class EducationPopUp extends View {
     this.setVisibility("visible");
     this.initializeData();
     this.populateData();
+    var cmd = this.set({
+      id: this.idSet.delButton,
+      visibility: window.__EducationPopUp.data ? "visible" : "gone"
+    });
+    Android.runInUI(cmd, 0)
   }
 
   hide = () => {
+    this.canSave = false;
     this.isVisible=false;
     JBridge.hideKeyboard();
     this.setVisibility("gone");
@@ -214,20 +238,22 @@ class EducationPopUp extends View {
   }
 
   updateSaveButtonStatus = (enabled) => {
-    var backgroundColor;
+    var alpha;
     var isClickable;
 
     if (enabled) {
-      backgroundColor = window.__Colors.LIGHT_BLUE;
-      isClickable = "true"
+      alpha = "1";
+      isClickable = "true";
+      this.canSave = true;
     } else {
-      backgroundColor = window.__Colors.FADE_BLUE;
-      isClickable = "false"
+      alpha = "0.5";
+      isClickable = "false";
+      this.canSave = false;
     }
 
     var cmd = this.set({
       id: this.idSet.saveButton,
-      background: backgroundColor,
+      alpha: alpha,
       clickable: isClickable
     })
 
@@ -235,6 +261,15 @@ class EducationPopUp extends View {
   }
 
   handleSaveClick = () => {
+
+    if (!this.canSave && !this.delete){
+      if (window.__EducationPopUp.data)
+        JBridge.showSnackBar("Please make some changes");
+      else
+        JBridge.showSnackBar("Please add mandatory details");
+      return;
+    }
+
     if(!JBridge.isNetworkAvailable()) {
       JBridge.showSnackBar(window.__S.NO_INTERNET);
       return;
@@ -390,7 +425,7 @@ class EducationPopUp extends View {
         {this.getEditTextView(this.idSet.yearOfPassingText, "Year of Passing", true, this.setYearOfPassingText, "numeric")}
         {this.getEditTextView(this.idSet.percentageText, "Percentage", true, this.setPercentage, "numeric")}
         {this.getEditTextView(this.idSet.gradeText, "Grade", true, this.setGrade)}
-        {this.getEditTextView(this.idSet.boardOrUniversityText, "Board//University", true, this.setBoardOrUniversity)}
+        {this.getEditTextView(this.idSet.boardOrUniversityText, "Board/University", true, this.setBoardOrUniversity)}
 
       </LinearLayout>
     );
@@ -398,41 +433,19 @@ class EducationPopUp extends View {
 
   getEditTextView = (id, label, optional,onChange, inputType) => {
     return (
-      <LinearLayout
+      <TextInputView
+        id = {id}
         height="wrap_content"
         width="match_parent"
-        orientation="vertical"
-        margin = "0,0,0,12">
-        <LinearLayout
-          height="wrap_content"
-          width="match_parent"
-          orientation="horizontal"
-          margin = "0,0,0,-5"
-          padding = "4,0,0,0">
-          <TextView
-            height="wrap_content"
-            width="wrap_content"
-            text={label}
-            textAllCaps="true"
-            textStyle={window.__TextStyle.textStyle.HINT.SEMI}/>
-          <TextView
-            height="wrap_content"
-            width="wrap_content"
-            text=" *"
-            color="#FF0000"
-            visibility = {optional ? "gone" : "visible"}/>
-        </LinearLayout>
-        <EditText
-          width="match_parent"
-          height="wrap_content"
-          id = {id}
-          onChange={onChange}
-          singleLine="true"
-          maxLine="1"
-          hint = {optional ? "(Optional)" : ""}
-          inputType = {inputType ? inputType : "text"}
-          style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
-    </LinearLayout>
+        hintText={optional ? "(Optional)" : ""}
+        labelText={label}
+        mandatory = {optional ? "false" : "true"}
+        margin = "0,0,0,18"
+        _onChange={onChange}
+        text = ""
+        textStyle = {window.__TextStyle.textStyle.HINT.BOLD}
+        editTextStyle = {window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
+        inputType = {inputType ? inputType : "text"}/>
     );
   }
 
@@ -442,7 +455,8 @@ class EducationPopUp extends View {
         width = "match_parent"
         height = "match_parent"
         orientation = "vertical"
-        backgroundColor = "#ffffff">
+        backgroundColor = "#ffffff"
+        margin = "0,0,0,24">
 
         {this.getToolbar()}
         <LinearLayout
@@ -469,16 +483,28 @@ class EducationPopUp extends View {
         orientation = "vertical"
         background = "#ffffff"
         alignParentBottom = "true, -1">
-
-        {this.getLineSeperator()}
         <LinearLayout
           width = "match_parent"
           height = "match_parent"
-          orientation = "horizontal"
-            margin = "16, 8, 0, 8">
-          {this.getBtn(this.idSet.delButton, "neg", "DELETE", this.handleDelClick, window.__EducationPopUp.data ? "visible" : "gone")}
-          {this.getBtn(this.idSet.saveButton, "pos", "SAVE", this.handleSaveClick, "visible")}
+          orientation = "horizontal">
+          {this.getButtons()}
         </LinearLayout>
+      </LinearLayout>
+    );
+  }
+
+  getButtons = () => {
+      var buttonList = [this.delBtnState, this.saveBtnState];
+
+    return (
+      <LinearLayout
+        width = "match_parent"
+        height = "wrap_content"
+        visibility = {"visible"}>
+        <PageOption
+            width="match_parent"
+            buttonItems={buttonList}
+            hideDivider={false}/>
       </LinearLayout>
     );
   }
@@ -493,7 +519,6 @@ class EducationPopUp extends View {
         margin = "0, 0, 16, 0">
 
         <FeatureButton
-          weight = "1"
           id = {id}
           clickable="false"
           width = "match_parent"

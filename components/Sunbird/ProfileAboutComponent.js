@@ -37,9 +37,13 @@ class ProfileAboutComponent extends View {
   }
 
   render() {
-    var buttonList = ["EDIT PROFILE"];
+    var btn = {
+      text : "EDIT PROFILE",
+      onClick : this.handleEnrollClick
+    }
+    var buttonList = [btn];
     this.layout = (
-    
+
       <LinearLayout
         root="true"
         orientation="vertical"
@@ -63,10 +67,8 @@ class ProfileAboutComponent extends View {
            width="match_parent"
            id={this.idSet.pageOption}
            buttonItems={buttonList}
-           hideDivider="true"
+           hideDivider="true"/>
 
-           onButtonClick={this.handleEnrollClick}/>
-      
     </LinearLayout>
     );
 

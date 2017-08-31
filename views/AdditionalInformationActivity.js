@@ -11,7 +11,8 @@ var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
 var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var Space = require('@juspay/mystique-backend').androidViews.Space;
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
-
+var TextInputView = require('../components/Sunbird/core/TextInputView');
+var FeatureButton = require('../components/Sunbird/FeatureButton');
 var Spinner = require('../components/Sunbird/core/Spinner');
 var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
 var ProfileHeader = require('../components/Sunbird/ProfileHeader');
@@ -23,7 +24,10 @@ var ProfileAccomplishments = require('../components/Sunbird/ProfileAccomplishmen
 var ProfileCreations = require('../components/Sunbird/ProfileCreations');
 var ProfileBadges = require('../components/Sunbird/ProfileBadges');
 var ProfileAdditionalInfo = require('../components/Sunbird/ProfileAdditionalInfo');
+var MultiSelectSpinner = require('../components/Sunbird/MultiSelectSpinner');
 var Styles = require("../res/Styles");
+var PageOption = require('../components/Sunbird/core/PageOption')
+
 let IconStyle = Styles.Params.IconStyle;
 
 class AdditionalInformationActivity extends View{
@@ -46,7 +50,8 @@ class AdditionalInformationActivity extends View{
       "gradeSpinnerContainer",
       "gradeContainer",
       "nameText",
-      "adharText"
+      "adharText",
+      "descriptionText"
     ]);
     this.shouldCacheScreen = false;
     this.state=state;
@@ -64,7 +69,11 @@ class AdditionalInformationActivity extends View{
     this.adhar=null;
     this.gender=null;
     this.dob=null;
+    this.description=null;
     this.responseCame=false;
+
+    this.prevData={};
+    this.prevData.description=null;
 
     this.genderArray= "Select,Male,Female,Transgender";
     this.GenderArray=["Select","Male","Female","Transgender"];
@@ -75,6 +84,14 @@ class AdditionalInformationActivity extends View{
 
     this.data = JSON.parse(this.state.data.value0.profile);
     console.log("Info State", this.data);
+
+    this.saveBtnState = {
+      text : "SAVE",
+      id : this.idSet.saveButton,
+      isClickable : "false",
+      onClick :  this.handleSaveClick,
+      alpha : "0.5"
+    }
   }
 
 
@@ -82,15 +99,27 @@ class AdditionalInformationActivity extends View{
 
     console.log(this.data, "jsontosens");
     window.__patchCallback = this.getPatchCallback ;
-
     this.email = this.data.email;
-    this.phone = this.data.phone;
+    this.mobile = this.data.phone;
     this.name = this.data.firstName;
     this.adhar = this.data.aadhaarNo;
     this.location = this.data.location;
     this.language = this.data.language;
     this.dob = this.data.dob;
     this.gender = this.data.gender;
+    this.description=this.data.profileSummary;
+
+    this.prevData.email = this.data.email;
+    this.prevData.mobile = this.data.phone;
+    this.prevData.name = this.data.firstName;
+    this.prevData.adhar = this.data.aadhaarNo;
+    this.prevData.location = this.data.location;
+    this.prevData.language = this.data.language;
+    this.prevData.dob = this.data.dob;
+    this.prevData.gender = this.data.gender;
+    this.prevData.description=this.data.profileSummary;
+
+   console.log(this.language + " grxj  "+ this.prevData.language + " ghc " + this.data.language);
 
     var cmd = this.set({
       id: this.idSet.emailText,
@@ -99,7 +128,7 @@ class AdditionalInformationActivity extends View{
 
     cmd += this.set({
       id: this.idSet.phoneText,
-      text: this.phone
+      text: this.mobile
     })
 
     cmd += this.set({
@@ -122,21 +151,56 @@ class AdditionalInformationActivity extends View{
       text: this.adhar
     })
 
+    cmd += this.set({
+      id: this.idSet.descriptionText,
+      text: this.description
+    })
+
     Android.runInUI(cmd, 0);
+
 
     for (var i = 0; i < this.data.subject.length; i++) {
       var value = this.data.subject[i].toLowerCase();
       this.selectLanguageItem(value);
     }
+    this.prevData.selectedLanguages = this.selectedLanguages.slice();
 
-    this.data.grade.map((data)=>{
-      this.addGrade(data);
-    });
+    this.populateGrade(this.data.grade);
+    this.prevData.grade= this.grade!=null ? this.grade.slice():null;
 
     JBridge.selectSpinnerItem(this.idSet.languageSpinner,this.LanguageArray.indexOf(this.language[0]));
     var gender = this.gender.substr(0,1).toUpperCase()+this.gender.substr(1);
-    JBridge.selectSpinnerItem(this.idSet.genderSpinner,gender);
+    JBridge.selectSpinnerItem(this.idSet.genderSpinner,this.GenderArray.indexOf(gender));
 
+  }
+
+  populateGrade = (items) => {
+    console.log("populateGrade", items);
+
+    var itemsListView = (
+      <LinearLayout
+        width="match_parent"
+        height="wrap_content"
+        orientation="vertical"
+        id={this.idSet.gradeSpinnerContainer}
+        margin="0,0,0,17">
+          <TextView
+           width="match_parent"
+           height="20"
+           style={window.__TextStyle.textStyle.HINT.BOLD}
+           text="GRADES"
+           margin="0,0,0,8"/>
+          <MultiSelectSpinner
+            width="match_parent"
+            height="wrap_content"
+            data={this.GradeArray}
+            selectedData={items}
+            onItemChange={this.onMultiSelectItemChange}
+           />
+      </LinearLayout>
+    );
+
+    this.replaceChild(this.idSet.gradeSpinnerContainer, itemsListView.render(), 0);
   }
 
 
@@ -145,54 +209,73 @@ class AdditionalInformationActivity extends View{
     this.updateSaveButtonStatus(this.checkCompleteStatus());
   }
 
+  getLineSeperator = () => {
+    return (<LinearLayout
+            width="match_parent"
+            height="2"
+            margin="0,0,0,0"
+            background={window.__Colors.PRIMARY_BLACK_22}/>)
+  }
 
+  getButtons = () => {
+      var buttonList = [this.saveBtnState];
+
+    return (
+      <LinearLayout
+        width = "match_parent"
+        height = "wrap_content"
+        visibility = {"visible"}>
+        <PageOption
+            width="match_parent"
+            buttonItems={buttonList}
+            hideDivider={false}/>
+      </LinearLayout>
+    );
+  }
+
+
+  getBtn = (id, type, label, onClick, visibility) => {
+    return (
+      <LinearLayout
+        width = "0"
+        weight = "1"
+        height = "wrap_content"
+        visibility = {visibility}
+        margin = "0, 0, 16, 0">
+
+        <FeatureButton
+          weight = "1"
+          id = {id}
+          clickable="false"
+          width = "match_parent"
+          height = "match_parent"
+          stroke = {type == "pos" ? "1," + window.__Colors.WHITE : "3," + window.__Colors.PRIMARY_DARK}
+          background = {type == "pos" ? window.__Colors.PRIMARY_DARK : window.__Colors.WHITE}
+          text = {label}
+          buttonClick = {onClick}
+          textColor = {type == "pos" ? window.__Colors.WHITE : window.__Colors.PRIMARY_DARK}
+          textStyle = {window.__TextStyle.textStyle.CARD.ACTION.LIGHT}/>
+      </LinearLayout>
+    );
+  }
 
   getTail = () => {
     return (
       <LinearLayout
-      height="match_parent"
-      width="match_parent"
-      orientation="vertical">
-          <LinearLayout
-          height="match_parent"
-          width="match_parent"
-          weight="1"
-          orientation="vertical"/>
-          <LinearLayout
-          width="match_parent"
-          height="match_parent"
-          padding="0,2,0,0"
-          weight="6"
-          orientation="vertical"
-          background={window.__Colors.PRIMARY_BLACK_22}>
-              <LinearLayout
-              width="match_parent"
-              height="match_parent"
-              padding="8,8,8,8"
-              background={window.__Colors.WHITE}>
-                  <LinearLayout
-                  onClick={this.handleSaveClick}
-                  height="match_parent"
-                  width="match_parent"
-                  cornerRadius="4,4,4,4"
-                  gravity="center"
-                  id={this.idSet.saveButtonContainer}>
-                      <LinearLayout
-                      height="match_parent"
-                      width="match_parent"
-                      gravity="center"
-                      background={window.__Colors.LIGHT_BLUE}
-                      id={this.idSet.saveButton}>
-                          <TextView
-                          text="FINISH EDITING"
-                          height="wrap_content"
-                          width="wrap_content"
-                          style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}/>
-                      </LinearLayout>
-                  </LinearLayout>
-              </LinearLayout>
-          </LinearLayout>
+        width = "match_parent"
+        height = "wrap_content"
+        orientation = "vertical"
+        background = "#ffffff"
+        alignParentBottom = "true, -1">
+
+        {this.getLineSeperator()}
+        <LinearLayout
+          width = "match_parent"
+          height = "match_parent"
+          orientation = "horizontal">
+          {this.getButtons()}
         </LinearLayout>
+      </LinearLayout>
     );
   }
 
@@ -209,7 +292,7 @@ class AdditionalInformationActivity extends View{
            width="match_parent"
            height="wrap_content"
            stroke={"2,"+window.__Colors.PRIMARY_BLACK_66}
-           padding="8,8,8,8"
+           padding="0,8,8,8"
            cornerRadius="4,4,4,4"
            id={id}>
             {callSpinner()}
@@ -220,23 +303,19 @@ class AdditionalInformationActivity extends View{
 
   getEditTextView = (id, label, hint , optional , onChange, inputType) =>{
     return(
-      <LinearLayout
-      width="match_parent"
-      height="wrap_content"
-      orientation="vertical"
-      margin="0,0,0,17">
-         {this.getLabel(label,optional)}
-         <EditText
-         id={id}
-         width="match_parent"
-         height="wrap_content"
-         maxLines="1"
-         style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
-         onChange={onChange}
-         inputType = {inputType ? inputType : "text"}
-         hint={hint + (optional)? "(optional)" : ""}
-         />
-       </LinearLayout>
+      <TextInputView
+        id = {id}
+        height="wrap_content"
+        width="match_parent"
+        hintText={hint + (optional ? " (Optional)" : "")}
+        labelText={label}
+        mandatory = {optional ? "false" : "true"}
+        margin = "0,0,0,18"
+        _onChange={onChange}
+        text = ""
+        textStyle = {window.__TextStyle.textStyle.HINT.BOLD}
+        editTextStyle = {window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
+        inputType = {inputType ? inputType : "text"}/>
     )
   }
 
@@ -248,7 +327,7 @@ class AdditionalInformationActivity extends View{
           height="20"
           style={window.__TextStyle.textStyle.HINT.BOLD}
           text={label}
-          margin="0,0,0,8"/>
+          margin="4,0,0,8"/>
          );
 
      return (
@@ -256,7 +335,7 @@ class AdditionalInformationActivity extends View{
        height="wrap_content"
        width="wrap_content"
        orientation="horizontal"
-       margin ="0,0,0,8">
+       margin ="4,0,0,8">
        <TextView
         width="match_parent"
         height="20"
@@ -276,15 +355,16 @@ class AdditionalInformationActivity extends View{
     <LinearLayout
     height="match_parent"
     width="match_parent"
-    orientation="vertical">
+    orientation="vertical"
+    padding="0,0,0,70">
       <ScrollView
        width="match_parent"
        height="match_parent"
-       weight="1"
-       padding="15,25,15,0">
+       weight="1">
         <LinearLayout
         width="match_parent"
         height="match_parent"
+        padding="15,15,15,15"
         orientation="vertical">
                <LinearLayout
                width="match_parent"
@@ -299,7 +379,7 @@ class AdditionalInformationActivity extends View{
                   height="20"
                   style={window.__TextStyle.textStyle.HINT.BOLD}
                   text="SUBJECTS"
-                  margin="0,0,0,8"/>
+                  margin="4,0,0,0"/>
                   <EditText
                   width="match_parent"
                   height="wrap_content"
@@ -333,7 +413,7 @@ class AdditionalInformationActivity extends View{
                        width="match_parent"
                        height="wrap_content"
                        orientation="vertical"
-                       margin="0,0,0,17">
+                       margin="4,0,0,17">
                          <TextView
                           width="match_parent"
                           height="20"
@@ -342,7 +422,7 @@ class AdditionalInformationActivity extends View{
                           <LinearLayout
                             width="match_parent"
                             height="wrap_content"
-                            padding="4,18,12,12">
+                            padding="0,6,12,12">
 
                               <ImageView
                                 height="16"
@@ -359,38 +439,40 @@ class AdditionalInformationActivity extends View{
                                 style={window.__TextStyle.textStyle.CARD.BODY.DARK.FADED}
                                 text="Select Date"
                                 onClick={this.showCalendar}/>
-
                           </LinearLayout>
+                          <LinearLayout
+                            width="match_parent"
+                            height="1"
+                            margin="1,0,2,0"
+                            alpha="0.6"
+                            background={window.__Colors.PRIMARY_BLACK}/>
                         </LinearLayout>
                         {this.getEditTextView(this.idSet.adharText,"ADHAR NUMBER","",true,this.setAdhar,"number")}
                         {this.getEditTextView(this.idSet.locationText,"CURRENT LOCATION","Enter your location",true,this.setLocation)}
 
-                         <LinearLayout
-                         width="match_parent"
-                         height="wrap_content"
-                         orientation="vertical"
-                         margin="0,0,0,17">
-                           <TextView
-                            width="match_parent"
-                            height="20"
-                            style={window.__TextStyle.textStyle.HINT.BOLD}
-                            text="GRADES"
-                            margin="0,0,0,8"/>
-                            <LinearLayout
+
+                        <LinearLayout
+                          width="match_parent"
+                          height="wrap_content"
+                          orientation="vertical"
+                          id={this.idSet.gradeSpinnerContainer}
+                          margin="0,0,0,17">
+                            <TextView
+                             width="match_parent"
+                             height="20"
+                             style={window.__TextStyle.textStyle.HINT.BOLD}
+                             text="GRADES"
+                             margin="0,0,0,8"/>
+                            <MultiSelectSpinner
                               width="match_parent"
                               height="wrap_content"
-                              stroke={"2,"+window.__Colors.PRIMARY_BLACK_66}
-                              padding="8,8,8,8"
-                              cornerRadius="4,4,4,4"
-                              id={this.idSet.gradeSpinnerContainer}>
-                               {this.loadGradeSpinner()}
-                            </LinearLayout>
-                            <HorizontalScrollView
-                              height = "wrap_content"
-                              width = "match_parent"
-                              id={this.idSet.gradeContainer}
-                              margin = "0,10,0,0"/>
-                          </LinearLayout>
+                              data={this.GradeArray}
+                              selectedData={this.grade}
+                              onItemChange={this.onMultiSelectItemChange}
+                             />
+                        </LinearLayout>
+
+                          {this.getEditTextView(this.idSet.descriptionText,"DESCRIPTION","",true,this.setDescription)}
 
                          {
                           // <LinearLayout
@@ -448,6 +530,8 @@ class AdditionalInformationActivity extends View{
                           //  </LinearLayout>
                          }
                     </LinearLayout>
+
+
                     <LinearLayout
                     height="wrap_content"
                     width="328"
@@ -468,10 +552,6 @@ class AdditionalInformationActivity extends View{
                  </RelativeLayout>
         </LinearLayout>
        </ScrollView>
-       <LinearLayout
-       height="match_parent"
-       width="match_parent"
-       weight="6"/>
       </LinearLayout>
     )
   }
@@ -528,6 +608,10 @@ class AdditionalInformationActivity extends View{
       );
   }
 
+  onMultiSelectItemChange = (selectedArray) => {
+    this.grade = selectedArray;
+  }
+
 
   render(){
       console.log("render");
@@ -551,113 +635,10 @@ class AdditionalInformationActivity extends View{
     return this.layout.render();
   }
 
-  loadGradeSpinner = () => {
-      return(<Spinner
-              width="match_parent"
-              height="34"
-              style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
-              margin="0,0,5,6"
-              onItemClick = {this.handleGradeSpinnerItemClick}
-              values={this.gradeArray}
-              />)
-    }
-
-    handleGradeSpinnerItemClick = (...params) => {
-
-      if(parseInt(params[2])>0)
-      this.addGrade(this.GradeArray[parseInt(params[2])]);
-
-    }
-
-    removeGrade = (data) => {
-         this.grade.splice(this.grade.indexOf(data),1);
-           this.gradeArray=this.gradeArray+","+data;
-           this.GradeArray.push(data);
-           this.gradeSpinnerLayout= (
-             <LinearLayout
-               root="true"
-               height="wrap_content"
-               width="match_parent">
-
-               {this.loadGradeSpinner()}
-
-             </LinearLayout>);
-           this.replaceChild(this.idSet.gradeSpinnerContainer,this.gradeSpinnerLayout.render(),0);
-           this.showSelectedGrades();
-         }
-
-         addGrade = (data) =>{
-           if(this.grade==null)
-           this.grade=[];
-           this.grade.unshift(data);
-           if(this.gradeArray.indexOf(data+",")>-1){
-             this.gradeArray = this.gradeArray.replace(data+",","");
-           }else{
-             this.gradeArray = this.gradeArray.replace(","+data, "");
-           }
-           this.GradeArray.splice(this.GradeArray.indexOf(data),1);
-           this.gradeSpinnerLayout= (
-             <LinearLayout
-             root="true"
-             height="wrap_content"
-             width="match_parent">
-
-              {this.loadGradeSpinner()}
-
-             </LinearLayout>);
-           this.replaceChild(this.idSet.gradeSpinnerContainer,this.gradeSpinnerLayout.render(),0);
-           this.showSelectedGrades();
-         }
-
-         showSelectedGrades = () =>{
-           var items = this.grade.map((data)=>{
-               return(
-                 <LinearLayout
-                    height="wrap_content"
-                    width="wrap_content"
-                    padding="6,4,6,4"
-                    margin="0,0,10,0"
-                    cornerRadius="10,10,10,10"
-                    background={window.__Colors.DARK_GRAY_44}
-                    gravity="center">
-
-                     <TextView
-                       height="wrap_content"
-                       width="wrap_content"
-                       text={data}
-                       margin="0,0,4,0"
-                       textStyle={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
-
-                     <ImageView
-                       height="15"
-                       width="15"
-                       imageUrl="ic_action_close"
-                       margin="0,1,0,0"
-                       onClick={()=>{this.removeGrade(data)}}/>
-                  </LinearLayout>
-               )
-           });
-
-
-        this.gradeCards =(
-          <LinearLayout
-            width="match_parent"
-            height="match_parent"
-            root="true">
-
-            {items}
-
-          </LinearLayout>
-        )
-
-        this.replaceChild(this.idSet.gradeContainer,this.gradeCards.render(),0);
-       }
-
-
    loadLanguageSpinner = () => {
      return(<Spinner
              width="match_parent"
-             height="34"
+             height="24"
              style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
              margin="0,0,5,6"
              id={this.idSet.languageSpinner}
@@ -670,13 +651,14 @@ class AdditionalInformationActivity extends View{
         console.log("12345");
 
         if(params[2]>0)
-        {this.language=[this.LanguageArray[params[2]]]}
+        {this.language=[this.LanguageArray[params[2]]]
+        this.updateSaveButtonStatus(this.checkCompleteStatus());}
    }
 
   loadGenderSpinner = () => {
     return(<Spinner
             width="match_parent"
-            height="34"
+            height="24"
             style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
             margin="0,0,5,6"
             onItemClick = {this.handleGenderSpinnerItemClick}
@@ -687,7 +669,8 @@ class AdditionalInformationActivity extends View{
 
   handleGenderSpinnerItemClick = (...params) => {
        if(params[2]>0)
-       {this.gender=this.GenderArray[params[2]]}
+       {this.gender=this.GenderArray[params[2]]
+       this.updateSaveButtonStatus(this.checkCompleteStatus());}
   }
 
   showCalendar = () =>{
@@ -767,8 +750,7 @@ class AdditionalInformationActivity extends View{
        height="match_parent"
        width="wrap_content"
        orientation="vertical"
-       margin="16,0,16,0"
-       >
+       margin="16,0,16,0">
 
          {predictionContent}
          <LinearLayout
@@ -854,6 +836,7 @@ class AdditionalInformationActivity extends View{
     </HorizontalScrollView>);
 
       this.replaceChild(this.idSet.LanguageLayout,this.updatedLanguages.render(),0);
+      this.updateSaveButtonStatus(this.checkCompleteStatus());
 
    }
 
@@ -877,37 +860,30 @@ class AdditionalInformationActivity extends View{
   languageItemLayout = (item)=> {
     return (
       <LinearLayout
-      height="wrap_content"
-      width="wrap_content"
-      >
-            <LinearLayout
-            height="32"
-            width="wrap_content"
-            background="#66D8D8D8"
-            cornerRadius="12,12,12,12"
-            >
-                <TextView
-                height="28"
-                width="wrap_content"
-                textColor="#ffffff"
-                text={item}
-                margin="12,0,0,0"
-                gravity="center"
-                />
-                <ImageView
-                margin="4,8,4,8"
-                height="12"
-                width="12"
-                imageUrl="ic_action_close"
-                onClick={()=>{this.removeLanguage(item)}}
-                />
-            </LinearLayout>
-            <LinearLayout
-            height="wrap_content"
-            width="10"/>
+         height="wrap_content"
+         width="wrap_content"
+         padding="6,4,6,4"
+         margin="0,0,10,0"
+         cornerRadius="10,10,10,10"
+         background={window.__Colors.DARK_GRAY_44}
+         gravity="center">
 
-    </LinearLayout>
-  );
+          <TextView
+            height="wrap_content"
+            width="wrap_content"
+            text={item}
+            margin="0,0,4,0"
+            textStyle={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
+
+          <ImageView
+            height="15"
+            width="15"
+            imageUrl="ic_action_close"
+            margin="0,1,0,0"
+            onClick={()=>{this.removeLanguage(item)}}
+            />
+       </LinearLayout>
+      );
   }
 
   removeLanguage= (item) =>{
@@ -935,6 +911,7 @@ class AdditionalInformationActivity extends View{
 
 
        this.replaceChild(this.idSet.LanguageLayout,this.updatedLanguages.render(),0);
+       this.updateSaveButtonStatus(this.checkCompleteStatus());
 
     }
   }
@@ -1158,31 +1135,79 @@ class AdditionalInformationActivity extends View{
     window.__runDuiCallback(event);
   }
 
+  checkEmailFormat = (data) =>{
+    if(!(data.indexOf("@") !== -1) || !(data.indexOf(".") !== -1))
+        return false
+    return true
+  }
+
+  checkPhoneFormat = (data) =>{
+    if(data.length == 10 && /^\d+$/.test(data))
+       return true
+    return false;
+  }
+
+  checkAdharFormat = (data) =>{
+    if(data.length == 12 && /^\d+$/.test(data))
+       return true
+    return false;
+  }
+
   handleSaveClick = () => {
     var json=  {};
 
 
+    if(!this.checkCompleteStatus())
+      {
+        JBridge.showSnackBar("Make Some Changes");
+        return;
+      }
+
+
     json.firstName=this.name;
     json.language=this.language;
-    json.email=this.email;
-    json.phone=this.mobile;
 
-    if(this.adhar!=null)
+    if(this.checkEmailFormat(this.email))
+        json.email=this.email;
+    else {
+      JBridge.showSnackBar(window.__S.ERROR_EMAIL_FORMAT)
+      return;
+    }
+
+
+    if(this.checkPhoneFormat(this.mobile))
+        json.phone=this.mobile;
+    else {
+      JBridge.showSnackBar("Invalid Phone Number")
+      return;
+    }
+
+
+    if(this.location!=null)
     json.location=this.location;
 
     if(this.adhar!=null)
-    json.aadhaarNo=this.adhar;
+      if(this.checkAdharFormat(this.adhar))
+           json.aadhaarNo=this.adhar;
+      else {
+        JBridge.showSnackBar("Invalid Aadhaar Number")
+        return;
+      }
 
     if(this.dob!=null)
     json.dob= this.dob;
 
-    if(this.grade!=null && this.grade!=[] )
-    json.grade=this.grade;
+    if(this.grade!=null && this.grade.length >= 0 ) {
+      json.grade=this.grade;
+    }
+
 
     if(this.gender!=null)
       json.gender=this.gender.toLowerCase();
 
       json.subject=this.selectedLanguages.length>0 ? this.selectedLanguages : null;
+
+      json.profileSummary = this.description;
 
 
    json.userId=window.__userToken;
@@ -1253,33 +1278,40 @@ class AdditionalInformationActivity extends View{
 
   checkCompleteStatus = () =>{
 
-    if(this.name==null || this.language==null || this.email==null || this.mobile==null)
-      {console.log(this.name + " "+ this.language + " " + this.email + " " + this.mobile);
+    if(this.name==null || this.language==null || this.email==null || this.mobile==null || this.checkSameData())
+      {
       return false;
       }
     return true;
   }
 
+  checkSameData = () =>{
+    console.log(JSON.stringify(this.selectedLanguages) +" gfgh "+ JSON.stringify(this.prevData.selectedLanguages));
+    if(this.name == this.prevData.name && JSON.stringify(this.language) == JSON.stringify(this.prevData.language) && this.email == this.prevData.email && this.mobile == this.prevData.mobile && this.prevData.adhar==this.adhar)
+      {
+        if(this.location==this.prevData.location && this.description == this.prevData.description && this.dob == this.prevData.dob && this.gender.toLowerCase() == this.prevData.gender.toLowerCase() && JSON.stringify(this.grade) == JSON.stringify(this.prevData.grade) )
+          if (JSON.stringify(this.selectedLanguages) == JSON.stringify(this.prevData.selectedLanguages))
+               return true;
+      }
+      return false;
+  }
+
   updateSaveButtonStatus = (enabled) => {
-    var backgroundColor;
+    var alphaVal;
     var isClickable;
 
     if (enabled) {
-      backgroundColor = window.__Colors.LIGHT_BLUE;
+      alphaVal="1"
       isClickable = "true"
     } else {
-      backgroundColor = window.__Colors.FADE_BLUE;
+      alphaVal="0.5"
       isClickable = "false"
     }
 
     var cmd = this.set({
       id: this.idSet.saveButton,
-      background: backgroundColor
-    })
-
-    cmd += this.set({
-      id: this.idSet.saveButtonContainer,
-      clickable: isClickable
+      clickable: isClickable,
+      alpha : alphaVal
     })
 
     Android.runInUI(cmd, 0);
@@ -1309,10 +1341,19 @@ class AdditionalInformationActivity extends View{
 
   setAdhar= (data) => {
     this.adhar=data=="" ? null :data;
+    this.updateSaveButtonStatus(this.checkCompleteStatus());
+
   }
 
   setLocation = (data) => {
     this.location=data=="" ? null :data;
+    this.updateSaveButtonStatus(this.checkCompleteStatus());
+
+  }
+
+  setDescription = (data)=>{
+    this.description=data;
+    this.updateSaveButtonStatus(this.checkCompleteStatus());
 
   }
 

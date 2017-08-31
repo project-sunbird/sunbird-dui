@@ -16,6 +16,7 @@ var CheckBox = require("@juspay/mystique-backend").androidViews.CheckBox;
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 var Styles = require("../../res/Styles");
 let IconStyle = Styles.Params.IconStyle;
+var PageOption = require('../../components/Sunbird/core/PageOption')
 var FeatureButton = require('../../components/Sunbird/FeatureButton');
 
 var _this;
@@ -40,7 +41,9 @@ class AddressPopUp extends View {
       "pincodeText",
       "saveButton",
       "saveButtonParent",
-      "saveButtonContainer"
+      "saveButtonContainer",
+      "delButton",
+      "btnsHolder"
     ]);
     _this=this;
     this.isVisible=false;
@@ -48,13 +51,32 @@ class AddressPopUp extends View {
     this.props = props;
     this.responseCame=false;
 
-
+    this.delete = false;
+    this.canSave = false;
 
     this.prevData = {};
+
+
+    this.delBtnState = {
+      text : "DELETE",
+      id : this.idSet.delButton,
+      isClickable : "true",
+      onClick : this.handleDelClick,
+      visibility : window.__AddressPopUp.data ? "visible" : "gone"
+    };
+
+    this.saveBtnState = {
+      text : "SAVE",
+      id : this.idSet.saveButton,
+      isClickable : "false",
+      onClick : this.handleSaveClick,
+      alpha : "0.5"
+    }
   }
 
 
   show = () => {
+    this.canSave = false;
     this.isVisible=true;;
     window.__patchCallback = this.getPatchCallback ;
     this.responseCame=false;
@@ -63,9 +85,21 @@ class AddressPopUp extends View {
     this.setVisibility("visible");
     this.initializeData();
     this.populateData();
+
+    var cmd = this.set({
+     id : this.idSet.saveButton,
+     alpha : "0.5",
+     clickable : "false"
+    });
+    cmd += this.set({
+      id: this.idSet.delButton,
+      visibility: window.__AddressPopUp.data ? "visible" : "gone"
+    });
+    Android.runInUI(cmd, 0)
   }
 
   hide = () => {
+    this.canSave = false;
     this.isVisible=false;
     JBridge.hideKeyboard();
     this.setVisibility("gone");
@@ -146,8 +180,8 @@ class AddressPopUp extends View {
     })
 
     var addressTypeValue = [
-      {name:"Permanent",select:"0",icon:"ic_check_circle"},
-      {name:"Current",select:"0",icon:"ic_check_circle"}
+      {name:"Permanent",select:"0",icon:"ic_action_radio"},
+      {name:"Current",select:"0",icon:"ic_action_radio"}
     ];
 
     var index;
@@ -239,7 +273,7 @@ class AddressPopUp extends View {
     //   return false;
     // }
     //
-    
+
     if (this.addressType == undefined || this.addressType.length == 0) {
       return false;
     }
@@ -248,28 +282,42 @@ class AddressPopUp extends View {
   }
 
   updateSaveButtonStatus = (enabled) => {
-    var backgroundColor;
-    var isClickable;
+    var cmd;
+
+    this.canSave = enabled;
 
     if (enabled) {
-      backgroundColor = window.__Colors.LIGHT_BLUE;
-      isClickable = "true"
+      cmd = this.set({
+        id: this.idSet.saveButton,
+        clickable: "true",
+        alpha: "1"
+      });
     } else {
-      backgroundColor = window.__Colors.FADE_BLUE;
-      isClickable = "false"
+      cmd = this.set({
+        id: this.idSet.saveButton,
+        clickable: "false",
+        alpha: "0.5"
+      });
     }
 
-    var cmd = this.set({
-      id: this.idSet.saveButton,
-      background: backgroundColor
-    })
-
-    cmd += this.set({
-      id: this.idSet.saveButtonContainer,
-      clickable: isClickable
-    })
-
     Android.runInUI(cmd, 0);
+  }
+
+  getButtons = () => {
+      var buttonList = [this.delBtnState, this.saveBtnState];
+
+    return (
+      <LinearLayout
+        width = "match_parent"
+        height = "wrap_content"
+        visibility = {"visible"}>
+        <PageOption
+            width="match_parent"
+            buttonItems={buttonList}
+            hideDivider={false}
+            onButtonClick={this.handlePageOption}/>
+      </LinearLayout>
+    );
   }
 
   handleDelClick = () => {
@@ -279,8 +327,17 @@ class AddressPopUp extends View {
 
 
   handleSaveClick = () => {
+    if (!this.canSave && !this.delete) {
+      if (window.__AddressPopUp.data)
+        JBridge.showSnackBar("Please make some changes");
+      else
+        JBridge.showSnackBar("Please add mandatory details");
+      return;
+    }
+
     if(!JBridge.isNetworkAvailable()) {
       JBridge.showSnackBar(window.__S.NO_INTERNET);
+      this.delete = false;
       return;
     }
 
@@ -471,7 +528,8 @@ class AddressPopUp extends View {
         width = "match_parent"
         height = "match_parent"
         orientation = "vertical"
-        backgroundColor = "#ffffff">
+        backgroundColor = "#ffffff"
+        margin = "0,0,0,24">
 
         {this.getToolbar()}
         <LinearLayout
@@ -498,16 +556,13 @@ class AddressPopUp extends View {
         orientation = "vertical"
         background = "#ffffff"
         alignParentBottom = "true, -1">
-
-        {this.getLineSeperator()}
         <LinearLayout
           width = "match_parent"
           height = "match_parent"
           orientation = "horizontal"
-            margin = "16, 8, 0, 8">
-          {this.getBtn(this.idSet.delButton, "neg", "DELETE", this.handleDelClick, window.__AddressPopUp.data ? "visible" : "gone")}
-          {this.getBtn(this.idSet.saveButton, "pos", "SAVE", this.handleSaveClick, "visible")}
-        </LinearLayout>
+          id = {this.idSet.btnsHolder}>
+          {this.getButtons()}
+          </LinearLayout>
       </LinearLayout>
     );
   }
@@ -555,7 +610,7 @@ class AddressPopUp extends View {
             width="wrap_content"
             gravity="center_vertical"
             padding = "4,0,0,0"
-            items={[{name:"Permanent",select:"0",icon:"ic_check_circle"},{name:"Current",select:"0",icon:"ic_check_circle"}]}
+            items={[{name:"Permanent",select:"0",icon:"ic_action_radio"},{name:"Current",select:"0",icon:"ic_action_radio"}]}
             onClick={this.handleRadioButtonClick}/>
         </LinearLayout>
 
@@ -572,41 +627,19 @@ class AddressPopUp extends View {
 
   getEditTextView = (id, label, optional,onChange, inputType) => {
     return (
-      <LinearLayout
+      <TextInputView
+        id = {id}
         height="wrap_content"
         width="match_parent"
-        orientation="vertical"
-        margin = "0,0,0,12">
-        <LinearLayout
-          height="wrap_content"
-          width="match_parent"
-          orientation="horizontal"
-          margin = "0,0,0,-5"
-          padding = "4,0,0,0">
-          <TextView
-            height="wrap_content"
-            width="wrap_content"
-            text={label}
-            textAllCaps="true"
-            textStyle={window.__TextStyle.textStyle.HINT.SEMI}/>
-          <TextView
-            height="wrap_content"
-            width="wrap_content"
-            text=" *"
-            color="#FF0000"
-            visibility = {optional ? "gone" : "visible"}/>
-        </LinearLayout>
-        <EditText
-          width="match_parent"
-          height="wrap_content"
-          id = {id}
-          onChange={onChange}
-          singleLine="true"
-          maxLine="1"
-          inputType = {inputType ? inputType : "text"}
-          hint = {optional ? "(Optional)" : ""}
-          style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
-    </LinearLayout>
+        hintText={optional ? "(Optional)" : ""}
+        labelText={label}
+        mandatory = {optional ? "false" : "true"}
+        margin = "0,0,0,16"
+        _onChange={onChange}
+        text = ""
+        textStyle = {window.__TextStyle.textStyle.HINT.SEMI}
+        editTextStyle = {window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
+        inputType = {inputType ? inputType : "text"}/>
     );
   }
 
@@ -723,7 +756,8 @@ class AddressPopUp extends View {
         height="match_parent"
         id={this.idSet.addressPopUpParent}
         visibility="gone"
-        gravity="center">
+        gravity="center"
+        background = "#ffffff">
             {this.getUi()}
       </LinearLayout>
     );

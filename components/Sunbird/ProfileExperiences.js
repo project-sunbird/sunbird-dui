@@ -28,7 +28,7 @@ class ProfileExperiences extends View {
 
   getHeader() {
     return (<LinearLayout
-              width="wrap_content"
+              width="match_parent"
               height="wrap_content">
 
               <TextView
@@ -261,7 +261,7 @@ class ProfileExperiences extends View {
               width="wrap_content"
               height="wrap_content"
               orientation="vertical"
-              margin="12,0,0,0">
+              padding="12,0,0,0">
 
                     <TextView
                     width="wrap_content"
@@ -269,11 +269,11 @@ class ProfileExperiences extends View {
                     text={this.getTitle(input)}
                     style={window.__TextStyle.textStyle.CARD.HEADING}/>
 
-                      <TextView
-                      width="wrap_content"
-                      height="wrap_content"
-                      text={this.getDetails(input)}
-                      style={window.__TextStyle.textStyle.HINT.REGULAR}/>
+                    <TextView
+                    width="wrap_content"
+                    height="wrap_content"
+                    text={this.getDetails(input)}
+                    style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
                 </LinearLayout>)
   }
@@ -288,10 +288,9 @@ class ProfileExperiences extends View {
    }
     var cards = this.jobs.map((item, i) => {
       return (<LinearLayout
-                width="wrap_content"
+                width="match_parent"
                 height="wrap_content"
-                gravity="top"
-                margin="0,16,0,16">
+                padding="0,8,0,0">
 
                 <LinearLayout
                   background={window.__Colors.WHITE_F4}
@@ -323,7 +322,7 @@ class ProfileExperiences extends View {
     this.layout = (
 
               <LinearLayout
-                width="wrap_content"
+                width="match_parent"
                 height="match_parent"
                 margin="0,16,0,0"
                 orientation="vertical"
