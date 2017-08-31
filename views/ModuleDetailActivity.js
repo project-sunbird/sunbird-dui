@@ -12,6 +12,7 @@ var RatingBar = require('@juspay/mystique-backend').androidViews.RatingBar;
 var objectAssign = require('object-assign');
 window.R = require("ramda");
 var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
+var SimplePopup = require('../components/Sunbird/core/SimplePopup');
 var CropParagraph = require('../components/Sunbird/CropParagraph');
 var ProgressButton = require('../components/Sunbird/core/ProgressButton');
 var CourseCurriculum = require('../components/Sunbird/CourseCurriculum');
@@ -42,6 +43,12 @@ class ModuleDetailActivity extends View {
             url: [
                 { imageUrl: 'ic_action_overflow' }
             ]
+        }
+        this.simpleData={
+              title:window.__S.DOWNLOAD_CONFIRMATION_TEXT,
+              content:"",
+              negButtonText : window.__S.NO,
+              posButtonText : window.__S.YES
         }
         this.popupMenu = "Delete"
         this.shouldCacheScreen = false;
@@ -147,44 +154,60 @@ class ModuleDetailActivity extends View {
         }
     }
 
+    checkContentType = (type) =>{
+        if(type.toLowerCase() == "story" || type.toLowerCase() == "worksheet" || type.toLowerCase() == "game")
+            return true;
+        else
+            return false;
+    }
+
     checkContentLocalStatus = (module) => {
         _this = this;
-        var callback = callbackMapper.map(function(data) {
-            _this.localContent = JSON.parse(utils.jsonifyData(data[0]))
-            console.log("local status",data[0])
-            if (_this.localContent.isAvailableLocally == true) {
-                var callback1 = callbackMapper.map(function(data) {
-                    _this.module = JSON.parse(utils.jsonifyData(data[0]));
-                    _this.renderModuleChildren(_this.module)
-                });
-                JBridge.getChildContent(module.identifier, callback1)
-            }
-             else {
-              if (JBridge.isNetworkAvailable()){
-                        if(_this.downloadList.indexOf(module.identifier)== -1){
-                            _this.downloadList.push(module.identifier)
-                            JBridge.importCourse(module.identifier, "true")        
-                        }
-                        else{
-                                JBridge.showSnackBar(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
-                                _this.onBackPressed();
-                                return;
-                        }
-                        
-                
-                
-              }
-              else
-                JBridge.showSnackBar(window.__S.NO_INTERNET)
-            }
-        });
-
-        if (!module.isAvailableLocally || module.isUpdateAvailable) {
-            window.__getDownloadStatus = this.getSpineStatus;
-            JBridge.getContentDetails(module.identifier, callback);
-        } else {
-            this.renderModuleChildren(module);
+        if(this.checkContentType(module.contentType)){
+            this.localStatus = false;
+            window.__ProgressButton.setVisibility("visible");
         }
+        else{
+                var callback = callbackMapper.map(function(data) {
+                    _this.localContent = JSON.parse(utils.jsonifyData(data[0]))
+                    console.log("local status",JSON.parse(utils.jsonifyData(data[0])))
+                    if (_this.localContent.isAvailableLocally == true) {
+                        var callback1 = callbackMapper.map(function(data) {
+                            _this.module = JSON.parse(utils.jsonifyData(data[0]));
+                            _this.renderModuleChildren(_this.module)
+                        });
+                        JBridge.getChildContent(module.identifier, callback1)
+                    }
+                     else {
+                      if (JBridge.isNetworkAvailable()){
+                                if(_this.downloadList.indexOf(module.identifier)== -1){
+                                    _this.downloadList.push(module.identifier)
+                                    console.log("module",module)
+                                    // this.simpleData.content = module.contentData.size ? "Size : " + utils.formatBytes(module.contentData.size) : "";
+                                    JBridge.importCourse(module.identifier, "true")
+                                    // _this.simpleData.content =         
+                                }
+                                else{
+                                        JBridge.showSnackBar(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
+                                        _this.onBackPressed();
+                                        return;
+                                }
+                                
+                        
+                        
+                      }
+                      else
+                        JBridge.showSnackBar(window.__S.NO_INTERNET)
+                    }
+                });
+
+                if (!module.isAvailableLocally || module.isUpdateAvailable) {
+                    window.__getDownloadStatus = this.getSpineStatus;
+                    JBridge.getContentDetails(module.identifier, callback);
+                } else {
+                    this.renderModuleChildren(module);
+                }
+            }
     }
 
     handleModuleClick = (moduleName, module) => {
@@ -247,6 +270,7 @@ class ModuleDetailActivity extends View {
     }
 
     afterRender = () => {
+        window.__SimplePopup.hide();
         this.checkContentLocalStatus(this.module);
     }
 
@@ -345,10 +369,28 @@ class ModuleDetailActivity extends View {
 
       this.replaceChild(this.idSet.simpleToolBarOverFlow, toolbar.render(), 0);
     }
+    onSimplePopClick=(type)=>{
+
+      if(type=="negative"){
+        //do something 
+      }else if(type =="positive"){
+        //do something
+
+        JBridge.importCourse(module.identifier, "true")
+      }
+    }
+    handleOverFlowClick = () =>{
+        console.log("overflow")
+    }
 
     render() {
 
         this.layout = (
+        <RelativeLayout
+          width="match_parent"
+          height="match_parent"
+          clickable="true"
+          root="true">
             <LinearLayout
             root = "true"
             width = "match_parent"
@@ -398,11 +440,16 @@ class ModuleDetailActivity extends View {
                     playContent = {this.props.localContent}
                     contentDetails = { this.module }
                     changeOverFlowMenu = {this.handleOverFlowClick}
-                    buttonText = "PLAY"
-                    localStatus = {true}
+                    buttonText = {window.__S.DOWNLOAD}
+                    localStatus = {this.localStatus}
                     identifier = { this.module.identifier }/>
 
             </LinearLayout>
+            <SimplePopup
+               buttonClick={this.onSimplePopClick}
+               data={this.simpleData}
+               />
+        </RelativeLayout>
             );
 
             return this.layout.render();
