@@ -556,8 +556,6 @@ class AddressPopUp extends View {
         orientation = "vertical"
         background = "#ffffff"
         alignParentBottom = "true, -1">
-
-        {this.getLineSeperator()}
         <LinearLayout
           width = "match_parent"
           height = "match_parent"
