@@ -14,6 +14,7 @@ var RadioButton = require('../Sunbird/core/RadioButton');
 var CheckBox = require("@juspay/mystique-backend").androidViews.CheckBox;
 var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
 var FeatureButton = require('../../components/Sunbird/FeatureButton');
+var PageOption = require('../../components/Sunbird/core/PageOption')
 var HorizontalScrollView = require("@juspay/mystique-backend").androidViews.HorizontalScrollView;
 var Styles = require("../../res/Styles");
 let IconStyle = Styles.Params.IconStyle;
@@ -59,6 +60,22 @@ class ExperiencePopUp extends View{
     this.prevData={};
     this.delete = false;
 
+    this.delBtnState = {
+      text : "DELETE",
+      id : this.idSet.delButton,
+      isClickable : "true",
+      onClick : this.del,
+      visibility : window.__ExperiencePopUp.data ? "visible" : "gone"
+    };
+
+    this.saveBtnState = {
+      text : "SAVE",
+      id : this.idSet.saveButton,
+      isClickable : "false",
+      onClick : this.sendJSON,
+      alpha : "0.5"
+    }
+
  }
 
  show = () => {
@@ -66,9 +83,10 @@ class ExperiencePopUp extends View{
    window.__patchCallback = this.getPatchCallback ;
    this.responseCame=false;
     var cmd=this.set({
-     id: this.idSet.saveButton,
-     background: window.__Colors.FADE_BLUE
-   })
+     id : this.idSet.saveButton,
+     alpha : "0.5",
+     clickable : "false"
+   });
    Android.runInUI(cmd, 0)
 
    this.replaceChild(this.idSet.experiencePopUpParent,this.getUi().render(),0);
@@ -76,6 +94,11 @@ class ExperiencePopUp extends View{
 
   this.initializeData();
   this.populateData();
+  cmd = this.set({
+    id: this.idSet.delButton,
+    visibility: window.__ExperiencePopUp.data ? "visible" : "gone"
+  });
+  Android.runInUI(cmd, 0)
  }
 
  hide = () => {
@@ -463,31 +486,6 @@ class ExperiencePopUp extends View{
     );
   }
 
-  getBtn = (id, type, label, onClick, visibility) => {
-    return (
-      <LinearLayout
-        width = "0"
-        weight = "1"
-        height = "wrap_content"
-        visibility = {visibility}
-        margin = "0, 0, 16, 0">
-
-        <FeatureButton
-          weight = "1"
-          id = {id}
-          clickable="false"
-          width = "match_parent"
-          height = "match_parent"
-          stroke = {type == "pos" ? "1," + window.__Colors.WHITE : "3," + window.__Colors.PRIMARY_DARK}
-          background = {type == "pos" ? window.__Colors.PRIMARY_DARK : window.__Colors.WHITE}
-          text = {label}
-          buttonClick = {onClick}
-          textColor = {type == "pos" ? window.__Colors.WHITE : window.__Colors.PRIMARY_DARK}
-          textStyle = {window.__TextStyle.textStyle.CARD.ACTION.LIGHT}/>
-      </LinearLayout>
-    );
-  }
-
   getFooter = () => {
     return (
       <LinearLayout
@@ -502,10 +500,28 @@ class ExperiencePopUp extends View{
           width = "match_parent"
           height = "match_parent"
           orientation = "horizontal"
-            margin = "16, 8, 0, 8">
-          {this.getBtn(this.idSet.delButton, "neg", "DELETE", this.del, window.__ExperiencePopUp.data ? "visible" : "gone")}
-          {this.getBtn(this.idSet.saveButton, "pos", "SAVE", this.sendJSON, "visible")}
-        </LinearLayout>
+          id = {this.idSet.btnsHolder}>
+          {this.getButtons()}
+          </LinearLayout>
+
+
+      </LinearLayout>
+    );
+  }
+
+  getButtons = () => {
+      var buttonList = [this.delBtnState, this.saveBtnState];
+
+    return (
+      <LinearLayout
+        width = "match_parent"
+        height = "wrap_content"
+        visibility = {"visible"}>
+        <PageOption
+            width="match_parent"
+            buttonItems={buttonList}
+            hideDivider={false}
+            onButtonClick={this.handlePageOption}/>
       </LinearLayout>
     );
   }
@@ -789,24 +805,21 @@ del = () => {
      }
 
      enableSaveButton = () =>{
-
-
-       var cmd = this.set({
-         id: this.idSet.saveButton,
-         background: window.__Colors.PRIMARY_DARK,
-         clickable: "true"
-       })
-
-       Android.runInUI(cmd, 0);
+       console.log("enableSaveButton");
+      var cmd = this.set({
+        id: this.idSet.saveButton,
+        clickable: "true",
+        alpha: "1"
+      });
+      Android.runInUI(cmd, 0);
      }
 
      disableSaveButton = () =>{
        var cmd = this.set({
          id: this.idSet.saveButton,
-         background: window.__Colors.FADE_BLUE,
-         clickable: "false"
-       })
-
+         clickable: "false",
+         alpha: "0.5"
+       });
        Android.runInUI(cmd, 0);
      }
 

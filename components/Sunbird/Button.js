@@ -31,6 +31,12 @@ class Button extends View {
         this.text = this.props.text;
         break;
 
+      case "BigButton_Primary_DB_Stroke":
+        this.layoutStyle = Styles.Params.BigButton.Primary_DB_Layout_Stroke;
+        this.textStyle = window.__TextStyle.textStyle.CARD.ACTION.BLUE;
+        this.text = this.props.text;
+        break;
+
       case "BigButton_Primary_WB":
         this.layoutStyle = Styles.Params.BigButton.Primary_WB_Layout;
         this.textStyle = window.__TextStyle.textStyle.CARD.ACTION.LIGHT;
