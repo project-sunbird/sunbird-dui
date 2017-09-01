@@ -185,6 +185,13 @@ class MainActivity extends View {
       JBridge.getApiToken(callback);
       return;
     }else if(responseCode == 501 || status === "failure" || status=="f") {
+      if(state.responseFor == "API_CreatedBy"){
+        responseData = utils.decodeBase64(responseData)
+        responseData = JSON.parse(responseData);
+        if(state.sendBack){
+          responseData.sendBack = state.sendBack;
+        }
+      }
       JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION)
       responseData=tmp;
     } else {

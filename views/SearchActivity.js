@@ -224,7 +224,7 @@ class SearchActivity extends View {
 
 
   renderResult = (data) => {
-
+    console.log("data from server",data)
     var layout = (<LinearLayout
                    width="match_parent"
                    height="wrap_content"
@@ -252,6 +252,7 @@ class SearchActivity extends View {
     if(searchText == ""){
       console.log("empty text"+window.__LoaderDialog.visibility);
       this.renderNoResult();
+      window.__LoaderDialog.hide();
     }
     else
     {
@@ -261,6 +262,7 @@ class SearchActivity extends View {
           _this.filterData = data[1];
                 if (searchText == "" || data[0] == "[]") {
                   _this.renderNoResult();
+                  window.__LoaderDialog.hide();
                   
                 } else {
                   var s = data[0];
@@ -274,13 +276,10 @@ class SearchActivity extends View {
                     .replace(/\\f/g, "\\f");
                   s = s.replace(/[\u0000-\u0019]+/g, "");
                   _this.renderResult(JSON.parse(s));
+                  window.__LoaderDialog.hide();
                   
                 }
         });
-
-        console.log("TOP OF HIDE\n\n\n\n\n\n");
-        window.__LoaderDialog.hide();
-
 
           if (this.filterData!=undefined && this.filterData.length == 0) {
             status = "false";
