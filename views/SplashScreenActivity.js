@@ -1,13 +1,13 @@
 
-var dom = require("@juspay/mystique-backend").doms.android;
-var Connector = require("@juspay/mystique-backend").connector;
-var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
-var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
-var TextView = require("@juspay/mystique-backend").androidViews.TextView;
-var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
-var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
+var dom = require("@juspay/mystique-backend/src/doms/android");
+var Connector = require("@juspay/mystique-backend/src/connectors/screen_connector");
+var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
+var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
+var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
+var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
+var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
 
-var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
+var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
 var objectAssign = require('object-assign');
 
 window.R = require("ramda");

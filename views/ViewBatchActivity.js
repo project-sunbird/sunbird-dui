@@ -1,14 +1,14 @@
-var dom = require("@juspay/mystique-backend").doms.android;
-var Connector = require("@juspay/mystique-backend").connector;
-var callbackMapper = require("@juspay/mystique-backend").helpers.android.callbackMapper;
-var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
+var dom = require("@juspay/mystique-backend/src/doms/android");
+var Connector = require("@juspay/mystique-backend/src/connectors/screen_connector");
+var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
+var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
 window.R = require("ramda");
 var debounce = require("debounce")
 
 var LinearLayout  = require("@juspay/mystique-backend").androidViews.LinearLayout ;
-var TextView = require("@juspay/mystique-backend").androidViews.TextView;
-var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
-var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
+var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
+var ScrollView = require("@juspay/mystique-backend/src/android_views/ScrollView");
+var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
 
 //Components
 var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');

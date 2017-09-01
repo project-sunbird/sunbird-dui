@@ -1,8 +1,8 @@
-var dom = require("@juspay/mystique-backend").doms.android;
-var Connector = require("@juspay/mystique-backend").connector;
-var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
-var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
-var RelativeLayout = require("@juspay/mystique-backend").androidViews.RelativeLayout;
+var dom = require("@juspay/mystique-backend/src/doms/android");
+var Connector = require("@juspay/mystique-backend/src/connectors/screen_connector");
+var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
+var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
+var RelativeLayout = require("@juspay/mystique-backend/src/android_views/RelativeLayout");
 
 
 var TextStyle = require("../res/TextStyle");

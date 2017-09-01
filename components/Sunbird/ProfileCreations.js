@@ -1,14 +1,14 @@
 
-var dom = require("@juspay/mystique-backend").doms.android;
-var Connector = require("@juspay/mystique-backend").connector;
-var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
-var RelativeLayout = require("@juspay/mystique-backend").androidViews.RelativeLayout;
-var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
-var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
-var TextView = require("@juspay/mystique-backend").androidViews.TextView;
-var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
-var RatingBar = require("@juspay/mystique-backend").androidViews.RatingBar;
-var HorizontalScrollView = require("@juspay/mystique-backend").androidViews.HorizontalScrollView;
+var dom = require("@juspay/mystique-backend/src/doms/android");
+var Connector = require("@juspay/mystique-backend/src/connectors/screen_connector");
+var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
+var RelativeLayout = require("@juspay/mystique-backend/src/android_views/RelativeLayout");
+var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
+var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget");
+var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
+var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
+var RatingBar = require("@juspay/mystique-backend/src/android_views/RatingBar");;
+var HorizontalScrollView = require("@juspay/mystique-backend/src/android_views/HorizontalScrollView");
 var CardComponent = require('../Sunbird/core/CardComponent');
 var utils = require('../../utils/GenericFunctions');
 

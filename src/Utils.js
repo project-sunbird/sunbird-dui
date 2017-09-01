@@ -1,6 +1,6 @@
 
 "use strict";
-var callbackMapper = require('@juspay/mystique-backend').helpers.android.callbackMapper;
+var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
 
 
 var callbackMapper = {

@@ -1,11 +1,11 @@
 
 
-var dom = require("@juspay/mystique-backend").doms.android;
-var Connector = require("@juspay/mystique-backend").connector;
-var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
-var RelativeLayout = require("@juspay/mystique-backend").androidViews.RelativeLayout;
-var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
-var TextView = require("@juspay/mystique-backend").androidViews.TextView;
+var dom = require("@juspay/mystique-backend/src/doms/android");
+var Connector = require("@juspay/mystique-backend/src/connectors/screen_connector");
+var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
+var RelativeLayout = require("@juspay/mystique-backend/src/android_views/RelativeLayout");
+var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
+var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var ProgressBar = require("@juspay/mystique-backend").androidViews.ProgressBar;
 
 class ContentLoadingComponent extends View {
