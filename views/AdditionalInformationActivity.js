@@ -219,7 +219,6 @@ class AdditionalInformationActivity extends View{
 
   getButtons = () => {
       var buttonList = [this.saveBtnState];
-
     return (
       <LinearLayout
         width = "match_parent"
@@ -242,7 +241,6 @@ class AdditionalInformationActivity extends View{
         height = "wrap_content"
         visibility = {visibility}
         margin = "0, 0, 16, 0">
-
         <FeatureButton
           weight = "1"
           id = {id}
@@ -267,8 +265,6 @@ class AdditionalInformationActivity extends View{
         orientation = "vertical"
         background = "#ffffff"
         alignParentBottom = "true, -1">
-
-        {this.getLineSeperator()}
         <LinearLayout
           width = "match_parent"
           height = "match_parent"
@@ -286,8 +282,7 @@ class AdditionalInformationActivity extends View{
       height="wrap_content"
       orientation="vertical"
       margin="0,0,0,17">
-
-       {this.getLabel(label,optional)}
+         {this.getLabel(label,optional)}
          <LinearLayout
            width="match_parent"
            height="wrap_content"
@@ -581,7 +576,6 @@ class AdditionalInformationActivity extends View{
                   text="Additional Information"
                   style={window.__TextStyle.textStyle.TOOLBAR.HEADING}/>
 
-
           </LinearLayout>);
 
   }
@@ -610,6 +604,8 @@ class AdditionalInformationActivity extends View{
 
   onMultiSelectItemChange = (selectedArray) => {
     this.grade = selectedArray;
+    console.log(this.grade , "selectedArray");
+    this.updateSaveButtonStatus(this.checkCompleteStatus());
   }
 
 
@@ -679,7 +675,6 @@ class AdditionalInformationActivity extends View{
       function (data){
 
             data[0]=_this.formatDate(data[0]);
-
              _this.dob=data[0];
 
               var cmd = _this.set({
@@ -688,6 +683,9 @@ class AdditionalInformationActivity extends View{
                 style: window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK
               });
               Android.runInUI(cmd, 0);
+
+              _this.updateSaveButtonStatus(_this.checkCompleteStatus());
+
     });
 
 
@@ -1286,7 +1284,8 @@ class AdditionalInformationActivity extends View{
   }
 
   checkSameData = () =>{
-    console.log(JSON.stringify(this.selectedLanguages) +" gfgh "+ JSON.stringify(this.prevData.selectedLanguages));
+
+    console.log(JSON.stringify(this.grade) +" gfgh "+ JSON.stringify(this.prevData.grade));
     if(this.name == this.prevData.name && JSON.stringify(this.language) == JSON.stringify(this.prevData.language) && this.email == this.prevData.email && this.mobile == this.prevData.mobile && this.prevData.adhar==this.adhar)
       {
         if(this.location==this.prevData.location && this.description == this.prevData.description && this.dob == this.prevData.dob && this.gender.toLowerCase() == this.prevData.gender.toLowerCase() && JSON.stringify(this.grade) == JSON.stringify(this.prevData.grade) )
