@@ -57,7 +57,7 @@ class AdditionalInformationActivity extends View{
     this.shouldCacheScreen = false;
     this.state=state;
     this.screenName="AdditionalInformationActivity"
-    this.subjectDictionary=["Select","Assamese","Bengali","English","Gujarati","Hindi","Kannada","Marathi","Punjabi","Tamil","Telugu"];
+    this.subjectDictionary=["Select","Assamese","Bengali","English","Gujarati","Hindi","Kannada","Malayalam","Marathi","Maths","Nepali","Oriya","Punjabi","Tamil","Telugu","Urdu"];
     this.selectedSubjects=[];
     //this.hobbieDictionary=["cycling","swimming","singing","travelling","playing","dancing"];
     //this.selectedHobbies=[];
@@ -79,7 +79,7 @@ class AdditionalInformationActivity extends View{
     this.genderArray= "Select,Male,Female,Transgender";
     this.GenderArray=["Select","Male","Female","Transgender"];
     this.languageArray= "Select,Bengali,English,Gujarati,Hindi,Kannada,Marathi,Punjabi,Tamil";
-    this.LanguageArray=["Select","Assamese","Bengali","English","Gujarati","Hindi","Kannada","Malayalam","Marathi","Maths","Nepali","Oriya","Punjabi","Tamil","Telugu","Urdu"];;
+    this.LanguageArray=["Select","Assamese","Bengali","English","Gujarati","Hindi","Kannada","Marathi","Punjabi","Tamil","Telugu"]
     this.gradeArray= "Select,Kindergarten,Grade 1,Grade 2,Grade 3,Grade 4,Grade 5,Grade 6,Grade 7";
     this.GradeArray=["Select","Kindergarten","Grade 1","Grade 2","Grade 3","Grade 4","Grade 5","Grade 6","Grade 7"];
 

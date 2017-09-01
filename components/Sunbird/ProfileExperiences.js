@@ -98,6 +98,8 @@ class ProfileExperiences extends View {
 
     if (this.props.popUpType == window.__PROFILE_POP_UP_TYPE.EXPERIENCE) {
       window.__ExperiencePopUp.data=item;
+      this.getCurrentJobStatus();
+      window.__ExperiencePopUp.currentJobSelected=this.currJobFlag  ;
       window.__ExperiencePopUp.show();
     } else if (this.props.popUpType == window.__PROFILE_POP_UP_TYPE.EDUCATION) {
       window.__EducationPopUp.data=item;
@@ -106,6 +108,15 @@ class ProfileExperiences extends View {
       window.__AddressPopUp.data=item;
       window.__AddressPopUp.show();
     }
+  }
+
+  getCurrentJobStatus = () => {
+     this.currJobFlag = false;
+     var _this=this;
+     this.jobs.map((item) => {
+        if(item.endDate == null)
+           _this.currJobFlag=true;
+     });
   }
 
   getTitle = (input) => {
@@ -246,6 +257,7 @@ class ProfileExperiences extends View {
     if (this.props.popUpType == window.__PROFILE_POP_UP_TYPE.EXPERIENCE) {
       det = this.getPosition(input) + this.getOrg(input) +
         this.getSubjects(input) + this.getDate(input);
+        this.currJobFlag = this.getCurrentJobStatus();
     } else if (this.props.popUpType == window.__PROFILE_POP_UP_TYPE.EDUCATION) {
       det = this.getDegree(input) + this.getDate(input) +
         this.getGrade(input) +
