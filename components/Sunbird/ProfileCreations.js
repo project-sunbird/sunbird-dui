@@ -22,7 +22,7 @@ class ProfileCreations extends View {
 
     ]);
     _this=this;
-    this.data = this.props.data;
+    this.data = this.props.data || {};
 
   }
 
