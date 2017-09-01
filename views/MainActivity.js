@@ -185,8 +185,16 @@ class MainActivity extends View {
       JBridge.getApiToken(callback);
       return;
     }else if(responseCode == 501 || status === "failure" || status=="f") {
-      JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION)
-      responseData=tmp;
+      if (state.responseFor == "API_CreatedBy") {
+        responseData = utils.decodeBase64(responseData)
+        responseData = JSON.parse(responseData);
+        if(state.sendBack){
+          responseData.sendBack = state.sendBack;
+        }
+      } else {
+        JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION)
+        responseData=tmp;
+      }
     } else {
      // responseData = utils.jsonifyData(responseData);
       responseData = utils.decodeBase64(responseData)
@@ -219,7 +227,7 @@ class MainActivity extends View {
       return;
     }
 
-    if (responseData.params.err) {
+    if (responseData.params && responseData.params.err) {
       JBridge.showSnackBar(window.__S.ERROR_SERVER_MESSAGE + response.params.errmsg)
       return;
     }
