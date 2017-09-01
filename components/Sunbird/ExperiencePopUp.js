@@ -43,11 +43,12 @@ class ExperiencePopUp extends View{
       "delButton",
       "delButtonParent",
       "subjectSpinner",
-      "subjectSpinnerContainer"
+      "subjectSpinnerContainer",
+      "jobTypeRadioContainer"
     ]);
     this.isVisible = false;
     this.spinnerArray = ["Select","Bengali","English","Gujarati","Hindi","Kannada","Marathi","Punjabi","Tamil"];
-    this.subjectArray = ["Select","Bengali","English","Gujarati","Hindi","Kannada","Marathi","Punjabi","Tamil"];
+    this.subjectArray = ["Select","Assamese","Bengali","English","Gujarati","Hindi","Kannada","Malayalam","Marathi","Maths","Nepali","Oriya","Punjabi","Tamil","Telugu","Urdu"];
     this.selecteSubject = [];
     this.array="Select,Bengali,English,Gujarati,Hindi,Kannada,Marathi,Punjabi,Tamil";
     _this=this;
@@ -150,7 +151,6 @@ class ExperiencePopUp extends View{
      this.prevData.joiningDate=window.__ExperiencePopUp.data.joiningDate;
      this.prevData.endDate=window.__ExperiencePopUp.data.endDate;
      this.prevData.subjects = window.__ExperiencePopUp.data.subject;
-
    }
 
  }
@@ -171,6 +171,8 @@ class ExperiencePopUp extends View{
    this.joiningDate=this.prevData.joiningDate;
    this.endDate=this.prevData.endDate;
 
+   console.log(this.prevData.jobName,"jobName");
+   console.log(this.prevData.Organization,"organizationText");
 
    var cmd=this.set({
      id: this.idSet.jobText,
@@ -196,10 +198,39 @@ class ExperiencePopUp extends View{
      id: this.idSet.closingDateText,
      text: this.prevData.endDate
    })
-
+   Android.runInUI(cmd, 0)
    this.replaceChild(this.idSet.subjectSpinnerContainer, this.getSpinner().render(), 0);
 
-   Android.runInUI(cmd, 0)
+   var jobTypeValue = [
+     {name:"Yes",select:"0",icon:"ic_action_radio"},
+     {name:"No",select:"0",icon:"ic_action_radio"}
+   ];
+
+   var index;
+
+   if (this.prevData.endDate == null && this.data != undefined) {
+     jobTypeValue[0].select = "1";
+     jobTypeValue[1].select = "0";
+     index = 0;
+     var cmd = this.set({
+       id: this.idSet.closingDateLayout,
+       visibility: "gone"
+     });
+     cmd += this.set({
+       id: this.idSet.closingDateText,
+       text : "Select Date"
+     });
+     Android.runInUI(cmd, 0);
+
+   } else  if (this.data != undefined){
+     jobTypeValue[0].select = "0";
+     jobTypeValue[1].select = "1";
+     index = 1;
+   }
+
+   this.replaceChild(this.idSet.jobTypeRadioContainer,
+     this.getRadioButtionLayout(jobTypeValue, index).render(), 0);
+
  }
 
 
@@ -271,7 +302,12 @@ class ExperiencePopUp extends View{
       {this.getEditTextView(this.idSet.positionText, "Position", true, this.setPosition)}
 
       {this.getSpinner()}
+      <LinearLayout
+      height="wrap_content"
+      width="wrap_content"
+      id={this.idSet.jobTypeRadioContainer}>
       {this.getJobStatus()}
+      </LinearLayout>
       {this.getDatePickers()}
     </LinearLayout>
    );
@@ -402,6 +438,33 @@ class ExperiencePopUp extends View{
           width="wrap_content"
           gravity="center_vertical"
           items={[{name:"Yes",select:"0",icon:"ic_action_radio"},{name:"No",select:"0",icon:"ic_action_radio"}]}
+          onClick={this.handleRadioButtonClick}/>
+     </LinearLayout>
+   );
+ }
+
+ getRadioButtionLayout = (item, index) => {
+   return (
+     <LinearLayout
+     height="wrap_content"
+     width="match_parent"
+     padding = "4,0,0,0"
+     margin = "0,0,0,12"
+     orientation="vertical">
+         <TextView
+           height="wrap_content"
+           width="wrap_content"
+           margin="0,0,16,10"
+           textStyle={window.__TextStyle.textStyle.HINT.SEMI}
+           textAllCaps="true"
+           text="Is this your current job?"/>
+
+         <RadioButton
+          height="wrap_content"
+          width="wrap_content"
+          gravity="center_vertical"
+          items={item}
+          defaultIndex={index}
           onClick={this.handleRadioButtonClick}/>
      </LinearLayout>
    );
@@ -667,24 +730,32 @@ del = () => {
 
        if(window.__RadioButton!=undefined && window.__RadioButton.currentIndex==0)
        {
-         var cmd = this.set({
-           id: this.idSet.closingDateLayout,
-           visibility: "gone"
-         });
-         cmd += this.set({
-           id: this.idSet.closingDateText,
-           text : "Select Date"
-         });
-         Android.runInUI(cmd, 0);
-         this.endDate=null;
 
-         if(this.checkCompleteStatus())
-         {
-           this.enableSaveButton();
-         }
-         else {
-           this.disableSaveButton();
-         }
+         if(window.__ExperiencePopUp.currentJobSelected != undefined && (window.__ExperiencePopUp.currentJobSelected == false || (window.__ExperiencePopUp.currentJobSelected && this.prevData.endDate == null && this.data != undefined)))
+          {
+               var cmd = this.set({
+               id: this.idSet.closingDateLayout,
+               visibility: "gone"
+             });
+             cmd += this.set({
+               id: this.idSet.closingDateText,
+               text : "Select Date"
+             });
+             Android.runInUI(cmd, 0);
+             this.endDate=null;
+
+             if(this.checkCompleteStatus())
+             {
+               this.enableSaveButton();
+             }
+             else {
+               this.disableSaveButton();
+             }
+          }
+          else {
+            console.log(window.__ExperiencePopUp , " gh ");
+            JBridge.showSnackBar("You already have a current job, please change that to not a current job");
+          }
 
 
        }
