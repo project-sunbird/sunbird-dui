@@ -93,7 +93,7 @@ class ProfileFragment extends View {
     return (<LinearLayout
             width="match_parent"
             height="1"
-            margin="0,0,0,15"
+            margin="0,0,0,24"
             background={window.__Colors.PRIMARY_BLACK_22}/>)
   }
 
@@ -122,6 +122,7 @@ class ProfileFragment extends View {
         <LinearLayout
           orientation = "vertical"
           height = "wrap_content"
+          margin="0,16,0,0"
           width = "match_parent">
 
           {this.getLineSeperator()}

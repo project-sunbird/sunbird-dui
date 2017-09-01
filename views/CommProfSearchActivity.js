@@ -289,7 +289,8 @@ class CommProfSearchActivity extends View {
                    background="#ffffff"
                    orientation="vertical">
                     <SearchResult
-                      data={data} />
+                      data={data}
+                      type = "Profile" />
                   </LinearLayout>)
 
     this.replaceChild(this.idSet.searchListContainer, layout.render(), 0);
@@ -334,7 +335,7 @@ class CommProfSearchActivity extends View {
 
        },
        "offset": 0,
-       "limit": 5
+       "limit": 30
    }
 
     var whatToSend = {
