@@ -40,6 +40,7 @@ class AdditionalInformationActivity extends View{
       "HobbiesLayout",
       "predictionHobbiesLayout",
       "languageSpinner",
+      "subjectSpinnerContainer",
       "genderSpinner",
       "saveButton",
       "saveButtonContainer",
@@ -56,10 +57,10 @@ class AdditionalInformationActivity extends View{
     this.shouldCacheScreen = false;
     this.state=state;
     this.screenName="AdditionalInformationActivity"
-    this.languageDictionary=["english","hindi","marathi","telugu","kannada","punjabi","bhojpuri","bengali"];
-    this.selectedLanguages=[];
-    this.hobbieDictionary=["cycling","swimming","singing","travelling","playing","dancing"];
-    this.selectedHobbies=[];
+    this.subjectDictionary=["Select","Assamese","Bengali","English","Gujarati","Hindi","Kannada","Marathi","Punjabi","Tamil","Telugu"];
+    this.selectedSubjects=[];
+    //this.hobbieDictionary=["cycling","swimming","singing","travelling","playing","dancing"];
+    //this.selectedHobbies=[];
     this.email = null;
     this.mobile = null;
     this.location = null;
@@ -78,7 +79,7 @@ class AdditionalInformationActivity extends View{
     this.genderArray= "Select,Male,Female,Transgender";
     this.GenderArray=["Select","Male","Female","Transgender"];
     this.languageArray= "Select,Bengali,English,Gujarati,Hindi,Kannada,Marathi,Punjabi,Tamil";
-    this.LanguageArray=["Select","Bengali","English","Gujarati","Hindi","Kannada","Marathi","Punjabi","Tamil"];
+    this.LanguageArray=["Select","Assamese","Bengali","English","Gujarati","Hindi","Kannada","Malayalam","Marathi","Maths","Nepali","Oriya","Punjabi","Tamil","Telugu","Urdu"];;
     this.gradeArray= "Select,Kindergarten,Grade 1,Grade 2,Grade 3,Grade 4,Grade 5,Grade 6,Grade 7";
     this.GradeArray=["Select","Kindergarten","Grade 1","Grade 2","Grade 3","Grade 4","Grade 5","Grade 6","Grade 7"];
 
@@ -108,6 +109,8 @@ class AdditionalInformationActivity extends View{
     this.dob = this.data.dob;
     this.gender = this.data.gender;
     this.description=this.data.profileSummary;
+    this.grade=this.data.grade!=null ? this.data.grade.slice():null;
+    this.selectedSubjects = this.data.subject!=null ? this.data.subject.slice():null;
 
     this.prevData.email = this.data.email;
     this.prevData.mobile = this.data.phone;
@@ -118,6 +121,8 @@ class AdditionalInformationActivity extends View{
     this.prevData.dob = this.data.dob;
     this.prevData.gender = this.data.gender;
     this.prevData.description=this.data.profileSummary;
+    this.prevData.grade = this.data.grade!=null ? this.data.grade.slice():null;
+    this.prevData.selectedSubjects = this.data.subject!=null ? this.data.subject.slice():null;
 
    console.log(this.language + " grxj  "+ this.prevData.language + " ghc " + this.data.language);
 
@@ -159,14 +164,10 @@ class AdditionalInformationActivity extends View{
     Android.runInUI(cmd, 0);
 
 
-    for (var i = 0; i < this.data.subject.length; i++) {
-      var value = this.data.subject[i].toLowerCase();
-      this.selectLanguageItem(value);
-    }
-    this.prevData.selectedLanguages = this.selectedLanguages.slice();
+    this.populateSubjects(this.data.subject);
 
+    console.log(this.prevData.selectedSubjects + " fg "+ this.selectedSubjects);
     this.populateGrade(this.data.grade);
-    this.prevData.grade= this.grade!=null ? this.grade.slice():null;
 
     JBridge.selectSpinnerItem(this.idSet.languageSpinner,this.LanguageArray.indexOf(this.language[0]));
     var gender = this.gender.substr(0,1).toUpperCase()+this.gender.substr(1);
@@ -195,12 +196,41 @@ class AdditionalInformationActivity extends View{
             height="wrap_content"
             data={this.GradeArray}
             selectedData={items}
-            onItemChange={this.onMultiSelectItemChange}
+            onItemChange={this.onMultiSelectGradeItemChange}
            />
       </LinearLayout>
     );
 
     this.replaceChild(this.idSet.gradeSpinnerContainer, itemsListView.render(), 0);
+  }
+
+  populateSubjects = (items) => {
+    console.log("populateGrade", items);
+
+    var itemsListView = (
+      <LinearLayout
+        width="match_parent"
+        height="wrap_content"
+        orientation="vertical"
+        id={this.idSet.subjectSpinnerContainer}
+        margin="0,0,0,17">
+          <TextView
+           width="match_parent"
+           height="20"
+           style={window.__TextStyle.textStyle.HINT.BOLD}
+           text="SUBJECTS"
+           margin="0,0,0,8"/>
+          <MultiSelectSpinner
+            width="match_parent"
+            height="wrap_content"
+            data={this.subjectDictionary}
+            selectedData={items}
+            onItemChange={this.onMultiSelectSubjectItemChange}
+           />
+      </LinearLayout>
+    );
+
+    this.replaceChild(this.idSet.subjectSpinnerContainer, itemsListView.render(), 0);
   }
 
 
@@ -361,44 +391,54 @@ class AdditionalInformationActivity extends View{
         height="match_parent"
         padding="15,15,15,15"
         orientation="vertical">
-               <LinearLayout
-               width="match_parent"
-               height="wrap_content"
-               orientation="vertical">
+
 
                   {this.getEditTextView(this.idSet.nameText,"NAME","Enter your name",false,this.setName)}
                   {this.getSingleSelectSpinner(this.idSet.languageSpinnerContainer,"LANGUAGE",false,this.loadLanguageSpinner)}
 
-                 <TextView
-                  width="match_parent"
-                  height="20"
-                  style={window.__TextStyle.textStyle.HINT.BOLD}
-                  text="SUBJECTS"
-                  margin="4,0,0,0"/>
-                  <EditText
-                  width="match_parent"
-                  height="wrap_content"
-                  maxLines="1"
-                  style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
-                  onChange={this.getLanguagePredictions}
-                  hint="Start typing to add a subject"
-                  />
-              </LinearLayout>
+                {//  <TextView
+                //   width="match_parent"
+                //   height="20"
+                //   style={window.__TextStyle.textStyle.HINT.BOLD}
+                //   text="SUBJECTS"
+                //   margin="4,0,0,0"/>
+                //   <EditText
+                //   width="match_parent"
+                //   height="wrap_content"
+                //   maxLines="1"
+                //   style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
+                //   onChange={this.getLanguagePredictions}
+                //   hint="Start typing to add a subject"
+                //   />
+              }
 
-                <RelativeLayout
-                 width="match_parent"
-                 height="wrap_content">
+
+
+                  <LinearLayout
+                    width="match_parent"
+                    height="wrap_content"
+                    orientation="vertical"
+                    id={this.idSet.subjectSpinnerContainer}
+                    margin="0,0,0,17">
+                      <TextView
+                       width="match_parent"
+                       height="20"
+                       style={window.__TextStyle.textStyle.HINT.BOLD}
+                       text="GRADES"
+                       margin="0,0,0,8"/>
+                      <MultiSelectSpinner
+                        width="match_parent"
+                        height="wrap_content"
+                        data={this.subjectDictionary}
+                        selectedData={this.selectedSubjects}
+                        onItemChange={this.onMultiSelectSubjectItemChange}
+                       />
+                  </LinearLayout>
+
                    <LinearLayout
                    height="wrap_content"
                    width="match_parent"
                    orientation="vertical">
-
-                        <LinearLayout
-                        height="wrap_content"
-                        width="wrap_content"
-                        orientation="horizontal"
-                        id={this.idSet.LanguageLayout}
-                        margin="0,4,0,17"/>
 
                        {this.getEditTextView(this.idSet.emailText,"E-MAIL","Enter your email",false,this.setEmail)}
                        {this.getEditTextView(this.idSet.phoneText,"PHONE","Enter your phone number",false,this.setPhone,"number")}
@@ -456,14 +496,14 @@ class AdditionalInformationActivity extends View{
                              width="match_parent"
                              height="20"
                              style={window.__TextStyle.textStyle.HINT.BOLD}
-                             text="GRADES"
+                             text="SUBJECTS"
                              margin="0,0,0,8"/>
                             <MultiSelectSpinner
                               width="match_parent"
                               height="wrap_content"
                               data={this.GradeArray}
                               selectedData={this.grade}
-                              onItemChange={this.onMultiSelectItemChange}
+                              onItemChange={this.onMultiSelectGradeItemChange}
                              />
                         </LinearLayout>
 
@@ -527,24 +567,7 @@ class AdditionalInformationActivity extends View{
                     </LinearLayout>
 
 
-                    <LinearLayout
-                    height="wrap_content"
-                    width="328"
-                    background={window.__Colors.PRIMARY_BLACK_22}>
-                       <ScrollView
-                       height="wrap_content"
-                       width="match_parent"
-                       margin="2,0,2,0">
-                           <LinearLayout
-                           height="wrap_content"
-                           width="match_parent"
-                           margin="2,0,2,0"
-                           id={this.idSet.predictionLanguageLayout}
-                           background="#ffffff">
-                           </LinearLayout>
-                       </ScrollView>
-                    </LinearLayout>
-                 </RelativeLayout>
+
         </LinearLayout>
        </ScrollView>
       </LinearLayout>
@@ -602,9 +625,15 @@ class AdditionalInformationActivity extends View{
       );
   }
 
-  onMultiSelectItemChange = (selectedArray) => {
+  onMultiSelectGradeItemChange = (selectedArray) => {
     this.grade = selectedArray;
     console.log(this.grade , "selectedArray");
+    this.updateSaveButtonStatus(this.checkCompleteStatus());
+  }
+
+  onMultiSelectSubjectItemChange = (selectedArray) => {
+    this.selectedSubjects = selectedArray;
+    console.log(this.selectedSubjects , "selectedArray");
     this.updateSaveButtonStatus(this.checkCompleteStatus());
   }
 
@@ -709,16 +738,16 @@ class AdditionalInformationActivity extends View{
 
   getLanguagePredictions = (data) => {
 
-    console.log(this.languageDictionary, " languageDictionarycitionary");
+    console.log(this.subjectDictionary, " subjectDictionarycitionary");
     data=data.toLowerCase();
       var predictions=[];
       var i;
 
       if(data!=""){
-         for(i=0; i < this.languageDictionary.length;i++)
+         for(i=0; i < this.subjectDictionary.length;i++)
          {
-           if(this.languageDictionary[i].startsWith(data))
-              predictions.unshift(this.languageDictionary[i]);
+           if(this.subjectDictionary[i].startsWith(data))
+              predictions.unshift(this.subjectDictionary[i]);
          }
          console.log(predictions, "LangPredi");
          if(predictions!=[])
@@ -802,7 +831,7 @@ class AdditionalInformationActivity extends View{
 
   selectLanguageItem =(data) =>{
     console.log(data, "selectItem");
-    var index=this.languageDictionary.indexOf(data);
+    var index=this.subjectDictionary.indexOf(data);
     if(index >-1){
       JBridge.hideKeyboard();
 
@@ -812,15 +841,15 @@ class AdditionalInformationActivity extends View{
 
       this.replaceChild(this.idSet.predictionLanguageLayout, this.predictLanguageLayout.render(), 0);
 
-     this.languageDictionary.splice(index,1);
-     this.selectedLanguages.unshift(data);
+     this.subjectDictionary.splice(index,1);
+     this.selectedSubjects.unshift(data);
 
 
-     var skills = this.selectedLanguages.map((item) => {
+     var skills = this.selectedSubjects.map((item) => {
        return (this.languageItemLayout(item));
      });
 
-    console.log(this.selectedLanguages," skiilhere");
+    console.log(this.selectedSubjects," skiilhere");
     this.updatedLanguages=(
       <HorizontalScrollView
       height="wrap_content"
@@ -841,9 +870,9 @@ class AdditionalInformationActivity extends View{
   }
 
   addLanguageItem = (data) =>{
-    if(this.languageDictionary.indexOf(data)==-1 && this.selectedLanguages.indexOf(data)==-1)
+    if(this.subjectDictionary.indexOf(data)==-1 && this.selectedSubjects.indexOf(data)==-1)
     {
-      this.languageDictionary.unshift(data);
+      this.subjectDictionary.unshift(data);
       this.selectLanguageItem(data);
     }
     else {
@@ -885,16 +914,16 @@ class AdditionalInformationActivity extends View{
   }
 
   removeLanguage= (item) =>{
-    var index= this.selectedLanguages.indexOf(item);
+    var index= this.selectedSubjects.indexOf(item);
     if(index>-1){
-      this.selectedLanguages.splice(index,1);
-      this.languageDictionary.unshift(item);
+      this.selectedSubjects.splice(index,1);
+      this.subjectDictionary.unshift(item);
 
-      var languages = this.selectedLanguages.map((data) => {
+      var languages = this.selectedSubjects.map((data) => {
         return (this.languageItemLayout(data));
       });
 
-      console.log(this.selectedLanguages," skiilll");
+      console.log(this.selectedSubjects," skiilll");
       this.updatedLanguages=(
         <HorizontalScrollView
         height="wrap_content"
@@ -1133,6 +1162,18 @@ class AdditionalInformationActivity extends View{
     window.__runDuiCallback(event);
   }
 
+  arrayEquals = (array1,array2) => {
+    if(array1.length!=array2.length)
+     return false;
+
+    var i=0
+    for(i=0;i<array1.length;i++)
+      if(array2.indexOf(array1[i])<0)
+         return false;
+
+    return true;
+  }
+
   checkEmailFormat = (data) =>{
     if(!(data.indexOf("@") !== -1) || !(data.indexOf(".") !== -1))
         return false
@@ -1203,7 +1244,7 @@ class AdditionalInformationActivity extends View{
     if(this.gender!=null)
       json.gender=this.gender.toLowerCase();
 
-      json.subject=this.selectedLanguages.length>0 ? this.selectedLanguages : null;
+      json.subject=this.selectedSubjects.length>0 ? this.selectedSubjects : null;
 
       json.profileSummary = this.description;
 
@@ -1288,8 +1329,8 @@ class AdditionalInformationActivity extends View{
     console.log(JSON.stringify(this.grade) +" gfgh "+ JSON.stringify(this.prevData.grade));
     if(this.name == this.prevData.name && JSON.stringify(this.language) == JSON.stringify(this.prevData.language) && this.email == this.prevData.email && this.mobile == this.prevData.mobile && this.prevData.adhar==this.adhar)
       {
-        if(this.location==this.prevData.location && this.description == this.prevData.description && this.dob == this.prevData.dob && this.gender.toLowerCase() == this.prevData.gender.toLowerCase() && JSON.stringify(this.grade) == JSON.stringify(this.prevData.grade) )
-          if (JSON.stringify(this.selectedLanguages) == JSON.stringify(this.prevData.selectedLanguages))
+        if(this.location==this.prevData.location && this.description == this.prevData.description && this.dob == this.prevData.dob && this.gender.toLowerCase() == this.prevData.gender.toLowerCase() && this.arrayEquals(this.grade,this.prevData.grade) )
+          if (this.arrayEquals(this.selectedSubjects,this.prevData.selectedSubjects))
                return true;
       }
       return false;
