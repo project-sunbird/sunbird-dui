@@ -1,14 +1,14 @@
 
 
-var dom = require("@juspay/mystique-backend").doms.android;
-var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
-var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
-var TextView = require("@juspay/mystique-backend").androidViews.TextView;
-var EditText = require("@juspay/mystique-backend").androidViews.EditText;
-var ListView = require("@juspay/mystique-backend").androidViews.ListView;
+var dom = require("@juspay/mystique-backend/src/doms/android");
+var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
+var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
+var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
+var EditText = require("@juspay/mystique-backend/src/android_views/EditText");
+var ListView = require("@juspay/mystique-backend/src/android_views/ListView");
 
-var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
-var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
+var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
+var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
 
 class ListGenerator extends View {
   constructor(props, children) {

@@ -1,4 +1,4 @@
-const uiHandler = require("@juspay/mystique-backend").uiHandlers.android;
+const uiHandler = require("@juspay/mystique-backend/src/ui_handlers").android;
 var dispatcher;
 const R = require('ramda');
 
@@ -6,7 +6,7 @@ const R = require('ramda');
 //Reducer
 const ScreenReducer = require("../state_machines/Screens");
 
-const reducer = require("@juspay/mystique-backend").stateManagers.reducer({
+const reducer = require("@juspay/mystique-backend/src/state_managers").reducer({
   "SCREEN": ScreenReducer
 });
 

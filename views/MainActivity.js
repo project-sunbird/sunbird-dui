@@ -1,11 +1,11 @@
-var dom = require("@juspay/mystique-backend").doms.android;
-var Connector = require("@juspay/mystique-backend").connector;
-var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
-var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
-var TextView = require("@juspay/mystique-backend").androidViews.TextView;
+var dom = require("@juspay/mystique-backend/src/doms/android");
+var Connector = require("@juspay/mystique-backend/src/connectors/screen_connector");
+var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
+var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
+var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var ViewPager = require("@juspay/mystique-backend").androidViews.ViewPager;
-var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
-var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
+var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget");
+var ScrollView = require("@juspay/mystique-backend/src/android_views/ScrollView");
 var BottomNavBar = require("../components/Sunbird/core/BottomNavBar")
 var HomeFragment = require('./Fragments/HomeFragment');
 var CourseFragment = require('./Fragments/CourseFragment');
@@ -14,7 +14,7 @@ var CommunityFragment = require('./Fragments/CommunityFragment');
 var ProfileFragment = require('./Fragments/ProfileFragment');
 var ContentLoadingComponent = require('../components/Sunbird/ContentLoadingComponent');
 var FeedParams = require('../FeedParams');
-var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
+var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
 var objectAssign = require('object-assign');
 var debounce = require("debounce");
 var utils = require('../utils/GenericFunctions');
@@ -185,8 +185,16 @@ class MainActivity extends View {
       JBridge.getApiToken(callback);
       return;
     }else if(responseCode == 501 || status === "failure" || status=="f") {
-      JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION)
-      responseData=tmp;
+      if (state.responseFor == "API_CreatedBy") {
+        responseData = utils.decodeBase64(responseData)
+        responseData = JSON.parse(responseData);
+        if(state.sendBack){
+          responseData.sendBack = state.sendBack;
+        }
+      } else {
+        JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION)
+        responseData=tmp;
+      }
     } else {
      // responseData = utils.jsonifyData(responseData);
       responseData = utils.decodeBase64(responseData)
@@ -219,7 +227,7 @@ class MainActivity extends View {
       return;
     }
 
-    if (responseData.params.err) {
+    if (responseData.params && responseData.params.err) {
       JBridge.showSnackBar(window.__S.ERROR_SERVER_MESSAGE + response.params.errmsg)
       return;
     }

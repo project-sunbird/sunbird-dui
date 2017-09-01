@@ -1,11 +1,11 @@
 
-const dom = require("@juspay/mystique-backend").doms.android;
-const View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
-var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
-var RelativeLayout = require("@juspay/mystique-backend").androidViews.RelativeLayout;
+const dom = require("@juspay/mystique-backend/src/doms/android");
+const View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
+var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
+var RelativeLayout = require("@juspay/mystique-backend/src/android_views/RelativeLayout");
 var FrameLayout = require("@juspay/mystique-backend").androidViews.FrameLayout;
-var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
-var TextView = require("@juspay/mystique-backend").androidViews.TextView;
+var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
+var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 
 class FeatureButton extends View {
   constructor(props, children) {

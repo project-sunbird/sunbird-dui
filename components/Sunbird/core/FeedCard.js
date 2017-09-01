@@ -1,15 +1,15 @@
-var dom = require("@juspay/mystique-backend").doms.android;
-var Connector = require("@juspay/mystique-backend").connector;
-var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
+var dom = require("@juspay/mystique-backend/src/doms/android");
+var Connector = require("@juspay/mystique-backend/src/connectors/screen_connector");
+var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
 
-var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
-var RatingBar = require('@juspay/mystique-backend').androidViews.RatingBar;
+var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
+var RatingBar = require("@juspay/mystique-backend/src/android_views/RatingBar");;
 window.R = require("ramda");
-var TextView = require("@juspay/mystique-backend").androidViews.TextView;
-var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
+var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
+var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
 var Button = require('../../Sunbird/Button');
-var EditText = require("@juspay/mystique-backend").androidViews.EditText;
-var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
+var EditText = require("@juspay/mystique-backend/src/android_views/EditText");
+var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget");
 var _this;
 
 var Styles = require("../../../res/Styles");

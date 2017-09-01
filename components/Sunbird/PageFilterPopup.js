@@ -1,16 +1,16 @@
-const dom = require("@juspay/mystique-backend").doms.android;
-const View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
-var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
-var RelativeLayout = require("@juspay/mystique-backend").androidViews.RelativeLayout;
+const dom = require("@juspay/mystique-backend/src/doms/android");
+const View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
+var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
+var RelativeLayout = require("@juspay/mystique-backend/src/android_views/RelativeLayout");
 var FrameLayout = require("@juspay/mystique-backend").androidViews.FrameLayout;
-var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
-var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
-var TextView = require("@juspay/mystique-backend").androidViews.TextView;
-var EditText = require("@juspay/mystique-backend").androidViews.EditText;
+var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
+var ScrollView = require("@juspay/mystique-backend/src/android_views/ScrollView");
+var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
+var EditText = require("@juspay/mystique-backend/src/android_views/EditText");
 
-var Space = require("@juspay/mystique-backend").androidViews.Space;
-var ViewWidget = require('@juspay/mystique-backend').androidViews.ViewWidget;
-var FeatureButton = require('../../components/Sunbird/FeatureButton');
+var Space = require("@juspay/mystique-backend/src/android_views/Space");
+var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
+var FeatureButton = require("../../components/Sunbird/FeatureButton");
 var PageFilterChooser = require('../Sunbird/PageFilterChooser');
 
 var FilterItem = require('../Sunbird/FilterItem')

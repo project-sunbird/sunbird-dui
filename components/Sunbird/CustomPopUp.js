@@ -1,11 +1,11 @@
-const View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
-var dom = require("@juspay/mystique-backend").doms.android;
-var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
-var RelativeLayout = require("@juspay/mystique-backend").androidViews.RelativeLayout;
-var EditText = require("@juspay/mystique-backend").androidViews.EditText;
-var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
-var TextView = require("@juspay/mystique-backend").androidViews.TextView;
-var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
+const View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
+var dom = require("@juspay/mystique-backend/src/doms/android");
+var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
+var RelativeLayout = require("@juspay/mystique-backend/src/android_views/RelativeLayout");
+var EditText = require("@juspay/mystique-backend/src/android_views/EditText");
+var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
+var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
+var ScrollView = require("@juspay/mystique-backend/src/android_views/ScrollView");
 
 
 class CustomPopUp extends View{

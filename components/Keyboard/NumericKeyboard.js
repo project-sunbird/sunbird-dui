@@ -1,6 +1,6 @@
-var dom = require("@juspay/mystique-backend").doms.android;
-var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
-var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
+var dom = require("@juspay/mystique-backend/src/doms/android");
+var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
+var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
 
 import KeyboardKey from "./KeyboardKey";
  
