@@ -59,8 +59,6 @@ class SearchActivity extends View {
 
   afterRender = () => {
 
-
-
     if(this.filterData!=undefined && this.filterData.length != 0){
       console.log(this.filterData, "filterinsearch");
       var flag=false;
@@ -116,6 +114,8 @@ class SearchActivity extends View {
       _this.handleSearchClick(data);
 
     });
+
+    console.log("VISIBILITY IN AFTERRENDER",window.__LoaderDialog.visibility);
 
     JBridge.handleImeAction(this.idSet.searchHolder, callback);
 
@@ -224,7 +224,7 @@ class SearchActivity extends View {
 
 
   renderResult = (data) => {
-
+    console.log("data from server",data)
     var layout = (<LinearLayout
                    width="match_parent"
                    height="wrap_content"
@@ -248,9 +248,11 @@ class SearchActivity extends View {
   }
 
   getSearchList=(searchText,flag)=> {
+    
     if(searchText == ""){
-      window.__LoaderDialog.hide();
+      console.log("empty text"+window.__LoaderDialog.visibility);
       this.renderNoResult();
+      window.__LoaderDialog.hide();
     }
     else
     {
@@ -261,6 +263,7 @@ class SearchActivity extends View {
                 if (searchText == "" || data[0] == "[]") {
                   _this.renderNoResult();
                   window.__LoaderDialog.hide();
+                  
                 } else {
                   var s = data[0];
                   s = s.replace(/\\n/g, "\\n")
@@ -274,9 +277,9 @@ class SearchActivity extends View {
                   s = s.replace(/[\u0000-\u0019]+/g, "");
                   _this.renderResult(JSON.parse(s));
                   window.__LoaderDialog.hide();
+                  
                 }
         });
-
 
           if (this.filterData!=undefined && this.filterData.length == 0) {
             status = "false";
@@ -324,8 +327,12 @@ class SearchActivity extends View {
 
   handleSearchClick = (searchText) => {
     JBridge.hideKeyboard();
-    this.getSearchList(searchText[0],"false");
+    this.filterData = "";
     window.__LoaderDialog.show();
+
+    this.getSearchList(searchText[0],"false");
+
+
   }
 
   handleClearClick = () => {
