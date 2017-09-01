@@ -24,7 +24,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/agpl.html>.
 
 
 */
-const callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
+const callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
 
 module.exports = (dispatcher) => {
   return {

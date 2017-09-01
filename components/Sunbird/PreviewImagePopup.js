@@ -1,11 +1,11 @@
-const View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
+const View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
 
-var dom = require("@juspay/mystique-backend").doms.android;
+var dom = require("@juspay/mystique-backend/src/doms/android");
 
-var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
-var RelativeLayout = require("@juspay/mystique-backend").androidViews.RelativeLayout;
-var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
-var TextView = require("@juspay/mystique-backend").androidViews.TextView;
+var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
+var RelativeLayout = require("@juspay/mystique-backend/src/android_views/RelativeLayout");
+var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
+var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 
 class PreviewImagePopup extends View {
     constructor(props, childern) {

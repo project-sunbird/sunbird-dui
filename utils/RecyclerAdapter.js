@@ -1,10 +1,10 @@
-var dom = require("@juspay/mystique-backend").doms.android;
-var Connector = require("@juspay/mystique-backend").connector;
-var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
-var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
-var ListView = require("@juspay/mystique-backend").androidViews.ListView;
+var dom = require("@juspay/mystique-backend/src/doms/android");
+var Connector = require("@juspay/mystique-backend/src/connectors/screen_connector");
+var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
+var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
+var ListView = require("@juspay/mystique-backend/src/android_views/ListView");
 
-var Space = require('@juspay/mystique-backend').androidViews.Space;
+var Space = require("@juspay/mystique-backend/src/android_views/Space");
 var _this;
 
 const filterParams = require('../FilterParams');

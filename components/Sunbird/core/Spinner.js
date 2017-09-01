@@ -1,9 +1,9 @@
 
-var dom = require("@juspay/mystique-backend").doms.android;
-var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
+var dom = require("@juspay/mystique-backend/src/doms/android");
+var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
 var FrameLayout = require("@juspay/mystique-backend").androidViews.FrameLayout;
-var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
-var TextView = require("@juspay/mystique-backend").androidViews.TextView;
+var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
+var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 
 class Spinner extends View{
 

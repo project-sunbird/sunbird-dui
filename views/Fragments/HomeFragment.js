@@ -1,14 +1,14 @@
-var dom = require("@juspay/mystique-backend").doms.android;
-var Connector = require("@juspay/mystique-backend").connector;
-var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
-var RelativeLayout = require("@juspay/mystique-backend").androidViews.RelativeLayout;
-var TextView = require("@juspay/mystique-backend").androidViews.TextView;
-var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
-var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
+var dom = require("@juspay/mystique-backend/src/doms/android");
+var Connector = require("@juspay/mystique-backend/src/connectors/screen_connector");
+var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
+var RelativeLayout = require("@juspay/mystique-backend/src/android_views/RelativeLayout");
+var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
+var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
+var ScrollView = require("@juspay/mystique-backend/src/android_views/ScrollView");
 
-var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
+var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
 var objectAssign = require('object-assign');
-var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
+var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
 var CourseInProgressContainer = require('../../components/Sunbird/CourseInProgressContainer');
 
 
