@@ -177,9 +177,9 @@ class PageFilterPopup extends View {
           width="match_parent"
           padding="16,0,16,0">
 
-            {this.getFeatureButton("DISMISS",true,this.hide)}
+            {this.getFeatureButton(window.__S.CANCEL,true,this.hide)}
 
-            {this.getFeatureButton("APPLY",false,this.onConfirm)}
+            {this.getFeatureButton(window.__S.APPLY,false,this.onConfirm)}
 
 
           </LinearLayout>)
@@ -250,7 +250,11 @@ class PageFilterPopup extends View {
 
     var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken,"filter_to_send":sendFilter}
     var event = { "tag": "API_FilterPage", contents: whatToSend};
-    window.__runDuiCallback(event);
+    
+    if(JBridge.isNetworkAvailable())
+      window.__runDuiCallback(event);
+    else
+      JBridge.showSnackBar(window.__S.NO_INTERNET)
 
   }
 
