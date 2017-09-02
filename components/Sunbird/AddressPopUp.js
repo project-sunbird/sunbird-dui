@@ -45,7 +45,8 @@ class AddressPopUp extends View {
       "saveButtonParent",
       "saveButtonContainer",
       "delButton",
-      "btnsHolder"
+      "btnsHolder",
+      "addressConf"
     ]);
     _this=this;
     this.isVisible=false;
@@ -323,9 +324,9 @@ class AddressPopUp extends View {
   }
 
   handleDelClick = () => {
-    this.delete = true;
-    this.handleSaveClick();
-    // window.__SimplePopup.show();
+    // this.delete = true;
+    // this.handleSaveClick();
+    window.__SimplePopup.show(this.idSet.addressConf);
   }
 
   checkPincode = (data) =>{
@@ -677,7 +678,7 @@ class AddressPopUp extends View {
     } else {
 
     }
-    window.__SimplePopup.hide();
+    window.__SimplePopup.hide(this.idSet.addressConf);
   }
 
   render() {
@@ -702,6 +703,7 @@ class AddressPopUp extends View {
           width = "match_parent"
           height = "match_parent">
           <SimplePopup
+            id = {this.idSet.addressConf}
             data = {popUpdata}
             buttonClick = {this.handleConfirmDialog} />
         </LinearLayout>

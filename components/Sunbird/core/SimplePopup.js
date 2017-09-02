@@ -28,6 +28,7 @@ class SimplePopup extends View {
       "linkShareIntents",
       "fileShareIntents"
     ]);
+    this.parentId = this.props.id || this.idSet.parentContainer;
     this.chosenItem;
     this.selectedList = [];
     _this=this;
@@ -37,13 +38,13 @@ class SimplePopup extends View {
   }
 
 
-  show = () => {
-    this.setVisibility("visible");
+  show = (id) => {
+    this.setVisibility("visible", id);
     this.isVisible=true;
   }
 
-  hide = () => {
-    this.setVisibility("gone");
+  hide = (id) => {
+    this.setVisibility("gone", id);
     this.isVisible=false;
   }
 
@@ -51,9 +52,9 @@ class SimplePopup extends View {
     return this.isVisible;
   }
 
-  setVisibility = (data) => {
+  setVisibility = (data, id) => {
     var cmd = this.set({
-      id: this.idSet.parentContainer,
+      id: id || this.parentId,
       visibility: data
     })
 
@@ -231,7 +232,7 @@ class SimplePopup extends View {
       <LinearLayout
         height = "match_parent"
         width = "match_parent"
-        id={this.idSet.parentContainer}
+        id={this.parentId}
         visibility="gone"
         afterRender={this.afterRender}
         root="true"

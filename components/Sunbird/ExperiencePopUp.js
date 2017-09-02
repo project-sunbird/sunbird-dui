@@ -46,7 +46,8 @@ class ExperiencePopUp extends View{
       "subjectSpinner",
       "subjectSpinnerContainer",
       "jobTypeRadioContainer",
-      "experiencePopUpBody"
+      "experiencePopUpBody",
+      "deleteConf"
     ]);
     this.isVisible = false;
     this.spinnerArray = ["Select","Bengali","English","Gujarati","Hindi","Kannada","Marathi","Punjabi","Tamil"];
@@ -606,10 +607,10 @@ class ExperiencePopUp extends View{
   }
 
 del = () => {
-  this.delete = true;
-  this.sendJSON();
-  // window.__SimplePopup.show();
-  // console.log("window.__SimplePopup.show()");
+  // this.delete = true;
+  // this.sendJSON();
+  window.__SimplePopup.show(this.idSet.deleteConf);
+  console.log("window.__SimplePopup.show()");
 }
 
  render(){
@@ -641,6 +642,7 @@ del = () => {
         height = "match_parent">
 
          <SimplePopup
+            id = {this.idSet.deleteConf}
             data = {popUpdata}
             buttonClick = {this.handleConfirmDialog} />
         </LinearLayout>
@@ -656,7 +658,7 @@ del = () => {
        } else {
 
        }
-       window.__SimplePopup.hide();
+       window.__SimplePopup.hide(this.idSet.deleteConf);
      }
 
      loadSpinner = () => {

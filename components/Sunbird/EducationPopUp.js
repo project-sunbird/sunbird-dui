@@ -37,7 +37,8 @@ class EducationPopUp extends View {
       "saveButton",
       "delButton",
       "saveButtonParent",
-      "saveButtonContainer"
+      "saveButtonContainer",
+      "eduConf"
     ]);
     _this=this;
     this.isVisible=false;
@@ -582,9 +583,9 @@ class EducationPopUp extends View {
   }
 
   handleDelClick = () => {
-    // window.__SimplePopup.show();
-    this.delete = true;
-    this.handleSaveClick();
+    window.__SimplePopup.show(this.idSet.eduConf);
+    // this.delete = true;
+    // this.handleSaveClick();
   }
 
   handleConfirmDialog = (type) => {
@@ -594,7 +595,7 @@ class EducationPopUp extends View {
     } else {
 
     }
-    window.__SimplePopup.hide();
+    window.__SimplePopup.hide(this.idSet.eduConf);
   }
 
   render() {
@@ -624,6 +625,7 @@ class EducationPopUp extends View {
           width = "match_parent"
           height = "match_parent">
           <SimplePopup
+            id = {this.idSet.eduConf}
             data = {popUpdata}
             buttonClick = {this.handleConfirmDialog} />
         </LinearLayout>
