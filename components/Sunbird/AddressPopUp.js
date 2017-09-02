@@ -16,6 +16,7 @@ var CheckBox = require("@juspay/mystique-backend/src/android_views/CheckBox");
 var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
 var Styles = require("../../res/Styles");
 let IconStyle = Styles.Params.IconStyle;
+var SimplePopup = require("../../components/Sunbird/core/SimplePopup");
 var PageOption = require("../../components/Sunbird/core/PageOption")
 var FeatureButton = require("../../components/Sunbird/FeatureButton");
 
@@ -31,6 +32,7 @@ class AddressPopUp extends View {
     super(props,childern);
     this.setIds([
       "addressPopUpParent",
+      "addressPopUpBody",
       "addressTypeRadioContainer",
       "addressTypeRadio",
       "addressLine1Text",
@@ -81,7 +83,7 @@ class AddressPopUp extends View {
     window.__patchCallback = this.getPatchCallback ;
     this.responseCame=false;
     this.updateSaveButtonStatus(false);
-    this.replaceChild(this.idSet.addressPopUpParent, this.getUi().render(),0);
+    this.replaceChild(this.idSet.addressPopUpBody, this.getUi().render(),0);
     this.setVisibility("visible");
     this.initializeData();
     this.populateData();
@@ -321,8 +323,7 @@ class AddressPopUp extends View {
   }
 
   handleDelClick = () => {
-    this.delete = true;
-    this.handleSaveClick();
+    window.__SimplePopup.show();
   }
 
   checkPincode = (data) =>{
@@ -654,103 +655,12 @@ class AddressPopUp extends View {
     );
   }
 
-
-  getBtn = (id, type, label, onClick, visibility) => {
-    return (
-      <LinearLayout
-        width = "0"
-        weight = "1"
-        height = "wrap_content"
-        visibility = {visibility}
-        margin = "0, 0, 16, 0">
-
-        <FeatureButton
-          weight = "1"
-          id = {id}
-          clickable="false"
-          width = "match_parent"
-          height = "match_parent"
-          stroke = {type == "pos" ? "1," + window.__Colors.WHITE : "3," + window.__Colors.PRIMARY_DARK}
-          background = {type == "pos" ? window.__Colors.PRIMARY_DARK : window.__Colors.WHITE}
-          text = {label}
-          buttonClick = {onClick}
-          textColor = {type == "pos" ? window.__Colors.WHITE : window.__Colors.PRIMARY_DARK}
-          textStyle = {window.__TextStyle.textStyle.CARD.ACTION.LIGHT}/>
-      </LinearLayout>
-    );
-  }
-
-  getSaveBtn() {
-    return (
-      <LinearLayout
-       height="match_parent"
-       weight="1"
-        height="match_parent"
-        width="0"
-       padding="6, 6, 6, 6"
-       background="#ffffff"
-       orientation="horizontal"
-       id={this.idSet.saveButtonParent}>
-          <LinearLayout
-          height="match_parent"
-          width="match_parent"
-          id={this.idSet.saveButtonContainer}
-          onClick={ this.handleSaveClick }>
-              <LinearLayout
-              height="match_parent"
-              width="match_parent"
-              gravity="center"
-              cornerRadius="5,5,5,5"
-              background={window.__Colors.FADE_BLUE}
-              id={this.idSet.saveButton}>
-                  <TextView
-                  text="Save"
-                  gravity="center"
-                  style={window.__TextStyle.textStyle.CARD.TITLE.LIGHT}/>
-              </LinearLayout>
-          </LinearLayout>
-      </LinearLayout>
-    );
-  }
-
-
-
-  getDelBtn = () => {
-    return (
-      <LinearLayout
-       visibility = {window.__AddressPopUp.data ? "visible" : "gone"}
-       weight = "1"
-       height="match_parent"
-       width="0"
-       padding="6, 6, 6, 6"
-       background="#ffffff"
-       orientation="horizontal">
-          <LinearLayout
-          height="match_parent"
-          width="match_parent"
-          onClick={ this.handleDelClick }>
-              <LinearLayout
-              height="match_parent"
-              width="match_parent"
-              gravity="center"
-              cornerRadius="5,5,5,5"
-              background={window.__Colors.ERROR_RED}>
-                  <TextView
-                  text="Delete"
-                  gravity="center"
-                  style={window.__TextStyle.textStyle.CARD.TITLE.LIGHT}/>
-              </LinearLayout>
-          </LinearLayout>
-      </LinearLayout>
-    );
-  }
-
-
   getUi = () => {
     return (
       <RelativeLayout
         width="match_parent"
         height="match_parent"
+        id = {this.idSet.addressPopUpBody}
         gravity="center">
             {this.getBody()}
             {this.getFooter()}
@@ -758,10 +668,25 @@ class AddressPopUp extends View {
     );
   }
 
+  handleConfirmDialog = (type) => {
+    if (type == "positive") {
+      this.delete = true;
+      this.handleSaveClick();
+    } else {
+
+    }
+    window.__SimplePopup.hide();
+  }
 
   render() {
+    var popUpdata = {
+      title : "Confirm Delete?",
+      content : "",
+      negButtonText : "Cancel",
+      posButtonText : "Delete"
+    }
     this.layout = (
-      <LinearLayout
+      <RelativeLayout
         orientation="vertical"
         width="match_parent"
         height="match_parent"
@@ -770,7 +695,15 @@ class AddressPopUp extends View {
         gravity="center"
         background = "#ffffff">
             {this.getUi()}
-      </LinearLayout>
+
+        <LinearLayout
+          width = "match_parent"
+          height = "match_parent">
+          <SimplePopup
+            data = {popUpdata}
+            buttonClick = {this.handleConfirmDialog} />
+        </LinearLayout>
+      </RelativeLayout>
     );
 
     return this.layout.render();

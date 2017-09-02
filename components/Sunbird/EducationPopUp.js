@@ -16,6 +16,7 @@ var CheckBox = require("@juspay/mystique-backend/src/android_views/CheckBox");
 var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
 var FeatureButton = require("../../components/Sunbird/FeatureButton");
 var PageOption = require("../../components/Sunbird/core/PageOption")
+var SimplePopup = require("../../components/Sunbird/core/SimplePopup");
 var Styles = require("../../res/Styles");
 let IconStyle = Styles.Params.IconStyle;
 
@@ -26,6 +27,7 @@ class EducationPopUp extends View {
     super(props,childern);
     this.setIds([
       "educationPopUpParent",
+      "educationPopUpBody",
       "degreeText",
       "yearOfPassingText",
       "percentageText",
@@ -88,7 +90,7 @@ class EducationPopUp extends View {
     window.__patchCallback = this.getPatchCallback ;
     this.responseCame=false;
     this.updateSaveButtonStatus(false);
-    this.replaceChild(this.idSet.educationPopUpParent, this.getUi().render(),0);
+    this.replaceChild(this.idSet.educationPopUpBody, this.getUi().render(),0);
     this.setVisibility("visible");
     this.initializeData();
     this.populateData();
@@ -580,13 +582,28 @@ class EducationPopUp extends View {
   }
 
   handleDelClick = () => {
-    this.delete = true;
-    this.handleSaveClick();
+    window.__SimplePopup.show();
+  }
+
+  handleConfirmDialog = (type) => {
+    if (type == "positive") {
+      this.delete = true;
+      this.handleSaveClick();
+    } else {
+
+    }
+    window.__SimplePopup.hide();
   }
 
   render() {
+    var popUpdata = {
+      title : "Confirm Delete?",
+      content : "",
+      negButtonText : "Cancel",
+      posButtonText : "Delete"
+    }
     this.layout = (
-      <LinearLayout
+      <RelativeLayout
         width = "match_parent"
         height = "match_parent"
         root = "true"
@@ -596,11 +613,19 @@ class EducationPopUp extends View {
         <RelativeLayout
           width="match_parent"
           height="match_parent"
+          id={this.idSet.educationPopUpBody}
           gravity="center">
               {this.getBody()}
               {this.getFooter()}
         </RelativeLayout>
-      </LinearLayout>
+        <LinearLayout
+          width = "match_parent"
+          height = "match_parent">
+          <SimplePopup
+            data = {popUpdata}
+            buttonClick = {this.handleConfirmDialog} />
+        </LinearLayout>
+      </RelativeLayout>
     );
 
     return this.layout.render();

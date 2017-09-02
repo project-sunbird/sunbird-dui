@@ -18,6 +18,7 @@ var PageOption = require("../../components/Sunbird/core/PageOption")
 var HorizontalScrollView = require("@juspay/mystique-backend/src/android_views/HorizontalScrollView");
 var Styles = require("../../res/Styles");
 var MultiSelectSpinner = require('./MultiSelectSpinner');
+var SimplePopup = require("../../components/Sunbird/core/SimplePopup");
 let IconStyle = Styles.Params.IconStyle;
 
 
@@ -44,7 +45,8 @@ class ExperiencePopUp extends View{
       "delButtonParent",
       "subjectSpinner",
       "subjectSpinnerContainer",
-      "jobTypeRadioContainer"
+      "jobTypeRadioContainer",
+      "experiencePopUpBody"
     ]);
     this.isVisible = false;
     this.spinnerArray = ["Select","Bengali","English","Gujarati","Hindi","Kannada","Marathi","Punjabi","Tamil"];
@@ -97,7 +99,7 @@ class ExperiencePopUp extends View{
    });
    Android.runInUI(cmd, 0)
 
-   this.replaceChild(this.idSet.experiencePopUpParent,this.getUi().render(),0);
+   this.replaceChild(this.idSet.experiencePopUpBody,this.getUi().render(),0);
    this.setVisibility("visible");
 
   this.initializeData();
@@ -604,29 +606,55 @@ class ExperiencePopUp extends View{
   }
 
 del = () => {
-  this.delete = true;
-  this.sendJSON();
+  window.__SimplePopup.show();
+  console.log("window.__SimplePopup.show()");
 }
 
  render(){
+   var popUpdata = {
+     title : "Confirm Delete?",
+     content : "",
+     negButtonText : "Cancel",
+     posButtonText : "Delete"
+   }
    this.layout=(
-     <LinearLayout
+     <RelativeLayout
        width = "match_parent"
        height = "match_parent"
        root = "true"
-       id={this.idSet.experiencePopUpParent}
        background = "#ffffff"
+       id={this.idSet.experiencePopUpParent}
        visibility="gone">
        <RelativeLayout
          width="match_parent"
          height="match_parent"
+         id = {this.idSet.experiencePopUpBody}
          gravity="center">
              {this.getBody()}
              {this.getFooter()}
        </RelativeLayout>
-     </LinearLayout>
+
+       <LinearLayout
+        width = "match_parent"
+        height = "match_parent">
+
+         <SimplePopup
+            data = {popUpdata}
+            buttonClick = {this.handleConfirmDialog} />
+        </LinearLayout>
+     </RelativeLayout>
      );
         return this.layout.render();
+     }
+
+     handleConfirmDialog = (type) => {
+       if (type == "positive") {
+         this.delete = true;
+         this.sendJSON();
+       } else {
+
+       }
+       window.__SimplePopup.hide();
      }
 
      loadSpinner = () => {
