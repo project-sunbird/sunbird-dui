@@ -28,6 +28,7 @@ class ProgressButton extends View {
 
     _this = this;
     this.isCancelVisible=false;
+    console.log("progress button props",this.props)
 
   }
 
@@ -59,13 +60,24 @@ class ProgressButton extends View {
 
   checkContentLocalStatus = (status) => {
 
-    if (status == true) {
-      this.isDownloaded = true;
-      console.log("status", status == "true")
-      this.replaceChild(this.idSet.downloadBarContainer, this.getButtons("100", "PLAY").render(), 0);
+    var callback = callbackMapper.map(function(data){
+      var data = JSON.parse(utils.jsonifyData(data[0]));
+      if(data.isAvailableLocally == true){
+        _this.isDownloaded = true;
+      console.log("status local", status)
+      // this.props.playContent = JSON.stringify(data)
+      _this.replaceChild(_this.idSet.downloadBarContainer, _this.getButtons("100", window.__S.PLAY).render(), 0);
+      }
+      else{
+        _this.isDownloaded = false;
+      console.log("status not local", status)
+      _this.replaceChild(_this.idSet.downloadBarContainer, _this.getButtons("0", window.__S.DOWNLOAD).render(), 0);
+      }
 
 
-    }
+    })
+    JBridge.getContentDetails(this.props.identifier,callback)
+
 
   }
 
@@ -87,7 +99,7 @@ class ProgressButton extends View {
      console.log(data.downloadProgress)
      if(data.status == "NOT_FOUND"){
           this.setCancelButtonVisibility("gone");
-        _this.replaceChild(_this.idSet.downloadBarContainer, _this.getButtons(0, "DOWNLOAD").render(), 0);
+        _this.replaceChild(_this.idSet.downloadBarContainer, _this.getButtons(0, window.__S.DOWNLOAD).render(), 0);
         JBridge.showSnackBar("Content Not Available");
         return;
      }
@@ -127,6 +139,17 @@ class ProgressButton extends View {
   setButtonFor = (identifier) => {
     this.props.identifier=identifier;
   }
+  setLocalStatus = (status) =>{
+    this.props.localStatus = status;
+  }
+
+  setPlayContent = (content) =>{
+    this.props.playContent = content;
+  }
+
+  setContentDetails = (data) =>{
+    this.props.contentDetails = data;
+  }
 
 
   handleButtonClick = () => {
@@ -134,7 +157,7 @@ class ProgressButton extends View {
       window.__getDownloadStatus = this.updateProgress;
 
       if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
-
+        console.log(this.isDownloaded,this.props)
         if (this.isDownloaded) {
           window.__getGenieEvents = this.checkTelemetry;
           // JBridge.playContent(this.props.identifier);
