@@ -202,11 +202,20 @@ class ContentPreviewScreen extends View {
 
     } else {
       window.__ContentLoaderDialog.show();
+      window.__ContentLoaderDialog.setClickCallback(this.handleContentLoaderCancelClick);
       window.__ContentLoaderDialog.updateProgressBar(downloadedPercent);
 
     }
 
 
+  }
+
+  handleContentLoaderCancelClick = () => {
+    JBridge.cancelDownload(this.baseIdentifier);
+    setTimeout(function(){
+      window.__ContentLoaderDialog.hide();
+      this.onBackPressed();
+    }, 500);
   }
 
 
@@ -225,7 +234,7 @@ class ContentPreviewScreen extends View {
       } else {
         if(JBridge.isNetworkAvailable()){
           JBridge.importCourse(identifier,"false");
-          
+
         }
         else
           JBridge.showSnackBar(window.__S.NO_INTERNET)
@@ -374,7 +383,7 @@ class ContentPreviewScreen extends View {
     window.__runDuiCallback(event);
   }
 
-  
+
 
   changeOverFlow = () =>{
     var toolbar =  (<SimpleToolbar
@@ -391,7 +400,7 @@ class ContentPreviewScreen extends View {
     this.replaceChild(this.idSet.simpleToolBarOverFlow, toolbar.render(), 0);
   }
   getHeader = () => {
-    var headFooterTitle = this.details.contentType + (this.details.contentData.hasOwnProperty("size") ? " ["+utils.formatBytes(this.details.contentData.size)+"]" : "");      
+    var headFooterTitle = this.details.contentType + (this.details.contentData.hasOwnProperty("size") ? " ["+utils.formatBytes(this.details.contentData.size)+"]" : "");
     return (
 
       <LinearLayout

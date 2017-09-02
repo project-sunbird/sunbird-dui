@@ -17,18 +17,25 @@ class ContentLoaderDialog extends View {
 
     this.setIds([
       'progressContainer',
-      "parentContainer"
+      "parentContainer",
+      "btnContainer"
     ]);
 
     this.state = state;
     window.__ContentLoaderDialog = this;
 
     this.isVisible=false;
+    this.handleClickCallback = null;
+    this.isButtonVisible = false;
 
 }
 
   afterRender = () => {
 
+  }
+
+  setClickCallback = (callback) => {
+    this.handleClickCallback = callback;
   }
 
     show = () => {
@@ -54,6 +61,8 @@ class ContentLoaderDialog extends View {
           );
     }
         this.isVisible=false;
+        if (this.handleClickCallback)
+          this.handleClickCallback = null;
 
     }
 
@@ -61,9 +70,51 @@ class ContentLoaderDialog extends View {
       return this.isVisible;
     }
 
-   updateProgressBar = (pStatus) => {
+  handleClick = () => {
+    if (this.handleClickCallback)
+      this.handleClickCallback();
+    else
+      return;
+  }
 
-    this.replaceChild(this.idSet.progressContainer, this.getProgressBar(pStatus).render(), 0)
+   updateProgressBar = (pStatus) => {
+    this.replaceChild(this.idSet.progressContainer, this.getProgressBar(pStatus).render(), 0);
+    if (pStatus > 0 && pStatus < 100){
+      if (!this.isButtonVisible){
+        this.isButtonVisible = true;
+        Android.runInUI(this.set({
+          id : this.idSet.btnContainer,
+          visibility : "visible"
+        }), 0);
+      }
+    } else {
+      if (this.isButtonVisible){
+        this.isButtonVisible = false;
+        Android.runInUI(this.set({
+          id : this.idSet.btnContainer,
+          visibility : "gone"
+        }), 0);
+      }
+    }
+  }
+
+  getButton = () => {
+    return(
+        <LinearLayout
+          width = "match_parent"
+          height = "wrap_content"
+          gravity = "center"
+          margin = "0,24,0,24">
+          <TextView
+            height = "wrap_content"
+            width = "wrap_content"
+            onClick = {this.handleClick}
+            text = "Cancel"
+            style = {window.__TextStyle.textStyle.CARD.BODY.BLUE_R}
+            color={window.__Colors.PRIMARY_ACCENT}
+            padding = "16,10,16,10" />
+        </LinearLayout>
+      );
   }
 
 
@@ -96,14 +147,17 @@ class ContentLoaderDialog extends View {
 
   render() {
     this.layout = (
+      <RelativeLayout
+        width = "match_parent"
+        height = "match_parent"
+        id={this.idSet.parentContainer}
+        visibility="gone"
+        clickable="true"
+        root = "true">
       <LinearLayout
         width="match_parent"
         height="match_parent"
-        root = "true"
         orientation="vertical"
-        visibility="gone"
-        clickable="true"
-        id={this.idSet.parentContainer}
         margin="0,0,0,0"
         background={window.__Colors.WHITE}
         gravity="center">
@@ -127,8 +181,18 @@ class ContentLoaderDialog extends View {
 
           </LinearLayout>
 
-
-      </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+          width = "match_parent"
+          height = "wrap_content"
+          alignParentBottom = "true, -1"
+          gravity = "center"
+          visibility = "gone"
+          id = {this.idSet.btnContainer}
+          margin = "0,8,0,8">
+          {this.getButton()}
+          </LinearLayout>
+      </RelativeLayout>
     );
 
     return this.layout.render();

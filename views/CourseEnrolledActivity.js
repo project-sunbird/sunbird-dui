@@ -192,13 +192,20 @@ class CourseEnrolledActivity extends View {
 
     } else {
       window.__ContentLoaderDialog.show();
+      window.__ContentLoaderDialog.setClickCallback(this.handleContentLoaderCancelClick)
       window.__ContentLoaderDialog.updateProgressBar(downloadedPercent);
-
     }
 
 
   }
 
+  handleContentLoaderCancelClick = () => {
+    JBridge.cancelDownload(this.baseIdentifier);
+    setTimeout(function(){
+      window.__ContentLoaderDialog.hide();
+      this.onBackPressed();
+    }, 500);
+  }
 
   checkContentLocalStatus = (identifier) => {
     console.log("local status")
@@ -286,8 +293,8 @@ class CourseEnrolledActivity extends View {
   handleStateChange = (state) =>{
     console.log("STATE \n\n",state)
     if(state.response.statusCode != 504){
-      
-        
+
+
         var response = JSON.parse(utils.decodeBase64(state.response.status[1]))
         var responseCode = state.response.status[2]
 
