@@ -417,30 +417,6 @@ class AdditionalInformationActivity extends View{
                 //   />
               }
 
-
-
-                  <LinearLayout
-                    width="match_parent"
-                    height="wrap_content"
-                    orientation="vertical"
-                    id={this.idSet.subjectSpinnerContainer}
-                    margin="0,0,0,17">
-                      <TextView
-                       width="match_parent"
-                       height="20"
-                       style={window.__TextStyle.textStyle.HINT.SEMI}
-                       text="GRADES"
-                       margin="0,0,0,8"
-                       padding ="4,0,4,0"/>
-                      <MultiSelectSpinner
-                        width="match_parent"
-                        height="wrap_content"
-                        data={this.subjectDictionary}
-                        selectedData={this.selectedSubjects}
-                        onItemChange={this.onMultiSelectSubjectItemChange}
-                       />
-                  </LinearLayout>
-
                    <LinearLayout
                    height="wrap_content"
                    width="match_parent"
@@ -448,6 +424,28 @@ class AdditionalInformationActivity extends View{
 
                        {this.getEditTextView(this.idSet.emailText,"E-MAIL","Enter your email",false,this.setEmail)}
                        {this.getEditTextView(this.idSet.phoneText,"PHONE","Enter your phone number",false,this.setPhone,"number")}
+                       {this.getEditTextView(this.idSet.descriptionText,"DESCRIPTION","",true,this.setDescription)}
+                       <LinearLayout
+                         width="match_parent"
+                         height="wrap_content"
+                         orientation="vertical"
+                         id={this.idSet.subjectSpinnerContainer}
+                         margin="0,0,0,17">
+                           <TextView
+                            width="match_parent"
+                            height="20"
+                            style={window.__TextStyle.textStyle.HINT.SEMI}
+                            text="GRADES"
+                            margin="0,0,0,8"
+                            padding ="4,0,4,0"/>
+                           <MultiSelectSpinner
+                             width="match_parent"
+                             height="wrap_content"
+                             data={this.subjectDictionary}
+                             selectedData={this.selectedSubjects}
+                             onItemChange={this.onMultiSelectSubjectItemChange}
+                            />
+                       </LinearLayout>
                        {this.getSingleSelectSpinner(this.idSet.spinnerContainer,"GENDER",true,this.loadGenderSpinner)}
 
                        <LinearLayout
@@ -514,7 +512,7 @@ class AdditionalInformationActivity extends View{
                              />
                         </LinearLayout>
 
-                          {this.getEditTextView(this.idSet.descriptionText,"DESCRIPTION","",true,this.setDescription)}
+
 
                          {
                           // <LinearLayout
