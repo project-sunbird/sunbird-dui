@@ -84,9 +84,9 @@ foreign import sendUpdatedState' :: forall a b.(State a)-> b
 foreign import saveToMemory :: String -> String -> Unit
 foreign import readFromMemory :: String -> String
 foreign import getJsonFromString :: String -> A.Json
-foreign import getApiUrl :: String -> String
+foreign import getApiUrl :: Unit -> String
 
-getEulerLocation1 = "https://staging.ntp.net.in/api"
+getEulerLocation1 = getApiUrl unit
 
 sendUpdatedState state = sendUpdatedState' state
 

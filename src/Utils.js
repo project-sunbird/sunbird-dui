@@ -125,13 +125,10 @@ exports["getJsonFromString"] = function(normalString) {
   return JSON.parse(normalString);
  
 };
-exports["getApiUrl"] = function(inputString) {
+exports["getApiUrl"] = function() {
   var url;
-  var callback = callbackMapper.map(function(data){
-    url = "https://"+data[0] +"/api";
-  })
-  return url;
-
+  var url = JBridge.getApiUrl();
+  return "https://"+url +"/api";
 };
 
 
