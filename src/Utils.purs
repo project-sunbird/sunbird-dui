@@ -55,7 +55,7 @@ foreign import ui' :: forall a c e. (Error -> Eff e Unit) -> (a -> Eff e Unit) -
 
 
 -- getEulerLocation = "https://qa.ekstep.in"
-getEulerLocation1 = "https://staging.ntp.net.in/api" 
+ 
 
 --getEulerLocation1 = "http://52.172.36.121:9000"
 -- getApiKey ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkMTc1MDIwNDdlODc0ODZjOTM0ZDQ1ODdlYTQ4MmM3MyJ9.7LWocwCn5rrCScFQYOne8_Op2EOo-xTCK5JCFarHKSs"
@@ -84,6 +84,9 @@ foreign import sendUpdatedState' :: forall a b.(State a)-> b
 foreign import saveToMemory :: String -> String -> Unit
 foreign import readFromMemory :: String -> String
 foreign import getJsonFromString :: String -> A.Json
+foreign import getApiUrl :: String -> String
+
+getEulerLocation1 = "https://staging.ntp.net.in/api"
 
 sendUpdatedState state = sendUpdatedState' state
 

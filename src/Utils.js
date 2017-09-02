@@ -125,6 +125,14 @@ exports["getJsonFromString"] = function(normalString) {
   return JSON.parse(normalString);
  
 };
+exports["getApiUrl"] = function(inputString) {
+  var url;
+  var callback = callbackMapper.map(function(data){
+    url = "https://"+data[0] +"/api";
+  })
+  return url;
+
+};
 
 
 

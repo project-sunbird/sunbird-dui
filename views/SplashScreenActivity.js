@@ -21,6 +21,7 @@ class SplashScreenActivity extends View {
     this.getUserToken()
     window.__pressedLoggedOut=false;
 
+    
     this.icon = JBridge.getFromSharedPrefs("logo_url") == "__failed" ? "ic_launcher" : JBridge.getFromSharedPrefs("logo_url");
 
   }
@@ -31,6 +32,23 @@ class SplashScreenActivity extends View {
       null
     );
   }
+
+  getApiUrl = ()=>{
+    var callback = callbackMapper.map(function(token){
+    
+    console.log("GOT API URL",token[0]);
+
+    window.__loginUrl = "https://"+token[0];
+
+    window.__apiUrl = "https://"+token[0];
+
+    window.__deepLinkUrl = token[0];
+    });
+
+    JBridge.getApiUrl(callback);
+
+
+  }  
 
   getUserToken = ()=>{
     console.log("in user token")
@@ -52,12 +70,12 @@ class SplashScreenActivity extends View {
     // JBridge.setInSharedPrefs("user_name", "vinay");
     // JBridge.setInSharedPrefs("user_token", "029c72b5-4691-4bf2-a6de-72b18df0b748");
 
-    window.__loginUrl = "https://staging.ntp.net.in";
+    // window.__loginUrl = "https://staging.ntp.net.in";
 
-    window.__apiUrl = "https://staging.ntp.net.in";
+    // window.__apiUrl = "https://staging.ntp.net.in";
 
-    window.__deepLinkUrl = "staging.ntp.net.in";
-
+    // window.__deepLinkUrl = "staging.ntp.net.in";
+    this.getApiUrl();
 
     setTimeout(() => {
       var whatToSend = []
