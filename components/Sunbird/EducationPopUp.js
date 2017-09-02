@@ -582,7 +582,9 @@ class EducationPopUp extends View {
   }
 
   handleDelClick = () => {
-    window.__SimplePopup.show();
+    // window.__SimplePopup.show();
+    this.delete = true;
+    this.handleSaveClick();
   }
 
   handleConfirmDialog = (type) => {

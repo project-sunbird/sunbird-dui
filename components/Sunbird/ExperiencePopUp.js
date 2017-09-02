@@ -606,8 +606,10 @@ class ExperiencePopUp extends View{
   }
 
 del = () => {
-  window.__SimplePopup.show();
-  console.log("window.__SimplePopup.show()");
+  this.delete = true;
+  this.sendJSON();
+  // window.__SimplePopup.show();
+  // console.log("window.__SimplePopup.show()");
 }
 
  render(){

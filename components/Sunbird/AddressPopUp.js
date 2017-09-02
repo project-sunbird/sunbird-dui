@@ -323,7 +323,9 @@ class AddressPopUp extends View {
   }
 
   handleDelClick = () => {
-    window.__SimplePopup.show();
+    this.delete = true;
+    this.handleSaveClick();
+    // window.__SimplePopup.show();
   }
 
   checkPincode = (data) =>{
