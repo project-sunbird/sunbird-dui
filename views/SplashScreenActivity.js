@@ -34,18 +34,14 @@ class SplashScreenActivity extends View {
   }
 
   getApiUrl = ()=>{
-    var callback = callbackMapper.map(function(token){
     
-    console.log("GOT API URL",token[0]);
+    var Url = JBridge.getApiUrl();
 
-    window.__loginUrl = "https://"+token[0];
+    window.__loginUrl = "https://"+Url;
 
-    window.__apiUrl = "https://"+token[0];
+    window.__apiUrl = "https://"+Url
 
-    window.__deepLinkUrl = token[0];
-    });
-
-    JBridge.getApiUrl(callback);
+    window.__deepLinkUrl = Url;
 
 
   }  
