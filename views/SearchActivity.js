@@ -328,10 +328,13 @@ class SearchActivity extends View {
   handleSearchClick = (searchText) => {
     JBridge.hideKeyboard();
     this.filterData = "";
-    window.__LoaderDialog.show();
-
-    this.getSearchList(searchText[0],"false");
-
+    
+    if(JBridge.isNetworkAvailable()){
+      window.__LoaderDialog.show();
+      this.getSearchList(searchText[0],"false");
+    }
+    else
+      JBridge.showSnackBar(window.__S.NO_INTERNET)
 
   }
 

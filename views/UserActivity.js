@@ -93,7 +93,7 @@ class UserActivity extends View {
       console.log("IDENTIFIER IN HANDLE DEEPLINK ACTION",identifier);
 
     var callback = callbackMapper.map(function(data) {
-        var item = JSON.parse(utils.jsonifyData(data[0]));
+        var item = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
         console.log("Callback data in userActivity",item);
         var deeplinkMode = JBridge.getFromSharedPrefs("deeplinkMode");
 

@@ -140,8 +140,10 @@ class FilterActivity extends View {
     var whatToSend = {
         "filterData" : JSON.stringify(data)
       };
-
-    window.__runDuiCallback({ "tag": "OPEN_SearchActivity_FILTER", contents: whatToSend });
+    if(JBridge.isNetworkAvailable())
+      window.__runDuiCallback({ "tag": "OPEN_SearchActivity_FILTER", contents: whatToSend });
+    else
+      JBridge.showSnackBar(window.__S.NO_INTERNET)
   }
 
 
