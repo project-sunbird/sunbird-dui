@@ -221,7 +221,7 @@ class ContentPreviewScreen extends View {
 
   checkContentLocalStatus = (identifier) => {
     var callback = callbackMapper.map(function(data) {
-      _this.localContent = JSON.parse(data[0]);
+      _this.localContent = JSON.parse(utils.decodeBase64(data[0]));
       if (_this.localContent.isAvailableLocally == true) {
         window.__ContentLoaderDialog.hide()
         var callback1 = callbackMapper.map(function(data) {

@@ -64,7 +64,7 @@ class ResourceDetailActivity extends View {
   checkLocalStatus = (data) => {
 
     var callback = callbackMapper.map(function(data) {
-      _this.playContent = JSON.parse(data)
+      _this.playContent = JSON.parse(utils.decodeBase64(data[0]))
       if (_this.playContent.isAvailableLocally == true) {
         _this.localStatus = true;
         var pButonLayout = (

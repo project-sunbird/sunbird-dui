@@ -61,7 +61,7 @@ class ProgressButton extends View {
   checkContentLocalStatus = (status) => {
 
     var callback = callbackMapper.map(function(data){
-      var data = JSON.parse(utils.jsonifyData(data[0]));
+      var data = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
       if(data.isAvailableLocally == true){
         _this.isDownloaded = true;
       console.log("status local", status)
@@ -165,8 +165,8 @@ class ProgressButton extends View {
             JBridge.playContent(JSON.stringify(this.props.playContent));
           else{
             var callback = callbackMapper.map(function(data){
-              console.log("data from progress",JSON.parse(utils.jsonifyData(data[0])))
-              JBridge.playContent(data[0]);
+              console.log("data from progress",JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0]))))
+              JBridge.playContent(utils.decodeBase64(data[0]));
             });
             JBridge.getContentDetails(_this.props.identifier,callback);
           }

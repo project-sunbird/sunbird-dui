@@ -210,7 +210,7 @@ class CourseEnrolledActivity extends View {
   checkContentLocalStatus = (identifier) => {
     console.log("local status")
     var callback = callbackMapper.map(function(data) {
-      data = JSON.parse(utils.jsonifyData(data[0]))
+      data = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])))
       _this.courseDetails = data;
       console.log("data",data)
       if (data.isAvailableLocally == true) {

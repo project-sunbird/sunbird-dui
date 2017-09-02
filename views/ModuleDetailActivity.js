@@ -174,8 +174,7 @@ class ModuleDetailActivity extends View {
         }
         else{
                 var callback = callbackMapper.map(function(data) {
-                    _this.localContent = JSON.parse(utils.jsonifyData(data[0]))
-                    console.log("local status",JSON.parse(utils.jsonifyData(data[0])))
+                    _this.localContent = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])))
                     if (_this.localContent.isAvailableLocally == true) {
                         var callback1 = callbackMapper.map(function(data) {
                             _this.module = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
