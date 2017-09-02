@@ -45,7 +45,7 @@ class ProfileExperiences extends View {
               width="wrap_content"
               height="wrap_content"
               text="Add"
-              padding = "8,8,8,8"
+              padding = "16,16,0,16"
               onClick = {() => this.showPopUp()}
               visibility = {(this.isEditable == "true") ? "visible" : "gone"}
               style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
@@ -57,7 +57,7 @@ class ProfileExperiences extends View {
     return (<LinearLayout
               width="match_parent"
               height="1"
-              margin="0,0,0,24"
+              margin="0,16,0,16"
               background={window.__Colors.PRIMARY_BLACK_22}/>)
   }
 
@@ -67,7 +67,7 @@ class ProfileExperiences extends View {
       <LinearLayout
       height="wrap_content"
       width="wrap_content"
-      padding = "8,8,8,8"
+      padding = "16,16,0,16"
       gravity="center">
       <ViewWidget
         height="0"
@@ -273,7 +273,7 @@ class ProfileExperiences extends View {
               width="wrap_content"
               height="wrap_content"
               orientation="vertical"
-              padding="12,0,0,0">
+              padding="12,0,0,16">
 
                     <TextView
                     width="wrap_content"
@@ -302,7 +302,7 @@ class ProfileExperiences extends View {
       return (<LinearLayout
                 width="match_parent"
                 height="wrap_content"
-                padding="0,8,0,0">
+                padding="0,0,0,0">
 
                 <LinearLayout
                   background={window.__Colors.WHITE_F4}
@@ -325,7 +325,7 @@ class ProfileExperiences extends View {
     return (<LinearLayout
             width="match_parent"
             height="1"
-            margin="0,0,0,24"
+            margin="0,16,0,0"
             background={window.__Colors.PRIMARY_BLACK_22}/>)
   }
 
@@ -336,7 +336,7 @@ class ProfileExperiences extends View {
               <LinearLayout
                 width="match_parent"
                 height="match_parent"
-                margin="0,16,0,0"
+                margin="0,0,0,0"
                 orientation="vertical"
                 >
 

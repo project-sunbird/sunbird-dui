@@ -93,7 +93,7 @@ class ProfileFragment extends View {
     return (<LinearLayout
             width="match_parent"
             height="1"
-            margin="0,0,0,24"
+            margin="0,16,0,16"
             background={window.__Colors.PRIMARY_BLACK_22}/>)
   }
 
@@ -122,7 +122,7 @@ class ProfileFragment extends View {
         <LinearLayout
           orientation = "vertical"
           height = "wrap_content"
-          margin="0,16,0,0"
+          margin="0,0,0,0"
           width = "match_parent">
 
           {this.getLineSeperator()}
@@ -133,7 +133,7 @@ class ProfileFragment extends View {
           }
             <CropParagraph
               height = "wrap_content"
-              margin = "0,0,0,12"
+              margin = "0,0,0,16"
               width = "match_parent"
               headText = { window.__S.DESCRIPTION }
               contentText = { this.details.profileSummary }/>
@@ -254,11 +254,12 @@ class ProfileFragment extends View {
                 height="match_parent"
                 width="match_parent"
                 padding={"0,0,0,50"}
-                padding="16,16,16,0"
+                padding="16,16,16,24"
                 orientation="vertical">
 
                 <ProfileHeader
-                  data={this.details}/>
+                  data={this.details}
+                  textStyle = {window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
 
                 {this.getDescription()}
 

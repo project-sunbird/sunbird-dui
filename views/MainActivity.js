@@ -228,7 +228,7 @@ class MainActivity extends View {
     }
 
     if (responseData.params && responseData.params.err) {
-      JBridge.showSnackBar(window.__S.ERROR_SERVER_MESSAGE + response.params.errmsg)
+      JBridge.showSnackBar(window.__S.ERROR_SERVER_MESSAGE + responseData.params.errmsg)
       return;
     }
 

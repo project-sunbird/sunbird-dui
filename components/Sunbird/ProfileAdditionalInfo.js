@@ -101,7 +101,7 @@ class ProfileAdditionalInfo extends View {
     return (<LinearLayout
             width="wrap_content"
             height="wrap_content"
-            margin="0,0,0,0"
+            margin="0,0,0,16"
             orientation="vertical">
 
             {this.getRows()}
@@ -128,7 +128,7 @@ class ProfileAdditionalInfo extends View {
               width="wrap_content"
               height="wrap_content"
               text={window.__S.EDIT}
-              padding = "8,8,8,8"
+              padding = "16,16,0,16"
               visibility = "visible"
               onClick={this.handleEditProfileClick}
               style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
@@ -140,7 +140,7 @@ class ProfileAdditionalInfo extends View {
     return (<LinearLayout
             width="match_parent"
             height="1"
-            margin="0,0,0,15"
+            margin="0,16,0,0"
             background={window.__Colors.PRIMARY_BLACK_22}/>)
   }
 
@@ -182,7 +182,7 @@ class ProfileAdditionalInfo extends View {
       <LinearLayout
                 width="match_parent"
                 height="wrap_content"
-                margin="0,15,0,60"
+                margin="0,0,0,0"
                 orientation="vertical"
                 id = {this.idSet.holder}
                 gravity = "center"

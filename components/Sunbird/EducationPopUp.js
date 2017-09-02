@@ -443,7 +443,7 @@ class EducationPopUp extends View {
         margin = "0,0,0,18"
         _onChange={onChange}
         text = ""
-        textStyle = {window.__TextStyle.textStyle.HINT.BOLD}
+        textStyle = {window.__TextStyle.textStyle.HINT.SEMI}
         editTextStyle = {window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
         inputType = {inputType ? inputType : "text"}/>
     );

@@ -187,8 +187,8 @@ class AdditionalInformationActivity extends View{
         margin="0,0,0,17">
           <TextView
            width="match_parent"
-           height="20"
-           style={window.__TextStyle.textStyle.HINT.BOLD}
+           height="wrap_content"
+           style={window.__TextStyle.textStyle.HINT.SEMI}
            text="GRADES"
            margin="0,0,0,8"/>
           <MultiSelectSpinner
@@ -217,7 +217,7 @@ class AdditionalInformationActivity extends View{
           <TextView
            width="match_parent"
            height="20"
-           style={window.__TextStyle.textStyle.HINT.BOLD}
+           style={window.__TextStyle.textStyle.HINT.SEMI}
            text="SUBJECTS"
            margin="0,0,0,8"/>
           <MultiSelectSpinner
@@ -338,7 +338,7 @@ class AdditionalInformationActivity extends View{
         margin = "0,0,0,18"
         _onChange={onChange}
         text = ""
-        textStyle = {window.__TextStyle.textStyle.HINT.BOLD}
+        textStyle = {window.__TextStyle.textStyle.HINT.SEMI}
         editTextStyle = {window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
         inputType = {inputType ? inputType : "text"}/>
     )
@@ -349,8 +349,8 @@ class AdditionalInformationActivity extends View{
          return(
            <TextView
           width="match_parent"
-          height="20"
-          style={window.__TextStyle.textStyle.HINT.BOLD}
+          height="wrap_content"
+          style={window.__TextStyle.textStyle.HINT.SEMI}
           text={label}
           margin="4,0,0,8"/>
          );
@@ -363,8 +363,8 @@ class AdditionalInformationActivity extends View{
        margin ="4,0,0,8">
        <TextView
         width="match_parent"
-        height="20"
-        style={window.__TextStyle.textStyle.HINT.BOLD}
+        height="wrap_content"
+        style={window.__TextStyle.textStyle.HINT.SEMI}
         text={label}/>
        <TextView
        height="wrap_content"
@@ -423,7 +423,7 @@ class AdditionalInformationActivity extends View{
                       <TextView
                        width="match_parent"
                        height="20"
-                       style={window.__TextStyle.textStyle.HINT.BOLD}
+                       style={window.__TextStyle.textStyle.HINT.SEMI}
                        text="GRADES"
                        margin="0,0,0,8"/>
                       <MultiSelectSpinner
@@ -451,8 +451,8 @@ class AdditionalInformationActivity extends View{
                        margin="4,0,0,17">
                          <TextView
                           width="match_parent"
-                          height="20"
-                          style={window.__TextStyle.textStyle.HINT.BOLD}
+                          height="wrap_content"
+                          style={window.__TextStyle.textStyle.HINT.SEMI}
                           text="DATE OF BIRTH"/>
                           <LinearLayout
                             width="match_parent"
@@ -494,8 +494,8 @@ class AdditionalInformationActivity extends View{
                           margin="0,0,0,17">
                             <TextView
                              width="match_parent"
-                             height="20"
-                             style={window.__TextStyle.textStyle.HINT.BOLD}
+                             height="wrap_content"
+                             style={window.__TextStyle.textStyle.HINT.SEMI}
                              text="SUBJECTS"
                              margin="0,0,0,8"/>
                             <MultiSelectSpinner

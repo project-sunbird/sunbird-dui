@@ -320,7 +320,7 @@ class ExperiencePopUp extends View{
        width="match_parent"
        orientation="horizontal"
        padding = "4,0,0,0"
-       margin = "0,0,0,12">
+       margin = "0,16,0,12">
 
              <LinearLayout
              height="wrap_content"
@@ -560,7 +560,7 @@ class ExperiencePopUp extends View{
         mandatory = {optional ? "false" : "true"}
         margin = "0,0,0,18"
         _onChange={onChange}
-        textStyle = {window.__TextStyle.textStyle.HINT.BOLD}
+        textStyle = {window.__TextStyle.textStyle.HINT.SEMI}
         editTextStyle = {window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
         inputType = {inputType ? inputType : "text"}/>
     );
