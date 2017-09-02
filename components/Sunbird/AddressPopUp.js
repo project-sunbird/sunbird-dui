@@ -583,7 +583,7 @@ class AddressPopUp extends View {
         width="match_parent"
         orientation="vertical"
         padding = "4,0,0,0"
-        margin = "0,0,0,12">
+        margin = "0,0,0,2">
 
           <LinearLayout
             height="wrap_content"

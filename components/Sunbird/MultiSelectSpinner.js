@@ -67,9 +67,9 @@ class MultiSelectSpinner extends View {
         <LinearLayout
            height="wrap_content"
            width="wrap_content"
-           padding="6,4,6,4"
+           padding="12,4,12,4"
            margin="0,0,10,0"
-           cornerRadius="10,10,10,10"
+           cornerRadius="16,16,16,16"
            background={window.__Colors.DARK_GRAY_44}
            gravity="center">
 
@@ -104,6 +104,7 @@ class MultiSelectSpinner extends View {
         height="wrap_content"
         cornerRadius="4"
         padding="0,8,8,8"
+        margin="4,0,4,0"
         stroke={"2,"+window.__Colors.PRIMARY_BLACK_66}>
 
         <Spinner

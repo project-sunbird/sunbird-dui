@@ -106,6 +106,7 @@ class RadioItem extends View {
           fontstyle ="SourceSansPro/Bold"
           gravity="center"
           margin="0,0,12,0"
+          padding="0,0,0,8"
           textSize={window.__Font.fontSize.FONT_12}/>
 
 

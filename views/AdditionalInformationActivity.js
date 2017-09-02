@@ -78,7 +78,7 @@ class AdditionalInformationActivity extends View{
 
     this.genderArray= "Select,Male,Female,Transgender";
     this.GenderArray=["Select","Male","Female","Transgender"];
-    this.languageArray= "Select,Bengali,English,Gujarati,Hindi,Kannada,Marathi,Punjabi,Tamil";
+    this.languageArray= "Select,Assamese,Bengali,English,Gujarati,Hindi,Kannada,Marathi,Punjabi,Tamil,Telugu";
     this.LanguageArray=["Select","Assamese","Bengali","English","Gujarati","Hindi","Kannada","Marathi","Punjabi","Tamil","Telugu"]
     this.gradeArray= "Select,Kindergarten,Grade 1,Grade 2,Grade 3,Grade 4,Grade 5,Grade 6,Grade 7";
     this.GradeArray=["Select","Kindergarten","Grade 1","Grade 2","Grade 3","Grade 4","Grade 5","Grade 6","Grade 7"];
@@ -190,7 +190,8 @@ class AdditionalInformationActivity extends View{
            height="wrap_content"
            style={window.__TextStyle.textStyle.HINT.SEMI}
            text="GRADES"
-           margin="0,0,0,8"/>
+           margin="0,0,0,8"
+           padding="4,0,0,0"/>
           <MultiSelectSpinner
             width="match_parent"
             height="wrap_content"
@@ -219,7 +220,8 @@ class AdditionalInformationActivity extends View{
            height="20"
            style={window.__TextStyle.textStyle.HINT.SEMI}
            text="SUBJECTS"
-           margin="0,0,0,8"/>
+           margin="0,0,0,8"
+           padding="4,0,0,0"/>
           <MultiSelectSpinner
             width="match_parent"
             height="wrap_content"
@@ -318,6 +320,7 @@ class AdditionalInformationActivity extends View{
            height="wrap_content"
            stroke={"2,"+window.__Colors.PRIMARY_BLACK_66}
            padding="0,8,8,8"
+           margin="4,0,4,4"
            cornerRadius="4,4,4,4"
            id={id}>
             {callSpinner()}
@@ -352,7 +355,8 @@ class AdditionalInformationActivity extends View{
           height="wrap_content"
           style={window.__TextStyle.textStyle.HINT.SEMI}
           text={label}
-          margin="4,0,0,8"/>
+          margin="0,0,0,8"
+          padding="4,0,0,4"/>
          );
 
      return (
@@ -360,7 +364,8 @@ class AdditionalInformationActivity extends View{
        height="wrap_content"
        width="wrap_content"
        orientation="horizontal"
-       margin ="4,0,0,8">
+       margin ="0,0,0,8"
+       padding="4,0,0,4">
        <TextView
         width="match_parent"
         height="wrap_content"
@@ -425,7 +430,8 @@ class AdditionalInformationActivity extends View{
                        height="20"
                        style={window.__TextStyle.textStyle.HINT.SEMI}
                        text="GRADES"
-                       margin="0,0,0,8"/>
+                       margin="0,0,0,8"
+                       padding ="4,0,4,0"/>
                       <MultiSelectSpinner
                         width="match_parent"
                         height="wrap_content"
@@ -497,7 +503,8 @@ class AdditionalInformationActivity extends View{
                              height="wrap_content"
                              style={window.__TextStyle.textStyle.HINT.SEMI}
                              text="SUBJECTS"
-                             margin="0,0,0,8"/>
+                             margin="0,0,0,8"
+                             padding="4,0,0,0"/>
                             <MultiSelectSpinner
                               width="match_parent"
                               height="wrap_content"

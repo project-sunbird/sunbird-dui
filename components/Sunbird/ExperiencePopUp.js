@@ -428,7 +428,7 @@ class ExperiencePopUp extends View{
          <TextView
            height="wrap_content"
            width="wrap_content"
-           margin="0,0,16,10"
+           margin="0,0,16,2"
            textStyle={window.__TextStyle.textStyle.HINT.SEMI}
            textAllCaps="true"
            text="Is this your current job?"/>
@@ -454,7 +454,7 @@ class ExperiencePopUp extends View{
          <TextView
            height="wrap_content"
            width="wrap_content"
-           margin="0,0,16,10"
+           margin="0,0,16,2"
            textStyle={window.__TextStyle.textStyle.HINT.SEMI}
            textAllCaps="true"
            text="Is this your current job?"/>
@@ -477,7 +477,6 @@ class ExperiencePopUp extends View{
        height="wrap_content"
        width="match_parent"
        orientation="vertical"
-       padding = "4,0,0,0"
        margin = "0,0,0,12">
 
        <TextView
@@ -485,7 +484,8 @@ class ExperiencePopUp extends View{
         width="wrap_content"
         text="SUBJECTS"
         textStyle={window.__TextStyle.textStyle.HINT.SEMI}
-        margin="0,0,0,3"/>
+        margin="0,0,0,8"
+        padding="4,0,0,0"/>
 
         <MultiSelectSpinner
           id={this.idSet.subjectSpinner}
