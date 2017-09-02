@@ -260,6 +260,31 @@ class EducationPopUp extends View {
     Android.runInUI(cmd, 0);
   }
 
+  checkPassingYear = (data) => {
+    if(data.length == 4 && /^\d+$/.test(data))
+       return true
+    return false;
+  }
+
+  checkPercentage = (data) => {
+    var flag =true;
+    try {
+      var per=parseFloat(this.percentage)
+      if(per > 100.0)
+       flag=false;
+    } catch (e) {
+       flag=false;
+    } finally {
+      return flag;
+    }
+  }
+
+  checkGrade = (data) => {
+    if( data.length == 1 && /[A-F a-f]/.test(data))
+       return true;
+    return false;
+  }
+
   handleSaveClick = () => {
 
     if (!this.canSave && !this.delete){
@@ -277,6 +302,27 @@ class EducationPopUp extends View {
 
     this.education = [];
     var json;
+
+    if(this.yearOfPassing!=null && this.yearOfPassing!="")
+        if(!this.checkPassingYear(this.yearOfPassing))
+            {
+              JBridge.showSnackBar("Invalid Year Of Passing");
+              return;
+            }
+
+    if(this.percentage!=null && this.percentage!="")
+        if(!this.checkPercentage(this.percentage))
+            {
+              JBridge.showSnackBar("Invalid Percentage");
+              return;
+            }
+
+    if(this.grade!=null && this.grade!="")
+          if(!this.checkGrade(this.grade))
+              {
+                JBridge.showSnackBar("Invalid Grade");
+                return;
+              }
 
     if (window.__EducationPopUp.data == undefined) {
       json = {

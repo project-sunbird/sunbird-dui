@@ -325,6 +325,11 @@ class AddressPopUp extends View {
     this.handleSaveClick();
   }
 
+  checkPincode = (data) =>{
+    if(data.length == 6 && /^\d+$/.test(data))
+       return true
+    return false;
+  }
 
   handleSaveClick = () => {
     if (!this.canSave && !this.delete) {
@@ -341,6 +346,12 @@ class AddressPopUp extends View {
       return;
     }
 
+    if(this.pincode!=null && this.pincode!="")
+        if(!this.checkPincode(this.pincode))
+            {
+              JBridge.showSnackBar("Invalid Pincode");
+              return;
+            }
 
     this.address = [];
     var json;
