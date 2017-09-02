@@ -103,7 +103,7 @@ class CourseInfoActivity extends View {
       _this.localContent  = JSON.parse(data[0]);
       if (_this.localContent.isAvailableLocally == true) {
         var callback1 = callbackMapper.map(function(data) {
-          data[0] = utils.jsonifyData(data[0])
+          data[0] = utils.jsonifyData(utils.decodeBase64(data[0]))
           _this.courseContent = JSON.parse(data[0]);
           _this.renderCourseChildren()
         });

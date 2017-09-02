@@ -216,7 +216,7 @@ class CourseEnrolledActivity extends View {
       if (data.isAvailableLocally == true) {
         window.__ContentLoaderDialog.hide()
         var callback1 = callbackMapper.map(function(data) {
-          data[0] = utils.jsonifyData(data[0])
+          data[0] = utils.jsonifyData(utils.decodeBase64(data[0]))
           _this.courseContent = JSON.parse(data[0]);
           window.__ContentLoaderDialog.hide();
           _this.renderCourseChildren()
