@@ -163,9 +163,14 @@ class ModuleDetailActivity extends View {
 
     checkContentLocalStatus = (module) => {
         _this = this;
+        console.log('module',module);
         if(this.checkContentType(module.contentType)){
             this.localStatus = false;
+            window.__ProgressButton.setLocalStatus(false);
+            console.log("content",module)
             window.__ProgressButton.setVisibility("visible");
+            window.__ProgressButton.setContentDetails(module);
+            window.__ProgressButton.checkContentLocalStatus(this.localStatus);
         }
         else{
                 var callback = callbackMapper.map(function(data) {
@@ -215,6 +220,7 @@ class ModuleDetailActivity extends View {
         // var event = { "tag": "OPEN_ModuleActivity", contents: whatToSend };
         // window.__runDuiCallback(event);
         // this.renderModuleChildren(module);
+        window.__ProgressButton.setButtonFor(module.identifier);
         this.stackPush(moduleName, module);
         this.reRender(moduleName, module);
     }
@@ -271,6 +277,7 @@ class ModuleDetailActivity extends View {
 
     afterRender = () => {
         window.__SimplePopup.hide();
+        window.__ProgressButton.setButtonFor(this.module.identifier);
         this.checkContentLocalStatus(this.module);
     }
 
