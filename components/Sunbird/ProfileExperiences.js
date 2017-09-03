@@ -66,12 +66,10 @@ class ProfileExperiences extends View {
     return (
       <LinearLayout
       height="wrap_content"
-      width="wrap_content"
+      width="0"
+      weight = "2"
       padding = "16,16,0,16"
       gravity="center">
-      <ViewWidget
-        height="0"
-        weight="1"/>
         <LinearLayout
           width = "wrap_content"
           height = "wrap_content"
@@ -198,7 +196,7 @@ class ProfileExperiences extends View {
           + input.zipcode;
     }
 
-    return address;
+    return this.trimText(address);
   }
 
   getSubjects = (input) => {
@@ -212,26 +210,26 @@ class ProfileExperiences extends View {
       });
       sub = "Subjects : " + sub;
     }
-    return (sub == "") ? sub : sub + "\n";
+    return (sub == "") ? sub : this.trimText(sub) + "\n";
   }
 
   getOrg = (input) => {
     if (input.orgName && input.orgName != "")
-      return input.orgName + "\n";
+      return this.trimText(input.orgName) + "\n";
     else
       return "";
   }
 
   getPosition = (input) => {
     if (input.role && input.role != "")
-      return input.role + ", ";
+      return this.trimText(input.role) + ", ";
     else
       return "";
   }
 
   getDegree = (input) => {
     if (input.degree && input.degree != "")
-      return input.degree + "\n"
+      return this.trimText(input.degree) + "\n"
     else
       return "";
   }
@@ -247,7 +245,7 @@ class ProfileExperiences extends View {
 
   getUniv = (input) => {
     if (input.boardOrUniversity && input.boardOrUniversity != "")
-      return input.boardOrUniversity;
+      return this.trimText(input.boardOrUniversity);
     else
       return "";
   }
@@ -268,9 +266,18 @@ class ProfileExperiences extends View {
     return det;
   }
 
+  trimText = (text, max) => {
+    var maxChar = max || 40;
+    if (text.length > maxChar) {
+      return text.substring(0, maxChar) + "...";
+    }
+    return text;
+  }
+
   getBody(input) {
     return (<LinearLayout
-              width="wrap_content"
+              width="0"
+              weight = "7"
               height="wrap_content"
               orientation="vertical"
               padding="12,0,0,16">
@@ -279,6 +286,7 @@ class ProfileExperiences extends View {
                     width="wrap_content"
                     height="wrap_content"
                     text={this.getTitle(input)}
+                    enableEllipse = "true"
                     style={window.__TextStyle.textStyle.CARD.HEADING}/>
 
                     <TextView
@@ -311,6 +319,9 @@ class ProfileExperiences extends View {
                   height="44"/>
 
                 {this.getBody(item)}
+                <LinearLayout
+                  width="0"
+                  weight="0.5" />
                 {this.getEditButton(item)}
 
                 </LinearLayout>)
