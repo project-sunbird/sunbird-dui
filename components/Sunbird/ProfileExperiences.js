@@ -70,6 +70,9 @@ class ProfileExperiences extends View {
       weight = "2"
       padding = "16,16,0,16"
       gravity="center">
+      <LinearLayout
+        width="0"
+        weight="1" />
         <LinearLayout
           width = "wrap_content"
           height = "wrap_content"
@@ -277,7 +280,6 @@ class ProfileExperiences extends View {
   getBody(input) {
     return (<LinearLayout
               width="0"
-              weight = "7"
               height="wrap_content"
               orientation="vertical"
               padding="12,0,0,16"
@@ -320,9 +322,6 @@ class ProfileExperiences extends View {
                   height="44"/>
 
                 {this.getBody(item)}
-                <LinearLayout
-                  width="0"
-                  weight="0.5" />
                 {this.getEditButton(item)}
 
                 </LinearLayout>)
