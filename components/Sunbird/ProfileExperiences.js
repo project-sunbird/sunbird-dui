@@ -280,7 +280,8 @@ class ProfileExperiences extends View {
               weight = "7"
               height="wrap_content"
               orientation="vertical"
-              padding="12,0,0,16">
+              padding="12,0,0,16"
+              weight="5.5">
 
                     <TextView
                     width="wrap_content"
