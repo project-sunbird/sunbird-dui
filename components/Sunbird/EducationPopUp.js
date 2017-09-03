@@ -363,19 +363,22 @@ class EducationPopUp extends View {
       }
     }
 
-    _this.responseCame=false;
-    JBridge.patchApi(url, JSON.stringify(body), window.__userToken, window.__apiToken);
-    window.__LoaderDialog.show();
-     setTimeout(() => {
-         if(_this.responseCame){
-           console.log("Response Already Came")
-           return;
-         }
-         console.log("TIMEOUT")
-         JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION);
-         window.__LoaderDialog.hide();
-         _this.responseCame=false;
-     },window.__API_TIMEOUT);
+    if(this.canSave){
+      this.canSave=false;
+        _this.responseCame=false;
+        JBridge.patchApi(url, JSON.stringify(body), window.__userToken, window.__apiToken);
+        window.__LoaderDialog.show();
+         setTimeout(() => {
+             if(_this.responseCame){
+               console.log("Response Already Came")
+               return;
+             }
+             console.log("TIMEOUT")
+             JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION);
+             window.__LoaderDialog.hide();
+             _this.responseCame=false;
+         },window.__API_TIMEOUT);
+    }
   }
 
   getPatchCallback = (data) =>{
@@ -409,12 +412,9 @@ class EducationPopUp extends View {
                   padding="0,0,0,0"
                   gravity="center_vertical"
                   background={window.__Colors.WHITE}
-                  width="match_parent" >
-
+                  width="match_parent">
                     {this.getBack()}
-
                     {this.getTitle()}
-
                 </LinearLayout>
             </LinearLayout>
 
