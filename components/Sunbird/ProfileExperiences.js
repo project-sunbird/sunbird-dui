@@ -66,12 +66,10 @@ class ProfileExperiences extends View {
     return (
       <LinearLayout
       height="wrap_content"
-      width="wrap_content"
+      width="0"
       padding = "16,16,0,16"
-      gravity="center">
-      <ViewWidget
-        height="0"
-        weight="1"/>
+      gravity="center"
+      weight="1">
         <LinearLayout
           width = "wrap_content"
           height = "wrap_content"
@@ -270,10 +268,11 @@ class ProfileExperiences extends View {
 
   getBody(input) {
     return (<LinearLayout
-              width="wrap_content"
+              width="0"
               height="wrap_content"
               orientation="vertical"
-              padding="12,0,0,16">
+              padding="12,0,0,16"
+              weight="5.5">
 
                     <TextView
                     width="wrap_content"

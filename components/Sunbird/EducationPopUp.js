@@ -345,7 +345,6 @@ class EducationPopUp extends View {
       json.grade = this.grade;
       json.boardOrUniversity = this.boardOrUniversity;
       json.isDeleted = this.delete ? this.delete : null;
-      this.delete = false;
     }
 
     this.education.push(json);
@@ -363,8 +362,12 @@ class EducationPopUp extends View {
       }
     }
 
-    if(this.canSave){
+    if(this.canSave || this.delete){
+      if(this.canSave)
       this.canSave=false;
+      
+      if(this.delete)
+      this.delete = false;
         _this.responseCame=false;
         JBridge.patchApi(url, JSON.stringify(body), window.__userToken, window.__apiToken);
         window.__LoaderDialog.show();
