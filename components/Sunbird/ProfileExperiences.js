@@ -231,7 +231,7 @@ class ProfileExperiences extends View {
 
   getDegree = (input) => {
     if (input.degree && input.degree != "")
-      return input.degree + "\n"
+      return this.trimText(input.degree, 30) + "\n"
     else
       return "";
   }
@@ -266,6 +266,14 @@ class ProfileExperiences extends View {
       det = this.getAddress(input);
     }
     return det;
+  }
+
+  trimText = (text, max) => {
+    var maxChar = max || 30;
+    if (text.length > maxChar) {
+      return text.substring(0, maxChar) + "...";
+    }
+    return text;
   }
 
   getBody(input) {

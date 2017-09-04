@@ -100,7 +100,7 @@ class SearchResult extends View {
                   <TextView
                     height = "wrap_content"
                     width = "wrap_content"
-                    text = {window.__S.ACTIVE}
+                    text = {item.data.status == 1 ? "Active" : "Inactive"}
                     style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK} />
                 </LinearLayout>
             </LinearLayout>
