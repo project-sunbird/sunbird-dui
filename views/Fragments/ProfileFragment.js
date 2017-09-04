@@ -106,7 +106,6 @@ class ProfileFragment extends View {
 
   overFlowCallback = (params) => {
     if(params == 0){
-      JBridge.showSnackBar("Change Language in progress");
       window.__LanguagePopup.show();
     } else if (params == 1) {
       this.logout();
