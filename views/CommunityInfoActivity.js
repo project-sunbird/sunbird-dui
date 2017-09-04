@@ -152,7 +152,7 @@ class CommunityInfoActivity extends View {
                   <TextView
                   width="wrap_content"
                   height="wrap_content"
-                  text="JOIN"
+                  text={window.__S.JOIN}
                   style={window.__TextStyle.textStyle.CLICKABLE.BLUE_SEMI}/>
               </LinearLayout>)
   }
