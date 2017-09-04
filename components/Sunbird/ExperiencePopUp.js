@@ -86,6 +86,7 @@ class ExperiencePopUp extends View{
  }
 
  show = () => {
+   this.singleClick =true;
    this.canSave = false;
    this.isVisible = true;
    window.__patchCallback = this.getPatchCallback ;
@@ -799,7 +800,7 @@ del = () => {
 
      sendJSON = () => {
 
-       if (!this.canSave && !this.delete) {
+       if (this.singleClick && !this.canSave && !this.delete) {
          if (window.__ExperiencePopUp.data)
            JBridge.showSnackBar(window.__S.WARNING_PLEASE_MAKE_SOME_CHANGES);
          else
@@ -833,8 +834,7 @@ del = () => {
           if(json.address!=undefined)
           json.address.userId= window.__userToken;
           this.jobProfile.push(json);
-          this.delete = false;
-
+          this.delete =false;
         }
 
         var url=window.__apiUrl + "/api/user/v1/update"
@@ -851,6 +851,9 @@ del = () => {
                     "jobProfile": this.jobProfile
                    }
                   }
+
+      if(this.singleClick){
+        this.singleClick=false;
         _this.responseCame=false;
         JBridge.patchApi(url,JSON.stringify(body),window.__userToken,window.__apiToken);
         window.__LoaderDialog.show();
@@ -864,7 +867,7 @@ del = () => {
            _this.responseCame=false;
        },window.__API_TIMEOUT);
      }
-
+   }
 
 
      formatDate = (date) =>{

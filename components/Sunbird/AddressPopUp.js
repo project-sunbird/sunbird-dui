@@ -76,6 +76,7 @@ class AddressPopUp extends View {
 
 
   show = () => {
+    this.singleClick=true;
     this.canSave = false;
     this.isVisible=true;;
     window.__patchCallback = this.getPatchCallback ;
@@ -332,7 +333,7 @@ class AddressPopUp extends View {
   }
 
   handleSaveClick = () => {
-    if (!this.canSave && !this.delete) {
+    if (this.singleClick && !this.canSave && !this.delete) {
       if (window.__AddressPopUp.data)
         JBridge.showSnackBar("Please make some changes");
       else
@@ -397,6 +398,8 @@ class AddressPopUp extends View {
     }
 
     console.log(JSON.stringify(body));
+   if(this.singleClick){
+     this.singleClick=false;
 
     _this.responseCame=false;
     JBridge.patchApi(url, JSON.stringify(body), window.__userToken, window.__apiToken);
@@ -411,6 +414,7 @@ class AddressPopUp extends View {
          window.__LoaderDialog.hide();
          _this.responseCame=false;
      },window.__API_TIMEOUT);
+    }
   }
 
   getRadioButtionLayout = (item, index) => {

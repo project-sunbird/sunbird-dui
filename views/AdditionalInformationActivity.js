@@ -177,7 +177,7 @@ class AdditionalInformationActivity extends View{
     this.populateGrade(this.data.grade);
 
     JBridge.selectSpinnerItem(this.idSet.languageSpinner,this.LanguageArray.indexOf(this.language[0]));
-    var gender = this.gender.substr(0,1).toUpperCase()+this.gender.substr(1);
+    var gender = this.gender != null ? (this.gender.substr(0,1).toUpperCase()+this.gender.substr(1)) : null;
     JBridge.selectSpinnerItem(this.idSet.genderSpinner,this.GenderArray.indexOf(gender));
 
   }
@@ -683,7 +683,7 @@ class AdditionalInformationActivity extends View{
    }
 
    handleLanguageSpinnerItemClick = (...params) => {
-        console.log("12345");
+        console.log(params[2]);
 
         if(params[2]>0)
         {this.language=[this.LanguageArray[params[2]]]
@@ -1339,7 +1339,7 @@ class AdditionalInformationActivity extends View{
     console.log(JSON.stringify(this.grade) +" gfgh "+ JSON.stringify(this.prevData.grade));
     if(this.name == this.prevData.name && this.lastName == this.prevData.lastName && JSON.stringify(this.language) == JSON.stringify(this.prevData.language) && this.email == this.prevData.email && this.mobile == this.prevData.mobile && this.prevData.adhar==this.adhar)
       {
-        if(this.location==this.prevData.location && this.description == this.prevData.description && this.dob == this.prevData.dob && this.gender.toLowerCase() == this.prevData.gender.toLowerCase() && this.arrayEquals(this.grade,this.prevData.grade) )
+        if(this.location==this.prevData.location && this.description == this.prevData.description && this.dob == this.prevData.dob && (this.gender == this.prevData.gender || this.gender.toLowerCase() == this.prevData.gender.toLowerCase()) && this.arrayEquals(this.grade,this.prevData.grade) )
           if (this.arrayEquals(this.selectedSubjects,this.prevData.selectedSubjects))
                return true;
       }

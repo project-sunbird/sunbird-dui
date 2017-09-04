@@ -83,6 +83,7 @@ class EducationPopUp extends View {
 
 
   show = () => {
+    this.singleClick=true;
     this.canSave = false;
     this.isVisible=true;;
     window.__patchCallback = this.getPatchCallback ;
@@ -287,7 +288,7 @@ class EducationPopUp extends View {
 
   handleSaveClick = () => {
 
-    if (!this.canSave && !this.delete){
+    if (this.singleClick && !this.canSave && !this.delete){
       if (window.__EducationPopUp.data)
         JBridge.showSnackBar(window.__S.WARNING_PLEASE_MAKE_SOME_CHANGES);
       else
@@ -360,19 +361,22 @@ class EducationPopUp extends View {
       }
     }
 
-    _this.responseCame=false;
-    JBridge.patchApi(url, JSON.stringify(body), window.__userToken, window.__apiToken);
-    window.__LoaderDialog.show();
-     setTimeout(() => {
-         if(_this.responseCame){
-           console.log("Response Already Came")
-           return;
-         }
-         console.log("TIMEOUT")
-         JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION);
-         window.__LoaderDialog.hide();
-         _this.responseCame=false;
-     },window.__API_TIMEOUT);
+    if(this.singleClick){
+        this.singleClick = false;
+        _this.responseCame=false;
+        JBridge.patchApi(url, JSON.stringify(body), window.__userToken, window.__apiToken);
+        window.__LoaderDialog.show();
+         setTimeout(() => {
+             if(_this.responseCame){
+               console.log("Response Already Came")
+               return;
+             }
+             console.log("TIMEOUT")
+             JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION);
+             window.__LoaderDialog.hide();
+             _this.responseCame=false;
+         },window.__API_TIMEOUT);
+    }
   }
 
   getPatchCallback = (data) =>{
