@@ -24,6 +24,7 @@ var ProfileAdditionalInfo = require('../../components/Sunbird/ProfileAdditionalI
 var ProfilAffiliations = require('../../components/Sunbird/ProfileAffiliations');
 var CropParagraph = require('../../components/Sunbird/CropParagraph');
 var utils = require('../../utils/GenericFunctions');
+const Str = require("../../res/Strings") ;
 
 
 var _this;
@@ -55,8 +56,10 @@ class ProfileFragment extends View {
 
   handleChangeLang = (lang) => {
      window.setLanguage(lang);
+     window.__S = Str.strings();
      window.__LanguagePopup.hide();
-     window.__BNavFlowRestart();
+     window.__renderBNavBar();
+     window.__reRender();
   }
 
   logout = () =>{
