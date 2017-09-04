@@ -20,6 +20,7 @@ var PermissionDeniedDialog = require('../components/Sunbird/core/PermissionDenie
 var ExperiencePopUp = require('../components/Sunbird/ExperiencePopUp');
 var EducationPopUp = require('../components/Sunbird/EducationPopUp');
 var AddressPopUp = require("../components/Sunbird/AddressPopUp");
+var LanguagePopup = require('../components/Sunbird/core/LanguagePopup');
 
 
 const Str = require("../res/Strings") ;
@@ -37,6 +38,7 @@ class RootScreen extends View {
 
     window.__RootScreen = this;
     window.__S = Str.strings();
+    window.setLanguage = Str.setLanguage;
     window.__TextStyle = TextStyle;
     window.__Symbols = Symbols;
     window.__Colors = Colors;
@@ -99,6 +101,7 @@ class RootScreen extends View {
         <AddressPopUp />
         <PreviewImagePopup
           defaultImage="https://pbs.twimg.com/media/CRafzhtWIAEQ2c9.png"/>
+        <LanguagePopup/>
       </RelativeLayout>
     );
 

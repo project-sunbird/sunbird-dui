@@ -46,11 +46,18 @@ class ProfileFragment extends View {
         { imageUrl: "ic_action_overflow" }
       ]
     }
-    this.popupMenu="Logout";
+    this.popupMenu="Change Language,Logout";
+    window.__LanguagePopup.props.buttonClick = this.handleChangeLang;
 
     this.handleResponse();
   }
 
+
+  handleChangeLang = (lang) => {
+     window.setLanguage(lang);
+     window.__LanguagePopup.hide();
+     window.__BNavFlowRestart();
+  }
 
   logout = () =>{
     window.__Logout();
@@ -99,6 +106,8 @@ class ProfileFragment extends View {
 
   overFlowCallback = (params) => {
     if(params == 0){
+      window.__LanguagePopup.show();
+    } else if (params == 1) {
       this.logout();
     }
   }
@@ -219,7 +228,10 @@ class ProfileFragment extends View {
   }
 
   render() {
-
+    var popUpdata = {
+      negButtonText : "Cancel",
+      posButtonText : "Change"
+    }
     this.layout = (
 
   <RelativeLayout
@@ -296,8 +308,6 @@ class ProfileFragment extends View {
          </ScrollView>
 
         </LinearLayout>
-
-
 
 
    </RelativeLayout>
