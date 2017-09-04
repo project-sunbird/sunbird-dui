@@ -471,6 +471,7 @@ class ResourceDetailActivity extends View {
           var callback = callbackMapper.map(function(response){
 
             if(response[0] == "successful"){
+              JBridge.logFlagClickEvent("SUCCESS");
               setTimeout(function(){
                 JBridge.showSnackBar(window.__S.CONTENT_FLAGGED_MSG)
                 window.__BNavFlowRestart();
@@ -518,6 +519,7 @@ class ResourceDetailActivity extends View {
     else if(params == 1){
       console.log("in flag rda")
       window.__LoaderDialog.hide();
+      JBridge.logFlagClickEvent("INITIATE");
       window.__FlagPopup.show();
     }
   }

@@ -105,8 +105,10 @@ class PageFilterPopup extends View {
 
     if(this.isForResouce){
       listToUse = this.filterListResource
+      JBridge.logPageFilterScreenEvent("RESOURCES");
     }else{
       listToUse = this.filterListCource
+      JBridge.logPageFilterScreenEvent("COURSES");
     }
 
     listToUse.map((item)=>{

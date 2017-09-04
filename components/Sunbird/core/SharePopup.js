@@ -40,6 +40,7 @@ class SharePopup extends View {
   show = () => {
     this.setVisibility("visible");
     this.isVisible=true;
+    JBridge.logshareScreenEvent();
   }
 
   hide = () => {
@@ -77,9 +78,12 @@ class SharePopup extends View {
     this.props.data.map((item, index) => {
 
       if(item.type == "file"){
+        JBridge.logShareClickEvent("FILE");
         fileLinkAvailable = true;
-      }else(item.type == "text")
+      }else if(item.type == "text"){
+        JBridge.logShareClickEvent("LINK");
         textLinkAvailable = true;
+      }
 
     });
     

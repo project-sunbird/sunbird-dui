@@ -42,6 +42,7 @@ class FilterActivity extends View {
         }
       }
     }
+    JBridge.logFlagScreenEvent();
 
 
   }

@@ -43,6 +43,7 @@ class FlagPopup extends View {
     this.resetPopup()
     this.showBodyWithOptions();
     this.setVisibility("visible");
+    JBridge.logFlagScreenEvent();
   }
 
   hide = () => {

@@ -330,6 +330,7 @@ class UserActivity extends View {
           JBridge.showSnackBar(window.__S.WELCOME_ON_BOARD.format(this.userName))
           JBridge.setInSharedPrefs("user_name", this.firstName);
           JBridge.setInSharedPrefs("user_token", result.userId);
+          JBridge.logSignUpSuccess();
           window.__pressedLoggedOut=true;
           this.userToken=result.userId;
           this.setDataInStorage();
@@ -429,7 +430,7 @@ class UserActivity extends View {
         JBridge.showSnackBar(window.__S.NO_INTERNET)
         return;
       }
-
+    JBridge.logSignUpInitiation();
     this.firstName=this.firstName.trim();
     this.userName=this.userName.trim();
     this.email=this.email.trim();

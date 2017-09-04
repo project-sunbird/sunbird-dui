@@ -349,6 +349,7 @@ class CourseEnrolledActivity extends View {
 
             if(responseCode == 200){
                 if(response[0] == "successful"){
+                  JBridge.logFlagClickEvent("SUCCESS");
                   setTimeout(function(){
                     JBridge.showSnackBar(window.__S.CONTENT_FLAGGED_MSG)
                     window.__BNavFlowRestart();
@@ -498,6 +499,7 @@ class CourseEnrolledActivity extends View {
     else if(params == 1){
       console.log("in flag rda")
       window.__LoaderDialog.hide();
+      JBridge.logFlagClickEvent("INITIATE");
       window.__FlagPopup.show();
     }
   }

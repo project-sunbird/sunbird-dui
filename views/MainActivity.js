@@ -302,6 +302,7 @@ class MainActivity extends View {
     this.color = "#123123"
     switch (index) {
       case 0:
+        JBridge.logTabClickEvent("HOME");
         contentLayout = (
           <HomeFragment
                 response = {data}
@@ -318,6 +319,7 @@ class MainActivity extends View {
 
         break;
       case 1:
+        JBridge.logTabClickEvent("COURSES");
         contentLayout = (
           <CourseFragment
               height="match_parent"
@@ -328,6 +330,7 @@ class MainActivity extends View {
 
         break;
       case 2:
+        JBridge.logTabClickEvent("RESOURCES");
         contentLayout = (<ResourceFragment
                   root="true"
                   response={data}
@@ -336,6 +339,7 @@ class MainActivity extends View {
 
         break;
       case 3:
+        JBridge.logTabClickEvent("GROUPS");
         contentLayout = (
           <CommunityFragment
             height="match_parent"
@@ -346,6 +350,7 @@ class MainActivity extends View {
 
         break;
       case 4:
+        JBridge.logTabClickEvent("PROFILE");
         contentLayout = (
           <ProfileFragment
             height="match_parent"

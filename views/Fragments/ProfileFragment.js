@@ -49,10 +49,12 @@ class ProfileFragment extends View {
     this.popupMenu="Logout";
 
     this.handleResponse();
+    JBridge.logTabScreenEvent("PROFILE");
   }
 
 
   logout = () =>{
+    JBridge.logLogoutInitiate();
     window.__Logout();
   }
 

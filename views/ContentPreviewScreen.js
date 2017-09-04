@@ -55,6 +55,8 @@ class ContentPreviewScreen extends View {
       ]
     }
 
+    JBridge.logPreviewScreenEvent();
+
     this.menuData1 = {
       url: [
         { imageUrl: "ic_action_share_black" },
@@ -379,6 +381,7 @@ class ContentPreviewScreen extends View {
 
   handleButtonClick = () =>{
     console.log("HANDLE PREVIEW CLICK")
+    JBridge.logPreviewLoginClickEvent();
     var event={tag:"OPEN_UserActivityFromPreview",contents:{}}
     window.__runDuiCallback(event);
   }

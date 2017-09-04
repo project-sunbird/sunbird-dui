@@ -70,6 +70,7 @@ class CourseFragment extends View {
           ]
         }
     }
+    JBridge.logTabScreenEvent("COURSES");
     this.enrolledCourses = []
     window.setEnrolledCourses = this.setEnrolledCourses;
   }
@@ -271,6 +272,7 @@ class CourseFragment extends View {
 
     }
      else if (url == "ic_action_filter" || url == "ic_action_filter_applied") {
+      JBridge.logPageFilterClickEvent("COURSES");
       window.__PageFilterPopup.resetPopup("Cource",this.props.response);
       window.__PageFilterPopup.show();
     }
