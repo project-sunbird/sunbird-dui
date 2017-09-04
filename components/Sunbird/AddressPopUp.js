@@ -79,6 +79,7 @@ class AddressPopUp extends View {
 
 
   show = () => {
+    this.singleClick=true;
     this.canSave = false;
     this.isVisible=true;;
     window.__patchCallback = this.getPatchCallback ;
@@ -336,7 +337,7 @@ class AddressPopUp extends View {
   }
 
   handleSaveClick = () => {
-    if (!this.canSave && !this.delete) {
+    if (this.singleClick && !this.canSave && !this.delete) {
       if (window.__AddressPopUp.data)
         JBridge.showSnackBar("Please make some changes");
       else
@@ -382,6 +383,7 @@ class AddressPopUp extends View {
       json.zipcode = this.pincode;
       json.addType = this.addressType;
       json.isDeleted = this.delete ? this.delete : null;
+      this.delete = false;
     }
 
     this.address.push(json);
@@ -400,12 +402,8 @@ class AddressPopUp extends View {
     }
 
     console.log(JSON.stringify(body));
-   if(this.canSave || this.delete){
-     if(this.canSave)
-      this.canSave=false;
-
-     if(this.delete)
-       this.delete = false;
+   if(this.singleClick){
+     this.singleClick=false;
 
     _this.responseCame=false;
     JBridge.patchApi(url, JSON.stringify(body), window.__userToken, window.__apiToken);
