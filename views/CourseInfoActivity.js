@@ -100,10 +100,10 @@ class CourseInfoActivity extends View {
 
   checkContentLocalStatus = (identifier) => {
     var callback = callbackMapper.map(function(data) {
-      _this.localContent  = JSON.parse(utils.decodeBase64(data[0]));
+      _this.localContent  = JSON.parse(data[0]);
       if (_this.localContent.isAvailableLocally == true) {
         var callback1 = callbackMapper.map(function(data) {
-          data[0] = utils.jsonifyData(utils.decodeBase64(data[0]))
+          data[0] = utils.jsonifyData(data[0])
           _this.courseContent = JSON.parse(data[0]);
           _this.renderCourseChildren()
         });
@@ -115,7 +115,7 @@ class CourseInfoActivity extends View {
               if(JBridge.isNetworkAvailable())
                 JBridge.importCourse(identifier,"false")
               else
-                JBridge.showSnackBar(window.__S.NO_INTERNET)
+                JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE)
           }
         })
 
@@ -330,7 +330,7 @@ class CourseInfoActivity extends View {
             }, 200);
       }else{
 
-          JBridge.showToast("Can't share. Try Again!","short");
+          JBridge.showToast({ERROR_CANT_SHARE_TRY_AGAIN},"short");
 
        }
 

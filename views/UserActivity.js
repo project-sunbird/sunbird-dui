@@ -79,7 +79,7 @@ class UserActivity extends View {
          _this.handleDeepLinkAction(identifier);
       }
     }else{
-        JBridge.showToast("Imported Successfully","short");
+        JBridge.showToast(window.__S.MSG_IMPORTED_SUCCESSFULLY,"short");
         console.log("Successfully IMPORTED CONTENT")
         var whatToSend = []
         var event = { tag: "OPEN_MainActivity", contents: whatToSend };
@@ -93,7 +93,7 @@ class UserActivity extends View {
       console.log("IDENTIFIER IN HANDLE DEEPLINK ACTION",identifier);
 
     var callback = callbackMapper.map(function(data) {
-        var item = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
+        var item = JSON.parse(utils.jsonifyData(data[0]));
         console.log("Callback data in userActivity",item);
         var deeplinkMode = JBridge.getFromSharedPrefs("deeplinkMode");
 
@@ -194,7 +194,7 @@ class UserActivity extends View {
     if(identifier!=""){
       JBridge.getContentDetails(identifier,callback)
     }else{
-      JBridge.showToast("Can't open empty content","short");
+      JBridge.showToast(window.__S.ERROR_CANT_OPEN_EMPTY_CONTENT,"short");
       this.performLogin();
     }
   }
@@ -426,7 +426,7 @@ class UserActivity extends View {
 
   handleSignUpClick = () => {
      if (!JBridge.isNetworkAvailable()) {
-        JBridge.showSnackBar(window.__S.NO_INTERNET)
+        JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE)
         return;
       }
 

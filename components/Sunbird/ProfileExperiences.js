@@ -44,7 +44,7 @@ class ProfileExperiences extends View {
               <TextView
               width="wrap_content"
               height="wrap_content"
-              text="Add"
+              text={window.__S.ADD}
               padding = "16,16,0,16"
               onClick = {() => this.showPopUp()}
               visibility = {(this.isEditable == "true") ? "visible" : "gone"}
@@ -66,13 +66,12 @@ class ProfileExperiences extends View {
     return (
       <LinearLayout
       height="wrap_content"
-      width="0"
-      weight = "2"
+      width="wrap_content"
       padding = "16,16,0,16"
       gravity="center">
-      <LinearLayout
-        width="0"
-        weight="1" />
+      <ViewWidget
+        height="0"
+        weight="1"/>
         <LinearLayout
           width = "wrap_content"
           height = "wrap_content"
@@ -199,7 +198,7 @@ class ProfileExperiences extends View {
           + input.zipcode;
     }
 
-    return this.trimText(address);
+    return address;
   }
 
   getSubjects = (input) => {
@@ -213,26 +212,26 @@ class ProfileExperiences extends View {
       });
       sub = "Subjects : " + sub;
     }
-    return (sub == "") ? sub : this.trimText(sub) + "\n";
+    return (sub == "") ? sub : sub + "\n";
   }
 
   getOrg = (input) => {
     if (input.orgName && input.orgName != "")
-      return this.trimText(input.orgName) + "\n";
+      return input.orgName + "\n";
     else
       return "";
   }
 
   getPosition = (input) => {
     if (input.role && input.role != "")
-      return this.trimText(input.role) + ", ";
+      return input.role + ", ";
     else
       return "";
   }
 
   getDegree = (input) => {
     if (input.degree && input.degree != "")
-      return this.trimText(input.degree) + "\n"
+      return input.degree + "\n"
     else
       return "";
   }
@@ -248,7 +247,7 @@ class ProfileExperiences extends View {
 
   getUniv = (input) => {
     if (input.boardOrUniversity && input.boardOrUniversity != "")
-      return this.trimText(input.boardOrUniversity);
+      return input.boardOrUniversity;
     else
       return "";
   }
@@ -269,27 +268,17 @@ class ProfileExperiences extends View {
     return det;
   }
 
-  trimText = (text, max) => {
-    var maxChar = max || 40;
-    if (text.length > maxChar) {
-      return text.substring(0, maxChar) + "...";
-    }
-    return text;
-  }
-
   getBody(input) {
     return (<LinearLayout
-              width="0"
+              width="wrap_content"
               height="wrap_content"
               orientation="vertical"
-              padding="12,0,0,16"
-              weight="5.5">
+              padding="12,0,0,16">
 
                     <TextView
                     width="wrap_content"
                     height="wrap_content"
                     text={this.getTitle(input)}
-                    enableEllipse = "true"
                     style={window.__TextStyle.textStyle.CARD.HEADING}/>
 
                     <TextView

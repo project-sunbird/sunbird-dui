@@ -43,7 +43,7 @@ class ProfileSkillTags extends View {
               <TextView
               width="wrap_content"
               height="wrap_content"
-              text="Skill Tags"
+              text={window.__S.SKILL_TAGS}
               style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
               <ViewWidget
@@ -53,7 +53,7 @@ class ProfileSkillTags extends View {
               <TextView
               width="wrap_content"
               height="wrap_content"
-              text="Add"
+              text={window.__S.ADD}
               visibility = {(this.isEditable == "true") ? "visible" : "gone"}
               style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
 
@@ -99,7 +99,7 @@ class ProfileSkillTags extends View {
               <TextView
               width="wrap_content"
               height="wrap_content"
-              text="Endorse"
+              text={window.__S.ENDORSE}
               margin="0,0,5,0"
               style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 

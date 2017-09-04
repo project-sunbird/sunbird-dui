@@ -100,7 +100,7 @@ class SearchResult extends View {
                   <TextView
                     height = "wrap_content"
                     width = "wrap_content"
-                    text = "Active"
+                    text = {window.__S.ACTIVE}
                     style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK} />
                 </LinearLayout>
             </LinearLayout>
@@ -142,7 +142,7 @@ class SearchResult extends View {
       if (JBridge.isNetworkAvailable()){
         window.__runDuiCallback(event);
       } else {
-        JBridge.showSnackBar(window.__S.NO_INTERNET);
+        JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE);
       }
    }
     else if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook" || utils.checkEnrolledCourse(item.identifier)){

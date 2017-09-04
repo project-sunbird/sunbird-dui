@@ -176,7 +176,7 @@ class PageFilterChooser extends View {
           <TextView
            width = "wrap_content"
            height = "wrap_content"
-           text = "Choose from following"
+           text = {window.__S.CHOOSE_FROM_FOLLOWING}
            style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
       </LinearLayout>

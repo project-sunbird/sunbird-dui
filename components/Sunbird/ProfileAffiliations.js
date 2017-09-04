@@ -50,7 +50,7 @@ class ProfileCreations extends View {
               <TextView
               width="wrap_content"
               height="wrap_content"
-              text="Affiliations"
+              text={window.__S.AFFILIATIONS}
               style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
               <ViewWidget
@@ -60,7 +60,7 @@ class ProfileCreations extends View {
               <TextView
               width="wrap_content"
               height="wrap_content"
-              text="Add"
+              text={window.__S.ADD}
               visibility = {(this.isEditable == "true") ? "visible" : "gone"}
               style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
 

@@ -76,7 +76,7 @@ class ProfileAccomplishments extends View {
               <TextView
               width="wrap_content"
               height="wrap_content"
-              text="Accomplishments"
+              text={window.__S.ACCOMPLISHMENTS}
               style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
               <ViewWidget
@@ -86,7 +86,7 @@ class ProfileAccomplishments extends View {
               <TextView
               width="wrap_content"
               height="wrap_content"
-              text="Add"
+              text={window.__S.ADD}
               visibility = {(this.isEditable == "true") ? "visible" : "gone"}
               style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
 

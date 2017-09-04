@@ -267,19 +267,19 @@ class ProfileFragment extends View {
                   editable = {this.isEditable}
                   data = {this.education}
                   popUpType={window.__PROFILE_POP_UP_TYPE.EDUCATION}
-                  heading = "Education"/>
+                  heading = {window.__S.TITLE_EDUCATION} />
 
                 <ProfileExperiences
                   editable = {this.isEditable}
                   data = {this.jobProfile}
                   popUpType={window.__PROFILE_POP_UP_TYPE.EXPERIENCE}
-                  heading = "Experiences"/>
+                  heading = {window.__S.TITLE_EXPERIENCES} />
 
                 <ProfileExperiences
                   editable = {this.isEditable}
                   data = {this.address}
                   popUpType={window.__PROFILE_POP_UP_TYPE.ADDRESS}
-                  heading = "Address"/>
+                  heading = {window.__S.TITLE_ADDRESS} />
 
                 <ProfileCreations
                   data = {this.createdBy}

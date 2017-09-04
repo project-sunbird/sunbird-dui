@@ -44,7 +44,7 @@ class ProfileCreations extends View {
             <TextView
             width="wrap_content"
             height="wrap_content"
-            text={"Your profile is "+this.completedPercentage+" complete"}
+            text={YOUR_PROFILE_IS+" " +this.completedPercentage+" "+COMPELETE}
             style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
             <ViewWidget
@@ -54,7 +54,7 @@ class ProfileCreations extends View {
             <TextView
             width="wrap_content"
             height="wrap_content"
-            text="Edit Profile"
+            text= {window.__S.EDIT_PROFILE}
             style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}
             onClick={this.handleEditProfileClick}
             />
@@ -107,7 +107,7 @@ class ProfileCreations extends View {
         <ViewWidget
           width = "10" />
         <TextView
-          text = "Follow"
+          text = {window.__S.FOLLOW}
           style={window.__TextStyle.textStyle.CARD.BODY.DARK.BLUE_R} />
       </LinearLayout>
     )
@@ -137,7 +137,7 @@ class ProfileCreations extends View {
           <TextView
           width="wrap_content"
           height="wrap_content"
-          text="People you follow"
+          text={window.__S.PEOPLE_YOU_FOLLOW}
           style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
         </LinearLayout>
@@ -160,7 +160,7 @@ class ProfileCreations extends View {
           <TextView
           width="wrap_content"
           height="wrap_content"
-          text="Groups you follow"
+          text={window.__S.GROUPS_YOU_FOLLOW}
           style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
         </LinearLayout>
@@ -183,7 +183,7 @@ class ProfileCreations extends View {
           <TextView
           width="wrap_content"
           height="wrap_content"
-          text="People follow you"
+          text={window.__S.PEOPLE_WHO_FOLLOW_YOU}
           style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
         </LinearLayout>

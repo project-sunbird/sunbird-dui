@@ -117,7 +117,7 @@ class ProfileAdditionalInfo extends View {
               <TextView
                 width="wrap_content"
                 height="wrap_content"
-                text="Personal Details"
+                text={window__S.PERSONAL_DETAILS}
                 style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
               <ViewWidget
@@ -153,7 +153,7 @@ class ProfileAdditionalInfo extends View {
         <TextView
         width="wrap_content"
         height="wrap_content"
-        text="HOBBIES"
+        text={window.__S.HOBBIES}
         style={window.__TextStyle.textStyle.HINT.SEMI}/>
 
         <ViewWidget

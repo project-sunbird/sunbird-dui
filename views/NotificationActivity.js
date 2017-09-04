@@ -136,7 +136,7 @@ class NotificationActivity extends View {
                 <TextView
                 width="wrap_content"
                 height="wrap_content"
-                text="No new notifications"
+                text={window.__S.MSG_NO_NEW_NOTIFICATION}
                 margin="0,20,0,0"
                 style={window.__TextStyle.textStyle.CARD.TITLE.FADE_DARK}/>
 

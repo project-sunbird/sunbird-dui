@@ -53,7 +53,7 @@ class ProfileAboutComponent extends View {
         >
 
         <TextView
-          text="Fully informed about the latest updates in the rules and regulations, our team works closely with you, helping choose the best foreign destination to work in, and preparing a well-presented error-free application."
+          text={window.__S.HELP_MSG}
           height="wrap_content"
           margin="16,12,16,16"
           style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>            

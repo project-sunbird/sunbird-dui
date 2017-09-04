@@ -109,7 +109,7 @@ class ContentLoaderDialog extends View {
             height = "wrap_content"
             width = "wrap_content"
             onClick = {this.handleClick}
-            text = "Cancel"
+            text = {window.__S.CANCEL}
             style = {window.__TextStyle.textStyle.CARD.BODY.BLUE_R}
             color={window.__Colors.PRIMARY_ACCENT}
             padding = "16,10,16,10" />
@@ -166,7 +166,7 @@ class ContentLoaderDialog extends View {
            width="wrap_content"
            height="wrap_content"
            margin="0,0,0,32"
-           text="Loading your Content.."/>
+           text={window.__S.LOADING_CONTENT}/>
 
           <LinearLayout
             height="wrap_content"

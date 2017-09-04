@@ -64,7 +64,7 @@ class ResourceDetailActivity extends View {
   checkLocalStatus = (data) => {
 
     var callback = callbackMapper.map(function(data) {
-      _this.playContent = JSON.parse(utils.decodeBase64(data[0]))
+      _this.playContent = JSON.parse(data)
       if (_this.playContent.isAvailableLocally == true) {
         _this.localStatus = true;
         var pButonLayout = (
@@ -73,7 +73,7 @@ class ResourceDetailActivity extends View {
                  isCourse = "false"
                  playContent = {_this.playContent}
                  contentDetail = {_this.details.content}
-                 buttonText="PLAY"
+                 buttonText={window.__S.PLAY}
                  localStatus = {_this.localStatus}
                  identifier = {_this.details.identifier}
                  changeOverFlowMenu = {_this.changeOverFlow}/>)
@@ -86,7 +86,7 @@ class ResourceDetailActivity extends View {
                  width="match_parent"
                  isCourse = "false"
                  contentDetail = {_this.details.content}
-                 buttonText="DOWNLOAD"
+                 buttonText={window.__S.DOWNLOAD}
                  playContent = {null}
                  localStatus = {_this.localStatus}
                  identifier = {_this.details.identifier}
@@ -154,7 +154,7 @@ class ResourceDetailActivity extends View {
               _this.replaceChild(_this.idSet.sharePopupContainer,sharePopUp.render(),0);
           }else{
 
-              JBridge.showToast("Can't share. Try Again!","short");
+              JBridge.showToast(window.__S.ERROR_CANT_SHARE_TRY_AGAIN,"short");
 
            }
 

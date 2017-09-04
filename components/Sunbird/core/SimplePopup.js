@@ -28,23 +28,22 @@ class SimplePopup extends View {
       "linkShareIntents",
       "fileShareIntents"
     ]);
-    this.parentId = this.props.id || this.idSet.parentContainer;
     this.chosenItem;
     this.selectedList = [];
     _this=this;
     window.__SimplePopup = this;
-    console.log("SIMPLE POPUP CME")
+    console.log("SHARE POPUP CME")
     this.isVisible=false;
   }
 
 
-  show = (id) => {
-    this.setVisibility("visible", id);
+  show = () => {
+    this.setVisibility("visible");
     this.isVisible=true;
   }
 
-  hide = (id) => {
-    this.setVisibility("gone", id);
+  hide = () => {
+    this.setVisibility("gone");
     this.isVisible=false;
   }
 
@@ -52,9 +51,9 @@ class SimplePopup extends View {
     return this.isVisible;
   }
 
-  setVisibility = (data, id) => {
+  setVisibility = (data) => {
     var cmd = this.set({
-      id: id || this.parentId,
+      id: this.idSet.parentContainer,
       visibility: data
     })
 
@@ -77,7 +76,7 @@ class SimplePopup extends View {
 
         <LinearLayout
           orientation="vertical"
-          margin="2,8,0,8"
+          margin="2,30,0,30"
           width="match_parent"
           height="wrap_content">
 
@@ -88,7 +87,7 @@ class SimplePopup extends View {
 
        </LinearLayout>
 
-
+    
      );
 
   }
@@ -104,8 +103,7 @@ class SimplePopup extends View {
 
         <LinearLayout
           width="match_parent"
-          height="wrap_content"
-          margin = "0,8,0,0">
+          height="wrap_content">
 
           <LinearLayout
           stroke = {"2," + window.__Colors.PRIMARY_DARK}
@@ -117,7 +115,7 @@ class SimplePopup extends View {
             onClick={()=>{this.handleButtonClick("negative")}}
             width="match_parent"
             height="match_parent">
-
+            
                  <TextView
                    gravity="center"
                    height="48"
@@ -137,7 +135,7 @@ class SimplePopup extends View {
            weight="1">
 
            <LinearLayout
-            onClick={()=>{this.handleButtonClick("positive")}}
+            onClick={()=>{this.handleButtonClick("negative")}}
             width="match_parent"
             height="match_parent">
 
@@ -154,18 +152,18 @@ class SimplePopup extends View {
 
        </LinearLayout>
 
-
+    
      );
   }
 
-
+ 
   getHeader = () => {
     return (
       <LinearLayout
         width="match_parent"
         height="wrap_content"
         gravity="center_vertical"
-        margin="0,0,0,8">
+        margin="0,0,0,0">
 
           <TextView
             width = "wrap_content"
@@ -203,24 +201,24 @@ class SimplePopup extends View {
               clickable = "true"
               padding="16,18,16,16"
               background="#ffffff">
-
+              
                {this.getHeader()}
 
                {this.getContent()}
 
                {this.getFooter()}
 
-
+            
             </LinearLayout>)
   }
 
-
+  
   handleDismissClick = () => {
     this.hide();
   }
 
 
-
+  
   afterRender = () => {
   }
 
@@ -229,10 +227,10 @@ class SimplePopup extends View {
   render() {
 
     this.layout = (
-      <LinearLayout
+      <LinearLayout 
         height = "match_parent"
         width = "match_parent"
-        id={this.parentId}
+        id={this.idSet.parentContainer}
         visibility="gone"
         afterRender={this.afterRender}
         root="true"

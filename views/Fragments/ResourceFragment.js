@@ -301,7 +301,7 @@ handleResourceViewAllClick= (data,title,searchQuery,visibility) =>{
         if(JBridge.isNetworkAvailable())
           window.__BNavFlowRestart();
         else
-        JBridge.showSnackBar(window.__S.NO_INTERNET);
+        JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE);
     });
       
         JBridge.addSwipeRefreshScrollView(this.idSet.scrollViewContainer,callbackRefresh);
@@ -327,7 +327,7 @@ handleResourceViewAllClick= (data,title,searchQuery,visibility) =>{
                         <OfflineResourceContainer
                          onResourceOpenClick = {_this.handleResourceOpen}
                          data = {_this.data}
-                         title="Saved Resources"
+                         title={window.__S.SAVED_RESOURCES}
                          onViewAllClick = {_this.handleResourceViewAllClick}/>
 
                          <LinearLayout

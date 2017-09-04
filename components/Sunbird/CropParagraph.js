@@ -110,7 +110,7 @@ class CropParagraph extends View {
               margin="0,0,8,0"
               id={this.idSet.showMoreButton}
               visibility={this.str.length > this.len ? "visible" : "gone"}
-              text="Read more"
+              text={window.__S.READ_MORE}
               gravity = "right"
               width = "wrap_content"
               height = "wrap_content"

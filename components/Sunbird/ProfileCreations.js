@@ -36,7 +36,7 @@ class ProfileCreations extends View {
                 <TextView
                   width="wrap_content"
                   height="wrap_content"
-                  text="Creator of"
+                  text={window.__S.CREATOR_OF}
                   style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
                 <ViewWidget

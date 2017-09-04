@@ -67,7 +67,7 @@ class CustomPopUp extends View{
               <TextView
               height="wrap_content"
               width="match_parent"
-              text="Add a skill"
+              text={window.__S.LABEL_ADD_A_SKILL}
               margin="16,16,0,0"
               style={window.__TextStyle.textStyle.CARD.TITLE.DARK}
               textSize="22"
@@ -76,7 +76,7 @@ class CustomPopUp extends View{
               height="wrap_content"
               margin="16,0,16,0"
               width="match_parent"
-              hint="Start Typing to Add a skill "
+              hint={window.__S.TYPE_TO_ADD_A_SKILL}
               gravity="center_vertical"
               color="#000000"
               maxLines="1"
@@ -253,7 +253,7 @@ class CustomPopUp extends View{
     }
     else {
       JBridge.hideKeyboard();
-      JBridge.showSnackBar("Already Added");
+      JBridge.showSnackBar(window.__S.ERROR_ALREADY_ADDED);
     }
   }
 

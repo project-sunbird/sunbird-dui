@@ -93,7 +93,7 @@ class FlagPopup extends View {
 
     }
     else
-      JBridge.showSnackBar(window.__S.NO_INTERNET)
+      JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE)
 
   }
 
@@ -210,7 +210,7 @@ class FlagPopup extends View {
 
   getRadioList = () =>{
 
-    this.radioList = ["Inappropriate content","Copyright violation","Piracy violation","Other"];
+    this.radioList = [OPTION_INAPPROPRIATE_CONTENT,OPTION_COPYRIGHT_VIOLATION,OPTION_PRIVACY_VIOLATION,OPTION_OTHER];
 
     var rows = this.radioList.map((item, index) => {
       return(
