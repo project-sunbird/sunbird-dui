@@ -382,7 +382,6 @@ class AddressPopUp extends View {
       json.zipcode = this.pincode;
       json.addType = this.addressType;
       json.isDeleted = this.delete ? this.delete : null;
-      this.delete = false;
     }
 
     this.address.push(json);
@@ -401,6 +400,12 @@ class AddressPopUp extends View {
     }
 
     console.log(JSON.stringify(body));
+   if(this.canSave || this.delete){
+     if(this.canSave)
+      this.canSave=false;
+
+     if(this.delete)
+       this.delete = false;
 
     _this.responseCame=false;
     JBridge.patchApi(url, JSON.stringify(body), window.__userToken, window.__apiToken);
@@ -415,6 +420,7 @@ class AddressPopUp extends View {
          window.__LoaderDialog.hide();
          _this.responseCame=false;
      },window.__API_TIMEOUT);
+    }
   }
 
   getRadioButtionLayout = (item, index) => {
