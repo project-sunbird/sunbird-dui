@@ -216,6 +216,8 @@ const stringsRes = {
 		STORAGE_DENIED : "Storage denied",
 		PERMISSION_DENIED : "Permission denied",
 		YEAR_OF_PASSING : "Year of passing",
+		
+		SELECT_ADDRESS_TYPE : "Select Address Type"
 	},
 	"hi_IN" : {
 		ALREADY_HAVE_ACC : "मौजूदा उपयोगकर्ता, साइन इन करें",

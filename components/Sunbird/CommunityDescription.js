@@ -133,7 +133,7 @@ class CommunityDescription extends View {
                 <TextView
                 width="match_parent"
                 height="wrap_content"
-                text="Description"
+                text={window.__S.DESCRIPTION}
                 style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
                 <TextView

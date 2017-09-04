@@ -117,7 +117,7 @@ class ProfileAdditionalInfo extends View {
               <TextView
                 width="wrap_content"
                 height="wrap_content"
-                text={window.__S.PERSONAL_DETAILS}
+                text={window__S.PERSONAL_DETAILS}
                 style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
               <ViewWidget

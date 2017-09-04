@@ -422,7 +422,7 @@ class AddressPopUp extends View {
         <TextView
          height="wrap_content"
          width="wrap_content"
-         text="Select Address Type"
+         text={window.__S.SELECT_ADDRESS_TYPE}
          textAllCaps="true"
          textStyle={window.__TextStyle.textStyle.HINT.SEMI}
          margin="0,0,0,3"/>
@@ -516,7 +516,7 @@ class AddressPopUp extends View {
                   width="match_parent"
                   gravity="center_vertical"
                   background="#ffffff"
-                  text="Address"
+                  text={window.__S.TITLE_ADDRESS}
                   style={window.__TextStyle.textStyle.TOOLBAR.HEADING}/>
 
 
@@ -604,7 +604,7 @@ class AddressPopUp extends View {
             <TextView
                height="wrap_content"
                width="wrap_content"
-               text="Select Address Type"
+               text={window.__S.SELECT_ADDRESS_TYPE}
                textAllCaps="true"
                textStyle={window.__TextStyle.textStyle.HINT.SEMI}
                />

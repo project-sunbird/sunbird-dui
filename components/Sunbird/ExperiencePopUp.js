@@ -297,10 +297,10 @@ class ExperiencePopUp extends View{
      padding="15,15,15,15">
 
 
-      {this.getEditTextView(this.idSet.jobText, window.__S.JOB_NAME, false, this.setJobName)}
-      {this.getEditTextView(this.idSet.organizationText, window.__S.ORGANIZATION, false, this.setOrganization)}
-      {this.getEditTextView(this.idSet.positionText, window.__S.POSITION, true, this.setPosition)}
-      
+      {this.getEditTextView(this.idSet.jobText, "Job Name", false, this.setJobName)}
+      {this.getEditTextView(this.idSet.organizationText, "Organization", false, this.setOrganization)}
+      {this.getEditTextView(this.idSet.positionText, "Position", true, this.setPosition)}
+
       {this.getSpinner()}
       <LinearLayout
       height="wrap_content"

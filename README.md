@@ -10,7 +10,7 @@
   use sudo if ACCESS ERROR
 
 # ip changes if not running locally (port forwarding)
-- MainActivity.java
+- MainActivity.java 
 ```
 private static final String BASE_URL = "http://IP_ADDRESS:8080"
  
