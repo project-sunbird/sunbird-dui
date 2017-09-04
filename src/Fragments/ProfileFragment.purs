@@ -92,6 +92,7 @@ resourceDetailActivity input whereFrom whatToSendBack = do
 courseInfoActivity input whereFrom whatToSendBack = do
 	event <- ui $ CourseInfoActivity {courseDetails : input}
 	case event of
+		OPEN_ViewBatchActivity {course: output}-> viewBatchActivity output "CourseInfoActivity" input
 		OPEN_EnrolledActivity {course: output} -> enrolledCourseActivity output "CourseFragment" input
 		API_EnrollCourse {user_token : x, reqParams : details , api_token: token} -> do
 				responseData <- enrollCourse x details token
@@ -130,3 +131,25 @@ subModuleDetailActivity mName input whereFrom whatToSendBack = do
 			"EnrolledCourseActivity" -> enrolledCourseActivity whatToSendBack "Terminate" input
 			_ ->  enrolledCourseActivity whatToSendBack "Terminate" input
   		_ -> subModuleDetailActivity mName input whereFrom whatToSendBack
+
+
+viewBatchActivity input whereFrom whatToSendBack = do
+	event <- ui $ ViewBatchActivity {extras : input}
+	case event of
+		OPEN_EnrolledActivity_BATCH {course: output} -> enrolledCourseActivity output "CourseFragment" input
+		API_BatchCreator {user_token:x, api_token:y} -> do
+			resData <- getProfileDetail x y
+			_<- sendUpdatedState {response : resData, responseFor : "API_BatchCreator", screen:"ViewBatchActivity"}
+			pure $ "apiCalled"
+		API_Get_Batch_list {user_token : x, api_token: token , request : request } -> do
+			responseData <- getBatchList x token request
+			_ <- sendUpdatedState {response : responseData, responseFor : "API_Get_Batch_list", screen:"asas"}
+			pure $ "apiDefault"
+		API_EnrollInBatch {reqParams : details , user_token : x, api_token: token} -> do
+			responseData <- enrollInBatch details x token
+			_ <- sendUpdatedState {response : responseData, responseFor : "API_EnrollInBatch", screen:"asas"}
+			pure $ "apiDefault"
+		BACK_ViewBatchActivity -> case whereFrom of
+			"CourseInfoActivity" -> courseInfoActivity whatToSendBack "Terminate" input
+			_ -> courseInfoActivity whatToSendBack "Terminate" input
+		_ -> viewBatchActivity input whereFrom whatToSendBack
