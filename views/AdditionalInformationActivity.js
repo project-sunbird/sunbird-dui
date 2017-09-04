@@ -487,9 +487,6 @@ class AdditionalInformationActivity extends View{
                             background={window.__Colors.PRIMARY_BLACK}/>
                         </LinearLayout>
                         {this.getEditTextView(this.idSet.adharText,"ADHAR NUMBER","",true,this.setAdhar,"number")}
-                        {this.getEditTextView(this.idSet.locationText,"CURRENT LOCATION","Enter your location",true,this.setLocation)}
-
-
                         <LinearLayout
                           width="match_parent"
                           height="wrap_content"
