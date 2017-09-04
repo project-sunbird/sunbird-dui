@@ -494,7 +494,6 @@ class AdditionalInformationActivity extends View{
                             alpha="0.6"
                             background={window.__Colors.PRIMARY_BLACK}/>
                         </LinearLayout>
-                        {this.getEditTextView(this.idSet.adharText,"ADHAR NUMBER","",true,this.setAdhar,"number")}
                         <LinearLayout
                           width="match_parent"
                           height="wrap_content"
@@ -1337,9 +1336,9 @@ class AdditionalInformationActivity extends View{
   checkSameData = () =>{
 
     console.log(JSON.stringify(this.grade) +" gfgh "+ JSON.stringify(this.prevData.grade));
-    if(this.name == this.prevData.name && this.lastName == this.prevData.lastName && JSON.stringify(this.language) == JSON.stringify(this.prevData.language) && this.email == this.prevData.email && this.mobile == this.prevData.mobile && this.prevData.adhar==this.adhar)
+    if(this.name == this.prevData.name && JSON.stringify(this.language) == JSON.stringify(this.prevData.language) && this.email == this.prevData.email && this.mobile == this.prevData.mobile )
       {
-        if(this.location==this.prevData.location && this.description == this.prevData.description && this.dob == this.prevData.dob && (this.gender == this.prevData.gender || this.gender.toLowerCase() == this.prevData.gender.toLowerCase()) && this.arrayEquals(this.grade,this.prevData.grade) )
+        if( this.description == this.prevData.description && this.dob == this.prevData.dob && (this.gender == this.prevData.gender || this.gender.toLowerCase() == this.prevData.gender.toLowerCase()) && this.arrayEquals(this.grade,this.prevData.grade) )
           if (this.arrayEquals(this.selectedSubjects,this.prevData.selectedSubjects))
                return true;
       }
