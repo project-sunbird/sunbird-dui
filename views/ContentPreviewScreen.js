@@ -359,7 +359,10 @@ class ContentPreviewScreen extends View {
 
       var sharePopUp = (
         <SharePopup
-        data = {input}/>
+        data = {input}
+        identifier = {_this.baseIdentifier}
+        type = ""
+        />
         )
 
 

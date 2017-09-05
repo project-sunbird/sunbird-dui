@@ -484,7 +484,6 @@ class MainActivity extends View {
         width="match_parent"
         clickable="true"
         background={window.__Colors.WHITE}
-        afterRender = {this.afterRender}
         height="match_parent">
         <LinearLayout
           height="0"

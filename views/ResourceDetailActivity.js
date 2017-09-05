@@ -148,7 +148,10 @@ class ResourceDetailActivity extends View {
 
                 var sharePopUp = (
                   <SharePopup
-                  data = {input}/>
+                  data = {input}
+                  identifier = {_this.details.identifier}
+                  type = "RESOURCES"
+                  />
                   )
 
               _this.replaceChild(_this.idSet.sharePopupContainer,sharePopUp.render(),0);
@@ -472,7 +475,7 @@ class ResourceDetailActivity extends View {
         if(responseCode == 200){
           var callback = callbackMapper.map(function(response){
 
-            if(response[0] == "successful"){
+            if(state.responseFor == "API_FlagContent" && response[0] == "successful"){
               JBridge.logFlagClickEvent(this.details.identifier,"RESOURCES");
               setTimeout(function(){
                 JBridge.showSnackBar(window.__S.CONTENT_FLAGGED_MSG)
@@ -563,6 +566,8 @@ class ResourceDetailActivity extends View {
 
      if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
        window.__SharePopup.show();
+       JBridge.logShareContentInitiateEvent("RESOURCES",this.details.identifier)
+
      }else{
         this.setPermissions();
       }

@@ -305,6 +305,7 @@ class CourseInfoActivity extends View {
   shareContent = () =>{
 
     console.log("SHARE POP UP CALLED")
+    JBridge.logShareContentInitiateEvent("COURSES",this.details.identifier)
 
     var shareCallback = callbackMapper.map(function(data) {
 
@@ -322,7 +323,10 @@ class CourseInfoActivity extends View {
 
             var sharePopUp = (
                               <SharePopup
-                              data = {input}/>
+                              data = {input}
+                              identifier = {_this.details.identifier}
+                              type = "COURSES"
+                              />
                               )
 
             _this.replaceChild(_this.idSet.sharePopupContainer,sharePopUp.render(),0);

@@ -517,34 +517,42 @@ class CourseEnrolledActivity extends View {
 
     if(url=="ic_action_share_black"){
 
-
-    var callback = callbackMapper.map(function(data) {
-
-    window.__LoaderDialog.hide();
-
-
-      if(data[0]!="failure"){
-            var input = [{
-                        type : "text",
-                        data : window.__deepLinkUrl+"/public/#!/course/"+_this.baseIdentifier
-
-                      },{
-                        type : "file",
-                        data : "file://"+data[0]
-
-                      }];
-
-          var sharePopUp = (
-            <SharePopup
-            data = {input}/>
-            )
+        if(this.showProgress == "gone")
+          JBridge.logShareContentInitiateEvent("RESOURCES",this.baseIdentifier)
+        else
+          JBridge.logShareContentInitiateEvent("COURSES",this.baseIdentifier)
 
 
-        _this.replaceChild(_this.idSet.sharePopupContainer,sharePopUp.render(),0);
+        var callback = callbackMapper.map(function(data) {
 
-         setTimeout(function() {
-          window.__SharePopup.show();
-        }, 200);
+        window.__LoaderDialog.hide();
+
+
+          if(data[0]!="failure"){
+                var input = [{
+                            type : "text",
+                            data : window.__deepLinkUrl+"/public/#!/course/"+_this.baseIdentifier
+
+                          },{
+                            type : "file",
+                            data : "file://"+data[0]
+
+                          }];
+                var type = _this.showProgress == "gone" ? "RESOURCES" : "COURSES";
+              var sharePopUp = (
+                <SharePopup
+                data = {input}
+                identifier = {_this.baseIdentifier}
+                type = {type}
+                />
+                )
+
+
+            _this.replaceChild(_this.idSet.sharePopupContainer,sharePopUp.render(),0);
+
+             setTimeout(function() {
+              window.__SharePopup.show();
+            }, 200);
        }else{
 
           JBridge.showToast("Can't share. Try Again!","short");
