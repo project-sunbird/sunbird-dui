@@ -474,6 +474,7 @@ class AddressPopUp extends View {
      window.__BNavFlowRestart();
    }else{
      JBridge.showSnackBar(data.params.errmsg);
+     this.singleClick=true;
    }
 
  }

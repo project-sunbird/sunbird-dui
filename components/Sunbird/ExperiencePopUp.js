@@ -824,6 +824,7 @@ del = () => {
         this.hide();
         window.__BNavFlowRestart();
       }else{
+        this.singleClick=true;
         JBridge.showSnackBar(data.params.errmsg);
       }
 

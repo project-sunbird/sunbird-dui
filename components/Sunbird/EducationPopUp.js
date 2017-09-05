@@ -397,6 +397,7 @@ class EducationPopUp extends View {
      window.__BNavFlowRestart();
    }else{
      JBridge.showSnackBar(data.params.errmsg);
+     this.singleClick=true;
    }
 
  }
