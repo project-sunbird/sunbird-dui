@@ -28,6 +28,7 @@ class LanguagePopup extends View {
     _this=this;
     window.__LanguagePopup = this;
     this.isVisible=false;
+    // "اردو Urdu" : "ur_IN",
     this.languageMap = {
       "English" : "en_US",
       "हिंदी" : "hi_IN",
@@ -40,7 +41,6 @@ class LanguagePopup extends View {
       "ગુજરાતી" : "gu_IN",
       "Assamese" : "as_IN",
       "मराठी" : "mr_IN",
-      "اردو Urdu" : "ur_IN",
       "ਪੰਜਾਬੀ" : "pa_IN"
     };
     this.selectedLang = window.__CurrentLanguage;

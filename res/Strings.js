@@ -200,7 +200,7 @@ const stringsRes = {
 		WARNING_INVALID_PERCENTAGE : "Invalid percentage",
 		WARNING_INVALID_GRADE : "Invalid grade",
 		DEGREE : "Degree",
-		INSTITUION_NAME : "Instution name",
+		INSTITUTION_NAME : "Institution name",
 		IS_THIS_YOUR_CURRENT_JOB : "Is this your current job",
 		ERROR_MULTIPLE_CURRENT_JOB : "You already have a current job, please change that to not a current job",
 		OPTION_INAPPROPRIATE_CONTENT : "Inappropriate content",
@@ -216,8 +216,10 @@ const stringsRes = {
 		STORAGE_DENIED : "Storage denied",
 		PERMISSION_DENIED : "Permission denied",
 		YEAR_OF_PASSING : "Year of passing",
-		
-		SELECT_ADDRESS_TYPE : "Select Address Type"
+		SELECT_ADDRESS_TYPE : "Select Address Type",
+		LANGUAGES : "LANGUAGES",
+		EMAIL : "EMAIL",
+		CHANGE_LANGUAGE : "Change Language"
 	},
 	"hi_IN" : {
 		ALREADY_HAVE_ACC : "मौजूदा उपयोगकर्ता, साइन इन करें",
@@ -382,6 +384,12 @@ const stringsRes = {
 		YES : "हाँ",
 		NO : "नहीं",
 		COMMING_SOON : "जल्द आ रहा है...",
+		TITLE_EDUCATION : "Education_Hindi",
+		TITLE_EXPERIENCES : "Experiences_Hindi",
+		TITLE_ADDRESS : "Address_Hindi",
+		DEGREE : "Degree_Hindi",
+		INSTITUION_NAME : "Instution name_Hindi",
+		YEAR_OF_PASSING : "Year of passing_Hindi",
 	},
 	"bn_IN" : {
 	},

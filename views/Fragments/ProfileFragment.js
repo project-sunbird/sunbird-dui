@@ -47,7 +47,7 @@ class ProfileFragment extends View {
         { imageUrl: "ic_action_overflow" }
       ]
     }
-    this.popupMenu="Change Language,Logout";
+    this.popupMenu=window.__S.CHANGE_LANGUAGE + "," + window.__S.LOGOUT;
     window.__LanguagePopup.props.buttonClick = this.handleChangeLang;
 
     this.handleResponse();

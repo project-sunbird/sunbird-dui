@@ -58,7 +58,7 @@ class AddressPopUp extends View {
 
 
     this.delBtnState = {
-      text : "DELETE",
+      text : window.__S.DELETE,
       id : this.idSet.delButton,
       isClickable : "true",
       onClick : this.handleDelClick,
@@ -66,7 +66,7 @@ class AddressPopUp extends View {
     };
 
     this.saveBtnState = {
-      text : "SAVE",
+      text : window.__S.SAVE,
       id : this.idSet.saveButton,
       isClickable : "false",
       onClick : this.handleSaveClick,

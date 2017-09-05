@@ -53,7 +53,7 @@ class EducationPopUp extends View {
     this.canSave = false;
 
     this.delBtnState = {
-      text : "DELETE",
+      text : window.__S.DELETE,
       id : this.idSet.delButton,
       isClickable : "true",
       onClick : this.handleDelClick,
@@ -61,7 +61,7 @@ class EducationPopUp extends View {
     };
 
     this.saveBtnState = {
-      text : "SAVE",
+      text : window.__S.SAVE,
       id : this.idSet.saveButton,
       isClickable : "false",
       onClick : this.handleSaveClick,
@@ -471,7 +471,7 @@ class EducationPopUp extends View {
         padding="15,15,15,15">
 
         {this.getEditTextView(this.idSet.degreeText, window.__S.DEGREE , false, this.setDegree)}
-        {this.getEditTextView(this.idSet.inititutionText, window.__S.INSTITUION_NAME, false, this.setInitution)}
+        {this.getEditTextView(this.idSet.inititutionText, window.__S.INSTITUTION_NAME, false, this.setInitution)}
         {this.getEditTextView(this.idSet.yearOfPassingText, window.__S.YEAR_OF_PASSING, true, this.setYearOfPassingText, "numeric")}
         {this.getEditTextView(this.idSet.percentageText, window.__S.PERCENTAGE, true, this.setPercentage, "numeric")}
         {this.getEditTextView(this.idSet.gradeText, window.__S.GRADE, true, this.setGrade)}
