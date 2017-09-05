@@ -242,7 +242,7 @@ class MainActivity extends View {
 
     switch (this.currentPageIndex) {
       case 0:
-        window.__runDuiCallback({ "tag": "OPEN_HomeFragment", contents: [] });
+        // window.__runDuiCallback({ "tag": "OPEN_HomeFragment", contents: [] });
         break;
       case 1:
         //shouldBeModified = (JBridge.getFromSharedPrefs("chooseCourse") != JSON.stringify(state.response.status[1].result.response))

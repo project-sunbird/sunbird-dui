@@ -196,6 +196,7 @@ class ResourceDetailActivity extends View {
     else if(this.details.content.hasOwnProperty("contentData") && this.details.content.contentData.hasOwnProperty("versionKey")){
       versionKey = this.details.content.contentData.versionKey
     }
+    JBridge.logFlagClickInitiateEvent("RESOURCES",selectedList[0],comment,this.details.content.identifier);
 
     var request = {
                           "flagReasons":selectedList,
