@@ -85,6 +85,7 @@ class RootScreen extends View {
   getBody = () => {
     return (
       <RelativeLayout>
+        <LoaderDialog/>
         <PageFilterPopup/>
         <ContentLoaderDialog/>
         <PermissionDeniedDialog/>
@@ -117,7 +118,7 @@ class RootScreen extends View {
           </RelativeLayout>
 
         </LinearLayout>
-        <LoaderDialog/>
+
         <RelativeLayout
           id = {this.idSet.popupContainer}>
           {this.getBody()}
