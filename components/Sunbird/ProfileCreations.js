@@ -167,6 +167,7 @@ class ProfileCreations extends View {
   render() {
     this.layout= (
               <LinearLayout
+                width="match_parent"
                 margin="0,15,0,0"
                 orientation="vertical"
                 visibility = {(this.data.hasOwnProperty("content")) ? "visible" : "gone"}>
@@ -176,7 +177,7 @@ class ProfileCreations extends View {
                 {this.getHeader()}
 
                 <HorizontalScrollView
-                 width = "wrap_content"
+                 width = "match_parent"
                  height = "wrap_content"
                  scrollBarX="false"
                  fillViewport="true">

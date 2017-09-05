@@ -32,7 +32,7 @@ class CourseContainer extends View {
     this.data= this.props.data;
     if(this.data==undefined)
           this.data=[];
-        
+
     var rows = this.data.map((item, i) => {
 
       return this.geCardLayout(item);
@@ -43,12 +43,12 @@ class CourseContainer extends View {
                   orientation="vertical"
                   height="wrap_content"
                   width="match_parent">
-                  
+
                   {this.getHeader()}
 
-                  
+
                   <HorizontalScrollView
-                   width = "wrap_content"
+                   width = "match_parent"
                    height = "wrap_content"
                    scrollBarX="false">
 
@@ -70,7 +70,7 @@ class CourseContainer extends View {
   }
 
   checkEnrolledCourse = (identifier) =>{
-    
+
     var enrolled = false;
     window.__enrolledCourses.map(function(item){
       if(item.courseId == identifier){
@@ -97,9 +97,9 @@ class CourseContainer extends View {
     };
 
     if(_this.checkEnrolledCourse(item.identifier)){
-     temp['type'] = "ENROLLED"; 
+     temp['type'] = "ENROLLED";
     }
-      return (<CardComponent 
+      return (<CardComponent
                  data={temp}
                  content={item}
                  onCardClick={this.handleCardClick}/>)
@@ -134,7 +134,7 @@ class CourseContainer extends View {
                 padding="8,8,8,8"
                 onClick={()=>{this.handleViewAllClick()}}
                 style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
-            
+
 
             </LinearLayout>)
   }
@@ -172,11 +172,11 @@ class CourseContainer extends View {
     });
 
     JBridge.setPermissions(callback,"android.permission.WRITE_EXTERNAL_STORAGE");
-    
+
   }
 
 
-  
+
 
 
 
@@ -189,14 +189,14 @@ class CourseContainer extends View {
         afterRender={this.afterRender}
         background={this.props.transparent?window.__Colors.WHITE_F2:window.__Colors.WHITE}
         root="true"
-        orientation="vertical">          
+        orientation="vertical">
 
            <LinearLayout
             id={this.idSet.courseContainer}
             padding="0,0,0,0"
             height="wrap_content"
             width="match_parent"/>
-      
+
 
          </LinearLayout>
     )
