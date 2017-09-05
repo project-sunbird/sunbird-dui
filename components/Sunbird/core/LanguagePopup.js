@@ -21,36 +21,27 @@ class LanguagePopup extends View {
   constructor(props, children) {
     super(props, children);
     this.setIds([
-      "chooseItemContainer",
-      "featureContainer",
       "parentContainer",
-      "contentContainer",
-      "spinnerContainer",
-      "linkShareIntents",
-      "fileShareIntents",
       "languageMapSpinner"
     ]);
-    this.parentId = this.props.id || this.idSet.parentContainer;
-    this.chosenItem;
-    this.selectedList = [];
+    this.parentId = this.idSet.parentContainer;
     _this=this;
     window.__LanguagePopup = this;
-    console.log("SIMPLE POPUP CME")
     this.isVisible=false;
     this.languageMap = {
       "English" : "en_US",
-      "Hindi" : "hi_IN",
-      "Kannada" : "kn_IN",
-      "Telugu": "te_IN",
-      "Tamil" : "ta_IN",
-      "Bengali" : "bn_IN",
-      "Malayalam" : "ml_IN",
+      "हिंदी" : "hi_IN",
+      "ಕನ್ನಡ" : "kn_IN",
+      "తెలుగు": "te_IN",
+      "தமிழ்" : "ta_IN",
+      "বাঙালি" : "bn_IN",
+      "മലയാളം" : "ml_IN",
       "Oriya" : "or_IN",
-      "Gujarati" : "gu_IN",
+      "ગુજરાતી" : "gu_IN",
       "Assamese" : "as_IN",
-      "Marathi" : "mr_IN",
-      "Punjabi" : "pa_IN",
-      "Urdu" : "ur_IN"
+      "मराठी" : "mr_IN",
+      "اردو Urdu" : "ur_IN",
+      "ਪੰਜਾਬੀ" : "pa_IN"
     };
     this.selectedLang = window.__CurrentLanguage;
   }
@@ -76,7 +67,6 @@ class LanguagePopup extends View {
       id: this.parentId,
       visibility: data
     })
-
     Android.runInUI(cmd, 0)
   }
 
@@ -96,19 +86,28 @@ class LanguagePopup extends View {
 
         <LinearLayout
           orientation="vertical"
-          margin="2,8,0,8"
+          margin="2,16,0,16"
           width="match_parent"
           height="wrap_content">
 
-          <Spinner
+          <LinearLayout
             width="match_parent"
-            height="24"
-            style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
-            margin="0,0,5,6"
-            id={this.idSet.languageMapSpinner}
-            onItemClick = {this.handleLanguageSpinnerItemClick}
-            values={Object.keys(this.languageMap).join(",")}
-            />
+            height="wrap_content"
+            stroke={"2,"+window.__Colors.PRIMARY_BLACK_66}
+            padding="0,8,8,8"
+            margin="4,0,4,4"
+            cornerRadius="4,4,4,4">
+
+            <Spinner
+              width="match_parent"
+              height="24"
+              style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
+              margin="0,0,5,6"
+              id={this.idSet.languageMapSpinner}
+              onItemClick = {this.handleLanguageSpinnerItemClick}
+              values={Object.keys(this.languageMap).join(",")} />
+
+          </LinearLayout>
 
        </LinearLayout>
 
@@ -116,7 +115,6 @@ class LanguagePopup extends View {
      );
 
   }
-
 
   handleButtonClick = (selectedLang) =>{
     this.props.buttonClick(selectedLang);
@@ -127,7 +125,6 @@ class LanguagePopup extends View {
     var index = parseInt(params[2]);
     var keyValue = keys[index];
     this.selectedLang = this.languageMap[keyValue];
-    // window.setLanguage(this.languageMap[keyValue]);
   }
 
   mapValueToKey = (value) => {
@@ -197,7 +194,6 @@ class LanguagePopup extends View {
      );
   }
 
-
   getHeader = () => {
     return (
       <LinearLayout
@@ -228,8 +224,6 @@ class LanguagePopup extends View {
       </LinearLayout>
     )
   }
-
-
 
   getBody = () => {
     return (<LinearLayout
