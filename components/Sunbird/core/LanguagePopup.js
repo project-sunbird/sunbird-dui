@@ -29,20 +29,23 @@ class LanguagePopup extends View {
     window.__LanguagePopup = this;
     this.isVisible=false;
     // "اردو Urdu" : "ur_IN",
-    this.languageMap = {
-      "English" : "en_US",
-      "हिंदी" : "hi_IN",
-      "ಕನ್ನಡ" : "kn_IN",
-      "తెలుగు": "te_IN",
-      "தமிழ்" : "ta_IN",
-      "বাঙালি" : "bn_IN",
-      "മലയാളം" : "ml_IN",
-      "Oriya" : "or_IN",
-      "ગુજરાતી" : "gu_IN",
-      "Assamese" : "as_IN",
-      "मराठी" : "mr_IN",
-      "ਪੰਜਾਬੀ" : "pa_IN"
-    };
+    // this.encodedJSON = btoa(encodeURIComponent(JSON.stringify({
+    //   "English" : "en_US",
+    //   "हिंदी" : "hi_IN",
+    //   "ಕನ್ನಡ" : "kn_IN",
+    //   "తెలుగు": "te_IN",
+    //   "தமிழ்" : "ta_IN",
+    //   "বাঙালি" : "bn_IN",
+    //   "മലയാളം" : "ml_IN",
+    //   "Oriya" : "or_IN",
+    //   "ગુજરાતી" : "gu_IN",
+    //   "Assamese" : "as_IN",
+    //   "मराठी" : "mr_IN",
+    //   "ਪੰਜਾਬੀ" : "pa_IN"
+    // })));
+    this.encodedJSON = "JTdCJTIyRW5nbGlzaCUyMjolMjJlbl9VUyUyMiwlMjIlRTAlQTQlQjklRTAlQTQlQkYlRTAlQTQlODIlRTAlQTQlQTYlRTAlQTUlODAlMjI6JTIyaGlfSU4lMjIsJTIyJUUwJUIyJTk1JUUwJUIyJUE4JUUwJUIzJThEJUUwJUIyJUE4JUUwJUIyJUExJTIyOiUyMmtuX0lOJTIyLCUyMiVFMCVCMCVBNCVFMCVCMSU4NiVFMCVCMCVCMiVFMCVCMSU4MSVFMCVCMCU5NyVFMCVCMSU4MSUyMjolMjJ0ZV9JTiUyMiwlMjIlRTAlQUUlQTQlRTAlQUUlQUUlRTAlQUUlQkYlRTAlQUUlQjQlRTAlQUYlOEQlMjI6JTIydGFfSU4lMjIsJTIyJUUwJUE2JUFDJUUwJUE2JUJFJUUwJUE2JTk5JUUwJUE2JUJFJUUwJUE2JUIyJUUwJUE2JUJGJTIyOiUyMmJuX0lOJTIyLCUyMiVFMCVCNCVBRSVFMCVCNCVCMiVFMCVCNCVBRiVFMCVCNCVCRSVFMCVCNCVCMyVFMCVCNCU4MiUyMjolMjJtbF9JTiUyMiwlMjJPcml5YSUyMjolMjJvcl9JTiUyMiwlMjIlRTAlQUElOTclRTAlQUIlODElRTAlQUElOUMlRTAlQUElQjAlRTAlQUElQkUlRTAlQUElQTQlRTAlQUIlODAlMjI6JTIyZ3VfSU4lMjIsJTIyQXNzYW1lc2UlMjI6JTIyYXNfSU4lMjIsJTIyJUUwJUE0JUFFJUUwJUE0JUIwJUUwJUE0JUJFJUUwJUE0JUEwJUUwJUE1JTgwJTIyOiUyMm1yX0lOJTIyLCUyMiVFMCVBOCVBQSVFMCVBOSVCMCVFMCVBOCU5QyVFMCVBOCVCRSVFMCVBOCVBQyVFMCVBOSU4MCUyMjolMjJwYV9JTiUyMiU3RA==";
+    this.languageMap = JSON.parse(decodeURIComponent(atob(this.encodedJSON)));
+    console.log("this.languageMap", this.languageMap);
     this.selectedLang = window.__CurrentLanguage;
   }
 
