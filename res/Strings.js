@@ -219,7 +219,9 @@ const stringsRes = {
 		SELECT_ADDRESS_TYPE : "Select Address Type",
 		LANGUAGES : "LANGUAGES",
 		EMAIL : "EMAIL",
-		CHANGE_LANGUAGE : "Change Language"
+		CHANGE_LANGUAGE : "Change Language",
+		CANCEL : "Cancel",
+		SELECT_LANGUAGE : "Select Language"
 	},
 	"hi_IN" : {
 		ALREADY_HAVE_ACC : "मौजूदा उपयोगकर्ता, साइन इन करें",

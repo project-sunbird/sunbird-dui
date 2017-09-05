@@ -162,7 +162,7 @@ class LanguagePopup extends View {
                    height="48"
                    width="match_parent"
                    style={window.__TextStyle.textStyle.CARD.ACTION.DARK}
-                   text={"Cancel"}/>
+                   text={window.__S.CANCEL /*"Cancel"*/}/>
 
                </LinearLayout>
 
@@ -185,7 +185,7 @@ class LanguagePopup extends View {
                    height="48"
                    width="match_parent"
                    style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
-                   text={"Change"}/>
+                   text={window.__S.CONFIRM /*"Change"*/}/>
 
              </LinearLayout>
 
@@ -209,7 +209,7 @@ class LanguagePopup extends View {
             width = "wrap_content"
             height = "wrap_content"
             gravity="center_vertical"
-            text = {"Select a Language"}
+            text = {window.__S.SELECT_LANGUAGE /*"Select a Language"*/}
             style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
           <ViewWidget
