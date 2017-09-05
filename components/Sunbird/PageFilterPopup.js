@@ -261,6 +261,12 @@ class PageFilterPopup extends View {
   }
 
   handleDismissClick = () => {
+    console.log("is resource",this.isForResouce)
+    if(this.isForResouce){
+      JBridge.logPageFilterClickEvent("RESOURCES");
+    }else{
+      JBridge.logPageFilterClickEvent("COURSES");
+    }
     this.hide();
   }
 

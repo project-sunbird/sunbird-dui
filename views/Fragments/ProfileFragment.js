@@ -54,7 +54,7 @@ class ProfileFragment extends View {
 
 
   logout = () =>{
-    JBridge.logLogoutInitiate();
+    JBridge.logLogoutInitiate(window.__userToken);
     window.__Logout();
   }
 

@@ -65,6 +65,8 @@ class CourseInfoActivity extends View {
       courseDesc: this.details ? this.details.description : "",
       competedCount: this.details && this.details.footerTitle ? this.details.footerTitle.split('%')[0] : "10",
     };
+
+    JBridge.logCourseDetailScreenEvent(this.details.identifier)
   }
 
 

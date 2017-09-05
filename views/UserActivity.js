@@ -798,6 +798,7 @@ class UserActivity extends View {
   setLoginPreferences = () =>{
     JBridge.setInSharedPrefs("logged_in","YES");
     window.__userToken=JBridge.getFromSharedPrefs("user_token");
+    JBridge.logLoginSuccess(window.__userToken);
     JBridge.setProfile(window.__userToken);
   }
 

@@ -78,10 +78,10 @@ class SharePopup extends View {
     this.props.data.map((item, index) => {
 
       if(item.type == "file"){
-        JBridge.logShareClickEvent("FILE");
+        // JBridge.logShareClickEvent("FILE");
         fileLinkAvailable = true;
       }else if(item.type == "text"){
-        JBridge.logShareClickEvent("LINK");
+        // JBridge.logShareClickEvent("LINK");
         textLinkAvailable = true;
       }
 

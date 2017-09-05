@@ -54,7 +54,7 @@ class ResourceDetailActivity extends View {
     console.log("RDA",this.details)
 
     this.localStatus = false;
-
+    JBridge.logResourceDetailScreenEvent(this.details.identifier)
 
     _this = this;
 
@@ -185,6 +185,7 @@ class ResourceDetailActivity extends View {
   }
 
   flagContent = (comment,selectedList) =>{
+
     window.__LoaderDialog.show();
     console.log("flag request",this.details)
     console.log(comment,selectedList)
@@ -471,7 +472,7 @@ class ResourceDetailActivity extends View {
           var callback = callbackMapper.map(function(response){
 
             if(response[0] == "successful"){
-              JBridge.logFlagClickEvent("SUCCESS");
+              JBridge.logFlagClickEvent(this.details.identifier,"RESOURCES");
               setTimeout(function(){
                 JBridge.showSnackBar(window.__S.CONTENT_FLAGGED_MSG)
                 window.__BNavFlowRestart();
@@ -518,8 +519,8 @@ class ResourceDetailActivity extends View {
     }
     else if(params == 1){
       console.log("in flag rda")
+      JBridge.logFlagScreenEvent("RESOURCES");
       window.__LoaderDialog.hide();
-      JBridge.logFlagClickEvent("INITIATE");
       window.__FlagPopup.show();
     }
   }
