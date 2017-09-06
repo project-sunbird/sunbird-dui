@@ -100,7 +100,7 @@ class ExperiencePopUp extends View{
    });
    Android.runInUI(cmd, 0)
 
-   this.replaceChild(this.idSet.experiencePopUpParent,this.getUi().render(),0);
+   this.replaceChild(this.idSet.experiencePopUpBody,this.getUi().render(),0);
    this.setVisibility("visible");
 
   this.initializeData();
@@ -544,6 +544,7 @@ class ExperiencePopUp extends View{
      <RelativeLayout
        width="match_parent"
        height="match_parent"
+       id = {this.idSet.experiencePopUpBody}
        gravity="center">
            {this.getBody()}
            {this.getFooter()}
