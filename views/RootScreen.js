@@ -78,7 +78,7 @@ class RootScreen extends View {
   reRenderRoot = () => {
     this.replaceChild(this.idSet.popupContainer, this.getBody().render(), 0);
     console.log("before BNavFlowRestart");
-    window.__BNavFlowRestart();
+    // window.__BNavFlowRestart();
     console.log("after BNavFlowRestart");
   }
 

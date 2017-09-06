@@ -59,7 +59,7 @@ class ProfileFragment extends View {
      window.setLanguage(lang);
      window.__S = Str.strings();
      window.__LanguagePopup.hide();
-     window.__renderBNavBar();
+     window.__renderBNavBar(4);
      window.__reRender();
   }
 

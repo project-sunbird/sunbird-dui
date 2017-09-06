@@ -372,13 +372,12 @@ class MainActivity extends View {
   }
 
   afterRender = () => {
-    this.renderBNavBar();
     this.currentPageIndex = 0;
-    this.handleBottomNavBarAction(0);
+    this.renderBNavBar(this.currentPageIndex);
     this.getUserProfileData();
   }
 
-  renderBNavBar = () => {
+  renderBNavBar = ( index ) => {
 
     console.log("IN RENDER BNAV BAR", window.__S.FILTER_BY);
 
@@ -401,6 +400,8 @@ class MainActivity extends View {
 
 
     this.replaceChild(this.idSet.tabLayoutContainer, layout.render(), 0);
+    this.handleBottomNavBarAction(index);
+
   }
 
   setupDuiCallback = () => {
