@@ -277,6 +277,7 @@ class ModuleDetailActivity extends View {
     afterRender = () => {
         window.__SimplePopup.hide();
         window.__ProgressButton.setButtonFor(this.module.identifier);
+        JBridge.logContentDetailScreenEvent(this.module.identifier);
         this.checkContentLocalStatus(this.module);
     }
 

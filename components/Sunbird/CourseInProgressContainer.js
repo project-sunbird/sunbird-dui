@@ -194,7 +194,7 @@ class CourseInProgressContainer extends View {
 
 
   handleViewAllClick = () =>{
-
+      JBridge.logViewAllClickEvent("MYCOURSES");
       var courseListDetails = {
                                "title" : this.props.title || window.__S.COURSES_IN_PROGRESS,
                                "courseListDetails" : this.data,

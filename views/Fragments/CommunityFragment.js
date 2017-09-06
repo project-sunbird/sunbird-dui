@@ -37,6 +37,7 @@ class CommunityFragment extends View {
         { imageUrl: "ic_action_search" }
       ]
     }
+    JBridge.logTabScreenEvent("GROUPS");
   }
 
 

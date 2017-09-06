@@ -150,6 +150,34 @@ if (typeof window !== "undefined") {
   window.__PROFILE_POP_UP_TYPE = profilePopUpType;
 }
 
+ /*************************************
+ *************Remove for debug build***
+ **************************************/
+
+ // window.console.log = function(msg){
+
+ // }
+
+ // window.console.info = function(msg){
+   
+ // }
+
+ // window.console.error = function(msg){
+   
+ // }
+
+ // window.console.warn = function(msg){
+   
+ // }
+
+ // window.onerror = function myErrorHandler(errorMsg, url, lineNumber) {
+ // return true;
+ // }
+/*************Until here******************
+******************************************/
+
+
+
 const duiShowScreen = (callback, state) => {
   console.log("state in indexjs",state.screen);
   window.__duiCb = callback;
@@ -194,6 +222,7 @@ const runDuiCallback = (state) => {
 };
 
 const logoutUser = () => {
+    JBridge.logLogoutSuccess(window.__userToken);
     JBridge.showSnackBar("Logged out")
     JBridge.setInSharedPrefs("logged_in","NO");
     JBridge.setInSharedPrefs("user_id", "__failed");

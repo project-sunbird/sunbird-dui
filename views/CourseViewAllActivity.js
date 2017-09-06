@@ -147,6 +147,12 @@ class CourseViewAllActivity extends View {
 
 
   afterRender = () => {
+    // if(this.btnStatus == "gone"){
+    //   JBridge.logViewAllScreenEvent("MYCOURSES");
+    // }
+    // else{
+    //   JBridge.logViewAllScreenEvent("COURSES");
+    // }
     this.changeViewMoreButtonStatus(this.btnStatus)
   }
 

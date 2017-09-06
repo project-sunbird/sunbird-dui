@@ -54,7 +54,7 @@ class ResourceDetailActivity extends View {
     console.log("RDA",this.details)
 
     this.localStatus = false;
-
+    JBridge.logResourceDetailScreenEvent(this.details.identifier)
 
     _this = this;
 
@@ -148,7 +148,10 @@ class ResourceDetailActivity extends View {
 
                 var sharePopUp = (
                   <SharePopup
-                  data = {input}/>
+                  data = {input}
+                  identifier = {_this.details.identifier}
+                  type = "RESOURCES"
+                  />
                   )
 
               _this.replaceChild(_this.idSet.sharePopupContainer,sharePopUp.render(),0);
@@ -185,6 +188,7 @@ class ResourceDetailActivity extends View {
   }
 
   flagContent = (comment,selectedList) =>{
+
     window.__LoaderDialog.show();
     console.log("flag request",this.details)
     console.log(comment,selectedList)
@@ -195,6 +199,7 @@ class ResourceDetailActivity extends View {
     else if(this.details.content.hasOwnProperty("contentData") && this.details.content.contentData.hasOwnProperty("versionKey")){
       versionKey = this.details.content.contentData.versionKey
     }
+    JBridge.logFlagClickInitiateEvent("RESOURCES",selectedList[0],comment,this.details.content.identifier);
 
     var request = {
                           "flagReasons":selectedList,
@@ -470,7 +475,8 @@ class ResourceDetailActivity extends View {
         if(responseCode == 200){
           var callback = callbackMapper.map(function(response){
 
-            if(response[0] == "successful"){
+            if(state.responseFor == "API_FlagContent" && response[0] == "successful"){
+              JBridge.logFlagClickEvent(this.details.identifier,"RESOURCES");
               setTimeout(function(){
                 JBridge.showSnackBar(window.__S.CONTENT_FLAGGED_MSG)
                 window.__BNavFlowRestart();
@@ -517,6 +523,7 @@ class ResourceDetailActivity extends View {
     }
     else if(params == 1){
       console.log("in flag rda")
+      JBridge.logFlagScreenEvent("RESOURCES");
       window.__LoaderDialog.hide();
       window.__FlagPopup.show();
     }
@@ -559,6 +566,8 @@ class ResourceDetailActivity extends View {
 
      if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
        window.__SharePopup.show();
+       JBridge.logShareContentInitiateEvent("RESOURCES",this.details.identifier)
+
      }else{
         this.setPermissions();
       }

@@ -50,6 +50,7 @@ class ProfileFragment extends View {
     window.__LanguagePopup.props.buttonClick = this.handleChangeLang;
 
     this.handleResponse();
+    JBridge.logTabScreenEvent("PROFILE");
   }
 
 
@@ -60,6 +61,7 @@ class ProfileFragment extends View {
   }
 
   logout = () =>{
+    JBridge.logLogoutInitiate(window.__userToken);
     window.__Logout();
   }
 

@@ -93,6 +93,13 @@ class CourseEnrolledActivity extends View {
       this.baseIdentifier = this.details.identifier
     }
 
+    if(this.showProgress == "gone"){
+        JBridge.logResourceDetailScreenEvent(this.baseIdentifier);
+    }
+    else
+    {
+      JBridge.logCourseDetailScreenEvent(this.baseIdentifier)
+    }
 
 
     if(window.__enrolledCourses != undefined){
@@ -349,6 +356,7 @@ class CourseEnrolledActivity extends View {
 
             if(responseCode == 200){
                 if(response[0] == "successful"){
+                  JBridge.logFlagClickEvent(this.baseIdentifier,"COURSES");
                   setTimeout(function(){
                     JBridge.showSnackBar(window.__S.CONTENT_FLAGGED_MSG)
                     window.__BNavFlowRestart();
@@ -497,6 +505,7 @@ class CourseEnrolledActivity extends View {
     }
     else if(params == 1){
       console.log("in flag rda")
+      JBridge.logFlagScreenEvent("COURSES");
       window.__LoaderDialog.hide();
       window.__FlagPopup.show();
     }
@@ -508,34 +517,42 @@ class CourseEnrolledActivity extends View {
 
     if(url=="ic_action_share_black"){
 
-
-    var callback = callbackMapper.map(function(data) {
-
-    window.__LoaderDialog.hide();
-
-
-      if(data[0]!="failure"){
-            var input = [{
-                        type : "text",
-                        data : window.__deepLinkUrl+"/public/#!/course/"+_this.baseIdentifier
-
-                      },{
-                        type : "file",
-                        data : "file://"+data[0]
-
-                      }];
-
-          var sharePopUp = (
-            <SharePopup
-            data = {input}/>
-            )
+        if(this.showProgress == "gone")
+          JBridge.logShareContentInitiateEvent("RESOURCES",this.baseIdentifier)
+        else
+          JBridge.logShareContentInitiateEvent("COURSES",this.baseIdentifier)
 
 
-        _this.replaceChild(_this.idSet.sharePopupContainer,sharePopUp.render(),0);
+        var callback = callbackMapper.map(function(data) {
 
-         setTimeout(function() {
-          window.__SharePopup.show();
-        }, 200);
+        window.__LoaderDialog.hide();
+
+
+          if(data[0]!="failure"){
+                var input = [{
+                            type : "text",
+                            data : window.__deepLinkUrl+"/public/#!/course/"+_this.baseIdentifier
+
+                          },{
+                            type : "file",
+                            data : "file://"+data[0]
+
+                          }];
+                var type = _this.showProgress == "gone" ? "RESOURCES" : "COURSES";
+              var sharePopUp = (
+                <SharePopup
+                data = {input}
+                identifier = {_this.baseIdentifier}
+                type = {type}
+                />
+                )
+
+
+            _this.replaceChild(_this.idSet.sharePopupContainer,sharePopUp.render(),0);
+
+             setTimeout(function() {
+              window.__SharePopup.show();
+            }, 200);
        }else{
 
           JBridge.showToast("Can't share. Try Again!","short");
@@ -558,7 +575,7 @@ class CourseEnrolledActivity extends View {
     console.log(this.details)
     var callback = callbackMapper.map(function(data){
       console.log("local content details",data)
-      data[0] = JSON.parse(utils.jsonifyData(data[0]))
+      data[0] = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])))
       _this.handleModuleClick(data[0].contentData.name,data[0])
     });
     var id;

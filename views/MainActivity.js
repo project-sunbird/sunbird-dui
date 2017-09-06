@@ -242,7 +242,7 @@ class MainActivity extends View {
 
     switch (this.currentPageIndex) {
       case 0:
-        window.__runDuiCallback({ "tag": "OPEN_HomeFragment", contents: [] });
+        // window.__runDuiCallback({ "tag": "OPEN_HomeFragment", contents: [] });
         break;
       case 1:
         //shouldBeModified = (JBridge.getFromSharedPrefs("chooseCourse") != JSON.stringify(state.response.status[1].result.response))
@@ -302,6 +302,7 @@ class MainActivity extends View {
     this.color = "#123123"
     switch (index) {
       case 0:
+        JBridge.logTabClickEvent("HOME");
         contentLayout = (
           <HomeFragment
                 response = {data}
@@ -318,6 +319,7 @@ class MainActivity extends View {
 
         break;
       case 1:
+        JBridge.logTabClickEvent("COURSES");
         contentLayout = (
           <CourseFragment
               height="match_parent"
@@ -328,6 +330,7 @@ class MainActivity extends View {
 
         break;
       case 2:
+        JBridge.logTabClickEvent("RESOURCES");
         contentLayout = (<ResourceFragment
                   root="true"
                   response={data}
@@ -336,6 +339,7 @@ class MainActivity extends View {
 
         break;
       case 3:
+        JBridge.logTabClickEvent("GROUPS");
         contentLayout = (
           <CommunityFragment
             height="match_parent"
@@ -346,6 +350,7 @@ class MainActivity extends View {
 
         break;
       case 4:
+        JBridge.logTabClickEvent("PROFILE");
         contentLayout = (
           <ProfileFragment
             height="match_parent"
@@ -479,7 +484,6 @@ class MainActivity extends View {
         width="match_parent"
         clickable="true"
         background={window.__Colors.WHITE}
-        afterRender = {this.afterRender}
         height="match_parent">
         <LinearLayout
           height="0"

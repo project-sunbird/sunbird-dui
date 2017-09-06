@@ -70,6 +70,7 @@ class CourseFragment extends View {
           ]
         }
     }
+    JBridge.logTabScreenEvent("COURSES");
     this.enrolledCourses = []
     window.setEnrolledCourses = this.setEnrolledCourses;
   }

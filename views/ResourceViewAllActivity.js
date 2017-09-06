@@ -34,7 +34,12 @@ class ResourceViewAllActivity extends View {
       }
     this.shouldCacheScreen = false;
     this.totalDetails = JSON.parse(state.data.value0.resourceDetails);
-
+    // if(this.totalDetails.showViewMore == "gone"){
+    //   JBridge.logViewAllScreenEvent("SAVEDRESOURCES");      
+    // }
+    // else{
+    //   JBridge.logViewAllScreenEvent("RESOURCES");
+    // }
 
 
     _this = this;
@@ -249,7 +254,6 @@ getRows = (data) =>{
   }
 
   changeViewMoreButtonStatus(status){
-
       var cmd = this.set({
         id: this.idSet.viewMoreButton,
         visibility: status

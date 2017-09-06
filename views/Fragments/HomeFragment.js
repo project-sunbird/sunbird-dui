@@ -35,7 +35,7 @@ class HomeFragment extends View {
         { imageUrl: "ic_action_search" },
       ]
     }
-
+    JBridge.logTabScreenEvent("HOME");
     window.setEnrolledCourses = this.setEnrolledCourses;
 
   }

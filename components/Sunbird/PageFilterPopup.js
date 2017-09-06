@@ -105,8 +105,10 @@ class PageFilterPopup extends View {
 
     if(this.isForResouce){
       listToUse = this.filterListResource
+      JBridge.logPageFilterScreenEvent("RESOURCES");
     }else{
       listToUse = this.filterListCource
+      JBridge.logPageFilterScreenEvent("COURSES");
     }
 
     listToUse.map((item)=>{
@@ -259,6 +261,12 @@ class PageFilterPopup extends View {
   }
 
   handleDismissClick = () => {
+    console.log("is resource",this.isForResouce)
+    if(this.isForResouce){
+      JBridge.logPageFilterClickEvent("RESOURCES");
+    }else{
+      JBridge.logPageFilterClickEvent("COURSES");
+    }
     this.hide();
   }
 
