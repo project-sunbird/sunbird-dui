@@ -190,7 +190,7 @@ class ProfileActivity extends View {
             width = "wrap_content"
             margin="0,30,0,0"
             style={window.__TextStyle.textStyle.HEADING.DARK}
-            text = "No details to show"
+            text = {window.__S.MSG_NO_DETAILS_TO_SHOW}
             gravity = "center_horizontal" />
         </LinearLayout>
       )
@@ -282,13 +282,13 @@ class ProfileActivity extends View {
                     editable = {this.isEditable}
                     data = {this.education}
                     popUpType = {window.__PROFILE_POP_UP_TYPE.EDUCATION}
-                    heading = "Education"/>
+                    heading = {window.__S.TITLE_EDUCATION}/>
 
                   <ProfileExperiences
                     editable = {this.isEditable}
                     data = {this.jobProfile}
                     popUpType = {window.__PROFILE_POP_UP_TYPE.EXPERIENCE}
-                    heading = "Experiences"/>
+                    heading = {window.__S.EXPERIENCE}/>
 
                   <ProfileCreations
                     data = {this.createdBy}

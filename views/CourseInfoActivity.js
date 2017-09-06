@@ -117,7 +117,7 @@ class CourseInfoActivity extends View {
               if(JBridge.isNetworkAvailable())
                 JBridge.importCourse(identifier,"false")
               else
-                JBridge.showSnackBar(window.__S.NO_INTERNET)
+                JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE)
           }
         })
 
@@ -336,7 +336,7 @@ class CourseInfoActivity extends View {
             }, 200);
       }else{
 
-          JBridge.showToast("Can't share. Try Again!","short");
+          JBridge.showToast({ERROR_CANT_SHARE_TRY_AGAIN},"short");
 
        }
 

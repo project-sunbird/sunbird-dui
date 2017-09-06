@@ -112,7 +112,7 @@ class PermissionDeniedDialog extends View {
                     cornerRadius="4"
                     stroke = {"2," + window.__Colors.WHITE}
                     background = {window.__Colors.PRIMARY_ACCENT}
-                    text = "OPEN SETTINGS"
+                    text = {window.__S.OPEN_SETTINGS }
                     buttonClick = {this.onConfirm}
                     textColor = {window.__Colors.WHITE}
                     textSize = "14"/>
@@ -157,7 +157,7 @@ class PermissionDeniedDialog extends View {
                 width="wrap_content"
                 height="wrap_content"
                 id={this.idSet.permissionTextHolder}
-                text="PERMISSION NOT AVAILABLE"
+                text={window.__S.PERMISSION_NOT_AVAILABLE}
                 margin="0,9,0,0"
                 gravity="center_horizontal"
                 style={window.__TextStyle.textStyle.HINT.DULL}/>

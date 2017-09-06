@@ -61,7 +61,7 @@ class AddressPopUp extends View {
 
 
     this.delBtnState = {
-      text : "DELETE",
+      text : window.__S.DELETE,
       id : this.idSet.delButton,
       isClickable : "true",
       onClick : this.handleDelClick,
@@ -69,7 +69,7 @@ class AddressPopUp extends View {
     };
 
     this.saveBtnState = {
-      text : "SAVE",
+      text : window.__S.SAVE,
       id : this.idSet.saveButton,
       isClickable : "false",
       onClick : this.handleSaveClick,
@@ -346,7 +346,7 @@ class AddressPopUp extends View {
     }
 
     if(!JBridge.isNetworkAvailable()) {
-      JBridge.showSnackBar(window.__S.NO_INTERNET);
+      JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE);
       this.delete = false;
       return;
     }
@@ -430,7 +430,7 @@ class AddressPopUp extends View {
         <TextView
          height="wrap_content"
          width="wrap_content"
-         text="Select Address Type"
+         text={window.__S.SELECT_ADDRESS_TYPE}
          textAllCaps="true"
          textStyle={window.__TextStyle.textStyle.HINT.SEMI}
          margin="0,0,0,3"/>
@@ -524,7 +524,7 @@ class AddressPopUp extends View {
                   width="match_parent"
                   gravity="center_vertical"
                   background="#ffffff"
-                  text="Address"
+                  text={window.__S.TITLE_ADDRESS}
                   style={window.__TextStyle.textStyle.TOOLBAR.HEADING}/>
 
 
@@ -612,7 +612,7 @@ class AddressPopUp extends View {
             <TextView
                height="wrap_content"
                width="wrap_content"
-               text="Select Address Type"
+               text={window.__S.SELECT_ADDRESS_TYPE}
                textAllCaps="true"
                textStyle={window.__TextStyle.textStyle.HINT.SEMI}
                />
@@ -650,7 +650,7 @@ class AddressPopUp extends View {
         id = {id}
         height="wrap_content"
         width="match_parent"
-        hintText={optional ? "(Optional)" : ""}
+        hintText={optional ? window.__S.OPTIONAL : ""}
         labelText={label}
         mandatory = {optional ? "false" : "true"}
         margin = "0,0,0,16"

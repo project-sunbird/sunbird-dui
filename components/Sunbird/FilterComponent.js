@@ -69,7 +69,7 @@ class FilterComponent extends View {
                           <TextView
                           width="match_parent"
                           height="wrap_content"
-                          text="Star ratings"
+                          text={window.__S.STAR_RATINGS}
                           gravity="center_horizontal"
                           style={window.__TextStyle.textStyle.FILTER.REGULAR_BLUE}
                           weight="1"/>
@@ -77,7 +77,7 @@ class FilterComponent extends View {
                           <TextView
                           width="match_parent"
                           height="wrap_content"
-                          text="Number of votes"
+                          text={window.__S.NUMBER_OF_VOTES}
                           gravity="center_horizontal"
                           style={window.__TextStyle.textStyle.FILTER.REGULAR_BLACK}
                           weight="1"/>
@@ -85,7 +85,7 @@ class FilterComponent extends View {
                           <TextView
                           width="match_parent"
                           height="wrap_content"
-                          text = "Published date"
+                          text = {window.__S.PUBLISHED_DATE}
                           gravity="center_horizontal"
                           style={window.__TextStyle.textStyle.FILTER.REGULAR_BLACK}
                           weight="1"/>
@@ -137,7 +137,7 @@ class FilterComponent extends View {
                       margin="16,6,0,6"
                       gravity="center_vertical"
                       style={window.__TextStyle.textStyle.FILTER.REGULAR_BLACK}
-                      text="SORT BY"/>
+                      text={window.__S.SORT_BY}/>
 
                       {this.getSortCard()}
                       
@@ -148,7 +148,7 @@ class FilterComponent extends View {
                       gravity="center_vertical"
                       margin="16,6,0,6"
                       style={window.__TextStyle.textStyle.FILTER.REGULAR_BLACK}
-                      text="FILTER BY"/>
+                      text={window.__S.FILTER_BY}/>
 
                       <FilterCard
                       filterData={this.filterData}

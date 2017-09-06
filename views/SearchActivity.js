@@ -86,7 +86,6 @@ class SearchActivity extends View {
         this.filterIcon="ic_action_filter";
       }
 
-    // JBridge.showSnackBar(window.__S.SEARCH_LOADING_MESSAGE)
        var cmd = "";
         cmd += _this.set({
           id: _this.idSet.filterHolder,
@@ -290,13 +289,12 @@ class SearchActivity extends View {
 
           var s = "";
           if(JBridge.isNetworkAvailable()){
-              // JBridge.showSnackBar(window.__S.SEARCH_LOADING_MESSAGE)
               console.log(this.filterData," filterData ");
               JBridge.searchContent(callback, JSON.stringify(this.filterData), searchText, this.searchType, flag, 30);
           }
           else{
             window.__LoaderDialog.hide();
-            JBridge.showSnackBar(window.__S.NO_INTERNET);
+            JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE);
           }
 
         this.showFilter();
@@ -334,7 +332,7 @@ class SearchActivity extends View {
       this.getSearchList(searchText[0],"false");
     }
     else
-      JBridge.showSnackBar(window.__S.NO_INTERNET)
+      JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE)
 
   }
 

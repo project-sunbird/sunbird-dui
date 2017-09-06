@@ -51,6 +51,7 @@ class AdditionalInformationActivity extends View{
       "gradeSpinnerContainer",
       "gradeContainer",
       "nameText",
+      "lastNameText",
       "adharText",
       "descriptionText"
     ]);
@@ -66,6 +67,7 @@ class AdditionalInformationActivity extends View{
     this.location = null;
     this.grade=null;
     this.name= null;
+    this.lastName=null;
     this.language=null;
     this.adhar=null;
     this.gender=null;
@@ -87,7 +89,7 @@ class AdditionalInformationActivity extends View{
     console.log("Info State", this.data);
 
     this.saveBtnState = {
-      text : "SAVE",
+      text : window.__S.SAVE,
       id : this.idSet.saveButton,
       isClickable : "false",
       onClick :  this.handleSaveClick,
@@ -103,6 +105,7 @@ class AdditionalInformationActivity extends View{
     this.email = this.data.email;
     this.mobile = this.data.phone;
     this.name = this.data.firstName;
+    this.lastName = this.data.lastName;
     this.adhar = this.data.aadhaarNo;
     this.location = this.data.location;
     this.language = this.data.language;
@@ -115,6 +118,7 @@ class AdditionalInformationActivity extends View{
     this.prevData.email = this.data.email;
     this.prevData.mobile = this.data.phone;
     this.prevData.name = this.data.firstName;
+    this.prevData.lastName = this.data.lastName;
     this.prevData.adhar = this.data.aadhaarNo;
     this.prevData.location = this.data.location;
     this.prevData.language = this.data.language;
@@ -124,7 +128,6 @@ class AdditionalInformationActivity extends View{
     this.prevData.grade = this.data.grade!=null ? this.data.grade.slice():null;
     this.prevData.selectedSubjects = this.data.subject!=null ? this.data.subject.slice():null;
 
-   console.log(this.language + " grxj  "+ this.prevData.language + " ghc " + this.data.language);
 
     var cmd = this.set({
       id: this.idSet.emailText,
@@ -147,6 +150,11 @@ class AdditionalInformationActivity extends View{
     })
 
     cmd += this.set({
+      id: this.idSet.lastNameText,
+      text: this.lastName
+    })
+
+    cmd += this.set({
       id: this.idSet.dobText,
       text: this.dob
     })
@@ -166,7 +174,6 @@ class AdditionalInformationActivity extends View{
 
     this.populateSubjects(this.data.subject);
 
-    console.log(this.prevData.selectedSubjects + " fg "+ this.selectedSubjects);
     this.populateGrade(this.data.grade);
 
     JBridge.selectSpinnerItem(this.idSet.languageSpinner,this.LanguageArray.indexOf(this.language[0]));
@@ -189,7 +196,7 @@ class AdditionalInformationActivity extends View{
            width="match_parent"
            height="wrap_content"
            style={window.__TextStyle.textStyle.HINT.SEMI}
-           text="GRADES"
+           text={window.__S.GRADE}
            margin="0,0,0,8"
            padding="4,0,0,0"/>
           <MultiSelectSpinner
@@ -219,7 +226,7 @@ class AdditionalInformationActivity extends View{
            width="match_parent"
            height="20"
            style={window.__TextStyle.textStyle.HINT.SEMI}
-           text="SUBJECTS"
+           text={window.__S.SUBJECTS}
            margin="0,0,0,8"
            padding="4,0,0,0"/>
           <MultiSelectSpinner
@@ -398,8 +405,9 @@ class AdditionalInformationActivity extends View{
         orientation="vertical">
 
 
-                  {this.getEditTextView(this.idSet.nameText,"NAME","Enter your name",false,this.setName)}
-                  {this.getSingleSelectSpinner(this.idSet.languageSpinnerContainer,"LANGUAGE",false,this.loadLanguageSpinner)}
+                  {this.getEditTextView(this.idSet.nameText,window.__S.FIRST_NAME,window.__S.FIRST_NAME_HINT,false,this.setName)}
+                  {this.getEditTextView(this.idSet.lastNameText,window.__S.LAST_NAME,window.__S.LAST_NAME_HINT,true,this.setLastName)}
+                  {this.getSingleSelectSpinner(this.idSet.languageSpinnerContainer,window.__S.LANGUAGES,false,this.loadLanguageSpinner)}
 
                 {//  <TextView
                 //   width="match_parent"
@@ -422,9 +430,9 @@ class AdditionalInformationActivity extends View{
                    width="match_parent"
                    orientation="vertical">
 
-                       {this.getEditTextView(this.idSet.emailText,"E-MAIL","Enter your email",false,this.setEmail)}
-                       {this.getEditTextView(this.idSet.phoneText,"PHONE","Enter your phone number",false,this.setPhone,"number")}
-                       {this.getEditTextView(this.idSet.descriptionText,"DESCRIPTION","",true,this.setDescription)}
+                       {this.getEditTextView(this.idSet.emailText,window.__S.EMAIL_ID,window.__S.HINT_EMAIL_ID,false,this.setEmail)}
+                       {this.getEditTextView(this.idSet.phoneText,window.__S.PHONE,window.__S.HINT_MOBILE_NUMBER,false,this.setPhone,"number")}
+                       {this.getEditTextView(this.idSet.descriptionText,window.__S.DESCRIPTION,"",true,this.setDescription)}
                        <LinearLayout
                          width="match_parent"
                          height="wrap_content"
@@ -435,7 +443,7 @@ class AdditionalInformationActivity extends View{
                             width="match_parent"
                             height="20"
                             style={window.__TextStyle.textStyle.HINT.SEMI}
-                            text="GRADES"
+                            text={window.__S.SUBJECTS}
                             margin="0,0,0,8"
                             padding ="4,0,4,0"/>
                            <MultiSelectSpinner
@@ -446,7 +454,7 @@ class AdditionalInformationActivity extends View{
                              onItemChange={this.onMultiSelectSubjectItemChange}
                             />
                        </LinearLayout>
-                       {this.getSingleSelectSpinner(this.idSet.spinnerContainer,"GENDER",true,this.loadGenderSpinner)}
+                       {this.getSingleSelectSpinner(this.idSet.spinnerContainer,window.__S.GENDER,true,this.loadGenderSpinner)}
 
                        <LinearLayout
                        width="match_parent"
@@ -457,7 +465,7 @@ class AdditionalInformationActivity extends View{
                           width="match_parent"
                           height="wrap_content"
                           style={window.__TextStyle.textStyle.HINT.SEMI}
-                          text="DATE OF BIRTH"/>
+                          text={window.__S.DATE_OF_BIRTH}/>
                           <LinearLayout
                             width="match_parent"
                             height="wrap_content"
@@ -476,7 +484,7 @@ class AdditionalInformationActivity extends View{
                                 height="wrap_content"
                                 id= {this.idSet.dobText}
                                 style={window.__TextStyle.textStyle.CARD.BODY.DARK.FADED}
-                                text="Select Date"
+                                text={window.__S.SELECT_DATE}
                                 onClick={this.showCalendar}/>
                           </LinearLayout>
                           <LinearLayout
@@ -496,7 +504,7 @@ class AdditionalInformationActivity extends View{
                              width="match_parent"
                              height="wrap_content"
                              style={window.__TextStyle.textStyle.HINT.SEMI}
-                             text="SUBJECTS"
+                             text={window.__S.GRADE}
                              margin="0,0,0,8"
                              padding="4,0,0,0"/>
                             <MultiSelectSpinner
@@ -597,7 +605,7 @@ class AdditionalInformationActivity extends View{
                   width="match_parent"
                   gravity="center_vertical"
                   background={window.__Colors.WHITE}
-                  text="Additional Information"
+                  text={window.__S.EDIT + " "+ window.__S.PROFILE_BNAV}
                   style={window.__TextStyle.textStyle.TOOLBAR.HEADING}/>
 
           </LinearLayout>);
@@ -1199,7 +1207,7 @@ class AdditionalInformationActivity extends View{
 
     if(!this.checkCompleteStatus())
       {
-        JBridge.showSnackBar("Make Some Changes");
+        JBridge.showSnackBar(window.__S.NO_CHANGE);
         return;
       }
 
@@ -1218,7 +1226,7 @@ class AdditionalInformationActivity extends View{
     if(this.checkPhoneFormat(this.mobile))
         json.phone=this.mobile;
     else {
-      JBridge.showSnackBar("Invalid Phone Number")
+      JBridge.showSnackBar(window.__S.ERROR_SHORT_MOBILE)
       return;
     }
 
@@ -1230,7 +1238,7 @@ class AdditionalInformationActivity extends View{
       if(this.checkAdharFormat(this.adhar))
            json.aadhaarNo=this.adhar;
       else {
-        JBridge.showSnackBar("Invalid Aadhaar Number")
+        JBridge.showSnackBar(window.__S.ERROR_INVALID_AADHAAR)
         return;
       }
 
@@ -1281,7 +1289,7 @@ class AdditionalInformationActivity extends View{
          this.responseCame=false;
      },window.__API_TIMEOUT);
  }else {
-   JBridge.showSnackBar(window.__S.NO_INTERNET);
+   JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE);
  }
 
  //  window.__LoaderDialog.show();
@@ -1360,6 +1368,11 @@ class AdditionalInformationActivity extends View{
 
   setName = (data) =>{
     this.name= data=="" ? null : data;
+    this.updateSaveButtonStatus(this.checkCompleteStatus());
+  }
+
+  setLastName = (data) =>{
+    this.lastName= data=="" ? null : data;
     this.updateSaveButtonStatus(this.checkCompleteStatus());
   }
 

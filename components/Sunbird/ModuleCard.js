@@ -47,7 +47,7 @@ class ModuleCard extends View {
               />
 
               <TextView
-              	text= {this.props.item.moduleName ? this.props.item.moduleName : "Module Name"}
+              	text= {this.props.item.moduleName ? this.props.item.moduleName : window.___S.MODULE_NAME}
               	style={window.__TextStyle.textStyle.HINT.SEMI.LIGHT}
               	margin = "0,0,0,16"
               	alpha="0.66"

@@ -204,7 +204,7 @@ class CourseFragment extends View {
         if(JBridge.isNetworkAvailable())
           window.__BNavFlowRestart();
         else
-        JBridge.showSnackBar(window.__S.NO_INTERNET);
+        JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE);
     });
         JBridge.addSwipeRefreshScrollView(this.idSet.scrollViewContainerCourse,callbackRefresh);
   }

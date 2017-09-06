@@ -117,7 +117,7 @@ class FilterDialog extends View {
         <TextView
           width="wrap_content"
           height="wrap_content"
-          text = "Search Filter"
+          text = {window.__S.FILTER}
           margin="0,0,0,20"
           style={window.__TextStyle.textStyle.CARD.HEADING}/>
 

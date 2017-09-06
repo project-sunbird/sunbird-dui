@@ -135,7 +135,7 @@ class PopularCommunities extends View {
             <TextView
             width="wrap_content"
             height="wrap_content"
-            text="+JOIN"
+            text={"+"+window.__S.JOIN}
             style={window.__TextStyle.textStyle.HINT.BLUE}/>
 
 
@@ -153,7 +153,7 @@ class PopularCommunities extends View {
             <TextView
             width="wrap_content"
             height="wrap_content"
-            text="Popular"
+            text={window.__S.POPULAR}
             style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
             </LinearLayout>)

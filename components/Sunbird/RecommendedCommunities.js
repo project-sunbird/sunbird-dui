@@ -155,7 +155,7 @@ class RecommendedCommunities extends View {
               <TextView
                 width="wrap_content"
                 height="wrap_content"
-                text="Recommended"
+                text={window.__S.RECOMMENDED}
                 style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
             </LinearLayout>)

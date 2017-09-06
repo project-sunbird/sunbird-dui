@@ -210,7 +210,7 @@ class ListViewComponent extends View {
 
                     <TextView 
                       height="match_parent"
-                      text="apply"
+                      text={window.__S.APPLY}
                       onClick={this.updateListView}
                       />
 

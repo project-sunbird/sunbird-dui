@@ -45,9 +45,7 @@ class ExperiencePopUp extends View{
       "delButtonParent",
       "subjectSpinner",
       "subjectSpinnerContainer",
-      "jobTypeRadioContainer",
-      "experiencePopUpBody",
-      "deleteConf"
+      "jobTypeRadioContainer"
     ]);
     this.isVisible = false;
     this.spinnerArray = ["Select","Bengali","English","Gujarati","Hindi","Kannada","Marathi","Punjabi","Tamil"];
@@ -71,7 +69,7 @@ class ExperiencePopUp extends View{
     this.canSave = false;
 
     this.delBtnState = {
-      text : "DELETE",
+      text : window.__S.DELETE,
       id : this.idSet.delButton,
       isClickable : "true",
       onClick : this.del,
@@ -79,7 +77,7 @@ class ExperiencePopUp extends View{
     };
 
     this.saveBtnState = {
-      text : "SAVE",
+      text : window.__S.SAVE,
       id : this.idSet.saveButton,
       isClickable : "false",
       onClick : this.sendJSON,
@@ -101,7 +99,7 @@ class ExperiencePopUp extends View{
    });
    Android.runInUI(cmd, 0)
 
-   this.replaceChild(this.idSet.experiencePopUpBody,this.getUi().render(),0);
+   this.replaceChild(this.idSet.experiencePopUpParent,this.getUi().render(),0);
    this.setVisibility("visible");
 
   this.initializeData();
@@ -282,7 +280,7 @@ class ExperiencePopUp extends View{
                  width="match_parent"
                  gravity="center_vertical"
                  background="#ffffff"
-                 text="Experience"
+                 text={window.__S.TITLE_EXPERIENCES}
                  style={window.__TextStyle.textStyle.TOOLBAR.HEADING}/>
 
 
@@ -336,7 +334,7 @@ class ExperiencePopUp extends View{
                <TextView
                 height="wrap_content"
                 width="wrap_content"
-                text="FROM"
+                text={window.__S.FROM}
                 textStyle={window.__TextStyle.textStyle.HINT.SEMI}
                 margin="0,0,0,10"/>
 
@@ -358,7 +356,7 @@ class ExperiencePopUp extends View{
                       height="wrap_content"
                       id= {this.idSet.joiningDateText}
                       style={window.__TextStyle.textStyle.CARD.BODY.DARK.FADED}
-                      text="Select Date"
+                      text={window.__S.SELECT_DATE}
                       onClick={this.startCalendar}/>
 
                 </LinearLayout>
@@ -383,7 +381,7 @@ class ExperiencePopUp extends View{
                <TextView
                 height="wrap_content"
                 width="wrap_content"
-                text="TO"
+                text={window.__S.TO}
                 textStyle={window.__TextStyle.textStyle.HINT.SEMI}
                 margin="0,0,0,10"/>
 
@@ -405,7 +403,7 @@ class ExperiencePopUp extends View{
                       height="wrap_content"
                       id= {this.idSet.closingDateText}
                       onClick={this.endCalendar}
-                      text="Select Date"
+                      text={window.__S.SELECT_DATE}
                       style={window.__TextStyle.textStyle.CARD.BODY.DARK.FADED}/>
 
                 </LinearLayout>
@@ -435,7 +433,8 @@ class ExperiencePopUp extends View{
            margin="0,0,16,2"
            textStyle={window.__TextStyle.textStyle.HINT.SEMI}
            textAllCaps="true"
-           text="Is this your current job?"/>
+           text={window.__S.IS_THIS_YOUR_CURRENT_JOB
+           }/>
 
          <RadioButton
           height="wrap_content"
@@ -461,7 +460,7 @@ class ExperiencePopUp extends View{
            margin="0,0,16,2"
            textStyle={window.__TextStyle.textStyle.HINT.SEMI}
            textAllCaps="true"
-           text="Is this your current job?"/>
+           text={window.__S.IS_THIS_YOUR_CURRENT_JOB}/>
 
          <RadioButton
           height="wrap_content"
@@ -486,7 +485,7 @@ class ExperiencePopUp extends View{
        <TextView
         height="wrap_content"
         width="wrap_content"
-        text="SUBJECTS"
+        text={window.__S.SUBJECTS}
         textStyle={window.__TextStyle.textStyle.HINT.SEMI}
         margin="0,0,0,8"
         padding="4,0,0,0"/>
@@ -559,7 +558,7 @@ class ExperiencePopUp extends View{
         id = {id}
         height="wrap_content"
         width="match_parent"
-        hintText={optional ? "(Optional)" : ""}
+        hintText={optional ? window.__S.OPTIONAL : ""}
         labelText={label}
         mandatory = {optional ? "false" : "true"}
         margin = "0,0,0,18"
@@ -787,7 +786,7 @@ del = () => {
           }
           else {
             console.log(window.__ExperiencePopUp , " gh ");
-            JBridge.showSnackBar("You already have a current job, please change that to not a current job");
+            JBridge.showSnackBar(window.__S.ERROR_MULTIPLE_CURRENT_JOB);
           }
 
 
@@ -833,9 +832,9 @@ del = () => {
 
        if (this.singleClick && !this.canSave && !this.delete) {
          if (window.__ExperiencePopUp.data)
-           JBridge.showSnackBar("Please make some changes");
+           JBridge.showSnackBar(window.__S.WARNING_PLEASE_MAKE_SOME_CHANGES);
          else
-           JBridge.showSnackBar("Please add mandatory details");
+           JBridge.showSnackBar(window.__S.WARNING_PLEASE_ADD_MANDATORY_DETAILS);
          return;
        }
 

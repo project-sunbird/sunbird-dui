@@ -31,6 +31,8 @@ class MainActivity extends View {
 
     this.state = state;
 
+    window.__renderBNavBar = this.renderBNavBar;
+
 
     //Assigning feedback duration of BottomNavbar
     this.handleBottomNavBarAction = debounce(this.handleBottomNavBarAction, 50);
@@ -38,6 +40,7 @@ class MainActivity extends View {
     this.setIds([
       "viewPagerContainer",
       "tabLayoutContainer",
+      "navBarContainer"
     ]);
 
     _this= this;
@@ -54,29 +57,7 @@ class MainActivity extends View {
 
     this.deipalayName = "MainActivity"
 
-    this.tabValues = [{
-        name: window.__S.HOME_BNAV,
-        select: "1",
-        icon: "ic_home"
-      }, {
-        name: window.__S.COURSES_BNAV,
-        select: "0",
-        icon: "ic_courses"
-      }, {
-        name: window.__S.RESOURCES_BNAV,
-        select: "0",
-        icon: "ic_notebook"
-      }, {
-        name: window.__S.GROUPS_BNAV,
-        select: "0",
-        icon: "ic_chat"
-      }, {
-        name: window.__S.PROFILE_BNAV,
-        select: "0",
-        icon: "ic_profile"
-      }
 
-    ]
     window.__API_Profile_Called = false;
     this.apiToken = window.__apiToken;
     window.__BNavFlowRestart= this.setupDuiCallback;
@@ -391,9 +372,35 @@ class MainActivity extends View {
   }
 
   afterRender = () => {
+    this.renderBNavBar();
     this.currentPageIndex = 0;
     this.handleBottomNavBarAction(0);
     this.getUserProfileData();
+  }
+
+  renderBNavBar = () => {
+
+    console.log("IN RENDER BNAV BAR", window.__S.FILTER_BY);
+
+    var layout = (
+      <LinearLayout
+        background={window.__Colors.WHITE}
+        width="match_parent"
+        orientation="vertical"
+        height="56">
+
+          <ViewWidget
+          height="2"
+          alpha="0.2"
+          width="match_parent"
+          background={window.__Colors.DARK_GRAY} />
+
+          {this.getBottomNavBar()}
+
+        </LinearLayout>);
+
+
+    this.replaceChild(this.idSet.tabLayoutContainer, layout.render(), 0);
   }
 
   setupDuiCallback = () => {
@@ -449,7 +456,7 @@ class MainActivity extends View {
               }
         }
         else{
-            JBridge.showSnackBar(window.__S.NO_INTERNET)
+            JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE)
         }
 
         window.__BottomNavBar.handleNavigationChange(this.currentPageIndex);
@@ -461,8 +468,31 @@ class MainActivity extends View {
 
 
   getBottomNavBar = () => {
+    var tabValues = [{
+        name: window.__S.HOME_BNAV,
+        select: "1",
+        icon: "ic_home"
+      }, {
+        name: window.__S.COURSES_BNAV,
+        select: "0",
+        icon: "ic_courses"
+      }, {
+        name: window.__S.RESOURCES_BNAV,
+        select: "0",
+        icon: "ic_notebook"
+      }, {
+        name: window.__S.GROUPS_BNAV,
+        select: "0",
+        icon: "ic_chat"
+      }, {
+        name: window.__S.PROFILE_BNAV,
+        select: "0",
+        icon: "ic_profile"
+      }
+
+    ]
     this.bNavBar = (<BottomNavBar
-                      tabItems = {this.tabValues}
+                      tabItems = {tabValues}
                       defaultIndex= "3"
                       _onClick = {this.handleBottomNavBarAction} />);
 
@@ -492,21 +522,14 @@ class MainActivity extends View {
           id={this.idSet.viewPagerContainer}
           width="match_parent" />
 
-
-
+          <LinearLayout
+            width = "match_parent">
           <LinearLayout
             background={window.__Colors.WHITE}
             width="match_parent"
             orientation="vertical"
             id={this.idSet.tabLayoutContainer}
-            height="56">
-              <ViewWidget
-                height="2"
-                alpha="0.2"
-                width="match_parent"
-                background={window.__Colors.DARK_GRAY} />
-
-              {this.getBottomNavBar()}
+            height="56"/>
           </LinearLayout>
 
       </LinearLayout>

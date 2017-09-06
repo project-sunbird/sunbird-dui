@@ -60,7 +60,7 @@ class RecommendedCard extends View {
             alignParentBottom="true,-1"
             padding = "10,10,10,10">
                 <TextView
-                text= {this.props.item.moduleName ? this.props.item.moduleName : "Module Name"}
+                text= {this.props.item.moduleName ? this.props.item.moduleName :window.__S.MODULE_NAME}
                 style={window.__TextStyle.textStyle.HINT.WBOLD}/>
            </LinearLayout>
           </RelativeLayout>)
@@ -88,7 +88,7 @@ class RecommendedCard extends View {
                     text= {"("}
                     style={window.__TextStyle.textStyle.HINT.REGULAR}/>
               <TextView
-                    text= {this.props.item.moduleUserCount ? this.props.item.moduleUserCount : "NIL"}
+                    text= {this.props.item.moduleUserCount ? this.props.item.moduleUserCount :window.__S.NIL}
                     style={window.__TextStyle.textStyle.HINT.REGULAR}/>
               <TextView
                     text= {")"}

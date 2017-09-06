@@ -236,7 +236,7 @@ class CourseEnrolledActivity extends View {
           _this.changeOverFlow();
         }
         else
-          JBridge.showSnackBar(window.__S.NO_INTERNET)
+          JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE)
       }
 
     });
@@ -461,7 +461,7 @@ class CourseEnrolledActivity extends View {
                     height = "56"
                     id = {this.idSet.featureButton}
                     background = {window.__Colors.PRIMARY_ACCENT}
-                    text = {"START COURSE"}
+                    text = {window.__S.START_COURSE}
                     style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
                     buttonClick = {this.handleResumeClick}
                     />)
@@ -486,7 +486,7 @@ class CourseEnrolledActivity extends View {
       if(JBridge.isNetworkAvailable())
         window.__runDuiCallback(event);
       else
-        JBridge.showSnackBar("Network Error, Batch details not found")
+        JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE);
     }
   }
 
@@ -555,7 +555,7 @@ class CourseEnrolledActivity extends View {
             }, 200);
        }else{
 
-          JBridge.showToast("Can't share. Try Again!","short");
+          JBridge.showToast(window.__S.ERROR_CANT_SHARE_TRY_AGAIN,"short");
 
        }
 
@@ -590,7 +590,7 @@ class CourseEnrolledActivity extends View {
       id = this.courseContent.children[0].identifier;
     }
     else{
-      JBridge.showSnackBar("No Resume Content Available")
+      JBridge.showSnackBar(window.__S.ERROR_NO_RESUME_CONTENT_AVAILABLE)
     }
     JBridge.getChildContent(id,callback)
   }
@@ -730,7 +730,7 @@ class CourseEnrolledActivity extends View {
                     height = "56"
                     id = {this.idSet.featureButton}
                     background = {window.__Colors.PRIMARY_ACCENT}
-                    text = {"RESUME COURSE"}
+                    text = {window.__s.RESUME+window.__S.COURSE}
                     style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
                     buttonClick = {this.handleResumeClick}
                     />
@@ -751,7 +751,7 @@ class CourseEnrolledActivity extends View {
                     width="match_parent"
                     height="match_parent"
                     style ={window.__TextStyle.textStyle.NOTHING}
-                    text="Batch not started"/>
+                    text={window.__S.ERROR_BATCH_NOT_STARTED }/>
 
                 </LinearLayout>
 

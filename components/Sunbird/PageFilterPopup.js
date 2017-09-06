@@ -166,7 +166,7 @@ class PageFilterPopup extends View {
           <TextView
            width = "match_parent"
            height = "wrap_content"
-           text = "Available filters"
+           text = {window.__S.AVAILABLE_FILTERS}
            style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
       </LinearLayout>
@@ -242,7 +242,7 @@ class PageFilterPopup extends View {
   onConfirm = () => {
 
     if(this.isEmpty(this.filter)){
-      JBridge.showSnackBar("No filter selected");
+      JBridge.showSnackBar(window.__S.NO_FILTERS_SELECTED);
       this.hide();
       return;
     }
@@ -256,7 +256,7 @@ class PageFilterPopup extends View {
     if(JBridge.isNetworkAvailable())
       window.__runDuiCallback(event);
     else
-      JBridge.showSnackBar(window.__S.NO_INTERNET)
+      JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE)
 
   }
 

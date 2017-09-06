@@ -100,21 +100,21 @@ class ProgressButton extends View {
      if(data.status == "NOT_FOUND"){
           this.setCancelButtonVisibility("gone");
         _this.replaceChild(_this.idSet.downloadBarContainer, _this.getButtons(0, window.__S.DOWNLOAD).render(), 0);
-        JBridge.showSnackBar("Content Not Available");
+        JBridge.showSnackBar(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
         return;
      }
     if (parseInt(data.downloadProgress) == 100) {
     console.log(data.downloadProgress ,"DONE")
       _this.props.changeOverFlowMenu();
       _this.isDownloaded = true;
-      textToShow = "PLAY";
+      textToShow = window.__S.PLAY;
       _this.isCancelVisible=true;
       _this.setCancelButtonVisibility("gone");
 
     } else {
       console.log(data.downloadProgress , "UPDATING")
       _this.isDownloaded = false;
-      textToShow = "DOWNLOADING " + data.downloadProgress + "%"
+      textToShow = window.__S.DOWNLOADING + " " + data.downloadProgress + "%"
 
     }
     if(!this.isCancelVisible && data.downloadProgress>0){
@@ -180,7 +180,7 @@ class ProgressButton extends View {
           }
         }
         else{
-            JBridge.showSnackBar(window.__S.NO_INTERNET);
+            JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE);
         }
 
       } else {

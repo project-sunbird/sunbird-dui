@@ -198,7 +198,7 @@ class CommunityFragment extends View {
           width="match_parent"
           height="match_parent"
           style ={window.__TextStyle.textStyle.NOTHING}
-          text="Coming Soon.."/>
+          text={window.__S.COMING_SOON}/>
 
        </LinearLayout>
 
