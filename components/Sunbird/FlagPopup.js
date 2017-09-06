@@ -43,7 +43,7 @@ class FlagPopup extends View {
     this.resetPopup()
     this.showBodyWithOptions();
     this.setVisibility("visible");
-    
+
   }
 
   hide = () => {
@@ -78,7 +78,7 @@ class FlagPopup extends View {
     Android.runInUI(cmd, 0)
   }
 
-  
+
 
 
   onConfirm = () =>{
@@ -210,8 +210,8 @@ class FlagPopup extends View {
   }
 
   getRadioList = () =>{
-
-    this.radioList = [OPTION_INAPPROPRIATE_CONTENT,OPTION_COPYRIGHT_VIOLATION,OPTION_PRIVACY_VIOLATION,OPTION_OTHER];
+    var w = window.__S;
+    this.radioList = [w.OPTION_INAPPROPRIATE_CONTENT,w.OPTION_COPYRIGHT_VIOLATION,w.OPTION_PRIVACY_VIOLATION,w.OPTION_OTHER];
 
     var rows = this.radioList.map((item, index) => {
       return(

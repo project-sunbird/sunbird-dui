@@ -45,7 +45,8 @@ class ExperiencePopUp extends View{
       "delButtonParent",
       "subjectSpinner",
       "subjectSpinnerContainer",
-      "jobTypeRadioContainer"
+      "jobTypeRadioContainer",
+      "deleteConf"
     ]);
     this.isVisible = false;
     this.spinnerArray = ["Select","Bengali","English","Gujarati","Hindi","Kannada","Marathi","Punjabi","Tamil"];

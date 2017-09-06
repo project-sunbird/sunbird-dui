@@ -185,7 +185,7 @@ class CourseInfoActivity extends View {
 
 
   afterRender = () => {
-   
+
 
     if(window.__enrolledCourses == undefined){
       window.__LoaderDialog.show();
@@ -336,7 +336,7 @@ class CourseInfoActivity extends View {
             }, 200);
       }else{
 
-          JBridge.showToast({ERROR_CANT_SHARE_TRY_AGAIN},"short");
+          JBridge.showToast(window.__S.ERROR_CANT_SHARE_TRY_AGAIN,"short");
 
        }
 

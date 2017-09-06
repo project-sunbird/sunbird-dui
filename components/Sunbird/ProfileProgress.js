@@ -44,7 +44,7 @@ class ProfileCreations extends View {
             <TextView
             width="wrap_content"
             height="wrap_content"
-            text={YOUR_PROFILE_IS+" " +this.completedPercentage+" "+COMPELETE}
+            text={window.__S.YOUR_PROFILE_IS+" " +this.completedPercentage+" "+window.__S.COMPELETE}
             style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
             <ViewWidget
