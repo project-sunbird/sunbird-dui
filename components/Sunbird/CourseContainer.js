@@ -48,9 +48,10 @@ class CourseContainer extends View {
 
 
                   <HorizontalScrollView
-                   width = "match_parent"
+                   width = "wrap_content"
                    height = "wrap_content"
-                   scrollBarX="false">
+                   scrollBarX="false"
+                   fillViewport="true">
 
                    <LinearLayout
                      padding="0,0,16,0"
