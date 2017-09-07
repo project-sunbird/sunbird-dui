@@ -28,7 +28,7 @@ class LanguagePopup extends View {
     _this=this;
     window.__LanguagePopup = this;
     this.isVisible=false;
-    // "اردو Urdu" : "ur_IN",FMCVCNCVBRiVFMCVCNCVCRSVFMCVCNCVCMyVFMCVCNCU4MiUyMjolMjJtbF9JTiUyMiwlMjJPcml5YSUyMjolMjJvcl9JTiUyMiwlMjIlRTAlQUElOTclRTAlQUIlODElRTAlQUElOUMlRTAlQUElQjAlRTAlQUElQkUlRTAlQUElQTQlRTAlQUIlODAlMjI6JTIyZ3VfSU4lMjIsJTIyQXNzYW1lc2UlMjI6JTIyYXNfSU4lMjIsJTIyJUUwJUE0JUFFJUUwJUE0JUIwJUUwJUE0JUJFJUUwJUE0JUEwJUUwJUE1JTgwJTIyOiUyMm1yX0lOJTIyLCUyMiVFMCVBOCVBQSVFMCVBOSVCMCVFMCVBOCU5QyVFMCVBOCVCRSVFMCVBOCVBQyVFMCVBOSU4MCUyMjolMjJwYV9JTiUyMiU3RA==";
+    // "اردو Urdu" : "ur_IN",
     this.languageMap = {
       "English" : "en_US",
       "हिंदी" : "hi_IN",
