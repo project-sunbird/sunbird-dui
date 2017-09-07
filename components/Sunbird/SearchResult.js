@@ -100,7 +100,8 @@ class SearchResult extends View {
                   <TextView
                     height = "wrap_content"
                     width = "wrap_content"
-                    text = {item.data.status == 1 ? "Active" : "Inactive"}
+                    visibility = {this.type == "Profile" ? "visible" : "gone"}
+                    text = {this.type == "Profile" ? (item.data.status == 1 ? "Active" : "Inactive") : ""}
                     style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK} />
                 </LinearLayout>
             </LinearLayout>

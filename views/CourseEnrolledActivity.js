@@ -730,7 +730,7 @@ class CourseEnrolledActivity extends View {
                     height = "56"
                     id = {this.idSet.featureButton}
                     background = {window.__Colors.PRIMARY_ACCENT}
-                    text = {window.__s.RESUME+window.__S.COURSE}
+                    text = {window.__S.RESUME+window.__S.COURSE}
                     style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
                     buttonClick = {this.handleResumeClick}
                     />
