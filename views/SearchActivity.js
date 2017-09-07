@@ -247,7 +247,7 @@ class SearchActivity extends View {
   }
 
   getSearchList=(searchText,flag)=> {
-    
+
     if(searchText == ""){
       console.log("empty text"+window.__LoaderDialog.visibility);
       this.renderNoResult();
@@ -262,7 +262,7 @@ class SearchActivity extends View {
                 if (searchText == "" || data[0] == "[]") {
                   _this.renderNoResult();
                   window.__LoaderDialog.hide();
-                  
+
                 } else {
                   var s = data[0];
                   s = s.replace(/\\n/g, "\\n")
@@ -276,7 +276,7 @@ class SearchActivity extends View {
                   s = s.replace(/[\u0000-\u0019]+/g, "");
                   _this.renderResult(JSON.parse(s));
                   window.__LoaderDialog.hide();
-                  
+
                 }
         });
 
@@ -309,6 +309,7 @@ class SearchActivity extends View {
      window.searchText="";
      var event = { tag: "BACK_SearchActivity", contents: whatToSend }
      window.__runDuiCallback(event);
+     window.__LoaderDialog.hide();
   }
 
   showFilter = () =>{
@@ -326,7 +327,7 @@ class SearchActivity extends View {
   handleSearchClick = (searchText) => {
     JBridge.hideKeyboard();
     this.filterData = "";
-    
+
     if(JBridge.isNetworkAvailable()){
       window.__LoaderDialog.show();
       this.getSearchList(searchText[0],"false");
