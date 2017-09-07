@@ -273,8 +273,7 @@ class EducationPopUp extends View {
   checkPercentage = (data) => {
     var flag =true;
     try {
-      var per=parseFloat(this.percentage)
-      if(per > 100.0)
+      if( isNaN(data) || parseFloat(data) > 100.0 || parseFloat(data) < 0.0)
        flag=false;
     } catch (e) {
        flag=false;
@@ -396,6 +395,7 @@ class EducationPopUp extends View {
      this.hide();
      window.__BNavFlowRestart();
    }else{
+     this.singleClick =true;
      JBridge.showSnackBar(data.params.errmsg);
    }
 
@@ -476,7 +476,7 @@ class EducationPopUp extends View {
         {this.getEditTextView(this.idSet.degreeText, window.__S.DEGREE , false, this.setDegree)}
         {this.getEditTextView(this.idSet.inititutionText, window.__S.INSTITUTION_NAME, false, this.setInitution)}
         {this.getEditTextView(this.idSet.yearOfPassingText, window.__S.YEAR_OF_PASSING, true, this.setYearOfPassingText, "numeric")}
-        {this.getEditTextView(this.idSet.percentageText, window.__S.PERCENTAGE, true, this.setPercentage, "numeric")}
+        {this.getEditTextView(this.idSet.percentageText, window.__S.PERCENTAGE, true, this.setPercentage, "floating")}
         {this.getEditTextView(this.idSet.gradeText, window.__S.GRADE, true, this.setGrade)}
         {this.getEditTextView(this.idSet.boardOrUniversityText,window.__S.BOARD_UNIVERSITY, true, this.setBoardOrUniversity)}
 
