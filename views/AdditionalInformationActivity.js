@@ -431,7 +431,7 @@ class AdditionalInformationActivity extends View{
                    orientation="vertical">
 
                        {this.getEditTextView(this.idSet.emailText,window.__S.EMAIL_ID,window.__S.HINT_EMAIL_ID,false,this.setEmail)}
-                       {this.getEditTextView(this.idSet.phoneText,window.__S.PHONE,window.__S.HINT_MOBILE_NUMBER,false,this.setPhone,"number")}
+                       {this.getEditTextView(this.idSet.phoneText,window.__S.PHONE,window.__S.HINT_MOBILE_NUMBER,false,this.setPhone,"numeric")}
                        {this.getEditTextView(this.idSet.descriptionText,window.__S.DESCRIPTION,"",true,this.setDescription)}
                        <LinearLayout
                          width="match_parent"
