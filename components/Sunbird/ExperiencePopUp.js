@@ -211,7 +211,7 @@ class ExperiencePopUp extends View{
 
    var index;
 
-   if (this.prevData.endDate == null && this.data != undefined) {
+   if (window.__ExperiencePopUp.data.isCurrentJob && this.data != undefined) {
      jobTypeValue[0].select = "1";
      jobTypeValue[1].select = "0";
      index = 0;
@@ -850,6 +850,10 @@ del = () => {
             "endDate":this.endDate,
             "subject":this.subjects,
             }
+          if(window.__RadioButton.currentIndex==0)
+            {this.json.isCurrentJob = true;
+            }
+
           this.jobProfile.push(this.json);
         }
         else{
@@ -864,6 +868,7 @@ del = () => {
           json.subject=this.subjects;
           json.userId= window.__userToken;
           json.isDeleted = this.delete ? this.delete : null;
+          json.isCurrentJob = window.__RadioButton.currentIndex  == 0 ? true : false;
           if(json.address!=undefined)
           json.address.userId= window.__userToken;
           this.jobProfile.push(json);

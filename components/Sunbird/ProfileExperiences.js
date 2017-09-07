@@ -20,7 +20,6 @@ class ProfileExperiences extends View {
     _this = this;
     this.isEditable = this.props.editable;
     this.popUpType = this.props.popUpType;
-
     this.jobs = (this.props.data != undefined)? this.props.data : [];
 
   }
@@ -115,7 +114,7 @@ class ProfileExperiences extends View {
      this.currJobFlag = false;
      var _this=this;
      this.jobs.map((item) => {
-        if(item.endDate == null)
+        if(item.isCurrentJob)
            _this.currJobFlag=true;
      });
   }
@@ -151,8 +150,9 @@ class ProfileExperiences extends View {
           date = date + " - " + endDateString + noOfYears;
         } else {
           var noOfYears = "";
-          date = date + " - Present";
         }
+        if(input.isCurrentJob)
+          date = date + " - Present";
       }
     }
     return (date == "") ? date : date + "\n";
@@ -309,6 +309,8 @@ class ProfileExperiences extends View {
        width="wrap_content"
        height="wrap_content"/>);
    }
+
+   this.jobs = this.sortDatewise(this.jobs);
     var cards = this.jobs.map((item, i) => {
       return (<LinearLayout
                 width="match_parent"
@@ -330,6 +332,61 @@ class ProfileExperiences extends View {
 
     return cards;
 
+  }
+
+  sortDatewise = (jobs) => {
+    if (this.props.popUpType == window.__PROFILE_POP_UP_TYPE.EXPERIENCE) {
+
+      return jobs.sort(
+        function (a,b) {
+            if(a.hasOwnProperty("endDate") && b.hasOwnProperty("endDate"))
+            {
+                if(b.isCurrentJob)
+                  return 1;
+                else if(a.endDate == null)
+                  return -1;
+                else if(b.endDate == null && !a.isCurrentJob)
+                   return 1;
+
+                var a1 = new Date(a);
+                var b1 = new Date(b);
+
+                return (b1.getTime()-a1.getTime());
+            }
+            else if(!a.hasOwnProperty("endDate") && b.hasOwnProperty("endDate"))
+            {
+                return 1;
+            }
+            else {
+                return -1;
+            }
+        }
+      );
+    } else if (this.props.popUpType == window.__PROFILE_POP_UP_TYPE.EDUCATION) {
+      return jobs.sort(
+        function (a,b) {
+            if(a.hasOwnProperty("yearOfPassing") && b.hasOwnProperty("yearOfPassing"))
+            {
+                if(a.yearOfPassing==null)
+                  return 1;
+                if(b.yearOfPassing==null)
+                  return -1;
+
+                return (b.yearOfPassing-a.yearOfPassing);
+            }
+            else if(!a.hasOwnProperty("yearOfPassing") && b.hasOwnProperty("yearOfPassing"))
+            {
+                return 1;
+            }
+            else {
+                return -1;
+            }
+        }
+      );
+    }
+    else {
+      return jobs;
+    }
   }
 
   getLineSeperator = () => {
