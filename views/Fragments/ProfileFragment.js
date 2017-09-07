@@ -56,6 +56,7 @@ class ProfileFragment extends View {
 
 
   handleChangeLang = (lang) => {
+    window.__LoaderDialog.show()
      window.setLanguage(lang);
      window.__S = Str.strings();
      window.__LanguagePopup.hide();
@@ -118,7 +119,9 @@ class ProfileFragment extends View {
   }
 
 
-  afterRender() {}
+  afterRender() {
+    window.__LoaderDialog.hide();
+  }
 
   getLineSeperator = () => {
     return (<LinearLayout
