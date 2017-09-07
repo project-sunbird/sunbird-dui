@@ -33,23 +33,26 @@ class FeatureButton extends View {
   render() {
     this.layout = (
       <LinearLayout
-        id = {this.props.id} 
+      height={this.props.height || "wrap_content"}
+      width={this.props.width || "wrap_content"}
+      clickable={this.props.clickable||"true"}
+      margin={this.props.margin||"0,0,0,0"}
+      stroke={this.props.stroke||"3,"+this.props.background||"1,#000000"}
+      background={this.props.background||"#FFFFFF"}
+      cornerRadius={this.props.cornerRadius || "2"}
+      visibility={this.props.visibility||"visible"}>
+      <LinearLayout
+        id = {this.props.id}
         height={this.props.height || "wrap_content"}
         width={this.props.width || "wrap_content"}
         orientation="horizontal"
-        cornerRadius={this.props.cornerRadius || "2"}
-        clickable={this.props.clickable||"true"}
-        margin={this.props.margin||"0,0,0,0"}
-        stroke={this.props.stroke||"3,"+this.props.background||"1,#000000"}
-        background={this.props.background||"#FFFFFF"}
-        visibility={this.props.visibility||"visible"}
+        onClick={this.buttonFunction}
         gravity="center">
         <TextView
           id = {this.idSet.buttonText}
           typeface={this.props.typeface||"normal"}
           text={this.props.text||"CONFIRM"}
           margin="8,0,8,0"
-          onClick={this.buttonFunction}
           width="match_parent"
           height="match_parent"
           gravity="center"
@@ -58,6 +61,7 @@ class FeatureButton extends View {
           padding={this.props.padding ||"10,10,10,10"}
           color={this.props.textColor||"#FFFFFF"}/>
       </LinearLayout>
+    </LinearLayout>
     )
     return this.layout.render();
   }
