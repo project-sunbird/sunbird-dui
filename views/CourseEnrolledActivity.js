@@ -580,9 +580,11 @@ class CourseEnrolledActivity extends View {
     });
     var id;
     if(this.enrolledCourses.hasOwnProperty('lastReadContentId') && this.enrolledCourses.lastReadContentId !=null){
+      console.log("this.enrolledCourses.lastReadContentId", this.enrolledCourses.lastReadContentId);
       id = this.enrolledCourses.lastReadContentId;
     }
-    else if(this.details.hasOwnProperty("lastReadContentId")){
+    else if(this.details.hasOwnProperty("lastReadContentId") && this.details.lastReadContentId != null){
+      console.log("this.details.lastReadContentId",this.details.lastReadContentId);
       id = this.details.lastReadContentId
     }
     else if(!(this.courseContent.children == undefined)){
@@ -592,7 +594,9 @@ class CourseEnrolledActivity extends View {
     else{
       JBridge.showSnackBar(window.__S.ERROR_NO_RESUME_CONTENT_AVAILABLE)
     }
-    JBridge.getChildContent(id,callback)
+    console.log("id before JBridge.getChildContent ", id);
+    if (id) JBridge.getChildContent(id,callback)
+    else JBridge.showSnackBar(window.__S.ERROR_NO_RESUME_CONTENT_AVAILABLE)
   }
 
   changeOverFlow = () =>{
