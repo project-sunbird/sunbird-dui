@@ -178,7 +178,7 @@ class ProfileFragment extends View {
       }
       if(data == "DeniedPermanently"){
         console.log("DENIED DeniedPermanently");
-        window.__PermissionDeniedDialog.show("ic_warning_grey",window.__S.STORAGE_DENIED);
+        window.__PermissionDeniedDialog.show("ic_warning_grey",window.__S.STORAGE);
       }
 
     });

@@ -53,7 +53,7 @@ class PermissionDeniedDialog extends View {
 
     Android.runInUI(this.set({
       id: this.idSet.permissionSettingsMsg,
-      text : window.__S.PERMISSION_SETTING_MSG+" "+data
+      text : window.__S.PERMISSION_SETTING_MSG
     }),0);
 
   }
@@ -157,7 +157,6 @@ class PermissionDeniedDialog extends View {
                 width="wrap_content"
                 height="wrap_content"
                 id={this.idSet.permissionTextHolder}
-                text={window.__S.PERMISSION_NOT_AVAILABLE}
                 margin="0,9,0,0"
                 gravity="center_horizontal"
                 style={window.__TextStyle.textStyle.HINT.DULL}/>
