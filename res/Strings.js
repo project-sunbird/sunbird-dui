@@ -23,7 +23,6 @@ const stringsRes = {
 		DESCRIPTION : "Description",
 		DOWNLOAD : "DOWNLOAD",
 		DOWNLOADS : "downloads",
- 		DOWNLOADING: "DOWNLOADING %s %",
 		EDIT : "Edit",
 		EMAIL_ID : "EMAIL ID",
 		EMPTY_SEARCH_RESULTS : "No Search Results Found",
@@ -239,7 +238,8 @@ const stringsRes = {
 		ORGANIZATION : "Organization",
 		POSITION : "Position",
 		CHOOSE_FROM_FOLLOWING : "Choose from following",
-		PERMISSION_SETTING_MSG : "To provide permissions, click on 'Open Settings' and provide suitable permissions."
+		PERMISSION_SETTING_MSG : "To provide permissions, click on 'Open Settings' and provide suitable permissions.",
+		DOWNLOADING: "DOWNLOADING %s %",
 	},
 	"hi_IN" : {
 		ALREADY_HAVE_ACC : "मौजूदा उपयोगकर्ता, साइन इन करें",
