@@ -205,8 +205,8 @@ class ExperiencePopUp extends View{
    this.replaceChild(this.idSet.subjectSpinnerContainer, this.getSpinner().render(), 0);
 
    var jobTypeValue = [
-     {name:"Yes",select:"0",icon:"ic_action_radio"},
-     {name:"No",select:"0",icon:"ic_action_radio"}
+     {name:window.__S.YES,select:"0",icon:"ic_action_radio"},
+     {name:window.__S.NO,select:"0",icon:"ic_action_radio"}
    ];
 
    var index;
@@ -300,9 +300,9 @@ class ExperiencePopUp extends View{
      padding="15,15,15,15">
 
 
-      {this.getEditTextView(this.idSet.jobText, "Job Name", false, this.setJobName)}
-      {this.getEditTextView(this.idSet.organizationText, "Organization", false, this.setOrganization)}
-      {this.getEditTextView(this.idSet.positionText, "Position", true, this.setPosition)}
+      {this.getEditTextView(this.idSet.jobText, window.__S.JOB_NAME, false, this.setJobName)}
+      {this.getEditTextView(this.idSet.organizationText, window.__S.ORGANIZATION, false, this.setOrganization)}
+      {this.getEditTextView(this.idSet.positionText, window.__S.POSITION, true, this.setPosition)}
 
       {this.getSpinner()}
       <LinearLayout
@@ -441,7 +441,7 @@ class ExperiencePopUp extends View{
           height="wrap_content"
           width="wrap_content"
           gravity="center_vertical"
-          items={[{name:"Yes",select:"0",icon:"ic_action_radio"},{name:"No",select:"0",icon:"ic_action_radio"}]}
+          items={[{name:window.__S.YES,select:"0",icon:"ic_action_radio"},{name:window.__S.NO,select:"0",icon:"ic_action_radio"}]}
           onClick={this.handleRadioButtonClick}/>
      </LinearLayout>
    );
@@ -617,10 +617,10 @@ del = () => {
 
  render(){
    var popUpdata = {
-     title : "Confirm Delete?",
+     title : window.__S.CONFIRM_DEL,
      content : "",
-     negButtonText : "Cancel",
-     posButtonText : "Delete"
+     negButtonText : window.__S.CANCEL,
+     posButtonText : window.__S.DELETE
    }
    this.layout=(
      <RelativeLayout

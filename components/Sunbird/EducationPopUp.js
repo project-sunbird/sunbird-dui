@@ -604,10 +604,10 @@ class EducationPopUp extends View {
 
   render() {
     var popUpdata = {
-      title : "Confirm Delete?",
+      title : window.__S.CONFIRM_DEL,
       content : "",
-      negButtonText : "Cancel",
-      posButtonText : "Delete"
+      negButtonText : window.__S.CANCEL,
+      posButtonText : window.__S.DELETE
     }
     this.layout = (
       <RelativeLayout

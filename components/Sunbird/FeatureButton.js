@@ -33,6 +33,7 @@ class FeatureButton extends View {
   render() {
     this.layout = (
       <LinearLayout
+      id = {this.props.id}
       height={this.props.height || "wrap_content"}
       width={this.props.width || "wrap_content"}
       clickable={this.props.clickable||"true"}
@@ -40,11 +41,11 @@ class FeatureButton extends View {
       stroke={this.props.stroke||"3,"+this.props.background||"1,#000000"}
       background={this.props.background||"#FFFFFF"}
       cornerRadius={this.props.cornerRadius || "2"}
-      visibility={this.props.visibility||"visible"}>
+      visibility={this.props.visibility||"visible"}
+      gravity="center">
       <LinearLayout
-        id = {this.props.id}
         height={this.props.height || "wrap_content"}
-        width={this.props.width || "wrap_content"}
+        width="match_parent"
         orientation="horizontal"
         onClick={this.buttonFunction}
         gravity="center">

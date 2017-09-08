@@ -154,7 +154,7 @@ class SearchActivity extends View {
                   width="0"
                   weight="1"
                   maxLines="1"
-                  hint="Search"
+                  hint={window.__S.SEARCH_HINT}
                   layoutTransition="true"
                   gravity="center_vertical"
                   background="#ffffff"

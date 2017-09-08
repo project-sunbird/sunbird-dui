@@ -66,10 +66,10 @@ class OfflineResourceContainer extends View {
         temp['title'] = item.contentData.name;
         temp['footerTitle'] = footerTitle;
         temp['screenshots'] = item.screenshots || [] ;
-        temp['footerSubTitle'] = "Saved on " + fileSavedTime;
-        temp['actionText'] = "OPEN";
+        temp['footerSubTitle'] = window.__S.SAVED_ON + " " + fileSavedTime;
+        temp['actionText'] = window.__S.OPEN;
         temp['content'] = item;
-        
+
 
 
 

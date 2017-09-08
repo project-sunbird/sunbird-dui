@@ -22,14 +22,15 @@ var FeatureButton = require("../../components/Sunbird/FeatureButton");
 
 var _this;
 
-const ADDRESS_TYPE = [
-  "permanent",
-  "current"
-];
+
 
 class AddressPopUp extends View {
   constructor(props, childern) {
     super(props,childern);
+    this.ADDRESS_TYPE = [
+      window.__S.PERMANENT,
+      window.__S.CURRENT
+    ];
     this.setIds([
       "addressPopUpParent",
       "addressPopUpBody",
@@ -184,8 +185,8 @@ class AddressPopUp extends View {
     })
 
     var addressTypeValue = [
-      {name:"Permanent",select:"0",icon:"ic_action_radio"},
-      {name:"Current",select:"0",icon:"ic_action_radio"}
+      {name:window.__S.PERMANENT,select:"0",icon:"ic_action_radio"},
+      {name:window.__S.CURRENT,select:"0",icon:"ic_action_radio"}
     ];
 
     var index;
@@ -361,7 +362,7 @@ class AddressPopUp extends View {
     this.address = [];
     var json;
 
-    this.addressType = ADDRESS_TYPE[window.__RadioButton.currentIndex];
+    this.addressType = this.ADDRESS_TYPE[window.__RadioButton.currentIndex];
 
     if (window.__AddressPopUp.data == undefined) {
       json = {
@@ -454,7 +455,7 @@ class AddressPopUp extends View {
     if (window.__RadioButton != undefined
       && window.__RadioButton.currentIndex > -1) {
         console.log("Radio Button click");
-      _this.addressType = ADDRESS_TYPE[window.__RadioButton.currentIndex];
+      _this.addressType = this.ADDRESS_TYPE[window.__RadioButton.currentIndex];
       _this.checkDataChanged();
     }
   }
@@ -630,16 +631,16 @@ class AddressPopUp extends View {
             width="wrap_content"
             gravity="center_vertical"
             padding = "4,0,0,0"
-            items={[{name:"Permanent",select:"0",icon:"ic_action_radio"},{name:"Current",select:"0",icon:"ic_action_radio"}]}
+            items={[{name:window.__S.PERMANENT,select:"0",icon:"ic_action_radio"},{name:window.__S.CURRENT,select:"0",icon:"ic_action_radio"}]}
             onClick={this.handleRadioButtonClick}/>
         </LinearLayout>
 
-        {this.getEditTextView(this.idSet.addressLine1Text, "Address Line 1", false, this.setAddressLine1)}
-        {this.getEditTextView(this.idSet.addressLine2Text, "Address Line 2", true, this.setAddressLine2)}
-        {this.getEditTextView(this.idSet.cityText, "City", false, this.setCity)}
-        {this.getEditTextView(this.idSet.stateText, "State", true, this.setState)}
-        {this.getEditTextView(this.idSet.countryText, "Country", true, this.setCountry)}
-        {this.getEditTextView(this.idSet.pincodeText, "Pincode", true, this.setPincode, "numeric")}
+        {this.getEditTextView(this.idSet.addressLine1Text, window.__S.ADDRESS_LINE1, false, this.setAddressLine1)}
+        {this.getEditTextView(this.idSet.addressLine2Text, window.__S.ADDRESS_LINE2, true, this.setAddressLine2)}
+        {this.getEditTextView(this.idSet.cityText, window.__S.CITY, false, this.setCity)}
+        {this.getEditTextView(this.idSet.stateText, window.__S.STATE, true, this.setState)}
+        {this.getEditTextView(this.idSet.countryText, window.__S.COUNTRY, true, this.setCountry)}
+        {this.getEditTextView(this.idSet.pincodeText, window.__S.PINCODE, true, this.setPincode, "numeric")}
 
        </LinearLayout>
     );
@@ -688,10 +689,10 @@ class AddressPopUp extends View {
 
   render() {
     var popUpdata = {
-      title : "Confirm Delete?",
+      title : window.__S.CONFIRM_DEL,
       content : "",
-      negButtonText : "Cancel",
-      posButtonText : "Delete"
+      negButtonText : window.__S.CANCEL,
+      posButtonText : window.__S.DELETE
     }
     this.layout = (
       <RelativeLayout
