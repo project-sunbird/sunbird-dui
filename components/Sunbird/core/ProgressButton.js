@@ -114,7 +114,7 @@ class ProgressButton extends View {
     } else {
       console.log(data.downloadProgress , "UPDATING")
       _this.isDownloaded = false;
-      textToShow = window.__S.DOWNLOADING + " " + data.downloadProgress + "%"
+      textToShow = window.__S.DOWNLOADING.format(data.downloadProgress)
 
     }
     if(!this.isCancelVisible && data.downloadProgress>0){
