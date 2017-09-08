@@ -23,6 +23,7 @@ const stringsRes = {
 		DESCRIPTION : "Description",
 		DOWNLOAD : "DOWNLOAD",
 		DOWNLOADS : "downloads",
+ 		DOWNLOADING: "DOWNLOADING %s %",
 		EDIT : "Edit",
 		EMAIL_ID : "EMAIL ID",
 		EMPTY_SEARCH_RESULTS : "No Search Results Found",

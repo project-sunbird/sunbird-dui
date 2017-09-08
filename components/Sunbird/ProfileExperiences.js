@@ -348,8 +348,8 @@ class ProfileExperiences extends View {
                 else if(b.endDate == null && !a.isCurrentJob)
                    return 1;
 
-                var a1 = new Date(a);
-                var b1 = new Date(b);
+                var a1 = new Date(a.endDate);
+                var b1 = new Date(b.endDate);
 
                 return (b1.getTime()-a1.getTime());
             }
