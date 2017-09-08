@@ -95,7 +95,7 @@ const stringsRes = {
 		SIGN_IN : "SIGN IN",
 		SIGN_UP : "SIGN UP",
 		SORT_BY : "SORT BY",
-		SPLASH_MESSAGE : "Project DIKSHA",
+		SPLASH_MESSAGE : "DIKSHA",
 		STRUCTURE : "Structure",
 		TO_DO : "To-Do",
 		USER_NAME : "USER NAME",
