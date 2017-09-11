@@ -32,7 +32,7 @@ class ResourceViewAllActivity extends View {
       url: [
       ]
       }
-    this.shouldCacheScreen = false;
+    this.shouldCacheScreen = true;
     this.totalDetails = JSON.parse(state.data.value0.resourceDetails);
     // if(this.totalDetails.showViewMore == "gone"){
     //   JBridge.logViewAllScreenEvent("SAVEDRESOURCES");      
@@ -45,6 +45,7 @@ class ResourceViewAllActivity extends View {
     _this = this;
     this.start_index = 0;
     this.details = this.totalDetails.resourceDetails;
+    console.log("data in view all",this.totalDetails)
     this.appbarTitle = this.totalDetails.title;
 
 
@@ -62,6 +63,7 @@ class ResourceViewAllActivity extends View {
         null
       );
     },100)
+    JBridge.logListViewScreenEvent("RESOURCES",this.details.length,this.totalDetails.searchQuery)
   }
 
 
@@ -112,6 +114,7 @@ getRows = (data) =>{
          return (<LargeCardComponent
                  data={temp}
                  content={item}
+                 index = {i}
                  onResourceClick = {this.handleResourceClick}/>)
 
      }
@@ -137,8 +140,9 @@ getRows = (data) =>{
   }
 
 
-    handleResourceClick = (item)=>{
-
+    handleResourceClick = (item,index)=>{
+      var index_click = this.start_index <1 ? index+1 : index+(this.start_index*10)+1;
+      JBridge.logContentClickEvent("RESOURCES",index_click,"",item.identifier)
       console.log(item)
        if(item.contentType.toLowerCase() == "course"){
         var whatToSend = {resourceDetails:JSON.stringify(item)}

@@ -32,7 +32,7 @@ class SearchResult extends View {
           height="wrap_content"
           orientation="vertical"
           margin = "16,0,16,0"
-          onClick = {()=>{this.handleItemClick(item)}}>
+          onClick = {()=>{this.handleItemClick(item,index)}}>
 
           <LinearLayout
             width = "match_parent"
@@ -121,10 +121,18 @@ class SearchResult extends View {
 
 
 
-  handleItemClick = (item) =>{
-
+  handleItemClick = (item,index) =>{
 
     var itemDetails = JSON.stringify(item);
+    if(this.props.searchType.toLowerCase() == "combined")
+      JBridge.logContentClickEvent("HOME",index+1,this.props.searchText,item.identifier)
+    else if(this.props.searchType.toLowerCase() == "course")
+      JBridge.logContentClickEvent("COURSES",index+1,this.props.searchText,item.identifier)
+    else if(this.props.toLowerCase() == "resource")
+      JBridge.logContentClickEvent("RESOURCES",index+1,this.props.searchText,item.identifier)
+
+
+
     if (item.hasOwnProperty("data") && item.data.hasOwnProperty("education")){
       console.log("item data", item);
       var data = JSON.stringify(item);

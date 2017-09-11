@@ -25,7 +25,7 @@ class CardComponent extends View {
       "rightProgress",
       "ratingBar"
     ]);
-
+    console.log("props in CC",this.props)
   }
 
 
@@ -185,7 +185,8 @@ class CardComponent extends View {
 
 
   handleCardClick = () => {
-    this.props.onCardClick(this.props.content, this.props.data.type);
+    
+    this.props.onCardClick(this.props.content, this.props.data.type,this.props.index);
   }
 
 
