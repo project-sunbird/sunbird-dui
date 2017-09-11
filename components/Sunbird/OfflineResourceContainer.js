@@ -77,6 +77,7 @@ class OfflineResourceContainer extends View {
         return (<CardComponent
                      data={temp}
                      content={item}
+                     index = {i}
                      onCardClick = {this.handleCardClick}/>)
       } else {
         return (<LinearLayout
@@ -145,8 +146,9 @@ class OfflineResourceContainer extends View {
     this.props.onCourseOpenClick(courseName);
   }
 
-  handleCardClick = (item, type) => {
-
+  handleCardClick = (item, type, index) => {
+    console.log(index)
+     JBridge.logCardClickEvent("RESOURCES",index+1,"SAVED_RESOURCES",item.identifier)
      if(item.contentType.toLowerCase() == "course" || item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook"){
       var whatToSend= {course:JSON.stringify(item)};
       var event ={tag:"OPEN_CourseInfoActivity",contents:whatToSend}

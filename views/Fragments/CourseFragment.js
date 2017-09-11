@@ -174,8 +174,8 @@ class CourseFragment extends View {
 
  
 
-  handleCourseClick = (content, type) => {
-
+  handleCourseClick = (content, type, index) => {
+    JBridge.logCardClickEvent("COURSES",index+1,"COURSES",content.identifier)
     var tmp = JSON.stringify(content)
     var whatToSend = []
     var event = {};
@@ -192,7 +192,8 @@ class CourseFragment extends View {
 
   }
 
-  handleUserCoursesClick = (content, type) => {
+  handleUserCoursesClick = (content, type, index) => {
+     JBridge.logCardClickEvent("COURSES",index+1,"COURSES_IN_PROGRESS",content.identifier)
     var whatToSend = { "course": JSON.stringify(content) }
     var event = { tag: 'OPEN_EnrolledCourseActivity', contents: whatToSend }
     window.__runDuiCallback(event);

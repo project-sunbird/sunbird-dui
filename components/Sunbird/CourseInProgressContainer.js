@@ -80,7 +80,7 @@ class CourseInProgressContainer extends View {
   
     }else{
        rows = this.data.map((item, index) => {
-       return this.getCardLayout(item);
+       return this.getCardLayout(item,index);
       });
 
        layout = (
@@ -109,7 +109,7 @@ class CourseInProgressContainer extends View {
     else return (bytes / 1073741824).toFixed(3) + " GB";
   };
 
-  getCardLayout =(item) => {
+  getCardLayout =(item,index) => {
     console.log("item in progress container",item)
      var pDone= item.progress == undefined || isNaN(item.progress)? 0 : item.progress;
      var pTotal = item.leafNodesCount == undefined || isNaN(item.leafNodesCount)? 0 : item.leafNodesCount;
@@ -131,6 +131,7 @@ class CourseInProgressContainer extends View {
       return (<CardComponent
                  data={temp}
                  content={item}
+                 index = {index}
                  onCardClick={this.handleCardClick}/>)
   }
 
@@ -168,15 +169,15 @@ class CourseInProgressContainer extends View {
 
 
 
-   handleCardClick = (content, type) => {
+   handleCardClick = (content, type, index) => {
 
-
+    console.log("index",index)
     var callback = callbackMapper.map(function(data) {
 
       if (data == "android.permission.WRITE_EXTERNAL_STORAGE") {
         JBridge.setKey("isPermissionSetWriteExternalStorage", "true");
 
-        _this.props.onCourseClick(content, type);
+        _this.props.onCourseClick(content, type, index);
 
       }
       if(data == "DeniedPermanently"){

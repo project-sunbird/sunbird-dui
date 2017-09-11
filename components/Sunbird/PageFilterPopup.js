@@ -47,6 +47,11 @@ class PageFilterPopup extends View {
   hide = () => {
     this.visible=false;
     this.setVisibility("gone");
+    if(this.isForResouce){
+      JBridge.logPageFilterClickEvent("RESOURCES");
+    }else{
+      JBridge.logPageFilterClickEvent("COURSES");
+    }
   }
 
   getVisibility = () => {
@@ -262,11 +267,6 @@ class PageFilterPopup extends View {
 
   handleDismissClick = () => {
     console.log("is resource",this.isForResouce)
-    if(this.isForResouce){
-      JBridge.logPageFilterClickEvent("RESOURCES");
-    }else{
-      JBridge.logPageFilterClickEvent("COURSES");
-    }
     this.hide();
   }
 

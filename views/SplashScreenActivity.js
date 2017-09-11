@@ -61,6 +61,7 @@ class SplashScreenActivity extends View {
   afterRender = () => {
     JBridge.syncTelemetry();
     JBridge.logsplashScreenEvent();
+    JBridge.logCorrelationPageEvent("SPLASHSCREEN","","");
     // JBridge.setInSharedPrefs("logged_in","YES");
     // JBridge.setInSharedPrefs("user_id", "029c72b5-4691-4bf2-a6de-72b18df0b748");
     // JBridge.setInSharedPrefs("user_name", "vinay");

@@ -166,6 +166,7 @@ class CourseEnrolledActivity extends View {
       "identifier" : this.baseIdentifier
     }
     var event= { "tag": "API_FlagCourse", contents: whatToSend };
+    JBridge.logFlagClickInitiateEvent("COURSES",selectedList[0],comment,this.details.content.identifier);
     window.__runDuiCallback(event);
 
   }

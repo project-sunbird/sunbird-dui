@@ -35,7 +35,7 @@ class CourseContainer extends View {
 
     var rows = this.data.map((item, i) => {
 
-      return this.geCardLayout(item);
+      return this.geCardLayout(item,i);
 
     });
 
@@ -83,7 +83,7 @@ class CourseContainer extends View {
   }
 
 
-  geCardLayout = (item) => {
+  geCardLayout = (item,i) => {
 
     var size = item.hasOwnProperty("size") ? "  "+window.__S.FILE_SIZE.format(utils.formatBytes(item.size)) : "";
 
@@ -102,6 +102,7 @@ class CourseContainer extends View {
       return (<CardComponent
                  data={temp}
                  content={item}
+                 index = {i}
                  onCardClick={this.handleCardClick}/>)
 
   }
@@ -154,14 +155,14 @@ class CourseContainer extends View {
   }
 
 
-  handleCardClick = (content, type) => {
+  handleCardClick = (content, type , index) => {
 
-
+    console.log("index clicked",index)
     var callback = callbackMapper.map(function(data) {
 
       if (data == "android.permission.WRITE_EXTERNAL_STORAGE") {
         JBridge.setKey("isPermissionSetWriteExternalStorage", "true");
-        _this.props.onCourseClick(content, type);
+        _this.props.onCourseClick(content, type, index);
 
       }
       if(data == "DeniedPermanently"){

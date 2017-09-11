@@ -223,7 +223,7 @@ class SearchActivity extends View {
   }
 
 
-  renderResult = (data) => {
+  renderResult = (data,searchText) => {
     console.log("data from server",data)
     var layout = (<LinearLayout
                    width="match_parent"
@@ -232,6 +232,9 @@ class SearchActivity extends View {
                    background="#ffffff"
                    orientation="vertical">
                     <SearchResult
+                      filterData = {_this.filterData}
+                      searchType = {this.searchType}
+                      searchText = {searchText}
                       data={data} />
                   </LinearLayout>)
 
@@ -275,7 +278,7 @@ class SearchActivity extends View {
                     .replace(/\\b/g, "\\b")
                     .replace(/\\f/g, "\\f");
                   s = s.replace(/[\u0000-\u0019]+/g, "");
-                  _this.renderResult(JSON.parse(s));
+                  _this.renderResult(JSON.parse(s),searchText);
                   window.__LoaderDialog.hide();
                   
                 }

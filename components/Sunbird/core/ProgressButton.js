@@ -65,6 +65,7 @@ class ProgressButton extends View {
       if(data.isAvailableLocally == true){
         _this.isDownloaded = true;
       console.log("status local", status)
+        _this.props.playContent = JSON.stringify(data)
       // this.props.playContent = JSON.stringify(data)
       _this.replaceChild(_this.idSet.downloadBarContainer, _this.getButtons("100", window.__S.PLAY).render(), 0);
       }

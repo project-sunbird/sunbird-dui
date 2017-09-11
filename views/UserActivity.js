@@ -194,7 +194,7 @@ class UserActivity extends View {
     if(identifier!=""){
       JBridge.getContentDetails(identifier,callback)
     }else{
-      JBridge.showToast("Can't open empty content","short");
+      // JBridge.showToast("Can't open empty content","short");
       this.performLogin();
     }
   }

@@ -199,6 +199,7 @@ class MainActivity extends View {
      // responseData = utils.jsonifyData(responseData);
       responseData = utils.decodeBase64(responseData)
       responseData = JSON.parse(responseData);
+      console.log("response data in MainActivity",responseData)
       if(state.sendBack){
         responseData.sendBack = state.sendBack;
       }
@@ -242,7 +243,8 @@ class MainActivity extends View {
 
     switch (this.currentPageIndex) {
       case 0:
-        // window.__runDuiCallback({ "tag": "OPEN_HomeFragment", contents: [] });
+        JBridge.logCorrelationPageEvent("HOME",responseData.params.msgid,responseData.id)
+        window.__runDuiCallback({ "tag": "OPEN_HomeFragment", contents: [] });
         break;
       case 1:
         //shouldBeModified = (JBridge.getFromSharedPrefs("chooseCourse") != JSON.stringify(state.response.status[1].result.response))
@@ -251,6 +253,7 @@ class MainActivity extends View {
         // }
         // responseData = state.response.status[1];
         shouldBeModified = true;
+        JBridge.logCorrelationPageEvent("COURSES",responseData.params.msgid,responseData.id)
         window.__runDuiCallback({ "tag": "OPEN_CourseFragment", contents: [] });
 
         break;
@@ -260,6 +263,7 @@ class MainActivity extends View {
         // if (shouldBeModified) {
         //   JBridge.setInSharedPrefs("userResource", JSON.stringify(state.response.status[1].result.response))
         // }
+        JBridge.logCorrelationPageEvent("RESOURCES",responseData.params.msgid,responseData.id)
         window.__runDuiCallback({ "tag": "OPEN_ResourceFragment", contents: [] });
 
         //shouldBeModified = true;
@@ -350,7 +354,8 @@ class MainActivity extends View {
 
         break;
       case 4:
-        JBridge.logTabClickEvent("PROFILE");
+        if(!data.sendBack)
+         JBridge.logTabClickEvent("PROFILE");
         contentLayout = (
           <ProfileFragment
             height="match_parent"
