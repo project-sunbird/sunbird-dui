@@ -62,6 +62,7 @@ class ProgressButton extends View {
 
     var callback = callbackMapper.map(function(data){
       var data = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
+      console.log("data in progress local",data)
       if(data.isAvailableLocally == true){
         _this.isDownloaded = true;
       console.log("status local", status)
@@ -161,16 +162,17 @@ class ProgressButton extends View {
         console.log(this.isDownloaded,this.props)
         if (this.isDownloaded) {
           window.__getGenieEvents = this.checkTelemetry;
-          // JBridge.playContent(this.props.identifier);
-          if(this.props.playContent!=null && this.props.playContent!=undefined)
-            JBridge.playContent(JSON.stringify(this.props.playContent));
-          else{
+          // if(this.props.playContent!=null && this.props.playContent!=undefined){
+          //   console.log("play local content")
+          //   JBridge.playContent(btoa(JSON.stringify(this.props.playContent)));
+          // }
+          // else{
             var callback = callbackMapper.map(function(data){
               console.log("data from progress",JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0]))))
               JBridge.playContent(utils.decodeBase64(data[0]));
             });
             JBridge.getContentDetails(_this.props.identifier,callback);
-          }
+          // }
 
         } else if(JBridge.isNetworkAvailable()){
 
