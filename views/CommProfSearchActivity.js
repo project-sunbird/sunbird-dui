@@ -111,7 +111,7 @@ class CommProfSearchActivity extends View {
        var event={tag:"OPEN_ProfileActivity_SEARCH",contents:whatToSend}
        window.__runDuiCallback(event);
     }else {
-      JBridge.showSnackBar("Unhandled responseFor");
+      JBridge.showSnackBar(window.__S.ERROR_FETCHING_DATA);
     }
 
     var callback = callbackMapper.map(function(data) {
@@ -125,7 +125,6 @@ class CommProfSearchActivity extends View {
   afterRender = () => {
     console.log("afterRender - CommProfSearchActivity");
     if(this.filterData!=undefined && this.filterData.length != 0){
-      // JBridge.showSnackBar(window.__S.SEARCH_LOADING_MESSAGE)
 
       var cmd = "";
       cmd += _this.set({
@@ -188,7 +187,7 @@ class CommProfSearchActivity extends View {
                 width="0"
                 weight="1"
                 maxLines="1"
-                hint="Search"
+                hint={window.__S.SEARCH_HINT}
                 layoutTransition="true"
                 gravity="center_vertical"
                 background="#ffffff"
@@ -354,7 +353,7 @@ class CommProfSearchActivity extends View {
       window.__LoaderDialog.show();
       this.getSearchList(searchText[0],"false");
     } else {
-      JBridge.showSnackBar(window.__S.NO_INTERNET);
+      JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE);
     }
   }
 

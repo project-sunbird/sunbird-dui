@@ -100,7 +100,8 @@ class SearchResult extends View {
                   <TextView
                     height = "wrap_content"
                     width = "wrap_content"
-                    text = { item.data && item.data.status &&  item.data.status == 1 ? "Active" : "Inactive"}
+                    visibility = {this.type == "Profile" ? "visible" : "gone"}
+                    text = {this.type == "Profile" ? (item.data.status == 1 ? "Active" : "Inactive") : ""}
                     style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK} />
                 </LinearLayout>
             </LinearLayout>
@@ -150,7 +151,7 @@ class SearchResult extends View {
       if (JBridge.isNetworkAvailable()){
         window.__runDuiCallback(event);
       } else {
-        JBridge.showSnackBar(window.__S.NO_INTERNET);
+        JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE);
       }
    }
     else if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook" || utils.checkEnrolledCourse(item.identifier)){
@@ -206,7 +207,7 @@ class SearchResult extends View {
       if(data == "DeniedPermanently"){
         console.log("DENIED DeniedPermanently");
         JBridge.hideKeyboard();
-        window.__PermissionDeniedDialog.show("ic_warning_grey",window.__S.STORAGE_DENIED);
+        window.__PermissionDeniedDialog.show("ic_warning_grey",window.__S.STORAGE);
       }
 
     });

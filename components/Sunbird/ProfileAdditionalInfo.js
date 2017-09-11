@@ -28,15 +28,15 @@ class ProfileAdditionalInfo extends View {
       this.languages += item + append;
     })
     this.info = [{
-      name: "LANGUAGES",
+      name: window.__S.LANGUAGES,
       value : this.languages
     },
     {
-      name: "EMAIL",
+      name: window.__S.EMAIL,
       value : this.data.email
     },
     {
-      name: "PHONE",
+      name: window.__S.PHONE,
       value : this.data.phone
     }]
 
@@ -60,7 +60,7 @@ class ProfileAdditionalInfo extends View {
       // } else
       if (item.addType == "current" && item.country){
         this.info.push({
-          name: "CURRENT LOCATION",
+          name: window.__S.CURRENT_LOCATION,
           value :item.city + ", " + item.country
         })
       }
@@ -117,7 +117,7 @@ class ProfileAdditionalInfo extends View {
               <TextView
                 width="wrap_content"
                 height="wrap_content"
-                text="Personal Details"
+                text={window.__S.PERSONAL_DETAILS}
                 style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
               <ViewWidget
@@ -153,7 +153,7 @@ class ProfileAdditionalInfo extends View {
         <TextView
         width="wrap_content"
         height="wrap_content"
-        text="HOBBIES"
+        text={window.__S.HOBBIES}
         style={window.__TextStyle.textStyle.HINT.SEMI}/>
 
         <ViewWidget

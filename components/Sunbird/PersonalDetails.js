@@ -38,7 +38,7 @@ class PersonalDetails extends View {
               <TextView
               width="wrap_content"
               height="wrap_content"
-              text="Profile Details"
+              text={window.__S.PROFILE_DETAILS_TITLE}
               style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
               <ViewWidget
@@ -97,10 +97,10 @@ class PersonalDetails extends View {
 
               {this.getHeader()}
 
-              {this.getRows("LANGUAGES",this.language)}
-              {this.getRows("E-MAIL",this.email)}
-              {this.getRows("PHONE",this.phone)}
-              {this.getRows("CURRENT LOCATION",this.currLoc)}
+              {this.getRows(window.__S.LANGUAGES,this.language)}
+              {this.getRows(window.__S.EMAIL_ID,this.email)}
+              {this.getRows(window.__S.PHONE,this.phone)}
+              {this.getRows(window.__S.CURRENT_LOCATION,this.currLoc)}
 
               </LinearLayout>)
     return this.layout.render();

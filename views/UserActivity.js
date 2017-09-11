@@ -79,7 +79,7 @@ class UserActivity extends View {
          _this.handleDeepLinkAction(identifier);
       }
     }else{
-        JBridge.showToast("Imported Successfully","short");
+        JBridge.showToast(window.__S.MSG_IMPORTED_SUCCESSFULLY,"short");
         console.log("Successfully IMPORTED CONTENT")
         var whatToSend = []
         var event = { tag: "OPEN_MainActivity", contents: whatToSend };
@@ -427,7 +427,7 @@ class UserActivity extends View {
 
   handleSignUpClick = () => {
      if (!JBridge.isNetworkAvailable()) {
-        JBridge.showSnackBar(window.__S.NO_INTERNET)
+        JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE)
         return;
       }
     JBridge.logSignUpInitiation();

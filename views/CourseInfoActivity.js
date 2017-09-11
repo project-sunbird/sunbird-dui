@@ -117,7 +117,7 @@ class CourseInfoActivity extends View {
               if(JBridge.isNetworkAvailable())
                 JBridge.importCourse(identifier,"false")
               else
-                JBridge.showSnackBar(window.__S.NO_INTERNET)
+                JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE)
           }
         })
 
@@ -142,12 +142,12 @@ class CourseInfoActivity extends View {
     console.log("RENDRING BREKAUP", this.courseContent)
     var child;
     if(this.courseContent.children==undefined){
-      child = <TextView
+      child = (<TextView
                   height="300"
                   width="match_parent"
                   gravity="center"
                   root="true"
-                  text={window.__S.ERROR_CONTENT_NOT_FOUND} />
+                  text={window.__S.ERROR_CONTENT_NOT_FOUND} />);
     }
     else{
        child = (<CourseCurriculum
@@ -157,7 +157,11 @@ class CourseInfoActivity extends View {
                   margin="0,0,0,12"
                   brief={true}
                   shouldGoForward={"gone"}
-                  content= {this.courseContent.children}/>)
+                  content= {this.courseContent.children}/>);
+        Android.runInUI(this.set({
+          id : this.idSet.enrollButtonId,
+          visibility :"visible"
+        }),0);
       }
 
       var layout = (
@@ -185,7 +189,7 @@ class CourseInfoActivity extends View {
 
 
   afterRender = () => {
-   
+
 
     if(window.__enrolledCourses == undefined){
       window.__LoaderDialog.show();
@@ -336,7 +340,7 @@ class CourseInfoActivity extends View {
             }, 200);
       }else{
 
-          JBridge.showToast("Can't share. Try Again!","short");
+          JBridge.showToast(window.__S.ERROR_CANT_SHARE_TRY_AGAIN,"short");
 
        }
 
@@ -500,6 +504,7 @@ class CourseInfoActivity extends View {
                  <LinearLayout
                  width="match_parent"
                  height = "wrap_content"
+                 visibility = "gone"
                   id = {this.idSet.enrollButtonId}>
                        <PageOption
                        width="match_parent"

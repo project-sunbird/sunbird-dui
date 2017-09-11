@@ -201,7 +201,7 @@ class ModuleDetailActivity extends View {
                         
                       }
                       else
-                        JBridge.showSnackBar(window.__S.NO_INTERNET)
+                        JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE)
                     }
                 });
 

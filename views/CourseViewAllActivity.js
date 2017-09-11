@@ -176,7 +176,7 @@ class CourseViewAllActivity extends View {
         }
         if(data == "DeniedPermanently"){
           console.log("DENIED DeniedPermanently");
-          window.__PermissionDeniedDialog.show("ic_warning_grey", window.__S.STORAGE_DENIED);
+          window.__PermissionDeniedDialog.show("ic_warning_grey", window.__S.STORAGE);
         }
 
         });
@@ -265,7 +265,7 @@ class CourseViewAllActivity extends View {
         }
         else{
           window.__LoaderDialog.hide();
-          JBridge.showSnackBar(window.__S.NO_INTERNET)
+          JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE)
         }
     // }
     // else{

@@ -239,7 +239,7 @@ class ContentPreviewScreen extends View {
 
         }
         else
-          JBridge.showSnackBar(window.__S.NO_INTERNET)
+          JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE)
       }
 
     });
@@ -537,7 +537,7 @@ class ContentPreviewScreen extends View {
             margin="0,16,0,0"
             width="wrap_content"
             height="wrap_content"
-            text="CREATED BY"
+            text={window.__S.CREATED_BY}
             style={window.__TextStyle.textStyle.HINT.BOLD}/>
 
 
@@ -640,7 +640,7 @@ class ContentPreviewScreen extends View {
                         margin="0,13,0,0"
                         width="wrap_content"
                         height="wrap_content"
-                        text="MODULES"
+                        text={window.__S.MODULES}
                         id = {this.idSet.moduleText}
                         style={window.__TextStyle.textStyle.HINT.BOLD}/>
 
@@ -675,7 +675,7 @@ class ContentPreviewScreen extends View {
                     height = "56"
                     id = {this.idSet.featureButton}
                     background = {window.__Colors.PRIMARY_ACCENT}
-                    text = {"CLICK HERE TO OPEN CONTENT"}
+                    text = {window.__S.BTN_CLICK_TO_OPEN_CONTENT}
                     style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
                     buttonClick = {this.handleButtonClick}
                     />

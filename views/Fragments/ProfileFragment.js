@@ -24,6 +24,7 @@ var ProfileAdditionalInfo = require('../../components/Sunbird/ProfileAdditionalI
 var ProfilAffiliations = require('../../components/Sunbird/ProfileAffiliations');
 var CropParagraph = require('../../components/Sunbird/CropParagraph');
 var utils = require('../../utils/GenericFunctions');
+const Str = require("../../res/Strings") ;
 
 
 var _this;
@@ -46,7 +47,7 @@ class ProfileFragment extends View {
         { imageUrl: "ic_action_overflow" }
       ]
     }
-    this.popupMenu="Change Language,Logout";
+    this.popupMenu=window.__S.CHANGE_LANGUAGE + "," + window.__S.LOGOUT;
     window.__LanguagePopup.props.buttonClick = this.handleChangeLang;
 
     this.handleResponse();
@@ -55,9 +56,12 @@ class ProfileFragment extends View {
 
 
   handleChangeLang = (lang) => {
+    window.__LoaderDialog.show()
      window.setLanguage(lang);
+     window.__S = Str.strings();
      window.__LanguagePopup.hide();
-     window.__BNavFlowRestart();
+     window.__renderBNavBar(4);
+     window.__reRender();
   }
 
   logout = () =>{
@@ -115,7 +119,9 @@ class ProfileFragment extends View {
   }
 
 
-  afterRender() {}
+  afterRender() {
+    window.__LoaderDialog.hide();
+  }
 
   getLineSeperator = () => {
     return (<LinearLayout
@@ -172,7 +178,7 @@ class ProfileFragment extends View {
       }
       if(data == "DeniedPermanently"){
         console.log("DENIED DeniedPermanently");
-        window.__PermissionDeniedDialog.show("ic_warning_grey",window.__S.STORAGE_DENIED);
+        window.__PermissionDeniedDialog.show("ic_warning_grey",window.__S.STORAGE);
       }
 
     });
@@ -281,19 +287,19 @@ class ProfileFragment extends View {
                   editable = {this.isEditable}
                   data = {this.education}
                   popUpType={window.__PROFILE_POP_UP_TYPE.EDUCATION}
-                  heading = "Education"/>
+                  heading = {window.__S.TITLE_EDUCATION} />
 
                 <ProfileExperiences
                   editable = {this.isEditable}
                   data = {this.jobProfile}
                   popUpType={window.__PROFILE_POP_UP_TYPE.EXPERIENCE}
-                  heading = "Experiences"/>
+                  heading = {window.__S.TITLE_EXPERIENCES} />
 
                 <ProfileExperiences
                   editable = {this.isEditable}
                   data = {this.address}
                   popUpType={window.__PROFILE_POP_UP_TYPE.ADDRESS}
-                  heading = "Address"/>
+                  heading = {window.__S.TITLE_ADDRESS} />
 
                 <ProfileCreations
                   data = {this.createdBy}

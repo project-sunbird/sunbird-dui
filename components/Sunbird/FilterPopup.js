@@ -71,7 +71,7 @@ class FilterPopup extends View {
                     height = "56"
                     stroke = {"3," + window.__Colors.WHITE}
                     background = {window.__Colors.PRIMARY_ACCENT}
-                    text = {"Confirm"}
+                    text = {window.__S.CONFIRM}
                     buttonClick = {this.onConfirm}
                     textColor = {window.__Colors.WHITE}
                     textSize = "18"/>
@@ -158,7 +158,7 @@ class FilterPopup extends View {
               width="match_parent">
 
               {this.getList()}
-            
+
               </ScrollView>
 
             </LinearLayout>)
@@ -175,7 +175,7 @@ class FilterPopup extends View {
           <TextView
            width = "wrap_content"
            height = "wrap_content"
-           text = "Choose from following"
+           text = {window.__S.CHOOSE_FROM_FOLLOWING}
            style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
       </LinearLayout>
@@ -230,7 +230,7 @@ class FilterPopup extends View {
               clickable = "true"
               padding="16,18,16,16"
               background="#ffffff">
-              
+
              {this.getHeader()}
 
              {this.getRadioList()}
@@ -270,7 +270,7 @@ class FilterPopup extends View {
   render() {
 
     this.layout = (
-      <LinearLayout 
+      <LinearLayout
         height = "match_parent"
         width = "match_parent"
         id={this.idSet.parentContainer}

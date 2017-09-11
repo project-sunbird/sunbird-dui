@@ -48,9 +48,10 @@ class CourseContainer extends View {
 
 
                   <HorizontalScrollView
-                   width = "match_parent"
+                   width = "wrap_content"
                    height = "wrap_content"
-                   scrollBarX="false">
+                   scrollBarX="false"
+                   fillViewport="true">
 
                    <LinearLayout
                      padding="0,0,16,0"
@@ -167,7 +168,7 @@ class CourseContainer extends View {
       }
       if(data == "DeniedPermanently"){
         console.log("DENIED DeniedPermanently");
-        window.__PermissionDeniedDialog.show("ic_warning_grey", window.__S.STORAGE_DENIED);
+        window.__PermissionDeniedDialog.show("ic_warning_grey", window.__S.STORAGE);
       }
 
     });

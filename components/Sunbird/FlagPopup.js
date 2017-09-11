@@ -43,7 +43,7 @@ class FlagPopup extends View {
     this.resetPopup()
     this.showBodyWithOptions();
     this.setVisibility("visible");
-    
+
   }
 
   hide = () => {
@@ -78,7 +78,7 @@ class FlagPopup extends View {
     Android.runInUI(cmd, 0)
   }
 
-  
+
 
 
   onConfirm = () =>{
@@ -94,7 +94,7 @@ class FlagPopup extends View {
 
     }
     else
-      JBridge.showSnackBar(window.__S.NO_INTERNET)
+      JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE)
 
   }
 
@@ -210,8 +210,8 @@ class FlagPopup extends View {
   }
 
   getRadioList = () =>{
-
-    this.radioList = ["Inappropriate content","Copyright violation","Piracy violation","Other"];
+    var w = window.__S;
+    this.radioList = [w.OPTION_INAPPROPRIATE_CONTENT,w.OPTION_COPYRIGHT_VIOLATION,w.OPTION_PRIVACY_VIOLATION,w.OPTION_OTHER];
 
     var rows = this.radioList.map((item, index) => {
       return(

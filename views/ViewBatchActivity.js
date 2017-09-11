@@ -116,7 +116,7 @@ class ViewBatchActivity extends View {
           window.__runDuiCallback(event);
 
       }else{
-        JBridge.showSnackBar(window.__S.NO_INTERNET)
+        JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE)
       }
     }
 
@@ -327,7 +327,7 @@ class ViewBatchActivity extends View {
           window.__runDuiCallback(event);
       }
       else{
-        JBridge.showSnackBar(window.__S.NO_INTERNET)
+        JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE)
       }
     }
 
@@ -409,7 +409,7 @@ class ViewBatchActivity extends View {
             margin="0,30,0,0"
             gravity="center"
             style={window.__TextStyle.textStyle.HEADING.DARK}
-            text = "No batches found"/>
+            text = {window.__S.ERROR_NO_BATCHES_FOUND}/>
 
 
           </LinearLayout>

@@ -43,7 +43,7 @@ class ProfileExperiences extends View {
               <TextView
               width="wrap_content"
               height="wrap_content"
-              text="Add"
+              text={window.__S.ADD}
               padding = "16,16,0,16"
               onClick = {() => this.showPopUp()}
               visibility = {(this.isEditable == "true") ? "visible" : "gone"}
@@ -348,8 +348,8 @@ class ProfileExperiences extends View {
                 else if(b.endDate == null && !a.isCurrentJob)
                    return 1;
 
-                var a1 = new Date(a);
-                var b1 = new Date(b);
+                var a1 = new Date(a.endDate);
+                var b1 = new Date(b.endDate);
 
                 return (b1.getTime()-a1.getTime());
             }

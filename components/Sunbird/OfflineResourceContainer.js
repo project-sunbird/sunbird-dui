@@ -66,10 +66,10 @@ class OfflineResourceContainer extends View {
         temp['title'] = item.contentData.name;
         temp['footerTitle'] = footerTitle;
         temp['screenshots'] = item.screenshots || [] ;
-        temp['footerSubTitle'] = "Saved on " + fileSavedTime;
-        temp['actionText'] = "OPEN";
+        temp['footerSubTitle'] = window.__S.SAVED_ON + " " + fileSavedTime;
+        temp['actionText'] = window.__S.OPEN;
         temp['content'] = item;
-        
+
 
 
 
@@ -132,7 +132,7 @@ class OfflineResourceContainer extends View {
               <TextView
                 width="wrap_content"
                 height="wrap_content"
-                text="VIEW ALL"
+                text={window.__S.VIEW_ALL}
                 id={this.idSet.viewAllContainer}
                 padding="8,8,8,8"
                 onClick={this.handleViewAllClick}

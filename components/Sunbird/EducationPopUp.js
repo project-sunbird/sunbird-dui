@@ -56,7 +56,7 @@ class EducationPopUp extends View {
     this.canSave = false;
 
     this.delBtnState = {
-      text : "DELETE",
+      text : window.__S.DELETE,
       id : this.idSet.delButton,
       isClickable : "true",
       onClick : this.handleDelClick,
@@ -64,7 +64,7 @@ class EducationPopUp extends View {
     };
 
     this.saveBtnState = {
-      text : "SAVE",
+      text : window.__S.SAVE,
       id : this.idSet.saveButton,
       isClickable : "false",
       onClick : this.handleSaveClick,
@@ -273,8 +273,7 @@ class EducationPopUp extends View {
   checkPercentage = (data) => {
     var flag =true;
     try {
-      var per=parseFloat(this.percentage)
-      if(per > 100.0)
+      if( isNaN(data) || parseFloat(data) > 100.0 || parseFloat(data) < 0.0)
        flag=false;
     } catch (e) {
        flag=false;
@@ -293,14 +292,14 @@ class EducationPopUp extends View {
 
     if (this.singleClick && !this.canSave && !this.delete){
       if (window.__EducationPopUp.data)
-        JBridge.showSnackBar("Please make some changes");
+        JBridge.showSnackBar(window.__S.WARNING_PLEASE_MAKE_SOME_CHANGES);
       else
-        JBridge.showSnackBar("Please add mandatory details");
+        JBridge.showSnackBar(window.__S.WARNING_PLEASE_ADD_MANDATORY_DETAILS );
       return;
     }
 
     if(!JBridge.isNetworkAvailable()) {
-      JBridge.showSnackBar(window.__S.NO_INTERNET);
+      JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE);
       return;
     }
 
@@ -310,21 +309,21 @@ class EducationPopUp extends View {
     if(this.yearOfPassing!=null && this.yearOfPassing!="")
         if(!this.checkPassingYear(this.yearOfPassing))
             {
-              JBridge.showSnackBar("Invalid Year Of Passing");
+              JBridge.showSnackBar(window.__S.WARNING_INVALID_YEAR_OF_PASSING);
               return;
             }
 
     if(this.percentage!=null && this.percentage!="")
         if(!this.checkPercentage(this.percentage))
             {
-              JBridge.showSnackBar("Invalid Percentage");
+              JBridge.showSnackBar(window.__S.WARNING_INVALID_PERCENTAGE);
               return;
             }
 
     if(this.grade!=null && this.grade!="")
           if(!this.checkGrade(this.grade))
               {
-                JBridge.showSnackBar("Invalid Grade");
+                JBridge.showSnackBar(window.__S.WARNING_INVALID_GRADE);
                 return;
               }
 
@@ -346,7 +345,7 @@ class EducationPopUp extends View {
       json.grade = this.grade;
       json.boardOrUniversity = this.boardOrUniversity;
       json.isDeleted = this.delete ? this.delete : null;
-      this.delete= false;
+      this.delete = false;
     }
 
     this.education.push(json);
@@ -396,8 +395,8 @@ class EducationPopUp extends View {
      this.hide();
      window.__BNavFlowRestart();
    }else{
+     this.singleClick =true;
      JBridge.showSnackBar(data.params.errmsg);
-     this.singleClick=true;
    }
 
  }
@@ -414,9 +413,12 @@ class EducationPopUp extends View {
                   padding="0,0,0,0"
                   gravity="center_vertical"
                   background={window.__Colors.WHITE}
-                  width="match_parent">
+                  width="match_parent" >
+
                     {this.getBack()}
+
                     {this.getTitle()}
+
                 </LinearLayout>
             </LinearLayout>
 
@@ -445,7 +447,7 @@ class EducationPopUp extends View {
                   width="match_parent"
                   gravity="center_vertical"
                   background="#ffffff"
-                  text="Education"
+                  text={window.__S.TITLE_EDUCATION}
                   style={window.__TextStyle.textStyle.TOOLBAR.HEADING}/>
 
 
@@ -471,12 +473,12 @@ class EducationPopUp extends View {
         id={this.idSet.scrollView}
         padding="15,15,15,15">
 
-        {this.getEditTextView(this.idSet.degreeText, "Degree", false, this.setDegree)}
-        {this.getEditTextView(this.idSet.inititutionText, "Institution Name", false, this.setInitution)}
-        {this.getEditTextView(this.idSet.yearOfPassingText, "Year of Passing", true, this.setYearOfPassingText, "numeric")}
-        {this.getEditTextView(this.idSet.percentageText, "Percentage", true, this.setPercentage, "numeric")}
-        {this.getEditTextView(this.idSet.gradeText, "Grade", true, this.setGrade)}
-        {this.getEditTextView(this.idSet.boardOrUniversityText, "Board/University", true, this.setBoardOrUniversity)}
+        {this.getEditTextView(this.idSet.degreeText, window.__S.DEGREE , false, this.setDegree)}
+        {this.getEditTextView(this.idSet.inititutionText, window.__S.INSTITUTION_NAME, false, this.setInitution)}
+        {this.getEditTextView(this.idSet.yearOfPassingText, window.__S.YEAR_OF_PASSING, true, this.setYearOfPassingText, "numeric")}
+        {this.getEditTextView(this.idSet.percentageText, window.__S.PERCENTAGE, true, this.setPercentage, "floating")}
+        {this.getEditTextView(this.idSet.gradeText, window.__S.GRADE, true, this.setGrade)}
+        {this.getEditTextView(this.idSet.boardOrUniversityText,window.__S.BOARD_UNIVERSITY, true, this.setBoardOrUniversity)}
 
       </LinearLayout>
     );
@@ -488,7 +490,7 @@ class EducationPopUp extends View {
         id = {id}
         height="wrap_content"
         width="match_parent"
-        hintText={optional ? "(Optional)" : ""}
+        hintText={optional ? window.__S.OPTIONAL : ""}
         labelText={label}
         mandatory = {optional ? "false" : "true"}
         margin = "0,0,0,18"
@@ -602,10 +604,10 @@ class EducationPopUp extends View {
 
   render() {
     var popUpdata = {
-      title : "Confirm Delete?",
+      title : window.__S.CONFIRM_DEL,
       content : "",
-      negButtonText : "Cancel",
-      posButtonText : "Delete"
+      negButtonText : window.__S.CANCEL,
+      posButtonText : window.__S.DELETE
     }
     this.layout = (
       <RelativeLayout

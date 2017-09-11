@@ -72,7 +72,7 @@ class CourseProgress extends View {
             <TextView
               width="wrap_content"
               height="wrap_content"
-              text="RESUME"
+              text={window.__S.RESUME}
               gravity="center"
               onClick={this.handleResumeClick}
               style={window.__TextStyle.textStyle.TABBAR.WHITE}/>

@@ -33,10 +33,12 @@ class RootScreen extends View {
     this.setIds([
       'root',
       'filterDialog',
-      'blurContainer'
+      'blurContainer',
+      'popupContainer'
     ]);
 
     window.__RootScreen = this;
+    window.__CurrentLanguage = JBridge.getKey("languagePref", "en_US");
     window.__S = Str.strings();
     window.setLanguage = Str.setLanguage;
     window.__TextStyle = TextStyle;
@@ -56,7 +58,7 @@ class RootScreen extends View {
 
     this.setStatusBarColor(window.__Colors.BLACK);
 
-
+    window.__reRender = this.reRenderRoot;
 
   }
 
@@ -70,6 +72,30 @@ class RootScreen extends View {
     Android.runInUI(
       "set_win=ctx->getWindow;get_win->addFlags:i_-2147483648;" + _color + "get_win->setStatusBarColor:get_color",
       null
+    );
+  }
+
+  reRenderRoot = () => {
+    this.replaceChild(this.idSet.popupContainer, this.getBody().render(), 0);
+    console.log("before BNavFlowRestart");
+    // window.__BNavFlowRestart();
+    console.log("after BNavFlowRestart");
+  }
+
+  getBody = () => {
+    return (
+      <RelativeLayout>
+        <LoaderDialog/>
+        <PageFilterPopup/>
+        <ContentLoaderDialog/>
+        <PermissionDeniedDialog/>
+        <ExperiencePopUp/>
+        <EducationPopUp/>
+        <AddressPopUp />
+        <PreviewImagePopup
+          defaultImage="https://pbs.twimg.com/media/CRafzhtWIAEQ2c9.png"/>
+        <LanguagePopup/>
+      </RelativeLayout>
     );
   }
 
@@ -92,16 +118,11 @@ class RootScreen extends View {
           </RelativeLayout>
 
         </LinearLayout>
-        <LoaderDialog/>
-        <PageFilterPopup/>
-        <ContentLoaderDialog/>
-        <PermissionDeniedDialog/>
-        <ExperiencePopUp/>
-        <EducationPopUp/>
-        <AddressPopUp />
-        <PreviewImagePopup
-          defaultImage="https://pbs.twimg.com/media/CRafzhtWIAEQ2c9.png"/>
-        <LanguagePopup/>
+
+        <RelativeLayout
+          id = {this.idSet.popupContainer}>
+          {this.getBody()}
+        </RelativeLayout>
       </RelativeLayout>
     );
 

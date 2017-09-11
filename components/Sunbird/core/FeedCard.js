@@ -135,7 +135,7 @@ class FeedCard extends View {
                 width="wrap_content"
                 height="wrap_content"
                 margin="2,0,0,0"
-                text="Answer"
+                text={window.__S.ANSWER}
                 style={window.__TextStyle.textStyle.HINT.SEMI}/>
             <ViewWidget
                 weight="1"
@@ -182,7 +182,7 @@ class FeedCard extends View {
             height="wrap_content"
             margin="0,10,0,0"
             onClick={this.handleAnswerSubmit}
-            text="submit"/>
+            text={window.__S.BTN_SUBMIT}/>
 
             <ImageView
             style={IconStyle}
@@ -297,7 +297,7 @@ class FeedCard extends View {
               height="wrap_content"
               margin="8,0,0,0"
               gravity="center_vertical"
-              text="Topic you might like"
+              text={window.__S.TOPIC_YOU_MIGHT_LIKE }
               style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
           </LinearLayout>

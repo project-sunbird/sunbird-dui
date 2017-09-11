@@ -56,8 +56,8 @@ class ProfileAboutComponent extends View {
           text=""
           height="wrap_content"
           margin="16,12,16,16"
-          style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>            
-      
+          style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>
+
 
 
       <ViewWidget

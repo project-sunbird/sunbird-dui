@@ -21,7 +21,6 @@ class SplashScreenActivity extends View {
     this.getUserToken()
     window.__pressedLoggedOut=false;
 
-    window.__CurrentLanguage = JBridge.getKey("languagePref", "en_US");
     this.icon = JBridge.getFromSharedPrefs("logo_url") == "__failed" ? "ic_launcher" : JBridge.getFromSharedPrefs("logo_url");
 
   }

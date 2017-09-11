@@ -97,7 +97,7 @@ class CourseProgressCard extends View {
                 width="wrap_content"
                 height="wrap_content"
                 margin = "10,10,10,10"
-                text= "COURSE"
+                text= {window.__S.COURSE}
                 padding="5,3,5,3"
                 cornerRadius="4"
                 background={window.__Colors.PRIMARY_BLACK}

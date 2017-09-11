@@ -116,7 +116,7 @@ class ProfileBadges extends View {
     return (<TextView
               width="wrap_content"
               height="wrap_content"
-              text="View All"
+              text={window.__S.VIEW_ALL}
               id={this.idSet.viewAll}
               onClick={this.handleViewAllClick}
               style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>)
@@ -131,7 +131,7 @@ class ProfileBadges extends View {
               <TextView
               width="wrap_content"
               height="wrap_content"
-              text="Badges"
+              text={window.__S.BADGES}
               style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
               <ViewWidget

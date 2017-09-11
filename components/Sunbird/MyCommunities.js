@@ -141,7 +141,7 @@ class MyCommunities extends View {
             width="wrap_content"
             height="wrap_content"
             onClick={this.handleAnswerSubmit}
-            text="VIEW"/>
+            text={window.__S.VIEW}/>
 
 
             </LinearLayout>
@@ -158,7 +158,7 @@ class MyCommunities extends View {
             <TextView
             width="wrap_content"
             height="wrap_content"
-            text="My Communities"
+            text={window.__S.MY_COMMUNITIES}
             style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
             <ViewWidget
@@ -168,7 +168,7 @@ class MyCommunities extends View {
             <TextView
             width="wrap_content"
             height="wrap_content"
-            text="View all"
+            text={window.__S.VIEW_ALL}
             onClick={()=>{this.handleViewAllClick()}}
             style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
 

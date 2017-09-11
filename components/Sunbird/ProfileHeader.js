@@ -44,7 +44,7 @@ class ProfileHeader extends View {
         JBridge.sendEmail(this.orgEmail);
       }
     else{
-      JBridge.showSnackBar("No email found for this organisation")
+      JBridge.showSnackBar(window.__S.NO_EMAIL_FOUND)
     }
   }
 
@@ -139,7 +139,7 @@ class ProfileHeader extends View {
                 visibility = {(this.userName != "" && this.isEditable == "true") ? "visible" : "gone"}>
                 <TextView
                   padding = "10, 2, 10, 2"
-                  text = {"Username: @" + this.userName} />
+                  text = {window.__S.USERNAME+  ": @" + this.userName} />
               </LinearLayout>
               </LinearLayout>)
     return this.layout.render();

@@ -35,7 +35,7 @@ class CourseInProgressContainer extends View {
 
 
   fetchFromServer = () => {
-    var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken} 
+    var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken}
     var event ={ "tag": "API_UserEnrolledCourse", contents: whatToSend};
     window.__runDuiCallback(event);
   }
@@ -77,7 +77,7 @@ class CourseInProgressContainer extends View {
 
     Android.runInUI(cmd, 0);
 
-  
+
     }else{
        rows = this.data.map((item, index) => {
        return this.getCardLayout(item,index);
@@ -95,10 +95,10 @@ class CourseInProgressContainer extends View {
 
     }
 
-    
-  
+
+
     this.replaceChild(this.idSet.parentContainer,layout.render(),0)
-    
+
 
   }
 
@@ -121,10 +121,10 @@ class CourseInProgressContainer extends View {
      var temp = {
         imageUrl: (item.courseLogoUrl ? item.courseLogoUrl : "ic_action_course"),
         title: item.courseName,
-        actionText: "RESUME",
+        actionText:  window.__S.RESUME,
         // footerTitle: (isNaN(pDone/pTotal)?"0":(pDone/pTotal)) +"% done",
-        footerTitle: progressCount +"% done",
-        footerSubTitle: "Duration unavailable",
+        footerTitle: window.__S.COURSE_PROGRESS_COMPLETED.format(progressCount),
+        footerSubTitle:  window.__S.ERROR_DURATION_NOT_AVAILABLE,
         isProgress : "true"
       };
 
@@ -182,13 +182,13 @@ class CourseInProgressContainer extends View {
       }
       if(data == "DeniedPermanently"){
         console.log("DENIED DeniedPermanently");
-        window.__PermissionDeniedDialog.show("ic_warning_grey",window.__S.STORAGE_DENIED);
+        window.__PermissionDeniedDialog.show("ic_warning_grey",window.__S.STORAGE);
       }
 
     });
 
     JBridge.setPermissions(callback,"android.permission.WRITE_EXTERNAL_STORAGE");
-    
+
   }
 
 
@@ -201,7 +201,7 @@ class CourseInProgressContainer extends View {
                                "courseListDetails" : this.data,
                                "viewMore" : this.props.showViewMore
                               }
-                              
+
       var whatToSend = {"courseListDetails": JSON.stringify(courseListDetails)}
       var event = { tag: "OPEN_CourseViewAllActivity", contents: whatToSend};
       window.__runDuiCallback(event);
