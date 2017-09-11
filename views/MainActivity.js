@@ -197,6 +197,7 @@ class MainActivity extends View {
       console.log("slug", responseData.result.response.rootOrg.slug);
       window.__orgName = responseData.result.response.rootOrg.orgName;
       window.__API_Profile_Called = true;
+      JBridge.showSnackBar(window.__S.WELCOME_BACK.format(window.__userName));
       var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken, "slug": responseData.result.response.rootOrg.slug};
       var event = { tag: "API_Tenant", contents: whatToSend};
       window.__runDuiCallback(event);
