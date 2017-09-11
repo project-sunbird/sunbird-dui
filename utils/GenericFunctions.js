@@ -56,6 +56,10 @@ exports.decodeBase64 = (data) =>{
   return decodeURIComponent(escape(atob(data)))
 }
 
+exports.encodeBase64 = (data) => {
+	return btoa(unescape(encodeURIComponent(data)))
+}
+
 exports.setPermissions = (permission) => {
 
    var callback = callbackMapper.map(function(data) {
