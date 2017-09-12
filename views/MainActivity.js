@@ -203,6 +203,12 @@ class MainActivity extends View {
       window.__runDuiCallback(event);
     }
 
+    if (!window.__API_Profile_Called){
+      window.__API_Profile_Called = true;
+      JBridge.showSnackBar(window.__S.WELCOME_BACK.format(window.__userName));
+    }
+
+
     if (state.responseFor == "API_Tenant"){
       console.log("responseFor API_Tenant", responseData);
       JBridge.setInSharedPrefs("logo", responseData.result.logo);
