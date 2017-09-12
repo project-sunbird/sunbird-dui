@@ -142,7 +142,7 @@ class CourseContainer extends View {
   }
 
  handleViewAllClick = () =>{
-      JBridge.logViewAllClickEvent("COURSES");
+      JBridge.logViewAllClickEvent("COURSES",this.props.title);
       var courseListDetails = {
                                "title" : this.props.title,
                                "courseListDetails" : this.data,
