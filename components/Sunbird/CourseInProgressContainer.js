@@ -31,6 +31,7 @@ class CourseInProgressContainer extends View {
     window.__fetchCourse = this.fetchFromServer;
 
     this.appendAtPosition=0;
+    this.savedCourseTag = "savedCourse";
 
   }
 
@@ -43,7 +44,7 @@ class CourseInProgressContainer extends View {
       var event ={ "tag": "API_UserEnrolledCourse", contents: whatToSend};
       window.__runDuiCallback(event);
     } else {
-      res = JBridge.getSavedCourse();
+      res = JBridge.getSavedData(this.savedCourseTag);
       if (res && res != "__failed"){
         var parsed = JSON.parse(utils.decodeBase64(res));
         this.renderContent(parsed, true);
@@ -57,7 +58,7 @@ class CourseInProgressContainer extends View {
     console.log("renderContent");
     if (dontSaveToFile == undefined && data != undefined){
       var encoded = utils.encodeBase64(JSON.stringify(data));
-      JBridge.saveCourse(encoded);
+      JBridge.saveData(this.savedCourseTag, encoded);
     }
 
     var isDataEmpty = (data === "" || data === undefined || data.length == 0);
