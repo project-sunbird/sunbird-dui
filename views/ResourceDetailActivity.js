@@ -79,7 +79,6 @@ class ResourceDetailActivity extends View {
                  changeOverFlowMenu = {_this.changeOverFlow}/>)
         _this.replaceChild(_this.idSet.progressButtonContainer, pButonLayout.render(), 0);
         _this.changeOverFlow();
-        _this.shareContent(true);
 
       } else {
         var pButonLayout = (<ProgressButton
@@ -92,7 +91,6 @@ class ResourceDetailActivity extends View {
                  identifier = {_this.details.identifier}
                  changeOverFlowMenu = {_this.changeOverFlow} />);
         _this.replaceChild(_this.idSet.progressButtonContainer, pButonLayout.render(), 0);
-        _this.shareContent(false);
 
       }
     });
@@ -119,7 +117,6 @@ class ResourceDetailActivity extends View {
   }
 
   shareContent = (isContentLocallyAvailable) =>{
-
 
         var shareCallback = callbackMapper.map(function(data) {
 
@@ -155,6 +152,10 @@ class ResourceDetailActivity extends View {
                   )
 
               _this.replaceChild(_this.idSet.sharePopupContainer,sharePopUp.render(),0);
+
+
+          window.__SharePopup.show();
+
           }else{
 
               JBridge.showToast(window.__S.ERROR_CANT_SHARE_TRY_AGAIN,"short");
@@ -558,14 +559,14 @@ class ResourceDetailActivity extends View {
           invert="true"/>)
 
     this.replaceChild(this.idSet.simpleToolBarOverFlow, toolbar.render(), 0);
-    this.shareContent(true);
+    this.localStatus=true;
   }
 
   handleMenuClick = (url) =>{
     if(url == "ic_action_share_black"){
 
      if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
-       window.__SharePopup.show();
+       this.shareContent(this.localStatus);
        JBridge.logShareContentInitiateEvent("RESOURCES",this.details.identifier)
 
      }else{

@@ -45,7 +45,7 @@ class CourseViewAllActivity extends View {
     url: [
     ]
     }
-
+    JBridge.logListViewScreenEvent("COURSES",this.totalDetails.length,this.searchQuery)
 
     _this = this;
     setTimeout(function() {
@@ -127,6 +127,7 @@ class CourseViewAllActivity extends View {
            return (<LargeCardComponent
                    data={temp}
                    content={item}
+                   index = {i}
                    onResourceClick = {this.handleCourseClick}/>)
 
        });
@@ -156,11 +157,10 @@ class CourseViewAllActivity extends View {
     this.changeViewMoreButtonStatus(this.btnStatus)
   }
 
-  handleCourseClick = (content)=>{
-
+  handleCourseClick = (content,i)=>{
 
     if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
-        this.performCourseAction(content);
+        this.performCourseAction(content,i);
     }else{
         this.setPermissions();
     }
@@ -184,9 +184,11 @@ class CourseViewAllActivity extends View {
         JBridge.setPermissions(callback,"android.permission.WRITE_EXTERNAL_STORAGE");
   }
 
-  performCourseAction = (content) =>{
+  performCourseAction = (content,index) =>{
        var tmp = JSON.stringify(content)
-
+       var index_click = this.start_index <1 ? index+1 : index+(this.start_index*10)+1;
+       var contentId = content.courseId ? content.courseId : content.identifier;
+        JBridge.logContentClickEvent("COURSES",index_click,"",contentId)
         var whatToSend = {
           "course": tmp 
           };

@@ -142,12 +142,12 @@ class CourseInfoActivity extends View {
     console.log("RENDRING BREKAUP", this.courseContent)
     var child;
     if(this.courseContent.children==undefined){
-      child = <TextView
+      child = (<TextView
                   height="300"
                   width="match_parent"
                   gravity="center"
                   root="true"
-                  text={window.__S.ERROR_CONTENT_NOT_FOUND} />
+                  text={window.__S.ERROR_CONTENT_NOT_FOUND} />);
     }
     else{
        child = (<CourseCurriculum
@@ -157,7 +157,11 @@ class CourseInfoActivity extends View {
                   margin="0,0,0,12"
                   brief={true}
                   shouldGoForward={"gone"}
-                  content= {this.courseContent.children}/>)
+                  content= {this.courseContent.children}/>);
+        Android.runInUI(this.set({
+          id : this.idSet.enrollButtonId,
+          visibility :"visible"
+        }),0);
       }
 
       var layout = (
@@ -500,6 +504,7 @@ class CourseInfoActivity extends View {
                  <LinearLayout
                  width="match_parent"
                  height = "wrap_content"
+                 visibility = "gone"
                   id = {this.idSet.enrollButtonId}>
                        <PageOption
                        width="match_parent"

@@ -184,7 +184,8 @@ class ResourceViewAllCard extends View {
 
 
   handleCardClick = () =>{
-    this.props.onResourceClick(this.props.content);
+    
+    this.props.onResourceClick(this.props.content,this.props.index);
   }
 
 
