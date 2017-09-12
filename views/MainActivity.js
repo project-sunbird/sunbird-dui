@@ -56,7 +56,7 @@ class MainActivity extends View {
     this.feedData = FeedParams.feedParams;
 
     this.deipalayName = "MainActivity"
-
+    this.profileDataTag = "savedProfile";
 
     window.__API_Profile_Called = false;
     this.apiToken = window.__apiToken;
@@ -97,9 +97,20 @@ class MainActivity extends View {
   }
 
   getUserProfileData = () => {
-    var whatToSend= {"user_token":window.__userToken,"api_token": window.__apiToken}
-    var event = { "tag": "API_ProfileFragment", contents:whatToSend };
-    window.__runDuiCallback(event);
+    if (JBridge.isNetworkAvailable()){
+      var whatToSend= {"user_token":window.__userToken,"api_token": window.__apiToken}
+      var event = { "tag": "API_ProfileFragment", contents:whatToSend };
+      window.__runDuiCallback(event);
+    } else if (JBridge.getSavedData(this.profileDataTag) != "__failed"){
+      var data = JSON.parse(utils.decodeBase64(JBridge.getSavedData(this.profileDataTag)));
+      data.local = true;
+      this.handleStateChange(data)
+    } else {
+      console.log("__failed in getUserProfileData");
+      JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE);
+      window.__LoaderDialog.hide();
+    }
+
   }
 
   onBackPressed = () => {
@@ -140,6 +151,11 @@ class MainActivity extends View {
   handleStateChange = (state) => {
     window.__LoaderDialog.hide();
     console.log(state, "state in handleStateChange");
+    if (!state.local && state.responseFor == "API_ProfileFragment"){
+      console.log("Saving state");
+      var data = utils.encodeBase64(JSON.stringify(state));
+      JBridge.saveData(this.profileDataTag, data);
+    }
     this.currentPageIndex = isNaN(this.currentPageIndex) ? 0 : this.currentPageIndex;
     var shouldBeModified = false;
     var status = state.response.status[0];
@@ -169,10 +185,19 @@ class MainActivity extends View {
     }else if(responseCode == 501 || status === "failure" || status=="f") {
       if (state.responseFor == "API_CreatedBy") {
         responseData = utils.decodeBase64(responseData)
-        responseData = JSON.parse(responseData);
-        if(state.sendBack){
-          responseData.sendBack = state.sendBack;
+        console.log("responseData", responseData);
+        try {
+          responseData = JSON.parse(responseData);
+        } catch (e) {
+          console.log("Error: " + e);
+          responseData = {}
+        } finally {
+          console.log("Finally");
+          if(state.sendBack){
+            responseData.sendBack = state.sendBack;
+          }
         }
+        console.log("After finally");
       } else {
         JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION)
         responseData=tmp;
@@ -187,7 +212,7 @@ class MainActivity extends View {
       }
 
     }
-     if (state.responseFor == "API_ProfileFragment"){
+    if (state.responseFor == "API_ProfileFragment"){
       console.log("profileData", responseData);
       window.__userName = responseData.result.response.userName;
     }
@@ -198,7 +223,7 @@ class MainActivity extends View {
       console.log("slug", responseData.result.response.rootOrg.slug);
       window.__orgName = responseData.result.response.rootOrg.orgName;
       window.__API_Profile_Called = true;
-      JBridge.showSnackBar(window.__S.WELCOME_BACK.format(window.__userName));
+      if (window.__userName != undefined) JBridge.showSnackBar(window.__S.WELCOME_BACK.format(window.__userName));
       var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken, "slug": responseData.result.response.rootOrg.slug};
       var event = { tag: "API_Tenant", contents: whatToSend};
       window.__runDuiCallback(event);
@@ -206,7 +231,7 @@ class MainActivity extends View {
 
     if (!window.__API_Profile_Called){
       window.__API_Profile_Called = true;
-      JBridge.showSnackBar(window.__S.WELCOME_BACK.format(window.__userName));
+      if (window.__userName != undefined) JBridge.showSnackBar(window.__S.WELCOME_BACK.format(window.__userName));
     }
 
 
@@ -442,15 +467,16 @@ class MainActivity extends View {
         event = { "tag": "OPEN_CommunityFragment", contents: whatToSend };
         break;
       case 4:
-        whatToSend= {"user_token":window.__userToken,"api_token": window.__apiToken}
-        event = { "tag": "API_ProfileFragment", contents:whatToSend };
+        // whatToSend= {"user_token":window.__userToken,"api_token": window.__apiToken}
+        // event = { "tag": "API_ProfileFragment", contents:whatToSend };
+        this.getUserProfileData();
         break;
       default:
         whatToSend ={ "name": "Kiran" }
         event = { "tag": "OPEN_HomeFragment",  contents: whatToSend };
         break;
     }
-    window.__runDuiCallback(event);
+    if (event) window.__runDuiCallback(event);
   }
 
 
@@ -462,7 +488,8 @@ class MainActivity extends View {
             index=0;
         }
 
-        if(JBridge.isNetworkAvailable()||(index!=1&&index!=4)){
+        // if(JBridge.isNetworkAvailable()||(index!=1&&index!=4)){
+        if(JBridge.isNetworkAvailable()||(index!=1)){
               this.currentPageIndex = index;
 
               if(index!=1 && index!=2 && index!=4){
