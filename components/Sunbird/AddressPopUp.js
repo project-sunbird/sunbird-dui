@@ -249,7 +249,6 @@ class AddressPopUp extends View {
       && this.addressType == this.prevData.addressType) {
          isChanged = false;
       }
-
     this.updateSaveButtonStatus((this.isValid() && isChanged));
   }
 
@@ -280,6 +279,7 @@ class AddressPopUp extends View {
     //
 
     if (this.addressType == undefined || this.addressType.length == 0) {
+      console.log(this.addressType);
       return false;
     }
 
@@ -338,6 +338,7 @@ class AddressPopUp extends View {
   }
 
   handleSaveClick = () => {
+
     if (this.singleClick && !this.canSave && !this.delete) {
       if (window.__AddressPopUp.data)
         JBridge.showSnackBar("Please make some changes");
@@ -361,7 +362,6 @@ class AddressPopUp extends View {
 
     this.address = [];
     var json;
-
     this.addressType = this.ADDRESS_TYPE[window.__RadioButton.currentIndex];
 
     if (window.__AddressPopUp.data == undefined) {
@@ -451,11 +451,12 @@ class AddressPopUp extends View {
     );
   }
 
-  handleRadioButtonClick() {
+  handleRadioButtonClick=()=> {
     if (window.__RadioButton != undefined
       && window.__RadioButton.currentIndex > -1) {
-        console.log("Radio Button click");
+        console.log("Radio Button click" + this.ADDRESS_TYPE[window.__RadioButton.currentIndex]);
       _this.addressType = this.ADDRESS_TYPE[window.__RadioButton.currentIndex];
+      this.addressType = this.ADDRESS_TYPE[window.__RadioButton.currentIndex];
       _this.checkDataChanged();
     }
   }
