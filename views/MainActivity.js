@@ -188,6 +188,9 @@ class MainActivity extends View {
         console.log("responseData", responseData);
         try {
           responseData = JSON.parse(responseData);
+          if (responseData.params && responseData.params.err) {
+            responseData.params = null;
+          }
         } catch (e) {
           console.log("Error: " + e);
           responseData = {}

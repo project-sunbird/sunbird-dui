@@ -85,7 +85,11 @@ class ProfileFragment extends View {
                })
          }
         var event = { tag: "API_CreatedBy", contents: whatToSend}
-        window.__runDuiCallback(event);
+        if (JBridge.isNetworkAvailable()){
+          window.__runDuiCallback(event);
+        } else {
+          this.props.response.sendBack = JSON.stringify(this.props.response);
+        }
       }
       var profileData = JSON.parse(this.props.response.sendBack)
       this.details = profileData.result.response;
