@@ -10,7 +10,15 @@ class SnackBar extends View {
     super(props, children);
     this.displayName = "CustomSnackBar";
 
-    window.__SNACKBAR = this;
+    window.__Snackbar = this;
+
+    this.totalTime = 0; //Total time required to render all the snackbar in the queue
+    this.totalSnackTime = 1300; //Time for which snackbar is shown, excluding fade in and fade out time
+    this.showTime = 2000; //Total time required to show one Snackbar, including both fade times
+    this.fadeTime = 350; //Fading animation time
+    this.delayTime = 100; //Time delay between render of two Snackbars
+
+    window.totalTime = this.totalTime
 
     this.setIds([
       "message",
@@ -19,40 +27,46 @@ class SnackBar extends View {
     ]);
   }
 
-  show = (hide) => {
-    var cmd = "";
+  show = (options, hide) => {
+    console.log("Snackbar queued: " + options.text + ", status: " + options.status + " @" + this.totalTime);
 
-    cmd = this.set({
-      id: this.idSet.container,
-      a_translationY: "0",
-      a_duration: "360"
-    })
+    setTimeout(() => {
+      this.setValues(options);
 
-    Android.runInUI(
-      cmd,
-      null
-    );
+      var cmd = this.set({
+        id: this.idSet.container,
+        visibility: "visible",
+        a_translationY: "0",
+        a_duration: "360"
+      });
+      Android.runInUI(cmd, null);
+
+    }, this.totalTime);
 
     if (typeof hide == "undefined" || hide) {
       setTimeout(() => {
         this.hide();
-      }, 2000)
+      }, this.totalTime + this.showTime - this.fadeTime - this.delayTime) //Time @ which fade out animation should start
     }
+
+    this.totalTime += this.showTime + this.delayTime; //Time required to display one Snackbar and delayTime added to totalTime
   }
 
   hide = () => {
-    var cmd = "";
-
-    cmd = this.set({
+    var cmd = this.set({
       id: this.idSet.container,
       a_translationY: "360",
       a_duration: "360"
     })
+    Android.runInUI(cmd, null);
+    cmd = this.set({
+      id: this.idSet.container,
+      visibility: "gone"
+    })
 
-    Android.runInUI(
-      cmd,
-      null
-    );
+    setTimeout(() => {Android.runInUI(cmd, null)}, this.fadeTime)
+
+    this.totalTime -= this.showTime //After rendering one Snackbar, its time is removed from totalTime
   }
 
   setValues = (options) => {
@@ -60,37 +74,44 @@ class SnackBar extends View {
     if (options.status == "success") {
       background = window.__Colors.SUCCESS_GREEN;
     } else if (options.status == "error") {
-      background = window.__Colors.DARK_GRAY;
-    } else {
       background = window.__Colors.ERROR_RED;
+    } else {
+      background = window.__Colors.DARK_GRAY;
     }
-    this.replaceChild(this.idSet.container, this.getBody(options, background, "undefined").render(), 0);
+    var cmd = this.set({
+      id: this.idSet.container,
+      background: background
+    })
+    cmd += this.set({
+      id: this.idSet.message,
+      text: options.text
+    })
+    if (options.onCLick) {
+      cmd += this.set({
+        id: this.idSet.action,
+        visibility: visible,
+        text: options.actionText,
+        onCLick: options.onCLick
+      })
+    }
 
-
+    Android.runInUI(cmd, 0);
   }
 
-  setAction = (options, onActionClick) => {
-    let background = null;
-    if (options.status == "success") {
-      background = window.__Colors.SUCCESS_GREEN;
-    } else if (options.status == "error") {
-      background = window.__Colors.DARK_GRAY;
-    } else {
-      background = window.__Colors.ERROR_RED;
-    }
+  render() {
+    var text = "";
+    var actionText = null;
+    var background = window.__Colors.DARK_GRAY;
+    this.layout = (
+      <LinearLayout
+            height="56"
+            alignParentBottom = "true,-1"
+            translationY = "360"
+            id={this.idSet.container}
+            gravity="center_vertical"
+            width="match_parent"
+            background = {background}>
 
-    this.replaceChild(this.idSet.container, this.getBody(options, background, onActionClick).render(), 0);
-
-  }
-
-  getBody = (options, background, onActionClick) => {
-    var text = options.text;
-    var actionText = options.actionText;
-    return (<LinearLayout
-          height="match_parent"
-          width="match_parent"
-          background={background}
-          root="true">
             <TextView
               id = {this.idSet.message}
               width = "0"
@@ -100,8 +121,7 @@ class SnackBar extends View {
               style = {window.__TextStyle.textStyle.CARD.BODY.LIGHT}
               gravity = "center_vertical"
               text = {text ? text : ""}
-              padding="16,8,8,8"
-              />
+              padding="16,8,8,8" />
 
             <TextView
               id = {this.idSet.action}
@@ -110,50 +130,10 @@ class SnackBar extends View {
               gravity="center_vertical"
               style = {window.__TextStyle.textStyle.CARD.BODY.LIGHT}
               gravity = "center_vertical"
-              onClick= {onActionClick}
+              onClick= {() => {}}
               visibility = {actionText ? "visible" : "gone"}
               text = {actionText ? actionText : ""}
-              padding="8,8,16,8"
-              />
-          </LinearLayout>)
-  }
-  render() {
-    var text = this.props.message;
-    var actionText = this.props.actionText;
-
-    this.layout = (
-      <LinearLayout
-            height="wrap_content"
-            alignParentBottom = "true,-1"
-            translationY = "360"
-            id={this.idSet.container}
-            gravity="center_vertical"
-            width="match_parent">
-
-         <TextView
-              id = {this.idSet.message}
-              width = "0"
-              weight= "1"
-              gravity="center_vertical"
-              margin="16,8,8,8"
-              height = "match_parent"
-              style = {window.__TextStyle.textStyle.CARD.BODY.LIGHT}
-              gravity = "center_vertical"
-              text = {text ? text : ""}/>
-
-            <TextView
-              id = {this.idSet.action}
-              width = "wrap_content"
-              height = "56"
-              gravity="center_vertical"
-              margin="8,8,16,8"
-              style = {window.__TextStyle.textStyle.CARD.BODY.LIGHT}
-              gravity = "center_vertical"
-              onClick= {()=>{ console.log("ACTION CLICK"); this.props.onActionClick()}}
-              visibility = {actionText ? "visible" : "gone"}
-              text = {actionText ? actionText : ""}/>
-
-        
+              padding="8,8,16,8" />
       </LinearLayout>
     )
 
