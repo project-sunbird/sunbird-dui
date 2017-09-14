@@ -56,8 +56,6 @@ class CustomPopUp extends View{
           weight="4"
           onClick={this.hide}
           />
-
-
           <LinearLayout
           height = "match_parent"
           width = "match_parent"
@@ -70,8 +68,7 @@ class CustomPopUp extends View{
               text={window.__S.LABEL_ADD_A_SKILL}
               margin="16,16,0,0"
               style={window.__TextStyle.textStyle.CARD.TITLE.DARK}
-              textSize="22"
-              />
+              textSize="22"/>
               <EditText
               height="wrap_content"
               margin="16,0,16,0"
@@ -81,9 +78,7 @@ class CustomPopUp extends View{
               color="#000000"
               maxLines="1"
               onChange={this.getPredictions}
-              textSize="18"
-              />
-
+              textSize="18"/>
               <RelativeLayout
               width="match_parent"
               height="match_parent">
@@ -156,8 +151,7 @@ class CustomPopUp extends View{
        height="match_parent"
        width="wrap_content"
        orientation="vertical"
-       margin="16,0,16,0"
-       >
+       margin="16,0,16,0">
 
          {predictionContent}
          <LinearLayout
@@ -180,8 +174,6 @@ class CustomPopUp extends View{
        </LinearLayout>);
 
     this.replaceChild(this.idSet.predictionLayout, this.predictlayout.render(), 0);
-
-
   }
 
   getPredictionCard = (item)=>{
@@ -225,7 +217,6 @@ class CustomPopUp extends View{
      this.dictionary.splice(index,1);
      this.selectedSkills.push(data);
 
-
      var skills = this.selectedSkills.map((item) => {
        return (this.skillItemLayout(item));
      });
@@ -242,7 +233,6 @@ class CustomPopUp extends View{
       this.replaceChild(this.idSet.skillLayout,this.updatedSkills.render(),0);
 
    }
-
   }
 
   addItem = (data) =>{
@@ -257,40 +247,32 @@ class CustomPopUp extends View{
     }
   }
 
-
-
-
   skillItemLayout = (item)=> {
     return (
       <LinearLayout
       height="wrap_content"
-      width="wrap_content"
-      >
+      width="wrap_content">
             <LinearLayout
             height="32"
             width="wrap_content"
             background="#66D8D8D8"
-            cornerRadius="12,12,12,12"
-            >
+            cornerRadius="12,12,12,12">
                 <TextView
                 height="28"
                 width="wrap_content"
                 textColor="#ffffff"
                 text={item}
-                margin="12,2,0,0"
-                />
+                margin="12,2,0,0"/>
                 <ImageView
                 margin="11,8,11,8"
                 height="match_parent"
                 width="match_parent"
                 imageFromUrl="https://ls.iu.edu/Images/close.png"
-                onClick={()=>{this.removeSkill(item)}}
-                />
+                onClick={()=>{this.removeSkill(item)}}/>
             </LinearLayout>
             <LinearLayout
             height="wrap_content"
             width="10"/>
-
     </LinearLayout>
   );
   }
@@ -327,10 +309,6 @@ class CustomPopUp extends View{
 
     }
   }
-
-
-
-
 }
 
 module.exports = CustomPopUp;
