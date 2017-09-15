@@ -2,7 +2,6 @@
 "use strict";
 var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
 
-
 var callbackMapper = {
   map: function(fn) {
     if (typeof window.__FN_INDEX !== 'undefined' && window.__FN_INDEX !== null) {
@@ -43,7 +42,7 @@ exports["ui'"] = function(err) {
           console.log("state in ui", state)
 
           var currentScreen = window.__CACHED_SCREENS[window.__CURR_SCREEN];
-          
+
           if (currentScreen == undefined || currentScreen.screenName == undefined || (currentScreen.screenName != screenName)) {
             window.__duiShowScreen(callback, { screen: screenName, data: state });
             console.log("ReNDERING new SCREEN ", screenName)
@@ -123,7 +122,7 @@ exports["killApp'"] = function(data){
 
 exports["getJsonFromString"] = function(normalString) {
   return JSON.parse(normalString);
- 
+
 };
 exports["getApiUrl"] = function() {
   var url;
@@ -244,7 +243,7 @@ exports["callAPI'"] = function(success) {
                   console.log("TIMEOUT reached")
                   return;
                 }
-               console.log("GOT -> from droid :",params) 
+               console.log("GOT -> from droid :",params)
               if (arguments && arguments[0].length >= 3 && shouldReturnCallback) {
                 shouldReturnCallback=false;
                 success({
@@ -331,4 +330,22 @@ exports["getUserId'"] = function(success) {
   };
 };
 
+exports["getCurrDate"] = function(){
+  var d = new Date();
+  return this.formatDate(d)
+}
 
+exports["formatDate"] = function(d){
+  var temp = d.toString();
+  var month = d.getMonth();
+  if(month<10){
+    month = "0" + d.getMonth();
+  }
+  var day = d.getDate();
+  if(day<10){
+    day = "0" + d.getDate();
+  }
+  var res = d.getFullYear() + "-" + month + "-" + day + " " + d.getHours () + ":" + d.getMinutes() + ":" + d.getSeconds() + ":" + d.getMilliseconds() + "+" + temp.substring(29,33);
+  console.log("result",res)
+  return res;
+}

@@ -85,6 +85,7 @@ foreign import saveToMemory :: String -> String -> Unit
 foreign import readFromMemory :: String -> String
 foreign import getJsonFromString :: String -> A.Json
 foreign import getApiUrl :: Unit -> String
+foreign import getCurrDate :: Unit -> String
 
 getEulerLocation1 = getApiUrl unit
 
@@ -121,7 +122,7 @@ generateRequestHeaders user_token api_token=
                                                             ,(Tuple "X-Consumer-ID" getUserId) --getUserId
                                                             ,(Tuple "X-Device-ID" "X-Device-ID")
                                                             ,(Tuple "X-msgid" "8e27cbf5-e299-43b0-bca7-8347f7e5abcf")
-                                                            ,(Tuple "ts" "2017-05-28 10:52:56:578+0530")
+                                                            ,(Tuple "ts" (getCurrDate unit))
                                                             ,(Tuple "Accept" "application/json")
                                                             ,(Tuple "X-Source" "web")
 
