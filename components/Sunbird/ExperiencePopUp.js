@@ -159,14 +159,7 @@ class ExperiencePopUp extends View{
  }
 
  populateData = () =>{
-  //  var subs=this.prevData.subjects.slice();
-  //  subs.map((item)=>{
-  //    this.addSubject(item);
-  //  });
-
    this.subjects = this.prevData.subjects.slice();
-
-
    this.prevData.subjects = this.subjects.slice();
    this.jobName=this.prevData.jobName;
    this.Organization=this.prevData.Organization;
@@ -283,8 +276,6 @@ class ExperiencePopUp extends View{
                  background="#ffffff"
                  text={window.__S.TITLE_EXPERIENCES}
                  style={window.__TextStyle.textStyle.TOOLBAR.HEADING}/>
-
-
          </LinearLayout>);
 
  }
@@ -298,7 +289,6 @@ class ExperiencePopUp extends View{
      background="#ffffff"
      id={this.idSet.scrollView}
      padding="15,15,15,15">
-
 
       {this.getEditTextView(this.idSet.jobText, window.__S.JOB_NAME, false, this.setJobName)}
       {this.getEditTextView(this.idSet.organizationText, window.__S.ORGANIZATION, false, this.setOrganization)}
@@ -699,12 +689,10 @@ del = () => {
 
      startCalendar =() =>{
        this.showCalendar(1);
-
      }
 
      endCalendar =() =>{
        this.showCalendar(2);
-
      }
 
      showCalendar = (index) =>{
@@ -723,8 +711,6 @@ del = () => {
                    style: window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK
                  });
                  Android.runInUI(cmd, 0);
-
-
             }
             else{
               _this.endDate=data[0];
@@ -757,14 +743,11 @@ del = () => {
        catch(err){
          console.log(err , "date err");
        }
-
      }
 
      handleRadioButtonClick = () =>{
-
        if(window.__RadioButton!=undefined && window.__RadioButton.currentIndex==0)
        {
-
          if(window.__ExperiencePopUp.currentJobSelected != undefined && (window.__ExperiencePopUp.currentJobSelected == false || (window.__ExperiencePopUp.currentJobSelected && this.prevData.endDate == null && this.data != undefined)))
           {
                var cmd = this.set({
@@ -777,7 +760,7 @@ del = () => {
              });
              Android.runInUI(cmd, 0);
              this.endDate=null;
-
+             
              if(this.checkCompleteStatus())
              {
                this.enableSaveButton();
@@ -800,7 +783,6 @@ del = () => {
          });
          Android.runInUI(cmd, 0);
 
-
          if(this.checkCompleteStatus())
          {
            this.enableSaveButton();
@@ -814,7 +796,6 @@ del = () => {
      getPatchCallback = (data) =>{
        data=JSON.parse(data);
        if(this.responseCame){
-
          return;
        }
 
@@ -882,7 +863,6 @@ del = () => {
                   "id":"unique API ID",
                   "ts":"response timestamp YYYY-MM-DDThh:mm:ss+/-nn:nn (timezone defaulted to +5.30)",
                     "params": {
-
                       },
                   "request":{
                     "userId":window.__userToken,
@@ -918,25 +898,24 @@ del = () => {
          if(date.length<10)
            date = date.substr(0,8)+"0"+date.substr(8);
            return date;
-
          }
 
      checkCompleteStatus = () =>{
-       if(window.__ExperiencePopUp.data != undefined)
-       {
-         if(this.jobName == this.prevData.jobName && this.Organization == this.prevData.Organization  && this.Position== this.prevData.Position && JSON.stringify(this.subjects)==JSON.stringify(this.prevData.subjects) && this.joiningDate == this.prevData.joiningDate && this.endDate == this.prevData.endDate )
-         {
+       if(window.__ExperiencePopUp.data != undefined 
+          && this.jobName == this.prevData.jobName 
+          && this.Organization == this.prevData.Organization  
+          && this.Position== this.prevData.Position 
+          && JSON.stringify(this.subjects)==JSON.stringify(this.prevData.subjects) 
+          && this.joiningDate == this.prevData.joiningDate 
+          && this.endDate == this.prevData.endDate ){
            return false;
          }
-         return true;
-      }
-      else {
-        if(this.jobName == this.prevData.jobName || this.Organization == this.prevData.Organization)
+      else if(window.__ExperiencePopUp.data == undefined 
+        &&(this.jobName == this.prevData.jobName || this.Organization == this.prevData.Organization))
         {
           return false;
         }
         return true;
-      }
      }
 
      enableSaveButton = () =>{

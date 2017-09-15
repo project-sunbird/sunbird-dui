@@ -217,9 +217,12 @@ class MainActivity extends View {
     }
 
     if (responseData.params && responseData.params.err) {
+      if (responseFor == "API_CreatedBy")
+        console.log(window.__S.ERROR_SERVER_MESSAGE + responseData.params.errmsg);
+      else
+        return;
       // JBridge.showSnackBar(window.__S.ERROR_SERVER_MESSAGE + responseData.params.errmsg)
       // return;
-      console.log(window.__S.ERROR_SERVER_MESSAGE + responseData.params.errmsg);
     }
 
     if (state.responseFor == "API_UserEnrolledCourse") {
