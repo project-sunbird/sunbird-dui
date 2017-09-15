@@ -31,7 +31,7 @@ class CropParagraph extends View {
     if (!this.max){
       var cmd = this.set({
         id: this.idSet.showMoreButton,
-        text: "Read Less"
+        text: window.__S.READ_LESS
       })
       cmd += this.set({
         id: this.idSet.paraContainerCroped,
@@ -41,7 +41,7 @@ class CropParagraph extends View {
     } else {
       var cmd = this.set({
         id: this.idSet.showMoreButton,
-        text: "Read More"
+        text: window.__S.READ_MORE
       })
       cmd += this.set({
         id: this.idSet.paraContainerCroped,
@@ -51,28 +51,6 @@ class CropParagraph extends View {
     }
     this.max = !this.max
   }
-
-
-  // getMoreButton = () => {
-  //   return (
-  //     <LinearLayout
-  //           height="wrap_content"
-  //           layoutTransition="true"
-  //           id={this.idSet.showMoreButton}
-  //           width="wrap_content">
-  //              <TextView
-  //               margin="0,0,8,0"
-  //               visibility="visible"
-  //               text="Read more"
-  //               width = "match_parent"
-  //               layoutTransition="true"
-  //               onClick={this.handleMoreClick}
-  //               style = {window.__TextStyle.textStyle.CARD.BODY.BLUE_R}
-  //               color={window.__Colors.PRIMARY_ACCENT} />
-  //
-  //         </LinearLayout>);
-  // }
-
 
   render() {
 

@@ -28,8 +28,8 @@ class AddressPopUp extends View {
   constructor(props, childern) {
     super(props,childern);
     this.ADDRESS_TYPE = [
-      window.__S.PERMANENT,
-      window.__S.CURRENT
+      "permanent",
+      "current"
     ];
     this.setIds([
       "addressPopUpParent",
@@ -249,40 +249,18 @@ class AddressPopUp extends View {
       && this.addressType == this.prevData.addressType) {
          isChanged = false;
       }
-
     this.updateSaveButtonStatus((this.isValid() && isChanged));
   }
 
   isValid = () => {
-    if (this.addressLine1 == undefined || this.addressLine1.length == 0 ) {
+    if (this.addressLine1 == undefined
+        || this.addressLine1.length == 0 
+        ||this.city == undefined 
+        || this.city.length == 0
+        || this.addressType == undefined 
+        || this.addressType.length == 0 ) {
       return false;
     }
-
-    // if (this.addressLine2 == undefined || this.addressLine2.length == 0 ) {
-    //   return false;
-    // }
-
-    if (this.city == undefined || this.city.length == 0 ) {
-      return false;
-    }
-
-    // if (this.state == undefined || this.state.length == 0 ) {
-    //   return false;
-    // }
-
-    // if (this.country == undefined || this.country.length == 0 ) {
-    //   return false;
-    // }
-    //
-    // if (this.pincode == undefined || this.pincode.length == 0 ) {
-    //   return false;
-    // }
-    //
-
-    if (this.addressType == undefined || this.addressType.length == 0) {
-      return false;
-    }
-
     return true;
   }
 
@@ -338,6 +316,7 @@ class AddressPopUp extends View {
   }
 
   handleSaveClick = () => {
+
     if (this.singleClick && !this.canSave && !this.delete) {
       if (window.__AddressPopUp.data)
         JBridge.showSnackBar("Please make some changes");
@@ -352,16 +331,13 @@ class AddressPopUp extends View {
       return;
     }
 
-    if(this.pincode!=null && this.pincode!="")
-        if(!this.checkPincode(this.pincode))
-            {
-              JBridge.showSnackBar("Invalid Pincode");
-              return;
-            }
+    if(this.pincode!=null && this.pincode!="" && (!this.checkPincode(this.pincode))){
+      JBridge.showSnackBar("Invalid Pincode");
+      return;
+    }
 
     this.address = [];
     var json;
-
     this.addressType = this.ADDRESS_TYPE[window.__RadioButton.currentIndex];
 
     if (window.__AddressPopUp.data == undefined) {
@@ -451,11 +427,12 @@ class AddressPopUp extends View {
     );
   }
 
-  handleRadioButtonClick() {
+  handleRadioButtonClick=()=> {
     if (window.__RadioButton != undefined
       && window.__RadioButton.currentIndex > -1) {
-        console.log("Radio Button click");
+        console.log("Radio Button click" + this.ADDRESS_TYPE[window.__RadioButton.currentIndex]);
       _this.addressType = this.ADDRESS_TYPE[window.__RadioButton.currentIndex];
+      this.addressType = this.ADDRESS_TYPE[window.__RadioButton.currentIndex];
       _this.checkDataChanged();
     }
   }

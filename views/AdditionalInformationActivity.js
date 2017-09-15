@@ -1336,10 +1336,16 @@ class AdditionalInformationActivity extends View{
   checkSameData = () =>{
 
     console.log(JSON.stringify(this.grade) +" gfgh "+ JSON.stringify(this.prevData.grade));
-    if(this.name == this.prevData.name && JSON.stringify(this.language) == JSON.stringify(this.prevData.language) && this.email == this.prevData.email && this.mobile == this.prevData.mobile )
-      {
-        if( this.description == this.prevData.description && this.dob == this.prevData.dob && (this.gender == this.prevData.gender || this.gender.toLowerCase() == this.prevData.gender.toLowerCase()) && this.arrayEquals(this.grade,this.prevData.grade) )
-          if (this.arrayEquals(this.selectedSubjects,this.prevData.selectedSubjects))
+    if(this.name == this.prevData.name 
+       && this.lastName == this.prevData.lastName
+       && JSON.stringify(this.language) == JSON.stringify(this.prevData.language) 
+       && this.email == this.prevData.email 
+       && this.mobile == this.prevData.mobile 
+       && this.description == this.prevData.description 
+       && this.dob == this.prevData.dob 
+       && (this.gender == this.prevData.gender || this.gender.toLowerCase() == this.prevData.gender.toLowerCase()) 
+       && this.arrayEquals(this.grade,this.prevData.grade)
+       && this.arrayEquals(this.selectedSubjects,this.prevData.selectedSubjects)){
                return true;
       }
       return false;
