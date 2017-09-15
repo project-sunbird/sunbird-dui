@@ -232,7 +232,7 @@ class SearchActivity extends View {
                    orientation="vertical">
                     <SearchResult
                       filterData = {_this.filterData}
-                      searchType = {this.searchType}
+                      type = {this.searchType}
                       searchText = {searchText}
                       data={data} />
                   </LinearLayout>)

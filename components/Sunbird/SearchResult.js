@@ -124,11 +124,11 @@ class SearchResult extends View {
   handleItemClick = (item,index) =>{
 
     var itemDetails = JSON.stringify(item);
-    if(this.props.searchType.toLowerCase() == "combined")
+    if(this.props.type.toLowerCase() == "combined")
       JBridge.logContentClickEvent("HOME",index+1,this.props.searchText,item.identifier)
-    else if(this.props.searchType.toLowerCase() == "course")
+    else if(this.props.type.toLowerCase() == "course")
       JBridge.logContentClickEvent("COURSES",index+1,this.props.searchText,item.identifier)
-    else if(this.props.toLowerCase() == "resource")
+    else if(this.props.type.toLowerCase() == "resource")
       JBridge.logContentClickEvent("RESOURCES",index+1,this.props.searchText,item.identifier)
 
 
