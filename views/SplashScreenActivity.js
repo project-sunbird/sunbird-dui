@@ -87,7 +87,7 @@ class SplashScreenActivity extends View {
 
   render() {
     var imgUrl = "ic_launcher";
-    var textToDisplay = window.__S.SPLASH_MESSAGE;
+    var textToDisplay = JBridge.getAppName();//window.__S.SPLASH_MESSAGE;
     if (JBridge.getFromSharedPrefs("logo_url") != "__failed" && JBridge.getFromSharedPrefs("logo_file_path") != "__failed"){
       imgUrl = "file://" + JBridge.getFromSharedPrefs("logo_file_path");
     }
