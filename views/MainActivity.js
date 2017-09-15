@@ -223,7 +223,7 @@ class MainActivity extends View {
     console.log("window.__API_Profile_Called", window.__API_Profile_Called);
 
     console.log("JBridge.getFromSharedPrefs('logo')",JBridge.getFromSharedPrefs("logo"));
-    if ( !window.__API_Profile_Called && (JBridge.getFromSharedPrefs("logo") == "__failed" || JBridge.getFromSharedPrefs("orgName") == "__failed")){
+    if (responseData.result.response && responseData.result.response.rootOrg && !window.__API_Profile_Called && (JBridge.getFromSharedPrefs("logo") == "__failed" || JBridge.getFromSharedPrefs("orgName") == "__failed")){
       console.log("slug", responseData.result.response.rootOrg.slug);
       window.__orgName = responseData.result.response.rootOrg.orgName;
       window.__API_Profile_Called = true;
@@ -265,8 +265,12 @@ class MainActivity extends View {
     }
 
     if (responseData.params && responseData.params.err) {
-      window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE + responseData.params.errmsg, "alert")
-      return;
+      if (responseFor == "API_CreatedBy")
+        console.log(window.__S.ERROR_SERVER_MESSAGE + responseData.params.errmsg);
+      else
+        return;
+      // JBridge.showSnackBar(window.__S.ERROR_SERVER_MESSAGE + responseData.params.errmsg)
+      // return;
     }
 
     if (state.responseFor == "API_UserEnrolledCourse") {

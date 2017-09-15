@@ -84,7 +84,6 @@ class EducationPopUp extends View {
     );
   }
 
-
   show = () => {
     this.singleClick=true;
     this.canSave = false;
@@ -122,7 +121,6 @@ class EducationPopUp extends View {
     })
     Android.runInUI(cmd, 0)
   }
-
 
   initializeData = () => {
     this.prevData.degree = "";
@@ -232,10 +230,10 @@ class EducationPopUp extends View {
   }
 
   isValid = () => {
-    if (this.degree == undefined || this.degree.length == 0 ) {
-      return false;
-    }
-    if (this.inititution == undefined || this.inititution.length == 0 ) {
+    if (this.degree == undefined 
+        || this.degree.length == 0 
+        ||this.inititution == undefined 
+        || this.inititution.length == 0 ) {
       return false;
     }
     return true;
@@ -441,7 +439,6 @@ class EducationPopUp extends View {
             height="match_parent"
             width="wrap_content"
             gravity="center_vertical">
-
               <TextView
                   height="match_parent"
                   width="match_parent"
@@ -449,8 +446,6 @@ class EducationPopUp extends View {
                   background="#ffffff"
                   text={window.__S.TITLE_EDUCATION}
                   style={window.__TextStyle.textStyle.TOOLBAR.HEADING}/>
-
-
           </LinearLayout>);
 
   }

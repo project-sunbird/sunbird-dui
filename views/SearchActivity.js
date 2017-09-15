@@ -232,7 +232,7 @@ class SearchActivity extends View {
                    orientation="vertical">
                     <SearchResult
                       filterData = {_this.filterData}
-                      searchType = {this.searchType}
+                      type = {this.searchType}
                       searchText = {searchText}
                       data={data} />
                   </LinearLayout>)
@@ -260,27 +260,35 @@ class SearchActivity extends View {
     {
 
         var callback = callbackMapper.map(function(data) {
-          data[0] = utils.decodeBase64(data[0])
-          _this.filterData = data[1];
-                if (searchText == "" || data[0] == "[]") {
-                  _this.renderNoResult();
-                  window.__LoaderDialog.hide();
+          console.log("callback data", data);
+          if (data[0] == "error"){
+            console.log("Error at callback", data[1]);
+            JBridge.showSnackBar("" + data[1])
+            _this.renderNoResult();
+            window.__LoaderDialog.hide();
+          } else {
+            data[0] = utils.decodeBase64(data[0])
+            _this.filterData = data[1];
+                  if (searchText == "" || data[0] == "[]") {
+                    _this.renderNoResult();
+                    window.__LoaderDialog.hide();
 
-                } else {
-                  var s = data[0];
-                  s = s.replace(/\\n/g, "\\n")
-                    .replace(/\\'/g, "\\'")
-                    .replace(/\\"/g, '\\"')
-                    .replace(/\\&/g, "\\&")
-                    .replace(/\\r/g, "\\r")
-                    .replace(/\\t/g, "\\t")
-                    .replace(/\\b/g, "\\b")
-                    .replace(/\\f/g, "\\f");
-                  s = s.replace(/[\u0000-\u0019]+/g, "");
-                  _this.renderResult(JSON.parse(s),searchText);
-                  window.__LoaderDialog.hide();
+                  } else {
+                    var s = data[0];
+                    s = s.replace(/\\n/g, "\\n")
+                      .replace(/\\'/g, "\\'")
+                      .replace(/\\"/g, '\\"')
+                      .replace(/\\&/g, "\\&")
+                      .replace(/\\r/g, "\\r")
+                      .replace(/\\t/g, "\\t")
+                      .replace(/\\b/g, "\\b")
+                      .replace(/\\f/g, "\\f");
+                    s = s.replace(/[\u0000-\u0019]+/g, "");
+                    _this.renderResult(JSON.parse(s),searchText);
+                    window.__LoaderDialog.hide();
 
-                }
+                  }
+          }
         });
 
           if (this.filterData!=undefined && this.filterData.length == 0) {

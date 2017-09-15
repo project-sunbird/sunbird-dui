@@ -19,6 +19,7 @@ const stringsRes = {
 		COURSES_IN_PROGRESS : "Courses In Progress",
 		COURSES_LW : "Courses",
 		CREATED_BY : "CREATED BY",
+		CREATED_BY_SMALL : "Created by",
 		DELETE : "Delete",
 		DESCRIPTION : "Description",
 		DOWNLOAD : "DOWNLOAD",

@@ -23,7 +23,7 @@ class ResourceViewAllCard extends View {
       'leftProgress',
       'rightProgress'
     ]);
-  
+
 
   }
 
@@ -36,8 +36,17 @@ class ResourceViewAllCard extends View {
     return (100 - parseInt(progress));
   }
 
+ shortenText =(data) =>{
+   if(((data+"").length)>15)
+      {
+
+        return ((data+"").substr(0,15)+"...");
+      }
+  return data;
+ }
 
   getFooter = () =>{
+    this.props.data.footerSubTitle = this.shortenText(this.props.data.footerSubTitle);
     return (    <LinearLayout
                   width="match_parent"
                   height="wrap_content"
@@ -45,8 +54,7 @@ class ResourceViewAllCard extends View {
 
 
                   <LinearLayout
-                    width="0"
-                    weight="1"
+                    width="wrap_content"
                     height="wrap_content"
                     orientation="vertical">
 
@@ -65,12 +73,16 @@ class ResourceViewAllCard extends View {
                       text={this.props.data.footerSubTitle}/>
 
                   </LinearLayout>
-
+                  <LinearLayout
+                  width="0"
+                  weight="1"
+                  />
 
                   <Button
                     type="SmallButton_Secondary_BT"
                     width="wrap_content"
                     height="wrap_content"
+                    gravity="right"
                     onClick={()=>this.handleCardClick()}
                     text={this.props.data.actionText? this.props.data.actionText : window.__S.OPEN}/>
 
@@ -83,12 +95,12 @@ class ResourceViewAllCard extends View {
   getBody = () =>{
     console.log("imageUrl",this.props.data.imageUrl)
     var myProgress = this.props.data.isProgress?this.props.data.footerTitle.split('%')[0]:"0" ;
-    var myProgressColor = myProgress==100 ? window.__Colors.SUCCESS_GREEN : window.__Colors.SAFFRON 
+    var myProgressColor = myProgress==100 ? window.__Colors.SUCCESS_GREEN : window.__Colors.SAFFRON
 
     return(
       <LinearLayout
         width = "match_parent"
-        height = "match_parent"
+        height = "wrap_content"
         margin = "16,16,16,0"
         padding = "1,1,1,1"
         multiCorners={"10,10,10,10,"+window.__Colors.SHADOW_BLACK}>
@@ -96,13 +108,13 @@ class ResourceViewAllCard extends View {
 
         <LinearLayout
           width="match_parent"
-          height="match_parent"
+          height="wrap_content"
           multiCorners={"10,10,10,10,"+window.__Colors.WHITE}
           onClick={this.handleCardClick}>
 
           <RelativeLayout
             width = "100"
-            height = "100">
+            height = "match_parent">
 
 
             <LinearLayout
@@ -136,7 +148,7 @@ class ResourceViewAllCard extends View {
             width="0"
             weight="1"
             background={window.__Colors.WHITE}
-            height="match_parent"
+            height="wrap_content"
             orientation = "vertical">
 
             <LinearLayout
@@ -184,7 +196,7 @@ class ResourceViewAllCard extends View {
 
 
   handleCardClick = () =>{
-    
+
     this.props.onResourceClick(this.props.content,this.props.index);
   }
 

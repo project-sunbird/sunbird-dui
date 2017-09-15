@@ -120,7 +120,7 @@ class CourseContainer extends View {
               <TextView
                 width="wrap_content"
                 height="wrap_content"
-                text={this.props.title}
+                text={this.props.languageTitle}
                 style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
               <ViewWidget
@@ -142,7 +142,7 @@ class CourseContainer extends View {
   }
 
  handleViewAllClick = () =>{
-      JBridge.logViewAllClickEvent("COURSES");
+      JBridge.logViewAllClickEvent("COURSES",this.props.title);
       var courseListDetails = {
                                "title" : this.props.title,
                                "courseListDetails" : this.data,
