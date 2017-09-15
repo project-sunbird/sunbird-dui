@@ -28,8 +28,8 @@ class AddressPopUp extends View {
   constructor(props, childern) {
     super(props,childern);
     this.ADDRESS_TYPE = [
-      window.__S.PERMANENT,
-      window.__S.CURRENT
+      "permanent",
+      "current"
     ];
     this.setIds([
       "addressPopUpParent",

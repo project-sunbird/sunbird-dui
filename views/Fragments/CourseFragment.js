@@ -154,6 +154,12 @@ class CourseFragment extends View {
 
 
   getCourseCardLayout = (item) => {
+
+    var langCode=window.__CurrentLanguage.substr(0,2);
+    if(langCode!="hi")
+       langCode="en"
+    var LanguageTitle=JSON.parse(item.display).name[langCode];
+
     return (<LinearLayout
         height="wrap_content"
         width="match_parent"
@@ -163,6 +169,7 @@ class CourseFragment extends View {
 
                   <CourseContainer
                     title={item.name}
+                    languageTitle={LanguageTitle}
                     data = {item.contents}
                     searchQuery = {item.searchQuery}
                     showViewMore = "visible"
@@ -265,7 +272,7 @@ class CourseFragment extends View {
       JBridge.showSnackBar(window.__S.COMMING_SOON)
     }
     else if (url == "ic_action_search") {
-      
+
       var searchDetails = { filterDetails: "", searchType: "Course" }
       var whatToSend = { filterDetails: JSON.stringify(searchDetails) }
       var event = { tag: "OPEN_SearchActivity", contents: whatToSend}
