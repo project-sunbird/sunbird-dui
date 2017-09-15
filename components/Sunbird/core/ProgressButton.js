@@ -198,7 +198,6 @@ class ProgressButton extends View {
     console.log("telemetry Data",telemetryData);
     console.log("props",this.props)
     if (telemetryData.eid == "OE_END") {
-        JBridge.endContent();
         JBridge.stopEventBus();
         var time = new Date();
         var date = utils.formatDate(time);
