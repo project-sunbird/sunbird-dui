@@ -288,7 +288,7 @@ class ProfileActivity extends View {
                     editable = {this.isEditable}
                     data = {this.jobProfile}
                     popUpType = {window.__PROFILE_POP_UP_TYPE.EXPERIENCE}
-                    heading = {window.__S.EXPERIENCE}/>
+                    heading = {window.__S.TITLE_EXPERIENCES}/>
 
                   <ProfileCreations
                     data = {this.createdBy}
