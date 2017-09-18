@@ -231,7 +231,7 @@ class UserActivity extends View {
     this.userName=contentBody.given_name;
 
     window.__userToken=contentBody.sub;
-    JBridge.showSnackBar(window.__S.WELCOME_ON_BOARD.format(contentBody.given_name))
+    JBridge.showSnackBar(window.__S.WELCOME_ON_BOARD.format(JBridge.getAppName(), contentBody.given_name))
     JBridge.setProfile(this.userToken);
     this.setDataInStorage();
 
@@ -326,8 +326,8 @@ class UserActivity extends View {
     switch (state.responseFor + "") {
       case "API_SignUp":
         if (result.response == "SUCCESS") {
-          console.log(window.__S.WELCOME_ON_BOARD.format(this.userName))
-          JBridge.showSnackBar(window.__S.WELCOME_ON_BOARD.format(this.userName))
+          console.log(window.__S.WELCOME_ON_BOARD.format(JBridge.getAppName(), this.userName))
+          JBridge.showSnackBar(window.__S.WELCOME_ON_BOARD.format(JBridge.getAppName(), this.userName))
           JBridge.setInSharedPrefs("user_name", this.firstName);
           JBridge.setInSharedPrefs("user_token", result.userId);
           JBridge.logSignUpSuccess();
@@ -527,7 +527,7 @@ class UserActivity extends View {
 
         <TextView
           width="match_parent"
-          text={window.__S.WELCOME_M1}
+          text={window.__S.WELCOME_M1.format(JBridge.getAppName())}
           gravity="center"
           margin="0,12,0,6"
           style={window.__TextStyle.textStyle.HEADING.DARK}/>
@@ -899,7 +899,7 @@ class UserActivity extends View {
 
   render() {
     var imgUrl = "ic_launcher";
-    var textToDisplay = window.__S.SPLASH_MESSAGE;
+    var textToDisplay = JBridge.getAppName();//window.__S.SPLASH_MESSAGE;
     if (JBridge.getFromSharedPrefs("logo_url") != "__failed" && JBridge.getFromSharedPrefs("logo_file_path") != "__failed"){
       imgUrl = "file://" + JBridge.getFromSharedPrefs("logo_file_path");
     }

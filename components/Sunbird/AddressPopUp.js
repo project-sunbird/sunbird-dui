@@ -254,10 +254,10 @@ class AddressPopUp extends View {
 
   isValid = () => {
     if (this.addressLine1 == undefined
-        || this.addressLine1.length == 0 
-        ||this.city == undefined 
+        || this.addressLine1.length == 0
+        ||this.city == undefined
         || this.city.length == 0
-        || this.addressType == undefined 
+        || this.addressType == undefined
         || this.addressType.length == 0 ) {
       return false;
     }
@@ -331,7 +331,7 @@ class AddressPopUp extends View {
       return;
     }
 
-    if(this.pincode!=null && this.pincode!="" && (!this.checkPincode(this.pincode))){
+    if(this.pincode!=null && this.pincode!="" && (!this.checkPincode(this.pincode)) && !this.delete){
       JBridge.showSnackBar("Invalid Pincode");
       return;
     }

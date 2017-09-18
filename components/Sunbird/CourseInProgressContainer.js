@@ -11,7 +11,7 @@ var Button = require('../Sunbird/Button');
 var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget");
 var Space = require("@juspay/mystique-backend/src/android_views/Space");
 var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
-
+var utils = require("../../utils/GenericFunctions")
 var _this;
 var CardComponent = require('../Sunbird/core/CardComponent');
 
@@ -20,7 +20,7 @@ class CourseInProgressContainer extends View {
   constructor(props, children) {
     super(props, children);
     _this = this;
-
+    console.log("CourseInProgressContainer", this.props);
     this.setIds([
       "parentContainer",
       "progressContainer",
@@ -28,20 +28,38 @@ class CourseInProgressContainer extends View {
     ]);
     this.displayName = "course_in_progress_container";
     window.__UpdateUserCourses = this.renderContent;
+    window.__fetchCourse = this.fetchFromServer;
 
     this.appendAtPosition=0;
+    this.savedCourseTag = "savedCourse";
 
   }
 
 
   fetchFromServer = () => {
-    var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken}
-    var event ={ "tag": "API_UserEnrolledCourse", contents: whatToSend};
-    window.__runDuiCallback(event);
+    console.log("fetchFromServer");
+    var res = null;
+    if (JBridge.isNetworkAvailable()) {
+      var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken}
+      var event ={ "tag": "API_UserEnrolledCourse", contents: whatToSend};
+      window.__runDuiCallback(event);
+    } else {
+      res = JBridge.getSavedData(this.savedCourseTag);
+      if (res && res != "__failed"){
+        var parsed = JSON.parse(utils.decodeBase64(res));
+        this.renderContent(parsed, true);
+        window.__enrolledCourses = parsed;
+      }
+    }
   }
 
 
-  renderContent = (data) => {
+  renderContent = (data, dontSaveToFile) => {
+    console.log("renderContent");
+    if (dontSaveToFile == undefined && data != undefined){
+      var encoded = utils.encodeBase64(JSON.stringify(data));
+      JBridge.saveData(this.savedCourseTag, encoded);
+    }
 
     var isDataEmpty = (data === "" || data === undefined || data.length == 0);
 

@@ -230,9 +230,9 @@ class EducationPopUp extends View {
   }
 
   isValid = () => {
-    if (this.degree == undefined 
-        || this.degree.length == 0 
-        ||this.inititution == undefined 
+    if (this.degree == undefined
+        || this.degree.length == 0
+        ||this.inititution == undefined
         || this.inititution.length == 0 ) {
       return false;
     }
@@ -304,21 +304,21 @@ class EducationPopUp extends View {
     this.education = [];
     var json;
 
-    if(this.yearOfPassing!=null && this.yearOfPassing!="")
+    if(this.yearOfPassing!=null && this.yearOfPassing!="" && !this.delete)
         if(!this.checkPassingYear(this.yearOfPassing))
             {
               JBridge.showSnackBar(window.__S.WARNING_INVALID_YEAR_OF_PASSING);
               return;
             }
 
-    if(this.percentage!=null && this.percentage!="")
+    if(this.percentage!=null && this.percentage!="" && !this.delete)
         if(!this.checkPercentage(this.percentage))
             {
               JBridge.showSnackBar(window.__S.WARNING_INVALID_PERCENTAGE);
               return;
             }
 
-    if(this.grade!=null && this.grade!="")
+    if(this.grade!=null && this.grade!="" && !this.delete)
           if(!this.checkGrade(this.grade))
               {
                 JBridge.showSnackBar(window.__S.WARNING_INVALID_GRADE);
