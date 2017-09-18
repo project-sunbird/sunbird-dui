@@ -886,7 +886,7 @@ class AdditionalInformationActivity extends View{
     }
     else {
       JBridge.hideKeyboard();
-      JBridge.showSnackBar("Language Already Added");
+      window.__Snackbar.show("Language Already Added");
     }
   }
 
@@ -1094,7 +1094,7 @@ class AdditionalInformationActivity extends View{
     }
     else {
       JBridge.hideKeyboard();
-      JBridge.showSnackBar("Hobbie Already Added");
+      window.__Snackbar.show("Hobbie Already Added");
     }
   }
 
@@ -1207,7 +1207,7 @@ class AdditionalInformationActivity extends View{
 
     if(!this.checkCompleteStatus())
       {
-        JBridge.showSnackBar(window.__S.NO_CHANGE);
+        window.__Snackbar.show(window.__S.NO_CHANGE);
         return;
       }
 
@@ -1218,7 +1218,7 @@ class AdditionalInformationActivity extends View{
     if(this.checkEmailFormat(this.email))
         json.email=this.email;
     else {
-      JBridge.showSnackBar(window.__S.ERROR_EMAIL_FORMAT)
+      window.__Snackbar.show(window.__S.ERROR_EMAIL_FORMAT)
       return;
     }
 
@@ -1226,7 +1226,7 @@ class AdditionalInformationActivity extends View{
     if(this.checkPhoneFormat(this.mobile))
         json.phone=this.mobile;
     else {
-      JBridge.showSnackBar(window.__S.ERROR_SHORT_MOBILE)
+      window.__Snackbar.show(window.__S.ERROR_SHORT_MOBILE)
       return;
     }
 
@@ -1238,7 +1238,7 @@ class AdditionalInformationActivity extends View{
       if(this.checkAdharFormat(this.adhar))
            json.aadhaarNo=this.adhar;
       else {
-        JBridge.showSnackBar(window.__S.ERROR_INVALID_AADHAAR)
+        window.__Snackbar.show(window.__S.ERROR_INVALID_AADHAAR)
         return;
       }
 
@@ -1284,12 +1284,12 @@ class AdditionalInformationActivity extends View{
          if(this.responseCame){
            return;
          }
-         JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION);
+         window.__Snackbar.show(window.__S.ERROR_SERVER_CONNECTION);
          window.__LoaderDialog.hide();
          this.responseCame=false;
      },window.__API_TIMEOUT);
  }else {
-   JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE);
+   window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE);
  }
 
  //  window.__LoaderDialog.show();
@@ -1298,7 +1298,7 @@ class AdditionalInformationActivity extends View{
  //     if(_this.responseCame){
  //       return;
  //     }
- //     JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION);
+ //     window.__Snackbar.show(window.__S.ERROR_SERVER_CONNECTION);
  //     window.__LoaderDialog.hide();
  //     _this.responseCame=false;
  // },window.__API_TIMEOUT);
@@ -1319,7 +1319,7 @@ class AdditionalInformationActivity extends View{
      window.__BNavFlowRestart();
      this.onBackPressed();
    }else{
-     JBridge.showSnackBar(data.params.errmsg);
+     window.__Snackbar.show(data.params.errmsg);
    }
 
   }

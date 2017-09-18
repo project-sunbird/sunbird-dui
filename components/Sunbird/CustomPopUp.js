@@ -243,7 +243,7 @@ class CustomPopUp extends View{
     }
     else {
       JBridge.hideKeyboard();
-      JBridge.showSnackBar(window.__S.ERROR_ALREADY_ADDED);
+      window.__Snackbar.show(window.__S.ERROR_ALREADY_ADDED);
     }
   }
 

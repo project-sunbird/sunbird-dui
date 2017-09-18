@@ -124,7 +124,7 @@ class ModuleDetailActivity extends View {
         var textToShow = "";
         if(data.status == "NOT_FOUND"){
           window.__ContentLoaderDialog.hide();
-          JBridge.showSnackBar(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
+          window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
           this.onBackPressed();
           return;
         }
@@ -134,7 +134,7 @@ class ModuleDetailActivity extends View {
         if (downloadedPercent == 100) {
             // if(this.downloadList.indexOf(data.identifier) != -1){
             //     console.log("download success",this.downloadList)
-            //     JBridge.showSnackBar(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
+            //     window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
             //     this.onBackPressed();
             //     return;
             // }
@@ -192,7 +192,7 @@ class ModuleDetailActivity extends View {
                                     // _this.simpleData.content =         
                                 }
                                 else{
-                                        JBridge.showSnackBar(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
+                                        window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
                                         _this.onBackPressed();
                                         return;
                                 }
@@ -201,7 +201,7 @@ class ModuleDetailActivity extends View {
                         
                       }
                       else
-                        JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE)
+                        window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE)
                     }
                 });
 

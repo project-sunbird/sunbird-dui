@@ -84,7 +84,7 @@ class FlagPopup extends View {
   onConfirm = () =>{
     if(JBridge.isNetworkAvailable()){
           if (this.selectedList.length == 0) {
-          JBridge.showSnackBar(window.__S.ERROR_FLAG_CONTENT_MIN_REASON)
+          window.__Snackbar.show(window.__S.ERROR_FLAG_CONTENT_MIN_REASON)
           return;
         }
 
@@ -94,7 +94,7 @@ class FlagPopup extends View {
 
     }
     else
-      JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE)
+      window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE)
 
   }
 

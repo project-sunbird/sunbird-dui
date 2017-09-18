@@ -193,7 +193,7 @@ class ProfileFragment extends View {
 
   handleMenuClick = (url) => {
     if (url == "ic_action_notification") {
-      JBridge.showSnackBar(window.__S.COMMING_SOON);
+      window.__Snackbar.show(window.__S.COMMING_SOON);
     } else if (url == "ic_action_search") {
       var searchDetails = { filterDetails: "", searchType: "Profile" }
       var whatToSend = { filterDetails: JSON.stringify(searchDetails) }

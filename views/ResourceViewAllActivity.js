@@ -234,7 +234,7 @@ getRows = (data) =>{
         }
         else{
           window.__LoaderDialog.hide();
-          JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE)
+          window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE)
         }
     // }
     // else{

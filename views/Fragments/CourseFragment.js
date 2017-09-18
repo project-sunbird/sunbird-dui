@@ -105,18 +105,18 @@ class CourseFragment extends View {
   handleResponse = () => {
 
       if(this.props.response===undefined) {
-        JBridge.showSnackBar(window.__S.ERROR_EMPTY_RESULT)
+        window.__Snackbar.show(window.__S.ERROR_EMPTY_RESULT)
         return;
       }
 
       this.details = this.props.response.result.response;
       if (!this.details.hasOwnProperty("name")) {
-        JBridge.showSnackBar(window.__S.ERROR_FETCHING_DATA);
+        window.__Snackbar.show(window.__S.ERROR_FETCHING_DATA);
         return;
       }
 
       if(this.details.sections==undefined && this.details.sections.length==0){
-          JBridge.showSnackBar(window.__S.ERROR_FETCHING_DATA);
+          window.__Snackbar.show(window.__S.ERROR_FETCHING_DATA);
           return;
       }
 
@@ -212,7 +212,7 @@ class CourseFragment extends View {
         if(JBridge.isNetworkAvailable())
           window.__BNavFlowRestart();
         else
-        JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE);
+        window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE);
     });
         JBridge.addSwipeRefreshScrollView(this.idSet.scrollViewContainerCourse,callbackRefresh);
   }
@@ -269,7 +269,7 @@ class CourseFragment extends View {
   handleMenuClick = (url) => {
 
     if (url == "ic_notification_red") {
-      JBridge.showSnackBar(window.__S.COMMING_SOON)
+      window.__Snackbar.show(window.__S.COMMING_SOON)
     }
     else if (url == "ic_action_search") {
 

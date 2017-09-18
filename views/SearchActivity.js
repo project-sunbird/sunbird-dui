@@ -263,7 +263,7 @@ class SearchActivity extends View {
           console.log("callback data", data);
           if (data[0] == "error"){
             console.log("Error at callback", data[1]);
-            JBridge.showSnackBar("" + data[1])
+            window.__Snackbar.show("" + data[1])
             _this.renderNoResult();
             window.__LoaderDialog.hide();
           } else {
@@ -305,7 +305,7 @@ class SearchActivity extends View {
           }
           else{
             window.__LoaderDialog.hide();
-            JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE);
+            window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE);
           }
 
         this.showFilter();
@@ -344,7 +344,7 @@ class SearchActivity extends View {
       this.getSearchList(searchText[0],"false");
     }
     else
-      JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE)
+      window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE)
 
   }
 

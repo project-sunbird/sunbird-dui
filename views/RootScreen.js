@@ -4,6 +4,7 @@ var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
 var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
 var RelativeLayout = require("@juspay/mystique-backend/src/android_views/RelativeLayout");
 
+var Snackbar = require('../components/Sunbird/SnackBar')
 
 var TextStyle = require("../res/TextStyle");
 var Symbols = require("../res/Symbols").symbol;
@@ -95,6 +96,8 @@ class RootScreen extends View {
         <PreviewImagePopup
           defaultImage="https://pbs.twimg.com/media/CRafzhtWIAEQ2c9.png"/>
         <LanguagePopup/>
+        <Snackbar/>
+        
       </RelativeLayout>
     );
   }

@@ -75,7 +75,7 @@ class ProfileActivity extends View {
   }
 
   logout = () =>{
-    JBridge.showSnackBar(window.__S.LOGGED_OUT)
+    window.__Snackbar.show(window.__S.LOGGED_OUT)
     JBridge.setInSharedPrefs("logged_in","NO");
     JBridge.setInSharedPrefs("user_id", "__failed");
     JBridge.setInSharedPrefs("user_name",  "__failed");
@@ -156,7 +156,7 @@ class ProfileActivity extends View {
 
   handleMenuClick = (url) => {
     if (url == "ic_action_notification") {
-      JBridge.showSnackBar(window.__S.COMMING_SOON);
+      window.__Snackbar.show(window.__S.COMMING_SOON);
     } else if (url == "ic_action_search") {
       var searchDetails = { filterDetails: "", searchType: "Profile" }
       var whatToSend = { filterDetails: JSON.stringify(searchDetails) }

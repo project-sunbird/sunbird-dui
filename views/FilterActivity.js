@@ -143,7 +143,7 @@ class FilterActivity extends View {
     if(JBridge.isNetworkAvailable())
       window.__runDuiCallback({ "tag": "OPEN_SearchActivity_FILTER", contents: whatToSend });
     else
-      JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE)
+      window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE)
   }
 
 

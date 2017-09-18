@@ -231,7 +231,7 @@ class UserActivity extends View {
     this.userName=contentBody.given_name;
 
     window.__userToken=contentBody.sub;
-    JBridge.showSnackBar(window.__S.WELCOME_ON_BOARD.format(JBridge.getAppName(), contentBody.given_name))
+    window.__Snackbar.show(window.__S.WELCOME_ON_BOARD.format(JBridge.getAppName(), contentBody.given_name))
     JBridge.setProfile(this.userToken);
     this.setDataInStorage();
 
@@ -241,7 +241,7 @@ class UserActivity extends View {
     this.performLogin();
     }catch(e){
      //console.log(e.message)
-     JBridge.showSnackBar(window.__S.ERROR_INVALID_EMAIL)
+     window.__Snackbar.show(window.__S.ERROR_INVALID_EMAIL)
    }
 
   }
@@ -268,7 +268,7 @@ class UserActivity extends View {
   onBackPressed = () => {
     this.backPressCount++;
     if (this.backPressCount == 1) {
-      JBridge.showSnackBar(window.__S.BACK_TO_EXIT)
+      window.__Snackbar.show(window.__S.BACK_TO_EXIT)
     }
     if (this.backPressCount > 1) {
       JBridge.closeApp();
@@ -302,7 +302,7 @@ class UserActivity extends View {
 
 
     if (responseCode == 501) {
-      JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION)
+      window.__Snackbar.show(window.__S.ERROR_SERVER_CONNECTION)
       return;
     }
 
@@ -310,10 +310,10 @@ class UserActivity extends View {
     if (status === "failure" || status=="f") {
       if (response.params.err) {
         console.log("\n\nEROR  :", response.params)
-        JBridge.showSnackBar(response.params.errmsg)
+        window.__Snackbar.show(response.params.errmsg)
         return;
       }
-      JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION)
+      window.__Snackbar.show(window.__S.ERROR_SERVER_CONNECTION)
       return;
     }
 
@@ -327,7 +327,7 @@ class UserActivity extends View {
       case "API_SignUp":
         if (result.response == "SUCCESS") {
           console.log(window.__S.WELCOME_ON_BOARD.format(JBridge.getAppName(), this.userName))
-          JBridge.showSnackBar(window.__S.WELCOME_ON_BOARD.format(JBridge.getAppName(), this.userName))
+          window.__Snackbar.show(window.__S.WELCOME_ON_BOARD.format(JBridge.getAppName(), this.userName))
           JBridge.setInSharedPrefs("user_name", this.firstName);
           JBridge.setInSharedPrefs("user_token", result.userId);
           JBridge.logSignUpSuccess();
@@ -340,7 +340,7 @@ class UserActivity extends View {
 
 
         } else {
-          JBridge.showSnackBar(window.__S.RETRY_ACTION)
+          window.__Snackbar.show(window.__S.RETRY_ACTION)
         }
 
 
@@ -427,7 +427,7 @@ class UserActivity extends View {
 
   handleSignUpClick = () => {
      if (!JBridge.isNetworkAvailable()) {
-        JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE)
+        window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE)
         return;
       }
     JBridge.logSignUpInitiation();
@@ -440,34 +440,34 @@ class UserActivity extends View {
 
 
     if (this.firstName.length <= 0 && this.userName.length <= 0 && this.email.length <= 0 && this.userPass.length <= 0 && this.mobileNumber.length <= 0){
-      JBridge.showSnackBar(window.__S.ERROR_EMPTY_FIELDS);
+      window.__Snackbar.show(window.__S.ERROR_EMPTY_FIELDS);
       return;
     } else if (this.firstName.length <= 0) {
-      JBridge.showSnackBar(window.__S.ERROR_EMPTY_FIRSTNAME);
+      window.__Snackbar.show(window.__S.ERROR_EMPTY_FIRSTNAME);
       return;
     }  else if (this.userName.length <= 0) {
-      JBridge.showSnackBar(window.__S.ERROR_EMPTY_USERNAME);
+      window.__Snackbar.show(window.__S.ERROR_EMPTY_USERNAME);
       return;
     } else if (this.email.length <= 0) {
-      JBridge.showSnackBar(window.__S.ERROR_EMPTY_EMAIL);
+      window.__Snackbar.show(window.__S.ERROR_EMPTY_EMAIL);
       return;
     } else if (!(this.email.indexOf("@") !== -1) || !(this.email.indexOf(".") !== -1)) {
-      JBridge.showSnackBar(window.__S.ERROR_EMAIL_FORMAT);
+      window.__Snackbar.show(window.__S.ERROR_EMAIL_FORMAT);
       return;
     }else if (this.userPass.length <= 0) {
-      JBridge.showSnackBar(window.__S.ERROR_EMPTY_PASSWORD);
+      window.__Snackbar.show(window.__S.ERROR_EMPTY_PASSWORD);
       return;
     } else if (this.userPass.length < 8) {
-      JBridge.showSnackBar(window.__S.ERROR_SHORT_PASSWORD);
+      window.__Snackbar.show(window.__S.ERROR_SHORT_PASSWORD);
       return;
     } else if (this.mobileNumber.length <= 0) {
-      JBridge.showSnackBar(window.__S.ERROR_EMPTY_MOBILE);
+      window.__Snackbar.show(window.__S.ERROR_EMPTY_MOBILE);
       return;
     } else if (this.mobileNumber.length < 10 || this.mobileNumber.length > 10) {
-      JBridge.showSnackBar(window.__S.ERROR_SHORT_MOBILE);
+      window.__Snackbar.show(window.__S.ERROR_SHORT_MOBILE);
       return;
     } else if (this.language.length <= 0) {
-      JBridge.showSnackBar(window.__S.ERROR_EMPTY_LANGUAGE);
+      window.__Snackbar.show(window.__S.ERROR_EMPTY_LANGUAGE);
       return;
     }
 
@@ -491,7 +491,7 @@ class UserActivity extends View {
       window.__runDuiCallback(event);
 
     } else {
-      JBridge.showSnackBar(window.__S.ERROR_INPUT_FORM);
+      window.__Snackbar.show(window.__S.ERROR_INPUT_FORM);
     }
 
   }
@@ -504,7 +504,7 @@ class UserActivity extends View {
   }
 
   handleForgotPasscode = ()=>{
-      JBridge.showSnackBar(window.__S.COMING_SOON);
+      window.__Snackbar.show(window.__S.COMING_SOON);
   }
 
 

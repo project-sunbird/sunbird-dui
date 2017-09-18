@@ -8,6 +8,7 @@ var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 class SnackBar extends View {
   constructor(props, children) {
     super(props, children);
+
     this.displayName = "CustomSnackBar";
 
     window.__Snackbar = this;
@@ -27,11 +28,12 @@ class SnackBar extends View {
     ]);
   }
 
-  show = (options, hide) => {
-    console.log("Snackbar queued: " + options.text + ", status: " + options.status + " @" + this.totalTime);
+//show(Snackbar text, type of Snackbar, action text, onclick of action text)
+  show = (text, status, actionText, onClick) => {
+    console.log("Snackbar queued: " + text + ", status: " + status + " @" + this.totalTime);
 
     setTimeout(() => {
-      this.setValues(options);
+      this.setValues(text, status, actionText, onClick);
 
       var cmd = this.set({
         id: this.idSet.container,
@@ -43,11 +45,9 @@ class SnackBar extends View {
 
     }, this.totalTime);
 
-    if (typeof hide == "undefined" || hide) {
-      setTimeout(() => {
-        this.hide();
-      }, this.totalTime + this.showTime - this.fadeTime - this.delayTime) //Time @ which fade out animation should start
-    }
+    setTimeout(() => {
+      this.hide();
+    }, this.totalTime + this.showTime - this.fadeTime - this.delayTime) //Time @ which fade out animation should start
 
     this.totalTime += this.showTime + this.delayTime; //Time required to display one Snackbar and delayTime added to totalTime
   }
@@ -69,11 +69,11 @@ class SnackBar extends View {
     this.totalTime -= this.showTime //After rendering one Snackbar, its time is removed from totalTime
   }
 
-  setValues = (options) => {
+  setValues = (text, status, actionText, onClick) => {
     let background = null;
-    if (options.status == "success") {
+    if (status == "success") {
       background = window.__Colors.SUCCESS_GREEN;
-    } else if (options.status == "error") {
+    } else if (status == "error") {
       background = window.__Colors.ERROR_RED;
     } else {
       background = window.__Colors.DARK_GRAY;
@@ -84,14 +84,14 @@ class SnackBar extends View {
     })
     cmd += this.set({
       id: this.idSet.message,
-      text: options.text
+      text: text
     })
-    if (options.onCLick) {
+    if (actionText != undefined && onCLick != undefined) {
       cmd += this.set({
         id: this.idSet.action,
         visibility: visible,
-        text: options.actionText,
-        onCLick: options.onCLick
+        text: actionText,
+        onCLick: onClick
       })
     }
 
@@ -104,7 +104,7 @@ class SnackBar extends View {
     var background = window.__Colors.DARK_GRAY;
     this.layout = (
       <LinearLayout
-            height="56"
+            height="48"
             alignParentBottom = "true,-1"
             translationY = "360"
             id={this.idSet.container}

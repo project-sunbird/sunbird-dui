@@ -7,7 +7,6 @@ var ViewPager = require("@juspay/mystique-backend").androidViews.ViewPager;
 var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget");
 var ScrollView = require("@juspay/mystique-backend/src/android_views/ScrollView");
 var BottomNavBar = require("../components/Sunbird/core/BottomNavBar")
-var Snackbar = require('../components/Sunbird/SnackBar')
 var HomeFragment = require('./Fragments/HomeFragment');
 var CourseFragment = require('./Fragments/CourseFragment');
 var ResourceFragment = require("./Fragments/ResourceFragment")
@@ -108,7 +107,7 @@ class MainActivity extends View {
       this.handleStateChange(data)
     } else {
       console.log("__failed in getUserProfileData");
-      JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE);
+      window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE);
       window.__LoaderDialog.hide();
     }
 
@@ -139,7 +138,7 @@ class MainActivity extends View {
 
     this.backPressCount++;
     if (this.backPressCount == 1) {
-      JBridge.showSnackBar(window.__S.BACK_TO_EXIT)
+      window.__Snackbar.show(window.__S.BACK_TO_EXIT)
     }
     if (this.backPressCount > 1) {
       JBridge.closeApp();
@@ -203,7 +202,7 @@ class MainActivity extends View {
         }
         console.log("After finally");
       } else {
-        JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION)
+        window.__Snackbar.show(window.__S.ERROR_SERVER_CONNECTION)
         responseData=tmp;
       }
     } else {
@@ -227,11 +226,7 @@ class MainActivity extends View {
       console.log("slug", responseData.result.response.rootOrg.slug);
       window.__orgName = responseData.result.response.rootOrg.orgName;
       window.__API_Profile_Called = true;
-      var options = {
-        text: window.__S.WELCOME_BACK.format(window.__userName),
-        status: "success"
-      }
-      if (window.__userName != undefined) window.__Snackbar.show(options);
+      if (window.__userName != undefined) window.__Snackbar.show(window.__S.WELCOME_BACK.format(window.__userName), "success");
       var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken, "slug": responseData.result.response.rootOrg.slug};
       var event = { tag: "API_Tenant", contents: whatToSend};
       window.__runDuiCallback(event);
@@ -239,21 +234,7 @@ class MainActivity extends View {
 
     if (!window.__API_Profile_Called){
       window.__API_Profile_Called = true;
-      // if (window.__userName != undefined) window.__Snackbar.show(window.__S.WELCOME_BACK.format(window.__userName), "success");
-      var options = {
-        text: window.__S.WELCOME_BACK.format(window.__userName),
-        status: "success"
-      }
-      if (window.__userName != undefined) window.__Snackbar.show(options);
-      // var options1 = {
-      //   text: window.__S.WELCOME_BACK.format(window.__userName),
-      //   status: "error"
-      // }
-      // window.__Snackbar.show(options1);
-      // var options2 = {
-      //   text: window.__S.WELCOME_BACK.format(window.__userName),
-      // }
-      // window.__Snackbar.show(options2);
+      if (window.__userName != undefined) window.__Snackbar.show(window.__S.WELCOME_BACK.format(window.__userName));
     }
 
 
@@ -269,7 +250,7 @@ class MainActivity extends View {
         console.log(window.__S.ERROR_SERVER_MESSAGE + responseData.params.errmsg);
       else
         return;
-      // JBridge.showSnackBar(window.__S.ERROR_SERVER_MESSAGE + responseData.params.errmsg)
+      // window.__Snackbar.show(window.__S.ERROR_SERVER_MESSAGE + responseData.params.errmsg)
       // return;
     }
 
@@ -523,7 +504,7 @@ class MainActivity extends View {
               }
         }
         else{
-            JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE)
+            window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE)
         }
 
         window.__BottomNavBar.handleNavigationChange(this.currentPageIndex);
@@ -588,7 +569,6 @@ class MainActivity extends View {
           root="true"
           id={this.idSet.viewPagerContainer}
           width="match_parent" />
-          <Snackbar />
           <LinearLayout
             width = "match_parent">
 

@@ -771,7 +771,7 @@ del = () => {
           }
           else {
             console.log(window.__ExperiencePopUp , " gh ");
-            JBridge.showSnackBar(window.__S.ERROR_MULTIPLE_CURRENT_JOB);
+            window.__Snackbar.show(window.__S.ERROR_MULTIPLE_CURRENT_JOB);
           }
 
 
@@ -807,7 +807,7 @@ del = () => {
         window.__BNavFlowRestart();
       }else{
         this.singleClick =true;
-        JBridge.showSnackBar(data.params.errmsg);
+        window.__Snackbar.show(data.params.errmsg);
       }
 
     }
@@ -816,9 +816,9 @@ del = () => {
 
        if (this.singleClick && !this.canSave && !this.delete) {
          if (window.__ExperiencePopUp.data)
-           JBridge.showSnackBar(window.__S.WARNING_PLEASE_MAKE_SOME_CHANGES);
+           window.__Snackbar.show(window.__S.WARNING_PLEASE_MAKE_SOME_CHANGES);
          else
-           JBridge.showSnackBar(window.__S.WARNING_PLEASE_ADD_MANDATORY_DETAILS);
+           window.__Snackbar.show(window.__S.WARNING_PLEASE_ADD_MANDATORY_DETAILS);
          return;
        }
 
@@ -880,7 +880,7 @@ del = () => {
            if(_this.responseCame){
              return;
            }
-           JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION);
+           window.__Snackbar.show(window.__S.ERROR_SERVER_CONNECTION);
            window.__LoaderDialog.hide();
            _this.responseCame=false;
        },window.__API_TIMEOUT);

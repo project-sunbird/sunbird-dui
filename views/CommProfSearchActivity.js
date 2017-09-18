@@ -77,7 +77,7 @@ class CommProfSearchActivity extends View {
       return;
     }else if(responseCode == 501 || status === "failure" || status=="f" || responseCode == 504 || status == "failed") {
       window.__LoaderDialog.hide();
-      JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION)
+      window.__Snackbar.show(window.__S.ERROR_SERVER_CONNECTION)
     } else {
       responseData = utils.decodeBase64(responseData);
       window.__LoaderDialog.hide();
@@ -111,7 +111,7 @@ class CommProfSearchActivity extends View {
        var event={tag:"OPEN_ProfileActivity_SEARCH",contents:whatToSend}
        window.__runDuiCallback(event);
     }else {
-      JBridge.showSnackBar(window.__S.ERROR_FETCHING_DATA);
+      window.__Snackbar.show(window.__S.ERROR_FETCHING_DATA);
     }
 
     var callback = callbackMapper.map(function(data) {
@@ -353,7 +353,7 @@ class CommProfSearchActivity extends View {
       window.__LoaderDialog.show();
       this.getSearchList(searchText[0],"false");
     } else {
-      JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE);
+      window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE);
     }
   }
 

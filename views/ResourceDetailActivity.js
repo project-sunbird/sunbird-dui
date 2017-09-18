@@ -479,7 +479,7 @@ class ResourceDetailActivity extends View {
             if(state.responseFor == "API_FlagContent" && response[0] == "successful"){
               JBridge.logFlagClickEvent(this.details.identifier,"RESOURCES");
               setTimeout(function(){
-                JBridge.showSnackBar(window.__S.CONTENT_FLAGGED_MSG)
+                window.__Snackbar.show(window.__S.CONTENT_FLAGGED_MSG)
                 window.__BNavFlowRestart();
                 _this.onBackPressed();
                 window.__LoaderDialog.hide();
@@ -492,7 +492,7 @@ class ResourceDetailActivity extends View {
         }
         else{
           window.__LoaderDialog.hide();
-          JBridge.showSnackBar(window.__S.CONTENT_FLAG_FAIL);
+          window.__Snackbar.show(window.__S.CONTENT_FLAG_FAIL);
           _this.onBackPressed();
 
         }
@@ -500,7 +500,7 @@ class ResourceDetailActivity extends View {
     }
     else{
       window.__LoaderDialog.hide();
-      JBridge.showSnackBar(window.__S.TIME_OUT)
+      window.__Snackbar.show(window.__S.TIME_OUT)
       _this.onBackPressed();
 
     }
@@ -516,7 +516,7 @@ class ResourceDetailActivity extends View {
         window.__LoaderDialog.hide();
 
         if(response[0] == "successful"){
-          JBridge.showSnackBar(window.__S.MSG_RESOURCE_DELETED)
+          window.__Snackbar.show(window.__S.MSG_RESOURCE_DELETED)
           _this.onBackPressed();
         }
       });

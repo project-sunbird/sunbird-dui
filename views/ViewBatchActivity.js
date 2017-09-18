@@ -116,7 +116,7 @@ class ViewBatchActivity extends View {
           window.__runDuiCallback(event);
 
       }else{
-        JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE)
+        window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE)
       }
     }
 
@@ -178,7 +178,7 @@ class ViewBatchActivity extends View {
 
       if (parseInt(responseCode) != 200) {
         window.__LoaderDialog.hide();
-        JBridge.showSnackBar(window.__S.RETRY_ACTION)
+        window.__Snackbar.show(window.__S.RETRY_ACTION)
         return;
       }
 
@@ -186,7 +186,7 @@ class ViewBatchActivity extends View {
 
       if (response.params.err) {
         window.__LoaderDialog.hide();
-        JBridge.showSnackBar(response.params.errmsg)
+        window.__Snackbar.show(response.params.errmsg)
         return;
       }
 
@@ -219,12 +219,12 @@ class ViewBatchActivity extends View {
 
             window.__enrolledCourses.push(enrolledCourse);
             console.log("extras",this.extras)
-            JBridge.showSnackBar(window.__S.COURSE_ENROLLED)
+            window.__Snackbar.show(window.__S.COURSE_ENROLLED)
             var whatToSend = { "course": JSON.stringify(this.extras)}
             var event = { tag: 'OPEN_EnrolledActivity_BATCH', contents: whatToSend }
             window.__runDuiCallback(event);
           } else {
-            JBridge.showSnackBar(window.__S.RETRY_ACTION)
+            window.__Snackbar.show(window.__S.RETRY_ACTION)
           }
           break;
 
@@ -327,7 +327,7 @@ class ViewBatchActivity extends View {
           window.__runDuiCallback(event);
       }
       else{
-        JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE)
+        window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE)
       }
     }
 

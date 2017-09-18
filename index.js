@@ -223,7 +223,7 @@ const runDuiCallback = (state) => {
 
 const logoutUser = () => {
     JBridge.logLogoutSuccess(window.__userToken);
-    JBridge.showSnackBar("Logged out")
+    window.__Snackbar.show("Logged out")
     JBridge.setInSharedPrefs("logged_in","NO");
     JBridge.setInSharedPrefs("user_id", "__failed");
     JBridge.setInSharedPrefs("user_name",  "__failed");

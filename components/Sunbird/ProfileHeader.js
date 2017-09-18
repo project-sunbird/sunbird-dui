@@ -44,7 +44,7 @@ class ProfileHeader extends View {
         JBridge.sendEmail(this.orgEmail);
       }
     else{
-      JBridge.showSnackBar(window.__S.NO_EMAIL_FOUND)
+      window.__Snackbar.show(window.__S.NO_EMAIL_FOUND)
     }
   }
 

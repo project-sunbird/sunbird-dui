@@ -184,7 +184,7 @@ class CourseEnrolledActivity extends View {
     console.log(data)
     if(data.status == "NOT_FOUND"){
       window.__ContentLoaderDialog.hide();
-      JBridge.showSnackBar(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
+      window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
       this.onBackPressed();
       return;
     }
@@ -237,7 +237,7 @@ class CourseEnrolledActivity extends View {
           _this.changeOverFlow();
         }
         else
-          JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE)
+          window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE)
       }
 
     });
@@ -310,16 +310,16 @@ class CourseEnrolledActivity extends View {
 
         if(responseCode == 501 || state.response.status === "failure" || state.response.status=="f") {
           window.__LoaderDialog.hide();
-          JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION)
+          window.__Snackbar.show(window.__S.ERROR_SERVER_CONNECTION)
           responseData=tmp;
         }else  if (response.params && response.params.err) {
           window.__LoaderDialog.hide();
             if(state.responseFor == "API_FlagCourse"){
-                JBridge.showSnackBar(window.__S.CONTENT_FLAG_FAIL);
+                window.__Snackbar.show(window.__S.CONTENT_FLAG_FAIL);
                 _this.onBackPressed();
               }
             else
-              JBridge.showSnackBar(window.__S.ERROR_SERVER_MESSAGE + response.params.errmsg)
+              window.__Snackbar.show(window.__S.ERROR_SERVER_MESSAGE + response.params.errmsg)
           return;
         }
 
@@ -359,7 +359,7 @@ class CourseEnrolledActivity extends View {
                 if(response[0] == "successful"){
                   JBridge.logFlagClickEvent(this.baseIdentifier,"COURSES");
                   setTimeout(function(){
-                    JBridge.showSnackBar(window.__S.CONTENT_FLAGGED_MSG)
+                    window.__Snackbar.show(window.__S.CONTENT_FLAGGED_MSG)
                     window.__BNavFlowRestart();
                     _this.onBackPressed();
                     window.__LoaderDialog.hide();
@@ -368,7 +368,7 @@ class CourseEnrolledActivity extends View {
             }
             else{
               window.__LoaderDialog.hide();
-              JBridge.showSnackBar(window.__S.CONTENT_FLAG_FAIL);
+              window.__Snackbar.show(window.__S.CONTENT_FLAG_FAIL);
               _this.onBackPressed();
 
             }
@@ -383,7 +383,7 @@ class CourseEnrolledActivity extends View {
     }
     else{
       window.__LoaderDialog.hide();
-      JBridge.showSnackBar(window.__S.TIME_OUT)
+      window.__Snackbar.show(window.__S.TIME_OUT)
     }
   }
 
@@ -487,7 +487,7 @@ class CourseEnrolledActivity extends View {
       if(JBridge.isNetworkAvailable())
         window.__runDuiCallback(event);
       else
-        JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE);
+        window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE);
     }
   }
 
@@ -593,11 +593,11 @@ class CourseEnrolledActivity extends View {
       id = this.courseContent.children[0].identifier;
     }
     else{
-      JBridge.showSnackBar(window.__S.ERROR_NO_RESUME_CONTENT_AVAILABLE)
+      window.__Snackbar.show(window.__S.ERROR_NO_RESUME_CONTENT_AVAILABLE)
     }
     console.log("id before JBridge.getChildContent ", id);
     if (id) JBridge.getChildContent(id,callback)
-    else JBridge.showSnackBar(window.__S.ERROR_NO_RESUME_CONTENT_AVAILABLE)
+    else window.__Snackbar.show(window.__S.ERROR_NO_RESUME_CONTENT_AVAILABLE)
   }
 
   changeOverFlow = () =>{

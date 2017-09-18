@@ -102,7 +102,7 @@ class ProgressButton extends View {
      if(data.status == "NOT_FOUND"){
           this.setCancelButtonVisibility("gone");
         _this.replaceChild(_this.idSet.downloadBarContainer, _this.getButtons(0, window.__S.DOWNLOAD).render(), 0);
-        JBridge.showSnackBar(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
+        window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
         return;
      }
     if (parseInt(data.downloadProgress) == 100) {
@@ -183,7 +183,7 @@ class ProgressButton extends View {
           }
         }
         else{
-            JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE);
+            window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE);
         }
 
       } else {

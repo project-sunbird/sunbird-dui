@@ -290,14 +290,14 @@ class EducationPopUp extends View {
 
     if (this.singleClick && !this.canSave && !this.delete){
       if (window.__EducationPopUp.data)
-        JBridge.showSnackBar(window.__S.WARNING_PLEASE_MAKE_SOME_CHANGES);
+        window.__Snackbar.show(window.__S.WARNING_PLEASE_MAKE_SOME_CHANGES);
       else
-        JBridge.showSnackBar(window.__S.WARNING_PLEASE_ADD_MANDATORY_DETAILS );
+        window.__Snackbar.show(window.__S.WARNING_PLEASE_ADD_MANDATORY_DETAILS );
       return;
     }
 
     if(!JBridge.isNetworkAvailable()) {
-      JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE);
+      window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE);
       return;
     }
 
@@ -307,21 +307,21 @@ class EducationPopUp extends View {
     if(this.yearOfPassing!=null && this.yearOfPassing!="" && !this.delete)
         if(!this.checkPassingYear(this.yearOfPassing))
             {
-              JBridge.showSnackBar(window.__S.WARNING_INVALID_YEAR_OF_PASSING);
+              window.__Snackbar.show(window.__S.WARNING_INVALID_YEAR_OF_PASSING);
               return;
             }
 
     if(this.percentage!=null && this.percentage!="" && !this.delete)
         if(!this.checkPercentage(this.percentage))
             {
-              JBridge.showSnackBar(window.__S.WARNING_INVALID_PERCENTAGE);
+              window.__Snackbar.show(window.__S.WARNING_INVALID_PERCENTAGE);
               return;
             }
 
     if(this.grade!=null && this.grade!="" && !this.delete)
           if(!this.checkGrade(this.grade))
               {
-                JBridge.showSnackBar(window.__S.WARNING_INVALID_GRADE);
+                window.__Snackbar.show(window.__S.WARNING_INVALID_GRADE);
                 return;
               }
 
@@ -372,7 +372,7 @@ class EducationPopUp extends View {
                return;
              }
              console.log("TIMEOUT")
-             JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION);
+             window.__Snackbar.show(window.__S.ERROR_SERVER_CONNECTION);
              window.__LoaderDialog.hide();
              _this.responseCame=false;
          },window.__API_TIMEOUT);
@@ -394,7 +394,7 @@ class EducationPopUp extends View {
      window.__BNavFlowRestart();
    }else{
      this.singleClick =true;
-     JBridge.showSnackBar(data.params.errmsg);
+     window.__Snackbar.show(data.params.errmsg);
    }
 
  }

@@ -319,20 +319,20 @@ class AddressPopUp extends View {
 
     if (this.singleClick && !this.canSave && !this.delete) {
       if (window.__AddressPopUp.data)
-        JBridge.showSnackBar("Please make some changes");
+        window.__Snackbar.show("Please make some changes");
       else
-        JBridge.showSnackBar("Please add mandatory details");
+        window.__Snackbar.show("Please add mandatory details");
       return;
     }
 
     if(!JBridge.isNetworkAvailable()) {
-      JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE);
+      window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE);
       this.delete = false;
       return;
     }
 
     if(this.pincode!=null && this.pincode!="" && (!this.checkPincode(this.pincode)) && !this.delete){
-      JBridge.showSnackBar("Invalid Pincode");
+      window.__Snackbar.show("Invalid Pincode");
       return;
     }
 
@@ -391,7 +391,7 @@ class AddressPopUp extends View {
            return;
          }
          console.log("TIMEOUT")
-         JBridge.showSnackBar(window.__S.ERROR_SERVER_CONNECTION);
+         window.__Snackbar.show(window.__S.ERROR_SERVER_CONNECTION);
          window.__LoaderDialog.hide();
          _this.responseCame=false;
      },window.__API_TIMEOUT);
@@ -452,7 +452,7 @@ class AddressPopUp extends View {
      window.__BNavFlowRestart();
    }else{
      this.singleClick =true;
-     JBridge.showSnackBar(data.params.errmsg);
+     window.__Snackbar.show(data.params.errmsg);
    }
 
  }

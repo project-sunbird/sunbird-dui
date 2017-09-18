@@ -247,7 +247,7 @@ class PageFilterPopup extends View {
   onConfirm = () => {
 
     if(this.isEmpty(this.filter)){
-      JBridge.showSnackBar(window.__S.NO_FILTERS_SELECTED);
+      window.__Snackbar.show(window.__S.NO_FILTERS_SELECTED);
       this.hide();
       return;
     }
@@ -261,7 +261,7 @@ class PageFilterPopup extends View {
     if(JBridge.isNetworkAvailable())
       window.__runDuiCallback(event);
     else
-      JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE)
+      window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE)
 
   }
 

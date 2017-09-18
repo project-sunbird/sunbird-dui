@@ -99,7 +99,7 @@ class ResourceComponent extends View {
       }
       else
       {
-        JBridge.showSnackBar(window.__S.ERROR_OFFLINE_MODE)
+        window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE)
         this.cards = (<LinearLayout
           height="wrap_content"
           width="match_parent"
@@ -300,7 +300,7 @@ handleResourceViewAllClick= (data,title,searchQuery,visibility) =>{
         if(JBridge.isNetworkAvailable())
           window.__BNavFlowRestart();
         else
-        JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE);
+        window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE);
     });
       
         JBridge.addSwipeRefreshScrollView(this.idSet.scrollViewContainer,callbackRefresh);

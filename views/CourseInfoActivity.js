@@ -80,7 +80,7 @@ class CourseInfoActivity extends View {
     var textToShow = ""
     if(data.status == "NOT_FOUND"){
       window.__ContentLoaderDialog.hide();
-      JBridge.showSnackBar(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
+      window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
       this.onBackPressed();
       return;
     }
@@ -117,7 +117,7 @@ class CourseInfoActivity extends View {
               if(JBridge.isNetworkAvailable())
                 JBridge.importCourse(identifier,"false")
               else
-                JBridge.showSnackBar(window.__S.ERROR_NO_INTERNET_MESSAGE)
+                window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE)
           }
         })
 
@@ -250,7 +250,7 @@ class CourseInfoActivity extends View {
     var result = response.result;
 
     if (response.params.err) {
-      JBridge.showSnackBar(response.params.errmsg)
+      window.__Snackbar.show(response.params.errmsg)
       return;
     }
 
@@ -262,12 +262,12 @@ class CourseInfoActivity extends View {
       //   if (result.response == "SUCCESS") {
       //     console.log("response",response)
       //     window.__enrolledCourses.push(this.cour)
-      //     JBridge.showSnackBar(window.__S.COURSE_ENROLLED)
+      //     window.__Snackbar.show(window.__S.COURSE_ENROLLED)
       //     var whatToSend = { "course": this.state.data.value0.courseDetails }
       //     var event = { tag: 'OPEN_EnrolledActivity', contents: whatToSend }
       //     window.__runDuiCallback(event);
       //   } else {
-      //     JBridge.showSnackBar(window.__S.RETRY_ACTION)
+      //     window.__Snackbar.show(window.__S.RETRY_ACTION)
       //   }
       //   break;
 
@@ -522,7 +522,7 @@ class CourseInfoActivity extends View {
 
 
   logout = () =>{
-    JBridge.showSnackBar("Logged out")
+    window.__Snackbar.show("Logged out")
     JBridge.setInSharedPrefs("logged_in","NO");
     JBridge.setInSharedPrefs("user_id", "__failed");
     JBridge.setInSharedPrefs("user_name",  "__failed");
