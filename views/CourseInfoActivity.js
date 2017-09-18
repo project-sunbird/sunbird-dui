@@ -158,9 +158,9 @@ class CourseInfoActivity extends View {
                   brief={true}
                   shouldGoForward={"gone"}
                   content= {this.courseContent.children}/>);
-        var isVisible = "visible";
-        if(this.details.isCreator)
-          isVisible = "gone";
+        var isVisible = "gone";
+        if(!this.details.isCreator)
+          isVisible = "visible";
         Android.runInUI(this.set({
           id : this.idSet.enrollButtonId,
           visibility :isVisible
