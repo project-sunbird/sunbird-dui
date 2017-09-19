@@ -739,7 +739,7 @@ class UserActivity extends View {
             gravity="center"
             id={this.idSet.needAccHolder}
             onClick={this.toggleSignUpForm}
-            visibility="gone"
+            visibility={JBridge.getApplicationId() == "in.diksha.app" ? "gone" : "visible"}
             textFromHtml= {"<font color='#007AFF'><a href=''>"+window.__S.NO_ACC_YET+"</a></font>"}
             style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
 
