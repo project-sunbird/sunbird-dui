@@ -79,7 +79,7 @@ class ProfileFragment extends View {
           api_token: window.__apiToken,
           sendBack : JSON.stringify(this.props.response),
           filters: JSON.stringify({"filters" : {
-                     "createdBy": this.props.response.result.response.userId,
+                     "createdBy": window.__userToken,
                      "status": ["Live"],
                      "contentType": ["Collection", "Story", "Worksheet", "TextBook", "Course", "LessonPlan"]
                  }
