@@ -231,6 +231,8 @@ const logoutUser = () => {
     JBridge.setInSharedPrefs("logo_url", "__failed");
     JBridge.setInSharedPrefs("logo_file_path", "__failed");
     JBridge.setInSharedPrefs("orgName", "__failed");
+    JBridge.setInSharedPrefs("channelId", "__failed");
+    JBridge.setParams();
     window.__pressedLoggedOut=true;
     JBridge.keyCloakLogout(window.__apiUrl + "/auth/realms/sunbird/protocol/openid-connect/logout");
     purescriptUserActivityFlow();

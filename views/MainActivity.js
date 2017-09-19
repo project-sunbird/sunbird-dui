@@ -222,11 +222,16 @@ class MainActivity extends View {
     console.log("window.__API_Profile_Called", window.__API_Profile_Called);
 
     console.log("JBridge.getFromSharedPrefs('logo')",JBridge.getFromSharedPrefs("logo"));
-    if (responseData.result.response && responseData.result.response.rootOrg && !window.__API_Profile_Called && (JBridge.getFromSharedPrefs("logo") == "__failed" || JBridge.getFromSharedPrefs("orgName") == "__failed")){
+    if (responseData.result.response && responseData.result.response.rootOrg && !window.__API_Profile_Called && (JBridge.getFromSharedPrefs("logo") == "__failed" || JBridge.getFromSharedPrefs("orgName") == "__failed" || JBridge.getFromSharedPrefs("channelId") == "__failed")){
       console.log("slug", responseData.result.response.rootOrg.slug);
       window.__orgName = responseData.result.response.rootOrg.orgName;
+      if (responseData.result.response.rootOrg.hashTagId) {
+        JBridge.setInSharedPrefs("channelId", responseData.result.response.rootOrg.hashTagId);
+        console.log("channelId", JBridge.getFromSharedPrefs("channelId"));
+        JBridge.setParams();
+      }
       window.__API_Profile_Called = true;
-      if (window.__userName != undefined) window.__Snackbar.show(window.__S.WELCOME_BACK.format(window.__userName), "success");
+      if (window.__userName != undefined) window.__Snackbar.show(window.__S.WELCOME_BACK.format(window.__userName));
       var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken, "slug": responseData.result.response.rootOrg.slug};
       var event = { tag: "API_Tenant", contents: whatToSend};
       window.__runDuiCallback(event);
