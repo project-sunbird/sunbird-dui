@@ -149,7 +149,6 @@ class MainActivity extends View {
   }
 
   handleStateChange = (state) => {
-    window.__LoaderDialog.hide();
     console.log(state, "state in handleStateChange");
     if (!state.local && state.responseFor == "API_ProfileFragment"){
       console.log("Saving state");
