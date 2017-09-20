@@ -556,31 +556,6 @@ class EducationPopUp extends View {
       </LinearLayout>
     );
   }
-
-  getBtn = (id, type, label, onClick, visibility) => {
-    return (
-      <LinearLayout
-        width = "0"
-        weight = "1"
-        height = "wrap_content"
-        visibility = {visibility}
-        margin = "0, 0, 16, 0">
-
-        <FeatureButton
-          id = {id}
-          clickable="false"
-          width = "match_parent"
-          height = "match_parent"
-          stroke = {type == "pos" ? "1," + window.__Colors.WHITE : "3," + window.__Colors.PRIMARY_DARK}
-          background = {type == "pos" ? window.__Colors.PRIMARY_DARK : window.__Colors.WHITE}
-          text = {label}
-          buttonClick = {onClick}
-          textColor = {type == "pos" ? window.__Colors.WHITE : window.__Colors.PRIMARY_DARK}
-          textStyle = {window.__TextStyle.textStyle.CARD.ACTION.LIGHT}/>
-      </LinearLayout>
-    );
-  }
-
   handleDelClick = () => {
     window.__SimplePopup.show(this.idSet.eduConf);
     // this.delete = true;
