@@ -26,6 +26,13 @@ class ProfileExperiences extends View {
 
 
   getHeader() {
+    console.log(this.props.data.length,this.isEditable);
+    if(this.props.data.length==0&&this.isEditable=="false")
+      {
+        return (<LinearLayout
+          height="wrap_content"
+          width="wrap_content"/>)
+      }
     return (<LinearLayout
               width="match_parent"
               height="wrap_content">
@@ -57,6 +64,7 @@ class ProfileExperiences extends View {
               width="match_parent"
               height="1"
               margin="0,16,0,16"
+              visibility = {this.props.data.length==0&&this.isEditable=="false"?"gone":"visible"}
               background={window.__Colors.PRIMARY_BLACK_22}/>)
   }
 
@@ -388,15 +396,6 @@ class ProfileExperiences extends View {
       return jobs;
     }
   }
-
-  getLineSeperator = () => {
-    return (<LinearLayout
-            width="match_parent"
-            height="1"
-            margin="0,16,0,0"
-            background={window.__Colors.PRIMARY_BLACK_22}/>)
-  }
-
 
   render() {
     this.layout = (

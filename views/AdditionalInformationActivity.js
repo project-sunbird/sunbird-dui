@@ -60,8 +60,6 @@ class AdditionalInformationActivity extends View{
     this.screenName="AdditionalInformationActivity"
     this.subjectDictionary=["Select","Assamese","Bengali","English","Gujarati","Hindi","Kannada","Malayalam","Marathi","Maths","Nepali","Oriya","Punjabi","Tamil","Telugu","Urdu"];
     this.selectedSubjects=[];
-    //this.hobbieDictionary=["cycling","swimming","singing","travelling","playing","dancing"];
-    //this.selectedHobbies=[];
     this.email = null;
     this.mobile = null;
     this.location = null;
@@ -97,7 +95,6 @@ class AdditionalInformationActivity extends View{
     }
   }
 
-
   initData = () => {
 
     console.log(this.data, "jsontosens");
@@ -127,7 +124,6 @@ class AdditionalInformationActivity extends View{
     this.prevData.description=this.data.profileSummary;
     this.prevData.grade = this.data.grade!=null ? this.data.grade.slice():null;
     this.prevData.selectedSubjects = this.data.subject!=null ? this.data.subject.slice():null;
-
 
     var cmd = this.set({
       id: this.idSet.emailText,
@@ -171,7 +167,6 @@ class AdditionalInformationActivity extends View{
 
     Android.runInUI(cmd, 0);
 
-
     this.populateSubjects(this.data.subject);
 
     this.populateGrade(this.data.grade);
@@ -179,12 +174,10 @@ class AdditionalInformationActivity extends View{
     JBridge.selectSpinnerItem(this.idSet.languageSpinner,this.LanguageArray.indexOf(this.language[0]));
     var gender = this.gender != null ? (this.gender.substr(0,1).toUpperCase()+this.gender.substr(1)) : null;
     JBridge.selectSpinnerItem(this.idSet.genderSpinner,this.GenderArray.indexOf(gender));
-
   }
 
   populateGrade = (items) => {
     console.log("populateGrade", items);
-
     var itemsListView = (
       <LinearLayout
         width="match_parent"
@@ -204,8 +197,7 @@ class AdditionalInformationActivity extends View{
             height="wrap_content"
             data={this.GradeArray}
             selectedData={items}
-            onItemChange={this.onMultiSelectGradeItemChange}
-           />
+            onItemChange={this.onMultiSelectGradeItemChange}/>
       </LinearLayout>
     );
 
@@ -234,14 +226,11 @@ class AdditionalInformationActivity extends View{
             height="wrap_content"
             data={this.subjectDictionary}
             selectedData={items}
-            onItemChange={this.onMultiSelectSubjectItemChange}
-           />
+            onItemChange={this.onMultiSelectSubjectItemChange}/>
       </LinearLayout>
     );
-
     this.replaceChild(this.idSet.subjectSpinnerContainer, itemsListView.render(), 0);
   }
-
 
   afterRender = () => {
     this.initData();
@@ -262,54 +251,13 @@ class AdditionalInformationActivity extends View{
       <LinearLayout
         width = "match_parent"
         height = "wrap_content"
-        visibility = {"visible"}>
+        alignParentBottom = "true, -1"
+        orientation = "vertical"
+        background = "#ffffff">
         <PageOption
             width="match_parent"
             buttonItems={buttonList}
             hideDivider={false}/>
-      </LinearLayout>
-    );
-  }
-
-
-  getBtn = (id, type, label, onClick, visibility) => {
-    return (
-      <LinearLayout
-        width = "0"
-        weight = "1"
-        height = "wrap_content"
-        visibility = {visibility}
-        margin = "0, 0, 16, 0">
-        <FeatureButton
-          weight = "1"
-          id = {id}
-          clickable="false"
-          width = "match_parent"
-          height = "match_parent"
-          stroke = {type == "pos" ? "1," + window.__Colors.WHITE : "3," + window.__Colors.PRIMARY_DARK}
-          background = {type == "pos" ? window.__Colors.PRIMARY_DARK : window.__Colors.WHITE}
-          text = {label}
-          buttonClick = {onClick}
-          textColor = {type == "pos" ? window.__Colors.WHITE : window.__Colors.PRIMARY_DARK}
-          textStyle = {window.__TextStyle.textStyle.CARD.ACTION.LIGHT}/>
-      </LinearLayout>
-    );
-  }
-
-  getTail = () => {
-    return (
-      <LinearLayout
-        width = "match_parent"
-        height = "wrap_content"
-        orientation = "vertical"
-        background = "#ffffff"
-        alignParentBottom = "true, -1">
-        <LinearLayout
-          width = "match_parent"
-          height = "match_parent"
-          orientation = "horizontal">
-          {this.getButtons()}
-        </LinearLayout>
       </LinearLayout>
     );
   }
@@ -350,8 +298,7 @@ class AdditionalInformationActivity extends View{
         text = ""
         textStyle = {window.__TextStyle.textStyle.HINT.SEMI}
         editTextStyle = {window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
-        inputType = {inputType ? inputType : "text"}/>
-    )
+        inputType = {inputType ? inputType : "text"}/>)
   }
 
   getLabel = (label,optional) =>{
@@ -363,8 +310,7 @@ class AdditionalInformationActivity extends View{
           style={window.__TextStyle.textStyle.HINT.SEMI}
           text={label}
           margin="0,0,0,8"
-          padding="4,0,0,4"/>
-         );
+          padding="4,0,0,4"/>);
 
      return (
        <LinearLayout
@@ -383,8 +329,7 @@ class AdditionalInformationActivity extends View{
        width="wrap_content"
        text=" *"
        color="#FF0000"/>
-       </LinearLayout>
-     );
+       </LinearLayout>);
   }
 
   getBody = () =>{
@@ -404,27 +349,9 @@ class AdditionalInformationActivity extends View{
         padding="15,15,15,15"
         orientation="vertical">
 
-
                   {this.getEditTextView(this.idSet.nameText,window.__S.FIRST_NAME,window.__S.FIRST_NAME_HINT,false,this.setName)}
                   {this.getEditTextView(this.idSet.lastNameText,window.__S.LAST_NAME,window.__S.LAST_NAME_HINT,true,this.setLastName)}
                   {this.getSingleSelectSpinner(this.idSet.languageSpinnerContainer,window.__S.LANGUAGES,false,this.loadLanguageSpinner)}
-
-                {//  <TextView
-                //   width="match_parent"
-                //   height="20"
-                //   style={window.__TextStyle.textStyle.HINT.BOLD}
-                //   text="SUBJECTS"
-                //   margin="4,0,0,0"/>
-                //   <EditText
-                //   width="match_parent"
-                //   height="wrap_content"
-                //   maxLines="1"
-                //   style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
-                //   onChange={this.getLanguagePredictions}
-                //   hint="Start typing to add a subject"
-                //   />
-              }
-
                    <LinearLayout
                    height="wrap_content"
                    width="match_parent"
@@ -451,8 +378,7 @@ class AdditionalInformationActivity extends View{
                              height="wrap_content"
                              data={this.subjectDictionary}
                              selectedData={this.selectedSubjects}
-                             onItemChange={this.onMultiSelectSubjectItemChange}
-                            />
+                             onItemChange={this.onMultiSelectSubjectItemChange}/>
                        </LinearLayout>
                        {this.getSingleSelectSpinner(this.idSet.spinnerContainer,window.__S.GENDER,true,this.loadGenderSpinner)}
 
@@ -487,13 +413,8 @@ class AdditionalInformationActivity extends View{
                                 text={window.__S.SELECT_DATE}
                                 onClick={this.showCalendar}/>
                           </LinearLayout>
-                          <LinearLayout
-                            width="match_parent"
-                            height="1"
-                            margin="1,0,2,0"
-                            alpha="0.6"
-                            background={window.__Colors.PRIMARY_BLACK}/>
-                        </LinearLayout>
+                          {this.getLineSeperator()}
+                         </LinearLayout>
                         <LinearLayout
                           width="match_parent"
                           height="wrap_content"
@@ -512,75 +433,12 @@ class AdditionalInformationActivity extends View{
                               height="wrap_content"
                               data={this.GradeArray}
                               selectedData={this.grade}
-                              onItemChange={this.onMultiSelectGradeItemChange}
-                             />
+                              onItemChange={this.onMultiSelectGradeItemChange}/>
                         </LinearLayout>
-
-
-
-                         {
-                          // <LinearLayout
-                          // width="match_parent"
-                          // height="wrap_content"
-                          // orientation="vertical">
-                          //   <TextView
-                          //    width="match_parent"
-                          //    height="20"
-                          //    style={window.__TextStyle.textStyle.HINT.BOLD}
-                          //    text="HOBBIES"/>
-                          //    <LinearLayout
-                          //    height="8"
-                          //    orientation="horizontal"
-                          //    width="match_parent"
-                          //    />
-                          //    <EditText
-                          //    width="match_parent"
-                          //    height="wrap_content"
-                          //    maxLines="1"
-                          //    style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
-                          //    hint="Start typing to add a hobby"
-                          //    onChange={this.getHobbiePredictions}
-                          //    />
-                          //    <RelativeLayout
-                          //     width="match_parent"
-                          //     height="wrap_content">
-                          //         <LinearLayout
-                          //         height="wrap_content"
-                          //         width="wrap_content"
-                          //         orientation="horizontal"
-                          //         id={this.idSet.HobbiesLayout}
-                          //         margin="0,4,0,8"/>
-                          //
-                          //         <LinearLayout
-                          //         height="wrap_content"
-                          //         width="328"
-                          //         background={window.__Colors.PRIMARY_BLACK_22}>
-                          //            <ScrollView
-                          //            height="wrap_content"
-                          //            width="match_parent"
-                          //            margin="2,0,2,0">
-                          //                <LinearLayout
-                          //                height="wrap_content"
-                          //                width="match_parent"
-                          //                margin="2,0,2,0"
-                          //                id={this.idSet.predictionHobbiesLayout}
-                          //                background="#ffffff">
-                          //                </LinearLayout>
-                          //            </ScrollView>
-                          //         </LinearLayout>
-                          //
-                          //    </RelativeLayout>
-                          //
-                          //  </LinearLayout>
-                         }
                     </LinearLayout>
-
-
-
         </LinearLayout>
        </ScrollView>
-      </LinearLayout>
-    )
+      </LinearLayout>)
   }
 
   getBack = () => {
@@ -609,7 +467,6 @@ class AdditionalInformationActivity extends View{
                   style={window.__TextStyle.textStyle.TOOLBAR.HEADING}/>
 
           </LinearLayout>);
-
   }
 
   getToolbar  = () =>{
@@ -625,28 +482,21 @@ class AdditionalInformationActivity extends View{
                   gravity="center_vertical"
                   background={window.__Colors.WHITE}
                   width="match_parent" >
-
                     {this.getBack()}
                     {this.getTitle()}
                 </LinearLayout>
-            </LinearLayout>
-
-      );
+            </LinearLayout>);
   }
-
   onMultiSelectGradeItemChange = (selectedArray) => {
     this.grade = selectedArray;
     console.log(this.grade , "selectedArray");
     this.updateSaveButtonStatus(this.checkCompleteStatus());
   }
-
   onMultiSelectSubjectItemChange = (selectedArray) => {
     this.selectedSubjects = selectedArray;
     console.log(this.selectedSubjects , "selectedArray");
     this.updateSaveButtonStatus(this.checkCompleteStatus());
   }
-
-
   render(){
       console.log("render");
       this.layout=(
@@ -662,7 +512,7 @@ class AdditionalInformationActivity extends View{
            width="match_parent"
            height="match_parent">
                {this.getBody()}
-               {this.getTail()}
+               {this.getButtons()}
            </RelativeLayout>
        </LinearLayout>
       );
@@ -677,8 +527,7 @@ class AdditionalInformationActivity extends View{
              margin="0,0,5,6"
              id={this.idSet.languageSpinner}
              onItemClick = {this.handleLanguageSpinnerItemClick}
-             values={this.languageArray}
-             />)
+             values={this.languageArray}/>)
    }
 
    handleLanguageSpinnerItemClick = (...params) => {
@@ -697,8 +546,7 @@ class AdditionalInformationActivity extends View{
             margin="0,0,5,6"
             onItemClick = {this.handleGenderSpinnerItemClick}
             id={this.idSet.genderSpinner}
-            values={this.genderArray}
-            />)
+            values={this.genderArray}/>)
   }
 
   handleGenderSpinnerItemClick = (...params) => {
@@ -722,13 +570,8 @@ class AdditionalInformationActivity extends View{
               });
               Android.runInUI(cmd, 0);
 
-              _this.updateSaveButtonStatus(_this.checkCompleteStatus());
-
-    });
-
-
+              _this.updateSaveButtonStatus(_this.checkCompleteStatus());});
       JBridge.showCalender(callback,"","","");
-
   }
 
   formatDate = (date) =>{
@@ -741,9 +584,7 @@ class AdditionalInformationActivity extends View{
       if(date.length<10)
         date = date.substr(0,8)+"0"+date.substr(8);
         return date;
-
       }
-
 
   getLanguagePredictions = (data) => {
 
@@ -771,14 +612,12 @@ class AdditionalInformationActivity extends View{
          this.replaceChild(this.idSet.predictionLanguageLayout, this.predictLanguageLayout.render(), 0);
        }
      }
-
   }
 
   populateLanguagePredictions = (predictions,data) =>{
 
     var predictionContent = predictions.map((item) => {
-      return (this.getLanguagePredictionCard(item))
-    });
+      return (this.getLanguagePredictionCard(item))});
 
     var addDictionaryString="Add \"String\"";
     addDictionaryString = addDictionaryString.replace("String", data);
@@ -801,15 +640,8 @@ class AdditionalInformationActivity extends View{
             text={addDictionaryString}
             textColor="#FF333333"/>
          </LinearLayout>
-         <LinearLayout
-         height="3"
-         width="328"
-         background="#E0E0E0">
-         </LinearLayout>
        </LinearLayout>);
-
     this.replaceChild(this.idSet.predictionLanguageLayout, this.predictLanguageLayout.render(), 0);
-
   }
 
   getLanguagePredictionCard = (item)=>{
@@ -818,7 +650,6 @@ class AdditionalInformationActivity extends View{
       <LinearLayout
       height="wrap_content"
       width="match_parent"
-
       orientation="vertical">
           <TextView
            height="wrap_content"
@@ -827,15 +658,9 @@ class AdditionalInformationActivity extends View{
            textSize="15"
            onClick={()=>{this.selectLanguageItem(item)}}
            text= {item}
-           textColor="#FF333333"
-          />
-          <LinearLayout
-          height="1"
-          width="328"
-          background={window.__Colors.PRIMARY_BLACK_66}>
-          </LinearLayout>
-      </LinearLayout>
-    );
+           textColor="#FF333333"/>
+           {this.getLineSeperator()}
+      </LinearLayout>);
   }
 
   selectLanguageItem =(data) =>{
@@ -853,10 +678,8 @@ class AdditionalInformationActivity extends View{
      this.subjectDictionary.splice(index,1);
      this.selectedSubjects.unshift(data);
 
-
      var skills = this.selectedSubjects.map((item) => {
-       return (this.languageItemLayout(item));
-     });
+       return (this.languageItemLayout(item));});
 
     console.log(this.selectedSubjects," skiilhere");
     this.updatedLanguages=(
@@ -873,9 +696,7 @@ class AdditionalInformationActivity extends View{
 
       this.replaceChild(this.idSet.LanguageLayout,this.updatedLanguages.render(),0);
       this.updateSaveButtonStatus(this.checkCompleteStatus());
-
    }
-
   }
 
   addLanguageItem = (data) =>{
@@ -889,9 +710,6 @@ class AdditionalInformationActivity extends View{
       window.__Snackbar.show("Language Already Added");
     }
   }
-
-
-
 
   languageItemLayout = (item)=> {
     return (
@@ -918,8 +736,7 @@ class AdditionalInformationActivity extends View{
             margin="0,1,0,0"
             onClick={()=>{this.removeLanguage(item)}}
             />
-       </LinearLayout>
-      );
+       </LinearLayout>);
   }
 
   removeLanguage= (item) =>{
@@ -945,10 +762,8 @@ class AdditionalInformationActivity extends View{
            </LinearLayout>
          </HorizontalScrollView>)
 
-
        this.replaceChild(this.idSet.LanguageLayout,this.updatedLanguages.render(),0);
        this.updateSaveButtonStatus(this.checkCompleteStatus());
-
     }
   }
 
@@ -978,14 +793,12 @@ class AdditionalInformationActivity extends View{
          this.replaceChild(this.idSet.predictionHobbiesLayout, this.predictHobbieLayout.render(), 0);
        }
      }
-
   }
 
   populateHobbiePredictions = (predictions,data) =>{
 
     var predictionContent = predictions.map((item) => {
-      return (this.getHobbiePredictionCard(item))
-    });
+      return (this.getHobbiePredictionCard(item))});
 
     var addDictionaryString="Add \"String\"";
     addDictionaryString = addDictionaryString.replace("String", data);
@@ -993,8 +806,7 @@ class AdditionalInformationActivity extends View{
        height="match_parent"
        width="wrap_content"
        orientation="vertical"
-       margin="16,0,16,0"
-       >
+       margin="16,0,16,0">
 
          {predictionContent}
          <LinearLayout
@@ -1009,16 +821,9 @@ class AdditionalInformationActivity extends View{
             text={addDictionaryString}
             textColor="#FF333333"/>
          </LinearLayout>
-         <LinearLayout
-         height="3"
-         width="328"
-         background="#E0E0E0">
-         </LinearLayout>
        </LinearLayout>);
 
     this.replaceChild(this.idSet.predictionHobbiesLayout, this.predictHobbieLayout.render(), 0);
-
-
   }
 
   getHobbiePredictionCard = (item)=>{
@@ -1036,15 +841,9 @@ class AdditionalInformationActivity extends View{
            textSize="15"
            onClick={()=>{this.selectHobbieItem(item)}}
            text= {item}
-           textColor="#FF333333"
-          />
-          <LinearLayout
-          height="1"
-          width="328"
-          background={window.__Colors.PRIMARY_BLACK_66}>
-          </LinearLayout>
-      </LinearLayout>
-    );
+           textColor="#FF333333"/>
+           {this.getLineSeperator()}
+      </LinearLayout>);
   }
 
   selectHobbieItem =(data) =>{
@@ -1062,7 +861,6 @@ class AdditionalInformationActivity extends View{
      this.hobbieDictionary.splice(index,1);
      this.selectedHobbies.unshift(data);
 
-
      var skills = this.selectedHobbies.map((item) => {
        return (this.hobbieItemLayout(item));
      });
@@ -1079,11 +877,8 @@ class AdditionalInformationActivity extends View{
                {skills}
             </LinearLayout>
       </HorizontalScrollView>);
-
       this.replaceChild(this.idSet.HobbiesLayout,this.updatedHobbies.render(),0);
-
    }
-
   }
 
   addHobbieItem = (data) =>{
@@ -1098,45 +893,36 @@ class AdditionalInformationActivity extends View{
     }
   }
 
-
-
-
   hobbieItemLayout = (item)=> {
     return (
       <LinearLayout
       height="wrap_content"
-      width="wrap_content"
-      >
+      width="wrap_content">
             <LinearLayout
             height="32"
             width="wrap_content"
             background="#66D8D8D8"
-            cornerRadius="12,12,12,12"
-            >
+            cornerRadius="12,12,12,12">
                 <TextView
                 height="28"
                 width="wrap_content"
                 textColor="#ffffff"
                 text={item}
                 margin="12,0,0,0"
-                gravity="center"
-                />
+                gravity="center"/>
                 <ImageView
                 margin="11,8,11,8"
                 height="match_parent"
                 width="match_parent"
                 imageUrl="ic_action_close"
-                onClick={()=>{this.removeHobbie(item)}}
-                />
+                onClick={()=>{this.removeHobbie(item)}}/>
             </LinearLayout>
             <LinearLayout
             height="wrap_content"
             width="10"/>
-
     </LinearLayout>
   );
   }
-
   removeHobbie= (item) =>{
     var index= this.selectedHobbies.indexOf(item);
     if(index>-1){
@@ -1144,8 +930,7 @@ class AdditionalInformationActivity extends View{
       this.hobbieDictionary.unshift(item);
 
       var Hobbies = this.selectedHobbies.map((data) => {
-        return (this.hobbieItemLayout(data));
-      });
+        return (this.hobbieItemLayout(data));});
 
       console.log(this.selectedHobbies," skiilll");
       this.updatedHobbies=(
@@ -1161,7 +946,6 @@ class AdditionalInformationActivity extends View{
          </HorizontalScrollView>);
 
        this.replaceChild(this.idSet.HobbiesLayout,this.updatedHobbies.render(),0);
-
     }
   }
 
@@ -1172,110 +956,105 @@ class AdditionalInformationActivity extends View{
   }
 
   arrayEquals = (array1,array2) => {
-    if(array1.length!=array2.length)
-     return false;
+    if(array1.length!=array2.length){
+       return false;
+    }
 
     var i=0
-    for(i=0;i<array1.length;i++)
-      if(array2.indexOf(array1[i])<0)
-         return false;
-
+    for(i=0;i<array1.length;i++){
+      if(array2.indexOf(array1[i])<0){
+           return false;
+      }
+    }
     return true;
   }
 
   checkEmailFormat = (data) =>{
-    if(!(data.indexOf("@") !== -1) || !(data.indexOf(".") !== -1))
-        return false
-    return true
+    if(!(data.indexOf("@") !== -1) || !(data.indexOf(".") !== -1)){
+        return false;
+    }
+    return true;
   }
 
   checkPhoneFormat = (data) =>{
-    if(data.length == 10 && /^\d+$/.test(data))
-       return true
+    if(data.length == 10 && /^\d+$/.test(data)){
+       return true;
+  }
     return false;
   }
 
   checkAdharFormat = (data) =>{
-    if(data.length == 12 && /^\d+$/.test(data))
+    if(data.length == 12 && /^\d+$/.test(data)){
        return true
+    }
     return false;
   }
 
   handleSaveClick = () => {
     var json=  {};
-
-
     if(!this.checkCompleteStatus())
       {
         window.__Snackbar.show(window.__S.NO_CHANGE);
         return;
       }
 
-
     json.firstName=this.name;
     json.language=this.language;
 
-    if(this.checkEmailFormat(this.email))
+    if(this.checkEmailFormat(this.email)){
         json.email=this.email;
+    }
     else {
       window.__Snackbar.show(window.__S.ERROR_EMAIL_FORMAT)
       return;
     }
 
-
-    if(this.checkPhoneFormat(this.mobile))
+    if(this.checkPhoneFormat(this.mobile)){
         json.phone=this.mobile;
+    }
     else {
       window.__Snackbar.show(window.__S.ERROR_SHORT_MOBILE)
       return;
     }
 
-
-    if(this.location!=null)
+    if(this.location!=null){
     json.location=this.location;
+    }
 
-    if(this.adhar!=null)
-      if(this.checkAdharFormat(this.adhar))
+    if(this.adhar!=null){
+      if(this.checkAdharFormat(this.adhar)){
            json.aadhaarNo=this.adhar;
+      }
       else {
         window.__Snackbar.show(window.__S.ERROR_INVALID_AADHAAR)
         return;
       }
-
-    if(this.dob!=null)
-    json.dob= this.dob;
+    }
+    if(this.dob!=null){
+       json.dob= this.dob;
+    }
 
     if(this.grade!=null && this.grade.length >= 0 ) {
       json.grade=this.grade;
     }
 
-
-    if(this.gender!=null)
+    if(this.gender!=null){
       json.gender=this.gender.toLowerCase();
-
+    }
       json.subject=this.selectedSubjects.length>0 ? this.selectedSubjects : null;
-
       json.profileSummary = this.description;
-
-
-   json.userId=window.__userToken;
+      json.userId=window.__userToken;
 
    var url=window.__apiUrl + "/api/user/v1/update"
-
 
    var body = {
              "id":"unique API ID",
              "ts":"response timestamp YYYY-MM-DDThh:mm:ss+/-nn:nn (timezone defaulted to +5.30)",
-               "params": {
-
-                 },
+               "params": {},
              "request":json
              }
-
   console.log(JSON.stringify(body),"sendingJson");
-
   this.responseCame=false;
-
   if(JBridge.isNetworkAvailable()){
       JBridge.patchApi(url,JSON.stringify(body),window.__userToken,window.__apiToken);
       window.__LoaderDialog.show();
@@ -1291,24 +1070,10 @@ class AdditionalInformationActivity extends View{
  }else {
    window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE);
  }
-
- //  window.__LoaderDialog.show();
- //
- // setTimeout(() => {
- //     if(_this.responseCame){
- //       return;
- //     }
- //     window.__Snackbar.show(window.__S.ERROR_SERVER_CONNECTION);
- //     window.__LoaderDialog.hide();
- //     _this.responseCame=false;
- // },window.__API_TIMEOUT);
-
-  }
-
+}
   getPatchCallback = (data) =>{
     data=JSON.parse(data);
     if(this.responseCame){
-
       return;
     }
 
@@ -1321,7 +1086,6 @@ class AdditionalInformationActivity extends View{
    }else{
      window.__Snackbar.show(data.params.errmsg);
    }
-
   }
 
   checkCompleteStatus = () =>{
@@ -1334,7 +1098,6 @@ class AdditionalInformationActivity extends View{
   }
 
   checkSameData = () =>{
-
     console.log(JSON.stringify(this.grade) +" gfgh "+ JSON.stringify(this.prevData.grade));
     if(this.name == this.prevData.name 
        && this.lastName == this.prevData.lastName
@@ -1396,27 +1159,21 @@ class AdditionalInformationActivity extends View{
   setPhone = (data) =>{
     this.mobile=data=="" ? null : data;
     this.updateSaveButtonStatus(this.checkCompleteStatus());
-
   }
 
   setAdhar= (data) => {
     this.adhar=data=="" ? null :data;
     this.updateSaveButtonStatus(this.checkCompleteStatus());
-
   }
 
   setLocation = (data) => {
     this.location=data=="" ? null :data;
     this.updateSaveButtonStatus(this.checkCompleteStatus());
-
   }
 
   setDescription = (data)=>{
     this.description=data;
     this.updateSaveButtonStatus(this.checkCompleteStatus());
-
   }
-
-
 }
 module.exports = Connector(AdditionalInformationActivity);

@@ -121,7 +121,6 @@ class ExperiencePopUp extends View{
    this.setVisibility("gone");
    this.subjects=[];
    window.__ExperiencePopUp.data=undefined;
-
  }
 
  getVisibility = (data) => {
@@ -139,13 +138,6 @@ class ExperiencePopUp extends View{
 
 
  initializeData = () =>{
-   this.prevData.subjects=[];
-   this.prevData.jobName="";
-   this.prevData.Organization="";
-   this.prevData.Position="";
-   this.prevData.joiningDate=null;
-   this.prevData.endDate=null;
-   this.jobProfile = [];
    if(window.__ExperiencePopUp.data!=undefined)
    {
      this.prevData.jobName = window.__ExperiencePopUp.data.jobName;
@@ -154,8 +146,15 @@ class ExperiencePopUp extends View{
      this.prevData.joiningDate=window.__ExperiencePopUp.data.joiningDate;
      this.prevData.endDate=window.__ExperiencePopUp.data.endDate;
      this.prevData.subjects = window.__ExperiencePopUp.data.subject;
+     return;
    }
-
+   this.prevData.subjects=[];
+   this.prevData.jobName="";
+   this.prevData.Organization="";
+   this.prevData.Position="";
+   this.prevData.joiningDate=null;
+   this.prevData.endDate=null;
+   this.jobProfile = [];
  }
 
  populateData = () =>{
@@ -226,7 +225,6 @@ class ExperiencePopUp extends View{
 
    this.replaceChild(this.idSet.jobTypeRadioContainer,
      this.getRadioButtionLayout(jobTypeValue, index).render(), 0);
-
  }
 
 
@@ -248,7 +246,6 @@ class ExperiencePopUp extends View{
                    {this.getTitle()}
                </LinearLayout>
            </LinearLayout>
-
      );
  }
 
@@ -268,7 +265,6 @@ class ExperiencePopUp extends View{
            height="match_parent"
            width="wrap_content"
            gravity="center_vertical">
-
              <TextView
                  height="match_parent"
                  width="match_parent"
@@ -537,7 +533,7 @@ class ExperiencePopUp extends View{
        id = {this.idSet.experiencePopUpBody}
        gravity="center">
            {this.getBody()}
-           {this.getFooter()}
+           {this.getButtons()}
      </RelativeLayout>
    );
  }
@@ -561,27 +557,6 @@ class ExperiencePopUp extends View{
     );
   }
 
-  getFooter = () => {
-    return (
-      <LinearLayout
-        width = "match_parent"
-        height = "wrap_content"
-        orientation = "vertical"
-        background = "#ffffff"
-        alignParentBottom = "true, -1">
-        <LinearLayout
-          width = "match_parent"
-          height = "match_parent"
-          orientation = "horizontal"
-          id = {this.idSet.btnsHolder}>
-          {this.getButtons()}
-          </LinearLayout>
-
-
-      </LinearLayout>
-    );
-  }
-
   getButtons = () => {
       var buttonList = [this.delBtnState, this.saveBtnState];
 
@@ -589,7 +564,9 @@ class ExperiencePopUp extends View{
       <LinearLayout
         width = "match_parent"
         height = "wrap_content"
-        visibility = {"visible"}>
+        orientation = "vertical"
+        background = "#ffffff"
+        alignParentBottom = "true, -1">
         <PageOption
             width="match_parent"
             buttonItems={buttonList}
@@ -599,8 +576,6 @@ class ExperiencePopUp extends View{
   }
 
 del = () => {
-  // this.delete = true;
-  // this.sendJSON();
   window.__SimplePopup.show(this.idSet.deleteConf);
   console.log("window.__SimplePopup.show()");
 }
@@ -626,7 +601,7 @@ del = () => {
          id = {this.idSet.experiencePopUpBody}
          gravity="center">
              {this.getBody()}
-             {this.getFooter()}
+             {this.getButtons()}
        </RelativeLayout>
 
        <LinearLayout
@@ -660,23 +635,20 @@ del = () => {
                style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
                margin="0,0,5,6"
                onItemClick = {this.handleSpinnerItemClick}
-               values={this.array}
-               />)
+               values={this.array}/>);
      }
 
      handleSpinnerItemClick = (...params) => {
 
-
-       if(parseInt(params[2])>0)
+       if(parseInt(params[2])>0){
        this.addSubject(this.spinnerArray[parseInt(params[2])]);
-
-       if(this.checkCompleteStatus())
+       }
+       if(this.checkCompleteStatus()){
           this.enableSaveButton();
-       else {
+       }else {
          this.disableSaveButton();
        }
      }
-
 
      getLineSeperator = () => {
        return (<LinearLayout
@@ -685,7 +657,6 @@ del = () => {
                margin="0,0,0,0"
                background={window.__Colors.PRIMARY_BLACK_22}/>)
      }
-
 
      startCalendar =() =>{
        this.showCalendar(1);
@@ -697,31 +668,25 @@ del = () => {
 
      showCalendar = (index) =>{
        var _this = this;
+       var temp;
        var callback = callbackMapper.map(
          function (data){
 
                data[0]=_this.formatDate(data[0]);
-
               if(index==1){
                 _this.joiningDate=data[0];
-
-                 var cmd = _this.set({
-                   id: _this.idSet.joiningDateText,
-                   text: data[0],
-                   style: window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK
-                 });
-                 Android.runInUI(cmd, 0);
+                temp=_this.idSet.joiningDateText;
             }
             else{
               _this.endDate=data[0];
-              var cmd = _this.set({
-                id: _this.idSet.closingDateText,
-                text: data[0],
-                style: window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK
-
-              });
-              Android.runInUI(cmd, 0);
+              temp=_this.idSet.closingDateText;
             }
+            var cmd = _this.set({
+              id: temp,
+              text: data[0],
+              style: window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK
+            });
+            Android.runInUI(cmd, 0);
 
             if(_this.checkCompleteStatus()){
               _this.enableSaveButton();
@@ -729,7 +694,6 @@ del = () => {
               _this.disableSaveButton();
             }
        });
-
 
        try{
         if (index==1){
@@ -773,8 +737,6 @@ del = () => {
             console.log(window.__ExperiencePopUp , " gh ");
             window.__Snackbar.show(window.__S.ERROR_MULTIPLE_CURRENT_JOB);
           }
-
-
        }
        else {
          var cmd = this.set({
@@ -809,7 +771,6 @@ del = () => {
         this.singleClick =true;
         window.__Snackbar.show(data.params.errmsg);
       }
-
     }
 
      sendJSON = () => {
@@ -831,15 +792,13 @@ del = () => {
             "endDate":this.endDate,
             "subject":this.subjects,
             }
-          if(window.__RadioButton.currentIndex==0)
-            {this.json.isCurrentJob = true;
+          if(window.__RadioButton.currentIndex==0){
+            this.json.isCurrentJob = true;
             }
-
           this.jobProfile.push(this.json);
         }
         else{
           var json=  window.__ExperiencePopUp.data;
-
 
           json.jobName=this.jobName;
           json.orgName=this.Organization;
@@ -858,12 +817,10 @@ del = () => {
 
         var url=window.__apiUrl + "/api/user/v1/update"
 
-
         var body = {
                   "id":"unique API ID",
                   "ts":"response timestamp YYYY-MM-DDThh:mm:ss+/-nn:nn (timezone defaulted to +5.30)",
-                    "params": {
-                      },
+                    "params": {},
                   "request":{
                     "userId":window.__userToken,
                     "jobProfile": this.jobProfile
@@ -886,7 +843,6 @@ del = () => {
        },window.__API_TIMEOUT);
      }
    }
-
 
      formatDate = (date) =>{
          date = date.substr(0,4)+"-"+date.substr(5);
@@ -971,7 +927,6 @@ del = () => {
          this.disableSaveButton();
        }
      }
-
   }
 
 module.exports = ExperiencePopUp;
