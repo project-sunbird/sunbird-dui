@@ -79,9 +79,8 @@ class EducationPopUp extends View {
         height="match_parent"
         gravity="center">
             {this.getBody()}
-            {this.getFooter()}
-      </RelativeLayout>
-    );
+            {this.getButtons()}
+      </RelativeLayout>);
   }
 
   show = () => {
@@ -263,16 +262,18 @@ class EducationPopUp extends View {
   }
 
   checkPassingYear = (data) => {
-    if(data.length == 4 && /^\d+$/.test(data))
-       return true
+    if(data.length == 4 && /^\d+$/.test(data)){
+       return true;
+    }
     return false;
   }
 
   checkPercentage = (data) => {
     var flag =true;
     try {
-      if( isNaN(data) || parseFloat(data) > 100.0 || parseFloat(data) < 0.0)
+      if( isNaN(data) || parseFloat(data) > 100.0 || parseFloat(data) < 0.0){
        flag=false;
+      }
     } catch (e) {
        flag=false;
     } finally {
@@ -281,18 +282,21 @@ class EducationPopUp extends View {
   }
 
   checkGrade = (data) => {
-    if( data.length == 1 && /[A-F a-f]/.test(data))
+    if( data.length == 1 && /[A-F a-f]/.test(data)){
        return true;
+    }
     return false;
   }
 
   handleSaveClick = () => {
 
     if (this.singleClick && !this.canSave && !this.delete){
-      if (window.__EducationPopUp.data)
+      if (window.__EducationPopUp.data){
         window.__Snackbar.show(window.__S.WARNING_PLEASE_MAKE_SOME_CHANGES);
-      else
+      }
+      else{
         window.__Snackbar.show(window.__S.WARNING_PLEASE_ADD_MANDATORY_DETAILS );
+      }
       return;
     }
 
@@ -311,20 +315,21 @@ class EducationPopUp extends View {
               return;
             }
 
-    if(this.percentage!=null && this.percentage!="" && !this.delete)
+    if(this.percentage!=null && this.percentage!="" && !this.delete){
         if(!this.checkPercentage(this.percentage))
             {
               window.__Snackbar.show(window.__S.WARNING_INVALID_PERCENTAGE);
               return;
             }
+          }
 
-    if(this.grade!=null && this.grade!="" && !this.delete)
+    if(this.grade!=null && this.grade!="" && !this.delete){
           if(!this.checkGrade(this.grade))
               {
                 window.__Snackbar.show(window.__S.WARNING_INVALID_GRADE);
                 return;
               }
-
+            }
     if (window.__EducationPopUp.data == undefined) {
       json = {
         "degree": this.degree,
@@ -352,9 +357,7 @@ class EducationPopUp extends View {
     var body = {
       "id" : "unique API ID",
       "ts" : "response timestamp YYYY-MM-DDThh:mm:ss+/-nn:nn (timezone defaulted to +5.30)",
-      "params" : {
-
-      },
+      "params" : {},
       "request" : {
         "userId" : window.__userToken,
         "education" : this.education
@@ -396,7 +399,6 @@ class EducationPopUp extends View {
      this.singleClick =true;
      window.__Snackbar.show(data.params.errmsg);
    }
-
  }
 
   getToolbar  = () =>{
@@ -414,12 +416,10 @@ class EducationPopUp extends View {
                   width="match_parent" >
 
                     {this.getBack()}
-
                     {this.getTitle()}
 
                 </LinearLayout>
             </LinearLayout>
-
       );
   }
 
@@ -447,7 +447,6 @@ class EducationPopUp extends View {
                   text={window.__S.TITLE_EDUCATION}
                   style={window.__TextStyle.textStyle.TOOLBAR.HEADING}/>
           </LinearLayout>);
-
   }
 
   getLineSeperator = () => {
@@ -455,7 +454,7 @@ class EducationPopUp extends View {
             width="match_parent"
             height="2"
             margin="0,0,0,0"
-            background={window.__Colors.PRIMARY_BLACK_22}/>)
+            background={window.__Colors.PRIMARY_BLACK_22}/>);
   }
 
   getScrollView(){
@@ -522,25 +521,6 @@ class EducationPopUp extends View {
       </LinearLayout>
     );
   }
-
-  getFooter = () => {
-    return (
-      <LinearLayout
-        width = "match_parent"
-        height = "wrap_content"
-        orientation = "vertical"
-        background = "#ffffff"
-        alignParentBottom = "true, -1">
-        <LinearLayout
-          width = "match_parent"
-          height = "match_parent"
-          orientation = "horizontal">
-          {this.getButtons()}
-        </LinearLayout>
-      </LinearLayout>
-    );
-  }
-
   getButtons = () => {
       var buttonList = [this.delBtnState, this.saveBtnState];
 
@@ -548,7 +528,8 @@ class EducationPopUp extends View {
       <LinearLayout
         width = "match_parent"
         height = "wrap_content"
-        visibility = {"visible"}>
+        orientation = "vertical"
+        alignParentBottom = "true, -1">
         <PageOption
             width="match_parent"
             buttonItems={buttonList}
@@ -558,17 +539,13 @@ class EducationPopUp extends View {
   }
   handleDelClick = () => {
     window.__SimplePopup.show(this.idSet.eduConf);
-    // this.delete = true;
-    // this.handleSaveClick();
   }
 
   handleConfirmDialog = (type) => {
     if (type == "positive") {
       this.delete = true;
       this.handleSaveClick();
-    } else {
-
-    }
+    } 
     window.__SimplePopup.hide(this.idSet.eduConf);
   }
 
@@ -593,7 +570,7 @@ class EducationPopUp extends View {
           id={this.idSet.educationPopUpBody}
           gravity="center">
               {this.getBody()}
-              {this.getFooter()}
+              {this.getButtons()}
         </RelativeLayout>
         <LinearLayout
           width = "match_parent"
