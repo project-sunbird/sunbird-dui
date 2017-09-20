@@ -139,13 +139,6 @@ class ExperiencePopUp extends View{
 
 
  initializeData = () =>{
-   this.prevData.subjects=[];
-   this.prevData.jobName="";
-   this.prevData.Organization="";
-   this.prevData.Position="";
-   this.prevData.joiningDate=null;
-   this.prevData.endDate=null;
-   this.jobProfile = [];
    if(window.__ExperiencePopUp.data!=undefined)
    {
      this.prevData.jobName = window.__ExperiencePopUp.data.jobName;
@@ -154,7 +147,15 @@ class ExperiencePopUp extends View{
      this.prevData.joiningDate=window.__ExperiencePopUp.data.joiningDate;
      this.prevData.endDate=window.__ExperiencePopUp.data.endDate;
      this.prevData.subjects = window.__ExperiencePopUp.data.subject;
+     return;
    }
+   this.prevData.subjects=[];
+   this.prevData.jobName="";
+   this.prevData.Organization="";
+   this.prevData.Position="";
+   this.prevData.joiningDate=null;
+   this.prevData.endDate=null;
+   this.jobProfile = [];
 
  }
 
@@ -697,6 +698,7 @@ del = () => {
 
      showCalendar = (index) =>{
        var _this = this;
+       var temp;
        var callback = callbackMapper.map(
          function (data){
 
@@ -704,24 +706,18 @@ del = () => {
 
               if(index==1){
                 _this.joiningDate=data[0];
-
-                 var cmd = _this.set({
-                   id: _this.idSet.joiningDateText,
-                   text: data[0],
-                   style: window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK
-                 });
-                 Android.runInUI(cmd, 0);
+                temp=_this.idSet.joiningDateText;
             }
             else{
               _this.endDate=data[0];
-              var cmd = _this.set({
-                id: _this.idSet.closingDateText,
-                text: data[0],
-                style: window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK
-
-              });
-              Android.runInUI(cmd, 0);
+              temp=_this.idSet.closingDateText;
             }
+            var cmd = _this.set({
+              id: temp,
+              text: data[0],
+              style: window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK
+            });
+            Android.runInUI(cmd, 0);
 
             if(_this.checkCompleteStatus()){
               _this.enableSaveButton();
@@ -729,7 +725,6 @@ del = () => {
               _this.disableSaveButton();
             }
        });
-
 
        try{
         if (index==1){
