@@ -282,7 +282,7 @@ class EducationPopUp extends View {
   }
 
   checkGrade = (data) => {
-    if( data.length == 1 && /[A-F a-f]/.test(data)){
+    if( data.length == 1 && /[A-F]/.test(data)){
        return true;
     }
     return false;
