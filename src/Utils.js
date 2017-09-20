@@ -244,12 +244,20 @@ exports["callAPI'"] = function(success) {
                   return;
                 }
                console.log("GOT -> from droid :",params)
+               console.log(arguments);
               if (arguments && arguments[0].length >= 3 && shouldReturnCallback) {
                 shouldReturnCallback=false;
+
+                var args = [];
+                args.push(arguments);
+
+                // console.log(arguments);
+                // console.log(params);
+
                 success({
-                  status: arguments[0],
-                  response: JSON.parse(arguments[1] || "{}"),
-                  statusCode: arguments[2]
+                  status: args[0],
+                  response: "",
+                  statusCode: 1
                 })();
               } else {
                 shouldReturnCallback=false;
@@ -275,7 +283,7 @@ exports["callAPI'"] = function(success) {
                 })();
               }, window.__API_TIMEOUT);
             console.log("->","BEGIN TEST")
-            JBridge.callAPI(method, url, btoa(JSON.stringify(data)), btoa(JSON.stringify(headers)), true, callback);
+            JBridge.callAPI(method, url, btoa(JSON.stringify(data)), btoa(JSON.stringify(headers)), callback);
           };
         };
       };

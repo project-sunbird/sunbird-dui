@@ -477,7 +477,7 @@ class ResourceDetailActivity extends View {
           var callback = callbackMapper.map(function(response){
 
             if(state.responseFor == "API_FlagContent" && response[0] == "successful"){
-              JBridge.logFlagClickEvent(this.details.identifier,"RESOURCES");
+              JBridge.logFlagClickEvent(_this.details.identifier,"RESOURCES");
               setTimeout(function(){
                 window.__Snackbar.show(window.__S.CONTENT_FLAGGED_MSG)
                 window.__BNavFlowRestart();

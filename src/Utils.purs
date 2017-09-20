@@ -65,7 +65,7 @@ type State a = {screen :: String |a}
 
 type AffError e = (Error -> Eff e Unit)
 type AffSuccess s e = (s -> Eff e Unit)
-type ApiResponse = {status :: String, statusCode :: Int, response :: A.Json}
+type ApiResponse = {status :: Array String, statusCode :: Int, response :: A.Json}
 type ExceptionableAff e a = ExceptT Error (Aff e) a
 type ExceptionableEff e a = ExceptT Error (Eff e) a
 

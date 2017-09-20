@@ -45,7 +45,7 @@ class ProfileAdditionalInfo extends View {
     this.hobbies = "Books, cycling, music, sports, browsing, teaching"
 
     this.visibility = "gone"
-    if (this.data.languages != "" && this.data.email && this.data.phone){
+    if (this.props.editable == "true"){
       this.visibility = "visible";
     }
   }
