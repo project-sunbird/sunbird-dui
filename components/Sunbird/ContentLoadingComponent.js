@@ -1,5 +1,3 @@
-
-
 var dom = require("@juspay/mystique-backend/src/doms/android");
 var Connector = require("@juspay/mystique-backend/src/connectors/screen_connector");
 var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
@@ -11,7 +9,6 @@ var ProgressBar = require("@juspay/mystique-backend").androidViews.ProgressBar;
 class ContentLoadingComponent extends View {
   constructor(props, children) {
     super(props, children);
-
     this.displayName = "content_loading_component"
 
     this.setIds([
@@ -20,6 +17,7 @@ class ContentLoadingComponent extends View {
     ])
     this.contentLayout = this.props.contentLayout == undefined ? this.getContent() : this.props.contentLayout;
     this.isRendering=false;
+    window.__ContentLoadingComponent = this;
   }
 
   getContent = () => {
@@ -39,8 +37,6 @@ class ContentLoadingComponent extends View {
   }
 
   hideLoader = () => {
-    window.__LoaderDialog.hide();
-    
     Android.runInUI(this.set({
       id: this.idSet.loaderComponent,
       visibility : "gone"
@@ -56,7 +52,6 @@ class ContentLoadingComponent extends View {
                       width="match_parent"
                       root="true"
                       gravity="center"
-                      afterRender={this.hideLoader}
                       orientation="vertical">
 
                           {this.contentLayout}

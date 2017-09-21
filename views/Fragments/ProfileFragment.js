@@ -125,6 +125,7 @@ class ProfileFragment extends View {
 
 
   afterRender() {
+    window.__ContentLoadingComponent.hideLoader();
     window.__LoaderDialog.hide();
   }
 

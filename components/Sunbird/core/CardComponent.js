@@ -155,8 +155,8 @@ class CardComponent extends View {
                   height="wrap_content">
 
                       <RatingBar
-                        width="wrap_content"
-                        height="wrap_content"
+                        width="0"
+                        height="0"
                         id={this.idSet.ratingBar}/>
 
                 </LinearLayout>
