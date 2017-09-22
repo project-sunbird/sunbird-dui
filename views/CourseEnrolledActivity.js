@@ -237,7 +237,7 @@ class CourseEnrolledActivity extends View {
           _this.changeOverFlow();
         }
         else
-          window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE)
+          window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE)
       }
 
     });
@@ -487,7 +487,7 @@ class CourseEnrolledActivity extends View {
       if(JBridge.isNetworkAvailable())
         window.__runDuiCallback(event);
       else
-        window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE);
+        window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
     }
   }
 

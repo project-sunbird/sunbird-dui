@@ -1068,7 +1068,7 @@ class AdditionalInformationActivity extends View{
          this.responseCame=false;
      },window.__API_TIMEOUT);
  }else {
-   window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE);
+   window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
  }
 }
   getPatchCallback = (data) =>{

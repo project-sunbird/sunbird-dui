@@ -353,7 +353,7 @@ class CommProfSearchActivity extends View {
       window.__LoaderDialog.show();
       this.getSearchList(searchText[0],"false");
     } else {
-      window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE);
+      window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
     }
   }
 

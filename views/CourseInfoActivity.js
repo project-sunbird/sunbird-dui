@@ -117,7 +117,7 @@ class CourseInfoActivity extends View {
               if(JBridge.isNetworkAvailable())
                 JBridge.importCourse(identifier,"false")
               else
-                window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE)
+                window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE)
           }
         })
 

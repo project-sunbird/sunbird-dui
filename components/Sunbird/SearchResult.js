@@ -151,7 +151,7 @@ class SearchResult extends View {
       if (JBridge.isNetworkAvailable()){
         window.__runDuiCallback(event);
       } else {
-        window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE);
+        window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
       }
    }
     else if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook" || utils.checkEnrolledCourse(item.identifier)){

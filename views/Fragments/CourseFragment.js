@@ -103,21 +103,24 @@ class CourseFragment extends View {
 
 
   handleResponse = () => {
-
+    if(!JBridge.isNetworkAvailable())
+      {
+        window.__ContentLoadingComponent.hideLoader();
+        window.__LoaderDialog.hide();
+        return (this.getNoInternetLayout());
+      }
       if(this.props.response===undefined) {
         window.__Snackbar.show(window.__S.ERROR_EMPTY_RESULT)
         return;
       }
 
       this.details = this.props.response.result.response;
-      if (!this.details.hasOwnProperty("name")) {
+      if ((!this.details.hasOwnProperty("name"))
+          || (this.details.sections==undefined && this.details.sections.length==0)) {
+            window.__ContentLoadingComponent.hideLoader();
+            window.__LoaderDialog.hide();
         window.__Snackbar.show(window.__S.ERROR_FETCHING_DATA);
         return;
-      }
-
-      if(this.details.sections==undefined && this.details.sections.length==0){
-          window.__Snackbar.show(window.__S.ERROR_FETCHING_DATA);
-          return;
       }
 
       Android.runInUI(this.set({
@@ -151,7 +154,41 @@ class CourseFragment extends View {
 
 
   }
-
+  getNoInternetLayout = () => {
+    
+    var layout = (
+      
+            <LinearLayout
+                background={window.__Colors.WHITE}
+                height="400"
+                width="match_parent"
+                alpha="0.55"
+                weight="1"
+                orientation="vertical"
+                gravity="center_horizontal"
+                clickable="true"
+                visibility={JBridge.isNetworkAvailable()==false?"visible":"gone"}>
+      
+                  <ImageView
+                    width="100"
+                    height="100"
+                    margin="0,58,0,0"
+                    gravity="center_horizontal"
+                    imageUrl="ic_no_internet"/>
+      
+                  <TextView
+                    width="wrap_content"
+                    height="wrap_content"
+                    gravity="center_horizontal"
+                    padding="0,16,0,0"
+                    style={window.__TextStyle.textStyle.CARD.HEADING}
+                    text={window.__S.ERROR_OFFLINE_MODE}/>
+      
+      
+                </LinearLayout>
+          )
+          return layout;
+        }
 
   getCourseCardLayout = (item) => {
 
@@ -211,8 +248,6 @@ class CourseFragment extends View {
       var callbackRefresh = callbackMapper.map(function(params) {
         if(JBridge.isNetworkAvailable())
           window.__BNavFlowRestart();
-        else
-        window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE);
     });
         JBridge.addSwipeRefreshScrollView(this.idSet.scrollViewContainerCourse,callbackRefresh);
   }
@@ -293,7 +328,6 @@ class CourseFragment extends View {
              width="match_parent"
              background={window.__Colors.WHITE_F2}/>)
            }
-
 
 
   render() {

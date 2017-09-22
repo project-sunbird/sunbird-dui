@@ -305,7 +305,7 @@ class SearchActivity extends View {
           }
           else{
             window.__LoaderDialog.hide();
-            window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE);
+            window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
           }
 
         this.showFilter();
@@ -344,7 +344,7 @@ class SearchActivity extends View {
       this.getSearchList(searchText[0],"false");
     }
     else
-      window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE)
+      window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE)
 
   }
 
