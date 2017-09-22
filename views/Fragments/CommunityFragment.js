@@ -40,6 +40,10 @@ class CommunityFragment extends View {
     JBridge.logTabScreenEvent("GROUPS");
   }
 
+afterRender =()=>{
+  window.__ContentLoadingComponent.hideLoader();
+  window.__LoaderDialog.hide();
+}
 
   getParentBody = () => {
     return (

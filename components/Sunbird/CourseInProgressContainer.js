@@ -115,8 +115,9 @@ class CourseInProgressContainer extends View {
 
 
 
-    this.replaceChild(this.idSet.parentContainer,layout.render(),0)
-
+    this.replaceChild(this.idSet.parentContainer,layout.render(),0);
+    window.__ContentLoadingComponent.hideLoader();
+    window.__LoaderDialog.hide();
 
   }
 

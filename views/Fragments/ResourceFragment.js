@@ -347,6 +347,8 @@ handleResourceViewAllClick= (data,title,searchQuery,visibility) =>{
     });
 
     JBridge.getAllLocalContent(callback);
+    window.__ContentLoadingComponent.hideLoader();
+    window.__LoaderDialog.hide();
   }
 
 
