@@ -345,32 +345,40 @@ class ContentPreviewScreen extends View {
 
 
     var callback = callbackMapper.map(function(data) {
+      var input;
+      if (data[0]!="failure"){
+        input = [{
+                      type : "text",
+                      data : window.__deepLinkUrl+"/public/#!/content/"+_this.baseIdentifier
+
+                    },{
+                      type : "file",
+                      data : "file://"+data[0]
+
+                    }];
+        } else {
+          input = [{
+                        type : "text",
+                        data : window.__deepLinkUrl+"/public/#!/content/"+_this.baseIdentifier
+
+                      }];
+        }
+        var sharePopUp = (
+          <SharePopup
+          data = {input}
+          identifier = {_this.baseIdentifier}
+          type = ""
+          />
+          )
 
 
-      var input = [{
-                    type : "text",
-                    data : window.__deepLinkUrl+"/public/"+_this.baseIdentifier
+        _this.replaceChild(_this.idSet.sharePopupContainer,sharePopUp.render(),0);
 
-                  },{
-                    type : "file",
-                    data : "file://"+data[0]
-
-                  }];
-
-      var sharePopUp = (
-        <SharePopup
-        data = {input}
-        identifier = {_this.baseIdentifier}
-        type = ""
-        />
-        )
+         setTimeout(function() {
+          window.__SharePopup.show();
+        }, 200);
 
 
-    _this.replaceChild(_this.idSet.sharePopupContainer,sharePopUp.render(),0);
-
-     setTimeout(function() {
-      window.__SharePopup.show();
-    }, 200);
 
     });
     JBridge.exportEcar(this.baseIdentifier, callback);

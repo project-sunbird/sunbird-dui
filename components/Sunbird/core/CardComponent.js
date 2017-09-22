@@ -41,7 +41,7 @@ class CardComponent extends View {
 
   getBody = () => {
     var myProgress = this.props.data.isProgress?this.props.data.footerTitle.split('%')[0]:"0" ;
-    var myProgressColor = myProgress==100 ? window.__Colors.SUCCESS_GREEN : window.__Colors.SAFFRON 
+    var myProgressColor = myProgress==100 ? window.__Colors.SUCCESS_GREEN : window.__Colors.SAFFRON
     return (
       <LinearLayout
             width="wrap_content"
@@ -185,7 +185,7 @@ class CardComponent extends View {
 
 
   handleCardClick = () => {
-    
+
     this.props.onCardClick(this.props.content, this.props.data.type,this.props.index);
   }
 
@@ -198,7 +198,7 @@ class CardComponent extends View {
           afterRender={this.afterRender}
           orientation="vertical">
 
-          
+
            {this.getBody()}
 
          </LinearLayout>

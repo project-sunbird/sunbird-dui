@@ -53,7 +53,11 @@ exports.formatDate = (d) =>{
 }
 
 exports.decodeBase64 = (data) =>{
-  return decodeURIComponent(escape(atob(data)))
+if(data.length!=0)
+		return decodeURIComponent(escape(atob(data)))
+else {
+	return "{}";
+}
 }
 
 exports.encodeBase64 = (data) => {

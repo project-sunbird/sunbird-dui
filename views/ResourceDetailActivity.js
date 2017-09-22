@@ -142,7 +142,12 @@ class ResourceDetailActivity extends View {
                                     }];
 
               }
-
+            } else {
+              input = [{
+                          type : "text",
+                          data : window.__deepLinkUrl+"/public/#!/content/"+_this.details.identifier
+                      }];
+            }
                 var sharePopUp = (
                   <SharePopup
                   data = {input}
@@ -156,11 +161,11 @@ class ResourceDetailActivity extends View {
 
           window.__SharePopup.show();
 
-          }else{
-
-              JBridge.showToast(window.__S.ERROR_CANT_SHARE_TRY_AGAIN,"short");
-
-           }
+          // }else{
+          //
+          //     JBridge.showToast(window.__S.ERROR_CANT_SHARE_TRY_AGAIN,"short");
+          //
+          //  }
 
         });
 
