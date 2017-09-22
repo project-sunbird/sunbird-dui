@@ -164,7 +164,7 @@ class ViewBatchActivity extends View {
 
     handleStateChange = (state) => {
 
-
+     console.log("HADLE STATE change" , state);
       var status,response,responseCode,responseUrl;
 
       if(state.response != ""){
@@ -173,10 +173,10 @@ class ViewBatchActivity extends View {
        responseCode = state.response.status[2];
        responseUrl = state.response.status[3];
       }
+      
 
-
-
-      if (parseInt(responseCode) != 200) {
+      if (parseInt(responseCode) != 200
+         && (!((state.responseFor=="API_BatchCreator")&&(parseInt(responseCode)==400)))){
         window.__LoaderDialog.hide();
         window.__Snackbar.show(window.__S.RETRY_ACTION)
         return;
@@ -224,7 +224,7 @@ class ViewBatchActivity extends View {
             var event = { tag: 'OPEN_EnrolledActivity_BATCH', contents: whatToSend }
             window.__runDuiCallback(event);
           } else {
-            window.__Snackbar.show(window.__S.RETRY_ACTION)
+            window.__Snackbar.show(window.__S.RETRY_ACTION);
           }
           break;
 
