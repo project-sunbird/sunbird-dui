@@ -528,9 +528,9 @@ class CourseEnrolledActivity extends View {
 
         window.__LoaderDialog.hide();
 
-
+        var input;
           if(data[0]!="failure"){
-                var input = [{
+                input = [{
                             type : "text",
                             data : window.__deepLinkUrl+"/public/#!/course/"+_this.baseIdentifier
 
@@ -539,6 +539,14 @@ class CourseEnrolledActivity extends View {
                             data : "file://"+data[0]
 
                           }];
+            }
+            else{
+              input = [{
+                          type : "text",
+                          data : window.__deepLinkUrl+"/public/#!/course/"+_this.baseIdentifier
+
+                        }];
+            }
                 var type = _this.showProgress == "gone" ? "RESOURCES" : "COURSES";
               var sharePopUp = (
                 <SharePopup
@@ -554,11 +562,11 @@ class CourseEnrolledActivity extends View {
              setTimeout(function() {
               window.__SharePopup.show();
             }, 200);
-       }else{
-
-          JBridge.showToast(window.__S.ERROR_CANT_SHARE_TRY_AGAIN,"short");
-
-       }
+      //  }else{
+       //
+      //     JBridge.showToast(window.__S.ERROR_CANT_SHARE_TRY_AGAIN,"short");
+       //
+      //  }
 
     });
     JBridge.exportEcar(this.baseIdentifier, callback);
