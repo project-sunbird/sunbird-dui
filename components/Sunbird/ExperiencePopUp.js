@@ -203,7 +203,7 @@ class ExperiencePopUp extends View{
 
    var index;
 
-   if (window.__ExperiencePopUp.data.isCurrentJob && this.data != undefined) {
+   if (this.data != undefined && window.__ExperiencePopUp.data.isCurrentJob) {
      jobTypeValue[0].select = "1";
      jobTypeValue[1].select = "0";
      index = 0;
@@ -273,7 +273,6 @@ class ExperiencePopUp extends View{
                  text={window.__S.TITLE_EXPERIENCES}
                  style={window.__TextStyle.textStyle.TOOLBAR.HEADING}/>
          </LinearLayout>);
-
  }
 
  getScrollView(){
@@ -347,17 +346,7 @@ class ExperiencePopUp extends View{
                       onClick={this.startCalendar}/>
 
                 </LinearLayout>
-                <LinearLayout
-                  width="match_parent"
-                  height="1"
-                  background={window.__Colors.PRIMARY_BLACK_66}/>
              </LinearLayout>
-
-             <LinearLayout
-               weight="0.25"
-               height="0"
-               width="0"/>
-
              <LinearLayout
                height="wrap_content"
                width="0"
@@ -394,14 +383,7 @@ class ExperiencePopUp extends View{
                       style={window.__TextStyle.textStyle.CARD.BODY.DARK.FADED}/>
 
                 </LinearLayout>
-
-                <LinearLayout
-                  width="match_parent"
-                  height="1"
-                  background={window.__Colors.PRIMARY_BLACK_66}/>
-
               </LinearLayout>
-
       </LinearLayout>
    );
  }

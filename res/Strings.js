@@ -239,7 +239,8 @@ const stringsRes = {
 		CHOOSE_FROM_FOLLOWING : "Choose from following",
 		PERMISSION_SETTING_MSG : "To provide permissions, click on 'Open Settings' and provide suitable permissions.",
 		DOWNLOADING: "DOWNLOADING %s %",
-		ERROR_OFFLINE_MODE : "No internet, Offline mode"
+		ERROR_OFFLINE_MODE : "No internet, Offline mode",
+		ADDITIONAL_INFORMATION : "Additional Information"
 	},
 	"hi_IN" : {
 		ALREADY_HAVE_ACC : "मौजूदा उपयोगकर्ता, साइन इन करें",

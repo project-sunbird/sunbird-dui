@@ -290,8 +290,6 @@ handleResourceViewAllClick= (data,title,searchQuery,visibility) =>{
   }
 
   afterRender = () => {
-    console.log('HAKUNA MATATA after render');
-     
      this.renderOfflineCard();
      var callbackRefresh = callbackMapper.map(function(params) {
           window.__BNavFlowRestart();
