@@ -11,6 +11,7 @@ var Button = require('../../Sunbird/Button');
 var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget");
 var Space = require("@juspay/mystique-backend/src/android_views/Space");
 var StarComponent = require('../../Sunbird/StarComponent');
+var utils = require('../../../utils/GenericFunctions')
 
 var _this;
 
@@ -51,17 +52,17 @@ class CardComponent extends View {
             orientation="vertical">
 
               <RelativeLayout
-               width="match_parent"
+               width="200"
                height="wrap_content">
 
                 <ImageView
-                  width="match_parent"
+                  width="200"
                   height="110"
                   scaleType="centerCrop"
                   circularImageUrl={"5,"+this.props.data.imageUrl}/>
 
                 <LinearLayout
-                  width="match_parent"
+                  width="200"
                   height="110"
                   gravity="center"
                   cornerRadius="4"
@@ -69,7 +70,7 @@ class CardComponent extends View {
                   alpha="0.50"/>
 
                 <LinearLayout
-                  width="match_parent"
+                  width="200"
                   cornerRadius="4"
                   visibility={this.props.data.isProgress ? "visible" : "gone"}
                   height="4">
@@ -134,7 +135,7 @@ class CardComponent extends View {
   getFooter = () => {
     return (<LinearLayout
               margin="0,8,0,0"
-              width="wrap_content"
+              width="200"
               height="wrap_content">
 
               <LinearLayout
@@ -164,7 +165,7 @@ class CardComponent extends View {
                 <TextView
                   width="wrap_content"
                   height="wrap_content"
-                  text={this.props.data.footerSubTitle}
+                  text={utils.cropText(this.props.data.footerSubTitle, 15)}
                   style={window.__TextStyle.textStyle.HINT.TINY}/>
 
               </LinearLayout>
