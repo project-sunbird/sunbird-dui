@@ -51,17 +51,17 @@ class CardComponent extends View {
             orientation="vertical">
 
               <RelativeLayout
-               width="200"
+               width="match_parent"
                height="wrap_content">
 
                 <ImageView
-                  width="200"
+                  width="match_parent"
                   height="110"
-                  scaleType="fitXY"
+                  scaleType="centerCrop"
                   circularImageUrl={"5,"+this.props.data.imageUrl}/>
 
                 <LinearLayout
-                  width="200"
+                  width="match_parent"
                   height="110"
                   gravity="center"
                   cornerRadius="4"
@@ -69,7 +69,7 @@ class CardComponent extends View {
                   alpha="0.50"/>
 
                 <LinearLayout
-                  width="200"
+                  width="match_parent"
                   cornerRadius="4"
                   visibility={this.props.data.isProgress ? "visible" : "gone"}
                   height="4">
@@ -134,7 +134,7 @@ class CardComponent extends View {
   getFooter = () => {
     return (<LinearLayout
               margin="0,8,0,0"
-              width="200"
+              width="wrap_content"
               height="wrap_content">
 
               <LinearLayout
