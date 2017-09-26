@@ -602,8 +602,6 @@ del = () => {
        if (type == "positive") {
          this.delete = true;
          this.sendJSON();
-       } else {
-
        }
        window.__SimplePopup.hide(this.idSet.deleteConf);
      }
@@ -704,7 +702,7 @@ del = () => {
              });
              Android.runInUI(cmd, 0);
              this.endDate=null;
-             
+
              if(this.checkCompleteStatus())
              {
                this.enableSaveButton();
@@ -754,7 +752,7 @@ del = () => {
     }
 
      sendJSON = () => {
-
+       console.log("inside sendJSON", this.jobProfile);
        if (this.singleClick && !this.canSave && !this.delete) {
          if (window.__ExperiencePopUp.data)
            window.__Snackbar.show(window.__S.WARNING_PLEASE_MAKE_SOME_CHANGES);
@@ -763,6 +761,8 @@ del = () => {
          return;
        }
 
+       this.jobProfile = []
+       console.log();
        if(window.__ExperiencePopUp.data==undefined){
           this.json ={
             "jobName":this.jobName,
@@ -810,6 +810,7 @@ del = () => {
       if(this.singleClick){
         this.singleClick=false;
         _this.responseCame=false;
+        console.log("patchApi", body);
         JBridge.patchApi(url,JSON.stringify(body),window.__userToken,window.__apiToken);
         window.__LoaderDialog.show();
 
