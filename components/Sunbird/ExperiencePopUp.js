@@ -401,7 +401,6 @@ class ExperiencePopUp extends View{
            width="wrap_content"
            margin="0,0,16,2"
            textStyle={window.__TextStyle.textStyle.HINT.SEMI}
-           textAllCaps="true"
            text={window.__S.IS_THIS_YOUR_CURRENT_JOB
            }/>
 
@@ -428,7 +427,6 @@ class ExperiencePopUp extends View{
            width="wrap_content"
            margin="0,0,16,2"
            textStyle={window.__TextStyle.textStyle.HINT.SEMI}
-           textAllCaps="true"
            text={window.__S.IS_THIS_YOUR_CURRENT_JOB}/>
 
          <RadioButton

@@ -466,6 +466,7 @@ class MainActivity extends View {
       case 1:
       if(!JBridge.isNetworkAvailable())
         {
+          window.__runDuiCallback({ "tag": "OPEN_CourseFragment", contents: [] });
           this.switchContent(this.currentPageIndex);
         }
         else{
@@ -473,11 +474,12 @@ class MainActivity extends View {
         event = { "tag": "API_CourseFragment", contents: whatToSend};
         }
         break;
-      case 2:
+      case 2: 
       if(!JBridge.isNetworkAvailable())
         {
+          window.__runDuiCallback({ "tag": "OPEN_ResourceFragment", contents: [] });
           this.switchContent(this.currentPageIndex);
-        }else{  
+        }else{ 
       whatToSend =  {"user_token":window.__userToken,"api_token": window.__apiToken}
         event = { "tag": "API_ResourceFragment", contents:whatToSend};
         }

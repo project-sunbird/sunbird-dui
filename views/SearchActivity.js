@@ -7,7 +7,7 @@ var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget"
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
 var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
-var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
+var ScrollView = require("@juspay/mystique-backend/src/android_views/ScrollView");
 var EditText = require("@juspay/mystique-backend/src/android_views/EditText");
 var Space = require("@juspay/mystique-backend/src/android_views/Space");
 var objectAssign = require('object-assign');
@@ -430,46 +430,12 @@ class SearchActivity extends View {
 
 
               {this.getToolbar()}
-
-
-                <ScrollView
-                  height="match_parent"
-                  width="match_parent"
-                  fillViewport="true">
-
-
                   <LinearLayout
                      width="match_parent"
                      height="wrap_content"
                      background="#ffffff"
                      id = {this.idSet.searchListContainer}
                      orientation="vertical"/>
-
-
-                  </ScrollView>
-
-        </LinearLayout>
-
-        <LinearLayout
-          orientation="vertical"
-          visibility="gone"
-          background={window.__Colors.PRIMARY_BLACK_66}
-          centerInParent = "true,-1"
-          width="match_parent"
-          height="match_parent">
-
-          <LinearLayout
-          width="match_parent"
-          height="match_parent"
-          gravity="center">
-
-            <FilterDialog/>
-
-
-          </LinearLayout>
-
-
-
         </LinearLayout>
 
       </RelativeLayout>

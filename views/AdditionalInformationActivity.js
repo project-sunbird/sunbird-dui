@@ -463,7 +463,7 @@ class AdditionalInformationActivity extends View{
                   width="match_parent"
                   gravity="center_vertical"
                   background={window.__Colors.WHITE}
-                  text={window.__S.PROFILE_DETAILS_TITLE}
+                  text={window.__S.PERSONAL_DETAILS}
                   style={window.__TextStyle.textStyle.TOOLBAR.HEADING}/>
 
           </LinearLayout>);

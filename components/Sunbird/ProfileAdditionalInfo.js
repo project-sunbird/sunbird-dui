@@ -112,7 +112,8 @@ class ProfileAdditionalInfo extends View {
   getHeader = () =>{
     return (<LinearLayout
               width="wrap_content"
-              height="wrap_content">
+              height="wrap_content"
+              padding="0,16,0,0">
 
               <TextView
                 width="wrap_content"
@@ -123,16 +124,16 @@ class ProfileAdditionalInfo extends View {
               <ViewWidget
               height="0"
               weight="1"/>
-
-              <TextView
-              width="wrap_content"
-              height="wrap_content"
-              text={window.__S.EDIT}
-              padding = "16,16,0,16"
-              visibility = "visible"
-              onClick={this.handleEditProfileClick}
-              style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
-
+              <LinearLayout
+          width = "wrap_content"
+          height = "wrap_content"
+          padding = "10,5,0,10"
+          onClick={this.handleEditProfileClick}>
+          <ImageView
+          width="18"
+          height="18"
+          imageUrl="ic_action_edit_blue"/>
+        </LinearLayout>
               </LinearLayout>)
   }
 

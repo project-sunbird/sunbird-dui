@@ -99,6 +99,14 @@ class ProfileHeader extends View {
         </LinearLayout>
       </LinearLayout>);
   }
+  capitalizeFirstLetter =(string)=> 
+  {
+    if(string!=undefined)
+      {  
+    return string.charAt(0).toUpperCase() + string.slice(1);
+      }
+      else return string;
+  }
   render() {
     this.layout = (
             <LinearLayout
@@ -115,7 +123,7 @@ class ProfileHeader extends View {
               <TextView
               width="wrap_content"
               height="wrap_content"
-              text={this.firstName + this.lastName}
+              text={this.capitalizeFirstLetter(this.firstName) + this.capitalizeFirstLetter(this.lastName)}
               padding="0,10,0,2"
               style={window.__TextStyle.textStyle.HEADING.DARK}/>
               

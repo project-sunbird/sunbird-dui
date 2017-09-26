@@ -52,7 +52,6 @@ class TextInputView extends View {
           <TextView
             textFromHtml={this.props.labelText}
             padding="4,0,0,0"
-            textAllCaps = "true"
             style={this.props.textStyle ? this.props.textStyle : window.__TextStyle.textStyle.BOTTOMBAR.DEFAULT}
             width="wrap_content"
             height="wrap_content"/>
