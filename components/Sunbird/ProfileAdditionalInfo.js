@@ -1,5 +1,3 @@
-
-
 var dom = require("@juspay/mystique-backend/src/doms/android");
 var Connector = require("@juspay/mystique-backend/src/connectors/screen_connector");
 var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
@@ -7,6 +5,7 @@ var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
 var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget");
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
+var utils = require('../../utils/GenericFunctions')
 
 var _this;
 class ProfileAdditionalInfo extends View {
@@ -21,12 +20,40 @@ class ProfileAdditionalInfo extends View {
     this.data = this.props.data;
     console.log("this.data", this.data);
 
+    //initialise data
+    this.maxLen = 30;
     this.languages = "";
+    this.email = this.data.email ? this.data.email : "";
+    this.phone = this.data.phone ? this.data.phone : "";
+    this.gender = this.data.gender ? this.data.gender : "";
+    this.subjects = "";
+    this.dob = this.data.dob ? this.data.dob : "";
+    this.grade = "";
+    this.currentLoc = "";
+
     this.data.language.map((item, i) => {
       var append = ",";
       if (i == this.data.language.length - 1) append = "";
       this.languages += item + append;
-    })
+    });
+    this.languages = utils.cropText(this.languages, this.maxLen);
+
+    this.data.subject.map((item, i) => {
+      var append = ",";
+      if (i == this.data.subject.length - 1) append = "";
+      this.subjects += item + append;
+    });
+    this.subject = utils.cropText(this.subject, this.maxLen);
+
+    this.data.grade.map((item, i) => {
+      var append = ",";
+      if (i == this.data.grade.length - 1) append = "";
+      this.grade += item + append;
+    });
+    this.grade = utils.cropText(this.grade, this.maxLen);
+
+    this.currentLoc = this.getAddress(this.data.address);
+
     this.info = [{
       name: window.__S.LANGUAGES,
       value : this.languages
@@ -38,9 +65,28 @@ class ProfileAdditionalInfo extends View {
     {
       name: window.__S.PHONE,
       value : this.data.phone
+    },
+    {
+      name: window.__S.GENDER,
+      value : this.gender
+    },
+    {
+      name: window.__S.SUBJECTS,
+      value : this.subjects
+    },
+    {
+      name: window.__S.DATE_OF_BIRTH,
+      value : this.dob
+    },
+    {
+      name: window.__S.GRADE,
+      value : this.grade
+    },
+    {
+      name: window.__S.CURRENT_LOCATION,
+      value : this.currentLoc
     }]
 
-    this.getAddress(this.data.address);
 
     this.hobbies = "Books, cycling, music, sports, browsing, teaching"
 
@@ -59,12 +105,10 @@ class ProfileAdditionalInfo extends View {
       //   })
       // } else
       if (item.addType == "current" && item.country){
-        this.info.push({
-          name: window.__S.CURRENT_LOCATION,
-          value :item.city + ", " + item.country
-        })
+        return item.city + ", " + item.country;
       }
     })
+    return "";
   }
 
   getRows = (input)=> {
@@ -78,6 +122,7 @@ class ProfileAdditionalInfo extends View {
               <TextView
               width="wrap_content"
               height="wrap_content"
+              textAllCaps = "true"
               text={item.name}
               style={window.__TextStyle.textStyle.HINT.SEMI}/>
 

@@ -32,10 +32,10 @@ class ResourceViewAllActivity extends View {
       url: [
       ]
       }
-    this.shouldCacheScreen = true;
+    this.shouldCacheScreen = false;
     this.totalDetails = JSON.parse(state.data.value0.resourceDetails);
     // if(this.totalDetails.showViewMore == "gone"){
-    //   JBridge.logViewAllScreenEvent("SAVEDRESOURCES");      
+    //   JBridge.logViewAllScreenEvent("SAVEDRESOURCES");
     // }
     // else{
     //   JBridge.logViewAllScreenEvent("RESOURCES");
