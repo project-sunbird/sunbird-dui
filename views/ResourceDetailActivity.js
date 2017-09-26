@@ -402,7 +402,7 @@ class ResourceDetailActivity extends View {
                 <ImageView
                 width="80"
                 height="50"
-                circularImageUrl={"4,"+ (this.details.imageUrl?this.details.imageUrl:"ic_action_resource")}/>
+                circularImageUrl={"4,"+ (this.details.imageUrl?this.details.imageUrl:"ic_launcher")}/>
 
             </LinearLayout>
 
