@@ -144,7 +144,7 @@ class CourseInProgressContainer extends View {
         actionText:  window.__S.RESUME,
         // footerTitle: (isNaN(pDone/pTotal)?"0":(pDone/pTotal)) +"% done",
         footerTitle: window.__S.COURSE_PROGRESS_COMPLETED.format(progressCount),
-        footerSubTitle:  window.__S.ERROR_DURATION_NOT_AVAILABLE,
+        footerSubTitle:  "",
         isProgress : "true"
       };
 
