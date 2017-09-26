@@ -20,14 +20,13 @@ class SearchResult extends View {
     this.type = this.props.type ? this.props.type : "Resource";
     this.jsonArray =[];
     this.setIds([
-      'lItem',
       'listContainer'
     ]);
   }
   getData = () => {
     return (<ListView
     id={this.idSet.listContainer}
-    background="#f0f0f0"
+    background="#ffffff"
     width="match_parent"
     height="wrap_content"/>);
   }
@@ -73,7 +72,7 @@ class SearchResult extends View {
                   width = "0"
                   padding = "10,10,0,0"
                   enableEllipse = "true"
-                  id = {this.idSet.lItem}
+                  text={item.name}
                   weight = "7"
                   style={window.__TextStyle.textStyle.CARD.HEADING}/>
 
@@ -126,11 +125,7 @@ class SearchResult extends View {
             background = {window.__Colors.DARK_GRAY_44} />
         </LinearLayout>
       );
-      var cmd = this.set({
-        id: this.idSet.lItem,
-        text: item.name
-      })
-      this.jsonArray.push({ view: this.getView(answerLayout.render()),value:cmd,viewType: 1 });
+     this.jsonArray.push({ view: this.getView(answerLayout.render()),value:"",viewType: 1 });
     })
     //console.log(this.jsonArray);
     JBridge.listViewAdapter(
