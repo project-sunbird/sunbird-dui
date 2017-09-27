@@ -13,6 +13,8 @@ var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
 var CropParagraph = require('../components/Sunbird/CropParagraph');
 var ProgressButton = require('../components/Sunbird/core/ProgressButton');
 var LargeCardComponent = require('../components/Sunbird/core/LargeCardComponent');
+var ListView = require("@juspay/mystique-backend/src/android_views/ListView");
+
 
 var utils = require('../utils/GenericFunctions');
 var objectAssign = require('object-assign');
@@ -23,10 +25,16 @@ var _this;
 class CourseViewAllActivity extends View {
   constructor(props, children, state) {
     super(props, children, state);
-
+    this.jsonArray=[];
+    this.temp1=0;
+    this.j = 0;
+    this.viewTypeMap = ["ic_action_course"];
     this.setIds([
       "listItems",
-      "viewMoreButton"
+      "viewMoreButton",
+      "listContainer",
+      "textView",
+      "image"
     ]);
     this.state = state;
 
@@ -76,16 +84,19 @@ class CourseViewAllActivity extends View {
      return enrolled;
 
   }
-
-
-  getRows = (list) =>{
-
+ getRows = () =>
+ {
+  return (<ListView
+    id={this.idSet.listContainer}
+    width="match_parent"
+    height="match_parent"/>);
+ }
+  showList = () =>{
      console.log("data in cva",this.totalDetails)
-     // if(list == undefined)
-     //  list = this.totalDetails;
-
-
-      var rows = list.map((item,i) => {
+     var list = this.totalDetails;
+     this.jsonArray=[];
+     let viewType = 0
+      list.map((item,i) => {
                 var progressCount = item.leafNodesCount == null ? 0 : (item.progress/item.leafNodesCount)*100;
                 progressCount = parseInt(progressCount)
                 var appIcon;
@@ -93,6 +104,11 @@ class CourseViewAllActivity extends View {
                   var appIcon,name,isProgress,size,actionText,type;
                   if(item.courseId){
                     appIcon = item.courseLogoUrl ? item.courseLogoUrl : "ic_action_course";
+                    viewType = this.viewTypeMap.indexOf(appIcon);
+                    if(viewType ==-1){
+                      this.viewTypeMap.push(appIcon);
+                      viewType=this.viewTypeMap.length-1;
+                    }
                     name = item.courseName
                     isProgress = "true"
                     size = window.__S.COURSE_PROGRESS_COMPLETED.format(progressCount)
@@ -101,6 +117,11 @@ class CourseViewAllActivity extends View {
                   }
                   else if(item.identifier) {
                     appIcon = item.appIcon ? item.appIcon : "ic_action_course";
+                    viewType = this.viewTypeMap.indexOf(appIcon);
+                    if(viewType ==-1){
+                      this.viewTypeMap.push(appIcon);
+                      viewType=this.viewTypeMap.length-1;
+                    }
                     name = item.name
                     isProgress = "false"
                     size = item.hasOwnProperty("size") ? window.__S.FILE_SIZE.format(utils.formatBytes(item.size)) : "";
@@ -109,6 +130,7 @@ class CourseViewAllActivity extends View {
                   }
                   else{
                     appIcon = "ic_action_course"
+                    viewType=0;
                     name = ""
                     isProgress = "false"
                   }
@@ -121,44 +143,49 @@ class CourseViewAllActivity extends View {
                   temp['footerTitle'] = size;
                   temp['actionText'] = actionText;
                   temp["footerSubTitle"] = window.__S.ERROR_DURATION_NOT_AVAILABLE;
-                  temp["type"] = type;
+                  temp["type"] = type; 
 
+                  
 
-           return (<LargeCardComponent
+           var layout = (
+          <LargeCardComponent
                    data={temp}
                    content={item}
                    index = {i}
                    onResourceClick = {this.handleCourseClick}/>)
-
+                   this.jsonArray.push({ view: this.getView(layout.render()),value:"",viewType:0});
+                   this.j++;
        });
 
-      var layout = (<LinearLayout
-                      width="match_parent"
-                      height="wrap_content"
-                      orientation = "vertical">
+       var callback = callbackMapper.map(function() {
+        console.log("button pressed");  
+        _this.handleViewMoreClick();
+      });
 
-                      {rows}
-
-                    </LinearLayout>);
-      return layout;
-
+       if(this.temp1==0)
+        {
+       JBridge.listViewAdapterWithBtn(
+        this.idSet.listContainer,
+        JSON.stringify(this.jsonArray),
+        1000,
+        "View more",
+        callback
+      );
+    }else
+    {
+        JBridge.appendToListView(
+        this.idSet.listContainer,
+        JSON.stringify(this.jsonArray),
+        1000);
+    }
     }
 
 
-
-
   afterRender = () => {
-    // if(this.btnStatus == "gone"){
-    //   JBridge.logViewAllScreenEvent("MYCOURSES");
-    // }
-    // else{
-    //   JBridge.logViewAllScreenEvent("COURSES");
-    // }
-    this.changeViewMoreButtonStatus(this.btnStatus)
+    console.log("after render");
   }
 
   handleCourseClick = (content,i)=>{
-
     if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
         this.performCourseAction(content,i);
     }else{
@@ -227,21 +254,11 @@ class CourseViewAllActivity extends View {
     }
 
   }
-
-  changeViewMoreButtonStatus(status){
-    
-      var cmd = this.set({
-        id: this.idSet.viewMoreButton,
-        visibility: status
-      });
-      Android.runInUI(cmd, 0);
-    
-  }
-
   
   handleViewMoreClick = () =>{
     var listContent = [];
-    window.__LoaderDialog.show();
+    this.temp1++;
+   // window.__LoaderDialog.show();
     // if(this.displayContent == "[]" || this.displayContent.length == 0){
        if(JBridge.isNetworkAvailable()){
             var callback = callbackMapper.map(function(data){
@@ -253,13 +270,14 @@ class CourseViewAllActivity extends View {
                   listContent.push(item)
               })
               _this.start_index++;
-              console.log(listContent)
-              _this.appendChild(_this.idSet.listItems,_this.getRows(listContent).render(),_this.start_index)
+              _this.totalDetails=listContent;
+              _this.showList();
+              // _this.appendChild(_this.idSet.listItems,_this.showList().render(),_this.start_index)
               window.__LoaderDialog.hide();
-              if(_this.start_index*10>=_this.displayContent.length){
+            /*  if(_this.start_index*10>=_this.displayContent.length){
                 _this.changeViewMoreButtonStatus("gone")
               }
-              
+              */
               });
               JBridge.searchContent(callback, JSON.stringify(this.searchQuery), "", "Course", false,(_this.start_index+2)*10);
         }
@@ -267,100 +285,33 @@ class CourseViewAllActivity extends View {
           window.__LoaderDialog.hide();
           window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE)
         }
-    // }
-    // else{
-    //       this.displayContent.map(function(item,index){
-    //         if(index > _this.start_index*10 && index<(_this.start_index+1)*10 && _this.start_index<_this.displayContent.length)
-    //           listContent.push(item)
-    //       })
-    //       _this.start_index++;
-    //       _this.appendChild(_this.idSet.listItems,_this.getRows(listContent).render(),_this.start_index)
-    //       window.__LoaderDialog.hide();
-    //       if(_this.start_index*10>=_this.displayContent.length){
-    //             _this.changeViewMoreButtonStatus("gone")
-    //       }
-          
-
-    // }
-    // console.log(this.start_index,this.displayContent.length)
-    //  if(this.start_index >= 9 ){
-    //   _this.changeViewMoreButtonStatus("gone")
-      
-    //  }
-
+    
   }
 
   render() {
     this.layout = (
-      <LinearLayout
+        <LinearLayout
         width="match_parent"
         height="match_parent"
         root = "true"
         clickable="true"
-        background={window.__Colors.WHITE}
+        background="#ffffff"
+        afterRender={this.showList}
         orientation="vertical">
         <SimpleToolbar
           afterRender={this.afterRender}
-          width="match_parent"
+          width="match_parent"orientation="vertical"
           menuData={this.menuData}
           onBackPress={this.onBackPressed}
           showMenu="true"
           invert="true"
-          title= {this.appbarTitle}/>
-
-
-              <ScrollView
-                height="0"
-                weight="1"
-                width="match_parent"
-                fillViewport="true"
-                >
-                <LinearLayout
-                  height = "match_parent"
-                  width = "match_parent"
-                  orientation = "vertical"
-                  layouTransition="true"
-                  >
-
-                      <LinearLayout
-                        height="match_parent"
-                        width="match_parent"
-                        orientation="vertical"
-                        padding= "0,0,0,16"
-                        id = {this.idSet.listItems}
-                        >
-
-                        {this.getRows(this.totalDetails)}
-
-
-                      </LinearLayout>
-                      <LinearLayout
-                              width = "match_parent"
-                              height = "50"
-                              margin = "16,16,16,16"
-                              layouTransition="true"
-                              id = {this.idSet.viewMoreButton}
-                              background = {window.__Colors.PRIMARY_DARK}
-                              gravity = "center"
-                              visibility = "gone"
-                              >
-                              <TextView
-                                height = "match_parent"
-                                width = "match_parent"
-                                gravity="center"
-                                onClick = {this.handleViewMoreClick}
-                                text = {window.__S.VIEW_MORE}
-                                style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
-                                />
-                            </LinearLayout>  
-                </LinearLayout>
-
-                </ScrollView>
-
-
-
+          title= {this.appbarTitle}/>   
+                    
+                      {
+                        this.getRows()
+                      }
       </LinearLayout>
-    );
+      );
 
     return this.layout.render();
   }

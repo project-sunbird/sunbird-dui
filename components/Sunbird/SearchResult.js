@@ -38,7 +38,7 @@ class SearchResult extends View {
       } else if (this.type == "Profile"){
         appIcon = (item.data && item.data.avatar) ? item.data.avatar : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR1X3cm5xzR4D1W9oPb2QWioKlrfLVd0DvXFUNqSjZfg-M0bpc";
       }
-      var answerLayout = (
+      var resultLayout = (
         <LinearLayout
           width="match_parent"
           height="warp_content"
@@ -118,20 +118,15 @@ class SearchResult extends View {
                 </LinearLayout>
             </LinearLayout>
           </LinearLayout>
-
-          <LinearLayout
-            width ="match_parent"
-            height = "1"
-            background = {window.__Colors.DARK_GRAY_44} />
         </LinearLayout>
       );
-     this.jsonArray.push({ view: this.getView(answerLayout.render()),value:"",viewType: 1 });
+     this.jsonArray.push({ view: this.getView(resultLayout.render()),value:"",viewType: 1 });
     })
     //console.log(this.jsonArray);
     JBridge.listViewAdapter(
       this.idSet.listContainer,
       JSON.stringify(this.jsonArray),
-      10
+      1
     );
   }
 
