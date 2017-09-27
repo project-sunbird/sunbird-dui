@@ -79,8 +79,8 @@ class ProfileCreations extends View {
   }
 
   getCards = () => {
-    if (this.data.hasOwnProperty("content")){
-      var cards = this.data.content.map((item, i) => {
+    if (this.data.length && this.data.length > 0){
+      var cards = this.data.map((item, i) => {
         return this.getCardLayout(item);
       });
     } else {
@@ -170,7 +170,7 @@ class ProfileCreations extends View {
                 width="match_parent"
                 margin="0,15,0,0"
                 orientation="vertical"
-                visibility = {(this.data.hasOwnProperty("content")) ? "visible" : "gone"}>
+                visibility = {(this.data.hasOwnProperty("length") && this.data.length > 0) ? "visible" : "gone"}>
 
                 {this.getLineSeperator()}
 

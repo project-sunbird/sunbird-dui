@@ -148,24 +148,9 @@ class SearchResult extends View {
 
     if (item.hasOwnProperty("data") && item.data.hasOwnProperty("education")){
       console.log("item data", item);
-      var data = JSON.stringify(item);
-      var whatToSend = {
-        user_token: item.data.identifier,
-        api_token: window.__apiToken,
-        sendBack : data,
-        filters: JSON.stringify({"filters" : {
-                   "createdBy": item.data.identifier,
-                   "status": ["Live"],
-                   "contentType": ["Collection", "Story", "Worksheet", "TextBook", "Course", "LessonPlan"]
-               }
-             })
-       }
-      var event = { tag: "API_CreatedBy_Search", contents: whatToSend}
-      if (JBridge.isNetworkAvailable()){
-        window.__runDuiCallback(event);
-      } else {
-        window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
-      }
+       var whatToSend={profile:JSON.stringify(item)};
+       var event={tag:"OPEN_ProfileActivity_SEARCH",contents:whatToSend}
+       window.__runDuiCallback(event);
    }else if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook" || utils.checkEnrolledCourse(item.identifier)){
 
       if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
@@ -229,7 +214,7 @@ class SearchResult extends View {
 			height="match_parent"
 			orientation="vertical"
       background="#ffffff">
-   
+
               {this.getData()}
 
        </LinearLayout>

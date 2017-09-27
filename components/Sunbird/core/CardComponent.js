@@ -53,7 +53,7 @@ class CardComponent extends View {
 
               <RelativeLayout
                width="200"
-               height="wrap_content">
+               height="110">
 
                 <ImageView
                   width="200"
