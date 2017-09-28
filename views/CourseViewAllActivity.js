@@ -7,7 +7,7 @@ var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget"
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
 var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
-var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
+var ScrollView = require("@juspay/mystique-backend/src/android_views/ScrollView");
 
 var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
 var CropParagraph = require('../components/Sunbird/CropParagraph');
@@ -26,21 +26,16 @@ class CourseViewAllActivity extends View {
   constructor(props, children, state) {
     super(props, children, state);
     this.jsonArray=[];
-    this.temp1=0;
-    this.j = 0;
-    this.viewTypeMap = ["ic_action_course"];
     this.setIds([
-      "listItems",
       "viewMoreButton",
-      "listContainer",
-      "textView",
-      "image"
+      "listContainer"
     ]);
     this.state = state;
 
     this.screenName = "CourseViewAllActivity";
 
     this.shouldCacheScreen = false;
+    _this = this;
 
     this.totalDetails = JSON.parse(state.data.value0.courseViewAllDetails);
     this.searchQuery = this.totalDetails.hasOwnProperty("searchQuery") ? this.totalDetails.searchQuery : null;
@@ -55,7 +50,6 @@ class CourseViewAllActivity extends View {
     }
     JBridge.logListViewScreenEvent("COURSES",this.totalDetails.length,this.searchQuery)
 
-    _this = this;
     setTimeout(function() {
       Android.runInUI(
         _this.animateView(),
@@ -104,11 +98,6 @@ class CourseViewAllActivity extends View {
                   var appIcon,name,isProgress,size,actionText,type;
                   if(item.courseId){
                     appIcon = item.courseLogoUrl ? item.courseLogoUrl : "ic_action_course";
-                    viewType = this.viewTypeMap.indexOf(appIcon);
-                    if(viewType ==-1){
-                      this.viewTypeMap.push(appIcon);
-                      viewType=this.viewTypeMap.length-1;
-                    }
                     name = item.courseName
                     isProgress = "true"
                     size = window.__S.COURSE_PROGRESS_COMPLETED.format(progressCount)
@@ -117,11 +106,6 @@ class CourseViewAllActivity extends View {
                   }
                   else if(item.identifier) {
                     appIcon = item.appIcon ? item.appIcon : "ic_action_course";
-                    viewType = this.viewTypeMap.indexOf(appIcon);
-                    if(viewType ==-1){
-                      this.viewTypeMap.push(appIcon);
-                      viewType=this.viewTypeMap.length-1;
-                    }
                     name = item.name
                     isProgress = "false"
                     size = item.hasOwnProperty("size") ? window.__S.FILE_SIZE.format(utils.formatBytes(item.size)) : "";
@@ -130,7 +114,6 @@ class CourseViewAllActivity extends View {
                   }
                   else{
                     appIcon = "ic_action_course"
-                    viewType=0;
                     name = ""
                     isProgress = "false"
                   }
@@ -154,24 +137,37 @@ class CourseViewAllActivity extends View {
                    index = {i}
                    onResourceClick = {this.handleCourseClick}/>)
                    this.jsonArray.push({ view: this.getView(layout.render()),value:"",viewType:0});
-                   this.j++;
        });
 
-       var callback = callbackMapper.map(function() {
+       var callback1 = callbackMapper.map(function() {
         console.log("button pressed");  
         _this.handleViewMoreClick();
       });
-
-       if(this.temp1==0)
+    
+       if(this.start_index==0)
         {
-       JBridge.listViewAdapterWithBtn(
+          if(this.btnStatus=="visible")
+            {
+       JBridge.listViewAdapter(
         this.idSet.listContainer,
         JSON.stringify(this.jsonArray),
         1000,
         "View more",
-        callback
+        callback1,
+        this.idSet.viewMoreButton
       );
     }else
+    {
+      JBridge.listViewAdapter(
+        this.idSet.listContainer,
+        JSON.stringify(this.jsonArray),
+        1000,
+        null,
+        "",
+        "",
+      );
+    }
+  }else
     {
         JBridge.appendToListView(
         this.idSet.listContainer,
@@ -217,7 +213,7 @@ class CourseViewAllActivity extends View {
        var contentId = content.courseId ? content.courseId : content.identifier;
         JBridge.logContentClickEvent("COURSES",index_click,"",contentId)
         var whatToSend = {
-          "course": tmp 
+          "course": tmp
           };
           if(this.totalDetails[0].courseId){
            var event = { tag: 'OPEN_EnrolledCourseFlowFromCourseViewAll', contents: whatToSend };
@@ -231,15 +227,6 @@ class CourseViewAllActivity extends View {
 
   onStop = () =>{
     window.__PermissionDeniedDialog.hide();
-  }
-
-
-  getLineSeperator = () =>{
-    return (<LinearLayout
-            width="match_parent"
-            height="1"
-            margin="0,16,0,0"
-            background={window.__Colors.PRIMARY_BLACK_22}/>)
   }
 
   onBackPressed = () => {
@@ -256,28 +243,26 @@ class CourseViewAllActivity extends View {
   }
   
   handleViewMoreClick = () =>{
+    window.__LoaderDialog.show();
     var listContent = [];
     this.temp1++;
-   // window.__LoaderDialog.show();
-    // if(this.displayContent == "[]" || this.displayContent.length == 0){
        if(JBridge.isNetworkAvailable()){
             var callback = callbackMapper.map(function(data){
               data[0] = JSON.parse(utils.decodeBase64(data[0]));
               _this.displayContent=data[0];
               console.log("data from response",data[0])
               _this.displayContent.map(function(item,index){
-                if(index > _this.start_index*10 && index<(_this.start_index+1)*10 && index<_this.displayContent.length)
+                if(index >=_this.start_index*10 && index<(_this.start_index+1)*10 && index<_this.displayContent.length)
                   listContent.push(item)
               })
               _this.start_index++;
               _this.totalDetails=listContent;
               _this.showList();
-              // _this.appendChild(_this.idSet.listItems,_this.showList().render(),_this.start_index)
               window.__LoaderDialog.hide();
-            /*  if(_this.start_index*10>=_this.displayContent.length){
-                _this.changeViewMoreButtonStatus("gone")
+             if((_this.start_index+1)*10>_this.displayContent.length){
+                _this.changeViewMoreButtonStatus();
               }
-              */
+              
               });
               JBridge.searchContent(callback, JSON.stringify(this.searchQuery), "", "Course", false,(_this.start_index+2)*10);
         }
@@ -287,6 +272,12 @@ class CourseViewAllActivity extends View {
         }
     
   }
+  changeViewMoreButtonStatus=()=>{
+  JBridge.hideFooterView(
+    this.idSet.listContainer,
+    this.idSet.viewMoreButton
+  );
+  } 
 
   render() {
     this.layout = (
