@@ -9,6 +9,7 @@ var Space = require("@juspay/mystique-backend/src/android_views/Space");
 var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget");
 var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
 var utils = require('../../utils/GenericFunctions');
+var ListView = require("@juspay/mystique-backend/src/android_views/ListView");
 
 
 
@@ -17,19 +18,30 @@ class SearchResult extends View {
     super(props, children);
     console.log(this.props.data);
     this.type = this.props.type ? this.props.type : "Resource";
+    this.jsonArray =[];
+    this.setIds([
+      'listContainer'
+    ]);
   }
   getData = () => {
-    var answerLayout = this.props.data.map((item, index) => {
+    return (<ListView
+    id={this.idSet.listContainer}
+    background="#ffffff"
+    width="match_parent"
+    height="wrap_content"/>);
+  }
+  showList=()=>{
+     this.props.data.map((item, index) => {
       var appIcon = "ic_launcher";
-      if (this.type == "Resource"){
+      if (this.type == "Resource"  || this.type == "Course"){
         appIcon = item.hasOwnProperty("appIcon") ? item.appIcon : "ic_launcher" ;
       } else if (this.type == "Profile"){
         appIcon = (item.data && item.data.avatar) ? item.data.avatar : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR1X3cm5xzR4D1W9oPb2QWioKlrfLVd0DvXFUNqSjZfg-M0bpc";
       }
-     return (
+      var answerLayout = (
         <LinearLayout
           width="match_parent"
-          height="wrap_content"
+          height="warp_content"
           orientation="vertical"
           margin = "16,0,16,0"
           onClick = {()=>{this.handleItemClick(item,index)}}>
@@ -59,8 +71,8 @@ class SearchResult extends View {
                   height="wrap_content"
                   width = "0"
                   padding = "10,10,0,0"
-                  text= {item.name}
                   enableEllipse = "true"
+                  text={item.name}
                   weight = "7"
                   style={window.__TextStyle.textStyle.CARD.HEADING}/>
 
@@ -113,13 +125,15 @@ class SearchResult extends View {
             background = {window.__Colors.DARK_GRAY_44} />
         </LinearLayout>
       );
+     this.jsonArray.push({ view: this.getView(answerLayout.render()),value:"",viewType: 1 });
     })
-
-    return answerLayout;
+    //console.log(this.jsonArray);
+    JBridge.listViewAdapter(
+      this.idSet.listContainer,
+      JSON.stringify(this.jsonArray),
+      10
+    );
   }
-
-
-
 
   handleItemClick = (item,index) =>{
 
@@ -132,29 +146,12 @@ class SearchResult extends View {
       JBridge.logContentClickEvent("RESOURCES",index+1,this.props.searchText,item.identifier)
 
 
-
     if (item.hasOwnProperty("data") && item.data.hasOwnProperty("education")){
       console.log("item data", item);
-      var data = JSON.stringify(item);
-      var whatToSend = {
-        user_token: item.data.identifier,
-        api_token: window.__apiToken,
-        sendBack : data,
-        filters: JSON.stringify({"filters" : {
-                   "createdBy": item.data.identifier,
-                   "status": ["Live"],
-                   "contentType": ["Collection", "Story", "Worksheet", "TextBook", "Course", "LessonPlan"]
-               }
-             })
-       }
-      var event = { tag: "API_CreatedBy_Search", contents: whatToSend}
-      if (JBridge.isNetworkAvailable()){
-        window.__runDuiCallback(event);
-      } else {
-        window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE);
-      }
-   }
-    else if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook" || utils.checkEnrolledCourse(item.identifier)){
+       var whatToSend={profile:JSON.stringify(item)};
+       var event={tag:"OPEN_ProfileActivity_SEARCH",contents:whatToSend}
+       window.__runDuiCallback(event);
+   }else if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook" || utils.checkEnrolledCourse(item.identifier)){
 
       if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
         var whatToSend={course:itemDetails};
@@ -163,7 +160,6 @@ class SearchResult extends View {
       }else{
         this.setPermissions();
       }
-
     }
     else if(item.contentType.toLowerCase() == "course"){
 
@@ -174,12 +170,10 @@ class SearchResult extends View {
       }else{
         this.setPermissions();
       }
-
     }
 
     else
     {
-
       var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");
       var resDetails = {};
       resDetails['imageUrl'] = item.appIcon;
@@ -194,11 +188,9 @@ class SearchResult extends View {
       var event= {tag:"OPEN_ResourceDetailActivity_SEARCH",contents:whatToSend}
       window.__runDuiCallback(event);
     }
-
   }
 
   setPermissions = () => {
-
    var callback = callbackMapper.map(function(data) {
 
       if (data == "android.permission.WRITE_EXTERNAL_STORAGE") {
@@ -209,42 +201,24 @@ class SearchResult extends View {
         JBridge.hideKeyboard();
         window.__PermissionDeniedDialog.show("ic_warning_grey",window.__S.STORAGE);
       }
-
     });
-
     JBridge.setPermissions(callback,"android.permission.WRITE_EXTERNAL_STORAGE");
-
   }
-
-
 
   render() {
 
-
     this.layout = (
-
       <LinearLayout
 			width="match_parent"
-			height="wrap_content"
-			orientation="vertical">
-        <ScrollView
-            height="match_parent"
-            width="match_parent"
-            fillViewPort="true">
-            <LinearLayout
-              height="match_parent"
-              width="match_parent"
-              orientation="vertical">
+      afterRender={this.showList}
+			height="match_parent"
+			orientation="vertical"
+      background="#ffffff">
 
-                  {this.getData()}
+              {this.getData()}
 
-            </LinearLayout>
-        </ScrollView>
        </LinearLayout>
-
-
     )
-
     return this.layout.render();
   }
 }

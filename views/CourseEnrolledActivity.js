@@ -237,7 +237,7 @@ class CourseEnrolledActivity extends View {
           _this.changeOverFlow();
         }
         else
-          window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE)
+          window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE)
       }
 
     });
@@ -487,7 +487,7 @@ class CourseEnrolledActivity extends View {
       if(JBridge.isNetworkAvailable())
         window.__runDuiCallback(event);
       else
-        window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE);
+        window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
     }
   }
 
@@ -743,10 +743,9 @@ class CourseEnrolledActivity extends View {
                     height = "56"
                     id = {this.idSet.featureButton}
                     background = {window.__Colors.PRIMARY_ACCENT}
-                    text = {window.__S.RESUME+window.__S.COURSE}
+                    text = {window.__S.RESUME+" "+window.__S.COURSE}
                     style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
-                    buttonClick = {this.handleResumeClick}
-                    />
+                    buttonClick = {this.handleResumeClick}/>
               </LinearLayout>
 
 

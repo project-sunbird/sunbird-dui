@@ -25,7 +25,6 @@ var _this;
 class ResourceComponent extends View {
   constructor(props, children) {
     super(props, children);
-
     this.props.appendText = this.props.appendText || "";
     this.setIds([
       "parentContainer",
@@ -99,7 +98,6 @@ class ResourceComponent extends View {
       }
       else
       {
-        window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE)
         this.cards = (<LinearLayout
           height="wrap_content"
           width="match_parent"
@@ -187,7 +185,7 @@ handleResourceViewAllClick= (data,title,searchQuery,visibility) =>{
               gravity="center_horizontal"
               padding="0,16,0,0"
               style={window.__TextStyle.textStyle.CARD.HEADING}
-              text={window.__S.ERROR_NO_INTERNET_MESSAGE}/>
+              text={window.__S.ERROR_OFFLINE_MODE}/>
 
 
           </LinearLayout>
@@ -292,19 +290,12 @@ handleResourceViewAllClick= (data,title,searchQuery,visibility) =>{
   }
 
   afterRender = () => {
-
      this.renderOfflineCard();
-
-
      var callbackRefresh = callbackMapper.map(function(params) {
-        if(JBridge.isNetworkAvailable())
           window.__BNavFlowRestart();
-        else
-        window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE);
     });
       
         JBridge.addSwipeRefreshScrollView(this.idSet.scrollViewContainer,callbackRefresh);
-      
   }
 
   renderOfflineCard =()=>{

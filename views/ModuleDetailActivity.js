@@ -201,7 +201,7 @@ class ModuleDetailActivity extends View {
                         
                       }
                       else
-                        window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE)
+                        window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE)
                     }
                 });
 

@@ -463,7 +463,7 @@ class AdditionalInformationActivity extends View{
                   width="match_parent"
                   gravity="center_vertical"
                   background={window.__Colors.WHITE}
-                  text={window.__S.EDIT + " "+ window.__S.PROFILE_BNAV}
+                  text={window.__S.PERSONAL_DETAILS}
                   style={window.__TextStyle.textStyle.TOOLBAR.HEADING}/>
 
           </LinearLayout>);
@@ -1068,7 +1068,7 @@ class AdditionalInformationActivity extends View{
          this.responseCame=false;
      },window.__API_TIMEOUT);
  }else {
-   window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE);
+   window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
  }
 }
   getPatchCallback = (data) =>{

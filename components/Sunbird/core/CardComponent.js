@@ -11,6 +11,7 @@ var Button = require('../../Sunbird/Button');
 var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget");
 var Space = require("@juspay/mystique-backend/src/android_views/Space");
 var StarComponent = require('../../Sunbird/StarComponent');
+var utils = require('../../../utils/GenericFunctions')
 
 var _this;
 
@@ -52,12 +53,12 @@ class CardComponent extends View {
 
               <RelativeLayout
                width="200"
-               height="wrap_content">
+               height="110">
 
                 <ImageView
                   width="200"
                   height="110"
-                  scaleType="fitXY"
+                  scaleType="centerCrop"
                   circularImageUrl={"5,"+this.props.data.imageUrl}/>
 
                 <LinearLayout
@@ -164,7 +165,9 @@ class CardComponent extends View {
                 <TextView
                   width="wrap_content"
                   height="wrap_content"
-                  text={this.props.data.footerSubTitle}
+                  visibility = {this.props.data.footerSubTitle && this.props.data.footerSubTitle
+                  != "" ? "visible" : "gone"}
+                  text={utils.cropText(this.props.data.footerSubTitle, 15)}
                   style={window.__TextStyle.textStyle.HINT.TINY}/>
 
               </LinearLayout>

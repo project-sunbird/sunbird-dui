@@ -102,12 +102,13 @@ class MainActivity extends View {
       var event = { "tag": "API_ProfileFragment", contents: whatToSend };
       window.__runDuiCallback(event);
     } else if (JBridge.getSavedData(this.profileDataTag) != "__failed"){
+      window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
       var data = JSON.parse(utils.decodeBase64(JBridge.getSavedData(this.profileDataTag)));
       data.local = true;
       this.handleStateChange(data)
     } else {
       console.log("__failed in getUserProfileData");
-      window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE);
+      window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
       window.__LoaderDialog.hide();
     }
 
@@ -201,7 +202,6 @@ class MainActivity extends View {
         }
         console.log("After finally");
       } else {
-        window.__Snackbar.show(window.__S.ERROR_SERVER_CONNECTION)
         responseData=tmp;
       }
     } else {
@@ -265,7 +265,7 @@ class MainActivity extends View {
 
       return;
     }
-
+    
     switch (this.currentPageIndex) {
       case 0:
         JBridge.logCorrelationPageEvent("HOME",responseData.params.msgid,responseData.id)
@@ -464,14 +464,25 @@ class MainActivity extends View {
         event = { "tag": "OPEN_HomeFragment", contents: whatToSend };
         break;
       case 1:
-
+      if(!JBridge.isNetworkAvailable())
+        {
+          window.__runDuiCallback({ "tag": "OPEN_CourseFragment", contents: [] });
+          this.switchContent(this.currentPageIndex);
+        }
+        else{
         whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken}
         event = { "tag": "API_CourseFragment", contents: whatToSend};
+        }
         break;
-      case 2:
-        whatToSend =  {"user_token":window.__userToken,"api_token": window.__apiToken}
+      case 2: 
+      if(!JBridge.isNetworkAvailable())
+        {
+          window.__runDuiCallback({ "tag": "OPEN_ResourceFragment", contents: [] });
+          this.switchContent(this.currentPageIndex);
+        }else{ 
+      whatToSend =  {"user_token":window.__userToken,"api_token": window.__apiToken}
         event = { "tag": "API_ResourceFragment", contents:whatToSend};
-
+        }
         break;
       case 3:
         whatToSend = []
@@ -500,16 +511,14 @@ class MainActivity extends View {
         }
 
         // if(JBridge.isNetworkAvailable()||(index!=1&&index!=4)){
-        if(JBridge.isNetworkAvailable()||(index!=1)){
+       // if(JBridge.isNetworkAvailable()){
               this.currentPageIndex = index;
 
               if(index!=1 && index!=2 && index!=4){
                 this.switchContent(index);
               }
-        }
-        else{
-            window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE)
-        }
+       //  }
+        
 
         window.__BottomNavBar.handleNavigationChange(this.currentPageIndex);
         this.setupDuiCallback();

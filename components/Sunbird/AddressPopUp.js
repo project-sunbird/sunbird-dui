@@ -322,7 +322,7 @@ class AddressPopUp extends View {
     }
 
     if(!JBridge.isNetworkAvailable()) {
-      window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE);
+      window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
       this.delete = false;
       return;
     }
@@ -401,7 +401,6 @@ class AddressPopUp extends View {
          height="wrap_content"
          width="wrap_content"
          text={window.__S.SELECT_ADDRESS_TYPE}
-         textAllCaps="true"
          textStyle={window.__TextStyle.textStyle.HINT.SEMI}
          margin="0,0,0,3"/>
          <RadioButton
@@ -553,7 +552,6 @@ class AddressPopUp extends View {
                height="wrap_content"
                width="wrap_content"
                text={window.__S.SELECT_ADDRESS_TYPE}
-               textAllCaps="true"
                textStyle={window.__TextStyle.textStyle.HINT.SEMI}/>
             <TextView
                 height="wrap_content"

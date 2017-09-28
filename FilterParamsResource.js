@@ -44,7 +44,7 @@ exports.filterParamsResource =[
               "Other"   ]
 },
 {
-  name : "domain",
+  name : "Concepts",
   displayName : "Domain",
   values : [ "numeracy",
             "literacy",
@@ -63,7 +63,7 @@ exports.filterParamsResource =[
 },
 {
   name : "subject",
-  displayName : "Sunject",
+  displayName : "Subject",
   values : [ "Maths",
             "English",
             "Hindi",

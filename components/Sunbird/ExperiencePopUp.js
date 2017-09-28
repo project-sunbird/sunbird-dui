@@ -203,7 +203,7 @@ class ExperiencePopUp extends View{
 
    var index;
 
-   if (window.__ExperiencePopUp.data.isCurrentJob && this.data != undefined) {
+   if (this.data != undefined && window.__ExperiencePopUp.data.isCurrentJob) {
      jobTypeValue[0].select = "1";
      jobTypeValue[1].select = "0";
      index = 0;
@@ -273,7 +273,6 @@ class ExperiencePopUp extends View{
                  text={window.__S.TITLE_EXPERIENCES}
                  style={window.__TextStyle.textStyle.TOOLBAR.HEADING}/>
          </LinearLayout>);
-
  }
 
  getScrollView(){
@@ -347,17 +346,7 @@ class ExperiencePopUp extends View{
                       onClick={this.startCalendar}/>
 
                 </LinearLayout>
-                <LinearLayout
-                  width="match_parent"
-                  height="1"
-                  background={window.__Colors.PRIMARY_BLACK_66}/>
              </LinearLayout>
-
-             <LinearLayout
-               weight="0.25"
-               height="0"
-               width="0"/>
-
              <LinearLayout
                height="wrap_content"
                width="0"
@@ -394,14 +383,7 @@ class ExperiencePopUp extends View{
                       style={window.__TextStyle.textStyle.CARD.BODY.DARK.FADED}/>
 
                 </LinearLayout>
-
-                <LinearLayout
-                  width="match_parent"
-                  height="1"
-                  background={window.__Colors.PRIMARY_BLACK_66}/>
-
               </LinearLayout>
-
       </LinearLayout>
    );
  }
@@ -419,7 +401,6 @@ class ExperiencePopUp extends View{
            width="wrap_content"
            margin="0,0,16,2"
            textStyle={window.__TextStyle.textStyle.HINT.SEMI}
-           textAllCaps="true"
            text={window.__S.IS_THIS_YOUR_CURRENT_JOB
            }/>
 
@@ -446,7 +427,6 @@ class ExperiencePopUp extends View{
            width="wrap_content"
            margin="0,0,16,2"
            textStyle={window.__TextStyle.textStyle.HINT.SEMI}
-           textAllCaps="true"
            text={window.__S.IS_THIS_YOUR_CURRENT_JOB}/>
 
          <RadioButton
@@ -622,8 +602,6 @@ del = () => {
        if (type == "positive") {
          this.delete = true;
          this.sendJSON();
-       } else {
-
        }
        window.__SimplePopup.hide(this.idSet.deleteConf);
      }
@@ -724,7 +702,7 @@ del = () => {
              });
              Android.runInUI(cmd, 0);
              this.endDate=null;
-             
+
              if(this.checkCompleteStatus())
              {
                this.enableSaveButton();
@@ -774,7 +752,7 @@ del = () => {
     }
 
      sendJSON = () => {
-
+       console.log("inside sendJSON", this.jobProfile);
        if (this.singleClick && !this.canSave && !this.delete) {
          if (window.__ExperiencePopUp.data)
            window.__Snackbar.show(window.__S.WARNING_PLEASE_MAKE_SOME_CHANGES);
@@ -783,6 +761,8 @@ del = () => {
          return;
        }
 
+       this.jobProfile = []
+       console.log();
        if(window.__ExperiencePopUp.data==undefined){
           this.json ={
             "jobName":this.jobName,
@@ -830,6 +810,7 @@ del = () => {
       if(this.singleClick){
         this.singleClick=false;
         _this.responseCame=false;
+        console.log("patchApi", body);
         JBridge.patchApi(url,JSON.stringify(body),window.__userToken,window.__apiToken);
         window.__LoaderDialog.show();
 

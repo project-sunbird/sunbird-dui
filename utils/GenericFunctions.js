@@ -114,3 +114,9 @@ exports.getEnrolledCourse = (identifier) =>{
 
      return enrolled;
   }
+
+exports.cropText = (text, limit) => {
+	if (!limit || limit == undefined) limit = 50;
+	if(text && text!=undefined && text.length > limit) text = text.substring(0,limit) + "...";
+	return text;
+}
