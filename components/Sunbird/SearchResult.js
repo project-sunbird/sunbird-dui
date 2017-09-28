@@ -120,13 +120,16 @@ class SearchResult extends View {
           </LinearLayout>
         </LinearLayout>
       );
-     this.jsonArray.push({ view: this.getView(resultLayout.render()),value:"",viewType: 1 });
+     this.jsonArray.push({ view: this.getView(resultLayout.render()),value:"",viewType: 0 });
     })
     //console.log(this.jsonArray);
     JBridge.listViewAdapter(
       this.idSet.listContainer,
       JSON.stringify(this.jsonArray),
-      1
+      1000,
+      null,
+      "",
+      ""
     );
   }
 
