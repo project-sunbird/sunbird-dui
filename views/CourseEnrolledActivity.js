@@ -8,7 +8,7 @@ var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
 var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var ProgressBar = require("@juspay/mystique-backend").androidViews.ProgressBar;
-
+var utils = require('../utils/GenericFunctions');
 var objectAssign = require('object-assign');
 var FeatureButton = require('../components/Sunbird/FeatureButton');
 
@@ -299,27 +299,25 @@ class CourseEnrolledActivity extends View {
   }
 
   handleStateChange = (state) =>{
-    console.log("STATE \n\n",state)
-    if(state.response.statusCode != 504){
+    var res = utils.processResponse(state);
+    if(res.code != 504){
+        var response = res.data;//JSON.parse(utils.decodeBase64(state.response.status[1]))
+        var responseCode = res.code;
+        //
+        // console.log("response \n\n",response)
 
-
-        var response = JSON.parse(utils.decodeBase64(state.response.status[1]))
-        var responseCode = state.response.status[2]
-
-        console.log("response \n\n",response)
-
-        if(responseCode == 501 || state.response.status === "failure" || state.response.status=="f") {
-          window.__LoaderDialog.hide();
-          window.__Snackbar.show(window.__S.ERROR_SERVER_CONNECTION)
-          responseData=tmp;
-        }else  if (response.params && response.params.err) {
+        if(res.hasOwnProperty("err")) {
+        //   window.__LoaderDialog.hide();
+        //   window.__Snackbar.show(window.__S.ERROR_SERVER_CONNECTION)
+        //   responseData=tmp;
+        // }else  if (response.params && response.params.err) {
           window.__LoaderDialog.hide();
             if(state.responseFor == "API_FlagCourse"){
                 window.__Snackbar.show(window.__S.CONTENT_FLAG_FAIL);
                 _this.onBackPressed();
               }
             else
-              window.__Snackbar.show(window.__S.ERROR_SERVER_MESSAGE + response.params.errmsg)
+              window.__Snackbar.show(window.__S.ERROR_SERVER_MESSAGE + res.err)
           return;
         }
 
@@ -352,26 +350,23 @@ class CourseEnrolledActivity extends View {
           var event= { "tag": "API_Get_Batch_Creator_name", contents: whatToSend };
           window.__runDuiCallback(event);
           console.log("batch created token",batch.createdBy)
-
         }else if(state.responseFor == "API_FlagCourse"){
-
-            if(responseCode == 200){
-                if(response[0] == "successful"){
-                  JBridge.logFlagClickEvent(this.baseIdentifier,"COURSES");
-                  setTimeout(function(){
-                    window.__Snackbar.show(window.__S.CONTENT_FLAGGED_MSG)
-                    window.__BNavFlowRestart();
-                    _this.onBackPressed();
-                    window.__LoaderDialog.hide();
-                  }, 2000)
-                }
+          if(responseCode == 200){
+            if(response[0] == "successful"){
+              JBridge.logFlagClickEvent(this.baseIdentifier,"COURSES");
+              setTimeout(function(){
+                window.__Snackbar.show(window.__S.CONTENT_FLAGGED_MSG)
+                window.__BNavFlowRestart();
+                _this.onBackPressed();
+                window.__LoaderDialog.hide();
+              }, 2000)
             }
-            else{
-              window.__LoaderDialog.hide();
-              window.__Snackbar.show(window.__S.CONTENT_FLAG_FAIL);
-              _this.onBackPressed();
+          }else{
+            window.__LoaderDialog.hide();
+            window.__Snackbar.show(window.__S.CONTENT_FLAG_FAIL);
+            _this.onBackPressed();
 
-            }
+          }
         }
         else if(state.responseFor == "API_Get_Batch_Creator_name"){
           var user_details = response.result.response;

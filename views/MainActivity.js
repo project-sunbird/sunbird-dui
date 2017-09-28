@@ -150,7 +150,7 @@ class MainActivity extends View {
   }
 
   handleStateChange = (state) => {
-    console.log(state, "state in handleStateChange");
+    var res = utils.processResponse(state);
     if (!state.local && state.responseFor == "API_ProfileFragment"){
       console.log("Saving state");
       var data = utils.encodeBase64(JSON.stringify(state));
@@ -158,10 +158,10 @@ class MainActivity extends View {
     }
     this.currentPageIndex = isNaN(this.currentPageIndex) ? 0 : this.currentPageIndex;
     var shouldBeModified = false;
-    var status = state.response.status[0];
-    var responseData = state.response.status[1];
-    var responseCode = state.response.status[2];
-    var responseUrl = state.response.status[3];
+    var status = res.status;
+    var responseData = res.data;
+    var responseCode = res.code;
+    var responseUrl = res.url;
     var tmp = {
         params: {},
         result: {
@@ -173,41 +173,21 @@ class MainActivity extends View {
         }
       }
 
-    if(responseCode == 401){
-      var callback  = callbackMapper.map(function(token){
-        window.__apiToken = token;
-        var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken}
-        var event = { "tag": state.responseFor, contents: whatToSend };
-        window.__runDuiCallback(event);
-      });
-      JBridge.getApiToken(callback);
-      return;
-    }else if(responseCode == 501 || status === "failure" || status=="f") {
-      if (state.responseFor == "API_CreatedBy") {
-        responseData = utils.decodeBase64(responseData)
-        console.log("responseData", responseData);
-        try {
-          responseData = JSON.parse(responseData);
-          if (responseData.params && responseData.params.err) {
-            responseData.params = null;
-          }
-        } catch (e) {
-          console.log("Error: " + e);
-          responseData = {}
-        } finally {
-          console.log("Finally");
-          if(state.sendBack){
-            responseData.sendBack = state.sendBack;
-          }
-        }
-        console.log("After finally");
-      } else {
+    // if(responseCode == 401){
+    //   var callback  = callbackMapper.map(function(token){
+    //     window.__apiToken = token;
+    //     var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken}
+    //     var event = { "tag": state.responseFor, contents: whatToSend };
+    //     window.__runDuiCallback(event);
+    //   });
+    //   JBridge.getApiToken(callback);
+    //   return;
+    if(res.hasOwnProperty("err")) {
         responseData=tmp;
-      }
     } else {
      // responseData = utils.jsonifyData(responseData);
-      responseData = utils.decodeBase64(responseData)
-      responseData = JSON.parse(responseData);
+      // responseData = utils.decodeBase64(responseData)
+      // responseData = JSON.parse(responseData);
       console.log("response data in MainActivity",responseData)
       if(state.sendBack){
         responseData.sendBack = state.sendBack;
@@ -250,9 +230,6 @@ class MainActivity extends View {
     }
 
     if (responseData.params && responseData.params.err) {
-      if (state.responseFor == "API_CreatedBy")
-        console.log(window.__S.ERROR_SERVER_MESSAGE + responseData.params.errmsg);
-      else
         return;
       // window.__Snackbar.show(window.__S.ERROR_SERVER_MESSAGE + responseData.params.errmsg)
       // return;
@@ -265,7 +242,7 @@ class MainActivity extends View {
 
       return;
     }
-    
+
     switch (this.currentPageIndex) {
       case 0:
         JBridge.logCorrelationPageEvent("HOME",responseData.params.msgid,responseData.id)
@@ -474,12 +451,12 @@ class MainActivity extends View {
         event = { "tag": "API_CourseFragment", contents: whatToSend};
         }
         break;
-      case 2: 
+      case 2:
       if(!JBridge.isNetworkAvailable())
         {
           window.__runDuiCallback({ "tag": "OPEN_ResourceFragment", contents: [] });
           this.switchContent(this.currentPageIndex);
-        }else{ 
+        }else{
       whatToSend =  {"user_token":window.__userToken,"api_token": window.__apiToken}
         event = { "tag": "API_ResourceFragment", contents:whatToSend};
         }
@@ -518,7 +495,7 @@ class MainActivity extends View {
                 this.switchContent(index);
               }
        //  }
-        
+
 
         window.__BottomNavBar.handleNavigationChange(this.currentPageIndex);
         this.setupDuiCallback();
