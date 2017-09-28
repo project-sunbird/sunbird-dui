@@ -290,9 +290,9 @@ class CourseInfoActivity extends View {
 
         }
         })
-
         if(courseEnrollCheckCount == 0){
           this.replaceChild(this.idSet.totalContainer,this.getBody().render(),0);
+          this.checkContentLocalStatus(this.details.identifier);
         }
 
         break;
