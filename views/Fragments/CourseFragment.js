@@ -88,18 +88,12 @@ class CourseFragment extends View {
 
     this.enrolledCourses.map((item) => {
 
-      if (item.identifier === identifier) {
-        enrolled = true;
-      } else if (item.contentId === identifier) {
-        enrolled = true;
-      } else if (item.courseId === identifier) {
+      if (item.identifier === identifier || item.contentId === identifier || item.courseId === identifier) {
         enrolled = true;
       }
     })
     return enrolled;
   }
-
-
 
 
   handleResponse = () => {
@@ -340,9 +334,6 @@ class CourseFragment extends View {
           {this.getBody()}
 
         </LinearLayout>
-
-
-
     )
 
     return this.layout.render();

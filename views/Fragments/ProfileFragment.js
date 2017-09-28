@@ -129,14 +129,6 @@ class ProfileFragment extends View {
     window.__LoaderDialog.hide();
   }
 
-  getLineSeperator = () => {
-    return (<LinearLayout
-            width="match_parent"
-            height="1"
-            margin = "0, 10, 0, 10"
-            background={window.__Colors.PRIMARY_BLACK_22}/>)
-  }
-
   getDescription = () => {
     console.log("this.details", this.details.profileSummary);
     if(this.details.profileSummary){

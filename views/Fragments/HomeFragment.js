@@ -81,34 +81,6 @@ class HomeFragment extends View {
   }
 
 
-  handleSearch = (data) => {
-    console.log("searched", data);
-  }
-
-  handleAnswerClick = () => {
-    console.log("answer clicked")
-  }
-
-  handleVoteClick = () => {
-    console.log("vote clicked")
-  }
-
-  handleBookmarkClick = () => {
-    console.log("bookmark clicked")
-  }
-
-  handleAnswerClick = () => {
-    console.log("answer clicked")
-  }
-
-  handleVoteClick = () => {
-    console.log("vote clicked")
-  }
-
-  handleBookmarkClick = () => {
-    console.log("bookmark clicked")
-  }
-
   handleResourceOpen = (data) => {
     console.log("resourceDetails");
     var whatToSend={ "resourceDetails": "nothing" }
@@ -124,8 +96,6 @@ class HomeFragment extends View {
 
   handleRecommendedClick = (content) => {
     console.log("Recommended clicked :", content.downloadUrl)
-
-
 
   }
   getLocalData = (data) => {

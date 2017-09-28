@@ -243,14 +243,6 @@ handleResourceViewAllClick= (data,title,searchQuery,visibility) =>{
   }
 
 
-  handleViewAllClick = () => {
-
-    var whatToSend = { "resourceDetails": JSON.stringify(this.data) }
-    var event ={ tag: "OPEN_ResourceViewAllActivity", contents: whatToSend }
-    window.__runDuiCallback(event);
-
-  }
-
   handleMenuClick = (url) => {
     console.log("url clicked", url);
     if (url == "ic_action_filter" ||  url == "ic_action_filter_applied") {
