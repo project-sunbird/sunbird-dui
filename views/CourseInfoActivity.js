@@ -228,18 +228,18 @@ class CourseInfoActivity extends View {
 
   handleStateChange = (state) => {
 
-    console.log("STATE IN HANDLE STATE CHANGE",state)
+    var res = utils.processResponse(state);
 
 
     window.__LoaderDialog.hide();
     var status,response,responseCode,responseUrl;
 
-    if(state.response != ""){
-     status = state.response.status[0];
-     response = JSON.parse(utils.decodeBase64(state.response.status[1]));
-     responseCode = state.response.status[2];
-     responseUrl = state.response.status[3];
-    }
+    // if(state.response != ""){
+     status = res.status;
+     response = res.data; //JSON.parse(utils.decodeBase64(state.response.status[1]));
+     responseCode = res.code;
+     responseUrl = res.url;
+    // }
 
 
 
@@ -249,8 +249,8 @@ class CourseInfoActivity extends View {
 
     var result = response.result;
 
-    if (response.params.err) {
-      window.__Snackbar.show(response.params.errmsg)
+    if (res.err) {
+      window.__Snackbar.show(res.err)
       return;
     }
 
@@ -290,9 +290,9 @@ class CourseInfoActivity extends View {
 
         }
         })
-
         if(courseEnrollCheckCount == 0){
           this.replaceChild(this.idSet.totalContainer,this.getBody().render(),0);
+          this.checkContentLocalStatus(this.details.identifier);
         }
 
         break;
