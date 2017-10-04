@@ -297,7 +297,7 @@ class CourseFragment extends View {
   handleMenuClick = (url) => {
 
     if (url == "ic_notification_red") {
-      window.__Snackbar.show(window.__S.COMMING_SOON)
+      window.__Snackbar.show(window.__S.COMING_SOON)
     }
     else if (url == "ic_action_search") {
 
