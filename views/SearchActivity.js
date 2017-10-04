@@ -321,7 +321,7 @@ class SearchActivity extends View {
   onBackPressed = () => {
      JBridge.hideKeyboard();
      var whatToSend = [];
-     window.searchText="";
+     window.search={};
      var event = { tag: "BACK_SearchActivity", contents: whatToSend }
      window.__runDuiCallback(event);
      window.__LoaderDialog.hide();
