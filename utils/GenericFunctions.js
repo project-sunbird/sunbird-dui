@@ -125,18 +125,17 @@ exports.processResponse = (state) => {
 	console.log("processing response, state:", state);
 	var response = {};
 	response.responseFor = state.responseFor;
-	if (state.response.status[0]){
+	if (state.response.status instanceof Object){
 		response.status = state.response.status[0];
 		response.data = state.response.status[1];
 		response.code = state.response.status[2];
 		response.url = state.response.status[3];
-	} else if (status.response.hasOwnProperty("status")){
+	} else if (state.response.hasOwnProperty("status")){
 		response.status = state.response.status;
 		response.data = "";
 		response.code = state.response.statusCode;
 		response.url = "";
 	}
-
 	var decoded = exports.decodeBase64(response.data);
 	try {
 		response.data = JSON.parse(decoded);
@@ -154,7 +153,7 @@ exports.processResponse = (state) => {
 		});
 		JBridge.getApiToken(callback);
 		return;
-	} else if (response.code == 501 || response.status === "failure" || response.status=="f" || response.code == 504 || status == "failed"){
+	} else if (response.code == 501 || response.status === "failure" || response.status=="f" || response.code == 504 || response.status == "failed"){
 		if (response.data.params && response.data.err)
 			response.err = response.data.err;
 		else

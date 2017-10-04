@@ -151,7 +151,7 @@ class MainActivity extends View {
 
   handleStateChange = (state) => {
     var res = utils.processResponse(state);
-    if (!state.local && state.responseFor == "API_ProfileFragment"){
+    if (!state.local && !res.hasOwnProperty("err") && state.responseFor == "API_ProfileFragment"){
       console.log("Saving state");
       var data = utils.encodeBase64(JSON.stringify(state));
       JBridge.saveData(this.profileDataTag, data);
@@ -160,6 +160,7 @@ class MainActivity extends View {
     var shouldBeModified = false;
     var status = res.status;
     var responseData = res.data;
+    this.responseData = responseData;
     var responseCode = res.code;
     var responseUrl = res.url;
     var tmp = {
@@ -182,8 +183,20 @@ class MainActivity extends View {
     //   });
     //   JBridge.getApiToken(callback);
     //   return;
-    if(res.hasOwnProperty("err")) {
-        responseData=tmp;
+    var isErr = res.hasOwnProperty("err");
+    if(isErr) {
+      if (state.responseFor == "API_ProfileFragment") {
+        if (false /*JBridge.getSavedData(this.profileDataTag) != "__failed"*/){
+          window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
+          var data = JSON.parse(utils.decodeBase64(JBridge.getSavedData(this.profileDataTag)));
+          data.local = true;
+          this.handleStateChange(data)
+        } else {
+          // window.__BNavFlowRestart();
+          window.__LoaderDialog.hide();
+        }
+      }
+      responseData=tmp;
     } else {
      // responseData = utils.jsonifyData(responseData);
       // responseData = utils.decodeBase64(responseData)
@@ -194,7 +207,7 @@ class MainActivity extends View {
       }
 
     }
-    if (state.responseFor == "API_ProfileFragment"){
+    if (!isErr && state.responseFor == "API_ProfileFragment"){
       console.log("profileData", responseData);
       window.__userName = responseData.result.response.userName;
     }
@@ -229,23 +242,33 @@ class MainActivity extends View {
       return;
     }
 
-    if (responseData.params && responseData.params.err) {
-        return;
-      // window.__Snackbar.show(window.__S.ERROR_SERVER_MESSAGE + responseData.params.errmsg)
-      // return;
-    }
+    // if (responseData.params && responseData.params.err) {
+    //     return;
+    //   // window.__Snackbar.show(window.__S.ERROR_SERVER_MESSAGE + responseData.params.errmsg)
+    //   // return;
+    // }
 
     if (state.responseFor == "API_UserEnrolledCourse") {
-
+      if (isErr){
+        var tmpData = JBridge.getSavedData("savedCourse");
+        if (tmpData && tmpData != "__failed"){
+          console.log("fetched enrolledCourses");
+          window.__enrolledCourses = JSON.parse(utils.decodeBase64(tmpData));
+          window.setEnrolledCourses(JSON.parse(utils.decodeBase64(tmpData)));
+          return;
+        }
+      } else {
+        JBridge.saveData("savedCourse", utils.encodeBase64(JSON.stringify(responseData.result.courses)));
+      }
       window.__enrolledCourses = responseData.result.courses;
       window.setEnrolledCourses(responseData.result.courses);
-
       return;
     }
 
     switch (this.currentPageIndex) {
       case 0:
-        JBridge.logCorrelationPageEvent("HOME",responseData.params.msgid,responseData.id)
+        // JBridge.logCorrelationPageEvent("HOME",responseData.params.msgid,responseData.id)
+        this.logCorrelationPageEvent("HOME");
         window.__runDuiCallback({ "tag": "OPEN_HomeFragment", contents: [] });
         break;
       case 1:
@@ -255,7 +278,8 @@ class MainActivity extends View {
         // }
         // responseData = state.response.status[1];
         shouldBeModified = true;
-        JBridge.logCorrelationPageEvent("COURSES",responseData.params.msgid,responseData.id)
+        this.logCorrelationPageEvent("COURSES");
+        // JBridge.logCorrelationPageEvent("COURSES",responseData.params.msgid,responseData.id)
         window.__runDuiCallback({ "tag": "OPEN_CourseFragment", contents: [] });
 
         break;
@@ -265,7 +289,8 @@ class MainActivity extends View {
         // if (shouldBeModified) {
         //   JBridge.setInSharedPrefs("userResource", JSON.stringify(state.response.status[1].result.response))
         // }
-        JBridge.logCorrelationPageEvent("RESOURCES",responseData.params.msgid,responseData.id)
+        this.logCorrelationPageEvent("RESOURCES");
+        // JBridge.logCorrelationPageEvent("RESOURCES",responseData.params.msgid,responseData.id)
         window.__runDuiCallback({ "tag": "OPEN_ResourceFragment", contents: [] });
 
         //shouldBeModified = true;
@@ -301,6 +326,10 @@ class MainActivity extends View {
 
   }
 
+  logCorrelationPageEvent = (page) => {
+    if (this.responseData.hasOwnProperty("params") && this.responseData.hasOwnProperty("id"))
+      JBridge.logCorrelationPageEvent(page,this.responseData.params.msgid,this.responseData.id);
+  }
 
   switchContent = (index, data) => {
     var tmp;

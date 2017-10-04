@@ -317,7 +317,7 @@ class CourseEnrolledActivity extends View {
                 _this.onBackPressed();
               }
             else
-              window.__Snackbar.show(window.__S.ERROR_SERVER_MESSAGE + res.err)
+              console.log(window.__S.ERROR_SERVER_MESSAGE + res.err)
           return;
         }
 
