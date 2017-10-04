@@ -473,14 +473,13 @@ class ResourceDetailActivity extends View {
 
   }
   handleStateChange = (state) =>{
-    console.log(state)
-    // var responseData = JSON.parse(state.response);
-    if(state.response.statusCode!=504){
-        var response = utils.decodeBase64(state.response.status[1] || "")
-        var responseCode = state.response.status[2]
-        if(responseCode == 200){
-          var callback = callbackMapper.map(function(response){
+    var res = utils.processResponse(state);
+    if(res.code!=504){
+        var response = res.data;
+        var responseCode = res.code;
+        if(responseCode == "200"){
 
+          var callback = callbackMapper.map(function(response){
             if(state.responseFor == "API_FlagContent" && response[0] == "successful"){
               JBridge.logFlagClickEvent(_this.details.identifier,"RESOURCES");
               setTimeout(function(){
@@ -489,27 +488,21 @@ class ResourceDetailActivity extends View {
                 _this.onBackPressed();
                 window.__LoaderDialog.hide();
               }, 2000)
-
             }
           });
           JBridge.deleteContent(this.details.identifier,callback);
 
-        }
-        else{
+        } else {
           window.__LoaderDialog.hide();
           window.__Snackbar.show(window.__S.CONTENT_FLAG_FAIL);
           _this.onBackPressed();
-
         }
         console.log(response)
-    }
-    else{
+    }else{
       window.__LoaderDialog.hide();
       window.__Snackbar.show(window.__S.TIME_OUT)
       _this.onBackPressed();
-
     }
-
   }
 
 

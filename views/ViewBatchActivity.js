@@ -164,15 +164,15 @@ class ViewBatchActivity extends View {
 
     handleStateChange = (state) => {
 
-     console.log("HADLE STATE change" , state);
+     var res = utils.processResponse(state);
       var status,response,responseCode,responseUrl;
 
-      if(state.response != ""){
-       status = state.response.status[0];
-       response = JSON.parse(utils.decodeBase64(state.response.status[1]));
-       responseCode = state.response.status[2];
-       responseUrl = state.response.status[3];
-      }
+      // if(state.response != ""){
+       status = res.status;
+       response = res.data;
+       responseCode = res.code;
+       responseUrl = res.url;
+      // }
 
 
       if (parseInt(responseCode) != 200
@@ -184,9 +184,9 @@ class ViewBatchActivity extends View {
 
       var result = response.result;
 
-      if (response.params.err) {
+      if (res.err) {
         window.__LoaderDialog.hide();
-        window.__Snackbar.show(response.params.errmsg)
+        window.__Snackbar.show(res.err)
         return;
       }
 
