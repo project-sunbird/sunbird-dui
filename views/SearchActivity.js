@@ -103,9 +103,9 @@ class SearchActivity extends View {
       this.getSearchList(this.searchText,"true");
       window.__LoaderDialog.show();
     }
-    else if(window.searchText!=undefined && window.searchText!=""){
-        this.getSearchList(window.searchText,"false");
-        window.__LoaderDialog.show();
+    else if(window.search && window.search.type == this.searchType && window.search.res!=undefined && window.search.res!="" && window.search.text!=undefined && window.search.text!=""){
+        _this.renderResult(JSON.parse(window.search.res),window.search.text);
+        // window.__LoaderDialog.show();
     }
 
     var callback = callbackMapper.map(function(data) {
@@ -284,6 +284,10 @@ class SearchActivity extends View {
                       .replace(/\\b/g, "\\b")
                       .replace(/\\f/g, "\\f");
                     s = s.replace(/[\u0000-\u0019]+/g, "");
+                    window.search = {};
+                    window.search.res = s;
+                    window.search.text = searchText;
+                    window.search.type = _this.searchType;
                     _this.renderResult(JSON.parse(s),searchText);
                     window.__LoaderDialog.hide();
 
