@@ -151,7 +151,7 @@ class CourseViewAllActivity extends View {
        JBridge.listViewAdapter(
         this.idSet.listContainer,
         JSON.stringify(this.jsonArray),
-        1000,
+        10000,
         "View more",
         callback1,
         this.idSet.viewMoreButton
@@ -161,7 +161,7 @@ class CourseViewAllActivity extends View {
       JBridge.listViewAdapter(
         this.idSet.listContainer,
         JSON.stringify(this.jsonArray),
-        1000,
+        10000,
         null,
         "",
         "",
@@ -172,7 +172,7 @@ class CourseViewAllActivity extends View {
         JBridge.appendToListView(
         this.idSet.listContainer,
         JSON.stringify(this.jsonArray),
-        1000);
+        10000);
     }
     }
 
@@ -259,7 +259,8 @@ class CourseViewAllActivity extends View {
               _this.totalDetails=listContent;
               _this.showList();
               window.__LoaderDialog.hide();
-             if((_this.start_index+1)*10>_this.displayContent.length){
+             if(((_this.start_index+1)*10>_this.displayContent.length)
+              ||(_this.displayContent.length>=9999)){
                 _this.changeViewMoreButtonStatus();
               }
               

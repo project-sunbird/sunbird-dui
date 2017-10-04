@@ -134,7 +134,7 @@ showList = () =>{
      JBridge.listViewAdapter(
       this.idSet.listContainer,
       JSON.stringify(this.jsonArray),
-      1000,
+      10000,
       "View more",
       callback1,
       this.idSet.viewMoreButton
@@ -144,7 +144,7 @@ showList = () =>{
     JBridge.listViewAdapter(
       this.idSet.listContainer,
       JSON.stringify(this.jsonArray),
-      1000,
+      10000,
       null,
       "",
       "",
@@ -155,7 +155,7 @@ showList = () =>{
       JBridge.appendToListView(
       this.idSet.listContainer,
       JSON.stringify(this.jsonArray),
-      1000);
+      10000);
   }
   }
 
@@ -238,7 +238,8 @@ showList = () =>{
               _this.showList();
             //  _this.appendChild(_this.idSet.listItems,_this.getRows(listContent).render(),_this.start_index)
               window.__LoaderDialog.hide();
-              if(_this.start_index*10>=_this.displayContent.length){
+              if((_this.start_index*10>=_this.displayContent.length)
+                ||(_this.displayContent.length>=9999)){
                 _this.changeViewMoreButtonStatus();
               }
               });
