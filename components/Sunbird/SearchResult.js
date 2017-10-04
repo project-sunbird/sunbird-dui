@@ -82,7 +82,7 @@ class SearchResult extends View {
 
                 <TextView
                   height="wrap_content"
-                  padding = "0,10,0,0"
+                  padding = "0,10,10,0"
                   weight="2"
                   gravity = "right"
                   width="0"
