@@ -29,7 +29,8 @@ class ProfileHeader extends View {
       this.orgName = "";
     if(this.props.data.rootOrg!=null && this.props.data.rootOrg.contactDetail!=null && this.props.data.rootOrg.contactDetail.length>0)
       {
-        this.orgEmail=this.props.data.rootOrg.contactDetail[0].email?this.props.data.rootOrg.contactDetail[0].email:"sunbird@test.com";
+        var temp=JSON.parse(this.props.data.rootOrg.contactDetail);
+        this.orgEmail = temp[0].email ? temp[0].email : "";
       }
     else{
       this.orgEmail = ""
@@ -99,10 +100,10 @@ class ProfileHeader extends View {
         </LinearLayout>
       </LinearLayout>);
   }
-  capitalizeFirstLetter =(string)=> 
+  capitalizeFirstLetter =(string)=>
   {
     if(string!=undefined)
-      {  
+      {
     return string.charAt(0).toUpperCase() + string.slice(1);
       }
       else return string;
@@ -126,10 +127,10 @@ class ProfileHeader extends View {
               text={this.capitalizeFirstLetter(this.firstName) + this.capitalizeFirstLetter(this.lastName)}
               padding="0,10,0,2"
               style={window.__TextStyle.textStyle.HEADING.DARK}/>
-              
+
               {this.getUserName()}
               {this.getEmailPart()}
-              
+
               <TextView
               width="wrap_content"
               height="wrap_content"

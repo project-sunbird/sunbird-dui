@@ -1056,7 +1056,7 @@ class AdditionalInformationActivity extends View{
   console.log(JSON.stringify(body),"sendingJson");
   this.responseCame=false;
   if(JBridge.isNetworkAvailable()){
-      JBridge.patchApi(url,JSON.stringify(body),window.__userToken,window.__apiToken);
+      JBridge.patchApi(url,JSON.stringify(body),window.__user_accessToken,window.__apiToken);
       window.__LoaderDialog.show();
 
      setTimeout(() => {
@@ -1099,14 +1099,14 @@ class AdditionalInformationActivity extends View{
 
   checkSameData = () =>{
     console.log(JSON.stringify(this.grade) +" gfgh "+ JSON.stringify(this.prevData.grade));
-    if(this.name == this.prevData.name 
+    if(this.name == this.prevData.name
        && this.lastName == this.prevData.lastName
-       && JSON.stringify(this.language) == JSON.stringify(this.prevData.language) 
-       && this.email == this.prevData.email 
-       && this.mobile == this.prevData.mobile 
-       && this.description == this.prevData.description 
-       && this.dob == this.prevData.dob 
-       && (this.gender == this.prevData.gender || this.gender.toLowerCase() == this.prevData.gender.toLowerCase()) 
+       && JSON.stringify(this.language) == JSON.stringify(this.prevData.language)
+       && this.email == this.prevData.email
+       && this.mobile == this.prevData.mobile
+       && this.description == this.prevData.description
+       && this.dob == this.prevData.dob
+       && (this.gender == this.prevData.gender || this.gender.toLowerCase() == this.prevData.gender.toLowerCase())
        && this.arrayEquals(this.grade,this.prevData.grade)
        && this.arrayEquals(this.selectedSubjects,this.prevData.selectedSubjects)){
                return true;

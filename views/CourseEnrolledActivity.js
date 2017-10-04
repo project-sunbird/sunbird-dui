@@ -160,7 +160,7 @@ class CourseEnrolledActivity extends View {
                      }
 
     var whatToSend = {
-      "user_token" : window.__userToken,
+      "user_token" : window.__user_accessToken,
       "api_token" : window.__apiToken,
       "requestBody" : JSON.stringify(request),
       "identifier" : this.baseIdentifier
@@ -479,7 +479,7 @@ class CourseEnrolledActivity extends View {
     if(this.details.batchId || this.enrolledCourses.batchId){
      var batchId = this.details.batchId ? this.details.batchId : this.enrolledCourses.batchId;
       var whatToSend = {
-        "user_token" : window.__userToken,
+        "user_token" : window.__user_accessToken,
         "api_token" : window.__apiToken,
         "batch_id" : batchId
       }

@@ -69,7 +69,7 @@ class CommProfSearchActivity extends View {
       window.__LoaderDialog.hide();
       var callback  = callbackMapper.map(function(token){
         window.__apiToken = token;
-        var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken}
+        var whatToSend = {"user_token":window.__user_accessToken,"api_token": window.__apiToken}
         var event = { "tag": state.responseFor, contents: whatToSend };
         window.__runDuiCallback(event);
       });
@@ -338,7 +338,7 @@ class CommProfSearchActivity extends View {
    }
 
     var whatToSend = {
-      user_token: window.__userToken,
+      user_token: window.__user_accessToken,
       api_token: window.__apiToken,
       filter_to_send: JSON.stringify(req)
     };

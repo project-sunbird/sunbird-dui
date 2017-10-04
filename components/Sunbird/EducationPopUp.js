@@ -367,7 +367,7 @@ class EducationPopUp extends View {
     if(this.singleClick){
         this.singleClick = false;
         _this.responseCame=false;
-        JBridge.patchApi(url, JSON.stringify(body), window.__userToken, window.__apiToken);
+        JBridge.patchApi(url, JSON.stringify(body), window.__user_accessToken, window.__apiToken);
         window.__LoaderDialog.show();
          setTimeout(() => {
              if(_this.responseCame){
@@ -545,7 +545,7 @@ class EducationPopUp extends View {
     if (type == "positive") {
       this.delete = true;
       this.handleSaveClick();
-    } 
+    }
     window.__SimplePopup.hide(this.idSet.eduConf);
   }
 

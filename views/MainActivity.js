@@ -86,7 +86,7 @@ class MainActivity extends View {
     this.backPressCount = 0;
 
     if(this.currentPageIndex==1 || this.currentPageIndex==0){
-      // var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken}
+      // var whatToSend = {"user_token":window.__user_accessToken,"api_token": window.__apiToken}
       // var event ={ "tag": "API_UserEnrolledCourse", contents: whatToSend};
       // window.__runDuiCallback(event);
       window.__fetchCourse();
@@ -98,7 +98,7 @@ class MainActivity extends View {
 
   getUserProfileData = () => {
     if (JBridge.isNetworkAvailable()){
-      var whatToSend= {"user_token":window.__userToken,"api_token": window.__apiToken}
+      var whatToSend= {"user_token":window.__user_accessToken,"api_token": window.__apiToken}
       var event = { "tag": "API_ProfileFragment", contents: whatToSend };
       window.__runDuiCallback(event);
     } else if (JBridge.getSavedData(this.profileDataTag) != "__failed"){
@@ -176,7 +176,7 @@ class MainActivity extends View {
     if(responseCode == 401){
       var callback  = callbackMapper.map(function(token){
         window.__apiToken = token;
-        var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken}
+        var whatToSend = {"user_token":window.__user_accessToken,"api_token": window.__apiToken}
         var event = { "tag": state.responseFor, contents: whatToSend };
         window.__runDuiCallback(event);
       });
@@ -231,7 +231,7 @@ class MainActivity extends View {
       }
       window.__API_Profile_Called = true;
       if (window.__userName != undefined) window.__Snackbar.show(window.__S.WELCOME_BACK.format(window.__userName));
-      var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken, "slug": responseData.result.response.rootOrg.slug};
+      var whatToSend = {"user_token":window.__user_accessToken,"api_token": window.__apiToken, "slug": responseData.result.response.rootOrg.slug};
       var event = { tag: "API_Tenant", contents: whatToSend};
       window.__runDuiCallback(event);
     }
@@ -265,7 +265,7 @@ class MainActivity extends View {
 
       return;
     }
-    
+
     switch (this.currentPageIndex) {
       case 0:
         JBridge.logCorrelationPageEvent("HOME",responseData.params.msgid,responseData.id)
@@ -470,17 +470,17 @@ class MainActivity extends View {
           this.switchContent(this.currentPageIndex);
         }
         else{
-        whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken}
+        whatToSend = {"user_token":window.__user_accessToken,"api_token": window.__apiToken}
         event = { "tag": "API_CourseFragment", contents: whatToSend};
         }
         break;
-      case 2: 
+      case 2:
       if(!JBridge.isNetworkAvailable())
         {
           window.__runDuiCallback({ "tag": "OPEN_ResourceFragment", contents: [] });
           this.switchContent(this.currentPageIndex);
-        }else{ 
-      whatToSend =  {"user_token":window.__userToken,"api_token": window.__apiToken}
+        }else{
+      whatToSend =  {"user_token":window.__user_accessToken,"api_token": window.__apiToken}
         event = { "tag": "API_ResourceFragment", contents:whatToSend};
         }
         break;
@@ -489,7 +489,7 @@ class MainActivity extends View {
         event = { "tag": "OPEN_CommunityFragment", contents: whatToSend };
         break;
       case 4:
-        // whatToSend= {"user_token":window.__userToken,"api_token": window.__apiToken}
+        // whatToSend= {"user_token":window.__user_accessToken,"api_token": window.__apiToken}
         // event = { "tag": "API_ProfileFragment", contents:whatToSend };
         this.getUserProfileData();
         break;
@@ -518,7 +518,7 @@ class MainActivity extends View {
                 this.switchContent(index);
               }
        //  }
-        
+
 
         window.__BottomNavBar.handleNavigationChange(this.currentPageIndex);
         this.setupDuiCallback();

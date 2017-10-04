@@ -110,7 +110,7 @@ class ViewBatchActivity extends View {
                       }
                   }
 
-          var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken, request : JSON.stringify(request)}
+          var whatToSend = {"user_token":window.__user_accessToken,"api_token": window.__apiToken, request : JSON.stringify(request)}
           var event ={ "tag": "API_Get_Batch_list", contents: whatToSend};
           window.__LoaderDialog.show();
           window.__runDuiCallback(event);
@@ -173,7 +173,7 @@ class ViewBatchActivity extends View {
        responseCode = state.response.status[2];
        responseUrl = state.response.status[3];
       }
-      
+
 
       if (parseInt(responseCode) != 200
          && (!((state.responseFor=="API_BatchCreator")&&(parseInt(responseCode)==400)))){
@@ -317,7 +317,7 @@ class ViewBatchActivity extends View {
             }
           var whatToSend = {
           "reqParams": JSON.stringify(this.courseDetails),
-          "user_token" : window.__userToken,
+          "user_token" : window.__user_accessToken,
           "api_token": window.__apiToken }
           var event = {
             "tag": "API_EnrollInBatch",

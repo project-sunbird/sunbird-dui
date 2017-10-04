@@ -215,7 +215,7 @@ class ResourceDetailActivity extends View {
                      }
 
     var whatToSend = {
-      "user_token" : window.__userToken,
+      "user_token" : window.__user_accessToken,
       "api_token" : window.__apiToken,
       "requestBody" : JSON.stringify(request),
       "identifier" : this.details.content.identifier

@@ -811,7 +811,7 @@ del = () => {
         this.singleClick=false;
         _this.responseCame=false;
         console.log("patchApi", body);
-        JBridge.patchApi(url,JSON.stringify(body),window.__userToken,window.__apiToken);
+        JBridge.patchApi(url,JSON.stringify(body),window.__user_accessToken,window.__apiToken);
         window.__LoaderDialog.show();
 
        setTimeout(() => {
@@ -838,16 +838,16 @@ del = () => {
          }
 
      checkCompleteStatus = () =>{
-       if(window.__ExperiencePopUp.data != undefined 
-          && this.jobName == this.prevData.jobName 
-          && this.Organization == this.prevData.Organization  
-          && this.Position== this.prevData.Position 
-          && JSON.stringify(this.subjects)==JSON.stringify(this.prevData.subjects) 
-          && this.joiningDate == this.prevData.joiningDate 
+       if(window.__ExperiencePopUp.data != undefined
+          && this.jobName == this.prevData.jobName
+          && this.Organization == this.prevData.Organization
+          && this.Position== this.prevData.Position
+          && JSON.stringify(this.subjects)==JSON.stringify(this.prevData.subjects)
+          && this.joiningDate == this.prevData.joiningDate
           && this.endDate == this.prevData.endDate ){
            return false;
          }
-      else if(window.__ExperiencePopUp.data == undefined 
+      else if(window.__ExperiencePopUp.data == undefined
         &&(this.jobName == this.prevData.jobName || this.Organization == this.prevData.Organization))
         {
           return false;
