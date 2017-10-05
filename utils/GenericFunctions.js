@@ -140,19 +140,37 @@ exports.processResponse = (state) => {
 	try {
 		response.data = JSON.parse(decoded);
 	} catch (e) {
-		console.log("processing response, error:", e);
+		console.log("processing response, error parsing:", e);
 		response.data = decoded;
 	}
 
 	if (response.code == "401"){
-		var callback  = callbackMapper.map(function(token){
-			window.__apiToken = token;
-			var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken}
-			var event = { "tag": state.responseFor, contents: whatToSend };
-			window.__runDuiCallback(event);
-		});
-		JBridge.getApiToken(callback);
-		return;
+		if (response.data.hasOwnProperty("message")){
+			//api token expired
+			window.__apiTokenExpireCount++;
+			if (window.__apiTokenExpireCount < 2){
+				var callback  = callbackMapper.map(function(token){
+					window.__apiToken = token;
+					window.__apiTokenExpireCount--;
+					var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken}
+					var event = { "tag": state.responseFor, contents: whatToSend };
+					window.__runDuiCallback(event);
+				});
+				JBridge.getApiToken(callback);
+			} else {
+				//force the user to upgrade app
+				window.__ForceUpgradePopup.show();
+			}
+			return;
+		} else if (response.data.hasOwnProperty("params") &&
+								response.data.params.hasOwnProperty("err") &&
+								response.data.params.err=="UNAUTHORIZE_USER"){
+				//user access token expired
+				//refresh user access token
+				var callback  = callbackMapper.map(function(token){
+
+				});
+		}
 	} else if (response.code == 501 || response.status === "failure" || response.status=="f" || response.code == 504 || response.status == "failed"){
 		if (response.data.params && response.data.err)
 			response.err = response.data.err;
