@@ -8,12 +8,13 @@ var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
 var RatingBar = require("@juspay/mystique-backend/src/android_views/RatingBar");;
 var HorizontalScrollView = require("@juspay/mystique-backend/src/android_views/HorizontalScrollView");
+var HorizontalProgressBar = require('../../components/Sunbird/HorizontalProgressBar');
 
 var _this;
 class ProfileCreations extends View {
   constructor(props, children) {
     super(props, children);
-    console.log("HAKUNA MATATA",this.props);
+    console.log("Profile Progress",this.props);
     this.setIds([
 
     ]);
@@ -34,6 +35,7 @@ class ProfileCreations extends View {
         <LinearLayout
           margin="0,0,0,16"
           orientation="vertical"
+          visibility={this.props.data.completeness==undefined?"gone":"visible"}
           width="match_parent"
           height="wrap_content">
 
@@ -52,30 +54,27 @@ class ProfileCreations extends View {
             </LinearLayout> 
             {this.getEditButton()}
           </LinearLayout>
-          <LinearLayout
-          width = "match_parent"
-          height = "6"
-          margin = "0, 10, 0, 0"
-          cornerRadius = "2"
-          orientation = "horizontal">
-          <LinearLayout
-            multiCorners = {"10,0,0,10," + window.__Colors.PRIMARY_ACCENT}
-            width = "0"
-            height = "match_parent"
-            weight = {percentL}/>
-          <LinearLayout
-            alpha="0.3"
-            multiCorners = {"0,10,10,0," + window.__Colors.PRIMARY_BLACK}
-            width = "0"
-            height = "match_parent"
-            weight = {percentR}/>
-        </LinearLayout>
+          <HorizontalProgressBar
+            width="match_parent"
+            height="10"
+            cornerRadius={"20,20,20,20,"}
+            progressBarColor={window.__Colors.PRIMARY_ACCENT}
+            currentProgress={this.props.data.completeness}
+            totalProgress={100}
+            visibility = {this.showProgress}/>
         </LinearLayout>
       )
   }
 
   getEditButton=()=>{
+    var temp=this.props.data.completeness==100?"gone":"visible";
+    if(this.props.data.hasOwnProperty("missingFields")&&this.props.data.missingFields[0]!=undefined){
     var editButtonText=this.props.data.missingFields[0];
+    }
+    else{
+      var editButtonText="";
+      temp="gone";
+    }
     if(editButtonText=="address"||editButtonText=="location"){
         editButtonText=window.__S.TITLE_ADDRESS;
       }
@@ -107,7 +106,7 @@ class ProfileCreations extends View {
     padding="16,8,0,8"
     width="wrap_content"
     height="wrap_content"
-    visibility={this.props.data.completeness==100?"gone":"visible"}
+    visibility={temp}
     text= {"+ "+window.__S.ADD+" "+editButtonText}
     style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}
     onClick={this.handleEditProfileClick}/>);
