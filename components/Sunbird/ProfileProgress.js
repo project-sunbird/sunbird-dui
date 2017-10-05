@@ -13,6 +13,7 @@ var _this;
 class ProfileCreations extends View {
   constructor(props, children) {
     super(props, children);
+    console.log("HAKUNA MATATA",this.props);
     this.setIds([
 
     ]);
@@ -260,7 +261,7 @@ class ProfileCreations extends View {
   }
 
   handleEditProfileClick = () => {
-    var editButtonText="Other fields";
+    var editButtonText=this.props.data.missingFields[0];
     if(editButtonText=="address"||editButtonText=="location"){
       window.__AddressPopUp.data=undefined;
       window.__AddressPopUp.show();
