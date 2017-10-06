@@ -62,6 +62,7 @@ class ExperiencePopUp extends View{
     this.Position="";
     this.joiningDate="";
     this.endDate="";
+    this.isCurrentJob=false;
 
     this.jobProfile=[];
 
@@ -146,6 +147,7 @@ class ExperiencePopUp extends View{
      this.prevData.joiningDate=window.__ExperiencePopUp.data.joiningDate;
      this.prevData.endDate=window.__ExperiencePopUp.data.endDate;
      this.prevData.subjects = window.__ExperiencePopUp.data.subject;
+     this.prevData.isCurrentJob=window.__ExperiencePopUp.data.isCurrentJob;
      return;
    }
    this.prevData.subjects=[];
@@ -154,6 +156,7 @@ class ExperiencePopUp extends View{
    this.prevData.Position="";
    this.prevData.joiningDate=null;
    this.prevData.endDate=null;
+   this.prevData.isCurrentJob=false;
    this.jobProfile = [];
  }
 
@@ -165,6 +168,8 @@ class ExperiencePopUp extends View{
    this.Position=this.prevData.Position;
    this.joiningDate=this.prevData.joiningDate;
    this.endDate=this.prevData.endDate;
+   this.isCurrentJob=this.prevData.isCurrentJob;
+
 
    console.log(this.prevData.jobName,"jobName");
    console.log(this.prevData.Organization,"organizationText");
@@ -186,14 +191,23 @@ class ExperiencePopUp extends View{
 
    cmd+=this.set({
      id: this.idSet.joiningDateText,
-     text: this.prevData.joiningDate
+     text: (this.prevData.joiningDate==null? "Select Date":this.prevData.joiningDate),
+     visibility: "visible"
    })
 
    cmd+=this.set({
      id: this.idSet.closingDateText,
-     text: this.prevData.endDate
+     text: (this.prevData.endDate==null? "Select Date":this.prevData.endDate),
+     visibility: "visible"
    })
-   Android.runInUI(cmd, 0)
+
+   cmd += this.set({
+               id: this.idSet.closingDateLayout,
+               visibility: "visible"
+             });
+
+   Android.runInUI(cmd, 0);
+
    this.replaceChild(this.idSet.subjectSpinnerContainer, this.getSpinner().render(), 0);
 
    var jobTypeValue = [
@@ -201,9 +215,9 @@ class ExperiencePopUp extends View{
      {name:window.__S.NO,select:"0",icon:"ic_action_radio"}
    ];
 
-   var index;
+   var index=-1;
 
-   if (this.data != undefined && window.__ExperiencePopUp.data.isCurrentJob) {
+   if (this.isCurrentJob) {
      jobTypeValue[0].select = "1";
      jobTypeValue[1].select = "0";
      index = 0;
@@ -664,7 +678,11 @@ del = () => {
               text: data[0],
               style: window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK
             });
+
+            
             Android.runInUI(cmd, 0);
+
+            
 
             if(_this.checkCompleteStatus()){
               _this.enableSaveButton();
@@ -703,6 +721,8 @@ del = () => {
              Android.runInUI(cmd, 0);
              this.endDate=null;
 
+             this.isCurrentJob=true;
+
              if(this.checkCompleteStatus())
              {
                this.enableSaveButton();
@@ -714,6 +734,16 @@ del = () => {
           else {
             console.log(window.__ExperiencePopUp , " gh ");
             window.__Snackbar.show(window.__S.ERROR_MULTIPLE_CURRENT_JOB);
+
+            var jobTypeValue = [
+               {name:window.__S.YES,select:"0",icon:"ic_action_radio"},
+               {name:window.__S.NO,select:"1",icon:"ic_action_radio"}
+                ];
+
+            
+             this.replaceChild(this.idSet.jobTypeRadioContainer,
+               this.getRadioButtionLayout(jobTypeValue, 1).render(), 0);
+
           }
        }
        else {
@@ -722,6 +752,7 @@ del = () => {
            visibility: "visible"
          });
          Android.runInUI(cmd, 0);
+         this.isCurrentJob=false;
 
          if(this.checkCompleteStatus())
          {
@@ -788,7 +819,7 @@ del = () => {
           json.subject=this.subjects;
           json.userId= window.__userToken;
           json.isDeleted = this.delete ? this.delete : null;
-          json.isCurrentJob = window.__RadioButton.currentIndex  == 0 ? true : false;
+          json.isCurrentJob = this.isCurrentJob;
           if(json.address!=undefined)
           json.address.userId= window.__userToken;
           this.jobProfile.push(json);
@@ -827,7 +858,7 @@ del = () => {
 
      formatDate = (date) =>{
          date = date.substr(0,4)+"-"+date.substr(5);
-         if(date.charAt(7)!='-'){
+         if(date.charAt(7)!='/'){
             date = date.substr(0,5)+"0"+date.substr(5);
           }
 
