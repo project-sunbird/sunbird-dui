@@ -3,6 +3,8 @@ var dom = require("@juspay/mystique-backend/src/doms/android");
 var Connector = require("@juspay/mystique-backend/src/connectors/screen_connector");
 var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
 var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
+var RelativeLayout = require("@juspay/mystique-backend/src/android_views/RelativeLayout");
+
 
 var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget");
 
@@ -31,28 +33,31 @@ class HorizontalProgressBar extends View {
   getProgressBar = () => {
     var percentL = parseFloat(this.currentProgress) / parseFloat(this.totalProgress);
     var percentR = (1 - percentL);
-
     var myProgressColor = percentL==1 ? window.__Colors.SUCCESS_GREEN : (this.props.progressBarColor===undefined?window.__Colors.ORANGE:this.props.progressBarColor) 
-    
-    return (
+    var myHeight= this.props.height||"2";
+    myHeight=myHeight=="wrap_content"?"2":myHeight;
+    var myCornerRadius=this.props.cornerRadius||"0,0,0,0";
+      return(<RelativeLayout
+      width="match_parent"
+      height={myHeight}
+      root="true">
       <LinearLayout
-      height="2"
-      root="true"
-      width="match_parent">
-        <ViewWidget
-          width="0"
-          weight={percentL}
-          background={myProgressColor}
-          height="2"/>
-        <ViewWidget
-          width="0"
-          weight={percentR}
-          background={window.__Colors.PRIMARY_BLACK_22}
-          height="2"/>
-
-      </LinearLayout>)
+        width="match_parent"
+        multiCorners = {myCornerRadius+","+window.__Colors.PRIMARY_BLACK_22}
+        height="match_parent"/>
+      <LinearLayout
+        width="match_parent"
+        height="match_parent">
+      <LinearLayout
+      weight={percentL}
+      multiCorners = {myCornerRadius+","+myProgressColor}
+      height="match_parent"/>
+      <LinearLayout
+      weight={percentR}
+      height="match_parent"/>
+      </LinearLayout>
+     </RelativeLayout>);
   }
-
 
   render() {
 

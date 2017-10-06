@@ -827,10 +827,9 @@ del = () => {
 
      formatDate = (date) =>{
          date = date.substr(0,4)+"-"+date.substr(5);
-         if(date.charAt(7)!='-'){
+         if(date.charAt(7)!='/'){
             date = date.substr(0,5)+"0"+date.substr(5);
           }
-
          date = date.substr(0,7)+"-"+date.substr(8);
          if(date.length<10)
            date = date.substr(0,8)+"0"+date.substr(8);

@@ -142,7 +142,8 @@ class AdditionalInformationActivity extends View{
 
     cmd += this.set({
       id: this.idSet.nameText,
-      text: this.name
+      text: this.name,
+
     })
 
     cmd += this.set({
@@ -357,7 +358,31 @@ class AdditionalInformationActivity extends View{
                    width="match_parent"
                    orientation="vertical">
 
-                       {this.getEditTextView(this.idSet.emailText,window.__S.EMAIL_ID,window.__S.HINT_EMAIL_ID,false,this.setEmail)}
+
+                       <LinearLayout
+                       width="match_parent"
+                       height="wrap_content"
+                       orientation="vertical"
+                       margin="4,0,0,17">
+                         <TextView
+                          width="match_parent"
+                          height="wrap_content"
+                          style={window.__TextStyle.textStyle.HINT.SEMI}
+                          text={window.__S.EMAIL_ID}/>
+                          <LinearLayout
+                            width="match_parent"
+                            height="wrap_content"
+                            padding="0,6,12,12">
+
+                              <TextView
+                                width="match_parent"
+                                height="wrap_content"
+                                id= {this.idSet.emailText}
+                                style={window.__TextStyle.textStyle.CARD.BODY.DARK.FADED}/>
+                          </LinearLayout>
+                          {this.getLineSeperator()}
+                         </LinearLayout>
+
                        {this.getEditTextView(this.idSet.phoneText,window.__S.PHONE,window.__S.HINT_MOBILE_NUMBER,false,this.setPhone,"numeric")}
                        {this.getEditTextView(this.idSet.descriptionText,window.__S.DESCRIPTION,"",true,this.setDescription)}
                        <LinearLayout
@@ -575,16 +600,15 @@ class AdditionalInformationActivity extends View{
   }
 
   formatDate = (date) =>{
-      date = date.substr(0,4)+"-"+date.substr(5);
-      if(date.charAt(7)!='-'){
-         date = date.substr(0,5)+"0"+date.substr(5);
-       }
-
-      date = date.substr(0,7)+"-"+date.substr(8);
-      if(date.length<10)
-        date = date.substr(0,8)+"0"+date.substr(8);
-        return date;
-      }
+    date = date.substr(0,4)+"-"+date.substr(5);
+    if(date.charAt(7)!='/'){
+       date = date.substr(0,5)+"0"+date.substr(5);
+     }
+    date = date.substr(0,7)+"-"+date.substr(8);
+    if(date.length<10)
+      date = date.substr(0,8)+"0"+date.substr(8);
+      return date;
+    }
 
   getLanguagePredictions = (data) => {
 
@@ -998,51 +1022,99 @@ class AdditionalInformationActivity extends View{
         return;
       }
 
-    json.firstName=this.name;
-    json.language=this.language;
+    if(this.name != this.prevData.name)
+       json.firstName=this.name;
+     else
+       delete json.name;
 
-    if(this.checkEmailFormat(this.email)){
+     if(!this.arrayEquals(this.language, this.prevData.language))
+       json.language=this.language;
+     else
+      delete json.language;
+
+    if(this.email != this.prevData.email && this.checkEmailFormat(this.email)){
         json.email=this.email;
+    }
+    else if(this.email == this.prevData.email)
+    {
+      delete json.email;
     }
     else {
       window.__Snackbar.show(window.__S.ERROR_EMAIL_FORMAT)
       return;
     }
 
-    if(this.checkPhoneFormat(this.mobile)){
+    if(this.mobile != this.prevData.mobile &&  this.checkPhoneFormat(this.mobile)){
         json.phone=this.mobile;
+    }
+    else if(this.mobile == this.prevData.mobile)
+    {
+      delete json.phone;
     }
     else {
       window.__Snackbar.show(window.__S.ERROR_SHORT_MOBILE)
       return;
     }
 
-    if(this.location!=null){
-    json.location=this.location;
+    // if(this.location!=null){
+    // json.location=this.location;
+    // }
+    // else
+    // {
+    //   delete json.location;
+    // }
+
+    // if(this.adhar!=null){
+    //   if(this.checkAdharFormat(this.adhar)){
+    //        json.aadhaarNo=this.adhar;
+    //   }
+    //   else {
+    //     window.__Snackbar.show(window.__S.ERROR_INVALID_AADHAAR)
+    //     return;
+    //   }
+    // }
+    // else{
+    //   delete json.aadhaarNo;
+    // }
+    if(this.lastName!=this.prevData.lastName){
+       json.lastName= this.lastName;
+    }
+    else{
+      delete json.lastName;
     }
 
-    if(this.adhar!=null){
-      if(this.checkAdharFormat(this.adhar)){
-           json.aadhaarNo=this.adhar;
-      }
-      else {
-        window.__Snackbar.show(window.__S.ERROR_INVALID_AADHAAR)
-        return;
-      }
-    }
-    if(this.dob!=null){
+    if(this.dob!=this.prevData.dob){
        json.dob= this.dob;
     }
+    else{
+      delete json.dob;
+    }
 
-    if(this.grade!=null && this.grade.length >= 0 ) {
+    if(!this.arrayEquals(this.grade,this.prevData.grade) ) {
       json.grade=this.grade;
     }
+    else
+    {
+      delete json.grade;
+    }
 
-    if(this.gender!=null){
+    if(this.gender!=this.prevData.gender){
       json.gender=this.gender.toLowerCase();
     }
-      json.subject=this.selectedSubjects.length>0 ? this.selectedSubjects : null;
+    else{
+      delete json.gender;
+    }
+
+    if(! this.arrayEquals(this.selectedSubjects,this.prevData.selectedSubjects))
+      json.subject= this.selectedSubjects;
+    else
+      delete json.subject;
+
+    if(this.description != this.prevData.description)
       json.profileSummary = this.description;
+    else
+      delete json.profileSummary;
+
       json.userId=window.__userToken;
 
    var url=window.__apiUrl + "/api/user/v1/update"
@@ -1141,7 +1213,7 @@ class AdditionalInformationActivity extends View{
   }
 
   setLastName = (data) =>{
-    this.lastName= data=="" ? null : data;
+    this.lastName= data;
     this.updateSaveButtonStatus(this.checkCompleteStatus());
   }
 

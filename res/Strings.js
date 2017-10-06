@@ -146,7 +146,7 @@ const stringsRes = {
 		SHOW_MORE : "Show More",
 		CREATOR_OF : "Creator of",
 		USERNAME : "Username",
-		YOUR_PROFILE_IS : "Your profile is ",
+		YOUR_PROFILE_IS: "Your profile is %s% completed",
 		FOLLOW : "Follow",
 		PEOPLE_YOU_FOLLOW : "People you follow",
 		GROUPS_YOU_FOLLOW : "Groups you follow",
