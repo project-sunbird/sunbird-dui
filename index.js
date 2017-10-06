@@ -58,6 +58,8 @@ if (typeof window !== "undefined") {
 
   window.__API_TIMEOUT=20000; //20 seconds for timeout
 
+  window.__apiTokenExpireCount = 0;
+
   window.callUICallback = function() {
     var args = (arguments.length === 1 ? [arguments[0]] : Array.apply(null, arguments));
     var fName = args[0]
