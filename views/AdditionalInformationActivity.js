@@ -500,6 +500,7 @@ class AdditionalInformationActivity extends View{
                               selectedData={this.grade}
                               onItemChange={this.onMultiSelectGradeItemChange}/>
                         </LinearLayout>
+                        {this.getEditTextView(this.idSet.locationText,window.__S.CURRENT_LOCATION,"",true,this.setLocation)}
                         {this.getEditTextView(this.idSet.fbText,window.__S.FACEBOOK,"",true,this.setFb)}
                         {this.getEditTextView(this.idSet.twitterText,window.__S.TWITTER,"",true,this.setTwitter)}
                         {this.getEditTextView(this.idSet.linkedinText,window.__S.LINKEDIN,"",true,this.setLinkedin)}
@@ -1100,13 +1101,13 @@ class AdditionalInformationActivity extends View{
       return;
     }
 
-    // if(this.location!=null){
-    // json.location=this.location;
-    // }
-    // else
-    // {
-    //   delete json.location;
-    // }
+    if(this.location!=this.prevData.location){
+    json.location=this.location;
+    }
+    else
+    {
+      delete json.location;
+    }
 
     // if(this.adhar!=null){
     //   if(this.checkAdharFormat(this.adhar)){
@@ -1252,6 +1253,7 @@ class AdditionalInformationActivity extends View{
        && this.mobile == this.prevData.mobile
        && this.description == this.prevData.description
        && this.dob == this.prevData.dob
+       && this.location == this.prevData.location
        && this.fb==this.prevData.fb
        && this.linkedin==this.prevData.linkedin
        && this.twitter==this.prevData.twitter
@@ -1316,7 +1318,7 @@ class AdditionalInformationActivity extends View{
   }
 
   setLocation = (data) => {
-    this.location=data=="" ? null :data;
+    this.location=data;
     this.updateSaveButtonStatus(this.checkCompleteStatus());
   }
 
