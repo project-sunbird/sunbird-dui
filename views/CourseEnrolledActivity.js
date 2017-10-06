@@ -655,7 +655,6 @@ class CourseEnrolledActivity extends View {
 
           <HorizontalProgressBar
             width="match_parent"
-            height="wrap_content"
             currentProgress={this.data.completedProgress}
             totalProgress={this.data.totalProgress}
             visibility = {this.showProgress}/>

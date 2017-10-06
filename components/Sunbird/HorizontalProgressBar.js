@@ -35,6 +35,7 @@ class HorizontalProgressBar extends View {
     var percentR = (1 - percentL);
     var myProgressColor = percentL==1 ? window.__Colors.SUCCESS_GREEN : (this.props.progressBarColor===undefined?window.__Colors.ORANGE:this.props.progressBarColor) 
     var myHeight= this.props.height||"2";
+    myHeight=myHeight=="wrap_content"?"2":myHeight;
     var myCornerRadius=this.props.cornerRadius||"0,0,0,0";
       return(<RelativeLayout
       width="match_parent"
