@@ -282,6 +282,9 @@ class ProfileFragment extends View {
                 <ProfileHeader
                   data={this.details}
                   textStyle = {window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
+                <ProfileProgress
+                editable={this.isEditable}
+                data={this.details}/>
 
                 {this.getDescription()}
 
