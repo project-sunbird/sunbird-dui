@@ -59,6 +59,7 @@ class ProfileCreations extends View {
             height="10"
             cornerRadius={"20,20,20,20"}
             progressBarColor={window.__Colors.PRIMARY_ACCENT}
+            progressBar100PercentColor={window.__Colors.PRIMARY_ACCENT}
             currentProgress={this.props.data.completeness}
             totalProgress={100}
             visibility = {this.showProgress}/>
@@ -75,7 +76,7 @@ class ProfileCreations extends View {
       var editButtonText="";
       temp="gone";
     }
-    if(editButtonText=="address"||editButtonText=="location"){
+    if(editButtonText=="address"){
         editButtonText=window.__S.TITLE_ADDRESS;
       }
     else if(editButtonText=="education"){
@@ -102,6 +103,9 @@ class ProfileCreations extends View {
     else if(editButtonText=="avatar"){
          return (this.getEditButton(index+1));
       }
+    else if(editButtonText=="location"){
+         editButtonText=window.__S.CURRENT_LOCATION;
+    } 
     else{
       temp="gone";
     }
@@ -268,7 +272,7 @@ class ProfileCreations extends View {
       {
         editButtonText=this.props.data.missingFields[1]||"";
       }
-    if(editButtonText=="address"||editButtonText=="location"){
+    if(editButtonText=="address"){
       window.__AddressPopUp.data=undefined;
       window.__AddressPopUp.show();
       return ;

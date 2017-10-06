@@ -175,7 +175,6 @@ const stringsRes = {
 		NAME_HINT : "Enter your name",
 		GENDER : "GENDER",
 		DATE_OF_BIRTH : "DATE OF BIRTH",
-		CURRENT_LOCATION : "CURRENT LOCATION",
 		HINT_CURRENT_LOCATION : "Enter your location",
 		MODULES : "MODULES",
 		BTN_CLICK_TO_OPEN_CONTENT : "Click to open content",

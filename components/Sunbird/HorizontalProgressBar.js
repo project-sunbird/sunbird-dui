@@ -33,7 +33,10 @@ class HorizontalProgressBar extends View {
   getProgressBar = () => {
     var percentL = parseFloat(this.currentProgress) / parseFloat(this.totalProgress);
     var percentR = (1 - percentL);
-    var myProgressColor = percentL==1 ? window.__Colors.SUCCESS_GREEN : (this.props.progressBarColor===undefined?window.__Colors.ORANGE:this.props.progressBarColor) 
+    var myProgressColor = this.props.progressBarColor||window.__Colors.ORANGE;       
+    if(this.props.progressBar100PercentColor==undefined && percentR==0){
+    myProgressColor = window.__Colors.SUCCESS_GREEN;
+  }
     var myHeight= this.props.height||"2";
     myHeight=myHeight=="wrap_content"?"2":myHeight;
     var myCornerRadius=this.props.cornerRadius||"0,0,0,0";
