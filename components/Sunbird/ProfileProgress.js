@@ -52,12 +52,12 @@ class ProfileCreations extends View {
               text={window.__S.YOUR_PROFILE_IS.format(this.props.data.completeness)}
               style={window.__TextStyle.textStyle.HINT.REGULAR}/>
             </LinearLayout> 
-            {this.getEditButton()}
+            {this.getEditButton(0)}
           </LinearLayout>
           <HorizontalProgressBar
             width="match_parent"
             height="10"
-            cornerRadius={"20,20,20,20,"}
+            cornerRadius={"20,20,20,20"}
             progressBarColor={window.__Colors.PRIMARY_ACCENT}
             currentProgress={this.props.data.completeness}
             totalProgress={100}
@@ -66,10 +66,10 @@ class ProfileCreations extends View {
       )
   }
 
-  getEditButton=()=>{
+  getEditButton=(index)=>{
     var temp=this.props.data.completeness==100?"gone":"visible";
-    if(this.props.data.hasOwnProperty("missingFields")&&this.props.data.missingFields[0]!=undefined){
-    var editButtonText=this.props.data.missingFields[0];
+    if(this.props.data.hasOwnProperty("missingFields")&&this.props.data.missingFields[index]!=undefined){
+    var editButtonText=this.props.data.missingFields[index];
     }
     else{
       var editButtonText="";
@@ -99,8 +99,11 @@ class ProfileCreations extends View {
     else if(editButtonText=="lastName"){
          editButtonText=window.__S.LAST_NAME;
       }
+    else if(editButtonText=="avatar"){
+         return (this.getEditButton(index+1));
+      }
     else{
-      editButtonText="Profile details";
+      temp="gone";
     }
     return (<TextView
     padding="16,8,0,8"
@@ -258,9 +261,13 @@ class ProfileCreations extends View {
     )
     return this.layout.render();
   }
-
+  
   handleEditProfileClick = () => {
     var editButtonText=this.props.data.missingFields[0];
+    if(editButtonText=="avatar")
+      {
+        editButtonText=this.props.data.missingFields[1]||"";
+      }
     if(editButtonText=="address"||editButtonText=="location"){
       window.__AddressPopUp.data=undefined;
       window.__AddressPopUp.show();

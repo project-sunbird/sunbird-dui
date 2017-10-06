@@ -35,21 +35,21 @@ class HorizontalProgressBar extends View {
     var percentR = (1 - percentL);
     var myProgressColor = percentL==1 ? window.__Colors.SUCCESS_GREEN : (this.props.progressBarColor===undefined?window.__Colors.ORANGE:this.props.progressBarColor) 
     var myHeight= this.props.height||"2";
-    var myCornerRadius=this.props.cornerRadius||"0,0,0,0,";
+    var myCornerRadius=this.props.cornerRadius||"0,0,0,0";
       return(<RelativeLayout
       width="match_parent"
       height={myHeight}
       root="true">
       <LinearLayout
         width="match_parent"
-        multiCorners = {myCornerRadius+window.__Colors.PRIMARY_BLACK_22}
+        multiCorners = {myCornerRadius+","+window.__Colors.PRIMARY_BLACK_22}
         height="match_parent"/>
       <LinearLayout
         width="match_parent"
         height="match_parent">
       <LinearLayout
       weight={percentL}
-      multiCorners = {myCornerRadius+myProgressColor}
+      multiCorners = {myCornerRadius+","+myProgressColor}
       height="match_parent"/>
       <LinearLayout
       weight={percentR}
