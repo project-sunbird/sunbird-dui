@@ -36,9 +36,16 @@ class ProfileHeader extends View {
     else{
       this.orgEmail = ""
     }
+    this.lastLoginTime = this.formatTime(this.props.data.lastLoginTime);
   }
 
-
+  formatTime = (data) => {
+    var time = data ? data : "";
+    if (time == "") return time;
+    var date = new Date(time);
+    var month = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    return month[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+  }
 
   sendEmail=()=>{
     if(this.orgEmail!="")
@@ -116,6 +123,13 @@ class ProfileHeader extends View {
               height="wrap_content"
               gravity="center_horizontal"
               orientation="vertical">
+              <TextView
+                visibility = {this.lastLoginTime == "" ? "gone" : "visible"}
+                width = "wrap_content"
+                height = "wrap_content"
+                text = {"Last login time: " + this.lastLoginTime}
+                margin = "0,0,0,16"
+                style={window.__TextStyle.textStyle.HINT.REGULAR} />
               <RelativeLayout
             width="wrap_content"
             height="wrap_content">

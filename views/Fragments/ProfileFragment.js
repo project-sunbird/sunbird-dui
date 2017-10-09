@@ -274,8 +274,7 @@ class ProfileFragment extends View {
               <LinearLayout
                 height="match_parent"
                 width="match_parent"
-                padding={"0,0,0,50"}
-                padding="16,16,16,24"
+                padding="16,8,16,24"
                 orientation="vertical"
                 layoutTransition = "true">
 
