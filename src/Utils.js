@@ -361,3 +361,7 @@ exports["formatDate"] = function(d){
 exports["getUserToken"] = function () {
   return window.__userToken;
 }
+
+exports["getUserAccessToken"] = function () {
+  return window.__user_accessToken;
+}

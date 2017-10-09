@@ -87,6 +87,7 @@ foreign import getJsonFromString :: String -> A.Json
 foreign import getApiUrl :: Unit -> String
 foreign import getCurrDate :: Unit -> String
 foreign import getUserToken :: Unit -> String
+foreign import getUserAccessToken :: Unit -> String
 
 getEulerLocation1 = getApiUrl unit
 
@@ -286,6 +287,11 @@ getUserEnrolledCourses user_access_token api_token =
 getProfileDetail user_access_token api_token =
   let requestUrl = "/user/v1/read/" <> (getUserToken unit) <> "?fields=completeness,missingFields,lastLoginTime"
       headers = (generateRequestHeaders user_access_token api_token) in
+  (get requestUrl headers)
+
+getUserDetail user_id api_token =
+  let requestUrl = "/user/v1/read/" <> user_id
+      headers = (generateRequestHeaders (getUserAccessToken unit) api_token) in
   (get requestUrl headers)
 
 getTenantDetail user_access_token api_token slug =
