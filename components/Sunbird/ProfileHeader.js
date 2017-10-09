@@ -5,6 +5,7 @@ var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
 var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget");
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
+var RelativeLayout = require("@juspay/mystique-backend/src/android_views/RelativeLayout");
 
 var _this;
 class ProfileHeader extends View {
@@ -115,12 +116,26 @@ class ProfileHeader extends View {
               height="wrap_content"
               gravity="center_horizontal"
               orientation="vertical">
-
-              <ImageView
+              <RelativeLayout
+            width="wrap_content"
+            height="wrap_content">
+            <LinearLayout
+            width="82"
+            height="82"
+            background="#d8d8d8"
+            cornerRadius="41"/>
+            <LinearLayout
+            width="80"
+            height="80"
+            margin="1,1,1,1"
+            cornerRadius="40"
+            background="#ffffff">
+            <ImageView
               width="80"
               height="80"
               circularImageUrl={"0,"+this.imageUrl}/>
-
+              </LinearLayout>
+            </RelativeLayout>
               <TextView
               width="wrap_content"
               height="wrap_content"
