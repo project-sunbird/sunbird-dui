@@ -44,7 +44,14 @@ class ProfileHeader extends View {
     if (time == "") return time;
     var date = new Date(time);
     var month = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-    return month[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+    var postFix = "AM";
+    var hrs = date.getHours();
+    if (hrs > 12) {
+      postFix = "PM";
+      hrs = hrs - 12;
+    }
+    if ((hrs + "") == "00") hrs = 12;
+    return month[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear() + " " + hrs + ":" + date.getMinutes() + ":" + date.getSeconds() + " " + postFix;
   }
 
   sendEmail=()=>{
