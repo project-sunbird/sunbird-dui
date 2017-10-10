@@ -11,7 +11,9 @@ var Button = require('../../Sunbird/Button');
 var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget");
 var Space = require("@juspay/mystique-backend/src/android_views/Space");
 var StarComponent = require('../../Sunbird/StarComponent');
-var utils = require('../../../utils/GenericFunctions')
+var utils = require('../../../utils/GenericFunctions');
+var HorizontalProgressBar = require('../../Sunbird/HorizontalProgressBar');
+
 
 var _this;
 
@@ -42,7 +44,6 @@ class CardComponent extends View {
 
   getBody = () => {
     var myProgress = this.props.data.isProgress?this.props.data.footerTitle.split('%')[0]:"0" ;
-    var myProgressColor = myProgress==100 ? window.__Colors.SUCCESS_GREEN : window.__Colors.SAFFRON
     return (
       <LinearLayout
             width="wrap_content"
@@ -69,31 +70,13 @@ class CardComponent extends View {
                   background={window.__Colors.BLACK}
                   alpha="0.50"/>
 
-                <LinearLayout
-                  width="200"
-                  cornerRadius="4"
-                  visibility={this.props.data.isProgress ? "visible" : "gone"}
-                  height="4">
-
-
-                  <LinearLayout
-                    width="0"
-                    weight={myProgress}
-                    id={this.idSet.leftProgress}
-                    height="match_parent"
-                    multiCorners={"6,0,0,0,"+ myProgressColor} />
-
-
-                  <LinearLayout
-                    width="0"
-                    id={this.idSet.rightProgress}
-                    alpha="0.3"
-                    multiCorners={"0,6,0,0,"+window.__Colors.PRIMARY_BLACK}
-                    weight={this.getRemainingProgress(myProgress)}
-                    height="match_parent"/>
-
-                </LinearLayout>
-
+                  <HorizontalProgressBar
+            width="match_parent"
+            height="4"
+            cornerRadius={"12,12,0,0"}
+            currentProgress={myProgress}
+            totalProgress={100}
+            visibility={this.props.data.isProgress ? "visible" : "gone"}/>
                 <TextView
                   width="200"
                   height="wrap_content"

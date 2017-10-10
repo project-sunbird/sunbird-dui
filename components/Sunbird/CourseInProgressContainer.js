@@ -107,7 +107,7 @@ class CourseInProgressContainer extends View {
           root="true"
           height="wrap_content"
           width="match_parent">
-
+          {this.getExtraLayout()}
           {rows}
 
         </LinearLayout>);
@@ -119,7 +119,6 @@ class CourseInProgressContainer extends View {
     this.replaceChild(this.idSet.parentContainer,layout.render(),0);
     window.__ContentLoadingComponent.hideLoader();
     window.__LoaderDialog.hide();
-
   }
 
   formatBytes = (bytes) => {
@@ -228,7 +227,16 @@ class CourseInProgressContainer extends View {
 
   }
 
-
+  getExtraLayout=()=>{
+    if(this.props.addCard==undefined)
+      {
+        return(
+          <LinearLayout
+          visibility="gone"/>
+        )
+      }
+      return this.props.addCard;
+  }
 
 
   render() {
@@ -255,7 +263,6 @@ class CourseInProgressContainer extends View {
                     height="match_parent">
 
          </LinearLayout>
-
           </HorizontalScrollView>
 
          </LinearLayout>
