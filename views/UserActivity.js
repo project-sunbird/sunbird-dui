@@ -253,6 +253,16 @@ class UserActivity extends View {
   }
 
   performLogin = () => {
+    var body = {
+     "params": { },
+        "request":{
+                "userId":window.__userToken
+        }
+    }
+    window.__patchCallback = (data) => {
+      console.log("login patch call", data);
+    }
+    JBridge.patchApi(window.__loginUrl + "/api/user/v1/update/logintime", JSON.stringify(body), window.__user_accessToken, window.__apiToken);
     this.setLoginPreferences();
     var whatToSend = []
     var event = { tag: "OPEN_MainActivity", contents: whatToSend };
@@ -281,24 +291,24 @@ class UserActivity extends View {
 
   handleStateChange = (state) => {
     window.__LoaderDialog.hide();
-    console.log(state)
-    var status = state.response.status[0];
-    var response = JSON.parse(utils.decodeBase64(state.response.status[1]));
-    var responseCode = state.response.status[2];
-    var responseUrl = state.response.status[3];
+    var res = utils.processResponse(state);
+    var status = res.status;
+    var response = res.data;
+    var responseCode = res.code;
+    var responseUrl = res.url;
 
-
-    if(responseCode == 401){
-      var callback  = callbackMapper.map(function(token){
-        window.__apiToken = token;
-        if(state.responseFor == "API_SignUp"){
-          _this.handleSignUpClick();
-        }
-
-      });
-      JBridge.getApiToken(callback);
-      return;
-        }
+    //
+    // if(responseCode == 401){
+    //   var callback  = callbackMapper.map(function(token){
+    //     window.__apiToken = token;
+    //     if(state.responseFor == "API_SignUp"){
+    //       _this.handleSignUpClick();
+    //     }
+    //
+    //   });
+    //   JBridge.getApiToken(callback);
+    //   return;
+    //     }
 
 
     if (responseCode == 501) {
@@ -308,9 +318,9 @@ class UserActivity extends View {
 
 
     if (status === "failure" || status=="f") {
-      if (response.params.err) {
-        console.log("\n\nEROR  :", response.params)
-        window.__Snackbar.show(response.params.errmsg)
+      if (res.err) {
+        console.log("\n\nEROR  :", res.err)
+        window.__Snackbar.show(res.err)
         return;
       }
       window.__Snackbar.show(window.__S.ERROR_SERVER_CONNECTION)
@@ -798,6 +808,7 @@ class UserActivity extends View {
   setLoginPreferences = () =>{
     JBridge.setInSharedPrefs("logged_in","YES");
     window.__userToken=JBridge.getFromSharedPrefs("user_token");
+    window.__user_accessToken = JBridge.getFromSharedPrefs("user_access_token");
     JBridge.setProfile(window.__userToken);
   }
 

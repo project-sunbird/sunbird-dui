@@ -127,7 +127,6 @@ instance encodeResourceDetailActivityAction:: Encode ResourceDetailActivityActio
 data CourseInfoActivity = CourseInfoActivity {courseDetails::String}
 data CourseInfoActivityAction = BACK_CourseInfoActivity | OPEN_ViewBatchActivity {course::String}|
   OPEN_EnrolledActivity {course::String} |
-  API_EnrollCourse {user_token::String,reqParams ::String, api_token::String} |
   ShowModuleDetails {moduleName::String,moduleDetails::String} |
   API_EnrolledCoursesList {user_token::String,api_token::String}
 

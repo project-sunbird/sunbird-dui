@@ -104,7 +104,8 @@ class SnackBar extends View {
     var background = window.__Colors.DARK_GRAY;
     this.layout = (
       <LinearLayout
-            height="48"
+            height="wrap_content"
+            padding = "0,10,0,10"
             alignParentBottom = "true,-1"
             translationY = "360"
             id={this.idSet.container}

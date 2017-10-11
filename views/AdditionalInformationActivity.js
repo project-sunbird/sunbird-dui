@@ -53,7 +53,10 @@ class AdditionalInformationActivity extends View{
       "nameText",
       "lastNameText",
       "adharText",
-      "descriptionText"
+      "descriptionText",
+      "fbText",
+      "twitterText",
+      "linkedinText"
     ]);
     this.shouldCacheScreen = false;
     this.state=state;
@@ -71,6 +74,9 @@ class AdditionalInformationActivity extends View{
     this.gender=null;
     this.dob=null;
     this.description=null;
+    this.fb=null;
+    this.twitter=null;
+    this.linkedin=null;
     this.responseCame=false;
 
     this.prevData={};
@@ -96,7 +102,7 @@ class AdditionalInformationActivity extends View{
   }
 
   initData = () => {
-
+    
     console.log(this.data, "jsontosens");
     window.__patchCallback = this.getPatchCallback ;
     this.email = this.data.email;
@@ -109,6 +115,23 @@ class AdditionalInformationActivity extends View{
     this.dob = this.data.dob;
     this.gender = this.data.gender;
     this.description=this.data.profileSummary;
+    var _this=this;
+    if(this.data.webPages!=undefined)
+    {
+      this.data.webPages.map((data)=>{
+        if(data.type=="fb"){
+           _this.fb=data.url;
+        }
+        else if(data.type=="twitter")
+        {
+          _this.twitter=data.url;
+        }
+        else if(data.type=="linkedin")
+        {
+          _this.linkedin=data.url;
+        }
+      })
+    }
     this.grade=this.data.grade!=null ? this.data.grade.slice():null;
     this.selectedSubjects = this.data.subject!=null ? this.data.subject.slice():null;
 
@@ -122,6 +145,9 @@ class AdditionalInformationActivity extends View{
     this.prevData.dob = this.data.dob;
     this.prevData.gender = this.data.gender;
     this.prevData.description=this.data.profileSummary;
+    this.prevData.fb=this.fb;
+    this.prevData.linkedin=this.linkedin;
+    this.prevData.twitter=this.twitter;
     this.prevData.grade = this.data.grade!=null ? this.data.grade.slice():null;
     this.prevData.selectedSubjects = this.data.subject!=null ? this.data.subject.slice():null;
 
@@ -142,7 +168,8 @@ class AdditionalInformationActivity extends View{
 
     cmd += this.set({
       id: this.idSet.nameText,
-      text: this.name
+      text: this.name,
+
     })
 
     cmd += this.set({
@@ -163,6 +190,20 @@ class AdditionalInformationActivity extends View{
     cmd += this.set({
       id: this.idSet.descriptionText,
       text: this.description
+    })
+
+    cmd += this.set({
+      id: this.idSet.twitterText,
+      text: this.twitter
+    })
+    cmd += this.set({
+      id: this.idSet.fbText,
+      text: this.fb
+    })
+
+    cmd += this.set({
+      id: this.idSet.linkedinText,
+      text: this.linkedin
     })
 
     Android.runInUI(cmd, 0);
@@ -357,7 +398,31 @@ class AdditionalInformationActivity extends View{
                    width="match_parent"
                    orientation="vertical">
 
-                       {this.getEditTextView(this.idSet.emailText,window.__S.EMAIL_ID,window.__S.HINT_EMAIL_ID,false,this.setEmail)}
+
+                       <LinearLayout
+                       width="match_parent"
+                       height="wrap_content"
+                       orientation="vertical"
+                       margin="4,0,0,17">
+                         <TextView
+                          width="match_parent"
+                          height="wrap_content"
+                          style={window.__TextStyle.textStyle.HINT.SEMI}
+                          text={window.__S.EMAIL_ID}/>
+                          <LinearLayout
+                            width="match_parent"
+                            height="wrap_content"
+                            padding="0,6,12,12">
+
+                              <TextView
+                                width="match_parent"
+                                height="wrap_content"
+                                id= {this.idSet.emailText}
+                                style={window.__TextStyle.textStyle.CARD.BODY.DARK.FADED}/>
+                          </LinearLayout>
+                          {this.getLineSeperator()}
+                         </LinearLayout>
+
                        {this.getEditTextView(this.idSet.phoneText,window.__S.PHONE,window.__S.HINT_MOBILE_NUMBER,false,this.setPhone,"numeric")}
                        {this.getEditTextView(this.idSet.descriptionText,window.__S.DESCRIPTION,"",true,this.setDescription)}
                        <LinearLayout
@@ -435,6 +500,11 @@ class AdditionalInformationActivity extends View{
                               selectedData={this.grade}
                               onItemChange={this.onMultiSelectGradeItemChange}/>
                         </LinearLayout>
+                        {this.getEditTextView(this.idSet.locationText,window.__S.CURRENT_LOCATION,"",true,this.setLocation)}
+                        {this.getEditTextView(this.idSet.fbText,window.__S.FACEBOOK,"",true,this.setFb)}
+                        {this.getEditTextView(this.idSet.twitterText,window.__S.TWITTER,"",true,this.setTwitter)}
+                        {this.getEditTextView(this.idSet.linkedinText,window.__S.LINKEDIN,"",true,this.setLinkedin)}
+
                     </LinearLayout>
         </LinearLayout>
        </ScrollView>
@@ -575,16 +645,15 @@ class AdditionalInformationActivity extends View{
   }
 
   formatDate = (date) =>{
-      date = date.substr(0,4)+"-"+date.substr(5);
-      if(date.charAt(7)!='-'){
-         date = date.substr(0,5)+"0"+date.substr(5);
-       }
-
-      date = date.substr(0,7)+"-"+date.substr(8);
-      if(date.length<10)
-        date = date.substr(0,8)+"0"+date.substr(8);
-        return date;
-      }
+    date = date.substr(0,4)+"-"+date.substr(5);
+    if(date.charAt(7)!='/'){
+       date = date.substr(0,5)+"0"+date.substr(5);
+     }
+    date = date.substr(0,7)+"-"+date.substr(8);
+    if(date.length<10)
+      date = date.substr(0,8)+"0"+date.substr(8);
+      return date;
+    }
 
   getLanguagePredictions = (data) => {
 
@@ -998,51 +1067,129 @@ class AdditionalInformationActivity extends View{
         return;
       }
 
-    json.firstName=this.name;
-    json.language=this.language;
+    if(this.name != this.prevData.name)
+       json.firstName=this.name;
+     else
+       delete json.name;
 
-    if(this.checkEmailFormat(this.email)){
+     if(!this.arrayEquals(this.language, this.prevData.language))
+       json.language=this.language;
+     else
+      delete json.language;
+
+    if(this.email != this.prevData.email && this.checkEmailFormat(this.email)){
         json.email=this.email;
+    }
+    else if(this.email == this.prevData.email)
+    {
+      delete json.email;
     }
     else {
       window.__Snackbar.show(window.__S.ERROR_EMAIL_FORMAT)
       return;
     }
 
-    if(this.checkPhoneFormat(this.mobile)){
+    if(this.mobile != this.prevData.mobile &&  this.checkPhoneFormat(this.mobile)){
         json.phone=this.mobile;
+    }
+    else if(this.mobile == this.prevData.mobile)
+    {
+      delete json.phone;
     }
     else {
       window.__Snackbar.show(window.__S.ERROR_SHORT_MOBILE)
       return;
     }
 
-    if(this.location!=null){
+    if(this.location!=this.prevData.location){
     json.location=this.location;
     }
-
-    if(this.adhar!=null){
-      if(this.checkAdharFormat(this.adhar)){
-           json.aadhaarNo=this.adhar;
-      }
-      else {
-        window.__Snackbar.show(window.__S.ERROR_INVALID_AADHAAR)
-        return;
-      }
+    else
+    {
+      delete json.location;
     }
-    if(this.dob!=null){
+
+    // if(this.adhar!=null){
+    //   if(this.checkAdharFormat(this.adhar)){
+    //        json.aadhaarNo=this.adhar;
+    //   }
+    //   else {
+    //     window.__Snackbar.show(window.__S.ERROR_INVALID_AADHAAR)
+    //     return;
+    //   }
+    // }
+    // else{
+    //   delete json.aadhaarNo;
+    // }
+    if(this.lastName!=this.prevData.lastName){
+       json.lastName= this.lastName;
+    }
+    else{
+      delete json.lastName;
+    }
+
+    if(this.dob!=this.prevData.dob){
        json.dob= this.dob;
     }
+    else{
+      delete json.dob;
+    }
 
-    if(this.grade!=null && this.grade.length >= 0 ) {
+    if(!this.arrayEquals(this.grade,this.prevData.grade) ) {
       json.grade=this.grade;
     }
+    else
+    {
+      delete json.grade;
+    }
 
-    if(this.gender!=null){
+    if(this.gender!=this.prevData.gender){
       json.gender=this.gender.toLowerCase();
     }
-      json.subject=this.selectedSubjects.length>0 ? this.selectedSubjects : null;
+    else{
+      delete json.gender;
+    }
+
+    if(! this.arrayEquals(this.selectedSubjects,this.prevData.selectedSubjects))
+      json.subject= this.selectedSubjects;
+    else
+      delete json.subject;
+
+    if(this.description != this.prevData.description)
       json.profileSummary = this.description;
+    else
+      delete json.profileSummary;
+
+
+    if(this.fb != this.prevData.fb || this.twitter!= this.data.twitter || this.linkedin != this.prevData.linkedin){
+        json.webPages=this.data.webPages;
+        if(json.webPages==undefined)
+          json.webPages=[];
+        if(this.fb != this.prevData.fb)
+          { var obj={
+            "type":"fb",
+            "url": this.fb}
+            json.webPages.push(obj);
+          }
+        
+        if(this.twitter != this.prevData.twitter)
+          { var obj={
+            "type":"twitter",
+            "url": this.twitter}
+            json.webPages.push(obj);
+          }
+
+        if(this.linkedin != this.prevData.linkedin)
+          { var obj={
+            "type":"linkedin",
+            "url": this.linkedin}
+            json.webPages.push(obj);
+          }
+
+    }
+    else
+      delete json.webPages;
+
       json.userId=window.__userToken;
 
    var url=window.__apiUrl + "/api/user/v1/update"
@@ -1056,7 +1203,7 @@ class AdditionalInformationActivity extends View{
   console.log(JSON.stringify(body),"sendingJson");
   this.responseCame=false;
   if(JBridge.isNetworkAvailable()){
-      JBridge.patchApi(url,JSON.stringify(body),window.__userToken,window.__apiToken);
+      JBridge.patchApi(url,JSON.stringify(body),window.__user_accessToken,window.__apiToken);
       window.__LoaderDialog.show();
 
      setTimeout(() => {
@@ -1099,14 +1246,18 @@ class AdditionalInformationActivity extends View{
 
   checkSameData = () =>{
     console.log(JSON.stringify(this.grade) +" gfgh "+ JSON.stringify(this.prevData.grade));
-    if(this.name == this.prevData.name 
+    if(this.name == this.prevData.name
        && this.lastName == this.prevData.lastName
-       && JSON.stringify(this.language) == JSON.stringify(this.prevData.language) 
-       && this.email == this.prevData.email 
-       && this.mobile == this.prevData.mobile 
-       && this.description == this.prevData.description 
-       && this.dob == this.prevData.dob 
-       && (this.gender == this.prevData.gender || this.gender.toLowerCase() == this.prevData.gender.toLowerCase()) 
+       && JSON.stringify(this.language) == JSON.stringify(this.prevData.language)
+       && this.email == this.prevData.email
+       && this.mobile == this.prevData.mobile
+       && this.description == this.prevData.description
+       && this.dob == this.prevData.dob
+       && this.location == this.prevData.location
+       && this.fb==this.prevData.fb
+       && this.linkedin==this.prevData.linkedin
+       && this.twitter==this.prevData.twitter
+       && (this.gender == this.prevData.gender || this.gender.toLowerCase() == this.prevData.gender.toLowerCase())
        && this.arrayEquals(this.grade,this.prevData.grade)
        && this.arrayEquals(this.selectedSubjects,this.prevData.selectedSubjects)){
                return true;
@@ -1141,7 +1292,7 @@ class AdditionalInformationActivity extends View{
   }
 
   setLastName = (data) =>{
-    this.lastName= data=="" ? null : data;
+    this.lastName= data;
     this.updateSaveButtonStatus(this.checkCompleteStatus());
   }
 
@@ -1167,7 +1318,7 @@ class AdditionalInformationActivity extends View{
   }
 
   setLocation = (data) => {
-    this.location=data=="" ? null :data;
+    this.location=data;
     this.updateSaveButtonStatus(this.checkCompleteStatus());
   }
 
@@ -1175,5 +1326,20 @@ class AdditionalInformationActivity extends View{
     this.description=data;
     this.updateSaveButtonStatus(this.checkCompleteStatus());
   }
+
+   setFb = (data)=>{
+    this.fb=data;
+    this.updateSaveButtonStatus(this.checkCompleteStatus());
+  }
+
+   setTwitter = (data)=>{
+    this.twitter=data;
+    this.updateSaveButtonStatus(this.checkCompleteStatus());
+  }
+
+   setLinkedin = (data)=>{
+    this.linkedin=data;
+    this.updateSaveButtonStatus(this.checkCompleteStatus());
+  } 
 }
 module.exports = Connector(AdditionalInformationActivity);

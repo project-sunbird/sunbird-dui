@@ -36,7 +36,7 @@ class CourseFragment extends View {
     this.popularCommunitySelected = "";
     this.recommendedCommunitySelected = "";
 
-    console.log("course constructor");
+    console.log("course constructor", props);
     if(this.props.response != undefined && this.props.response.hasOwnProperty("filter_to_send") && this.props.response.filter_to_send!=null)
     { console.log(props.response.filter_to_send, "fiter applied");
       console.log([].concat.apply([], Object.values(JSON.parse(props.response.filter_to_send))).length, "lenth");
@@ -105,7 +105,7 @@ class CourseFragment extends View {
       }
       if(this.props.response===undefined) {
         window.__Snackbar.show(window.__S.ERROR_EMPTY_RESULT)
-        return;
+        return(this.getErrorLayout());
       }
 
       this.details = this.props.response.result.response;
@@ -114,7 +114,7 @@ class CourseFragment extends View {
             window.__ContentLoadingComponent.hideLoader();
             window.__LoaderDialog.hide();
         window.__Snackbar.show(window.__S.ERROR_FETCHING_DATA);
-        return;
+        return(this.getErrorLayout());
       }
 
       Android.runInUI(this.set({
@@ -149,9 +149,9 @@ class CourseFragment extends View {
 
   }
   getNoInternetLayout = () => {
-    
+
     var layout = (
-      
+
             <LinearLayout
                 background={window.__Colors.WHITE}
                 height="400"
@@ -162,14 +162,14 @@ class CourseFragment extends View {
                 gravity="center_horizontal"
                 clickable="true"
                 visibility={JBridge.isNetworkAvailable()==false?"visible":"gone"}>
-      
+
                   <ImageView
                     width="100"
                     height="100"
                     margin="0,58,0,0"
                     gravity="center_horizontal"
                     imageUrl="ic_no_internet"/>
-      
+
                   <TextView
                     width="wrap_content"
                     height="wrap_content"
@@ -177,12 +177,48 @@ class CourseFragment extends View {
                     padding="0,16,0,0"
                     style={window.__TextStyle.textStyle.CARD.HEADING}
                     text={window.__S.ERROR_OFFLINE_MODE}/>
-      
-      
+
+
                 </LinearLayout>
           )
           return layout;
         }
+
+  getErrorLayout = () => {
+
+  var layout = (
+
+      <LinearLayout
+          background={window.__Colors.WHITE}
+          height="400"
+          width="match_parent"
+          alpha="0.55"
+          weight="1"
+          orientation="vertical"
+          gravity="center_horizontal"
+          clickable="true">
+
+            <ImageView
+              width="100"
+              height="100"
+              margin="0,58,0,0"
+              gravity="center_horizontal"
+              imageUrl="ic_no_internet"/>
+
+            <TextView
+              width="wrap_content"
+              height="wrap_content"
+              gravity="center_horizontal"
+              padding="0,16,0,0"
+              style={window.__TextStyle.textStyle.CARD.HEADING}
+              text={window.__S.ERROR_FETCHING_DATA}/>
+
+
+          </LinearLayout>
+    )
+    return layout;
+  }
+
 
   getCourseCardLayout = (item) => {
 
@@ -210,7 +246,7 @@ class CourseFragment extends View {
         </LinearLayout>)
   }
 
- 
+
 
   handleCourseClick = (content, type, index) => {
     JBridge.logCardClickEvent("COURSES",index+1,"COURSES",content.identifier)

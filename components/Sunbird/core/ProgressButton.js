@@ -254,7 +254,7 @@ class ProgressButton extends View {
         if(data[0] == "true"){
             console.log("in patch",body)
 
-            JBridge.patchApi(url,JSON.stringify(body),window.__userToken,window.__apiToken);
+            JBridge.patchApi(url,JSON.stringify(body),window.__user_accessToken,window.__apiToken);
           }
       })
       JBridge.getContentType(this.props.contentDetails.hierarchyInfo[0].identifier,callback)

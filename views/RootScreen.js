@@ -20,8 +20,9 @@ var ContentLoaderDialog = require('../components/Sunbird/core/ContentLoaderDialo
 var PermissionDeniedDialog = require('../components/Sunbird/core/PermissionDeniedDialog');
 var ExperiencePopUp = require('../components/Sunbird/ExperiencePopUp');
 var EducationPopUp = require('../components/Sunbird/EducationPopUp');
-var AddressPopUp = require("../components/Sunbird/AddressPopUp");
+var AddressPopUp = require('../components/Sunbird/AddressPopUp');
 var LanguagePopup = require('../components/Sunbird/core/LanguagePopup');
+var ForceUpgradePopup = require('../components/Sunbird/ForceUpgradePopup');
 
 
 const Str = require("../res/Strings") ;
@@ -86,6 +87,7 @@ class RootScreen extends View {
   getBody = () => {
     return (
       <RelativeLayout>
+        <ForceUpgradePopup/>
         <LoaderDialog/>
         <PageFilterPopup/>
         <ContentLoaderDialog/>

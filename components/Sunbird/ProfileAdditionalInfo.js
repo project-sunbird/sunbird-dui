@@ -29,7 +29,7 @@ class ProfileAdditionalInfo extends View {
     this.subjects = "";
     this.dob = this.data.dob ? this.data.dob : "";
     this.grade = "";
-    this.currentLoc = "";
+    this.currentLoc = this.data.location ? this.data.location : "";
 
     this.data.language.map((item, i) => {
       var append = ",";
@@ -52,7 +52,7 @@ class ProfileAdditionalInfo extends View {
     });
     this.grade = utils.cropText(this.grade, this.maxLen);
 
-    this.currentLoc = this.getAddress(this.data.address);
+    // this.currentLoc = this.getAddress(this.data.address);
 
     this.info = [{
       name: window.__S.LANGUAGES,

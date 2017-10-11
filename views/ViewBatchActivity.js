@@ -110,7 +110,7 @@ class ViewBatchActivity extends View {
                       }
                   }
 
-          var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken, request : JSON.stringify(request)}
+          var whatToSend = {"user_token":window.__user_accessToken,"api_token": window.__apiToken, request : JSON.stringify(request)}
           var event ={ "tag": "API_Get_Batch_list", contents: whatToSend};
           window.__LoaderDialog.show();
           window.__runDuiCallback(event);
@@ -164,16 +164,16 @@ class ViewBatchActivity extends View {
 
     handleStateChange = (state) => {
 
-     console.log("HADLE STATE change" , state);
+     var res = utils.processResponse(state);
       var status,response,responseCode,responseUrl;
 
-      if(state.response != ""){
-       status = state.response.status[0];
-       response = JSON.parse(utils.decodeBase64(state.response.status[1]));
-       responseCode = state.response.status[2];
-       responseUrl = state.response.status[3];
-      }
-      
+      // if(state.response != ""){
+       status = res.status;
+       response = res.data;
+       responseCode = res.code;
+       responseUrl = res.url;
+      // }
+
 
       if (parseInt(responseCode) != 200
          && (!((state.responseFor=="API_BatchCreator")&&(parseInt(responseCode)==400)))){
@@ -184,9 +184,9 @@ class ViewBatchActivity extends View {
 
       var result = response.result;
 
-      if (response.params.err) {
+      if (res.err) {
         window.__LoaderDialog.hide();
-        window.__Snackbar.show(response.params.errmsg)
+        window.__Snackbar.show(res.err)
         return;
       }
 
@@ -317,7 +317,7 @@ class ViewBatchActivity extends View {
             }
           var whatToSend = {
           "reqParams": JSON.stringify(this.courseDetails),
-          "user_token" : window.__userToken,
+          "user_token" : window.__user_accessToken,
           "api_token": window.__apiToken }
           var event = {
             "tag": "API_EnrollInBatch",

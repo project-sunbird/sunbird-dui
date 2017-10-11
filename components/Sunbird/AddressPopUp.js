@@ -376,7 +376,7 @@ class AddressPopUp extends View {
    if(this.singleClick){
      this.singleClick=false;
     _this.responseCame=false;
-    JBridge.patchApi(url, JSON.stringify(body), window.__userToken, window.__apiToken);
+    JBridge.patchApi(url, JSON.stringify(body), window.__user_accessToken, window.__apiToken);
     window.__LoaderDialog.show();
      setTimeout(() => {
          if(_this.responseCame){

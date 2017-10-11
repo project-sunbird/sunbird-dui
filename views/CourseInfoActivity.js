@@ -196,7 +196,7 @@ class CourseInfoActivity extends View {
 
     if(window.__enrolledCourses == undefined){
       window.__LoaderDialog.show();
-      var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken}
+      var whatToSend = {"user_token":window.__user_accessToken,"api_token": window.__apiToken}
       var event ={ "tag": "API_EnrolledCoursesList", contents: whatToSend};
       window.__runDuiCallback(event);
 
@@ -228,18 +228,18 @@ class CourseInfoActivity extends View {
 
   handleStateChange = (state) => {
 
-    console.log("STATE IN HANDLE STATE CHANGE",state)
+    var res = utils.processResponse(state);
 
 
     window.__LoaderDialog.hide();
     var status,response,responseCode,responseUrl;
 
-    if(state.response != ""){
-     status = state.response.status[0];
-     response = JSON.parse(utils.decodeBase64(state.response.status[1]));
-     responseCode = state.response.status[2];
-     responseUrl = state.response.status[3];
-    }
+    // if(state.response != ""){
+     status = res.status;
+     response = res.data; //JSON.parse(utils.decodeBase64(state.response.status[1]));
+     responseCode = res.code;
+     responseUrl = res.url;
+    // }
 
 
 
@@ -249,29 +249,14 @@ class CourseInfoActivity extends View {
 
     var result = response.result;
 
-    if (response.params.err) {
-      window.__Snackbar.show(response.params.errmsg)
+    if (res.err) {
+      window.__Snackbar.show(res.err)
       return;
     }
 
     console.log("RESPONSE FOR IN COURSE INFO",state.responseFor)
 
     switch (state.responseFor + "") {
-      //REMOVED FOR NOW
-      // case "API_EnrollCourse":
-      //   if (result.response == "SUCCESS") {
-      //     console.log("response",response)
-      //     window.__enrolledCourses.push(this.cour)
-      //     window.__Snackbar.show(window.__S.COURSE_ENROLLED)
-      //     var whatToSend = { "course": this.state.data.value0.courseDetails }
-      //     var event = { tag: 'OPEN_EnrolledActivity', contents: whatToSend }
-      //     window.__runDuiCallback(event);
-      //   } else {
-      //     window.__Snackbar.show(window.__S.RETRY_ACTION)
-      //   }
-      //   break;
-
-
       case "API_EnrolledCoursesList":
 
         window.__enrolledCourses = response.result.courses;
@@ -290,9 +275,9 @@ class CourseInfoActivity extends View {
 
         }
         })
-
         if(courseEnrollCheckCount == 0){
           this.replaceChild(this.idSet.totalContainer,this.getBody().render(),0);
+          this.checkContentLocalStatus(this.details.identifier);
         }
 
         break;

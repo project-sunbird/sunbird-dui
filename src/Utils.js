@@ -357,3 +357,11 @@ exports["formatDate"] = function(d){
   console.log("result",res)
   return res;
 }
+
+exports["getUserToken"] = function () {
+  return window.__userToken;
+}
+
+exports["getUserAccessToken"] = function () {
+  return window.__user_accessToken;
+}

@@ -33,7 +33,7 @@ class SearchResult extends View {
   showList=()=>{
      this.props.data.map((item, index) => {
       var appIcon = "ic_launcher";
-      if (this.type == "Resource"){
+      if (this.type == "Resource"  || this.type == "Course"){
         appIcon = item.hasOwnProperty("appIcon") ? item.appIcon : "ic_launcher" ;
       } else if (this.type == "Profile"){
         appIcon = (item.data && item.data.avatar) ? item.data.avatar : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR1X3cm5xzR4D1W9oPb2QWioKlrfLVd0DvXFUNqSjZfg-M0bpc";
@@ -82,7 +82,7 @@ class SearchResult extends View {
 
                 <TextView
                   height="wrap_content"
-                  padding = "0,10,0,0"
+                  padding = "0,10,10,0"
                   weight="2"
                   gravity = "right"
                   width="0"
@@ -146,24 +146,9 @@ class SearchResult extends View {
 
     if (item.hasOwnProperty("data") && item.data.hasOwnProperty("education")){
       console.log("item data", item);
-      var data = JSON.stringify(item);
-      var whatToSend = {
-        user_token: item.data.identifier,
-        api_token: window.__apiToken,
-        sendBack : data,
-        filters: JSON.stringify({"filters" : {
-                   "createdBy": item.data.identifier,
-                   "status": ["Live"],
-                   "contentType": ["Collection", "Story", "Worksheet", "TextBook", "Course", "LessonPlan"]
-               }
-             })
-       }
-      var event = { tag: "API_CreatedBy_Search", contents: whatToSend}
-      if (JBridge.isNetworkAvailable()){
-        window.__runDuiCallback(event);
-      } else {
-        window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
-      }
+       var whatToSend={profile:JSON.stringify(item)};
+       var event={tag:"OPEN_ProfileActivity_SEARCH",contents:whatToSend}
+       window.__runDuiCallback(event);
    }else if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook" || utils.checkEnrolledCourse(item.identifier)){
 
       if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
@@ -227,7 +212,7 @@ class SearchResult extends View {
 			height="match_parent"
 			orientation="vertical"
       background="#ffffff">
-   
+
               {this.getData()}
 
        </LinearLayout>

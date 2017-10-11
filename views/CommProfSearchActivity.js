@@ -51,38 +51,38 @@ class CommProfSearchActivity extends View {
   }
 
   handleStateChange = (state) => {
-    console.log(state, "handleStateChange resData");
+    var res = utils.processResponse(state);
 
-    if (state.response.status[0]){
-      var status = state.response.status[0];
-      var responseData = state.response.status[1];
-      var responseCode = state.response.status[2];
-      var responseUrl = state.response.status[3];
-    } else if (state.response.hasOwnProperty("status")){
-      var status = state.response.status;
-      var responseData = "";
-      var responseCode = state.response.statusCode;
-      var responseUrl = "";
-    }
+    // if (state.response.status[0]){
+    var status = res.status;
+    var responseData = res.data;
+    var responseCode = res.code;
+    var responseUrl = res.url;
+    // } else if (state.response.hasOwnProperty("status")){
+    //   var status = state.response.status;
+    //   var responseData = "";
+    //   var responseCode = state.response.statusCode;
+    //   var responseUrl = "";
+    // }
 
-    if(responseCode == 401){
-      window.__LoaderDialog.hide();
-      var callback  = callbackMapper.map(function(token){
-        window.__apiToken = token;
-        var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken}
-        var event = { "tag": state.responseFor, contents: whatToSend };
-        window.__runDuiCallback(event);
-      });
-      JBridge.getApiToken(callback);
-      return;
-    }else if(responseCode == 501 || status === "failure" || status=="f" || responseCode == 504 || status == "failed") {
-      window.__LoaderDialog.hide();
-      window.__Snackbar.show(window.__S.ERROR_SERVER_CONNECTION)
-    } else {
-      responseData = utils.decodeBase64(responseData);
-      window.__LoaderDialog.hide();
-      responseData = JSON.parse(responseData);
-    }
+    // if(responseCode == 401){
+    //   window.__LoaderDialog.hide();
+    //   var callback  = callbackMapper.map(function(token){
+    //     window.__apiToken = token;
+    //     var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken}
+    //     var event = { "tag": state.responseFor, contents: whatToSend };
+    //     window.__runDuiCallback(event);
+    //   });
+    //   JBridge.getApiToken(callback);
+    //   return;
+    // }else if(responseCode == 501 || status === "failure" || status=="f" || responseCode == 504 || status == "failed") {
+    //   window.__LoaderDialog.hide();
+    //   window.__Snackbar.show(window.__S.ERROR_SERVER_CONNECTION)
+    // } else {
+    //   responseData = utils.decodeBase64(responseData);
+    //   window.__LoaderDialog.hide();
+    //   responseData = JSON.parse(responseData);
+    // }
 
     if(state.responseFor == "API_SearchProfile"){
       if(responseData.result.response.content && responseData.result.response.content.length > 0){
@@ -101,15 +101,6 @@ class CommProfSearchActivity extends View {
         this.renderNoResult();
         window.__LoaderDialog.hide();
       }
-    } else if (state.responseFor == "API_CreatedBy_Search"){
-      console.log("state in handleStateChange", state);
-      var data = {};
-       data.profileData = state.sendBack;
-       data.creatorOfData = responseData;
-       data = JSON.stringify(data);
-       var whatToSend={profile:data};
-       var event={tag:"OPEN_ProfileActivity_SEARCH",contents:whatToSend}
-       window.__runDuiCallback(event);
     }else {
       window.__Snackbar.show(window.__S.ERROR_FETCHING_DATA);
     }
@@ -338,7 +329,7 @@ class CommProfSearchActivity extends View {
    }
 
     var whatToSend = {
-      user_token: window.__userToken,
+      user_token: window.__user_accessToken,
       api_token: window.__apiToken,
       filter_to_send: JSON.stringify(req)
     };

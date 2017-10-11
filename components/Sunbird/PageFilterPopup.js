@@ -255,9 +255,9 @@ class PageFilterPopup extends View {
 
     var sendFilter=JSON.stringify(this.filter);
 
-    var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken,"filter_to_send":sendFilter}
+    var whatToSend = {"user_token":window.__user_accessToken,"api_token": window.__apiToken,"filter_to_send":sendFilter}
     var event = { "tag": "API_FilterPage", contents: whatToSend};
-    
+
     if(JBridge.isNetworkAvailable())
       window.__runDuiCallback(event);
     else
