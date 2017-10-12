@@ -244,7 +244,8 @@ const stringsRes = {
 		ERROR_OFFLINE_MODE : "No internet, Offline mode",
 		ADDITIONAL_INFORMATION : "Additional Information",
 		SOCIAL : "Social",
-		UPDATE : "UPDATE"
+		UPDATE : "UPDATE",
+		STRENGTHEN_YOUR_PROFILE : "Strengthen your profile"
 	},
 	"hi_IN" : {
 		ALREADY_HAVE_ACC : "मौजूदा उपयोगकर्ता, साइन इन करें",
