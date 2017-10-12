@@ -1,54 +1,63 @@
-var dom = require("@juspay/mystique-backend").doms.android;
-var Connector = require("@juspay/mystique-backend").connector;
-var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
-var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
-var TextView = require("@juspay/mystique-backend").androidViews.TextView;
-var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
-var Space = require('@juspay/mystique-backend').androidViews.Space;
+var dom = require("@juspay/mystique-backend/src/doms/android");
+var Connector = require("@juspay/mystique-backend/src/connectors/screen_connector");
+var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
+var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
+var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
+var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
+var ScrollView = require("@juspay/mystique-backend/src/android_views/ScrollView");
+var Space = require("@juspay/mystique-backend/src/android_views/Space");
 window.R = require("ramda");
+
 class ClassListItem extends View {
   constructor(props, children) {
     super(props, children);
   }
+  
   getData = () => {
     var answerLayout = this.props.data.values.map((item, index) => {
-      return <LinearLayout
-            width="match_parent"
-            height="wrap_content"
-            padding="16,16,16,16">
-            <LinearLayout
-              width="32"
-              heigh="32"
-              padding="0,0,0,0"
-              background={item.color}
-              gravity="center"
-              >
-            <ImageView
-              height="20"
-              width="14"
-              imageUrl= {item.imageUrl} />
+     return (<LinearLayout
+              width="match_parent"
+              height="wrap_content"
+              orientation="vertical">
+                <LinearLayout
+                  width="match_parent"
+                  height="wrap_content"
+                  margin="16,11,16,11">
+                  
+                  <LinearLayout
+                    padding="10,7,10,7"
+                    background={item.color}
+                    gravity="center">
+                      
+                      <ImageView
+                        height="20"
+                        width="14"
+                        imageUrl= {item.imageUrl} />
 
-              </LinearLayout>
-            <LinearLayout
+                  </LinearLayout>
+                  
+                  <LinearLayout
                     height="wrap_content"
                     width="0"
                     weight="1"
                     padding="16,0,0,0"
                     orientation="vertical">
-                      
+
                       <TextView
                         onClick={item.onMenuItemClick}
-                        text={item.subject}
+                        textFromHtml={item.subject}
                         height="wrap_content"
                         style={window.__TextStyle.textStyle.CARD.HEADING}/>
+                      
                       <Space
                         width="0"
                         weight="1" />
+                      
                       <TextView
-                        text={item.comment}
+                        textFromHtml={item.comment}
                         height="wrap_content"
                         visibility = {item.comment ? true : false}
-                        style={window.__TextStyle.textStyle.HINT.REGULAR}/>  
+                        style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
                       <Space
                         width="0"
@@ -56,32 +65,60 @@ class ClassListItem extends View {
 
                   </LinearLayout>
 
+                  {this.getMenuItems(item,index)}
+
+
+              </LinearLayout>
+
+              <LinearLayout
+                visibility={this.props.lineSeparator == "true" ?"visible":"gone"}
+                width="match_parent"
+                background={window.__Colors.PRIMARY_BLACK_22}
+                height="1"/>
+
+        </LinearLayout>)
+    })
+
+    return answerLayout;
+  }
+
+
+
+  handleItemClick(itemNo,logoNo){
+    this.props.itemClick(itemNo,logoNo);
+  }
+
+  getMenuItems(data,cardNo){
+    var layout = data.logo.map((item, index) => {
+               return (
                   <LinearLayout
                     width="wrap_content"
-                    height="match_parent"
-                    >
-
-                  <ImageView
-                    height="20"
-                    width="20"
-                    margin="0,0,16,0"
-                    imageUrl= {item.logo2} 
-                    onClick={this.props.onShareClick}
-                    />
+                    height="wrap_content">
+                    
+                    <ImageView
+                        height="20"
+                        width="20"
+                        margin="0,0,16,0"
+                        imageUrl= {item}
+                        onClick={()=>{this.handleItemClick(cardNo,index)}}/>
+                    
                     <Space
                       height="1"
                       width="0"
                       weight="1"/>
 
-                  <ImageView
-                    height="20"
-                    width="20"
-                    imageUrl= {item.logo1} />
-                  </LinearLayout>
-        </LinearLayout>
-    })
+                  </LinearLayout>)
+            })
 
-    return answerLayout;
+    return (
+            <LinearLayout
+            width="wrap_content"
+            height="wrap_content">
+            
+            {layout}
+
+            </LinearLayout>
+      )
   }
 
   render() {
@@ -92,12 +129,24 @@ class ClassListItem extends View {
       <LinearLayout
 			width="match_parent"
 			height="wrap_content"
-			orientation="vertical"
-			>
+			orientation="vertical">
+      
+        <ScrollView
+            height="match_parent"
+            width="match_parent"
+            fillViewPort="true">
+            
+            <LinearLayout
+              height="match_parent"
+              width="match_parent"
+              orientation="vertical">
 
-                {this.getData()}
-                    		
-	                	
+                  {this.getData()}
+
+            </LinearLayout>
+            
+        </ScrollView>
+
        </LinearLayout>
 
 

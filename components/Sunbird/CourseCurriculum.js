@@ -1,12 +1,14 @@
-var dom = require("@juspay/mystique-backend").doms.android;
-var Connector = require("@juspay/mystique-backend").connector;
-var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
-var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
+var dom = require("@juspay/mystique-backend/src/doms/android");
+var Connector = require("@juspay/mystique-backend/src/connectors/screen_connector");
+var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
+var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
 
-var TextView = require("@juspay/mystique-backend").androidViews.TextView;
-var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
+var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
+var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
 
 var ChapterList = require('../Sunbird/ChapterList');
+var AnswerView = require('../Sunbird/AnswerView');
+var ChapterOverView = require('../Sunbird/ChapterOverView');
 
 class CourseCurriculum extends View {
   constructor(props, children) {
@@ -14,38 +16,57 @@ class CourseCurriculum extends View {
 
     this.displayName = "course_curriculumn"
     this.enrolledStatus = this.props.enrolledStatus == undefined ? false : this.props.enrolledStatus;
-
+    console.log("CourseCurriculum", props);
+    this.currIndex = this.props.currIndex ? this.props.currIndex : "";
   }
 
 
-  getCurriculumnBrief = () => {
 
-    var items = this.props.content.courseBrief.map((item, i) => {
-      return (<TextView
-                style={window.__TextStyle.textStyle.HINT.REGULAR} 
-                text ={(i==0?"":" | ") +item.count + " "+item.type}/>)
+  getChapterList = () => {
+    var items = this.props.content.map((item) => {
+      return (<ChapterList
+                item={item}
+                _onClick={this.props.onItemSelected}
+                enrolledStatus={this.enrolledStatus}/>)
     })
 
     return (
       <LinearLayout
-        margin="0,0,0,24"
+        orientation="vertical"
         height="wrap_content"
         width="match_parent">
+
         {items}
+
       </LinearLayout>);
   }
 
+  getCourseBreakUp = () => {
 
-  getChapterList = () => {
+    var items = this.props.content.map((item, index) => {
+
+      return (
+        <LinearLayout
+          width="match_parent"
+          height="wrap_content"
+          orientation="vertical">
 
 
+          <ChapterOverView
+            item={item}
+            height="wrap_content"
+            _onClick={this.handleClick}
+            currIndex = {this.currIndex}
+            shouldGoForward={this.props.shouldGoForward?this.props.shouldGoForward:"visible"}
+            index={index}/>
 
-    var items = this.props.content.chapterList.map((item) => {
-      return (<ChapterList 
-          item={item} 
-          _onClick={this.props.onItemSelected}
-          enrolledStatus={this.enrolledStatus}/>)
+          {this.getLineSeperator()}
+
+
+        </LinearLayout> )
+
     })
+
 
     return (
       <LinearLayout
@@ -56,23 +77,39 @@ class CourseCurriculum extends View {
       </LinearLayout>);
   }
 
+  getLineSeperator = () => {
+    return (<LinearLayout
+            width="match_parent"
+            height="1"
+            background={window.__Colors.PRIMARY_BLACK_22}/>)
+  }
+
+
+  handleClick = (mName, module) => {
+    this.props.onClick(mName, module)
+  }
+
+
+  getContent = () => {
+    if (this.props.brief) {
+      return this.getCourseBreakUp()
+    } else {
+      return this.getChapterList()
+    }
+  }
+
   render() {
 
 
     this.layout = (
 
       <LinearLayout
+       padding="0,0,0,0"
        height="match_parent"
        orientation="vertical"
        width="match_parent">
-        <TextView
-          margin="0,24,0,0"
-          text="Curriculum" 
-          style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
-        {this.getCurriculumnBrief()}  
-
-        {this.getChapterList()}
+        {this.getContent()}
 
        </LinearLayout>
 

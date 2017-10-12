@@ -7,16 +7,18 @@
     "output"
   ],
   "dependencies": {
-    "purescript-prelude": "^2.5.0",
-    "purescript-console": "^2.0.0",
-    "purescript-aff": "^2.0.3",
-    "purescript-affjax": "^3.0.2",
-    "purescript-foreign-generic": "^3.0.0",
-    "purescript-transformers": "^3.0.0",
-    "purescript-foreign": "^4.0.0"
+    "purescript-prelude": "^3.1.0",
+    "purescript-console": "^3.0.0",
+    "purescript-aff": "^3.1.0",
+    "purescript-affjax": "^4.0.0",
+    "purescript-foreign-generic": "^4.1.0",
+    "purescript-flow": "https://bitbucket.org/juspay/purescript-flow.git",
+    "purescript-transformers": "^3.4.0",
+    "purescript-foreign": "^4.0.1",
+    "purescript-argonaut-core": "^3.1.0"
   },
   "devDependencies": {
-    "purescript-psci-support": "^2.0.0"
+    "purescript-psci-support": "^3.0.0"
   },
   "resolutions": {
     "purescript-eff": "^2.0.0",
@@ -39,12 +41,14 @@
     "purescript-tuples": "^3.0.0",
     "purescript-transformers": "^2.0.1",
     "purescript-unsafe-coerce": "^2.0.0",
-    "purescript-prelude": "^2.1.0",
+    "purescript-prelude": "^3.1.0",
     "purescript-foreign": "^3.0.0",
     "purescript-functions": "^2.0.0",
     "purescript-integers": "^2.0.0",
     "purescript-globals": "^2.0.0",
     "purescript-strings": "^2.0.0",
-    "purescript-lists": "^3.0.0"
+    "purescript-lists": "^3.0.0",
+    "purescript-console": "^3.0.0",
+    "purescript-psci-support": "^3.0.0"
   }
 }

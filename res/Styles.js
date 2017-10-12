@@ -1,3 +1,4 @@
+
 const Colors = require('./Colors').color;
 const Font = require('./Font');
 
@@ -41,6 +42,11 @@ exports.Params = {
       stroke: "2," + Colors.PRIMARY_LIGHT,
       style: BaseParams.BigButton
     },
+    "Primary_DB_Layout_Stroke": {
+      background: Colors.PRIMARY_LIGHT,
+      stroke: "2," + Colors.PRIMARY_DARK,
+      style: BaseParams.BigButton
+    },
     "Secondary_WB_Layout": {
       background: Colors.PRIMARY_LIGHT,
       stroke: "2," + Colors.PRIMARY_DARK,
@@ -54,9 +60,9 @@ exports.Params = {
   },
   SmallButton: {
     "WB_Secondary_Layout": {
-      background: Colors.PRIMARY_LIGHT,
       stroke: "2," + Colors.PRIMARY_DARK,
-      style: BaseParams.SmallButton
+      style: BaseParams.SmallButton,
+      background: Colors.TRANSPARENT,
     },
     "WB_Primary_Layout": {
       background: Colors.PRIMARY_DARK,

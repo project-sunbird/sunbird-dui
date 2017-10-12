@@ -1,26 +1,45 @@
-const uiHandler = require("@juspay/mystique-backend").uiHandlers.android;
+const uiHandler = require("@juspay/mystique-backend/src/ui_handlers").android;
 var dispatcher;
+const R = require('ramda');
+
 
 //Reducer
 const ScreenReducer = require("../state_machines/Screens");
 
-const reducer = require("@juspay/mystique-backend").stateManagers.reducer({
+const reducer = require("@juspay/mystique-backend/src/state_managers").reducer({
   "SCREEN": ScreenReducer
 });
 
 // Screens
 const RootScreen = require("../views/RootScreen");
-const SplashScreen = require("../views/SplashScreen");
-const HomeScreen = require("../views/HomeScreen");
+const SplashScreenActivity = require("../views/SplashScreenActivity");
 
-const CourseInfoScreen = require("../views/CoursesActivity/CourseInfoScreen");
-const CourseActivityScreen = require("../views/CoursesActivity/CourseActivityScreen");
+//Home
+const MainActivity = require("../views/MainActivity");
+const UserActivity = require("../views/UserActivity");
+//Course or Learn
+const CourseInfoActivity = require("../views/CourseInfoActivity");
+const CourseEnrolledActivity = require("../views/CourseEnrolledActivity");
+const ModuleDetailActivity = require("../views/ModuleDetailActivity");
+const ViewBatchActivity = require("../views/ViewBatchActivity");
 
+//Resource
 
-const ClassRoomContentScreen = require("../views/ClassRoomActivity/ClassRoomContentScreen");
+//Comunity
+const CommunityInfoActivity = require("../views/CommunityInfoActivity");
+const CommunityViewAllActivity = require("../views/CommunityViewAllActivity");
+//Profile
+const NotificationActivity = require("../views/NotificationActivity");
+const ResourceDetailActivity = require("../views/ResourceDetailActivity");
+const ResourceViewAllActivity = require("../views/ResourceViewAllActivity");
+const CourseViewAllActivity = require("../views/CourseViewAllActivity");
+const SearchActivity = require("../views/SearchActivity");
+const FilterActivity = require("../views/FilterActivity");
+const AdditionalInformationActivity = require("../views/AdditionalInformationActivity");
+const CommProfSearchActivity = require("../views/CommProfSearchActivity");
+const ProfileActivity = require("../views/ProfileActivity");
 
-const ProfileActivityScreen = require("../views/ProfileActivity/ProfileActivityScreen");
-
+const ContentPreviewScreen = require("../views/ContentPreviewScreen");
 // ScreenActions
 const RootScreenActions = require("../actions/RootScreenActions");
 
@@ -31,24 +50,73 @@ var determineScreen = (screenName, state) => {
   // Space has been added for dir strucuture
   // add accordingly
   switch (state.currScreen) {
-    case "SPLASH":
-      screen = new(SplashScreen(dispatcher, RootScreenActions))(null, null, state);
+    case "CourseInfoActivty":
+      screen = new(CourseInfoActivty(dispatcher, RootScreenActions))(null, null, state);
       break;
-    case "HOME":
-      screen = new(HomeScreen(dispatcher, RootScreenActions))(null, null, state);
+    case "CourseEnrolledActivity":
+      screen = new(CourseEnrolledActivity(dispatcher, RootScreenActions))(null, null, state);
+      break;
+    case "SplashScreenActivity":
+      screen = new(SplashScreenActivity(dispatcher, RootScreenActions))(null, null, state);
+      break;
+    case "MainActivity":
+      screen = new(MainActivity(dispatcher, RootScreenActions))(null, null, state);
+      break;
+    case "ViewBatchActivity":
+      screen = new(ViewBatchActivity(dispatcher, RootScreenActions))(null, null, state);
+      break;
+    case "UserActivity":
+      screen = new(UserActivity(dispatcher, RootScreenActions))(null, null, state);
+      break;
+    case "AdditionalInformationActivity":
+      screen = new(AdditionalInformationActivity(dispatcher, RootScreenActions))(null,null,state);
+      break;
+    case "ModuleDetailActivity":
+      screen = new(ModuleDetailActivity(dispatcher, RootScreenActions))(null, null, state);
+      break;
+    case "ContentPreviewScreen":
+      screen = new(ContentPreviewScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
 
-    case "COURSE_INFO_SCREEN":
-      screen = new(CourseInfoScreen(dispatcher, RootScreenActions))(null, null, state);
+
+    case "CourseInfoActivity":
+      screen = new(CourseInfoActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
-    case "COURSE_ACTIVITY_SCREEN":
-      screen = new(CourseActivityScreen(dispatcher, RootScreenActions))(null, null, state);
+    case "CourseViewAllActivity":
+      screen = new(CourseViewAllActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
-    case "CLASSROOM_CONTENT_SCREEN":
-      screen = new(ClassRoomContentScreen(dispatcher, RootScreenActions))(null, null, state);
+    case "NotificationActivity":
+      screen = new(NotificationActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
-    case "PROFILE_ACTIVITY_SCREEN":
-      screen = new(ProfileActivityScreen(dispatcher, RootScreenActions))(null, null, state);
+
+    case "ResourceDetailActivity":
+      screen = new(ResourceDetailActivity(dispatcher, RootScreenActions))(null, null, state);
+      break;
+    case "ResourceViewAllActivity":
+      screen = new(ResourceViewAllActivity(dispatcher, RootScreenActions))(null, null, state);
+      break;
+
+    case "CourseViewAllActivity":
+      screen = new(CourseViewAllActivity(dispatcher, RootScreenActions))(null, null, state);
+      break;
+
+    case "SearchActivity":
+      screen = new(SearchActivity(dispatcher, RootScreenActions))(null, null, state);
+      break;
+    case "FilterActivity":
+      screen = new(FilterActivity(dispatcher, RootScreenActions))(null, null, state);
+      break;
+
+    case "CommProfSearchActivity":
+      screen = new(CommProfSearchActivity(dispatcher, RootScreenActions))(null, null, state);
+      break;
+
+    case "ProfileActivity":
+      screen = new(ProfileActivity(dispatcher, RootScreenActions))(null, null, state);
+      break;
+
+    case "RootScreen":
+      screen = new(RootScreen(dispatcher,RootScreenActions))(null, null,state) ;
       break;
   }
 
@@ -95,14 +163,17 @@ var renderScreen = function(data) {
   var takeFromCache = true;
   var screenData = window.__CACHED_SCREENS[data.action];
 
+
   if (screenData) {
     isCached = true;
 
     screen = screenData.screen;
+
     if (typeof screen.shouldCacheScreen !== "undefined" && !screen.shouldCacheScreen) {
       console.info("updating screen ", data.action);
       updateNode(data);
       takeFromCache = false;
+      console.log("data.action", screen);
     }
   } else {
     window.__ANIMATE_DIR = 1;
@@ -151,11 +222,25 @@ var handleGoBack = function(data) {
     }
   }
 
+
   window.__PREV_SCREEN = window.__SCREEN_STACK[stackLen - 1];
   window.__CURR_SCREEN = window.__SCREEN_STACK[stackLen - 2];
-  window.__ANIMATE_DIR = -1;
   window.__SCREEN_STACK.pop();
-  window.__CACHED_SCREENS[window.__CURR_SCREEN].screen.onPop(data.state, "backPress");
+
+  var screen = window.__CACHED_SCREENS[window.__CURR_SCREEN].screen;
+  var state = R.merge(data.state, { currScreen: window.__CURR_SCREEN });
+
+  data = R.merge(data, { action: window.__CURR_SCREEN, state: state });
+
+  if (typeof screen.shouldCacheScreen !== "undefined" && !screen.shouldCacheScreen) {
+    console.info("updating screen ", window.__CURR_SCREEN);
+    updateNode(data);
+    window.__ANIMATE_DIR = getDirection();
+    appendToRoot(window.__CACHED_SCREENS[window.__CURR_SCREEN].screen);
+  } else {
+    window.__ANIMATE_DIR = -1;
+    screen.onPop(data.state, "backPress");
+  }
 }
 
 var handleScreenActions = function(data) {
@@ -195,6 +280,8 @@ var handleScreenActions = function(data) {
   window.__CURR_SCREEN = data.action;
 
   res = renderScreen(data);
+
+  console.log(res);
   if (!res.isCached) {
     appendToRoot(res.screen);
     return {};
@@ -204,6 +291,7 @@ var handleScreenActions = function(data) {
     if (res.screen.onPop)
       res.screen.onPop(data.state);
   } else {
+    console.log("appendToRoot");
     window.__ANIMATE_DIR = getDirection();
     appendToRoot(res.screen);
   }
@@ -231,6 +319,7 @@ module.exports = {
     dispatcher("SCREEN", "INIT_UI", initialState);
   },
   changeScreen: (screen, state) => {
+    console.log("container", state)
     dispatcher("SCREEN", screen, state);
   }
 }

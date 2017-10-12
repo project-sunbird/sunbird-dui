@@ -1,3 +1,4 @@
+
 var path = require('path');
 const WebpackShellPlugin = require('webpack-shell-plugin');
 

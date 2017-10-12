@@ -1,12 +1,14 @@
-var dom = require("@juspay/mystique-backend").doms.android;
-var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
-var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
-var TextView = require("@juspay/mystique-backend").androidViews.TextView;
-var EditText = require("@juspay/mystique-backend").androidViews.EditText;
-var ListView = require("@juspay/mystique-backend").androidViews.ListView;
 
-var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
-var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
+
+var dom = require("@juspay/mystique-backend/src/doms/android");
+var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
+var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
+var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
+var EditText = require("@juspay/mystique-backend/src/android_views/EditText");
+var ListView = require("@juspay/mystique-backend/src/android_views/ListView");
+
+var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
+var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
 
 class ListGenerator extends View {
   constructor(props, children) {
@@ -37,8 +39,7 @@ class ListGenerator extends View {
             weight="1"
             id = {this.idSet.lItem}
             margin="5,5,5,5"
-            onClick={()=>{console.log("CLICKED L BUTTON OF ",i); this.indexToModify =i ; this.updateListView() }}
-            />
+            onClick={()=>{console.log("CLICKED L BUTTON OF ",i); this.indexToModify =i ; this.updateListView() }}/>
 
             <TextView
             color="#ff0000"
@@ -46,20 +47,18 @@ class ListGenerator extends View {
             margin="5,5,5,5"
              id = {this.idSet.rItem}
             onClick={()=>{console.log("CLICKED R BUTTON OF ",i)}}
-            text={"R of i:"+ i}
-            />
+            text={"R of i:"+ i}/>
 
         </LinearLayout>
       )
 
       var listItemLayout2 = (
-        <LinearLayout
-          >
-        <LinearLayout
-        height="100"
-        margin="12,6,12,6"
-        background="#cccccc"
-        width="match_parent">
+        <LinearLayout>
+          <LinearLayout
+            height="100"
+            margin="12,6,12,6"
+            background="#cccccc"
+            width="match_parent">
 
             <ImageView
               width="156"
@@ -72,10 +71,9 @@ class ListGenerator extends View {
             color="#ff0000"
             weight="1"
             margin="5,5,5,5"
-             id = {this.idSet.lItem}
+            id = {this.idSet.lItem}
             onClick={()=>{console.log("CLICKED BUTTON OF ",i); this.indexToModify =i ; this.updateListView() }}
-            text={"R of i:"+ i}
-            />
+            text={"R of i:"+ i}/>
 
         </LinearLayout>
 
@@ -211,7 +209,7 @@ class ListGenerator extends View {
 
                     <TextView 
                       height="match_parent"
-                      text="apply"
+                      text={window.__S.APPLY}
                       onClick={this.updateListView}
                       />
 

@@ -1,10 +1,11 @@
-const dom = require("@juspay/mystique-backend").doms.android;
-const View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
-var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
-var RelativeLayout = require("@juspay/mystique-backend").androidViews.RelativeLayout;
+
+const dom = require("@juspay/mystique-backend/src/doms/android");
+const View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
+var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
+var RelativeLayout = require("@juspay/mystique-backend/src/android_views/RelativeLayout");
 var FrameLayout = require("@juspay/mystique-backend").androidViews.FrameLayout;
-var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
-var TextView = require("@juspay/mystique-backend").androidViews.TextView;
+var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
+var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 
 class FeatureButton extends View {
   constructor(props, children) {
@@ -26,25 +27,27 @@ class FeatureButton extends View {
   }
 
   afterRender = () =>{
-      console.log("afterRender","came")
      JBridge.setClickFeedback(this.idSet.buttonText);
   }
 
   render() {
     this.layout = (
       <LinearLayout
-        id = {this.props.id} 
-        weight={this.props.weight||"1"}
+      id = {this.props.id}
+      height={this.props.height || "wrap_content"}
+      width={this.props.width || "wrap_content"}
+      clickable={this.props.clickable||"true"}
+      margin={this.props.margin||"0,0,0,0"}
+      stroke={this.props.stroke||"3,"+this.props.background||"1,#000000"}
+      background={this.props.background||"#FFFFFF"}
+      cornerRadius={this.props.cornerRadius || "2"}
+      visibility={this.props.visibility||"visible"}
+      gravity="center">
+      <LinearLayout
         height={this.props.height || "wrap_content"}
-        width={this.props.width || "wrap_content"}
+        width="match_parent"
         orientation="horizontal"
-        cornerRadius="2"
-        clickable={this.props.clickable||"true"}
-        margin={this.props.margin||"0,0,0,0"}
-        stroke={this.props.stroke||"3,"+this.props.background||"1,#000000"}
-        background={this.props.background||"#FFFFFF"}
         onClick={this.buttonFunction}
-        visibility={this.props.visibility||"visible"}
         gravity="center">
         <TextView
           id = {this.idSet.buttonText}
@@ -55,10 +58,11 @@ class FeatureButton extends View {
           height="match_parent"
           gravity="center"
           afterRender = {this.afterRender}
-          textSize={this.props.textSize || "18"}
+          textSize={this.props.textSize || "14"}
           padding={this.props.padding ||"10,10,10,10"}
           color={this.props.textColor||"#FFFFFF"}/>
       </LinearLayout>
+    </LinearLayout>
     )
     return this.layout.render();
   }

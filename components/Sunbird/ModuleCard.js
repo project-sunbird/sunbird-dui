@@ -1,10 +1,11 @@
-var dom = require("@juspay/mystique-backend").doms.android;
-var Connector = require("@juspay/mystique-backend").connector;
-var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
-var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 
-var TextView = require("@juspay/mystique-backend").androidViews.TextView;
-var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
+var dom = require("@juspay/mystique-backend/src/doms/android");
+var Connector = require("@juspay/mystique-backend/src/connectors/screen_connector");
+var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
+var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
+
+var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
+var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
 
 class ModuleCard extends View {
   constructor(props, children) {
@@ -29,6 +30,7 @@ class ModuleCard extends View {
 			background = {this.props.item.moduleBackground? this.props.item.moduleBackground : "#229012FE" }
 			orientation="vertical"
 			gravity="center"
+      cornerRadius="5"
 			>
       <LinearLayout
         height="match_parent"
@@ -45,7 +47,7 @@ class ModuleCard extends View {
               />
 
               <TextView
-              	text= {this.props.item.moduleName ? this.props.item.moduleName : "Module Name"}
+              	text= {this.props.item.moduleName ? this.props.item.moduleName : window.___S.MODULE_NAME}
               	style={window.__TextStyle.textStyle.HINT.SEMI.LIGHT}
               	margin = "0,0,0,16"
               	alpha="0.66"

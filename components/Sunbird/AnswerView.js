@@ -1,13 +1,14 @@
-var dom = require("@juspay/mystique-backend").doms.android;
-var Connector = require("@juspay/mystique-backend").connector;
-var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
-var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
-var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
-var RelativeLayout = require("@juspay/mystique-backend").androidViews.RelativeLayout;
+
+var dom = require("@juspay/mystique-backend/src/doms/android");
+var Connector = require("@juspay/mystique-backend/src/connectors/screen_connector");
+var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
+var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
+var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget");
+var RelativeLayout = require("@juspay/mystique-backend/src/android_views/RelativeLayout");
 
 
-var TextView = require("@juspay/mystique-backend").androidViews.TextView;
-var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
+var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
+var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
 
 
 class AnswerView extends View {
@@ -51,7 +52,10 @@ class AnswerView extends View {
 
 
   getIndexHolder = () => {
-    return (<TextView id = {this.idSet.itemPosition} text={this.props.index + 1} />)
+    return (
+      <TextView 
+        id = {this.idSet.itemPosition} 
+        text={this.props.index + 1} />)
   }
 
   getSelectedImage = () => {
@@ -73,19 +77,20 @@ class AnswerView extends View {
 
     this.layout = (
       <LinearLayout
-      width="match_parent"
-      cornerRadius="5"
-      id ={this.idSet.parentContainer}
-      margin="0,0,0,12"
-      stroke ={"2," + window.__Colors.PRIMARY_BLACK_66}
-      height="56">
+        width="match_parent"
+        cornerRadius="5"
+        id ={this.idSet.parentContainer}
+        margin="0,0,0,12"
+        stroke ={"2," + window.__Colors.PRIMARY_BLACK_66}
+        height="56">
+        
         <LinearLayout
-      width="match_parent"
-      gravity="center_vertical"
-      allowMultipleClicks="true"
-      padding="12,8,12,8"
-      onClick={this.handleSelectionEvent}
-      height="match_parent">
+          width="match_parent"
+          gravity="center_vertical"
+          allowMultipleClicks="true"
+          padding="12,8,12,8"
+          onClick={this.handleSelectionEvent}
+          height="match_parent">
 
             <RelativeLayout
               width="40"
@@ -101,6 +106,7 @@ class AnswerView extends View {
               {this.getIndexHolder()}
              
             </RelativeLayout>
+           
            <TextView
             width="wrap_content"
             height="match_parent"
@@ -111,6 +117,7 @@ class AnswerView extends View {
             style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>
 
          </LinearLayout> 
+
       </LinearLayout>
     )
 

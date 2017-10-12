@@ -1,12 +1,13 @@
-var dom = require("@juspay/mystique-backend").doms.android;
-var Connector = require("@juspay/mystique-backend").connector;
-var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
-var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 
-var TextView = require("@juspay/mystique-backend").androidViews.TextView;
-var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
+var dom = require("@juspay/mystique-backend/src/doms/android");
+var Connector = require("@juspay/mystique-backend/src/connectors/screen_connector");
+var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
+var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
 
-var Space = require('@juspay/mystique-backend').androidViews.Space;
+var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
+var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
+
+var Space = require("@juspay/mystique-backend/src/android_views/Space");
 
 window.R = require("ramda");
 
@@ -29,8 +30,7 @@ class SubjectListItem extends View {
               heigh="32"
               padding="0,0,0,0"
               background={window.__Colors.RED_10}
-              gravity="center"
-              >
+              gravity="center">
             <ImageView
               height="20"
               width="14"
@@ -99,8 +99,7 @@ class SubjectListItem extends View {
       <LinearLayout
 			width="match_parent"
 			height="wrap_content"
-			orientation="vertical"
-			>
+			orientation="vertical">
 
                 {this.getData()}
                     		

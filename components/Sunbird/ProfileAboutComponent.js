@@ -1,15 +1,16 @@
-var dom = require("@juspay/mystique-backend").doms.android;
-var Connector = require("@juspay/mystique-backend").connector;
-var View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
-var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
-var RelativeLayout = require("@juspay/mystique-backend").androidViews.RelativeLayout;
-var TextView = require("@juspay/mystique-backend").androidViews.TextView;
-var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
-var callbackMapper = require("@juspay/mystique-backend/").helpers.android.callbackMapper;
+
+var dom = require("@juspay/mystique-backend/src/doms/android");
+var Connector = require("@juspay/mystique-backend/src/connectors/screen_connector");
+var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
+var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
+var RelativeLayout = require("@juspay/mystique-backend/src/android_views/RelativeLayout");
+var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
+var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget");
+var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
 var objectAssign = require('object-assign');
 
 window.R = require("ramda");
-var PageOption = require('../../components/Sunbird/PageOption');
+var PageOption = require("../../components/Sunbird/core/PageOption");
 class ProfileAboutComponent extends View {
   constructor(props, children, state) {
     super(props, children, state);
@@ -36,9 +37,13 @@ class ProfileAboutComponent extends View {
   }
 
   render() {
-    var buttonList = ["EDIT PROFILE"];
+    var btn = {
+      text : "EDIT PROFILE",
+      onClick : this.handleEnrollClick
+    }
+    var buttonList = [btn];
     this.layout = (
-    
+
       <LinearLayout
         root="true"
         orientation="vertical"
@@ -48,11 +53,11 @@ class ProfileAboutComponent extends View {
         >
 
         <TextView
-          text="Fully informed about the latest updates in the rules and regulations, our team works closely with you, helping choose the best foreign destination to work in, and preparing a well-presented error-free application."
+          text=""
           height="wrap_content"
           margin="16,12,16,16"
-          style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>            
-      
+          style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>
+
 
 
       <ViewWidget
@@ -62,10 +67,8 @@ class ProfileAboutComponent extends View {
            width="match_parent"
            id={this.idSet.pageOption}
            buttonItems={buttonList}
-           hideDivider="true"
+           hideDivider="true"/>
 
-           onButtonClick={this.handleEnrollClick}/>
-      
     </LinearLayout>
     );
 

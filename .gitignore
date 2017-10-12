@@ -1,6 +1,6 @@
 /bower_components/
-/node_modules/
 /.pulp-cache/
+/node_modules/
 /output/
 /.psc*
 /.psa*
@@ -9,6 +9,7 @@
 npm-debug.log
 tags
 TODO
+pulp-*
 
 # Emacs stuff
 

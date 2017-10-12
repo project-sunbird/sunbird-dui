@@ -1,12 +1,14 @@
-const dom = require("@juspay/mystique-backend").doms.android;
-const View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
-var LinearLayout = require("@juspay/mystique-backend").androidViews.LinearLayout;
-var RelativeLayout = require("@juspay/mystique-backend").androidViews.RelativeLayout;
+
+
+const dom = require("@juspay/mystique-backend/src/doms/android");
+const View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
+var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
+var RelativeLayout = require("@juspay/mystique-backend/src/android_views/RelativeLayout");
 var FrameLayout = require("@juspay/mystique-backend").androidViews.FrameLayout;
-var ImageView = require("@juspay/mystique-backend").androidViews.ImageView;
-var TextView = require("@juspay/mystique-backend").androidViews.TextView;
-var EditText = require("@juspay/mystique-backend").androidViews.EditText;
-var HorizontalScrollView = require("@juspay/mystique-backend").androidViews.HorizontalScrollView;
+var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
+var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
+var EditText = require("@juspay/mystique-backend/src/android_views/EditText");
+var HorizontalScrollView = require("@juspay/mystique-backend/src/android_views/HorizontalScrollView");
 
 var Styles = require("../../res/Styles");
 var R = require('ramda');
@@ -25,6 +27,12 @@ class Button extends View {
     switch (this.props.type) {
       case "BigButton_Primary_DB":
         this.layoutStyle = Styles.Params.BigButton.Primary_DB_Layout;
+        this.textStyle = window.__TextStyle.textStyle.CARD.ACTION.BLUE;
+        this.text = this.props.text;
+        break;
+
+      case "BigButton_Primary_DB_Stroke":
+        this.layoutStyle = Styles.Params.BigButton.Primary_DB_Layout_Stroke;
         this.textStyle = window.__TextStyle.textStyle.CARD.ACTION.BLUE;
         this.text = this.props.text;
         break;
@@ -62,6 +70,12 @@ class Button extends View {
       case "SmallButton_Secondary_WB":
         this.layoutStyle = Styles.Params.SmallButton.WB_Secondary_Layout;
         this.textStyle = window.__TextStyle.textStyle.blueButton;
+        this.text = this.props.text;
+        break;
+
+      case "SmallButton_Secondary_BT":
+        this.layoutStyle = Styles.Params.SmallButton.WB_Secondary_Layout;
+        this.textStyle = window.__TextStyle.textStyle.TABBAR.SELECTED;
         this.text = this.props.text;
         break;
 
