@@ -224,18 +224,20 @@ class ProfileAdditionalInfo extends View {
   getRows1=()=>{
     var count=0;
     var rows= this.data.webPages.map((item,i)=>{
-      var dumy=this.data.webPages[i].url
-      if(dumy!=undefined&&dumy!="")
-        {
+      var dumy=this.data.webPages[i].url||"";
+      var flag=1;
+      if(dumy!=undefined&&dumy!=""){
+          flag=0;
           count++;
-        }
+      }
         var dumy1=utils.cropText(dumy,20);
         dumy= "<a href="+dumy+">"+dumy1+"</a>"
       return (
         <LinearLayout
         width="match_parent"
         height="match_parent"
-        gravity="right">
+        gravity="right"
+        visibility={flag==1?"gone":"visible"}>
         <TextView
         widht="wrap_content"
         height="wrap_content"
@@ -275,7 +277,14 @@ class ProfileAdditionalInfo extends View {
     );
   }
  socialClicked=(index)=>{
-   console.log("Social media link clicked",index);
+  var url=this.data.webPages[index].url||"";
+  var type=this.data.webPages[index].type||"";
+  if(url.indexOf("www.")==0)
+    {
+      url= "https://"+url;
+    }
+  JBridge.openSocialMedia(url,type);
+   console.log(" Social media link clicked ",index);
  }
 
 

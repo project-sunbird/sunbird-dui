@@ -136,7 +136,7 @@ class ResourceComponent extends View {
 
 
 handleResourceViewAllClick= (data,title,searchQuery,visibility) =>{
-
+  
    var resourceDetails = {
                             "title" : title,
                             "resourceDetails" : data,

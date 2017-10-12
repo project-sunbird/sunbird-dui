@@ -308,8 +308,12 @@ class AddressPopUp extends View {
       }
     return false;
   }
-
-  handleSaveClick = () => {
+  handleSaveClick =()=>{
+    window.__LoaderDialog.show();
+    this.handleSaveClickBody();
+    window.__LoaderDialog.hide();
+  }
+  handleSaveClickBody = () => {
 
     if (this.singleClick && !this.canSave && !this.delete) {
       if (window.__AddressPopUp.data){

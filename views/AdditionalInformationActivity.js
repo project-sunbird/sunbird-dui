@@ -1058,8 +1058,13 @@ class AdditionalInformationActivity extends View{
     }
     return false;
   }
+  handleSaveClick =()=>{
+    window.__LoaderDialog.show();
+    this.handleSaveClickBody();
+    window.__LoaderDialog.hide();
+  }
 
-  handleSaveClick = () => {
+  handleSaveClickBody = () => {
     var json=  {};
     if(!this.checkCompleteStatus())
       {
