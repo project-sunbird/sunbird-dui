@@ -100,6 +100,10 @@ class ProfileCreations extends View {
     else if(editButtonText=="lastName"){
          editButtonText=window.__S.LAST_NAME;
       }
+    else if (editButtonText=="subject")
+      {
+           editButtonText=window.__S.SUBJECTS;
+      }
     else if(editButtonText=="avatar"){
          return (this.getEditButton(index+1));
       }
@@ -287,7 +291,7 @@ class ProfileCreations extends View {
       window.__ExperiencePopUp.show();
       return;
       }
-        var whatToSend = { "profile" : JSON.stringify(this.props.data)}
+       var whatToSend = { "profile" : JSON.stringify(this.props.data)}
         var event ={ tag: "OPEN_EditProfileActivity", contents: whatToSend }
         window.__runDuiCallback(event);
     
