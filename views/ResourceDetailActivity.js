@@ -184,11 +184,12 @@ class ResourceDetailActivity extends View {
       JBridge.setRating(this.idSet.ratingBar, this.details.content.contentData.me_averageRating);
     }
     else{
-      var layout=(<TextView
-          text={window.__S.NO_RATING}
-          style={window.__TextStyle.textStyle.HINT.TINY}/>)
-
-        this.replaceChild(this.idSet.ratingContainer,layout.render(),0)
+      // var layout=(<TextView
+      //     text={window.__S.NO_RATING}
+      //     style={window.__TextStyle.textStyle.HINT.TINY}/>)
+      //
+      //   this.replaceChild(this.idSet.ratingContainer,layout.render(),0)
+      JBridge.setRating(this.idSet.ratingBar, 0);
     }
 
   }
