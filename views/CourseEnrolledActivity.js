@@ -576,12 +576,7 @@ class CourseEnrolledActivity extends View {
   }
 
   handleResumeClick = () =>{
-    console.log(this.details)
-    var callback = callbackMapper.map(function(data){
-      console.log("local content details",data)
-      data[0] = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])))
-      _this.handleModuleClick(data[0].contentData.name,data[0])
-    });
+    console.log("handleResumeClick this.details",this.details)
     var id;
     if(this.enrolledCourses.hasOwnProperty('lastReadContentId') && this.enrolledCourses.lastReadContentId !=null){
       console.log("this.enrolledCourses.lastReadContentId", this.enrolledCourses.lastReadContentId);
@@ -599,8 +594,11 @@ class CourseEnrolledActivity extends View {
       window.__Snackbar.show(window.__S.ERROR_NO_RESUME_CONTENT_AVAILABLE)
     }
     console.log("id before JBridge.getChildContent ", id);
-    if (id) JBridge.getChildContent(id,callback)
-    else window.__Snackbar.show(window.__S.ERROR_NO_RESUME_CONTENT_AVAILABLE)
+    if (id) {
+      this.courseContent.children.map((item, i) => {
+        if (item.identifier == id) this.handleModuleClick(item.contentData.name,item)
+      })
+    } else window.__Snackbar.show(window.__S.ERROR_NO_RESUME_CONTENT_AVAILABLE)
   }
 
   changeOverFlow = () =>{
