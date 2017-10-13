@@ -137,26 +137,12 @@ class ProfileHeader extends View {
                 text = {"Last login time: " + this.lastLoginTime}
                 margin = "0,0,0,16"
                 style={window.__TextStyle.textStyle.HINT.REGULAR} />
-              <RelativeLayout
-            width="wrap_content"
-            height="wrap_content">
-            <LinearLayout
-            width="82"
-            height="82"
-            background="#d8d8d8"
-            cornerRadius="41"/>
-            <LinearLayout
-            width="80"
-            height="80"
-            margin="1,1,1,1"
-            cornerRadius="40"
-            background="#ffffff">
-            <ImageView
+             <ImageView
               width="80"
               height="80"
-              circularImageUrl={"0,"+this.imageUrl}/>
-              </LinearLayout>
-            </RelativeLayout>
+              circularImageUrl={"0,"+this.imageUrl}
+              stroke ={"2," + "#d8d8d8"}
+              cornerRadius="40"/>
               <TextView
               width="wrap_content"
               height="wrap_content"

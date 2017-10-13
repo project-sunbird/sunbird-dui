@@ -89,7 +89,6 @@ class CourseViewAllActivity extends View {
      console.log("data in cva",this.totalDetails)
      var list = this.totalDetails;
      this.jsonArray=[];
-     let viewType = 0
       list.map((item,i) => {
                 var progressCount = item.leafNodesCount == null ? 0 : (item.progress/item.leafNodesCount)*100;
                 progressCount = parseInt(progressCount)
@@ -146,7 +145,7 @@ class CourseViewAllActivity extends View {
     
        if(this.start_index==0)
         {
-          if(this.btnStatus=="visible")
+          if(this.btnStatus=="visible"&&(this.jsonArray.length)>=10)
             {
        JBridge.listViewAdapter(
         this.idSet.listContainer,

@@ -781,8 +781,12 @@ del = () => {
         window.__Snackbar.show(data.params.errmsg);
       }
     }
-
-     sendJSON = () => {
+     sendJSON =()=>{
+       window.__LoaderDialog.show();
+       this.sendJSONBody();
+       window.__LoaderDialog.hide();
+     }
+     sendJSONBody = () => {
        console.log("inside sendJSON", this.jobProfile);
        if (this.singleClick && !this.canSave && !this.delete) {
          if (window.__ExperiencePopUp.data)

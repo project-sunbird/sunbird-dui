@@ -239,6 +239,8 @@ const stringsRes = {
 		CREATED_BY_SMALL : "Created by",
 		ERROR_OFFLINE_MODE : "No internet, Offline mode",
 		ADDITIONAL_INFORMATION : "Additional Information",
+		SOCIAL : "Social",
+		UPDATE : "UPDATE"
 	},
 	"hi_IN" : {
 		ALREADY_HAVE_ACC : "मौजूदा उपयोगकर्ता, साइन इन करें",

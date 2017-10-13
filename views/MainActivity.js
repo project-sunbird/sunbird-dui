@@ -186,7 +186,7 @@ class MainActivity extends View {
     var isErr = res.hasOwnProperty("err");
     if(isErr) {
       if (state.responseFor == "API_ProfileFragment") {
-        if (false /*JBridge.getSavedData(this.profileDataTag) != "__failed"*/){
+        if (JBridge.getSavedData(this.profileDataTag) != "__failed"){
           window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
           var data = JSON.parse(utils.decodeBase64(JBridge.getSavedData(this.profileDataTag)));
           data.local = true;
@@ -267,6 +267,7 @@ class MainActivity extends View {
 
     switch (this.currentPageIndex) {
       case 0:
+      shouldBeModified = true;
         // JBridge.logCorrelationPageEvent("HOME",responseData.params.msgid,responseData.id)
         this.logCorrelationPageEvent("HOME");
         window.__runDuiCallback({ "tag": "OPEN_HomeFragment", contents: [] });
@@ -468,6 +469,7 @@ class MainActivity extends View {
       case 0:
         whatToSend= { "name": "Kiran" };
         event = { "tag": "OPEN_HomeFragment", contents: whatToSend };
+        this.getUserProfileData();
         break;
       case 1:
       if(!JBridge.isNetworkAvailable())

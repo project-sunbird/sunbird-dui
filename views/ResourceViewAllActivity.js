@@ -129,7 +129,7 @@ showList = () =>{
   
      if(this.start_index==0)
       {
-        if(this.btnStatus=="visible")
+        if(this.btnStatus=="visible"&&(this.jsonArray.length)>=10)
           {
      JBridge.listViewAdapter(
       this.idSet.listContainer,
