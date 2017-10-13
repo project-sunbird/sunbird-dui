@@ -12,7 +12,7 @@ sheet = wb.get_sheet_by_name('Sheet1')
 
 blacklist = ['\n','"']
 
-f1=open("strings.js", 'w+')
+f1=open("Strings.js", 'w+')
 print >> f1, "const objectAssign = require('object-assign');"
 print >> f1, "const stringsRes = {"
 for k in range(2 , 15):
