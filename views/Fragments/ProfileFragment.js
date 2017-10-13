@@ -47,8 +47,8 @@ class ProfileFragment extends View {
         { imageUrl: "ic_action_overflow" }
       ]
     }
-    // this.popupMenu=window.__S.CHANGE_LANGUAGE + "," + window.__S.LOGOUT;
-    this.popupMenu=window.__S.LOGOUT;
+    this.popupMenu=window.__S.CHANGE_LANGUAGE + "," + window.__S.LOGOUT;
+    // this.popupMenu=window.__S.LOGOUT;
     window.__LanguagePopup.props.buttonClick = this.handleChangeLang;
 
     this.handleResponse();
@@ -96,9 +96,9 @@ class ProfileFragment extends View {
   }
 
   overFlowCallback = (params) => {
-    if(params == 1){
+    if(params == 0){
       window.__LanguagePopup.show();
-    } else if (params == 0) {
+    } else if (params == 1) {
       this.logout();
     }
   }

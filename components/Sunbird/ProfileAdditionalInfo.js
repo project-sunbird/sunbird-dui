@@ -72,7 +72,7 @@ class ProfileAdditionalInfo extends View {
     },
     {
       name: window.__S.SUBJECTS,
-      value : this.subjects
+      value : utils.cropText(this.subjects, 30)
     },
     {
       name: window.__S.DATE_OF_BIRTH,
@@ -249,7 +249,7 @@ class ProfileAdditionalInfo extends View {
     });
     return rows;
   }
-  getSocialDetils=()=>{ 
+  getSocialDetils=()=>{
     return (
       <LinearLayout
       width="match_parent"
