@@ -215,7 +215,7 @@ class ResourceDetailActivity extends View {
                      }
 
     var whatToSend = {
-      "user_token" : window.__userToken,
+      "user_token" : window.__user_accessToken,
       "api_token" : window.__apiToken,
       "requestBody" : JSON.stringify(request),
       "identifier" : this.details.content.identifier
@@ -402,7 +402,7 @@ class ResourceDetailActivity extends View {
                 <ImageView
                 width="80"
                 height="50"
-                circularImageUrl={"4,"+ (this.details.imageUrl?this.details.imageUrl:"ic_action_resource")}/>
+                circularImageUrl={"4,"+ (this.details.imageUrl?this.details.imageUrl:"ic_launcher")}/>
 
             </LinearLayout>
 
@@ -473,14 +473,13 @@ class ResourceDetailActivity extends View {
 
   }
   handleStateChange = (state) =>{
-    console.log(state)
-    // var responseData = JSON.parse(state.response);
-    if(state.response.statusCode!=504){
-        var response = utils.decodeBase64(state.response.status[1] || "")
-        var responseCode = state.response.status[2]
-        if(responseCode == 200){
-          var callback = callbackMapper.map(function(response){
+    var res = utils.processResponse(state);
+    if(res.code!=504){
+        var response = res.data;
+        var responseCode = res.code;
+        if(responseCode == "200"){
 
+          var callback = callbackMapper.map(function(response){
             if(state.responseFor == "API_FlagContent" && response[0] == "successful"){
               JBridge.logFlagClickEvent(_this.details.identifier,"RESOURCES");
               setTimeout(function(){
@@ -489,27 +488,21 @@ class ResourceDetailActivity extends View {
                 _this.onBackPressed();
                 window.__LoaderDialog.hide();
               }, 2000)
-
             }
           });
           JBridge.deleteContent(this.details.identifier,callback);
 
-        }
-        else{
+        } else {
           window.__LoaderDialog.hide();
           window.__Snackbar.show(window.__S.CONTENT_FLAG_FAIL);
           _this.onBackPressed();
-
         }
         console.log(response)
-    }
-    else{
+    }else{
       window.__LoaderDialog.hide();
       window.__Snackbar.show(window.__S.TIME_OUT)
       _this.onBackPressed();
-
     }
-
   }
 
 

@@ -29,7 +29,7 @@ class ProfileAdditionalInfo extends View {
     this.subjects = "";
     this.dob = this.data.dob ? this.data.dob : "";
     this.grade = "";
-    this.currentLoc = "";
+    this.currentLoc = this.data.location ? this.data.location : "";
 
     this.data.language.map((item, i) => {
       var append = ",";
@@ -52,7 +52,7 @@ class ProfileAdditionalInfo extends View {
     });
     this.grade = utils.cropText(this.grade, this.maxLen);
 
-    this.currentLoc = this.getAddress(this.data.address);
+    // this.currentLoc = this.getAddress(this.data.address);
 
     this.info = [{
       name: window.__S.LANGUAGES,
@@ -221,6 +221,71 @@ class ProfileAdditionalInfo extends View {
       </LinearLayout>
     )
   }
+  getRows1=()=>{
+    var count=0;
+    var rows= this.data.webPages.map((item,i)=>{
+      var dumy=this.data.webPages[i].url||"";
+      var flag=1;
+      if(dumy!=undefined&&dumy!=""){
+          flag=0;
+          count++;
+      }
+        var dumy1=utils.cropText(dumy,20);
+        dumy= "<a href="+dumy+">"+dumy1+"</a>"
+      return (
+        <LinearLayout
+        width="match_parent"
+        height="match_parent"
+        gravity="right"
+        visibility={flag==1?"gone":"visible"}>
+        <TextView
+        widht="wrap_content"
+        height="wrap_content"
+        textFromHtml={dumy}
+        padding="0,0,0,8"
+        onClick={()=>this.socialClicked(i)}/>
+        </LinearLayout>
+        );
+    });
+    return rows;
+  }
+  getSocialDetils=()=>{ 
+    return (
+      <LinearLayout
+      width="match_parent"
+      height="wrap_content"
+      orientation="horizontal" >
+      <LinearLayout
+      width="wrap_content"
+      height="match_parent">
+      <TextView
+      width="wrap_content"
+      height="wrap_content"
+      text={window.__S.SOCIAL}
+      textAllCaps = "true"
+      style={window.__TextStyle.textStyle.HINT.SEMI}/>
+      </LinearLayout>
+      <LinearLayout
+      width="wrap_content"
+      height="wrap_content"
+      orientation = "vertical"
+      weight='1'
+      >
+      {this.getRows1()}
+        </LinearLayout>
+        </LinearLayout>
+    );
+  }
+ socialClicked=(index)=>{
+  var url=this.data.webPages[index].url||"";
+  var type=this.data.webPages[index].type||"";
+  if(url.indexOf("www.")==0)
+    {
+      url= "https://"+url;
+    }
+  JBridge.openSocialMedia(url,type);
+   console.log(" Social media link clicked ",index);
+ }
 
 
   render() {
@@ -238,7 +303,7 @@ class ProfileAdditionalInfo extends View {
 
                 {this.getHeader()}
                 {this.getBody()}
-
+                {this.getSocialDetils()}
               </LinearLayout>
     )
     return this.layout.render();

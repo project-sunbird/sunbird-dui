@@ -40,11 +40,11 @@ class CourseInProgressContainer extends View {
     console.log("fetchFromServer");
     var res = null;
     if (JBridge.isNetworkAvailable()) {
-      var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken}
+      var whatToSend = {"user_token":window.__user_accessToken,"api_token": window.__apiToken}
       var event ={ "tag": "API_UserEnrolledCourse", contents: whatToSend};
       window.__runDuiCallback(event);
-    } else {    
-     // window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);        
+    } else {
+     // window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
       res = JBridge.getSavedData(this.savedCourseTag);
       if (res && res != "__failed"){
         var parsed = JSON.parse(utils.decodeBase64(res));
@@ -107,7 +107,7 @@ class CourseInProgressContainer extends View {
           root="true"
           height="wrap_content"
           width="match_parent">
-
+          {this.getExtraLayout()}
           {rows}
 
         </LinearLayout>);
@@ -119,7 +119,6 @@ class CourseInProgressContainer extends View {
     this.replaceChild(this.idSet.parentContainer,layout.render(),0);
     window.__ContentLoadingComponent.hideLoader();
     window.__LoaderDialog.hide();
-
   }
 
   formatBytes = (bytes) => {
@@ -144,7 +143,7 @@ class CourseInProgressContainer extends View {
         actionText:  window.__S.RESUME,
         // footerTitle: (isNaN(pDone/pTotal)?"0":(pDone/pTotal)) +"% done",
         footerTitle: window.__S.COURSE_PROGRESS_COMPLETED.format(progressCount),
-        footerSubTitle:  window.__S.ERROR_DURATION_NOT_AVAILABLE,
+        footerSubTitle:  "",
         isProgress : "true"
       };
 
@@ -228,7 +227,16 @@ class CourseInProgressContainer extends View {
 
   }
 
-
+  getExtraLayout=()=>{
+    if(this.props.addCard==undefined)
+      {
+        return(
+          <LinearLayout
+          visibility="gone"/>
+        )
+      }
+      return this.props.addCard;
+  }
 
 
   render() {
@@ -255,7 +263,6 @@ class CourseInProgressContainer extends View {
                     height="match_parent">
 
          </LinearLayout>
-
           </HorizontalScrollView>
 
          </LinearLayout>

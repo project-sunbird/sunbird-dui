@@ -40,7 +40,8 @@ class ProfileActivity extends View {
     }
 
     this.setIds([
-      "mainHolder"
+      "mainHolder",
+      "createdByHolder"
     ]);
 
     this.popupMenu="Logout";
@@ -49,13 +50,13 @@ class ProfileActivity extends View {
     this.shouldCacheScreen = false;
 
     this.state = state;
-    this.data = JSON.parse(this.state.data.value0.profile);
+    this.profile = JSON.parse(this.state.data.value0.profile);
     console.log(this.data, "profileData in ProfileActivity");
 
-    this.profileData = (JSON.parse(this.data.profileData)).data;
+    this.profileData = this.profile.data;
     this.jobProfile = this.profileData.jobProfile;
     this.education = this.profileData.education;
-    this.createdBy = this.data.creatorOfData.result;
+    this.createdBy = {}
     console.log("this.profileData", this.profileData);
     console.log("this.createdBy", this.createdBy);
     this.isEditable = "false"
@@ -195,6 +196,22 @@ class ProfileActivity extends View {
         </LinearLayout>
       )
       this.replaceChild(this.idSet.mainHolder, layout.render(), 0);
+    } else {
+      var callback = callbackMapper.map((data) => {
+        console.log("createdBy data", JSON.parse(utils.decodeBase64(data[0])));
+        _this.createdBy = JSON.parse(utils.decodeBase64(data[0]));
+        var layout = (
+          <ProfileCreations
+            data = {_this.createdBy}
+            editable = {_this.editable}
+            onCardClick = {_this.handleCreatedCardClick}/>
+        );
+        _this.replaceChild(_this.idSet.createdByHolder, layout.render(), 0);
+      });
+      if (JBridge.isNetworkAvailable())
+        JBridge.searchContent(callback, "userToken", window.__userToken, "Combined", "true", 10);
+      else
+        console.log("JBridge.searchContent failed, no internet");
     }
   }
 
@@ -290,10 +307,15 @@ class ProfileActivity extends View {
                     popUpType = {window.__PROFILE_POP_UP_TYPE.EXPERIENCE}
                     heading = {window.__S.TITLE_EXPERIENCES}/>
 
-                  <ProfileCreations
-                    data = {this.createdBy}
-                    editable = {this.editable}
-                    onCardClick = {this.handleCreatedCardClick}/>
+                    <LinearLayout
+                      width = "match_parent"
+                      id = {this.idSet.createdByHolder}>
+
+                        <ProfileCreations
+                          data = {_this.createdBy}
+                          editable = {_this.editable}
+                          onCardClick = {_this.handleCreatedCardClick}/>
+                    </LinearLayout>
 
                   <ProfileAdditionalInfo
                     data={this.profileData}

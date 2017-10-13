@@ -10,7 +10,9 @@ var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callb
 var objectAssign = require('object-assign');
 var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
 var CourseInProgressContainer = require('../../components/Sunbird/CourseInProgressContainer');
-
+var HorizontalProgressBar = require('../../components/Sunbird/HorizontalProgressBar');
+var utils = require('../../utils/GenericFunctions');
+var Button = require('../../components/Sunbird/Button');
 
 
 window.R = require("ramda");
@@ -18,7 +20,6 @@ window.R = require("ramda");
 
 var SearchToolbar = require('../../components/Sunbird/core/SearchToolbar');
 var SimpleToolbar = require('../../components/Sunbird/core/SimpleToolbar');
-
 
 
 var HomeRecommendedContainer = require('../../components/Sunbird/HomeRecommendedContainer');
@@ -29,7 +30,6 @@ class HomeFragment extends View {
   constructor(props, children) {
     super(props, children);
 
-
     this.menuData = {
       url: [
         { imageUrl: "ic_action_search" },
@@ -37,9 +37,8 @@ class HomeFragment extends View {
     }
     JBridge.logTabScreenEvent("HOME");
     window.setEnrolledCourses = this.setEnrolledCourses;
-
+  this.profileData="";
   }
-
 
   setEnrolledCourses = (list) => {
     this.enrolledCourses = list;
@@ -109,6 +108,138 @@ class HomeFragment extends View {
              width="match_parent"
              background={window.__Colors.WHITE_F2}/>)
   }
+  getTodoProfileCard=()=>{
+   this.profileData = JSON.parse(utils.decodeBase64(JBridge.getSavedData("savedProfile")));
+    this.profileData= JSON.parse(utils.decodeBase64(this.profileData.response.status[1]));    
+    var data= this.profileData.result.response;
+    if(data.completeness==100||data.completeness==undefined)
+      {
+        return(<LinearLayout
+        height="match_parent"/>);
+      }
+      var temp="visible";
+      if(data.hasOwnProperty("missingFields")&&data.missingFields[0]!=undefined){
+      var editButtonText=data.missingFields[0];
+      }
+      else{
+        var editButtonText="";
+        temp="gone";
+      }
+      if(editButtonText=="address"){
+          editButtonText=window.__S.TITLE_ADDRESS;
+        }
+      else if(editButtonText=="education"){
+          editButtonText=window.__S.TITLE_EDUCATION;
+        }
+      else if(editButtonText=="jobProfile"){
+          editButtonText=window.__S.TITLE_EXPERIENCES;
+        }
+      else if(editButtonText=="dob"){
+          editButtonText=window.__S.DATE_OF_BIRTH;
+        }
+      else if(editButtonText=="grade"){
+          editButtonText=window.__S.GRADE;
+        }
+      else if(editButtonText=="gender"){
+          editButtonText=window.__S.GENDER;
+        }
+      else if(editButtonText=="profileSummary"){
+          editButtonText=window.__S.DESCRIPTION;
+        }
+      else if(editButtonText=="lastName"){
+           editButtonText=window.__S.LAST_NAME;
+        }
+      else if (editButtonText=="subject")
+        {
+             editButtonText=window.__S.SUBJECTS;
+        }
+      else if(editButtonText=="avatar"){
+          editButtonText="avatar";
+        }
+      else if(editButtonText=="location"){
+           editButtonText=window.__S.CURRENT_LOCATION;
+      } 
+      else{
+        temp="gone";
+      }
+      
+    return(
+      <LinearLayout
+      width="200"
+      height="match_parent"
+      margin="16,0,0,0"
+      orientation="vertical"
+      onClick={()=>this.handleEditProfileClick(data.missingFields[0])}>
+      <LinearLayout
+      widht="match_parent"
+      height="110"
+      cornerRadius="4"
+      stroke ={"2," + window.__Colors.PRIMARY_BLACK_66}
+      orientation="vertical">
+      <HorizontalProgressBar
+            width="match_parent"
+            height="4"
+            progressBarColor={window.__Colors.PRIMARY_ACCENT}
+            cornerRadius={"12,12,0,0"}
+            currentProgress={data.completeness}
+            totalProgress={100}/>
+      <LinearLayout
+      width="match_parent"
+      height="match_parent"
+      orientation="horizontal">
+      <ImageView
+              width="74"
+              height="74"
+              margin="12,16,0,0"
+              circularImageUrl={"0,"+data.avatar}
+              stroke ={"2," + "#d8d8d8"}
+              cornerRadius="37"/>
+            <LinearLayout
+            width="match_parent"
+            height="match_parent"
+            gravity="center"
+            orientation="vertical">
+            <TextView
+            widht="'wrap_content"
+            height="wrap_content"
+            gravity="center"
+            text="Strengthen your profile"
+            style={window.__TextStyle.textStyle.CARD.HEADING}/>
+            <TextView
+            width="wrap_content"
+            height="wrap_content"
+            gravity="center"
+            margin="0,17,0,0"
+            text={utils.cropText(window.__S.ADD+" "+editButtonText,14)}
+            style={window.__TextStyle.textStyle.HINT.TINY}/>
+            </LinearLayout>
+              </LinearLayout>
+              </LinearLayout>
+              <LinearLayout
+              width="match_parent"
+              height="match_parent"
+              margin="0,8,0,0">
+              <LinearLayout
+              weight="1"
+              padding="0,0,8,0"
+              height="match_parent">
+              <TextView
+              width="match_parent"
+              height="match_parent"
+              text={window.__S.YOUR_PROFILE_IS.format(data.completeness)}
+              style={window.__TextStyle.textStyle.HINT.TINY}/>
+              </LinearLayout>
+              <Button
+                type="SmallButton_Secondary_BT"
+                width="wrap_content"
+                height="wrap_content"
+                text={window.__S.UPDATE}
+                onClick={()=>this.handleEditProfileClick(data.missingFields[0])}/>
+
+            </LinearLayout>
+             </LinearLayout>
+    )
+  }
 
 
 
@@ -148,8 +279,8 @@ class HomeFragment extends View {
                   width="match_parent"
                   orientation="vertical">
 
-
                    <CourseInProgressContainer
+                    addCard={this.getTodoProfileCard()}
                     transparent="true"
                     title={window.__S.TO_DO}
                     onCourseClick={this.handleUserCoursesClick}/>
@@ -178,6 +309,33 @@ class HomeFragment extends View {
 
     return this.layout.render();
   }
+  handleEditProfileClick = (editButtonText) => {
+    if(editButtonText=="avatar")
+      {
+        editButtonText=this.props.data.missingFields[1]||"";
+      }
+    if(editButtonText=="address"){
+      window.__AddressPopUp.data=undefined;
+      window.__AddressPopUp.show();
+      return ;
+      }
+    else if(editButtonText=="education"){
+      window.__EducationPopUp.data=undefined;
+      window.__EducationPopUp.show();
+      return;
+      }
+    else if(editButtonText=="jobProfile"){
+      window.__ExperiencePopUp.data=undefined;
+      window.__ExperiencePopUp.show();
+      return;
+      }
+        console.log("testing",this.profileData.result.response)
+        var whatToSend = { "profile" : JSON.stringify(this.profileData.result.response)}
+        var event ={ tag: "OPEN_EditProfileActivity", contents: whatToSend }
+        window.__runDuiCallback(event);
+    
+      }
+
 }
 
 

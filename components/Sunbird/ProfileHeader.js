@@ -5,6 +5,7 @@ var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
 var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget");
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
+var RelativeLayout = require("@juspay/mystique-backend/src/android_views/RelativeLayout");
 
 var _this;
 class ProfileHeader extends View {
@@ -29,14 +30,29 @@ class ProfileHeader extends View {
       this.orgName = "";
     if(this.props.data.rootOrg!=null && this.props.data.rootOrg.contactDetail!=null && this.props.data.rootOrg.contactDetail.length>0)
       {
-        this.orgEmail=this.props.data.rootOrg.contactDetail[0].email?this.props.data.rootOrg.contactDetail[0].email:"sunbird@test.com";
+        var temp=JSON.parse(this.props.data.rootOrg.contactDetail);
+        this.orgEmail = temp[0].email ? temp[0].email : "";
       }
     else{
       this.orgEmail = ""
     }
+    this.lastLoginTime = this.formatTime(this.props.data.lastLoginTime);
   }
 
-
+  formatTime = (data) => {
+    var time = data ? data : "";
+    if (time == "") return time;
+    var date = new Date(time);
+    var month = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    var postFix = "AM";
+    var hrs = date.getHours();
+    if (hrs > 12) {
+      postFix = "PM";
+      hrs = hrs - 12;
+    }
+    if ((hrs + "") == "00") hrs = 12;
+    return month[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear() + " " + hrs + ":" + date.getMinutes() + ":" + date.getSeconds() + " " + postFix;
+  }
 
   sendEmail=()=>{
     if(this.orgEmail!="")
@@ -99,10 +115,10 @@ class ProfileHeader extends View {
         </LinearLayout>
       </LinearLayout>);
   }
-  capitalizeFirstLetter =(string)=> 
+  capitalizeFirstLetter =(string)=>
   {
     if(string!=undefined)
-      {  
+      {
     return string.charAt(0).toUpperCase() + string.slice(1);
       }
       else return string;
@@ -114,22 +130,29 @@ class ProfileHeader extends View {
               height="wrap_content"
               gravity="center_horizontal"
               orientation="vertical">
-
-              <ImageView
+              <TextView
+                visibility = {this.lastLoginTime == "" ? "gone" : "visible"}
+                width = "wrap_content"
+                height = "wrap_content"
+                text = {"Last login time: " + this.lastLoginTime}
+                margin = "0,0,0,16"
+                style={window.__TextStyle.textStyle.HINT.REGULAR} />
+             <ImageView
               width="80"
               height="80"
-              circularImageUrl={"0,"+this.imageUrl}/>
-
+              circularImageUrl={"0,"+this.imageUrl}
+              stroke ={"2," + "#d8d8d8"}
+              cornerRadius="40"/>
               <TextView
               width="wrap_content"
               height="wrap_content"
               text={this.capitalizeFirstLetter(this.firstName) + this.capitalizeFirstLetter(this.lastName)}
               padding="0,10,0,2"
               style={window.__TextStyle.textStyle.HEADING.DARK}/>
-              
+
               {this.getUserName()}
               {this.getEmailPart()}
-              
+
               <TextView
               width="wrap_content"
               height="wrap_content"

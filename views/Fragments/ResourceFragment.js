@@ -98,13 +98,7 @@ class ResourceComponent extends View {
       }
       else
       {
-        this.cards = (<LinearLayout
-          height="wrap_content"
-          width="match_parent"
-          orientation="vertical"
-          root="true">
-
-          </LinearLayout>)
+        this.cards = this.getErrorLayout();
       }
     } else {
 
@@ -142,7 +136,7 @@ class ResourceComponent extends View {
 
 
 handleResourceViewAllClick= (data,title,searchQuery,visibility) =>{
-
+  
    var resourceDetails = {
                             "title" : title,
                             "resourceDetails" : data,
@@ -186,6 +180,41 @@ handleResourceViewAllClick= (data,title,searchQuery,visibility) =>{
               padding="0,16,0,0"
               style={window.__TextStyle.textStyle.CARD.HEADING}
               text={window.__S.ERROR_OFFLINE_MODE}/>
+
+
+          </LinearLayout>
+    )
+    return layout;
+  }
+
+  getErrorLayout = () => {
+
+  var layout = (
+
+      <LinearLayout
+          background={window.__Colors.WHITE}
+          height="400"
+          width="match_parent"
+          alpha="0.55"
+          weight="1"
+          orientation="vertical"
+          gravity="center_horizontal"
+          clickable="true">
+
+            <ImageView
+              width="100"
+              height="100"
+              margin="0,58,0,0"
+              gravity="center_horizontal"
+              imageUrl="ic_no_internet"/>
+
+            <TextView
+              width="wrap_content"
+              height="wrap_content"
+              gravity="center_horizontal"
+              padding="0,16,0,0"
+              style={window.__TextStyle.textStyle.CARD.HEADING}
+              text={window.__S.ERROR_FETCHING_DATA}/>
 
 
           </LinearLayout>
@@ -253,7 +282,7 @@ handleResourceViewAllClick= (data,title,searchQuery,visibility) =>{
       var event = { tag: "OPEN_NotificationActivity", contents: [] }
       window.__runDuiCallback(event);
     }else if (url == "ic_action_search") {
-      
+
       var searchDetails = { filterDetails: "", searchType: "Resource" }
       var whatToSend = { filterDetails: JSON.stringify(searchDetails) }
       var event = { tag: "OPEN_SearchActivity", contents: whatToSend }
@@ -286,7 +315,7 @@ handleResourceViewAllClick= (data,title,searchQuery,visibility) =>{
      var callbackRefresh = callbackMapper.map(function(params) {
           window.__BNavFlowRestart();
     });
-      
+
         JBridge.addSwipeRefreshScrollView(this.idSet.scrollViewContainer,callbackRefresh);
   }
 

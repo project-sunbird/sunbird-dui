@@ -287,9 +287,14 @@ class EducationPopUp extends View {
     }
     return false;
   }
+ handleSaveClick= ()=>{
+   window.__LoaderDialog.show();
+   this.handleSaveClickBody();
+   window.__LoaderDialog.hide();   
+ }
 
-  handleSaveClick = () => {
-
+  handleSaveClickBody = () => {
+    
     if (this.singleClick && !this.canSave && !this.delete){
       if (window.__EducationPopUp.data){
         window.__Snackbar.show(window.__S.WARNING_PLEASE_MAKE_SOME_CHANGES);
@@ -367,16 +372,15 @@ class EducationPopUp extends View {
     if(this.singleClick){
         this.singleClick = false;
         _this.responseCame=false;
-        JBridge.patchApi(url, JSON.stringify(body), window.__userToken, window.__apiToken);
-        window.__LoaderDialog.show();
+        JBridge.patchApi(url, JSON.stringify(body), window.__user_accessToken, window.__apiToken);
          setTimeout(() => {
              if(_this.responseCame){
                console.log("Response Already Came")
                return;
              }
-             console.log("TIMEOUT")
+             console.log("TIMEOUT");
+             window.__LoaderDialog.hide();             
              window.__Snackbar.show(window.__S.ERROR_SERVER_CONNECTION);
-             window.__LoaderDialog.hide();
              _this.responseCame=false;
          },window.__API_TIMEOUT);
     }
@@ -545,7 +549,7 @@ class EducationPopUp extends View {
     if (type == "positive") {
       this.delete = true;
       this.handleSaveClick();
-    } 
+    }
     window.__SimplePopup.hide(this.idSet.eduConf);
   }
 

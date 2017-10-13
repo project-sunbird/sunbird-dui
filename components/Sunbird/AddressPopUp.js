@@ -308,8 +308,12 @@ class AddressPopUp extends View {
       }
     return false;
   }
-
-  handleSaveClick = () => {
+  handleSaveClick =()=>{
+    window.__LoaderDialog.show();
+    this.handleSaveClickBody();
+    window.__LoaderDialog.hide();
+  }
+  handleSaveClickBody = () => {
 
     if (this.singleClick && !this.canSave && !this.delete) {
       if (window.__AddressPopUp.data){
@@ -376,7 +380,7 @@ class AddressPopUp extends View {
    if(this.singleClick){
      this.singleClick=false;
     _this.responseCame=false;
-    JBridge.patchApi(url, JSON.stringify(body), window.__userToken, window.__apiToken);
+    JBridge.patchApi(url, JSON.stringify(body), window.__user_accessToken, window.__apiToken);
     window.__LoaderDialog.show();
      setTimeout(() => {
          if(_this.responseCame){

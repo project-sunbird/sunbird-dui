@@ -35,7 +35,7 @@ class ProfileFragment extends View {
 
     this.props.appendText = this.props.appendText || "";
     this.setIds([
-
+      'createdByHolder'
     ]);
 
     _this = this;
@@ -73,33 +73,13 @@ class ProfileFragment extends View {
   handleResponse = () => {
     console.log("this.props.response", this.props.response);
     if (this.props.response) {
-      if (!this.props.response.sendBack){
-        var whatToSend = {
-          user_token: window.__userToken,
-          api_token: window.__apiToken,
-          sendBack : JSON.stringify(this.props.response),
-          filters: JSON.stringify({"filters" : {
-                     "createdBy": window.__userToken,
-                     "status": ["Live"],
-                     "contentType": ["Collection", "Story", "Worksheet", "TextBook", "Course", "LessonPlan"]
-                 }
-               })
-         }
-        var event = { tag: "API_CreatedBy", contents: whatToSend}
-        if (JBridge.isNetworkAvailable()){
-          window.__runDuiCallback(event);
-        } else {
-          this.props.response.sendBack = JSON.stringify(this.props.response);
-        }
-      }
-      var profileData = JSON.parse(this.props.response.sendBack)
+      var profileData = this.props.response;
       this.details = profileData.result.response;
       this.description = this.details.profileSummary ? this.details.profileSummary : ""
-      this.createdBy = this.props.response.result;
+      this.createdBy = {}
       this.jobProfile = this.details.jobProfile;
       this.education = this.details.education;
       this.address = this.details.address;
-      console.log("this.createdBy", this.createdBy);
     } else {
       this.details = {};
       this.description = "";
@@ -125,6 +105,21 @@ class ProfileFragment extends View {
 
 
   afterRender() {
+    var callback = callbackMapper.map((data) => {
+      console.log("createdBy data", JSON.parse(utils.decodeBase64(data[0])));
+      _this.createdBy = JSON.parse(utils.decodeBase64(data[0]));
+      var layout = (
+        <ProfileCreations
+          data = {_this.createdBy}
+          editable = {_this.editable}
+          onCardClick = {_this.handleCreatedCardClick}/>
+      );
+      _this.replaceChild(_this.idSet.createdByHolder, layout.render(), 0);
+    });
+    if (JBridge.isNetworkAvailable())
+      JBridge.searchContent(callback, "userToken", window.__userToken, "Combined", "true", 10);
+    else
+      console.log("JBridge.searchContent failed, no internet");
     window.__ContentLoadingComponent.hideLoader();
     window.__LoaderDialog.hide();
   }
@@ -271,13 +266,16 @@ class ProfileFragment extends View {
               <LinearLayout
                 height="match_parent"
                 width="match_parent"
-                padding={"0,0,0,50"}
-                padding="16,16,16,24"
-                orientation="vertical">
+                padding="16,8,16,24"
+                orientation="vertical"
+                layoutTransition = "true">
 
                 <ProfileHeader
                   data={this.details}
                   textStyle = {window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
+                <ProfileProgress
+                editable={this.isEditable}
+                data={this.details}/>
 
                 {this.getDescription()}
 
@@ -299,10 +297,15 @@ class ProfileFragment extends View {
                   popUpType={window.__PROFILE_POP_UP_TYPE.ADDRESS}
                   heading = {window.__S.TITLE_ADDRESS} />
 
-                <ProfileCreations
-                  data = {this.createdBy}
-                  editable = {this.editable}
-                  onCardClick = {this.handleCreatedCardClick}/>
+                <LinearLayout
+                  width = "match_parent"
+                  id = {this.idSet.createdByHolder}>
+
+                    <ProfileCreations
+                      data = {_this.createdBy}
+                      editable = {_this.editable}
+                      onCardClick = {_this.handleCreatedCardClick}/>
+                </LinearLayout>
 
 
                 <ProfileAdditionalInfo

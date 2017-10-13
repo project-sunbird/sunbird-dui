@@ -62,6 +62,7 @@ class ExperiencePopUp extends View{
     this.Position="";
     this.joiningDate="";
     this.endDate="";
+    this.isCurrentJob=false;
 
     this.jobProfile=[];
 
@@ -146,6 +147,7 @@ class ExperiencePopUp extends View{
      this.prevData.joiningDate=window.__ExperiencePopUp.data.joiningDate;
      this.prevData.endDate=window.__ExperiencePopUp.data.endDate;
      this.prevData.subjects = window.__ExperiencePopUp.data.subject;
+     this.prevData.isCurrentJob=window.__ExperiencePopUp.data.isCurrentJob;
      return;
    }
    this.prevData.subjects=[];
@@ -154,6 +156,7 @@ class ExperiencePopUp extends View{
    this.prevData.Position="";
    this.prevData.joiningDate=null;
    this.prevData.endDate=null;
+   this.prevData.isCurrentJob=false;
    this.jobProfile = [];
  }
 
@@ -165,6 +168,8 @@ class ExperiencePopUp extends View{
    this.Position=this.prevData.Position;
    this.joiningDate=this.prevData.joiningDate;
    this.endDate=this.prevData.endDate;
+   this.isCurrentJob=this.prevData.isCurrentJob;
+
 
    console.log(this.prevData.jobName,"jobName");
    console.log(this.prevData.Organization,"organizationText");
@@ -186,14 +191,23 @@ class ExperiencePopUp extends View{
 
    cmd+=this.set({
      id: this.idSet.joiningDateText,
-     text: this.prevData.joiningDate
+     text: (this.prevData.joiningDate==null? "Select Date":this.prevData.joiningDate),
+     visibility: "visible"
    })
 
    cmd+=this.set({
      id: this.idSet.closingDateText,
-     text: this.prevData.endDate
+     text: (this.prevData.endDate==null? "Select Date":this.prevData.endDate),
+     visibility: "visible"
    })
-   Android.runInUI(cmd, 0)
+
+   cmd += this.set({
+               id: this.idSet.closingDateLayout,
+               visibility: "visible"
+             });
+
+   Android.runInUI(cmd, 0);
+
    this.replaceChild(this.idSet.subjectSpinnerContainer, this.getSpinner().render(), 0);
 
    var jobTypeValue = [
@@ -201,9 +215,9 @@ class ExperiencePopUp extends View{
      {name:window.__S.NO,select:"0",icon:"ic_action_radio"}
    ];
 
-   var index;
+   var index=-1;
 
-   if (this.data != undefined && window.__ExperiencePopUp.data.isCurrentJob) {
+   if (this.isCurrentJob) {
      jobTypeValue[0].select = "1";
      jobTypeValue[1].select = "0";
      index = 0;
@@ -602,8 +616,6 @@ del = () => {
        if (type == "positive") {
          this.delete = true;
          this.sendJSON();
-       } else {
-
        }
        window.__SimplePopup.hide(this.idSet.deleteConf);
      }
@@ -666,7 +678,11 @@ del = () => {
               text: data[0],
               style: window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK
             });
+
+            
             Android.runInUI(cmd, 0);
+
+            
 
             if(_this.checkCompleteStatus()){
               _this.enableSaveButton();
@@ -704,7 +720,9 @@ del = () => {
              });
              Android.runInUI(cmd, 0);
              this.endDate=null;
-             
+
+             this.isCurrentJob=true;
+
              if(this.checkCompleteStatus())
              {
                this.enableSaveButton();
@@ -716,6 +734,16 @@ del = () => {
           else {
             console.log(window.__ExperiencePopUp , " gh ");
             window.__Snackbar.show(window.__S.ERROR_MULTIPLE_CURRENT_JOB);
+
+            var jobTypeValue = [
+               {name:window.__S.YES,select:"0",icon:"ic_action_radio"},
+               {name:window.__S.NO,select:"1",icon:"ic_action_radio"}
+                ];
+
+            
+             this.replaceChild(this.idSet.jobTypeRadioContainer,
+               this.getRadioButtionLayout(jobTypeValue, 1).render(), 0);
+
           }
        }
        else {
@@ -724,6 +752,7 @@ del = () => {
            visibility: "visible"
          });
          Android.runInUI(cmd, 0);
+         this.isCurrentJob=false;
 
          if(this.checkCompleteStatus())
          {
@@ -752,9 +781,13 @@ del = () => {
         window.__Snackbar.show(data.params.errmsg);
       }
     }
-
-     sendJSON = () => {
-
+     sendJSON =()=>{
+       window.__LoaderDialog.show();
+       this.sendJSONBody();
+       window.__LoaderDialog.hide();
+     }
+     sendJSONBody = () => {
+       console.log("inside sendJSON", this.jobProfile);
        if (this.singleClick && !this.canSave && !this.delete) {
          if (window.__ExperiencePopUp.data)
            window.__Snackbar.show(window.__S.WARNING_PLEASE_MAKE_SOME_CHANGES);
@@ -763,6 +796,8 @@ del = () => {
          return;
        }
 
+       this.jobProfile = []
+       console.log();
        if(window.__ExperiencePopUp.data==undefined){
           this.json ={
             "jobName":this.jobName,
@@ -788,7 +823,7 @@ del = () => {
           json.subject=this.subjects;
           json.userId= window.__userToken;
           json.isDeleted = this.delete ? this.delete : null;
-          json.isCurrentJob = window.__RadioButton.currentIndex  == 0 ? true : false;
+          json.isCurrentJob = this.isCurrentJob;
           if(json.address!=undefined)
           json.address.userId= window.__userToken;
           this.jobProfile.push(json);
@@ -810,7 +845,8 @@ del = () => {
       if(this.singleClick){
         this.singleClick=false;
         _this.responseCame=false;
-        JBridge.patchApi(url,JSON.stringify(body),window.__userToken,window.__apiToken);
+        console.log("patchApi", body);
+        JBridge.patchApi(url,JSON.stringify(body),window.__user_accessToken,window.__apiToken);
         window.__LoaderDialog.show();
 
        setTimeout(() => {
@@ -826,10 +862,9 @@ del = () => {
 
      formatDate = (date) =>{
          date = date.substr(0,4)+"-"+date.substr(5);
-         if(date.charAt(7)!='-'){
+         if(date.charAt(7)!='/'){
             date = date.substr(0,5)+"0"+date.substr(5);
           }
-
          date = date.substr(0,7)+"-"+date.substr(8);
          if(date.length<10)
            date = date.substr(0,8)+"0"+date.substr(8);
@@ -837,16 +872,16 @@ del = () => {
          }
 
      checkCompleteStatus = () =>{
-       if(window.__ExperiencePopUp.data != undefined 
-          && this.jobName == this.prevData.jobName 
-          && this.Organization == this.prevData.Organization  
-          && this.Position== this.prevData.Position 
-          && JSON.stringify(this.subjects)==JSON.stringify(this.prevData.subjects) 
-          && this.joiningDate == this.prevData.joiningDate 
+       if(window.__ExperiencePopUp.data != undefined
+          && this.jobName == this.prevData.jobName
+          && this.Organization == this.prevData.Organization
+          && this.Position== this.prevData.Position
+          && JSON.stringify(this.subjects)==JSON.stringify(this.prevData.subjects)
+          && this.joiningDate == this.prevData.joiningDate
           && this.endDate == this.prevData.endDate ){
            return false;
          }
-      else if(window.__ExperiencePopUp.data == undefined 
+      else if(window.__ExperiencePopUp.data == undefined
         &&(this.jobName == this.prevData.jobName || this.Organization == this.prevData.Organization))
         {
           return false;

@@ -58,6 +58,8 @@ if (typeof window !== "undefined") {
 
   window.__API_TIMEOUT=20000; //20 seconds for timeout
 
+  window.__apiTokenExpireCount = 0;
+
   window.callUICallback = function() {
     var args = (arguments.length === 1 ? [arguments[0]] : Array.apply(null, arguments));
     var fName = args[0]
@@ -159,15 +161,15 @@ if (typeof window !== "undefined") {
  // }
 
  // window.console.info = function(msg){
-   
+
  // }
 
  // window.console.error = function(msg){
-   
+
  // }
 
  // window.console.warn = function(msg){
-   
+
  // }
 
  // window.onerror = function myErrorHandler(errorMsg, url, lineNumber) {
@@ -222,6 +224,7 @@ const runDuiCallback = (state) => {
 };
 
 const logoutUser = () => {
+  if (JBridge.isNetworkAvailable()){
     JBridge.logLogoutSuccess(window.__userToken);
     window.__Snackbar.show("Logged out")
     JBridge.setInSharedPrefs("logged_in","NO");
@@ -236,6 +239,9 @@ const logoutUser = () => {
     window.__pressedLoggedOut=true;
     JBridge.keyCloakLogout(window.__apiUrl + "/auth/realms/sunbird/protocol/openid-connect/logout");
     purescriptUserActivityFlow();
+  } else {
+    window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE)
+  }
 
 }
 
