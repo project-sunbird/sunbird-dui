@@ -88,18 +88,12 @@ class CourseFragment extends View {
 
     this.enrolledCourses.map((item) => {
 
-      if (item.identifier === identifier) {
-        enrolled = true;
-      } else if (item.contentId === identifier) {
-        enrolled = true;
-      } else if (item.courseId === identifier) {
+      if (item.identifier === identifier || item.contentId === identifier || item.courseId === identifier) {
         enrolled = true;
       }
     })
     return enrolled;
   }
-
-
 
 
   handleResponse = () => {
@@ -339,7 +333,7 @@ class CourseFragment extends View {
   handleMenuClick = (url) => {
 
     if (url == "ic_notification_red") {
-      window.__Snackbar.show(window.__S.COMMING_SOON)
+      window.__Snackbar.show(window.__S.COMING_SOON)
     }
     else if (url == "ic_action_search") {
 
@@ -376,9 +370,6 @@ class CourseFragment extends View {
           {this.getBody()}
 
         </LinearLayout>
-
-
-
     )
 
     return this.layout.render();

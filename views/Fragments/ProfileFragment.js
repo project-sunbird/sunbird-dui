@@ -124,14 +124,6 @@ class ProfileFragment extends View {
     window.__LoaderDialog.hide();
   }
 
-  getLineSeperator = () => {
-    return (<LinearLayout
-            width="match_parent"
-            height="1"
-            margin = "0, 10, 0, 10"
-            background={window.__Colors.PRIMARY_BLACK_22}/>)
-  }
-
   getDescription = () => {
     console.log("this.details", this.details.profileSummary);
     if(this.details.profileSummary){
@@ -190,7 +182,7 @@ class ProfileFragment extends View {
 
   handleMenuClick = (url) => {
     if (url == "ic_action_notification") {
-      window.__Snackbar.show(window.__S.COMMING_SOON);
+      window.__Snackbar.show(window.__S.COMING_SOON);
     } else if (url == "ic_action_search") {
       var searchDetails = { filterDetails: "", searchType: "Profile" }
       var whatToSend = { filterDetails: JSON.stringify(searchDetails) }

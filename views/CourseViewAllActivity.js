@@ -7,12 +7,14 @@ var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget"
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
 var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
-var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
+var ScrollView = require("@juspay/mystique-backend/src/android_views/ScrollView");
 
 var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
 var CropParagraph = require('../components/Sunbird/CropParagraph');
 var ProgressButton = require('../components/Sunbird/core/ProgressButton');
 var LargeCardComponent = require('../components/Sunbird/core/LargeCardComponent');
+var ListView = require("@juspay/mystique-backend/src/android_views/ListView");
+
 
 var utils = require('../utils/GenericFunctions');
 var objectAssign = require('object-assign');
@@ -23,16 +25,17 @@ var _this;
 class CourseViewAllActivity extends View {
   constructor(props, children, state) {
     super(props, children, state);
-
+    this.jsonArray=[];
     this.setIds([
-      "listItems",
-      "viewMoreButton"
+      "viewMoreButton",
+      "listContainer"
     ]);
     this.state = state;
 
     this.screenName = "CourseViewAllActivity";
 
     this.shouldCacheScreen = false;
+    _this = this;
 
     this.totalDetails = JSON.parse(state.data.value0.courseViewAllDetails);
     this.searchQuery = this.totalDetails.hasOwnProperty("searchQuery") ? this.totalDetails.searchQuery : null;
@@ -47,7 +50,6 @@ class CourseViewAllActivity extends View {
     }
     JBridge.logListViewScreenEvent("COURSES",this.totalDetails.length,this.searchQuery)
 
-    _this = this;
     setTimeout(function() {
       Android.runInUI(
         _this.animateView(),
@@ -76,16 +78,18 @@ class CourseViewAllActivity extends View {
      return enrolled;
 
   }
-
-
-  getRows = (list) =>{
-
+ getRows = () =>
+ {
+  return (<ListView
+    id={this.idSet.listContainer}
+    width="match_parent"
+    height="match_parent"/>);
+ }
+  showList = () =>{
      console.log("data in cva",this.totalDetails)
-     // if(list == undefined)
-     //  list = this.totalDetails;
-
-
-      var rows = list.map((item,i) => {
+     var list = this.totalDetails;
+     this.jsonArray=[];
+      list.map((item,i) => {
                 var progressCount = item.leafNodesCount == null ? 0 : (item.progress/item.leafNodesCount)*100;
                 progressCount = parseInt(progressCount)
                 var appIcon;
@@ -121,44 +125,62 @@ class CourseViewAllActivity extends View {
                   temp['footerTitle'] = size;
                   temp['actionText'] = actionText;
                   temp["footerSubTitle"] = window.__S.ERROR_DURATION_NOT_AVAILABLE;
-                  temp["type"] = type;
+                  temp["type"] = type; 
 
+                  
 
-           return (<LargeCardComponent
+           var layout = (
+          <LargeCardComponent
                    data={temp}
                    content={item}
                    index = {i}
                    onResourceClick = {this.handleCourseClick}/>)
-
+                   this.jsonArray.push({ view: this.getView(layout.render()),value:"",viewType:0});
        });
 
-      var layout = (<LinearLayout
-                      width="match_parent"
-                      height="wrap_content"
-                      orientation = "vertical">
-
-                      {rows}
-
-                    </LinearLayout>);
-      return layout;
-
+       var callback1 = callbackMapper.map(function() {
+        console.log("button pressed");  
+        _this.handleViewMoreClick();
+      });
+    
+       if(this.start_index==0)
+        {
+          if(this.btnStatus=="visible"&&(this.jsonArray.length)>=10)
+            {
+       JBridge.listViewAdapter(
+        this.idSet.listContainer,
+        JSON.stringify(this.jsonArray),
+        1000,
+        "View more",
+        callback1,
+        this.idSet.viewMoreButton
+      );
+    }else
+    {
+      JBridge.listViewAdapter(
+        this.idSet.listContainer,
+        JSON.stringify(this.jsonArray),
+        1000,
+        null,
+        "",
+        "",
+      );
+    }
+  }else
+    {
+        JBridge.appendToListView(
+        this.idSet.listContainer,
+        JSON.stringify(this.jsonArray),
+        1000);
+    }
     }
 
 
-
-
   afterRender = () => {
-    // if(this.btnStatus == "gone"){
-    //   JBridge.logViewAllScreenEvent("MYCOURSES");
-    // }
-    // else{
-    //   JBridge.logViewAllScreenEvent("COURSES");
-    // }
-    this.changeViewMoreButtonStatus(this.btnStatus)
+    console.log("after render");
   }
 
   handleCourseClick = (content,i)=>{
-
     if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
         this.performCourseAction(content,i);
     }else{
@@ -190,7 +212,7 @@ class CourseViewAllActivity extends View {
        var contentId = content.courseId ? content.courseId : content.identifier;
         JBridge.logContentClickEvent("COURSES",index_click,"",contentId)
         var whatToSend = {
-          "course": tmp 
+          "course": tmp
           };
           if(this.totalDetails[0].courseId){
            var event = { tag: 'OPEN_EnrolledCourseFlowFromCourseViewAll', contents: whatToSend };
@@ -206,15 +228,6 @@ class CourseViewAllActivity extends View {
     window.__PermissionDeniedDialog.hide();
   }
 
-
-  getLineSeperator = () =>{
-    return (<LinearLayout
-            width="match_parent"
-            height="1"
-            margin="0,16,0,0"
-            background={window.__Colors.PRIMARY_BLACK_22}/>)
-  }
-
   onBackPressed = () => {
     
     if(window.__PermissionDeniedDialog.getVisibility() == "visible"){
@@ -227,37 +240,27 @@ class CourseViewAllActivity extends View {
     }
 
   }
-
-  changeViewMoreButtonStatus(status){
-    
-      var cmd = this.set({
-        id: this.idSet.viewMoreButton,
-        visibility: status
-      });
-      Android.runInUI(cmd, 0);
-    
-  }
-
   
   handleViewMoreClick = () =>{
-    var listContent = [];
     window.__LoaderDialog.show();
-    // if(this.displayContent == "[]" || this.displayContent.length == 0){
+    var listContent = [];
+    this.temp1++;
        if(JBridge.isNetworkAvailable()){
             var callback = callbackMapper.map(function(data){
               data[0] = JSON.parse(utils.decodeBase64(data[0]));
               _this.displayContent=data[0];
               console.log("data from response",data[0])
               _this.displayContent.map(function(item,index){
-                if(index > _this.start_index*10 && index<(_this.start_index+1)*10 && index<_this.displayContent.length)
+                if(index >=_this.start_index*10 && index<(_this.start_index+1)*10 && index<_this.displayContent.length)
                   listContent.push(item)
               })
               _this.start_index++;
-              console.log(listContent)
-              _this.appendChild(_this.idSet.listItems,_this.getRows(listContent).render(),_this.start_index)
+              _this.totalDetails=listContent;
+              _this.showList();
               window.__LoaderDialog.hide();
-              if(_this.start_index*10>=_this.displayContent.length){
-                _this.changeViewMoreButtonStatus("gone")
+             if(((_this.start_index+1)*10>_this.displayContent.length)
+              ||(_this.displayContent.length>=999)){
+                _this.changeViewMoreButtonStatus();
               }
               
               });
@@ -267,100 +270,39 @@ class CourseViewAllActivity extends View {
           window.__LoaderDialog.hide();
           window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE)
         }
-    // }
-    // else{
-    //       this.displayContent.map(function(item,index){
-    //         if(index > _this.start_index*10 && index<(_this.start_index+1)*10 && _this.start_index<_this.displayContent.length)
-    //           listContent.push(item)
-    //       })
-    //       _this.start_index++;
-    //       _this.appendChild(_this.idSet.listItems,_this.getRows(listContent).render(),_this.start_index)
-    //       window.__LoaderDialog.hide();
-    //       if(_this.start_index*10>=_this.displayContent.length){
-    //             _this.changeViewMoreButtonStatus("gone")
-    //       }
-          
-
-    // }
-    // console.log(this.start_index,this.displayContent.length)
-    //  if(this.start_index >= 9 ){
-    //   _this.changeViewMoreButtonStatus("gone")
-      
-    //  }
-
+    
   }
+  changeViewMoreButtonStatus=()=>{
+  JBridge.hideFooterView(
+    this.idSet.listContainer,
+    this.idSet.viewMoreButton
+  );
+  } 
 
   render() {
     this.layout = (
-      <LinearLayout
+        <LinearLayout
         width="match_parent"
         height="match_parent"
         root = "true"
         clickable="true"
-        background={window.__Colors.WHITE}
+        background="#ffffff"
+        afterRender={this.showList}
         orientation="vertical">
         <SimpleToolbar
           afterRender={this.afterRender}
-          width="match_parent"
+          width="match_parent"orientation="vertical"
           menuData={this.menuData}
           onBackPress={this.onBackPressed}
           showMenu="true"
           invert="true"
-          title= {this.appbarTitle}/>
-
-
-              <ScrollView
-                height="0"
-                weight="1"
-                width="match_parent"
-                fillViewport="true"
-                >
-                <LinearLayout
-                  height = "match_parent"
-                  width = "match_parent"
-                  orientation = "vertical"
-                  layouTransition="true"
-                  >
-
-                      <LinearLayout
-                        height="match_parent"
-                        width="match_parent"
-                        orientation="vertical"
-                        padding= "0,0,0,16"
-                        id = {this.idSet.listItems}
-                        >
-
-                        {this.getRows(this.totalDetails)}
-
-
-                      </LinearLayout>
-                      <LinearLayout
-                              width = "match_parent"
-                              height = "50"
-                              margin = "16,16,16,16"
-                              layouTransition="true"
-                              id = {this.idSet.viewMoreButton}
-                              background = {window.__Colors.PRIMARY_DARK}
-                              gravity = "center"
-                              visibility = "gone"
-                              >
-                              <TextView
-                                height = "match_parent"
-                                width = "match_parent"
-                                gravity="center"
-                                onClick = {this.handleViewMoreClick}
-                                text = {window.__S.VIEW_MORE}
-                                style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
-                                />
-                            </LinearLayout>  
-                </LinearLayout>
-
-                </ScrollView>
-
-
-
+          title= {this.appbarTitle}/>   
+                    
+                      {
+                        this.getRows()
+                      }
       </LinearLayout>
-    );
+      );
 
     return this.layout.render();
   }

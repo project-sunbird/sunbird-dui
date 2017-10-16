@@ -18,7 +18,7 @@ class ProfileAdditionalInfo extends View {
     _this = this;
 
     this.data = this.props.data;
-    console.log("this.data hakuna matata", this.data);
+    console.log("this.data", this.data);
 
     //initialise data
     this.maxLen = 30;
