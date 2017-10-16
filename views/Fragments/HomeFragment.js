@@ -110,7 +110,7 @@ class HomeFragment extends View {
   }
   getTodoProfileCard=()=>{
    this.profileData = JSON.parse(utils.decodeBase64(JBridge.getSavedData("savedProfile")));
-    this.profileData= JSON.parse(utils.decodeBase64(this.profileData.response.status[1]));    
+    this.profileData= JSON.parse(utils.decodeBase64(this.profileData.response.status[1]));
     var data= this.profileData.result.response;
     if(data.completeness==100||data.completeness==undefined)
       {
@@ -158,11 +158,11 @@ class HomeFragment extends View {
         }
       else if(editButtonText=="location"){
            editButtonText=window.__S.CURRENT_LOCATION;
-      } 
+      }
       else{
         temp="gone";
       }
-      
+
     return(
       <LinearLayout
       width="200"
@@ -190,7 +190,7 @@ class HomeFragment extends View {
       <ImageView
               width="74"
               height="74"
-              margin="12,16,0,0"
+              margin="16,16,0,0"
               circularImageUrl={"0,"+data.avatar}
               stroke ={"2," + "#d8d8d8"}
               cornerRadius="37"/>
@@ -198,18 +198,19 @@ class HomeFragment extends View {
             width="match_parent"
             height="match_parent"
             gravity="center"
+            margin="8,20,16,20"
             orientation="vertical">
             <TextView
             widht="'wrap_content"
             height="wrap_content"
-            gravity="center"
-            text="Strengthen your profile"
+            gravity="left"
+            text={window.__S.STRENGTHEN_YOUR_PROFILE}
             style={window.__TextStyle.textStyle.CARD.HEADING}/>
             <TextView
             width="wrap_content"
             height="wrap_content"
             gravity="center"
-            margin="0,17,0,0"
+            margin="0,10,0,0"
             text={utils.cropText(window.__S.ADD+" "+editButtonText,14)}
             style={window.__TextStyle.textStyle.HINT.TINY}/>
             </LinearLayout>
@@ -333,7 +334,7 @@ class HomeFragment extends View {
         var whatToSend = { "profile" : JSON.stringify(this.profileData.result.response)}
         var event ={ tag: "OPEN_EditProfileActivity", contents: whatToSend }
         window.__runDuiCallback(event);
-    
+
       }
 
 }

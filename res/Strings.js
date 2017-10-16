@@ -45,7 +45,6 @@ const stringsRes = {
 		ERROR_SERVER_MESSAGE : "Error :",
 		ERROR_SHORT_MOBILE : "Please check the mobile number format",
 		ERROR_SHORT_PASSWORD : "Password cannot be shorter than 8 characters",
-		FACEBOOK : "Facebook",
 		FETCHING_CONTENTS : "Fetching Contents : %s %",
 		FILE_SIZE : "Size [%s]",
 		FILTER : "Filter",
@@ -62,7 +61,6 @@ const stringsRes = {
 		HOME_BNAV : "HOME",
 		JOIN : "JOIN",
 		LATEST_COURSES : "Latest Courses",
-		LINKEDIN : "LinkedIn",
 		LOADING_CONTENT : "Loading content",
 		LOGGED_OUT : "Logged out",
 		MOBILE_NUMBER : "MOBILE NUMBER",
@@ -97,7 +95,7 @@ const stringsRes = {
 		SIGN_IN : "SIGN IN",
 		SIGN_UP : "SIGN UP",
 		SORT_BY : "SORT BY",
-		SPLASH_MESSAGE : "Project NCTE",
+		SPLASH_MESSAGE : "Project %s",
 		STRUCTURE : "Structure",
 		TO_DO : "To-Do",
 		USER_NAME : "USER NAME",
@@ -125,7 +123,6 @@ const stringsRes = {
 		BATCHES_FOR_THIS_COURSE : "Batches for this course",
 		ERROR_EMPTY_FIELDS : "Please enter the detials. ",
 		TIME_OUT : "Server timeout, please try again later",
-		TWITTER : "Twitter",
 		OPTIONAL : "(Optional)",
 		PERCENTAGE : "Percentage",
 		SUBJECTS : "Subjects",
@@ -149,7 +146,7 @@ const stringsRes = {
 		SHOW_MORE : "Show More",
 		CREATOR_OF : "Creator of",
 		USERNAME : "Username",
-		YOUR_PROFILE_IS: "Your profile is %s% completed",
+		YOUR_PROFILE_IS : "Your profile is ",
 		FOLLOW : "Follow",
 		PEOPLE_YOU_FOLLOW : "People you follow",
 		GROUPS_YOU_FOLLOW : "Groups you follow",
@@ -177,6 +174,7 @@ const stringsRes = {
 		NAME_HINT : "Enter your name",
 		GENDER : "GENDER",
 		DATE_OF_BIRTH : "DATE OF BIRTH",
+		CURRENT_LOCATION : "CURRENT LOCATION",
 		HINT_CURRENT_LOCATION : "Enter your location",
 		MODULES : "MODULES",
 		BTN_CLICK_TO_OPEN_CONTENT : "Click to open content",
@@ -209,7 +207,6 @@ const stringsRes = {
 		OPTION_PRIVACY_VIOLATION : "Privacy violation",
 		OPTION_OTHER : "Other",
 		MODULE_NAME : "Module name",
-		CURRENT_LOCATION : "Current location",
 		HOBBIES : "Hobbies",
 		EDIT_PROFILE : "Edit profile",
 		ACTIVE : "Active",
@@ -239,7 +236,11 @@ const stringsRes = {
 		CREATED_BY_SMALL : "Created by",
 		ERROR_OFFLINE_MODE : "No internet, Offline mode",
 		ADDITIONAL_INFORMATION : "Additional Information",
-		SOCIAL : "Social",
+		FACEBOOK : "Facebook",
+		TWITTER : "Twitter",
+		LINKEDIN : "LinkedIn",
+		STRENGTHEN_YOUR_PROFILE : "Strengthen your profile",
+		CHANGE_LANGUAGE : "Change language",
 		UPDATE : "UPDATE"
 	},
 	"hi_IN" : {
@@ -469,6 +470,7 @@ const stringsRes = {
 		CHOOSE_FROM_FOLLOWING : "चयन",
 		PERMISSION_SETTING_MSG : "उपयुक्त अनुमति के लिए ओपन सेटिंग्स स्पर्श करें",
 		DOWNLOADING : "डाउनलोड ",
+		CHANGE_LANGUAGE : "भाषा बदलो",
 	},
 	"ta_IN" : {
 		ALREADY_HAVE_ACC : "முன்னரே அக்கௌன்ட் இருக்கிறதா? சைன் இன் செய்யுங்கள்.",
@@ -650,6 +652,7 @@ const stringsRes = {
 		ORGANIZATION : "அமைப்பு",
 		POSITION : "நிலை",
 		CHOOSE_FROM_FOLLOWING : "தொடர்ந்து இருந்து தேர்வு",
+		CHANGE_LANGUAGE : "மொழியை மாற்று",
 	},
 	"te_IN" : {
 		ALREADY_HAVE_ACC : "అకౌంట్ ఉందా? లాగిన్ అవ్వండి",
@@ -831,6 +834,7 @@ const stringsRes = {
 		ORGANIZATION : "సంస్థ",
 		POSITION : "స్థానం",
 		CHOOSE_FROM_FOLLOWING : "కింది నుండి ఎంచుకోండి",
+		CHANGE_LANGUAGE : "భాష మార్చు",
 	},
 	"bn_IN" : {
 	},
@@ -849,7 +853,7 @@ const stringsRes = {
 	"pa_IN" : {
 	},
 	"ur_IN" : {
-	},
+	}
 }
 
 var decideString = function(){
