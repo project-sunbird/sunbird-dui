@@ -130,7 +130,11 @@ const stringsRes = {
 		SELECT_DATE : "Select Date",
 		SAVE : "Save",
 		GRADE : "Grade",
+<<<<<<< HEAD
 		INSTITUTION_NAME : "Institution Name",
+=======
+		INSTITUTION_NAME : "Instution Name",
+>>>>>>> dc8a60b657b9eed8ac56760cd3d2b511b2917b03
 		BOARD_UNIVERSITY : "Board/University",
 		APPLY : "APPLY",
 		MY_COMMUNITIES : "My Communities",
@@ -198,7 +202,7 @@ const stringsRes = {
 		WARNING_INVALID_PERCENTAGE : "Invalid percentage",
 		WARNING_INVALID_GRADE : "Invalid grade",
 		DEGREE : "Degree",
-		INSTITUION_NAME : "Instution name",
+		INSTITUTION_NAME : "Instution name",
 		IS_THIS_YOUR_CURRENT_JOB : "Is this your current job?",
 		ERROR_MULTIPLE_CURRENT_JOB : "You already have a current job, please change that to not a current job",
 		OPTION_INAPPROPRIATE_CONTENT : "Inappropriate content",
@@ -243,8 +247,14 @@ const stringsRes = {
 		STRENGTHEN_YOUR_PROFILE : "Strengthen your profile",
 		UPDATE : "Update",
 		CHANGE_LANGUAGE : "Change language",
+<<<<<<< HEAD
 		LAST_LOGIN_TIME : "Last login time %s",
 		MEDIUM : "Medium"
+=======
+		UPDATE : "UPDATE",
+		SOCIAL : "Social Media",
+		LAST_LOGIN_TIME: "Last login time: %s"
+>>>>>>> dc8a60b657b9eed8ac56760cd3d2b511b2917b03
 	},
 	"hi_IN" : {
 		ALREADY_HAVE_ACC : "मौजूदा उपयोगकर्ता, साइन इन करें",
@@ -378,7 +388,7 @@ const stringsRes = {
 		SELECT_DATE : "तारीख़ चुनें",
 		SAVE : "सेव्ड",
 		GRADE : "ग्रेड",
-		INSTITUION_NAME : "संस्था का नाम",
+		INSTITUTION_NAME : "संस्था का नाम",
 		BOARD_UNIVERSITY : "बोर्ड / विश्वविद्यालय",
 		APPLY : "लागू करें",
 		MY_COMMUNITIES : "मेरे समुदाय",
@@ -440,7 +450,7 @@ const stringsRes = {
 		WARNING_INVALID_YEAR_OF_PASSING : "उत्तीर्ण वर्ष के लिए चार (yyyy) अंक दर्ज करें",
 		WARNING_INVALID_PERCENTAGE : "प्रतिशत के लिए अंक (0-100) दर्ज करें",
 		WARNING_INVALID_GRADE : "ग्रेड के लिए किसी भी एक वर्णमाला (ए-एफ) का चयन करें",
-		INSTITUION_NAME : "संस्था का नाम",
+		INSTITUTION_NAME : "संस्था का नाम",
 		IS_THIS_YOUR_CURRENT_JOB : "यह आपकी वर्तमान नौकरी है",
 		ERROR_MULTIPLE_CURRENT_JOB : "समाप्ति तिथि दर्ज करें",
 		OPTION_INAPPROPRIATE_CONTENT : "अनुचित पाठ्यक्रम",
@@ -607,7 +617,7 @@ const stringsRes = {
 		SELECT_DATE : "தேதி தேர்வுசெய்யுங்கள்",
 		SAVE : "செவ் செய்யுங்கள்",
 		GRADE : "வகுப்பு",
-		INSTITUION_NAME : "இயக்க பெயர்",
+		INSTITUTION_NAME : "இயக்க பெயர்",
 		BOARD_UNIVERSITY : "வாரியம் / பல்கலைக்கழகம்",
 		APPLY : "பில்ட்டர் செய்யுங்கள்",
 		MY_COMMUNITIES : "என் சமுதாயங்கள்",
@@ -787,7 +797,7 @@ const stringsRes = {
 		SELECT_DATE : "తేదీ ఇవ్వండి",
 		SAVE : "సేవ్ చెయ్యండి",
 		GRADE : "తరగతి",
-		INSTITUION_NAME : "సంస్థ పేరు",
+		INSTITUTION_NAME : "సంస్థ పేరు",
 		BOARD_UNIVERSITY : "బోర్డు/విశ్వవిద్యాలయం",
 		APPLY : "ఫిల్టర్ చెయ్యండి",
 		MY_COMMUNITIES : "నా కమ్యూనిటీలు",
