@@ -61,6 +61,7 @@ class MainActivity extends View {
     window.__API_Profile_Called = false;
     this.apiToken = window.__apiToken;
     window.__BNavFlowRestart= this.setupDuiCallback;
+    this.profAPIerrCount = 0;
   }
 
   onPop = () => {
@@ -97,7 +98,8 @@ class MainActivity extends View {
   }
 
   getUserProfileData = () => {
-    if (JBridge.isNetworkAvailable()){
+    if (JBridge.isNetworkAvailable() && this.profAPIerrCount <= 3){
+      console.log("this.profAPIerrCount", this.profAPIerrCount);
       var whatToSend= {"user_token":window.__user_accessToken,"api_token": window.__apiToken}
       var event = { "tag": "API_ProfileFragment", contents: whatToSend };
       window.__runDuiCallback(event);
@@ -186,6 +188,8 @@ class MainActivity extends View {
     var isErr = res.hasOwnProperty("err");
     if(isErr) {
       if (state.responseFor == "API_ProfileFragment") {
+        this.profAPIerrCount++;
+        console.log("this.profAPIerrCount", this.profAPIerrCount);
         if (JBridge.getSavedData(this.profileDataTag) != "__failed"){
           window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
           var data = JSON.parse(utils.decodeBase64(JBridge.getSavedData(this.profileDataTag)));
@@ -208,6 +212,7 @@ class MainActivity extends View {
 
     }
     if (!isErr && state.responseFor == "API_ProfileFragment"){
+      this.profAPIerrCount = 0;
       console.log("profileData", responseData);
       window.__userName = responseData.result.response.userName;
     }
