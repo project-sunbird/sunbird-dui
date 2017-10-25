@@ -72,7 +72,7 @@ const stringsRes = {
 		NUMBER_OF_VOTES : "Number of votes",
 		OPEN : "OPEN",
 		PASSWORD : "PASSWORD",
-		PHONE : "PHONE",
+		PHONE : "Phone",
 		PLAY : "PLAY",
 		POPULAR_COURSES : "Popular Courses",
 		PREVIEWS : "PREVIEWS",
@@ -95,7 +95,6 @@ const stringsRes = {
 		SIGN_IN : "SIGN IN",
 		SIGN_UP : "SIGN UP",
 		SORT_BY : "SORT BY",
-		SPLASH_MESSAGE : "Project %s",
 		STRUCTURE : "Structure",
 		TO_DO : "To-Do",
 		USER_NAME : "USER NAME",
@@ -104,9 +103,9 @@ const stringsRes = {
 		VIEW_MORE : "VIEW MORE",
 		WAIT_REQUEST : "Please Wait ...",
 		WELCOME_BACK : "WELCOME BACK %s",
-		WELCOME_M1 : "Welcome to NTP",
+		WELCOME_M1 : "Welcome to %s",
 		WELCOME_M2 : "Structured education for the educators",
-		WELCOME_ON_BOARD : "Welcome to NTP, %s ",
+		WELCOME_ON_BOARD : "Welcome to %s, %s ",
 		WHAT_WENT_WRONG : "What went wrong?",
 		YOUR_PROGRESS : "Your Progress: %s%",
 		FLAG : "Flag / Report ",
@@ -131,7 +130,7 @@ const stringsRes = {
 		SELECT_DATE : "Select Date",
 		SAVE : "Save",
 		GRADE : "Grade",
-		INSTITUION_NAME : "Instution Name",
+		INSTITUTION_NAME : "Institution Name",
 		BOARD_UNIVERSITY : "Board/University",
 		APPLY : "APPLY",
 		MY_COMMUNITIES : "My Communities",
@@ -146,7 +145,7 @@ const stringsRes = {
 		SHOW_MORE : "Show More",
 		CREATOR_OF : "Creator of",
 		USERNAME : "Username",
-		YOUR_PROFILE_IS : "Your profile is ",
+		YOUR_PROFILE_IS : "Your profile is %s% complete",
 		FOLLOW : "Follow",
 		PEOPLE_YOU_FOLLOW : "People you follow",
 		GROUPS_YOU_FOLLOW : "Groups you follow",
@@ -163,7 +162,7 @@ const stringsRes = {
 		NO : "No",
 		ABOUT_MODULE : "About This Module",
 		CHOOSE_FROM_FOLLOWING : "Choose from following",
-		LANGUAGES : "LANGUAGES",
+		LANGUAGES : "Languages",
 		COMING_SOON : "More details coming soon ..",
 		TITLE_EDUCATION : "Education",
 		TITLE_EXPERIENCES : "Experiences",
@@ -172,8 +171,8 @@ const stringsRes = {
 		LAST_NAME_HINT : "Enter your last name",
 		NAME : "NAME",
 		NAME_HINT : "Enter your name",
-		GENDER : "GENDER",
-		DATE_OF_BIRTH : "DATE OF BIRTH",
+		GENDER : "Gender",
+		DATE_OF_BIRTH : "Birthdate",
 		CURRENT_LOCATION : "CURRENT LOCATION",
 		HINT_CURRENT_LOCATION : "Enter your location",
 		MODULES : "MODULES",
@@ -207,6 +206,7 @@ const stringsRes = {
 		OPTION_PRIVACY_VIOLATION : "Privacy violation",
 		OPTION_OTHER : "Other",
 		MODULE_NAME : "Module name",
+		CURRENT_LOCATION : "Current location",
 		HOBBIES : "Hobbies",
 		EDIT_PROFILE : "Edit profile",
 		ACTIVE : "Active",
@@ -239,9 +239,12 @@ const stringsRes = {
 		FACEBOOK : "Facebook",
 		TWITTER : "Twitter",
 		LINKEDIN : "LinkedIn",
+		SOCIAL : "Social",
 		STRENGTHEN_YOUR_PROFILE : "Strengthen your profile",
+		UPDATE : "Update",
 		CHANGE_LANGUAGE : "Change language",
-		UPDATE : "UPDATE"
+		LAST_LOGIN_TIME : "Last login time %s",
+		MEDIUM : "Medium"
 	},
 	"hi_IN" : {
 		ALREADY_HAVE_ACC : "मौजूदा उपयोगकर्ता, साइन इन करें",
@@ -652,7 +655,7 @@ const stringsRes = {
 		ORGANIZATION : "அமைப்பு",
 		POSITION : "நிலை",
 		CHOOSE_FROM_FOLLOWING : "தொடர்ந்து இருந்து தேர்வு",
-		CHANGE_LANGUAGE : "மொழியை மாற்று",
+		CHANGE_LANGUAGE : "மொழியை மாற்ற",
 	},
 	"te_IN" : {
 		ALREADY_HAVE_ACC : "అకౌంట్ ఉందా? లాగిన్ అవ్వండి",
@@ -836,14 +839,6 @@ const stringsRes = {
 		CHOOSE_FROM_FOLLOWING : "కింది నుండి ఎంచుకోండి",
 		CHANGE_LANGUAGE : "భాష మార్చు",
 	},
-	"bn_IN" : {
-	},
-	"ml_IN" : {
-	},
-	"or_IN" : {
-	},
-	"gu_IN" : {
-	},
 	"kn_IN" : {
 	},
 	"as_IN" : {
@@ -853,7 +848,7 @@ const stringsRes = {
 	"pa_IN" : {
 	},
 	"ur_IN" : {
-	}
+	},
 }
 
 var decideString = function(){
@@ -872,3 +867,4 @@ var setLanguage = function(lang){
 exports.setLanguage = setLanguage;
 exports.strings = decideString;
 exports.stringsRes = stringsRes;
+
