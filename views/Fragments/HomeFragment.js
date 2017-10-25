@@ -38,6 +38,7 @@ class HomeFragment extends View {
     JBridge.logTabScreenEvent("HOME");
     window.setEnrolledCourses = this.setEnrolledCourses;
   this.profileData="";
+  this.profileUpdateCardVisibility="gone";
   }
 
   setEnrolledCourses = (list) => {
@@ -108,7 +109,7 @@ class HomeFragment extends View {
              width="match_parent"
              background={window.__Colors.WHITE_F2}/>)
   }
-  getTodoProfileCard=()=>{
+  getTodoProfileCard=(index)=>{
    this.profileData = JSON.parse(utils.decodeBase64(JBridge.getSavedData("savedProfile")));
     this.profileData= JSON.parse(utils.decodeBase64(this.profileData.response.status[1]));
     var data= this.profileData.result.response;
@@ -117,13 +118,13 @@ class HomeFragment extends View {
         return(<LinearLayout
         height="match_parent"/>);
       }
-      var temp="visible";
+      this.profileUpdateCardVisibility="visible";
       if(data.hasOwnProperty("missingFields")&&data.missingFields[0]!=undefined){
       var editButtonText=data.missingFields[0];
       }
       else{
         var editButtonText="";
-        temp="gone";
+        this.profileUpdateCardVisibility="gone";
       }
       if(editButtonText=="address"){
           editButtonText=window.__S.TITLE_ADDRESS;
@@ -151,16 +152,16 @@ class HomeFragment extends View {
         }
       else if (editButtonText=="subject")
         {
-             editButtonText=window.__S.SUBJECTS;
+           editButtonText=window.__S.SUBJECTS;
         }
       else if(editButtonText=="avatar"){
-          editButtonText="avatar";
+        return getTodoProfileCard(index+1);
         }
       else if(editButtonText=="location"){
            editButtonText=window.__S.CURRENT_LOCATION;
       }
       else{
-        temp="gone";
+        this.profileUpdateCardVisibility="gone";
       }
 
     return(
@@ -191,7 +192,7 @@ class HomeFragment extends View {
               width="74"
               height="74"
               margin="16,16,0,0"
-              circularImageUrl={"0,"+data.avatar}
+              circularImageUrl={"0,"+(data.avatar ? data.avatar : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR1X3cm5xzR4D1W9oPb2QWioKlrfLVd0DvXFUNqSjZfg-M0bpc")}
               stroke ={"2," + "#d8d8d8"}
               cornerRadius="37"/>
             <LinearLayout
@@ -281,7 +282,8 @@ class HomeFragment extends View {
                   orientation="vertical">
 
                    <CourseInProgressContainer
-                    addCard={this.getTodoProfileCard()}
+                    addCard={this.getTodoProfileCard(0)}
+                    addCardVisibility={this.profileUpdateCardVisibility}                    
                     transparent="true"
                     title={window.__S.TO_DO}
                     onCourseClick={this.handleUserCoursesClick}/>

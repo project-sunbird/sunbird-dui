@@ -69,25 +69,23 @@ class CourseInProgressContainer extends View {
 
 
      var layout="";
+     var layout1="";
      var rows="";
 
     if(isDataEmpty){
-      layout= (
-      <LinearLayout
-        root="true"
-        gravity="center"
-        height="wrap_content"
-        width="match_parent">
-
-        <TextView
-              width="match_parent"
-              height="50"
-              gravity="center"
-              text={window.__S.ERROR_NO_COURSES_ENROLLED}
-              style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>
-
-      </LinearLayout>);
-
+        if(this.props.addCard==undefined||this.addCardVisibility=="gone")
+          {
+            layout1= (
+              <TextView
+                    width="match_parent"
+                    height="50"
+                    gravity="center"
+                    text={window.__S.ERROR_NO_COURSES_ENROLLED}
+                    style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>)
+          }
+        else {
+          layout1=this.getExtraLayout();
+        }
 
        var cmd = this.set({
         id: this.idSet.viewAllContainer,
@@ -96,26 +94,28 @@ class CourseInProgressContainer extends View {
 
     Android.runInUI(cmd, 0);
 
-
-    }else{
+    layout = (
+      <LinearLayout
+        root="true"
+        height="wrap_content"
+        width="match_parent">
+        {layout1}
+      </LinearLayout>);
+    }
+    else{
        rows = this.data.map((item, index) => {
        return this.getCardLayout(item,index);
       });
-
-       layout = (
+      layout = (
         <LinearLayout
           root="true"
           height="wrap_content"
           width="match_parent">
-          {this.getExtraLayout()}
           {rows}
-
+          {this.getExtraLayout()}
         </LinearLayout>);
-
     }
-
-
-
+       
     this.replaceChild(this.idSet.parentContainer,layout.render(),0);
     window.__ContentLoadingComponent.hideLoader();
     window.__LoaderDialog.hide();
