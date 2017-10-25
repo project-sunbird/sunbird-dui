@@ -115,12 +115,13 @@ class HomeFragment extends View {
     var data= this.profileData.result.response;
     if(data.completeness==100||data.completeness==undefined)
       {
+        this.profileUpdateCardVisibility="gone";        
         return(<LinearLayout
         height="match_parent"/>);
       }
       this.profileUpdateCardVisibility="visible";
-      if(data.hasOwnProperty("missingFields")&&data.missingFields[0]!=undefined){
-      var editButtonText=data.missingFields[0];
+      if(data.hasOwnProperty("missingFields")&&(index<data.missingFields.length)&&data.missingFields[index]!=undefined){
+      var editButtonText=data.missingFields[index];
       }
       else{
         var editButtonText="";
@@ -155,7 +156,7 @@ class HomeFragment extends View {
            editButtonText=window.__S.SUBJECTS;
         }
       else if(editButtonText=="avatar"){
-        return getTodoProfileCard(index+1);
+        return this.getTodoProfileCard(index+1);
         }
       else if(editButtonText=="location"){
            editButtonText=window.__S.CURRENT_LOCATION;
@@ -170,7 +171,7 @@ class HomeFragment extends View {
       height="match_parent"
       margin="16,0,0,0"
       orientation="vertical"
-      onClick={()=>this.handleEditProfileClick(data.missingFields[0])}>
+      onClick={()=>this.handleEditProfileClick(data.missingFields[index])}>
       <LinearLayout
       widht="match_parent"
       height="110"
@@ -236,7 +237,7 @@ class HomeFragment extends View {
                 width="wrap_content"
                 height="wrap_content"
                 text={window.__S.UPDATE}
-                onClick={()=>this.handleEditProfileClick(data.missingFields[0])}/>
+                onClick={()=>this.handleEditProfileClick(data.missingFields[index])}/>
 
             </LinearLayout>
              </LinearLayout>
