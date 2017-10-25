@@ -73,7 +73,7 @@ class CourseInProgressContainer extends View {
      var rows="";
 
     if(isDataEmpty){
-        if(this.props.addCard==undefined||this.addCardVisibility=="gone")
+        if(this.props.addCard==undefined||this.props.addCardVisibility=="gone")
           {
             layout1= (
               <TextView
