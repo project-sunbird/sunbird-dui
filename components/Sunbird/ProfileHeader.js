@@ -134,7 +134,7 @@ class ProfileHeader extends View {
                 visibility = {this.lastLoginTime == "" ? "gone" : "visible"}
                 width = "wrap_content"
                 height = "wrap_content"
-                text = {"Last login time: " + this.lastLoginTime}
+                text = {window.__S.LAST_LOGIN_TIME.format(this.lastLoginTime)}
                 margin = "0,0,0,16"
                 style={window.__TextStyle.textStyle.HINT.REGULAR} />
              <ImageView
