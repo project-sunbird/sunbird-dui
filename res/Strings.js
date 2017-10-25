@@ -130,11 +130,7 @@ const stringsRes = {
 		SELECT_DATE : "Select Date",
 		SAVE : "Save",
 		GRADE : "Grade",
-<<<<<<< HEAD
 		INSTITUTION_NAME : "Institution Name",
-=======
-		INSTITUTION_NAME : "Instution Name",
->>>>>>> dc8a60b657b9eed8ac56760cd3d2b511b2917b03
 		BOARD_UNIVERSITY : "Board/University",
 		APPLY : "APPLY",
 		MY_COMMUNITIES : "My Communities",
@@ -247,14 +243,8 @@ const stringsRes = {
 		STRENGTHEN_YOUR_PROFILE : "Strengthen your profile",
 		UPDATE : "Update",
 		CHANGE_LANGUAGE : "Change language",
-<<<<<<< HEAD
 		LAST_LOGIN_TIME : "Last login time %s",
 		MEDIUM : "Medium"
-=======
-		UPDATE : "UPDATE",
-		SOCIAL : "Social Media",
-		LAST_LOGIN_TIME: "Last login time: %s"
->>>>>>> dc8a60b657b9eed8ac56760cd3d2b511b2917b03
 	},
 	"hi_IN" : {
 		ALREADY_HAVE_ACC : "मौजूदा उपयोगकर्ता, साइन इन करें",
