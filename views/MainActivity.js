@@ -218,8 +218,8 @@ class MainActivity extends View {
     }
     console.log("window.__API_Profile_Called", window.__API_Profile_Called);
 
-    console.log("JBridge.getFromSharedPrefs('logo')",JBridge.getFromSharedPrefs("logo"));
-    if (responseData.result.response && responseData.result.response.rootOrg && !window.__API_Profile_Called && (JBridge.getFromSharedPrefs("logo") == "__failed" || JBridge.getFromSharedPrefs("orgName") == "__failed" || JBridge.getFromSharedPrefs("channelId") == "__failed")){
+    console.log("JBridge.getFromSharedPrefs('logo_url')",JBridge.getFromSharedPrefs("logo_url"));
+    if (responseData.result.response && responseData.result.response.rootOrg && !window.__API_Profile_Called && (JBridge.getFromSharedPrefs("logo_url") == "__failed" || JBridge.getFromSharedPrefs("orgName") == "__failed" || JBridge.getFromSharedPrefs("channelId") == "__failed")){
       console.log("slug", responseData.result.response.rootOrg.slug);
       window.__orgName = responseData.result.response.rootOrg.orgName;
       if (responseData.result.response.rootOrg.hashTagId) {
@@ -242,8 +242,9 @@ class MainActivity extends View {
 
     if (state.responseFor == "API_Tenant"){
       console.log("responseFor API_Tenant", responseData);
-      JBridge.setInSharedPrefs("logo", responseData.result.logo);
+      JBridge.setInSharedPrefs("logo_url", responseData.result.logo);
       JBridge.setInSharedPrefs("orgName", window.__orgName);
+      JBridge.downloadImage(responseData.result.logo);
       return;
     }
 
