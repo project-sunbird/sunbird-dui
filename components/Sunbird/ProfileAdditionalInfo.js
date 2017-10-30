@@ -223,31 +223,38 @@ class ProfileAdditionalInfo extends View {
   }
   getRows1=()=>{
     var count=0;
-    var rows= this.data.webPages.map((item,i)=>{
-      var dumy=this.data.webPages[i].url||"";
-      var flag=1;
-      if(dumy!=undefined&&dumy!=""){
-          flag=0;
-          count++;
-      }
-        var dumy1=utils.cropText(dumy,20);
-        dumy= "<a href="+dumy+">"+dumy1+"</a>"
-      return (
-        <LinearLayout
-        width="match_parent"
-        height="match_parent"
-        gravity="right"
-        visibility={flag==1?"gone":"visible"}>
-        <TextView
-        widht="wrap_content"
-        height="wrap_content"
-        textFromHtml={dumy}
-        padding="0,0,0,8"
-        onClick={()=>this.socialClicked(i)}/>
-        </LinearLayout>
-        );
-    });
-    return rows;
+    var rows="";
+    if(this.data.hasOwnProperty("webPages")&&this.data.webPages.length>0){
+      rows= this.data.webPages.map((item,i)=>{
+        var dumy=this.data.webPages[i].url||"";
+        var flag=1;
+        if(dumy!=undefined&&dumy!=""){
+            flag=0;
+            count++;
+        }
+          var dumy1=utils.cropText(dumy,20);
+          dumy= "<a href="+dumy+">"+dumy1+"</a>"
+        return (
+          <LinearLayout
+          width="match_parent"
+          height="match_parent"
+          gravity="right"
+          visibility={flag==1?"gone":"visible"}>
+          <TextView
+          widht="wrap_content"
+          height="wrap_content"
+          textFromHtml={dumy}
+          padding="0,0,0,8"
+          onClick={()=>this.socialClicked(i)}/>
+          </LinearLayout>
+          );
+      });
+      return rows;
+    }else{
+      return(<LinearLayout
+      width="0"
+      height="0"/>);
+    }
   }
   getSocialDetils=()=>{
     return (
@@ -261,6 +268,7 @@ class ProfileAdditionalInfo extends View {
       <TextView
       width="wrap_content"
       height="wrap_content"
+      visibility={this.data.hasOwnProperty("webPages")&&this.data.webPages.length>0?"visible":"gone"}
       text={window.__S.SOCIAL}
       textAllCaps = "true"
       style={window.__TextStyle.textStyle.HINT.SEMI}/>
