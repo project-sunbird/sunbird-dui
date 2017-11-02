@@ -72,9 +72,9 @@ class PageOption extends View {
   render() {
     var text = this.props.text;
 
-
     this.layout = (
       <LinearLayout
+        visibility = {this.props.visibility ? this.props.visibility : "visible"}
         height="wrap_content"
         orientation="vertical"
         width="match_parent"

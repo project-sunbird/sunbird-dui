@@ -113,6 +113,7 @@ class Button extends View {
 
     this.layout = (
       <LinearLayout
+        visibility = {this.props.visibility ? this.props.visibility : "visible"}
           feedback="false"
           padding={this.props.padding}
           margin={this.props.margin}
