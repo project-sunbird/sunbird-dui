@@ -32,7 +32,7 @@ class HomeFragment extends View {
 
     this.menuData = {
       url: [
-        { imageUrl: "ic_launcher"},
+        { imageUrl: "ic_scanqr"},
         { imageUrl: "ic_action_search" }
       ]
     }
@@ -78,7 +78,7 @@ class HomeFragment extends View {
       var whatToSend = { filterDetails: JSON.stringify(searchDetails) }
       var event = { tag: "OPEN_SearchActivity", contents: whatToSend }
       window.__runDuiCallback(event);
-    } else if (url == "ic_launcher") {
+    } else if (url == "ic_scanqr") {
       var whatToSend = []
       var event = { tag: "OPEN_QRActivity", contents: whatToSend }
       window.__runDuiCallback(event);

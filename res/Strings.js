@@ -244,7 +244,11 @@ const stringsRes = {
 		UPDATE : "Update",
 		CHANGE_LANGUAGE : "Change language",
 		LAST_LOGIN_TIME : "Last login time %s",
-		MEDIUM : "Medium"
+		MEDIUM : "Medium",
+		CAMERA_PERMISSION_DENIED : "Camera Permission denied",
+		CAMERA_PERMISSION_SETTINGS : "To provide permission, open settings, select the %s app and click on the camera to allow.",
+		UNKNOWN_QR : "No content found associated with that QR code",
+		TRY_AGAIN : "TRY AGAIN"
 	},
 	"hi_IN" : {
 		ALREADY_HAVE_ACC : "मौजूदा उपयोगकर्ता, साइन इन करें",
@@ -867,4 +871,3 @@ var setLanguage = function(lang){
 exports.setLanguage = setLanguage;
 exports.strings = decideString;
 exports.stringsRes = stringsRes;
-

@@ -9,6 +9,9 @@ var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
 var utils = require('../utils/GenericFunctions');
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var PageOption = require('../components/Sunbird/core/PageOption');
+var Button = require('../components/Sunbird/Button');
+var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
+
 
 var _this;
 window.R = require("ramda");
@@ -23,23 +26,38 @@ class QRActivity extends View {
       "loading",
       "errorPopup",
       "tryAgainBtn",
-      "goBackBtn"
+      "goBackBtn",
+      "pageOption",
+      "openSettingsBtn",
+      "permissionSettingsMsg",
+      "permissionTextHolder",
+      "footer"
     ]);
 
     this.shouldCacheScreen = false;
-    this.menuData = {
-      url: [
-        { imageUrl: "ic_launcher"},
-        { imageUrl: "ic_action_search" }
-      ]
-    }
+    this.menuData = { url: [] }
 
     window.BarcodeResult = this.barcodeResult;
     _this = this;
   }
 
   openFrame = () => {
-      QRScanner.openQRScanner(this.idSet.frameLayout);
+    var callback = callbackMapper.map(function(data) {
+      console.log("Permission callback", data);
+      if (data == "android.permission.CAMERA") {
+        JBridge.setKey("isPermissionSetCamera", "true");
+        QRScanner.openQRScanner(_this.idSet.frameLayout);
+      }
+      if(data == "DeniedPermanently"){
+        console.log("DENIED DeniedPermanently");
+        window.__PermissionDeniedDialog.show("ic_warning_grey", window.__S.CAMERA);
+      }
+      if(data == "ERROR"){
+        console.log("DENIED");
+        _this.showErrorPopup("PERMISSION");
+      }
+    });
+    JBridge.setPermissions(callback,"android.permission.CAMERA");
   }
 
   onBackPressed = () => {
@@ -54,7 +72,7 @@ class QRActivity extends View {
     console.log("barcode data", atob(barcode));
     barcode = atob(barcode);
     if (!this.isValidBarcode(barcode)) {
-      this.showErrorPopup();
+      this.showErrorPopup("WRONGQR");
       return;
     }
     var identifier = barcode.substr(barcode.lastIndexOf("/")+1,barcode.length);
@@ -96,9 +114,31 @@ class QRActivity extends View {
     JBridge.getContentDetails(identifier,callback);
   }
 
-  showErrorPopup = () => {
-    console.log("showErrorPopup");
-    var cmd = this.set({
+  showErrorPopup = (type) => {
+    console.log("showErrorPopup", type );
+    var cmd;
+    if (type == "PERMISSION"){
+      cmd += this.set({
+        id: this.idSet.permissionSettingsMsg,
+        text: window.__S.CAMERA_PERMISSION_DENIED
+      });
+      cmd += this.set({
+        id: this.idSet.permissionTextHolder,
+        visibility: "visible",
+        text: window.__S.CAMERA_PERMISSION_SETTINGS.format(JBridge.getAppName())
+      });
+    } else if (type == "WRONGQR"){
+      cmd += this.set({
+        id: this.idSet.permissionSettingsMsg,
+        text: window.__S.UNKNOWN_QR
+      });
+      cmd += this.set({
+        id: this.idSet.permissionTextHolder,
+        visibility: "gone"
+      });
+    }
+    this.replaceChild(this.idSet.footer, this.getFooter(type).render(), 0)
+    cmd += this.set({
       id: this.idSet.errorPopup,
       visibility: "visible"
     });
@@ -123,20 +163,56 @@ class QRActivity extends View {
     QRScanner.openQRScanner(this.idSet.frameLayout);
   }
 
-  getErrorPopup = () => {
-    this.goBackBtn = {
-      text : "GO TO HOME",
-      id : this.idSet.goBackBtn,
-      isClickable : "true",
-      onClick : this.onBackPressed
-    };
+  openSettings = () => {
+    JBridge.showPermissionScreen();
+  }
 
-    this.tryAgainBtn = {
-      text : "TRY AGAIN",
-      id : this.idSet.tryAgainBtn,
-      isClickable : "false",
-      onClick : this.handleRetry
+  getFooter = (type) => {
+    if (type == "PERMISSION"){
+      return (
+        <LinearLayout
+          width = "match_parent"
+          height = "wrap_content">
+          <Button
+            id={this.idSet.openSettingsBtn}
+            type = {"BigButton_Primary_WB"}
+            text={window.__S.OPEN_SETTINGS}
+            margin="10,20,10,20"
+            onClick={this.openSettings}/>
+          </LinearLayout>
+      )
+    } else if (type == "WRONGQR") {
+      this.goBackBtn = {
+        text : window.__S.CANCEL,
+        id : this.idSet.goBackBtn,
+        isClickable : "true",
+        onClick : this.onBackPressed
+      };
+
+      this.tryAgainBtn = {
+        text : window.__S.TRY_AGAIN,
+        id : this.idSet.tryAgainBtn,
+        isClickable : "false",
+        onClick : this.handleRetry
+      }
+      return (
+        <LinearLayout
+          width = "match_parent"
+          height= "wrap_content"
+          margin="0, 16, 0, 0">
+          <PageOption
+            id={this.idSet.pageOption}
+            visibility="visible"
+            width="match_parent"
+            buttonItems={[this.goBackBtn, this.tryAgainBtn]}
+            hideDivider={true}
+            onButtonClick={this.handlePageOption}/>
+        </LinearLayout>
+      )
     }
+  }
+
+  getErrorPopup = () => {
     var popup = (
       <RelativeLayout
         width="match_parent"
@@ -144,6 +220,7 @@ class QRActivity extends View {
         <LinearLayout
           width="match_parent"
           height="match_parent"
+          clickable="true"
           background="#000000"
           alpha="0.5"/>
         <LinearLayout
@@ -151,15 +228,33 @@ class QRActivity extends View {
           height="wrap_content"
           orientation="vertical"
           background="#ffffff"
+          gravity="center_horizontal"
           alignParentBottom="true, -1">
+          <ImageView
+            width="87"
+            height="78"
+            margin="0,100,0,0"
+            gravity="center_horizontal"
+            imageUrl={"ic_warning_grey"}/>
           <TextView
-            margin="16,16,16,16"
-            text="Invalid QR"/>
-            <PageOption
-                width="match_parent"
-                buttonItems={[this.goBackBtn, this.tryAgainBtn]}
-                hideDivider={false}
-                onButtonClick={this.handlePageOption}/>
+            width="260"
+            height="wrap_content"
+            margin="0,20,0,0"
+            gravity="center_horizontal"
+            style={window.__TextStyle.textStyle.HINT.DULL}
+            id={this.idSet.permissionSettingsMsg}
+            />
+          <TextView
+           width="wrap_content"
+           height="wrap_content"
+           id={this.idSet.permissionTextHolder}
+           margin="16,80,16,16"
+           gravity="center_horizontal"
+           style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>
+          <LinearLayout
+            width="match_parent"
+            orientation="vertical"
+            id = {this.idSet.footer}/>
         </LinearLayout>
       </RelativeLayout>
     );
@@ -175,14 +270,6 @@ class QRActivity extends View {
         clickable="true"
         background="#FFFFFF"
         orientation="vertical">
-        <SimpleToolbar
-           title=""
-           width="match_parent"
-           showMenu="true"
-           invert="true"
-           menuData={this.menuData}
-           onBackPress={this.onBackPressed}
-           onMenuItemClick={this.handleMenuClick}/>
         <RelativeLayout
         width="match_parent"
         height="match_parent">
@@ -190,13 +277,20 @@ class QRActivity extends View {
           width="match_parent"
           height="match_parent"
           orientation="vertical">
-          <LinearLayout
+          <SimpleToolbar
+             title="Scan QR Code"
+             width="match_parent"
+             showMenu="true"
+             invert="true"
+             menuData={this.menuData}
+             onBackPress={this.onBackPressed}/>
+          <ImageView
+            margin="0,0, 0,0"
             width="match_parent"
-            height="wrap_content">
-            <TextView
-              margin="16,16,16,16"
-              text="Scan QR code on your textbook"/>
-          </LinearLayout>
+            background = "#123123"
+            height = "wrap_content"
+            adjustViewBounds="true"
+            imageUrl="ic_scanqrdemo"/>
           <FrameLayout
             id={this.idSet.frameLayout}
             afterRender = {this.openFrame}
