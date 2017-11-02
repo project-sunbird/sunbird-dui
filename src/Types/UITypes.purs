@@ -95,6 +95,7 @@ data MainActivityAction = OPEN_HomeFragment |
   OPEN_EditProfileActivity {profile::String} |
   OPEN_SearchActivity {filterDetails::String}|
   OPEN_CommProfSearchActivity {filterDetails::String}|
+  OPEN_QRActivity |
   API_ResourceFragment {user_token::String, api_token::String}|
   API_CourseFragment {user_token::String, api_token::String} |
   API_ProfileFragment {user_token::String, api_token::String}|
@@ -328,3 +329,18 @@ instance addtionalInsormationActivity :: UIScreen AdditionalInformationActivity 
 derive instance genericAdditionalInformationActivityAction  :: Generic AdditionalInformationActivityAction _
 instance decodeAdditionalInformationActivityAction :: Decode AdditionalInformationActivityAction where decode = defaultDecode
 instance encodeAdditionalInformationActivityAction :: Encode AdditionalInformationActivityAction where encode = defaultEncode
+
+data QRActivity = QRActivity
+data QRActivityAction = DummyQRActivity |
+  BACK_QRActivity |
+  OPEN_CourseEnrolledActivity_QR {course::String} |
+  OPEN_ResourceDetailActivity_QR {resourceDetails::String} |
+  OPEN_CourseInfoActivity_QR {course::String}
+
+instance qrActivity :: UIScreen QRActivity QRActivityAction where
+  generateMockEvents _ = [ DummyQRActivity , BACK_QRActivity ]
+  ui x = genericUI x (generateMockEvents x :: Array QRActivityAction)
+
+derive instance genericQRActivityAction  :: Generic QRActivityAction _
+instance decodeQRActivityAction :: Decode QRActivityAction where decode = defaultDecode
+instance encodeQRActivityAction :: Encode QRActivityAction where encode = defaultEncode

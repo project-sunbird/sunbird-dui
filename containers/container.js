@@ -40,6 +40,7 @@ const CommProfSearchActivity = require("../views/CommProfSearchActivity");
 const ProfileActivity = require("../views/ProfileActivity");
 
 const ContentPreviewScreen = require("../views/ContentPreviewScreen");
+const QRActivity = require("../views/QRActivity");
 // ScreenActions
 const RootScreenActions = require("../actions/RootScreenActions");
 
@@ -117,6 +118,10 @@ var determineScreen = (screenName, state) => {
 
     case "RootScreen":
       screen = new(RootScreen(dispatcher,RootScreenActions))(null, null,state) ;
+      break;
+
+    case "QRActivity":
+      screen = new(QRActivity(dispatcher,RootScreenActions))(null, null,state) ;
       break;
   }
 

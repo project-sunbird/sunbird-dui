@@ -32,13 +32,14 @@ class HomeFragment extends View {
 
     this.menuData = {
       url: [
-        { imageUrl: "ic_action_search" },
+        { imageUrl: "ic_launcher"},
+        { imageUrl: "ic_action_search" }
       ]
     }
     JBridge.logTabScreenEvent("HOME");
     window.setEnrolledCourses = this.setEnrolledCourses;
-  this.profileData="";
-  this.profileUpdateCardVisibility="gone";
+    this.profileData="";
+    this.profileUpdateCardVisibility="gone";
   }
 
   setEnrolledCourses = (list) => {
@@ -76,6 +77,10 @@ class HomeFragment extends View {
       var searchDetails = { filterDetails: "", searchType: "Combined" }
       var whatToSend = { filterDetails: JSON.stringify(searchDetails) }
       var event = { tag: "OPEN_SearchActivity", contents: whatToSend }
+      window.__runDuiCallback(event);
+    } else if (url == "ic_launcher") {
+      var whatToSend = []
+      var event = { tag: "OPEN_QRActivity", contents: whatToSend }
       window.__runDuiCallback(event);
     }
   }
@@ -115,7 +120,7 @@ class HomeFragment extends View {
     var data= this.profileData.result.response;
     if(data.completeness==100||data.completeness==undefined)
       {
-        this.profileUpdateCardVisibility="gone";        
+        this.profileUpdateCardVisibility="gone";
         return(<LinearLayout
         height="match_parent"/>);
       }
@@ -284,7 +289,7 @@ class HomeFragment extends View {
 
                    <CourseInProgressContainer
                     addCard={this.getTodoProfileCard(0)}
-                    addCardVisibility={this.profileUpdateCardVisibility}                    
+                    addCardVisibility={this.profileUpdateCardVisibility}
                     transparent="true"
                     title={window.__S.TO_DO}
                     onCourseClick={this.handleUserCoursesClick}/>

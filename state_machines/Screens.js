@@ -105,6 +105,11 @@ module.exports = function(action, payload, state) {
       localState.currScreen = "UserActivity";
       break;
 
+    case "QRActivity":
+      localState.isInit = false
+      localState.currScreen = "QRActivity";
+      break;
+
     case "AdditionalInformationActivity":
       localState.isInit = false
       localState.currScreen ="AdditionalInformationActivity"

@@ -138,13 +138,13 @@ class UserActivity extends View {
 
                 console.log("Content type is collecion or TextBook",_this.deepLinkCollectionDetails);
 
-                var whatToSend={course:_this.deepLinkCollectionDetails};
-                var event={tag:"OPEN_Deeplink_CourseEnrolled",contents:whatToSend}
-                window.__runDuiCallback(event);
+                // var whatToSend={course:_this.deepLinkCollectionDetails};
+                // var event={tag:"OPEN_Deeplink_CourseEnrolled",contents:whatToSend}
+                // window.__runDuiCallback(event);
 
-              // var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken}
-              // var event ={ "tag": "API_EnrolledCourses", contents: whatToSend};
-              // window.__runDuiCallback(event);
+              var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken}
+              var event ={ "tag": "API_EnrolledCourses", contents: whatToSend};
+              window.__runDuiCallback(event);
             }
 
         }
@@ -355,19 +355,19 @@ class UserActivity extends View {
 
 
         break;
-      // case "API_EnrolledCourses":
-      //   console.log("API_EnrolledCourses in userActivity")
-      //   window.__enrolledCourses = response.result.courses;
+      case "API_EnrolledCourses":
+        console.log("API_EnrolledCourses in userActivity")
+        window.__enrolledCourses = response.result.courses;
 
-      //   console.log("DEEPLINK COURSE DETAILS",this.deepLinkCollectionDetails);
+        console.log("DEEPLINK COURSE DETAILS",this.deepLinkCollectionDetails);
 
-      //   if(this.deepLinkCollectionDetails != undefined){
-      //     var whatToSend={course:this.deepLinkCollectionDetails};
-      //     var event={tag:"OPEN_Deeplink_CourseEnrolled",contents:whatToSend}
-      //     window.__runDuiCallback(event);
-      //   }
-
-      //   break;
+        if(this.deepLinkCollectionDetails != undefined){
+          var whatToSend={course:this.deepLinkCollectionDetails};
+          var event={tag:"OPEN_Deeplink_CourseEnrolled",contents:whatToSend}
+          window.__runDuiCallback(event);
+        }
+        
+        break;
       default:
         console.log("default SWITCH")
         break;

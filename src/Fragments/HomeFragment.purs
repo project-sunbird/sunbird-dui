@@ -18,6 +18,7 @@ homeFragment input whereFrom whatToSendBack = do
 		OPEN_SearchActivity {filterDetails : output} -> homeSearchActivity output "HomeFragment" input
 		OPEN_CourseViewAllActivity {courseListDetails : output} -> courseViewAllActivity output "HomeFragment" input
 		OPEN_EditProfileActivity {profile : output} -> additionalInformationActivity output "ProfileFragment"  input
+		OPEN_QRActivity -> qrActivity "HomeFragment" input
 		API_UserEnrolledCourse {user_token:x,api_token:y}-> do
 			responseData <- getUserEnrolledCourses x y
 	 		_ <- sendUpdatedState {response : responseData, responseFor : "API_UserEnrolledCourse", screen:"asas"}
@@ -147,3 +148,12 @@ subModuleDetailActivity mName input whereFrom whatToSendBack= do
 			"EnrolledCourseActivity" -> enrolledCourseActivity whatToSendBack "Terminate" input
 			_ ->  enrolledCourseActivity whatToSendBack "Terminate" input
   		_ -> subModuleDetailActivity mName input whereFrom whatToSendBack
+
+qrActivity whereFrom whatToSendBack = do
+ event <- ui $ QRActivity
+ case event of
+  OPEN_CourseEnrolledActivity_QR {course : output} -> enrolledCourseActivity output "HomeFragment" whatToSendBack
+  OPEN_ResourceDetailActivity_QR {resourceDetails : output} -> enrolledCourseActivity output "HomeFragment" whatToSendBack
+  OPEN_CourseInfoActivity_QR {course : output} -> courseInfoActivity output "HomeFragment" whatToSendBack
+  BACK_QRActivity -> homeFragment whatToSendBack "Terminate" whatToSendBack
+  _ -> homeFragment whatToSendBack "Terminate" whatToSendBack
