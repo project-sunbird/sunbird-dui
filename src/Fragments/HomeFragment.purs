@@ -153,7 +153,7 @@ qrActivity whereFrom whatToSendBack = do
  event <- ui $ QRActivity
  case event of
   OPEN_CourseEnrolledActivity_QR {course : output} -> enrolledCourseActivity output "HomeFragment" whatToSendBack
-  OPEN_ResourceDetailActivity_QR {resourceDetails : output} -> enrolledCourseActivity output "HomeFragment" whatToSendBack
+  OPEN_ResourceDetailActivity_QR {resourceDetails : output} -> resourceDetailActivity output "HomeFragment" whatToSendBack
   OPEN_CourseInfoActivity_QR {course : output} -> courseInfoActivity output "HomeFragment" whatToSendBack
   BACK_QRActivity -> homeFragment whatToSendBack "Terminate" whatToSendBack
   _ -> homeFragment whatToSendBack "Terminate" whatToSendBack

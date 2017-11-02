@@ -68,6 +68,7 @@ class QRActivity extends View {
   }
 
   barcodeResult = (barcode) => {
+    window.__LoaderDialog.show()
     QRScanner.closeQRScanner();
     console.log("barcode data", atob(barcode));
     barcode = atob(barcode);
@@ -77,8 +78,15 @@ class QRActivity extends View {
     }
     var identifier = barcode.substr(barcode.lastIndexOf("/")+1,barcode.length);
     var callback = callbackMapper.map(function(data){
+      console.log("getContentDetails ", data);
+      if (data[0]=="__failed"){
+        window.__LoaderDialog.hide()
+        _this.showErrorPopup("WRONGQR");
+        return;
+      }
       var item = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
       console.log("Callback data in QRActivity",item);
+      window.__LoaderDialog.hide();
       if(item.contentType.toLowerCase() == "course"){
             console.log("Content type is course",item.contentData);
             var whatToSend={course:JSON.stringify(item.contentData)};
@@ -106,7 +114,7 @@ class QRActivity extends View {
 
               console.log("resourceDetails IN QRActivity",resDetails);
 
-              var whatToSend = {resource:JSON.stringify(resDetails)}
+              var whatToSend = {resourceDetails:JSON.stringify(resDetails)}
               var event = {tag:"OPEN_ResourceDetailActivity_QR",contents:whatToSend}
               window.__runDuiCallback(event);
             }
@@ -146,9 +154,9 @@ class QRActivity extends View {
   }
 
   isValidBarcode = (data) => {
-    var identifier = data.substr(data.lastIndexOf("/")+1,data.length);
-    console.log("regex match - " + identifier.match(/do_\d{22}/g));
-    if (identifier.match(/do_\d{22}/g)){
+    var re = new RegExp(JBridge.getApiUrl());
+    console.log("regex match - " + re.test(data));
+    if (re.test(data)){
       return true
     }
     return false;
