@@ -524,10 +524,11 @@ class CourseEnrolledActivity extends View {
         window.__LoaderDialog.hide();
 
         var input;
+        var contentType = _this.showProgress == "gone" ? "content" : "course";
           if(data[0]!="failure"){
                 input = [{
                             type : "text",
-                            data : window.__deepLinkUrl+"/public/#!/course/"+_this.baseIdentifier
+                            data : window.__deepLinkUrl+"/public/#!/"+ contentType +"/"+_this.baseIdentifier
 
                           },{
                             type : "file",
@@ -538,7 +539,7 @@ class CourseEnrolledActivity extends View {
             else{
               input = [{
                           type : "text",
-                          data : window.__deepLinkUrl+"/public/#!/course/"+_this.baseIdentifier
+                          data : window.__deepLinkUrl+"/public/#!/"+ contentType +"/"+_this.baseIdentifier
 
                         }];
             }
