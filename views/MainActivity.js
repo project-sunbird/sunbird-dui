@@ -18,6 +18,7 @@ var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callb
 var objectAssign = require('object-assign');
 var debounce = require("debounce");
 var utils = require('../utils/GenericFunctions');
+const Str = require("../res/Strings") ;
 
 window.R = require("ramda");
 
@@ -226,6 +227,9 @@ class MainActivity extends View {
         JBridge.setInSharedPrefs("channelId", responseData.result.response.rootOrg.hashTagId);
         console.log("channelId", JBridge.getFromSharedPrefs("channelId"));
         JBridge.setParams();
+      }
+      if (responseData.result.response.rootOrg.hasOwnProperty("preferredLanguage") && responseData.result.response.rootOrg.preferredLanguage != null) {
+        this.handleChangeLang(responseData.result.response.rootOrg.preferredLanguage)
       }
       window.__API_Profile_Called = true;
       if (window.__userName != undefined) window.__Snackbar.show(window.__S.WELCOME_BACK.format(window.__userName));
@@ -578,7 +582,15 @@ class MainActivity extends View {
     window.__PermissionDeniedDialog.hide();
   }
 
-
+  handleChangeLang = (lang) => {
+    console.log("handleChangeLang");
+    window.__LoaderDialog.show()
+     window.setLanguage(lang);
+     window.__S = Str.strings();
+     window.__LanguagePopup.hide();
+    //  window.__renderBNavBar(4);
+     window.__reRender();
+  }
 
 
   render() {
