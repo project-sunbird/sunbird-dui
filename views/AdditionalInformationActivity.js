@@ -191,20 +191,20 @@ class AdditionalInformationActivity extends View{
       id: this.idSet.descriptionText,
       text: this.description
     })
-
-    cmd += this.set({
-      id: this.idSet.twitterText,
-      text: this.twitter
-    })
-    cmd += this.set({
-      id: this.idSet.fbText,
-      text: this.fb
-    })
-
-    cmd += this.set({
-      id: this.idSet.linkedinText,
-      text: this.linkedin
-    })
+    //
+    // cmd += this.set({
+    //   id: this.idSet.twitterText,
+    //   text: this.twitter
+    // })
+    // cmd += this.set({
+    //   id: this.idSet.fbText,
+    //   text: this.fb
+    // })
+    //
+    // cmd += this.set({
+    //   id: this.idSet.linkedinText,
+    //   text: this.linkedin
+    // })
 
     Android.runInUI(cmd, 0);
 
@@ -1166,34 +1166,34 @@ class AdditionalInformationActivity extends View{
       delete json.profileSummary;
 
 
-    if(this.fb != this.prevData.fb || this.twitter!= this.data.twitter || this.linkedin != this.prevData.linkedin){
-        json.webPages=this.data.webPages;
-        if(json.webPages==undefined)
-          json.webPages=[];
-        if(this.fb != this.prevData.fb)
-          { var obj={
-            "type":"fb",
-            "url": this.fb}
-            json.webPages.push(obj);
-          }
-
-        if(this.twitter != this.prevData.twitter)
-          { var obj={
-            "type":"twitter",
-            "url": this.twitter}
-            json.webPages.push(obj);
-          }
-
-        if(this.linkedin != this.prevData.linkedin)
-          { var obj={
-            "type":"linkedin",
-            "url": this.linkedin}
-            json.webPages.push(obj);
-          }
-
-    }
-    else
-      delete json.webPages;
+    // if(this.fb != this.prevData.fb || this.twitter!= this.data.twitter || this.linkedin != this.prevData.linkedin){
+    //     json.webPages=this.data.webPages;
+    //     if(json.webPages==undefined)
+    //       json.webPages=[];
+    //     if(this.fb != this.prevData.fb)
+    //       { var obj={
+    //         "type":"fb",
+    //         "url": this.fb}
+    //         json.webPages.push(obj);
+    //       }
+    //
+    //     if(this.twitter != this.prevData.twitter)
+    //       { var obj={
+    //         "type":"twitter",
+    //         "url": this.twitter}
+    //         json.webPages.push(obj);
+    //       }
+    //
+    //     if(this.linkedin != this.prevData.linkedin)
+    //       { var obj={
+    //         "type":"linkedin",
+    //         "url": this.linkedin}
+    //         json.webPages.push(obj);
+    //       }
+    //
+    // }
+    // else
+    //   delete json.webPages;
 
       json.userId=window.__userToken;
 
@@ -1241,8 +1241,8 @@ class AdditionalInformationActivity extends View{
   }
 
   checkCompleteStatus = () =>{
-
-    if(this.name==null || this.language==null || this.email==null || this.mobile==null || this.checkSameData())
+     console.log("checkSameData",this.checkSameData());
+    if(this.name==null || this.language==null   || this.checkSameData())
       {
       return false;
       }
@@ -1259,9 +1259,9 @@ class AdditionalInformationActivity extends View{
        && this.description == this.prevData.description
        && this.dob == this.prevData.dob
        && this.location == this.prevData.location
-       && this.fb==this.prevData.fb
-       && this.linkedin==this.prevData.linkedin
-       && this.twitter==this.prevData.twitter
+      //  && this.fb==this.prevData.fb
+      //  && this.linkedin==this.prevData.linkedin
+      //  && this.twitter==this.prevData.twitter
        && (this.gender == this.prevData.gender || this.gender.toLowerCase() == this.prevData.gender.toLowerCase())
        && this.arrayEquals(this.grade,this.prevData.grade)
        && this.arrayEquals(this.selectedSubjects,this.prevData.selectedSubjects)){
@@ -1281,7 +1281,7 @@ class AdditionalInformationActivity extends View{
       alphaVal="0.5"
       isClickable = "false"
     }
-
+    console.log("clickable",isClickable);
     var cmd = this.set({
       id: this.idSet.saveButton,
       clickable: isClickable,
