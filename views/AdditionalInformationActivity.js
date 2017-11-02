@@ -102,7 +102,7 @@ class AdditionalInformationActivity extends View{
   }
 
   initData = () => {
-    
+
     console.log(this.data, "jsontosens");
     window.__patchCallback = this.getPatchCallback ;
     this.email = this.data.email;
@@ -501,9 +501,9 @@ class AdditionalInformationActivity extends View{
                               onItemChange={this.onMultiSelectGradeItemChange}/>
                         </LinearLayout>
                         {this.getEditTextView(this.idSet.locationText,window.__S.CURRENT_LOCATION,"",true,this.setLocation)}
-                        {this.getEditTextView(this.idSet.fbText,window.__S.FACEBOOK,"",true,this.setFb)}
-                        {this.getEditTextView(this.idSet.twitterText,window.__S.TWITTER,"",true,this.setTwitter)}
-                        {this.getEditTextView(this.idSet.linkedinText,window.__S.LINKEDIN,"",true,this.setLinkedin)}
+                        {/*this.getEditTextView(this.idSet.fbText,window.__S.FACEBOOK,"",true,this.setFb)*/}
+                        {/*this.getEditTextView(this.idSet.twitterText,window.__S.TWITTER,"",true,this.setTwitter)*/}
+                        {/*this.getEditTextView(this.idSet.linkedinText,window.__S.LINKEDIN,"",true,this.setLinkedin)*/}
 
                     </LinearLayout>
         </LinearLayout>
@@ -1176,7 +1176,7 @@ class AdditionalInformationActivity extends View{
             "url": this.fb}
             json.webPages.push(obj);
           }
-        
+
         if(this.twitter != this.prevData.twitter)
           { var obj={
             "type":"twitter",
@@ -1345,6 +1345,6 @@ class AdditionalInformationActivity extends View{
    setLinkedin = (data)=>{
     this.linkedin=data;
     this.updateSaveButtonStatus(this.checkCompleteStatus());
-  } 
+  }
 }
 module.exports = Connector(AdditionalInformationActivity);
