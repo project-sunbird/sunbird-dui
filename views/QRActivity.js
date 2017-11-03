@@ -123,6 +123,7 @@ class QRActivity extends View {
   }
 
   showErrorPopup = (type) => {
+    window.__LoaderDialog.hide();
     console.log("showErrorPopup", type );
     var cmd;
     if (type == "PERMISSION"){
