@@ -217,7 +217,7 @@ const stringsRes = {
 		CANCEL : "CANCEL",
 		ERROR_NO_RESUME_CONTENT_AVAILABLE : "Error no resume content available",
 		SELECT_LANGUAGE : "Select Language",
-		READ_LESS : "Read Less",
+		READ_LESS : "Read less",
 		CONFIRM_DEL : "Confirm Delete?",
 		ADDRESS_LINE1 : "Address Line 1",
 		ADDRESS_LINE2 : "Address Line 2",
