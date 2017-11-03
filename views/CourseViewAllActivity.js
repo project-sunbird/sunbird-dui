@@ -153,7 +153,8 @@ class CourseViewAllActivity extends View {
         1000,
         "View more",
         callback1,
-        this.idSet.viewMoreButton
+        this.idSet.viewMoreButton,
+        0
       );
     }else
     {
@@ -164,6 +165,7 @@ class CourseViewAllActivity extends View {
         null,
         "",
         "",
+        0
       );
     }
   }else

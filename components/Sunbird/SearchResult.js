@@ -129,7 +129,8 @@ class SearchResult extends View {
       1000,
       null,
       "",
-      ""
+      "",
+      1
     );
   }
 
