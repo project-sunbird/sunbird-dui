@@ -59,7 +59,7 @@ class ProfileAdditionalInfo extends View {
       value : this.languages
     },
     {
-      name: window.__S.EMAIL,
+      name: window.__S.EMAIL_ID,
       value : this.data.email
     },
     {

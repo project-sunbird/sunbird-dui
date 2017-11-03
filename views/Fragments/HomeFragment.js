@@ -288,7 +288,6 @@ class HomeFragment extends View {
                   orientation="vertical">
 
                    <CourseInProgressContainer
-                    addCard={this.getTodoProfileCard(0)}
                     addCardVisibility={this.profileUpdateCardVisibility}
                     transparent="true"
                     title={window.__S.TO_DO}
