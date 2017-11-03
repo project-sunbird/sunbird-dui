@@ -137,7 +137,8 @@ showList = () =>{
       1000,
       "View more",
       callback1,
-      this.idSet.viewMoreButton
+      this.idSet.viewMoreButton,
+      0
     );
   }else
   {
@@ -148,6 +149,7 @@ showList = () =>{
       null,
       "",
       "",
+      0
     );
   }
 }else
