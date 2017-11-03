@@ -145,6 +145,7 @@ class CommProfSearchActivity extends View {
     });
 
     JBridge.handleImeAction(this.idSet.searchEditHolder, callback);
+    JBridge.getFocus(this.idSet.searchEditHolder);
   }
 
   onPop = () => {

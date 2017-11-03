@@ -117,6 +117,7 @@ class SearchActivity extends View {
     console.log("VISIBILITY IN AFTERRENDER",window.__LoaderDialog.visibility);
 
     JBridge.handleImeAction(this.idSet.searchHolder, callback);
+    JBridge.getFocus(this.idSet.searchHolder);
 
   }
 
