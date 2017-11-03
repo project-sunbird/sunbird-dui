@@ -20,7 +20,7 @@ class ProfileHeader extends View {
     this.userName = this.props.data.userName ? this.props.data.userName : "";
     this.imageUrl = this.props.data.avatar ? this.props.data.avatar : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR1X3cm5xzR4D1W9oPb2QWioKlrfLVd0DvXFUNqSjZfg-M0bpc";
     this.firstName = this.props.data.firstName ? this.props.data.firstName : this.userName
-    this.lastName = this.props.data.lastName ? " " + this.props.data.lastName : ""
+    this.lastName = this.props.data.lastName ? this.props.data.lastName : ""
     this.address = (this.props.data.address && this.props.data.address.length > 0) ? this.props.data.address : ""
     // this.orgName=this.props.data.rootOrg.orgName?this.props.data.rootOrg.orgName:"";
     if(this.props.data.rootOrg!=null && this.props.data.rootOrg.hasOwnProperty("orgName")){
@@ -115,14 +115,13 @@ class ProfileHeader extends View {
         </LinearLayout>
       </LinearLayout>);
   }
-  capitalizeFirstLetter =(string)=>
+
+  capitalizeFirstLetter = (string) =>
   {
-    if(string!=undefined)
-      {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-      }
-      else return string;
+    if(string!=undefined) return string.charAt(0).toUpperCase() + string.slice(1);
+    else return string;
   }
+
   render() {
     this.layout = (
             <LinearLayout
@@ -146,7 +145,7 @@ class ProfileHeader extends View {
               <TextView
               width="wrap_content"
               height="wrap_content"
-              text={this.capitalizeFirstLetter(this.firstName) + this.capitalizeFirstLetter(this.lastName)}
+              text={this.capitalizeFirstLetter(this.firstName) + " " + this.capitalizeFirstLetter(this.lastName)}
               padding="0,10,0,2"
               style={window.__TextStyle.textStyle.HEADING.DARK}/>
 
