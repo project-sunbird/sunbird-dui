@@ -85,16 +85,22 @@ foreign import saveToMemory :: String -> String -> Unit
 foreign import readFromMemory :: String -> String
 foreign import getJsonFromString :: String -> A.Json
 foreign import getApiUrl :: Unit -> String
+foreign import getApiUrl1 :: Unit -> String
 foreign import getCurrDate :: Unit -> String
 foreign import getUserToken :: Unit -> String
 foreign import getUserAccessToken :: Unit -> String
 
 getEulerLocation1 = getApiUrl unit
+getEulerLocation2 = getApiUrl1 unit
 
 sendUpdatedState state = sendUpdatedState' state
 
 get path headers =
   makeAff(\error success -> callAPI' success error GET ((getEulerLocation1) <> path) (A.jsonEmptyObject) headers')
+  where headers' = cons (RequestHeader "Content-Type" "application/json") headers
+
+get1 path headers =
+  makeAff(\error success -> callAPI' success error GET ((getEulerLocation2) <> path) (A.jsonEmptyObject) headers')
   where headers' = cons (RequestHeader "Content-Type" "application/json") headers
 
 post path headers body =
@@ -296,9 +302,9 @@ getUserDetail user_id api_token =
   (get requestUrl headers)
 
 getTenantDetail user_access_token api_token slug =
-  let requestUrl = "/org/v1/tenant/info/" <> slug
+  let requestUrl = "/v1/tenant/info/" <> slug
       headers = (generateRequestHeaders user_access_token api_token) in
-  (get requestUrl headers)
+  (get1 requestUrl headers)
 
 userSignup request api_token =
   let requestUrl = "/user/v1/create"

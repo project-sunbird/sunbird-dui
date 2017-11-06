@@ -130,6 +130,12 @@ exports["getApiUrl"] = function() {
   return "https://"+url +"/api";
 };
 
+exports["getApiUrl1"] = function() {
+  var url;
+  var url = JBridge.getApiUrl();
+  return "https://"+url;
+};
+
 
 
 exports["sendUpdatedState'"] = function(state) {
