@@ -162,7 +162,7 @@ const stringsRes = {
 		NO : "No",
 		ABOUT_MODULE : "About This Module",
 		CHOOSE_FROM_FOLLOWING : "Choose from following",
-		LANGUAGES : "Languages",
+		LANGUAGE : "Language",
 		COMING_SOON : "More details coming soon ..",
 		TITLE_EDUCATION : "Education",
 		TITLE_EXPERIENCES : "Experiences",
