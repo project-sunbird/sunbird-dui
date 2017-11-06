@@ -437,7 +437,7 @@ class ResourceDetailActivity extends View {
             width="wrap_content"
             height="wrap_content"
             visibility = {this.details.hasOwnProperty("content")&& this.details.content.hasOwnProperty("me_totalDownloads") ? "visible" : "gone"}
-            text={this.details.hasOwnProperty("content")&& this.details.content.hasOwnProperty("me_totalDownloads") ? this.details.content.me_totalDownloads : "0"}
+            text={this.details.hasOwnProperty("content")&& this.details.content.hasOwnProperty("me_totalDownloads") ? parseInt(this.details.content.me_totalDownloads) : "0"}
             style={window.__TextStyle.textStyle.HINT.DULL}/>
 
           </LinearLayout>

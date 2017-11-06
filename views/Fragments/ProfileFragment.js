@@ -122,6 +122,10 @@ class ProfileFragment extends View {
       console.log("JBridge.searchContent failed, no internet");
     window.__ContentLoadingComponent.hideLoader();
     window.__LoaderDialog.hide();
+    if(!JBridge.isNetworkAvailable()){
+      window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
+      return ;
+    }
   }
 
   getDescription = () => {

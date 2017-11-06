@@ -317,7 +317,10 @@ class ProfileAdditionalInfo extends View {
     return this.layout.render();
   }
   handleEditProfileClick = () => {
-
+    if(!JBridge.isNetworkAvailable()){
+      window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
+      return ;
+    }
     var whatToSend = { "profile" : JSON.stringify(this.data)}
     var event ={ tag: "OPEN_EditProfileActivity", contents: whatToSend }
     window.__runDuiCallback(event);

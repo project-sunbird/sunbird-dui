@@ -102,6 +102,10 @@ class ProfileExperiences extends View {
   }
 
   showPopUp = (item) =>{
+    if(!JBridge.isNetworkAvailable()){
+      window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
+      return ;
+    }
     console.log(item, "showPopUp");
 
     if (this.props.popUpType == window.__PROFILE_POP_UP_TYPE.EXPERIENCE) {

@@ -18,6 +18,7 @@ class SplashScreenActivity extends View {
     this.state = state;
     this.screenName = "SplashScreenActivity"
     window.__apiToken = JBridge.get
+    window.__Check = 0;
     this.getUserToken()
     window.__pressedLoggedOut=false;
 

@@ -159,7 +159,7 @@ class ProfileCreations extends View {
     return (<LinearLayout
               width="match_parent"
               height="1"
-              margin="0,0,0,15"
+              margin="0,16,0,16"
               background={window.__Colors.PRIMARY_BLACK_22}/>)
   }
 
