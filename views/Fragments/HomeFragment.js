@@ -253,8 +253,8 @@ class HomeFragment extends View {
 
   render() {
     var imgUrl = "ic_launcher";
-    if (JBridge.getFromSharedPrefs("logo_url") != "__failed" && JBridge.getFromSharedPrefs("logo_file_path") != "__failed"){
-      imgUrl = "file://" + JBridge.getFromSharedPrefs("logo_file_path");
+    if (JBridge.getFromSharedPrefs("logo_url") != "__failed"){
+      imgUrl = JBridge.getFromSharedPrefs("logo_url");
     }
     this.layout = (
 
