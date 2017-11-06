@@ -46,14 +46,11 @@ const RootScreenActions = require("../actions/RootScreenActions");
 
 var determineScreen = (screenName, state) => {
   var screen;
-
+   
 
   // Space has been added for dir strucuture
   // add accordingly
   switch (state.currScreen) {
-    case "CourseInfoActivty":
-      screen = new(CourseInfoActivty(dispatcher, RootScreenActions))(null, null, state);
-      break;
     case "CourseEnrolledActivity":
       screen = new(CourseEnrolledActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
@@ -78,8 +75,6 @@ var determineScreen = (screenName, state) => {
     case "ContentPreviewScreen":
       screen = new(ContentPreviewScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
-
-
     case "CourseInfoActivity":
       screen = new(CourseInfoActivity(dispatcher, RootScreenActions))(null, null, state);
       break;

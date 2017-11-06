@@ -3,12 +3,13 @@ var Connector = require("@juspay/mystique-backend/src/connectors/screen_connecto
 var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
 var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
 var RelativeLayout = require("@juspay/mystique-backend/src/android_views/RelativeLayout");
-var ProgressBar = require("@juspay/mystique-backend").androidViews.ProgressBar;
+var ProgressBar = require("@juspay/mystique-backend/src/android_views/ProgressBar");
 var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget");
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
-var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
-var ProgressBar = require("@juspay/mystique-backend").androidViews.ProgressBar;
+var ScrollView = require("@juspay/mystique-backend/src/android_views/ScrollView");;
+var HorizontalScrollView = require("@juspay/mystique-backend/src/android_views/HorizontalScrollView");
+var ProgressBar = require("@juspay/mystique-backend/src/android_views/ProgressBar");
 var utils = require('../utils/GenericFunctions');
 
 var objectAssign = require('object-assign');
@@ -383,12 +384,16 @@ class CourseInfoActivity extends View {
     })
 
     return (
+      <HorizontalScrollView
+      width="match_parent"
+      height="wrap_content">
       <LinearLayout
-        margin="0,0,0,0"
+        padding="2,0,2,5"
         height="wrap_content"
         width="match_parent">
         {items}
-      </LinearLayout>);
+      </LinearLayout>
+      </HorizontalScrollView>);
   }
 
   handleMenuClick = (url) =>{
