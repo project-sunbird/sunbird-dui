@@ -392,7 +392,7 @@ class AdditionalInformationActivity extends View{
 
                   {this.getEditTextView(this.idSet.nameText,window.__S.FIRST_NAME,window.__S.FIRST_NAME_HINT,false,this.setName)}
                   {this.getEditTextView(this.idSet.lastNameText,window.__S.LAST_NAME,window.__S.LAST_NAME_HINT,true,this.setLastName)}
-                  {this.getSingleSelectSpinner(this.idSet.languageSpinnerContainer,window.__S.LANGUAGES,false,this.loadLanguageSpinner)}
+                  {this.getSingleSelectSpinner(this.idSet.languageSpinnerContainer,window.__S.LANGUAGE,false,this.loadLanguageSpinner)}
                    <LinearLayout
                    height="wrap_content"
                    width="match_parent"

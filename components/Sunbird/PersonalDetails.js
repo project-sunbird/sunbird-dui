@@ -97,7 +97,7 @@ class PersonalDetails extends View {
 
               {this.getHeader()}
 
-              {this.getRows(window.__S.LANGUAGES,this.language)}
+              {this.getRows(window.__S.LANGUAGE,this.language)}
               {this.getRows(window.__S.EMAIL_ID,this.email)}
               {this.getRows(window.__S.PHONE,this.phone)}
               {this.getRows(window.__S.CURRENT_LOCATION,this.currLoc)}

@@ -55,7 +55,7 @@ class ProfileAdditionalInfo extends View {
     // this.currentLoc = this.getAddress(this.data.address);
 
     this.info = [{
-      name: window.__S.LANGUAGES,
+      name: window.__S.LANGUAGE,
       value : this.languages
     },
     {
