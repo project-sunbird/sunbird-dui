@@ -79,7 +79,7 @@ class UserActivity extends View {
          _this.handleDeepLinkAction(identifier);
       }
     }else{
-        JBridge.showToast(window.__S.MSG_IMPORTED_SUCCESSFULLY,"short");
+        JBridge.showToast(window.__S.MSG_ALREADY_IMPORTED,"short");
         console.log("Successfully IMPORTED CONTENT")
         var whatToSend = []
         var event = { tag: "OPEN_MainActivity", contents: whatToSend };
@@ -366,7 +366,7 @@ class UserActivity extends View {
           var event={tag:"OPEN_Deeplink_CourseEnrolled",contents:whatToSend}
           window.__runDuiCallback(event);
         }
-        
+
         break;
       default:
         console.log("default SWITCH")

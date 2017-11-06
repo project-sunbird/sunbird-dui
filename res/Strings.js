@@ -248,7 +248,8 @@ const stringsRes = {
 		CAMERA_PERMISSION_DENIED : "Camera Permission denied",
 		CAMERA_PERMISSION_SETTINGS : "To provide permission, open settings, select the %s app and click on the camera to allow.",
 		UNKNOWN_QR : "No content found associated with that QR code",
-		TRY_AGAIN : "TRY AGAIN"
+		TRY_AGAIN : "TRY AGAIN",
+		MSG_ALREADY_IMPORTED : "Already Imported"
 	},
 	"hi_IN" : {
 		ALREADY_HAVE_ACC : "मौजूदा उपयोगकर्ता, साइन इन करें",
