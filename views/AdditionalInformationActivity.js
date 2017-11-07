@@ -641,7 +641,10 @@ class AdditionalInformationActivity extends View{
               Android.runInUI(cmd, 0);
 
               _this.updateSaveButtonStatus(_this.checkCompleteStatus());});
-      JBridge.showCalender(callback,"","","");
+              var today = new Date();
+              var date = (today.getFullYear()-18)+'-'+(today.getMonth()+1)+'-'+today.getDate(); 
+              console.log("current date ", date);        
+      JBridge.showCalender(callback,"",date,date);
   }
 
   formatDate = (date) =>{
