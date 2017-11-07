@@ -119,7 +119,11 @@ class QRActivity extends View {
               window.__runDuiCallback(event);
             }
     });
-    JBridge.getContentDetails(identifier,callback);
+
+    if (JBridge.isNetworkAvailable())
+      JBridge.getContentDetails(identifier,callback);
+    else
+      this.showErrorPopup("NOINTERNET");
   }
 
   showErrorPopup = (type) => {
@@ -140,6 +144,15 @@ class QRActivity extends View {
       cmd += this.set({
         id: this.idSet.permissionSettingsMsg,
         text: window.__S.UNKNOWN_QR
+      });
+      cmd += this.set({
+        id: this.idSet.permissionTextHolder,
+        visibility: "gone"
+      });
+    } else if (type == "NOINTERNET"){
+      cmd += this.set({
+        id: this.idSet.permissionSettingsMsg,
+        text: window.__S.ERROR_NO_INTERNET_MESSAGE
       });
       cmd += this.set({
         id: this.idSet.permissionTextHolder,
