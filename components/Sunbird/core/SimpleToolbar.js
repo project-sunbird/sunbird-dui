@@ -40,13 +40,13 @@ getMenu = () =>{
                    style = {IconStyle}
                    popupMenu = {this.props.popupMenu}
                    onMenuItemClick = {this.props.overFlowCallback}
-                   circularImageUrl = {"1," + item.imgUrl}/>
+                   imageUrl = {item.imageUrl}/>
         }
 
          return  <ImageView
                     style = {IconStyle}
                     onClick = {() => {this.handleMenuClick(item.imageUrl)}}
-                    circularImageUrl = {"1," + item.imageUrl}/>
+                    imageUrl = {item.imageUrl}/>
         })
 
     return menuItems;
