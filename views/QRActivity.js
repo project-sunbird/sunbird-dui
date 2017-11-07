@@ -203,7 +203,7 @@ class QRActivity extends View {
             onClick={this.openSettings}/>
           </LinearLayout>
       )
-    } else if (type == "WRONGQR") {
+    } else if (type == "WRONGQR" || type == "NOINTERNET") {
       this.goBackBtn = {
         text : window.__S.CANCEL,
         id : this.idSet.goBackBtn,
