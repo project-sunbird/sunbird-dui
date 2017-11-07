@@ -43,7 +43,7 @@ class CardComponent extends View {
   }
 
   getBody = () => {
-    var myProgress = this.props.data.isProgress?this.props.data.footerTitle.split('%')[0]:"0" ;
+    var myProgress = this.props.data.progressPercent||"0";
     return (
       <LinearLayout
             width="wrap_content"

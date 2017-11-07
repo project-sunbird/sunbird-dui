@@ -299,6 +299,10 @@ class AddressPopUp extends View {
   }
 
   handleDelClick = () => {
+    if(!JBridge.isNetworkAvailable()){
+      window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
+      return ;
+    }
     window.__SimplePopup.show(this.idSet.addressConf);
   }
 
@@ -309,6 +313,10 @@ class AddressPopUp extends View {
     return false;
   }
   handleSaveClick =()=>{
+    if(!JBridge.isNetworkAvailable()){
+      window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
+      return ;
+    }
     window.__LoaderDialog.show();
     this.handleSaveClickBody();
     window.__LoaderDialog.hide();

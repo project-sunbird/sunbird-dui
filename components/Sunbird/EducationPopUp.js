@@ -262,9 +262,14 @@ class EducationPopUp extends View {
   }
 
   checkPassingYear = (data) => {
-    if(data.length == 4 && /^\d+$/.test(data)){
-       return true;
-    }
+    try{
+      var inputDate=parseInt(data);
+      var dt = new Date();
+      var currentYear=dt.getYear()+1900;
+      if(inputDate>1900&&inputDate<=currentYear)
+      return true;
+    }catch(e){
+    return false;}
     return false;
   }
 
@@ -288,6 +293,10 @@ class EducationPopUp extends View {
     return false;
   }
  handleSaveClick= ()=>{
+  if(!JBridge.isNetworkAvailable()){
+    window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
+    return ;
+  }
    window.__LoaderDialog.show();
    this.handleSaveClickBody();
    window.__LoaderDialog.hide();   
@@ -542,6 +551,10 @@ class EducationPopUp extends View {
     );
   }
   handleDelClick = () => {
+    if(!JBridge.isNetworkAvailable()){
+      window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
+      return ;
+    }
     window.__SimplePopup.show(this.idSet.eduConf);
   }
 

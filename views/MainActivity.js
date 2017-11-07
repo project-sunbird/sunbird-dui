@@ -105,13 +105,11 @@ class MainActivity extends View {
       var event = { "tag": "API_ProfileFragment", contents: whatToSend };
       window.__runDuiCallback(event);
     } else if (JBridge.getSavedData(this.profileDataTag) != "__failed"){
-      window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
       var data = JSON.parse(utils.decodeBase64(JBridge.getSavedData(this.profileDataTag)));
       data.local = true;
       this.handleStateChange(data)
     } else {
       console.log("__failed in getUserProfileData");
-      window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
       window.__LoaderDialog.hide();
     }
 
@@ -192,7 +190,6 @@ class MainActivity extends View {
         this.profAPIerrCount++;
         console.log("this.profAPIerrCount", this.profAPIerrCount);
         if (JBridge.getSavedData(this.profileDataTag) != "__failed"){
-          window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
           var data = JSON.parse(utils.decodeBase64(JBridge.getSavedData(this.profileDataTag)));
           data.local = true;
           this.handleStateChange(data)
@@ -475,11 +472,18 @@ class MainActivity extends View {
     window.__LoaderDialog.show();
     var event;
     var whatToSend;
+    if(this.currentPageIndex!=0){
+      window.__Check = 0;      
+    }
     switch (this.currentPageIndex) {
       case 0:
-        whatToSend= { "name": "Kiran" };
+      if(!JBridge.isNetworkAvailable()&&window.__Check==0){
+        window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
+        }
+        whatToSend= { "name": "SoMEOnE" };
         event = { "tag": "OPEN_HomeFragment", contents: whatToSend };
         this.getUserProfileData();
+        window.__Check=1;
         break;
       case 1:
       if(!JBridge.isNetworkAvailable())
@@ -512,7 +516,7 @@ class MainActivity extends View {
         this.getUserProfileData();
         break;
       default:
-        whatToSend ={ "name": "Kiran" }
+        whatToSend ={ "name": "sOMeONe" }
         event = { "tag": "OPEN_HomeFragment",  contents: whatToSend };
         break;
     }

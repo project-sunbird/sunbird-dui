@@ -5,7 +5,7 @@ var RelativeLayout = require("@juspay/mystique-backend/src/android_views/Relativ
 var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
 var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
 var HorizontalScrollView = require("@juspay/mystique-backend/src/android_views/HorizontalScrollView");
-var ProgressBar = require("@juspay/mystique-backend").androidViews.ProgressBar;
+var ProgressBar = require("@juspay/mystique-backend/src/android_views/ProgressBar");
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var Button = require('../Sunbird/Button');
 var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget");
@@ -143,6 +143,7 @@ class CourseInProgressContainer extends View {
         actionText:  window.__S.RESUME,
         // footerTitle: (isNaN(pDone/pTotal)?"0":(pDone/pTotal)) +"% done",
         footerTitle: window.__S.COURSE_PROGRESS_COMPLETED.format(progressCount),
+        progressPercent : progressCount,
         footerSubTitle:  "",
         isProgress : "true"
       };
