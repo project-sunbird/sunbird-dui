@@ -120,7 +120,7 @@ class UserActivity extends View {
               }
 
         }
-        else if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook"){
+        else if(item.mimeType.toLowerCase() == "application/vnd.ekstep.content-collection"){
 
               if(deeplinkMode=="preview"){
                 var whatToSend={details:JSON.stringify(item)};
