@@ -439,7 +439,7 @@ class CourseEnrolledActivity extends View {
 
 
 
-    if((this.details.hasOwnProperty("contentType")) && (this.details.contentType.toLocaleLowerCase() == "collection" || this.details.contentType.toLocaleLowerCase() == "textbook")){
+    if((this.details.hasOwnProperty("mimeType")) && (this.details.mimeType.toLocaleLowerCase() == "application/vnd.ekstep.content-collection")){
       var cmd = this.set({
         id: this.idSet.featureButton,
         visibility: "gone"
