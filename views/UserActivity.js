@@ -98,27 +98,20 @@ class UserActivity extends View {
         var deeplinkMode = JBridge.getFromSharedPrefs("deeplinkMode");
 
         if(item.contentType.toLowerCase() == "course"){
-
               console.log("Content type is course",item.contentData);
-
               console.log("DEEPLINK MODE COURSE",deeplinkMode);
-
               if(deeplinkMode=="preview"){
-
-
                 var whatToSend={details:JSON.stringify(item)};
                 var event={tag:"OPEN_DeepLink_ContentPreview",contents:whatToSend}
                 window.__runDuiCallback(event);
 
               }else if(deeplinkMode=="actual"){
-
                 _this.clearDeeplinkPreferences();
 
                 var whatToSend={course:JSON.stringify(item.contentData)};
                 var event={tag:"OPEN_DeepLink_CourseInfo",contents:whatToSend}
                 window.__runDuiCallback(event);
               }
-
         }
         else if(item.mimeType.toLowerCase() == "application/vnd.ekstep.content-collection"){
 
@@ -128,9 +121,7 @@ class UserActivity extends View {
                 window.__runDuiCallback(event);
 
               }else if(deeplinkMode=="actual"){
-
                 console.log("ACTUAL MODE RESOURCE")
-
                 _this.clearDeeplinkPreferences();
 
                 var itemDetails = JSON.stringify(item.contentData);
