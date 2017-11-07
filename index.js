@@ -155,26 +155,20 @@ if (typeof window !== "undefined") {
  /*************************************
  *************Remove for debug build***
  **************************************/
+ console.log("isDebuggable ", JBridge.isDebuggable());
+ if (!JBridge.isDebuggable()){
+   window.console.log = function(msg){}
 
- // window.console.log = function(msg){
+   window.console.info = function(msg){}
 
- // }
+   window.console.error = function(msg){}
 
- // window.console.info = function(msg){
+   window.console.warn = function(msg){}
 
- // }
-
- // window.console.error = function(msg){
-
- // }
-
- // window.console.warn = function(msg){
-
- // }
-
- // window.onerror = function myErrorHandler(errorMsg, url, lineNumber) {
- // return true;
- // }
+   window.onerror = function myErrorHandler(errorMsg, url, lineNumber) {
+     return true;
+   }
+ }
 /*************Until here******************
 ******************************************/
 
