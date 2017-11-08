@@ -93,7 +93,7 @@ class QRActivity extends View {
             var event={tag:"OPEN_CourseInfoActivity_QR",contents:whatToSend}
             window.__runDuiCallback(event);
 
-      } else if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook"){
+      } else if(item.mimeType.toLowerCase() == "application/vnd.ekstep.content-collection"){
               var itemDetails = JSON.stringify(item.contentData);
               _this.deepLinkCollectionDetails = itemDetails;
               console.log("Content type is collecion or TextBook",_this.deepLinkCollectionDetails);

@@ -164,6 +164,7 @@ const stringsRes = {
 		ABOUT_MODULE : "About Module",
 		CHOOSE_FROM_FOLLOWING : "Select from following",
 		LANGUAGES : "LANGUAGES",
+		LANGUAGE : "Language",
 		COMING_SOON : "Details coming soon",
 		TITLE_EDUCATION : "Education",
 		TITLE_EXPERIENCES : "Experiences",
