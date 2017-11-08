@@ -150,6 +150,15 @@ class SearchResult extends View {
        var whatToSend={profile:JSON.stringify(item)};
        var event={tag:"OPEN_ProfileActivity_SEARCH",contents:whatToSend}
        window.__runDuiCallback(event);
+   }else if(item.contentType.toLowerCase() == "course"){
+
+     if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
+       var whatToSend={course:itemDetails};
+       var event={tag:"OPEN_CourseInfoActivity_SEARCH",contents:whatToSend}
+       window.__runDuiCallback(event);
+     }else{
+       this.setPermissions();
+     }
    }else if(item.mimeType.toLowerCase() == "application/vnd.ekstep.content-collection" || utils.checkEnrolledCourse(item.identifier)){
 
       if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
@@ -160,16 +169,7 @@ class SearchResult extends View {
         this.setPermissions();
       }
     }
-    else if(item.contentType.toLowerCase() == "course"){
 
-      if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
-        var whatToSend={course:itemDetails};
-        var event={tag:"OPEN_CourseInfoActivity_SEARCH",contents:whatToSend}
-        window.__runDuiCallback(event);
-      }else{
-        this.setPermissions();
-      }
-    }
 
     else
     {
