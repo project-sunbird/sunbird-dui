@@ -191,20 +191,20 @@ class AdditionalInformationActivity extends View{
       id: this.idSet.descriptionText,
       text: this.description
     })
-    //
-    // cmd += this.set({
-    //   id: this.idSet.twitterText,
-    //   text: this.twitter
-    // })
-    // cmd += this.set({
-    //   id: this.idSet.fbText,
-    //   text: this.fb
-    // })
-    //
-    // cmd += this.set({
-    //   id: this.idSet.linkedinText,
-    //   text: this.linkedin
-    // })
+
+    cmd += this.set({
+      id: this.idSet.twitterText,
+      text: this.twitter
+    })
+    cmd += this.set({
+      id: this.idSet.fbText,
+      text: this.fb
+    })
+
+    cmd += this.set({
+      id: this.idSet.linkedinText,
+      text: this.linkedin
+    })
 
     Android.runInUI(cmd, 0);
 
@@ -490,7 +490,7 @@ class AdditionalInformationActivity extends View{
                              width="match_parent"
                              height="wrap_content"
                              style={window.__TextStyle.textStyle.HINT.SEMI}
-                             text={window.__S.GRADE}
+                         text={window.__S.GRADE}
                              margin="0,0,0,8"
                              padding="4,0,0,0"/>
                             <MultiSelectSpinner
@@ -501,9 +501,9 @@ class AdditionalInformationActivity extends View{
                               onItemChange={this.onMultiSelectGradeItemChange}/>
                         </LinearLayout>
                         {this.getEditTextView(this.idSet.locationText,window.__S.CURRENT_LOCATION,"",true,this.setLocation)}
-                        {/*this.getEditTextView(this.idSet.fbText,window.__S.FACEBOOK,"",true,this.setFb)*/}
-                        {/*this.getEditTextView(this.idSet.twitterText,window.__S.TWITTER,"",true,this.setTwitter)*/}
-                        {/*this.getEditTextView(this.idSet.linkedinText,window.__S.LINKEDIN,"",true,this.setLinkedin)*/}
+                        {this.getEditTextView(this.idSet.fbText,window.__S.FACEBOOK,"",true,this.setFb)}
+                        {this.getEditTextView(this.idSet.twitterText,window.__S.TWITTER,"",true,this.setTwitter)}
+                        {this.getEditTextView(this.idSet.linkedinText,window.__S.LINKEDIN,"",true,this.setLinkedin)}
 
                     </LinearLayout>
         </LinearLayout>
@@ -642,8 +642,8 @@ class AdditionalInformationActivity extends View{
 
               _this.updateSaveButtonStatus(_this.checkCompleteStatus());});
               var today = new Date();
-              var date = (today.getFullYear()-18)+'-'+(today.getMonth()+1)+'-'+today.getDate(); 
-              console.log("current date ", date);        
+              var date = (today.getFullYear()-18)+'-'+(today.getMonth()+1)+'-'+today.getDate();
+              console.log("current date ", date);
       JBridge.showCalender(callback,"",date,date);
   }
 
@@ -1173,34 +1173,34 @@ class AdditionalInformationActivity extends View{
       delete json.profileSummary;
 
 
-    // if(this.fb != this.prevData.fb || this.twitter!= this.data.twitter || this.linkedin != this.prevData.linkedin){
-    //     json.webPages=this.data.webPages;
-    //     if(json.webPages==undefined)
-    //       json.webPages=[];
-    //     if(this.fb != this.prevData.fb)
-    //       { var obj={
-    //         "type":"fb",
-    //         "url": this.fb}
-    //         json.webPages.push(obj);
-    //       }
-    //
-    //     if(this.twitter != this.prevData.twitter)
-    //       { var obj={
-    //         "type":"twitter",
-    //         "url": this.twitter}
-    //         json.webPages.push(obj);
-    //       }
-    //
-    //     if(this.linkedin != this.prevData.linkedin)
-    //       { var obj={
-    //         "type":"linkedin",
-    //         "url": this.linkedin}
-    //         json.webPages.push(obj);
-    //       }
-    //
-    // }
-    // else
-    //   delete json.webPages;
+    if(this.fb != this.prevData.fb || this.twitter!= this.data.twitter || this.linkedin != this.prevData.linkedin){
+        json.webPages=this.data.webPages;
+        if(json.webPages==undefined)
+          json.webPages=[];
+        if(this.fb != this.prevData.fb)
+          { var obj={
+            "type":"fb",
+            "url": this.fb}
+            json.webPages.push(obj);
+          }
+
+        if(this.twitter != this.prevData.twitter)
+          { var obj={
+            "type":"twitter",
+            "url": this.twitter}
+            json.webPages.push(obj);
+          }
+
+        if(this.linkedin != this.prevData.linkedin)
+          { var obj={
+            "type":"linkedin",
+            "url": this.linkedin}
+            json.webPages.push(obj);
+          }
+
+    }
+    else
+      delete json.webPages;
 
       json.userId=window.__userToken;
 
@@ -1249,7 +1249,7 @@ class AdditionalInformationActivity extends View{
 
   checkCompleteStatus = () =>{
      console.log("checkSameData",this.checkSameData());
-    if(this.name==null || this.language==null   || this.checkSameData())
+    if(this.name==null || this.language==null || this.mobile==null || this.checkSameData())
       {
       return false;
       }
@@ -1266,9 +1266,9 @@ class AdditionalInformationActivity extends View{
        && this.description == this.prevData.description
        && this.dob == this.prevData.dob
        && this.location == this.prevData.location
-      //  && this.fb==this.prevData.fb
-      //  && this.linkedin==this.prevData.linkedin
-      //  && this.twitter==this.prevData.twitter
+       && this.fb==this.prevData.fb
+       && this.linkedin==this.prevData.linkedin
+       && this.twitter==this.prevData.twitter
        && (this.gender == this.prevData.gender || this.gender.toLowerCase() == this.prevData.gender.toLowerCase())
        && this.arrayEquals(this.grade,this.prevData.grade)
        && this.arrayEquals(this.selectedSubjects,this.prevData.selectedSubjects)){

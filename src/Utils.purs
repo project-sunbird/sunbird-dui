@@ -127,7 +127,6 @@ getUserId = readFromMemory "user_id"
 generateRequestHeaders user_access_token api_token=
   let filtered = filter (\x -> not $ snd(x) == "__failed")  [(Tuple "Authorization" ("Bearer " <> api_token))
                                                             ,(Tuple "x-authenticated-user-token" user_access_token) --getUserToken
-                                                            ,(Tuple "x-authenticated-userId" (getUserToken unit)) --getUserToken
                                                             ,(Tuple "X-Consumer-ID" getUserId) --getUserId
                                                             ,(Tuple "X-Device-ID" "X-Device-ID")
                                                             ,(Tuple "X-msgid" "8e27cbf5-e299-43b0-bca7-8347f7e5abcf")
