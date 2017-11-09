@@ -78,7 +78,7 @@ class SplashScreenActivity extends View {
       var whatToSend = []
       var event = { tag: "OPEN_UserActivity", contents: whatToSend}
       window.__runDuiCallback(event);
-    }, 1000);
+    }, 2000);
   }
 
 
