@@ -787,7 +787,7 @@ class UserActivity extends View {
           orientation="vertical">
 
 
-          {this.getSignUpSection()}
+          {/*this.getSignUpSection()*/}
          </LinearLayout>
 
 
