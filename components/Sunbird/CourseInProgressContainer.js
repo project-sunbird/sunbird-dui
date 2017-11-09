@@ -111,11 +111,11 @@ class CourseInProgressContainer extends View {
           root="true"
           height="wrap_content"
           width="match_parent">
-          {rows}
           {this.getExtraLayout()}
+          {rows}
         </LinearLayout>);
     }
-       
+
     this.replaceChild(this.idSet.parentContainer,layout.render(),0);
     window.__ContentLoadingComponent.hideLoader();
     window.__LoaderDialog.hide();
