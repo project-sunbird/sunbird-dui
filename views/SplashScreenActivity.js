@@ -103,6 +103,7 @@ class SplashScreenActivity extends View {
         width="match_parent"
         height="match_parent"
         gravity="center"
+        background={window.__Colors.WHITE}
         orientation="vertical">
 
           <ImageView
