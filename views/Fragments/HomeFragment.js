@@ -32,7 +32,7 @@ class HomeFragment extends View {
 
     this.menuData = {
       url: [
-        // { imageUrl: "ic_scanqr"}, // hide qr scanner feature
+        { imageUrl: "ic_scanqr"},
         { imageUrl: "ic_action_search" }
       ]
     }
