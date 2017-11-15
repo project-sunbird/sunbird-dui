@@ -8,25 +8,25 @@ var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
 var ScrollView = require("@juspay/mystique-backend/src/android_views/ScrollView");
 var EditText = require("@juspay/mystique-backend/src/android_views/EditText");
-var TextInputView = require("./core/TextInputView");
-var Spinner = require("../Sunbird/core/Spinner");
-var RadioButton = require("../Sunbird/core/RadioButton");
+var TextInputView = require("../components/Sunbird/core/TextInputView");
+var Spinner = require("../components/Sunbird/core/Spinner");
+var RadioButton = require("../components/Sunbird/core/RadioButton");
 var CheckBox = require("@juspay/mystique-backend/src/android_views/CheckBox");
 var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
-var FeatureButton = require("../../components/Sunbird/FeatureButton");
-var PageOption = require("../../components/Sunbird/core/PageOption")
+var FeatureButton = require("../components/Sunbird/FeatureButton");
+var PageOption = require("../components/Sunbird/core/PageOption")
 var HorizontalScrollView = require("@juspay/mystique-backend/src/android_views/HorizontalScrollView");
-var Styles = require("../../res/Styles");
-var MultiSelectSpinner = require('./MultiSelectSpinner');
-var SimplePopup = require("../../components/Sunbird/core/SimplePopup");
+var Styles = require("../res/Styles");
+var MultiSelectSpinner = require('../components/Sunbird/MultiSelectSpinner');
+var SimplePopup = require("../components/Sunbird/core/SimplePopup");
 let IconStyle = Styles.Params.IconStyle;
 
 
 var _this;
 
-class ExperiencePopUp extends View{
-  constructor(props,childern){
-    super(props,childern);
+class ExperienceActivity extends View{
+  constructor(props, children, state) {
+    super(props, children, state);
     this.setIds([
       "experiencePopUpParent",
       "joiningDateText",
@@ -48,13 +48,19 @@ class ExperiencePopUp extends View{
       "jobTypeRadioContainer",
       "deleteConf"
     ]);
-    this.isVisible = false;
+    this.shouldCacheScreen = false;
+    this.state=state;
+    this.screenName="AddressActivity"
+    try{
+      this.data = JSON.parse(this.state.data.value0.profile);
+      }catch(e){
+        this.data="";
+      }
     this.spinnerArray = ["Select","Bengali","English","Gujarati","Hindi","Kannada","Marathi","Punjabi","Tamil"];
     this.subjectArray = ["Select","Assamese","Bengali","English","Gujarati","Hindi","Kannada","Malayalam","Marathi","Maths","Nepali","Oriya","Punjabi","Tamil","Telugu","Urdu"];
     this.selecteSubject = [];
     this.array="Select,Bengali,English,Gujarati,Hindi,Kannada,Marathi,Punjabi,Tamil";
     _this=this;
-    window.__ExperiencePopUp = this;
     this.props=props;
     this.subjects=[];
     this.jobName="";
@@ -63,152 +69,69 @@ class ExperiencePopUp extends View{
     this.joiningDate="";
     this.endDate="";
     this.isCurrentJob=false;
+    this.singleClick =true;
+    this.canSave = false;
+    this.isVisible = true;
+    window.__patchCallback = this.getPatchCallback ;
 
     this.jobProfile=[];
 
     this.prevData={};
     this.delete = false;
-    this.canSave = false;
 
     this.delBtnState = {
       text : window.__S.DELETE,
       id : this.idSet.delButton,
       isClickable : "true",
       onClick : this.del,
-      visibility : window.__ExperiencePopUp.data ? "visible" : "gone"
+      visibility : this.data ? "visible" : "gone"
     };
 
     this.saveBtnState = {
       text : window.__S.SAVE,
       id : this.idSet.saveButton,
       isClickable : "false",
-      onClick : this.sendJSON,
+      onClick : this.sendJSONBody,
       alpha : "0.5"
     }
 
  }
 
- show = () => {
-   this.singleClick =true;
-   this.canSave = false;
-   this.isVisible = true;
-   window.__patchCallback = this.getPatchCallback ;
-   this.responseCame=false;
-    var cmd=this.set({
-     id : this.idSet.saveButton,
-     alpha : "0.5",
-     clickable : "false"
-   });
-   Android.runInUI(cmd, 0)
-
-   this.replaceChild(this.idSet.experiencePopUpBody,this.getUi().render(),0);
-   this.setVisibility("visible");
-
-  this.initializeData();
-  this.populateData();
-  cmd = this.set({
-    id: this.idSet.delButton,
-    visibility: window.__ExperiencePopUp.data ? "visible" : "gone"
-  });
-  Android.runInUI(cmd, 0)
- }
-
- hide = () => {
-   this.canSave = false;
-   this.isVisible = false;
-   this.spinnerArray = ["Select","Bengali","English","Gujarati","Hindi","Kannada","Marathi","Punjabi","Tamil"];
-   this.array="Select,Bengali,English,Gujarati,Hindi,Kannada,Marathi,Punjabi,Tamil";
-   JBridge.hideKeyboard();
-   this.setVisibility("gone");
-   this.subjects=[];
-   window.__ExperiencePopUp.data=undefined;
- }
-
- getVisibility = (data) => {
-   return this.isVisible;
- }
-
- setVisibility = (data) => {
-   var cmd = this.set({
-     id: this.idSet.experiencePopUpParent,
-     visibility: data
-   })
-
-   Android.runInUI(cmd, 0)
- }
-
-
  initializeData = () =>{
-   if(window.__ExperiencePopUp.data!=undefined)
+   if(this.data!=undefined&& this.data!="")
    {
-     this.prevData.jobName = window.__ExperiencePopUp.data.jobName;
-     this.prevData.Organization = window.__ExperiencePopUp.data.orgName;
-     this.prevData.Position = window.__ExperiencePopUp.data.role;
-     this.prevData.joiningDate=window.__ExperiencePopUp.data.joiningDate;
-     this.prevData.endDate=window.__ExperiencePopUp.data.endDate;
-     this.prevData.subjects = window.__ExperiencePopUp.data.subject;
-     this.prevData.isCurrentJob=window.__ExperiencePopUp.data.isCurrentJob;
-     return;
+     this.prevData.jobName = this.data.jobName;
+     this.prevData.Organization = this.data.orgName;
+     this.prevData.Position = this.data.role;
+     this.prevData.joiningDate=this.data.joiningDate;
+     this.prevData.endDate=this.data.endDate;
+     this.prevData.subjects = this.data.subject;
+     this.prevData.isCurrentJob=this.data.isCurrentJob;
    }
-   this.prevData.subjects=[];
-   this.prevData.jobName="";
-   this.prevData.Organization="";
-   this.prevData.Position="";
-   this.prevData.joiningDate=null;
-   this.prevData.endDate=null;
-   this.prevData.isCurrentJob=false;
-   this.jobProfile = [];
+   else{
+       this.prevData.subjects=[];
+       this.prevData.jobName="";
+       this.prevData.Organization="";
+       this.prevData.Position="";
+       this.prevData.joiningDate=null;
+       this.prevData.endDate=null;
+       this.prevData.isCurrentJob=false;
+       this.jobProfile = [];
+    }
+
+    this.subjects = this.prevData.subjects.slice();
+    this.prevData.subjects = this.subjects.slice();
+    this.jobName=this.prevData.jobName;
+    this.Organization=this.prevData.Organization;
+    this.Position=this.prevData.Position;
+    this.joiningDate=this.prevData.joiningDate;
+    this.endDate=this.prevData.endDate;
+    this.isCurrentJob=this.prevData.isCurrentJob;
+
  }
 
  populateData = () =>{
-   this.subjects = this.prevData.subjects.slice();
-   this.prevData.subjects = this.subjects.slice();
-   this.jobName=this.prevData.jobName;
-   this.Organization=this.prevData.Organization;
-   this.Position=this.prevData.Position;
-   this.joiningDate=this.prevData.joiningDate;
-   this.endDate=this.prevData.endDate;
-   this.isCurrentJob=this.prevData.isCurrentJob;
 
-
-   console.log(this.prevData.jobName,"jobName");
-   console.log(this.prevData.Organization,"organizationText");
-
-   var cmd=this.set({
-     id: this.idSet.jobText,
-     text: this.prevData.jobName
-   })
-
-   cmd+=this.set({
-     id: this.idSet.organizationText,
-     text: this.prevData.Organization
-   })
-
-   cmd+=this.set({
-     id: this.idSet.positionText,
-     text: this.prevData.Position
-   })
-
-   cmd+=this.set({
-     id: this.idSet.joiningDateText,
-     text: (this.prevData.joiningDate==null? "Select Date":this.prevData.joiningDate),
-     visibility: "visible"
-   })
-
-   cmd+=this.set({
-     id: this.idSet.closingDateText,
-     text: (this.prevData.endDate==null? "Select Date":this.prevData.endDate),
-     visibility: "visible"
-   })
-
-   cmd += this.set({
-               id: this.idSet.closingDateLayout,
-               visibility: "visible"
-             });
-
-   Android.runInUI(cmd, 0);
-
-   this.replaceChild(this.idSet.subjectSpinnerContainer, this.getSpinner().render(), 0);
 
    var jobTypeValue = [
      {name:window.__S.YES,select:"0",icon:"ic_action_radio"},
@@ -231,7 +154,7 @@ class ExperiencePopUp extends View{
      });
      Android.runInUI(cmd, 0);
 
-   } else  if (this.data != undefined){
+   } else  if (this.data != undefined&&this.data!=""){
      jobTypeValue[0].select = "0";
      jobTypeValue[1].select = "1";
      index = 1;
@@ -262,6 +185,11 @@ class ExperiencePopUp extends View{
            </LinearLayout>
      );
  }
+ handleBackPressed = () =>{
+  var whatToSend = []
+  var event = { tag: "BACK_ExperienceActivity", contents: whatToSend};
+  window.__runDuiCallback(event);
+}
 
  getBack = () => {
    return (
@@ -270,7 +198,7 @@ class ExperiencePopUp extends View{
      style={IconStyle}
      height="48"
      width="48"
-     onClick={this.hide}
+     onClick={this.handleBackPressed}
      imageUrl = {"ic_action_arrow_left"}/>);
  }
 
@@ -284,7 +212,7 @@ class ExperiencePopUp extends View{
                  width="match_parent"
                  gravity="center_vertical"
                  background="#ffffff"
-                 text={window.__S.TITLE_EXPERIENCES}
+                 text={window.__S.TITLE_EXPERIENCE}
                  style={window.__TextStyle.textStyle.TOOLBAR.HEADING}/>
          </LinearLayout>);
  }
@@ -540,7 +468,7 @@ class ExperiencePopUp extends View{
         id = {id}
         height="wrap_content"
         width="match_parent"
-        hintText={optional ? window.__S.OPTIONAL : ""}
+        hintText={optional ?window.__S.OPTIONAL : label}
         labelText={label}
         mandatory = {optional ? "false" : "true"}
         margin = "0,0,0,18"
@@ -568,11 +496,14 @@ class ExperiencePopUp extends View{
       </LinearLayout>
     );
   }
+  del = () => {
+    window.__SimplePopup.show(this.idSet.deleteConf);
+    console.log("window.__SimplePopup.show()");
+  }
+  afterRender=()=>{
+    this.populateData();
+  }
 
-del = () => {
-  window.__SimplePopup.show(this.idSet.deleteConf);
-  console.log("window.__SimplePopup.show()");
-}
 
  render(){
    var popUpdata = {
@@ -587,8 +518,7 @@ del = () => {
        height = "match_parent"
        root = "true"
        background = "#ffffff"
-       id={this.idSet.experiencePopUpParent}
-       visibility="gone">
+       id={this.idSet.experiencePopUpParent}>
        <RelativeLayout
          width="match_parent"
          height="match_parent"
@@ -615,7 +545,7 @@ del = () => {
      handleConfirmDialog = (type) => {
        if (type == "positive") {
          this.delete = true;
-         this.sendJSON();
+         this.sendJSONBody();
        }
        window.__SimplePopup.hide(this.idSet.deleteConf);
      }
@@ -679,10 +609,10 @@ del = () => {
               style: window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK
             });
 
-            
+
             Android.runInUI(cmd, 0);
 
-            
+
 
             if(_this.checkCompleteStatus()){
               _this.enableSaveButton();
@@ -708,7 +638,7 @@ del = () => {
      handleRadioButtonClick = () =>{
        if(window.__RadioButton!=undefined && window.__RadioButton.currentIndex==0)
        {
-         if(window.__ExperiencePopUp.currentJobSelected != undefined && (window.__ExperiencePopUp.currentJobSelected == false || (window.__ExperiencePopUp.currentJobSelected && this.prevData.endDate == null && this.data != undefined)))
+         if(window.__currentJobSelected != undefined && (window.__currentJobSelected == false || (window.__currentJobSelected && this.prevData.endDate == null && this.data != undefined)))
           {
                var cmd = this.set({
                id: this.idSet.closingDateLayout,
@@ -740,7 +670,7 @@ del = () => {
                {name:window.__S.NO,select:"1",icon:"ic_action_radio"}
                 ];
 
-            
+
              this.replaceChild(this.idSet.jobTypeRadioContainer,
                this.getRadioButtionLayout(jobTypeValue, 1).render(), 0);
 
@@ -774,31 +704,30 @@ del = () => {
       this.responseCame=true;
       console.log(data)
       if(data.result.response=="SUCCESS"){
-        this.hide();
+        window.__LoaderDialog.show();
         window.__BNavFlowRestart();
       }else{
         this.singleClick =true;
         window.__Snackbar.show(data.params.errmsg);
       }
+  }
+  sendJSONBody = () => {
+    if(!JBridge.isNetworkAvailable()){
+      window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
+      return ;
     }
-     sendJSON =()=>{
-       window.__LoaderDialog.show();
-       this.sendJSONBody();
-       window.__LoaderDialog.hide();
-     }
-     sendJSONBody = () => {
-       console.log("inside sendJSON", this.jobProfile);
-       if (this.singleClick && !this.canSave && !this.delete) {
-         if (window.__ExperiencePopUp.data)
-           window.__Snackbar.show(window.__S.WARNING_PLEASE_MAKE_SOME_CHANGES);
-         else
-           window.__Snackbar.show(window.__S.WARNING_PLEASE_ADD_MANDATORY_DETAILS);
-         return;
-       }
+      console.log("inside sendJSON", this.jobProfile);
+      if (this.singleClick && !this.canSave && !this.delete) {
+        if (this.data)
+          window.__Snackbar.show(window.__S.WARNING_PLEASE_MAKE_SOME_CHANGES);
+        else
+          window.__Snackbar.show(window.__S.WARNING_PLEASE_ADD_MANDATORY_DETAILS);
+        return;
+      }
 
        this.jobProfile = []
        console.log();
-       if(window.__ExperiencePopUp.data==undefined){
+       if(this.data==undefined||this.data==""){
           this.json ={
             "jobName":this.jobName,
             "orgName":this.Organization,
@@ -813,7 +742,7 @@ del = () => {
           this.jobProfile.push(this.json);
         }
         else{
-          var json=  window.__ExperiencePopUp.data;
+          var json=  this.data;
 
           json.jobName=this.jobName;
           json.orgName=this.Organization;
@@ -872,7 +801,8 @@ del = () => {
          }
 
      checkCompleteStatus = () =>{
-       if(window.__ExperiencePopUp.data != undefined
+       console.log("1,",this.data,"2,",this.jobName,"3,",this.prevData.jobName,"4,");
+       if(this.data != undefined  && this.data!=""
           && this.jobName == this.prevData.jobName
           && this.Organization == this.prevData.Organization
           && this.Position== this.prevData.Position
@@ -881,8 +811,8 @@ del = () => {
           && this.endDate == this.prevData.endDate ){
            return false;
          }
-      else if(window.__ExperiencePopUp.data == undefined
-        &&(this.jobName == this.prevData.jobName || this.Organization == this.prevData.Organization))
+      else if((this.data == undefined || this.data == "")
+        &&(this.jobName==""|| this.Organization==""|| this.jobName == this.prevData.jobName || this.Organization == this.prevData.Organization))
         {
           return false;
         }
@@ -944,4 +874,4 @@ del = () => {
      }
   }
 
-module.exports = ExperiencePopUp;
+module.exports = Connector(ExperienceActivity);

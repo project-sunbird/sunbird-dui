@@ -151,7 +151,7 @@ class CourseViewAllActivity extends View {
         this.idSet.listContainer,
         JSON.stringify(this.jsonArray),
         1000,
-        "View more",
+        window.__S.VIEW_MORE,
         callback1,
         this.idSet.viewMoreButton,
         0

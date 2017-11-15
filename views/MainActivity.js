@@ -67,7 +67,7 @@ class MainActivity extends View {
 
   onPop = () => {
 
-
+    
     Android.runInUI(
       this.animateView(),
       null
@@ -87,14 +87,15 @@ class MainActivity extends View {
 
     this.backPressCount = 0;
 
-    if(this.currentPageIndex==1 || this.currentPageIndex==0){
-      // var whatToSend = {"user_token":window.__user_accessToken,"api_token": window.__apiToken}
-      // var event ={ "tag": "API_UserEnrolledCourse", contents: whatToSend};
-      // window.__runDuiCallback(event);
-      window.__fetchCourse();
-    }else if(this.currentPageIndex==2){
-      window.__UpdateOfflineContent();
-    }
+    // if(this.currentPageIndex==1 || this.currentPageIndex==0){
+    //   // var whatToSend = {"user_token":window.__user_accessToken,"api_token": window.__apiToken}
+    //   // var event ={ "tag": "API_UserEnrolledCourse", contents: whatToSend};
+    //   // window.__runDuiCallback(event);
+    //   window.__fetchCourse();
+    // }else if(this.currentPageIndex==2){
+    //   window.__UpdateOfflineContent();
+    // }
+    window.__BNavFlowRestart();
 
   }
 
@@ -117,18 +118,6 @@ class MainActivity extends View {
 
   onBackPressed = () => {
 
-    if(window.__EducationPopUp.getVisibility()){
-      window.__EducationPopUp.hide();
-      return;
-    }
-    if(window.__ExperiencePopUp.getVisibility()){
-      window.__ExperiencePopUp.hide();
-      return;
-    }
-    if(window.__AddressPopUp.getVisibility()){
-      window.__AddressPopUp.hide();
-      return;
-    }
     if(window.__PageFilterChooser.getVisibility()){
       window.__PageFilterChooser.hide();
       return;
@@ -237,7 +226,9 @@ class MainActivity extends View {
 
     if (!window.__API_Profile_Called){
       window.__API_Profile_Called = true;
-      if (window.__userName != undefined) window.__Snackbar.show(window.__S.WELCOME_BACK.format(window.__userName));
+      if (window.__userName != undefined) {
+        window.__Snackbar.show(window.__S.WELCOME_BACK.format(window.__userName));
+      }
     }
 
 

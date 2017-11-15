@@ -9,23 +9,23 @@ var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
 var ScrollView = require("@juspay/mystique-backend/src/android_views/ScrollView");
 var EditText = require("@juspay/mystique-backend/src/android_views/EditText");
-var TextInputView = require("./core/TextInputView");
-var Spinner = require("../Sunbird/core/Spinner");
-var RadioButton = require("../Sunbird/core/RadioButton");
+var TextInputView = require("../components/Sunbird/core/TextInputView");
+var Spinner = require("../components/Sunbird/core/Spinner");
+var RadioButton = require("../components/Sunbird/core/RadioButton");
 var CheckBox = require("@juspay/mystique-backend/src/android_views/CheckBox");
 var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
-var FeatureButton = require("../../components/Sunbird/FeatureButton");
-var PageOption = require("../../components/Sunbird/core/PageOption")
-var SimplePopup = require("../../components/Sunbird/core/SimplePopup");
-var Styles = require("../../res/Styles");
+var FeatureButton = require("../components/Sunbird/FeatureButton");
+var PageOption = require("../components/Sunbird/core/PageOption")
+var SimplePopup = require("../components/Sunbird/core/SimplePopup");
+var Styles = require("../res/Styles");
 let IconStyle = Styles.Params.IconStyle;
 
 var _this;
 
-class EducationPopUp extends View {
-  constructor(props, childern) {
-    super(props,childern);
-    this.setIds([
+class EducationActivity extends View {
+  constructor(props, children, state) {
+    super(props, children, state);
+      this.setIds([
       "educationPopUpParent",
       "educationPopUpBody",
       "degreeText",
@@ -40,9 +40,17 @@ class EducationPopUp extends View {
       "saveButtonContainer",
       "eduConf"
     ]);
-    _this=this;
-    this.isVisible=false;
-    window.__EducationPopUp = this;
+    this.shouldCacheScreen = false;
+    this.state=state;
+    window.__patchCallback = this.getPatchCallback ;
+    this.screenName="EducationActivity"
+    try{
+      this.data = JSON.parse(this.state.data.value0.profile);
+      }catch(e){
+        this.data=""
+      }    _this=this;
+    this.isVisible=true;
+    this.singleClick=true;
     this.props = props;
     this.responseCame=false;
     this.degree = "";
@@ -60,16 +68,18 @@ class EducationPopUp extends View {
       id : this.idSet.delButton,
       isClickable : "true",
       onClick : this.handleDelClick,
-      visibility : window.__EducationPopUp.data ? "visible" : "gone"
+      visibility : this.data ? "visible" : "gone"
     };
 
     this.saveBtnState = {
       text : window.__S.SAVE,
       id : this.idSet.saveButton,
       isClickable : "false",
-      onClick : this.handleSaveClick,
+      onClick : this.handleSaveClickBody,
       alpha : "0.5"
     }
+
+    this.initializeData();
   }
 
   getUi = () => {
@@ -83,103 +93,35 @@ class EducationPopUp extends View {
       </RelativeLayout>);
   }
 
-  show = () => {
-    this.singleClick=true;
-    this.canSave = false;
-    this.isVisible=true;;
-    window.__patchCallback = this.getPatchCallback ;
-    this.responseCame=false;
-    this.updateSaveButtonStatus(false);
-    this.replaceChild(this.idSet.educationPopUpBody, this.getUi().render(),0);
-    this.setVisibility("visible");
-    this.initializeData();
-    this.populateData();
-    var cmd = this.set({
-      id: this.idSet.delButton,
-      visibility: window.__EducationPopUp.data ? "visible" : "gone"
-    });
-    Android.runInUI(cmd, 0)
-  }
-
-  hide = () => {
-    this.canSave = false;
-    this.isVisible=false;
-    JBridge.hideKeyboard();
-    this.setVisibility("gone");
-    window.__EducationPopUp.data=undefined;
-  }
-
-  getVisibility = (data) => {
-    return this.isVisible;
-  }
-
-  setVisibility = (data) => {
-    var cmd = this.set({
-      id: this.idSet.educationPopUpParent,
-      visibility: data
-    })
-    Android.runInUI(cmd, 0)
-  }
 
   initializeData = () => {
-    this.prevData.degree = "";
-    this.prevData.yearOfPassing = "";
-    this.prevData.percentage = "";
-    this.prevData.inititution = "";
-    this.prevData.boardOrUniversity = "";
-    this.prevData.grade = "";
 
-    if (window.__EducationPopUp.data != undefined) {
-      this.prevData.degree = window.__EducationPopUp.data.degree;
-      this.prevData.yearOfPassing = window.__EducationPopUp.data.yearOfPassing ? window.__EducationPopUp.data.yearOfPassing : "";
-      this.prevData.percentage = window.__EducationPopUp.data.percentage ? window.__EducationPopUp.data.percentage : "";
-      this.prevData.inititution = window.__EducationPopUp.data.name;
-      this.prevData.boardOrUniversity = window.__EducationPopUp.data.boardOrUniversity;
-      this.prevData.grade = window.__EducationPopUp.data.grade;
-    }
+
+    if (this.data != undefined && this.data!="") {
+      this.prevData.degree = this.data.degree;
+      this.prevData.yearOfPassing = this.data.yearOfPassing ? this.data.yearOfPassing : "";
+      this.prevData.percentage = this.data.percentage ? this.data.percentage : "";
+      this.prevData.inititution = this.data.name;
+      this.prevData.boardOrUniversity = this.data.boardOrUniversity;
+      this.prevData.grade = this.data.grade;
+     }
+     else{
+       this.prevData.degree = "";
+       this.prevData.yearOfPassing = "";
+       this.prevData.percentage = "";
+       this.prevData.inititution = "";
+       this.prevData.boardOrUniversity = "";
+       this.prevData.grade = "";
+     }
+
+     this.degree = this.prevData.degree;
+     this.yearOfPassing = this.prevData.yearOfPassing;
+     this.percentage = this.prevData.percentage;
+     this.inititution = this.prevData.inititution;
+     this.boardOrUniversity = this.prevData.boardOrUniversity;
+     this.grade = this.prevData.grade;
   }
 
-
-  populateData = () => {
-    this.degree = this.prevData.degree;
-    this.yearOfPassing = this.prevData.yearOfPassing;
-    this.percentage = this.prevData.percentage;
-    this.inititution = this.prevData.inititution;
-    this.boardOrUniversity = this.prevData.boardOrUniversity;
-    this.grade = this.prevData.grade;
-
-    var cmd = this.set({
-      id: this.idSet.degreeText,
-      text: this.prevData.degree
-    })
-
-    cmd += this.set({
-      id: this.idSet.yearOfPassingText,
-      text: this.prevData.yearOfPassing
-    })
-
-    cmd += this.set({
-      id: this.idSet.percentageText,
-      text: this.prevData.percentage
-    })
-
-    cmd += this.set({
-      id: this.idSet.inititutionText,
-      text: this.prevData.inititution
-    })
-
-    cmd += this.set({
-      id: this.idSet.boardOrUniversityText,
-      text: this.prevData.boardOrUniversity
-    })
-
-    cmd += this.set({
-      id: this.idSet.gradeText,
-      text: this.prevData.grade
-    })
-
-    Android.runInUI(cmd, 0);
-  }
 
   setDegree = (data) => {
     this.degree = data;
@@ -292,20 +234,14 @@ class EducationPopUp extends View {
     }
     return false;
   }
- handleSaveClick= ()=>{
-  if(!JBridge.isNetworkAvailable()){
-    window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
-    return ;
-  }
-   window.__LoaderDialog.show();
-   this.handleSaveClickBody();
-   window.__LoaderDialog.hide();   
- }
 
   handleSaveClickBody = () => {
-    
+    if(!JBridge.isNetworkAvailable()){
+      window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
+      return ;
+    }
     if (this.singleClick && !this.canSave && !this.delete){
-      if (window.__EducationPopUp.data){
+      if (this.data){
         window.__Snackbar.show(window.__S.WARNING_PLEASE_MAKE_SOME_CHANGES);
       }
       else{
@@ -344,7 +280,7 @@ class EducationPopUp extends View {
                 return;
               }
             }
-    if (window.__EducationPopUp.data == undefined) {
+    if (this.data == undefined|| this.data=="") {
       json = {
         "degree": this.degree,
         "yearOfPassing": parseInt(this.yearOfPassing),
@@ -354,7 +290,7 @@ class EducationPopUp extends View {
         "boardOrUniversity" : this.boardOrUniversity
       }
     } else {
-      json = window.__EducationPopUp.data;
+      json = this.data;
       json.degree = this.degree;
       json.yearOfPassing = parseInt(this.yearOfPassing);
       json.name = this.inititution;
@@ -388,7 +324,7 @@ class EducationPopUp extends View {
                return;
              }
              console.log("TIMEOUT");
-             window.__LoaderDialog.hide();             
+             window.__LoaderDialog.hide();
              window.__Snackbar.show(window.__S.ERROR_SERVER_CONNECTION);
              _this.responseCame=false;
          },window.__API_TIMEOUT);
@@ -406,9 +342,9 @@ class EducationPopUp extends View {
    this.responseCame=true;
    console.log(data)
    if(data.result.response=="SUCCESS"){
-     this.hide();
-     window.__BNavFlowRestart();
-   }else{
+     window.__LoaderDialog.show();
+    window.__BNavFlowRestart();
+  }else{
      this.singleClick =true;
      window.__Snackbar.show(data.params.errmsg);
    }
@@ -435,6 +371,11 @@ class EducationPopUp extends View {
             </LinearLayout>
       );
   }
+  handleBackPressed = () =>{
+    var whatToSend = []
+    var event = { tag: "BACK_EducationActivity", contents: whatToSend};
+    window.__runDuiCallback(event);
+  }
 
   getBack = () => {
     return (
@@ -443,7 +384,7 @@ class EducationPopUp extends View {
       style={IconStyle}
       height="48"
       width="48"
-      onClick={this.hide}
+      onClick={this.handleBackPressed}
       imageUrl = {"ic_action_arrow_left"}/>);
   }
 
@@ -480,29 +421,29 @@ class EducationPopUp extends View {
         id={this.idSet.scrollView}
         padding="15,15,15,15">
 
-        {this.getEditTextView(this.idSet.degreeText, window.__S.DEGREE , false, this.setDegree)}
-        {this.getEditTextView(this.idSet.inititutionText, window.__S.INSTITUTION_NAME, false, this.setInitution)}
-        {this.getEditTextView(this.idSet.yearOfPassingText, window.__S.YEAR_OF_PASSING, true, this.setYearOfPassingText, "numeric")}
-        {this.getEditTextView(this.idSet.percentageText, window.__S.PERCENTAGE, true, this.setPercentage, "floating")}
-        {this.getEditTextView(this.idSet.gradeText, window.__S.GRADE, true, this.setGrade)}
-        {this.getEditTextView(this.idSet.boardOrUniversityText,window.__S.BOARD_UNIVERSITY, true, this.setBoardOrUniversity)}
+        {this.getEditTextView(this.idSet.degreeText, this.degree, window.__S.DEGREE , false, this.setDegree)}
+        {this.getEditTextView(this.idSet.inititutionText,this.degree, window.__S.INSTITUTION_NAME, false, this.setInitution)}
+        {this.getEditTextView(this.idSet.yearOfPassingText,this.yearOfPassing, window.__S.YEAR_OF_PASSING, true, this.setYearOfPassingText, "numeric")}
+        {this.getEditTextView(this.idSet.percentageText,this.percentage, window.__S.PERCENTAGE, true, this.setPercentage, "numeric")}
+        {this.getEditTextView(this.idSet.gradeText,this.grade, window.__S.GRADE, true, this.setGrade)}
+        {this.getEditTextView(this.idSet.boardOrUniversityText,this.boardOrUniversity,window.__S.BOARD_UNIVERSITY, true, this.setBoardOrUniversity)}
 
       </LinearLayout>
     );
   }
 
-  getEditTextView = (id, label, optional,onChange, inputType) => {
+  getEditTextView = (id, text, label, optional,onChange, inputType) => {
     return (
       <TextInputView
         id = {id}
         height="wrap_content"
         width="match_parent"
-        hintText={optional ? window.__S.OPTIONAL : ""}
+        hintText={optional ?window.__S.OPTIONAL : label}
         labelText={label}
         mandatory = {optional ? "false" : "true"}
         margin = "0,0,0,18"
         _onChange={onChange}
-        text = ""
+        text = {text}
         textStyle = {window.__TextStyle.textStyle.HINT.SEMI}
         editTextStyle = {window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
         inputType = {inputType ? inputType : "text"}/>
@@ -561,10 +502,12 @@ class EducationPopUp extends View {
   handleConfirmDialog = (type) => {
     if (type == "positive") {
       this.delete = true;
-      this.handleSaveClick();
+      this.handleSaveClickBody();
     }
     window.__SimplePopup.hide(this.idSet.eduConf);
   }
+
+
 
   render() {
     var popUpdata = {
@@ -579,8 +522,7 @@ class EducationPopUp extends View {
         height = "match_parent"
         root = "true"
         id={this.idSet.educationPopUpParent}
-        background = "#ffffff"
-        visibility="gone">
+        background = "#ffffff">
         <RelativeLayout
           width="match_parent"
           height="match_parent"
@@ -604,4 +546,4 @@ class EducationPopUp extends View {
   }
 }
 
-module.exports = EducationPopUp;
+module.exports = Connector(EducationActivity);

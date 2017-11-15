@@ -31,25 +31,31 @@ class ProfileAdditionalInfo extends View {
     this.grade = "";
     this.currentLoc = this.data.location ? this.data.location : "";
 
-    this.data.language.map((item, i) => {
+    if(this.data.hasOwnProperty("language")&&this.data.language.length>0){
+      this.data.language.map((item, i) => {
       var append = ",";
       if (i == this.data.language.length - 1) append = "";
       this.languages += item + append;
     });
+  }
     this.languages = utils.cropText(this.languages, this.maxLen);
 
+    if(this.data.hasOwnProperty("subject")&&this.data.subject.length>0){
     this.data.subject.map((item, i) => {
       var append = ",";
       if (i == this.data.subject.length - 1) append = "";
       this.subjects += item + append;
     });
+  }
     this.subject = utils.cropText(this.subject, this.maxLen);
 
+    if(this.data.hasOwnProperty("grade")&&this.data.grade.length>0){ 
     this.data.grade.map((item, i) => {
       var append = ",";
       if (i == this.data.grade.length - 1) append = "";
       this.grade += item + append;
     });
+  }
     this.grade = utils.cropText(this.grade, this.maxLen);
 
     // this.currentLoc = this.getAddress(this.data.address);
@@ -264,7 +270,7 @@ class ProfileAdditionalInfo extends View {
       orientation="horizontal" >
       <LinearLayout
       width="wrap_content"
-      height="match_parent">
+      height="wrap_content">
       <TextView
       width="wrap_content"
       height="wrap_content"

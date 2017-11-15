@@ -65,8 +65,7 @@ class TextInputView extends View {
         </LinearLayout>
 
         <EditText
-          margin="0,0,0,0"
-          padding="4,4,0,10"
+          padding={this.props.editTextPadding||"4,4,0,10"}
           width="match_parent"
           height="wrap_content"
           id={this.props.id ? this.props.id : this.idSet.editText}

@@ -31,7 +31,7 @@ var _this;
 class ProfileFragment extends View {
   constructor(props, children) {
     super(props, children);
-    console.log(props, "this.props");
+    console.log("this.props profile fragments",props);
 
     this.props.appendText = this.props.appendText || "";
     this.setIds([
@@ -231,6 +231,13 @@ class ProfileFragment extends View {
       window.__runDuiCallback(event);
     }
   }
+  addSkills = ()=>{
+    if(!JBridge.isNetworkAvailable()){
+      window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
+      return;      
+    }    
+    window.__CustomPopUp.show();
+  }
 
   render() {
     var popUpdata = {
@@ -293,13 +300,16 @@ class ProfileFragment extends View {
                   editable = {this.isEditable}
                   data = {this.jobProfile}
                   popUpType={window.__PROFILE_POP_UP_TYPE.EXPERIENCE}
-                  heading = {window.__S.TITLE_EXPERIENCES} />
+                  heading = {window.__S.TITLE_EXPERIENCE} />
 
                 <ProfileExperiences
                   editable = {this.isEditable}
                   data = {this.address}
                   popUpType={window.__PROFILE_POP_UP_TYPE.ADDRESS}
                   heading = {window.__S.TITLE_ADDRESS} />
+                <ProfileSkillTags
+                  editable = {this.isEditable}
+                  onAddClicked={this.addSkills}/>
 
                 <LinearLayout
                   width = "match_parent"

@@ -144,7 +144,7 @@ class ModuleDetailActivity extends View {
                 this.checkContentLocalStatus(this.module);
             // }
 
-            
+
         } else {
             var cmd = this.set({
                 id: this.idSet.downloadProgressText,
@@ -174,6 +174,11 @@ class ModuleDetailActivity extends View {
         }
         else{
                 var callback = callbackMapper.map(function(data) {
+                   if(data=="__failed")
+                     {
+                       window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
+                       this.onBackPressed();
+                     }
                     _this.localContent = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])))
                     if (_this.localContent.isAvailableLocally == true) {
                         var callback1 = callbackMapper.map(function(data) {
@@ -189,16 +194,16 @@ class ModuleDetailActivity extends View {
                                     console.log("module",module)
                                     // this.simpleData.content = module.contentData.size ? "Size : " + utils.formatBytes(module.contentData.size) : "";
                                     JBridge.importCourse(module.identifier, "true")
-                                    // _this.simpleData.content =         
+                                    // _this.simpleData.content =
                                 }
                                 else{
                                         window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
                                         _this.onBackPressed();
                                         return;
                                 }
-                                
-                        
-                        
+
+
+
                       }
                       else
                         window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE)
@@ -379,7 +384,7 @@ class ModuleDetailActivity extends View {
     onSimplePopClick=(type)=>{
 
       if(type=="negative"){
-        //do something 
+        //do something
       }else if(type =="positive"){
         //do something
 

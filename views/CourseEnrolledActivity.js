@@ -218,6 +218,12 @@ class CourseEnrolledActivity extends View {
   checkContentLocalStatus = (identifier) => {
     console.log("local status")
     var callback = callbackMapper.map(function(data) {
+      if(data=="__failed")
+         {
+           window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
+           this.onBackPressed();
+         }
+
       data = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])))
       _this.courseDetails = data;
       console.log("data",data)

@@ -207,7 +207,7 @@ class UserActivity extends View {
     console.log("GOT LOGIN RESPONSE ",response)
 
     window.__LoaderDialog.hide()
-
+    
     if(!this.enableLoginCallback){
       return;
     }
@@ -254,7 +254,7 @@ class UserActivity extends View {
       console.log("login patch call", data);
     }
     JBridge.patchApi(window.__loginUrl + "/api/user/v1/update/logintime", JSON.stringify(body), window.__user_accessToken, window.__apiToken);
-    this.setLoginPreferences();
+    this.setLoginPreferences();  
     var whatToSend = []
     var event = { tag: "OPEN_MainActivity", contents: whatToSend };
     window.__runDuiCallback(event);
@@ -502,7 +502,7 @@ class UserActivity extends View {
     console.log(window.__loginUrl , "/auth/realms/sunbird/protocol/openid-connect/auth","\nandroid");
 
     JBridge.keyCloakLogin(window.__loginUrl + "/auth/realms/sunbird/protocol/openid-connect/auth","android");
-  }
+   }
 
   handleForgotPasscode = ()=>{
       window.__Snackbar.show(window.__S.COMING_SOON);
@@ -913,6 +913,7 @@ class UserActivity extends View {
 
         <LinearLayout
         root="true"
+        background={window.__Colors.WHITE}
         id={this.idSet.parentContainer}
         width="match_parent"
         height="match_parent">

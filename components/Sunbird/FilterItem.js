@@ -92,7 +92,7 @@ class FilterItem extends View {
 
   }
 
-  getPrettifiedLabel = () =>{
+/*  getPrettifiedLabel = () =>{
     var unformatted = this.filterLable.charAt(0).toUpperCase() + this.filterLable.substring(1,this.filterLable.length);
 
     var formatted = [];
@@ -105,12 +105,12 @@ class FilterItem extends View {
         
       }
       return formatted.join("");
-    }
+      }*/
 
   render() {
 
       
-      var label = this.getPrettifiedLabel();
+      var label = this.filterLable;//getPrettifiedLabel(); for future use
 
     this.layout = (
 

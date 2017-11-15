@@ -13,6 +13,9 @@ var CourseInProgressContainer = require('../../components/Sunbird/CourseInProgre
 var HorizontalProgressBar = require('../../components/Sunbird/HorizontalProgressBar');
 var utils = require('../../utils/GenericFunctions');
 var Button = require('../../components/Sunbird/Button');
+var AnnouncementCard = require('../../components/Sunbird/AnnouncementCard');
+const CommunityParams = require('../../CommunityParams');
+
 
 
 window.R = require("ramda");
@@ -49,7 +52,13 @@ class HomeFragment extends View {
   }
 
 
+  handleAnnouncementClick = (item) => {
+    
+    var whatToSend = { "announcementData" : JSON.stringify(item)}
+    var event ={ tag: "OPEN_AnnouncementDetailActivity", contents: whatToSend }
+    window.__runDuiCallback(event);
 
+  }
 
   handleTodoClick = (index) => {
     console.log("Todo Clicked index is ", index);
@@ -115,8 +124,12 @@ class HomeFragment extends View {
              background={window.__Colors.WHITE_F2}/>)
   }
   getTodoProfileCard=(index)=>{
-   this.profileData = JSON.parse(utils.decodeBase64(JBridge.getSavedData("savedProfile")));
-    this.profileData= JSON.parse(utils.decodeBase64(this.profileData.response.status[1]));
+    try {
+      this.profileData = JSON.parse(utils.decodeBase64(JBridge.getSavedData("savedProfile")));
+      this.profileData= JSON.parse(utils.decodeBase64(this.profileData.response.status[1]));
+      } catch (error) {
+        return(<LinearLayout/>);
+    }
     var data= this.profileData.result.response;
     if(data.completeness==100||data.completeness==undefined)
       {
@@ -132,42 +145,29 @@ class HomeFragment extends View {
         var editButtonText="";
         this.profileUpdateCardVisibility="gone";
       }
-      if(editButtonText=="address"){
-          editButtonText=window.__S.TITLE_ADDRESS;
-        }
-      else if(editButtonText=="education"){
-          editButtonText=window.__S.TITLE_EDUCATION;
-        }
-      else if(editButtonText=="jobProfile"){
-          editButtonText=window.__S.TITLE_EXPERIENCES;
-        }
-      else if(editButtonText=="dob"){
-          editButtonText=window.__S.DATE_OF_BIRTH;
-        }
-      else if(editButtonText=="grade"){
-          editButtonText=window.__S.GRADE;
-        }
-      else if(editButtonText=="gender"){
-          editButtonText=window.__S.GENDER;
-        }
-      else if(editButtonText=="profileSummary"){
-          editButtonText=window.__S.DESCRIPTION;
-        }
-      else if(editButtonText=="lastName"){
-           editButtonText=window.__S.LAST_NAME;
-        }
-      else if (editButtonText=="subject")
-        {
-           editButtonText=window.__S.SUBJECTS;
-        }
-      else if(editButtonText=="avatar"){
-        return this.getTodoProfileCard(index+1);
-        }
-      else if(editButtonText=="location"){
-           editButtonText=window.__S.CURRENT_LOCATION;
-      }
-      else{
-        this.profileUpdateCardVisibility="gone";
+      switch(editButtonText){
+        case "address" : editButtonText = window.__S.TITLE_ADDRESS;
+        break;
+        case "education" : editButtonText=window.__S.TITLE_EDUCATION;
+        break;
+        case "jobProfile" : editButtonText=window.__S.TITLE_EXPERIENCE;
+        break;
+        case "dob" : editButtonText=window.__S.DATE_OF_BIRTH;
+        break;
+        case "grade" :  editButtonText=window.__S.GRADE;
+        break;
+        case "gender" : editButtonText=window.__S.GENDER;
+        break;
+        case "profileSummary" : editButtonText=window.__S.DESCRIPTION;
+        break;
+        case "lastName" : editButtonText=window.__S.LAST_NAME; 
+        break;
+        case "subject" : editButtonText=window.__S.SUBJECTS;
+        break;
+        case "location" : editButtonText=window.__S.CURRENT_LOCATION;
+        break;
+        case "avatar" : return this.getTodoProfileCard(index+1);
+        default : this.profileUpdateCardVisibility="gone";
       }
 
     return(
@@ -248,8 +248,69 @@ class HomeFragment extends View {
              </LinearLayout>
     )
   }
+  getAnnouncementCard=()=>{
+    var viewAllVisibility="gone";
+    if(CommunityParams.eventParams.length==0)
+      {
+        var cards= (<LinearLayout
+                    width="match_parent"
+                    height="wrap_content"
+                    background={window.__Colors.PRIMARY_LIGHT}>
+                    <TextView
+                      width="wrap_content"
+                      height="wrap_content"
+                      padding="15,100,5,30"
+                      text={window.__S.NO_ANNOUNCEMENTS}/>
+                  </LinearLayout>
+          );
+      }else{
+        viewAllVisibility="visible"
+   var cards = CommunityParams.eventParams.map((item, i) => {
+      return (
+        <AnnouncementCard
+         params={item}
+         onClick={()=>this.handleAnnouncementClick(item)}/>
+      )
+    });
+  }
+    return (<LinearLayout
+              height="wrap_content"
+              width="match_parent"
+              orientation="vertical"
+              background={window.__Colors.LIGHT_GRAY}>
+                <LinearLayout
+                 width="match_parent"
+                 height="wrap_content"
+                 orientation="horizontal">
+                  <TextView
+                    height="wrap_content"
+                    width="wrap_content"
+                    padding="25,5,25,5"
+                    text={window.__S.ANNOUNCEMENT}
+                    style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
+                  <TextView
+                    height="wrap_content"
+                    weight="1"
+                    gravity="right"
+                    padding="5,0,15,0"
+                    visibility={viewAllVisibility}
+                    onClick={()=>this.handleAnnouncementViewAllClick(CommunityParams.eventParams)}
+                    text={window.__S.VIEW_ALL}
+                    style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
+                </LinearLayout>
+                {cards}
+              </LinearLayout>);
+ }
+ handleAnnouncementViewAllClick= (data1) =>{
+   var data = {
+     "details" : data1
+   }
 
+var whatToSend ={ "announcementDetails": JSON.stringify(data)}
+   var event ={ tag: "OPEN_AnnouncementViewAllActivity", contents:  whatToSend}
 
+   window.__runDuiCallback(event);
+}
 
   render() {
     var imgUrl = "ic_launcher";
@@ -278,7 +339,6 @@ class HomeFragment extends View {
 
 
             <ScrollView
-              height="0"
               weight="1"
               width="match_parent">
 
@@ -301,51 +361,44 @@ class HomeFragment extends View {
                          title= {window.__S.RECOMMENDED}
                          onCourseOpenClick = {this.handleCourseOpen}
                          onResourceOpenClick = {this.handleResourceOpen}/>
-
-
+                    {this.getAnnouncementCard()}
                </LinearLayout>
 
             </ScrollView>
 
 
       </LinearLayout>
-
-
-
-
       )
-
-
     return this.layout.render();
   }
+
   handleEditProfileClick = (editButtonText) => {
-    if(editButtonText=="avatar")
-      {
-        editButtonText=this.props.data.missingFields[1]||"";
-      }
-    if(editButtonText=="address"){
-      window.__AddressPopUp.data=undefined;
-      window.__AddressPopUp.show();
-      return ;
-      }
-    else if(editButtonText=="education"){
-      window.__EducationPopUp.data=undefined;
-      window.__EducationPopUp.show();
+    if(!JBridge.isNetworkAvailable()){
+      window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
       return;
+    }
+    var whatToSend = "";
+    var event = ""
+    switch(editButtonText){
+      case "address" :
+      whatToSend = { "profile": "" }
+      event = { tag: 'OPEN_AddressActivity', contents: whatToSend }
+      break;
+      case "education" :
+      whatToSend = { "profile": "" }
+      event = { tag: 'OPEN_EducationActivity', contents: whatToSend }
+      break;
+      case "jobProfile" :
+      whatToSend = { "profile": "" }
+      event = { tag: 'OPEN_ExperienceActivity', contents: whatToSend }
+      break;
+      case "avatar" : return;
+      default :
+      whatToSend = { "profile" : JSON.stringify(this.profileData.result.response)}
+      event ={ tag: "OPEN_EditProfileActivity", contents: whatToSend }
       }
-    else if(editButtonText=="jobProfile"){
-      window.__ExperiencePopUp.data=undefined;
-      window.__ExperiencePopUp.show();
-      return;
-      }
-        console.log("testing",this.profileData.result.response)
-        var whatToSend = { "profile" : JSON.stringify(this.profileData.result.response)}
-        var event ={ tag: "OPEN_EditProfileActivity", contents: whatToSend }
-        window.__runDuiCallback(event);
-
-      }
-
+      window.__runDuiCallback(event);          
+    }
 }
-
 
 module.exports = HomeFragment;

@@ -95,12 +95,20 @@ class CourseFragment extends View {
     return enrolled;
   }
 
+networkCheck =()=>{
+  if(JBridge.isNetworkAvailable()){
+    window.__BNavFlowRestart();
+    return;
+  }
+  window.__timer=setTimeout(this.dumyfunction,5000);
+}
 
   handleResponse = () => {
     if(!JBridge.isNetworkAvailable())
       {
         window.__ContentLoadingComponent.hideLoader();
-        window.__LoaderDialog.hide();
+        window.__LoaderDialog.hide();       
+        window.timer= setTimeout(this.networkCheck,5000);
         return (this.getNoInternetLayout());
       }
       if(this.props.response===undefined) {
@@ -226,11 +234,12 @@ class CourseFragment extends View {
     if(langCode!="hi")
        langCode="en"
     var LanguageTitle=JSON.parse(item.display).name[langCode];
-
+    
     return (<LinearLayout
         height="wrap_content"
         width="match_parent"
         root="true"
+        visibility={item.contents==undefined?"gone":"visible"}
         orientation="vertical">
           {this.getSpaceSeparator()}
 

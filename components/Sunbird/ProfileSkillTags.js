@@ -7,6 +7,7 @@ var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
 var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget");
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
+var utils = require('../../utils/GenericFunctions')
 
 var _this;
 class ProfileSkillTags extends View {
@@ -18,17 +19,18 @@ class ProfileSkillTags extends View {
     ]);
     _this = this;
     this.isEditable = this.props.editable;
+    console.log("Profile skill tags :",this.props.editable)
     this.data = [{
       "name": "Leadership",
       "tagCount": "+24"
     }, {
-      "name": "Mentor",
-      "tagCount": "+4"
+      "name": undefined,
+      "tagCount": "-4"
     }, {
       "name": "Advanced Chemistry",
       "tagCount": "+12"
     }, {
-      "name": "Mastery in Organic  Chemistry",
+      "name": "Mastery in Organic  Chemistrydnfnwerierjwoeirjoiewjrweijreiewjeij",
       "tagCount": "+14"
     }]
 
@@ -54,7 +56,8 @@ class ProfileSkillTags extends View {
               width="wrap_content"
               height="wrap_content"
               text={window.__S.ADD}
-              visibility = {(this.isEditable == "true") ? "visible" : "gone"}
+              onClick = {this.props.onAddClicked}
+              visibility = {this.isEditable=="true" ? "visible" : "gone"}
               style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
 
               </LinearLayout>)
@@ -71,43 +74,47 @@ class ProfileSkillTags extends View {
 
   getRows(input) {
     return (<LinearLayout
-              width="wrap_content"
+              width="match_parent"
               height="wrap_content"
-              gravity="center_vertical"
-              >
-
+              margin="0,24,0,0"
+              visibility={input.name==undefined?"gone":"visible"}
+              gravity="center_vertical">
+              <LinearLayout
+              weight="1"
+              height="wrap_content"
+              cornerRadius="20"
+              orientation="horizontal"
+              background={window.__Colors.WHITE_F4}>              
               <TextView
-              width="wrap_content"
+              weight="1"
               height="wrap_content"
-              text={input.name}
-              padding="12,2,12,2"
-              background={window.__Colors.WHITE_F4}
-              cornerRadius="15"
+              text={ utils.cropText(input.name,50)}
+              padding="12,7,12,7"
               style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
-
+              <LinearLayout
+               width="1"
+               height="match_parent"
+               cornerRadius="2"
+               background={window.__Colors.PRIMARY_BLACK_22}
+               margin="0,3,0,3"/>
               <TextView
               width="wrap_content"
-              height="wrap_content"
+              height="match_parent"
+              gravity="center"
               text={input.tagCount}
-              margin="8,0,0,0"
+              padding="8,0,12,0"
               style={window.__TextStyle.textStyle.HINT.REGULAR}/>
-
-              <ViewWidget
-              height="0"
-              weight="1"/>
-
+              </LinearLayout>
               <TextView
               width="wrap_content"
               height="wrap_content"
-              text={window.__S.ENDORSE}
-              margin="0,0,5,0"
+              visibility={this.isEditable=="true"?"gone":"visible"}
+              text={"+1"}
+              margin="5,0,5,0"
+              padding="10,3,10,3"
+              cornerRadius="15"
+              stroke={"2,"+window.__Colors.PRIMARY_BLACK_22}
               style={window.__TextStyle.textStyle.HINT.REGULAR}/>
-
-              <ImageView
-              width="24"
-              height="24"
-              imageUrl="ic_action_add_rounded"/>
-
               </LinearLayout>)
   }
 
@@ -116,11 +123,9 @@ class ProfileSkillTags extends View {
 
     var rows = this.data.map((item, i) => {
       return (<LinearLayout
-                width="wrap_content"
+                width="match_parent"
                 height="wrap_content"
-                orientation="vertical"
-                margin="0,24,0,0"
-                >
+                orientation="vertical">
                 {this.getRows(item)}
 
                 </LinearLayout>)
@@ -136,7 +141,7 @@ class ProfileSkillTags extends View {
       <LinearLayout
                 width="wrap_content"
                 height="wrap_content"
-                margin="0,16,0,0"
+                margin="0,16,0,24"
                 orientation="vertical">
 
                 {this.getLineSeperator()}

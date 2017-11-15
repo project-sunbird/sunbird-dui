@@ -22,6 +22,7 @@ class MultiSelectSpinner extends View {
     this.hint = props.hint;
     this.data = props.data;
     this.selectedData = props.selectedData ? props.selectedData : new Array();
+    this.addLayout=props.addLayout;
 
     if (this.selectedData.length > 0) {
       this.selectedData.map((value) => {
@@ -141,14 +142,29 @@ class MultiSelectSpinner extends View {
     );
   }
 
+  getExtraLayout=()=>{
+    if(this.props.addLayout!=undefined&&this.props.addLayout!="")
+      {
+        return (this.props.addLayout);
+      }
+      return (
+        <LinearLayout/> 
+      );
+  }
   getUi() {
     return (
       <LinearLayout
-        width="match_parent"
+      width="match_parent"
+      height="wrap_content"
+      orientation="horizontal">
+      <LinearLayout
+        weight="1"
         height="wrap_content"
         orientation="vertical">
         {this.getSpinnerComponent()}
         {this.getSelectedView()}
+      </LinearLayout>
+      {this.getExtraLayout()}
       </LinearLayout>
     );
   }

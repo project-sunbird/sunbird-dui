@@ -56,10 +56,25 @@ class AdditionalInformationActivity extends View{
       "descriptionText",
       "fbText",
       "twitterText",
-      "linkedinText"
+      "linkedinText",
+      "languageLI",
+      "emailLI",
+      "phoneLI",
+      "locationLI",
+      "dobLI",
+      "gradeLI",
+      "genderLI",
+      "subjectsLI",
+      "descriptionLI",
+      "fbLI",
+      "twitterLI",
+      "linkedinLI",
+      "nameLI",
+      "lastNameLI" 
     ]);
     this.shouldCacheScreen = false;
     this.state=state;
+    this.lockStatus=true;
     this.screenName="AdditionalInformationActivity"
     this.subjectDictionary=["Select","Assamese","Bengali","English","Gujarati","Hindi","Kannada","Malayalam","Marathi","Maths","Nepali","Oriya","Punjabi","Tamil","Telugu","Urdu"];
     this.selectedSubjects=[];
@@ -90,7 +105,7 @@ class AdditionalInformationActivity extends View{
     this.GradeArray=["Select","Kindergarten","Grade 1","Grade 2","Grade 3","Grade 4","Grade 5","Grade 6","Grade 7"];
 
     this.data = JSON.parse(this.state.data.value0.profile);
-    console.log("Info State", this.data);
+    console.log("Info State  ----->", this.state);
 
     this.saveBtnState = {
       text : window.__S.SAVE,
@@ -236,6 +251,7 @@ class AdditionalInformationActivity extends View{
           <MultiSelectSpinner
             width="match_parent"
             height="wrap_content"
+            addLayout={this.getLockIcon(this.idSet.gradeLI,true)}
             data={this.GradeArray}
             selectedData={items}
             onItemChange={this.onMultiSelectGradeItemChange}/>
@@ -265,6 +281,7 @@ class AdditionalInformationActivity extends View{
           <MultiSelectSpinner
             width="match_parent"
             height="wrap_content"
+            addLayout={this.getLockIcon(this.idSet.subjectsLI,true)}
             data={this.subjectDictionary}
             selectedData={items}
             onItemChange={this.onMultiSelectSubjectItemChange}/>
@@ -281,9 +298,8 @@ class AdditionalInformationActivity extends View{
   getLineSeperator = () => {
     return (<LinearLayout
             width="match_parent"
-            height="2"
-            margin="0,0,0,0"
-            background={window.__Colors.PRIMARY_BLACK_22}/>)
+            height="1"
+            background={window.__Colors.PRIMARY_BLACK}/>)
   }
 
   getButtons = () => {
@@ -303,43 +319,93 @@ class AdditionalInformationActivity extends View{
     );
   }
 
-  getSingleSelectSpinner = (id,label,optional,callSpinner) => {
+  getSingleSelectSpinner = (id,label,optional,callSpinner,lockIconVisibility,lockIconId) => {
     return(
       <LinearLayout
       width="match_parent"
       height="wrap_content"
       orientation="vertical"
-      margin="0,0,0,17">
+      margin="0,0,0,18">
          {this.getLabel(label,optional)}
          <LinearLayout
            width="match_parent"
            height="wrap_content"
-           stroke={"2,"+window.__Colors.PRIMARY_BLACK_66}
-           padding="0,8,8,8"
-           margin="4,0,4,4"
-           cornerRadius="4,4,4,4"
+           margin="4,0,0,0"
+           orientation="horizontal"
            id={id}>
+           <LinearLayout
+           height="wrap_content"
+           weight="1">
             {callSpinner()}
+          </LinearLayout>
+            {this.getLockIcon(lockIconId,lockIconVisibility)}
          </LinearLayout>
+         {this.getLineSeperator()}
        </LinearLayout>
     )
   }
+  getLockIcon =(id,visibility)=>{
+    return (<LinearLayout
+    height="36"
+    width="36"
+    id={id}
+    visibility={visibility?"visible":"gone"}
+    onClick={()=>this.privacyChange(id)}
+    alignParentRight="true,-1"
+    gravity="right">
+      <ImageView
+      height="16"
+      width="16"
+      imageUrl={this.lockStatus?"ic_action_lock":"ic_action_unlock"}/>
+  </LinearLayout>);
+  }
 
-  getEditTextView = (id, label, hint , optional , onChange, inputType) =>{
+  getEditTextView = (id, label, hint , optional , onChange, inputType,lockIconVisibility,lockIconId) =>{
+    console.log("getedittextview :",label,"   ",lockIconVisibility);
     return(
-      <TextInputView
-        id = {id}
+      <RelativeLayout
+       height="match_parent"
+       width="match_parent">
+       <TextInputView
+        id={id}
         height="wrap_content"
         width="match_parent"
         hintText={hint + (optional ? " (Optional)" : "")}
         labelText={label}
         mandatory = {optional ? "false" : "true"}
         margin = "0,0,0,18"
+        editTextPadding="4,4,41,10"
         _onChange={onChange}
         text = ""
         textStyle = {window.__TextStyle.textStyle.HINT.SEMI}
         editTextStyle = {window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
-        inputType = {inputType ? inputType : "text"}/>)
+        inputType = {inputType ? inputType : "text"}/>
+        {this.getLockIcon(lockIconId,lockIconVisibility)}
+        </RelativeLayout>)
+  }
+
+  privacyChange = (id)=>{
+    this.lockStatus=!this.lockStatus;
+    
+    var tempLayout=( <LinearLayout
+      height="36"
+      width="36"
+      id={id}
+      onClick={()=>this.privacyChange(id)}
+      alignParentRight="true,-1">
+        <ImageView
+        height="16"
+        width="16"
+        imageUrl={this.lockStatus?"ic_action_lock":"ic_action_unlock"}/>
+     </LinearLayout>
+       );
+    this.replaceChild(id,tempLayout.render(), 0);
+    if(this.lockStatus){
+      window.__Snackbar.show(window.__S.PRIVATE);
+    }else{
+      window.__Snackbar.show(window.__S.PUBLIC);
+      
+    }
   }
 
   getLabel = (label,optional) =>{
@@ -390,14 +456,13 @@ class AdditionalInformationActivity extends View{
         padding="15,15,15,15"
         orientation="vertical">
 
-                  {this.getEditTextView(this.idSet.nameText,window.__S.FIRST_NAME,window.__S.FIRST_NAME_HINT,false,this.setName)}
-                  {this.getEditTextView(this.idSet.lastNameText,window.__S.LAST_NAME,window.__S.LAST_NAME_HINT,true,this.setLastName)}
-                  {this.getSingleSelectSpinner(this.idSet.languageSpinnerContainer,window.__S.LANGUAGE,false,this.loadLanguageSpinner)}
+                  {this.getEditTextView(this.idSet.nameText,window.__S.FIRST_NAME,window.__S.FIRST_NAME_HINT,false,this.setName,undefined,false,this.idSet.nameLI)}
+                  {this.getEditTextView(this.idSet.lastNameText,window.__S.LAST_NAME,window.__S.LAST_NAME_HINT,true,this.setLastName,undefined,false,this.idSet.lastNameLI)}
+                  {this.getSingleSelectSpinner(this.idSet.languageSpinnerContainer,window.__S.LANGUAGES,false,this.loadLanguageSpinner,true,this.idSet.languageLI)}
                    <LinearLayout
                    height="wrap_content"
                    width="match_parent"
                    orientation="vertical">
-
 
                        <LinearLayout
                        width="match_parent"
@@ -412,19 +477,20 @@ class AdditionalInformationActivity extends View{
                           <LinearLayout
                             width="match_parent"
                             height="wrap_content"
-                            padding="0,6,12,12">
+                            padding="0,6,0,0">
 
                               <TextView
-                                width="match_parent"
-                                height="wrap_content"
+                                width="wrap_content"
+                                weight="1"
                                 id= {this.idSet.emailText}
                                 style={window.__TextStyle.textStyle.CARD.BODY.DARK.FADED}/>
+                                {this.getLockIcon(this.idSet.emailLI,true)}
                           </LinearLayout>
                           {this.getLineSeperator()}
                          </LinearLayout>
 
-                       {this.getEditTextView(this.idSet.phoneText,window.__S.PHONE,window.__S.HINT_MOBILE_NUMBER,false,this.setPhone,"numeric")}
-                       {this.getEditTextView(this.idSet.descriptionText,window.__S.DESCRIPTION,"",true,this.setDescription)}
+                       {this.getEditTextView(this.idSet.phoneText,window.__S.PHONE,window.__S.HINT_MOBILE_NUMBER,false,this.setPhone,"numeric",true,this.idSet.phoneLI)}
+                       {this.getEditTextView(this.idSet.descriptionText,window.__S.DESCRIPTION,"",true,this.setDescription,undefined,true,this.idSet.descriptionLI)}
                        <LinearLayout
                          width="match_parent"
                          height="wrap_content"
@@ -441,17 +507,18 @@ class AdditionalInformationActivity extends View{
                            <MultiSelectSpinner
                              width="match_parent"
                              height="wrap_content"
+                             addLayout={this.getLockIcon(this.idSet.subjectsLI,true)}
                              data={this.subjectDictionary}
                              selectedData={this.selectedSubjects}
                              onItemChange={this.onMultiSelectSubjectItemChange}/>
                        </LinearLayout>
-                       {this.getSingleSelectSpinner(this.idSet.spinnerContainer,window.__S.GENDER,true,this.loadGenderSpinner)}
+                       {this.getSingleSelectSpinner(this.idSet.spinnerContainer,window.__S.GENDER,true,this.loadGenderSpinner,true,this.idSet.genderLI)}
 
                        <LinearLayout
                        width="match_parent"
                        height="wrap_content"
                        orientation="vertical"
-                       margin="4,0,0,17">
+                       margin="4,0,0,20">
                          <TextView
                           width="match_parent"
                           height="wrap_content"
@@ -460,7 +527,7 @@ class AdditionalInformationActivity extends View{
                           <LinearLayout
                             width="match_parent"
                             height="wrap_content"
-                            padding="0,6,12,12">
+                            padding="0,6,0,0">
 
                               <ImageView
                                 height="16"
@@ -471,12 +538,15 @@ class AdditionalInformationActivity extends View{
                                 onClick={this.showCalendar}/>
 
                               <TextView
-                                width="match_parent"
+                                width="match_content"
                                 height="wrap_content"
                                 id= {this.idSet.dobText}
                                 style={window.__TextStyle.textStyle.CARD.BODY.DARK.FADED}
                                 text={window.__S.SELECT_DATE}
                                 onClick={this.showCalendar}/>
+                                <LinearLayout
+                                weight="1"/>
+                                {this.getLockIcon(this.idSet.dobLI,true)}      
                           </LinearLayout>
                           {this.getLineSeperator()}
                          </LinearLayout>
@@ -496,14 +566,15 @@ class AdditionalInformationActivity extends View{
                             <MultiSelectSpinner
                               width="match_parent"
                               height="wrap_content"
+                              addLayout={this.getLockIcon(this.idSet.gradeLI,true)}
                               data={this.GradeArray}
                               selectedData={this.grade}
                               onItemChange={this.onMultiSelectGradeItemChange}/>
                         </LinearLayout>
-                        {this.getEditTextView(this.idSet.locationText,window.__S.CURRENT_LOCATION,"",true,this.setLocation)}
-                        {this.getEditTextView(this.idSet.fbText,window.__S.FACEBOOK,"",true,this.setFb)}
-                        {this.getEditTextView(this.idSet.twitterText,window.__S.TWITTER,"",true,this.setTwitter)}
-                        {this.getEditTextView(this.idSet.linkedinText,window.__S.LINKEDIN,"",true,this.setLinkedin)}
+                        {this.getEditTextView(this.idSet.locationText,window.__S.CURRENT_LOCATION,"",true,this.setLocation,undefined,true,this.idSet.locationLI)}
+                        {/*{this.getEditTextView(this.idSet.fbText,window.__S.FACEBOOK,"",true,this.setFb,undefined,true,this.idSet.fbLI)}
+                        {this.getEditTextView(this.idSet.twitterText,window.__S.TWITTER,"",true,this.setTwitter,undefined,true,this.idSet.twitterLI)}
+                        {this.getEditTextView(this.idSet.linkedinText,window.__S.LINKEDIN,"",true,this.setLinkedin,undefined,true,this.idSet.linkedinLI)}*/}
 
                     </LinearLayout>
         </LinearLayout>

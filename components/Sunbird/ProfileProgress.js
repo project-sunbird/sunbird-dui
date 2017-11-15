@@ -76,42 +76,30 @@ class ProfileCreations extends View {
       var editButtonText="";
       temp="gone";
     }
-    if(editButtonText=="address"){
-        editButtonText=window.__S.TITLE_ADDRESS;
-      }
-    else if(editButtonText=="education"){
-        editButtonText=window.__S.TITLE_EDUCATION;
-      }
-    else if(editButtonText=="jobProfile"){
-        editButtonText=window.__S.TITLE_EXPERIENCES;
-      }
-    else if(editButtonText=="dob"){
-        editButtonText=window.__S.DATE_OF_BIRTH;
-      }
-    else if(editButtonText=="grade"){
-        editButtonText=window.__S.GRADE;
-      }
-    else if(editButtonText=="gender"){
-        editButtonText=window.__S.GENDER;
-      }
-    else if(editButtonText=="profileSummary"){
-        editButtonText=window.__S.DESCRIPTION;
-      }
-    else if(editButtonText=="lastName"){
-         editButtonText=window.__S.LAST_NAME;
-      }
-    else if (editButtonText=="subject")
-      {
-           editButtonText=window.__S.SUBJECTS;
-      }
-    else if(editButtonText=="avatar"){
-         return (this.getEditButton(index+1));
-      }
-    else if(editButtonText=="location"){
-         editButtonText=window.__S.CURRENT_LOCATION;
-    } 
-    else{
-      temp="gone";
+
+    switch(editButtonText){
+      case "address" : editButtonText = window.__S.TITLE_ADDRESS;
+      break;      
+      case "education" : editButtonText=window.__S.TITLE_EDUCATION;
+      break;
+      case "jobProfile" : editButtonText=window.__S.TITLE_EXPERIENCE;
+      break;
+      case "dob" : editButtonText=window.__S.DATE_OF_BIRTH;
+      break;
+      case "grade" :  editButtonText=window.__S.GRADE;
+      break;
+      case "gender" : editButtonText=window.__S.GENDER;
+      break;
+      case "profileSummary" : editButtonText=window.__S.DESCRIPTION;
+      break;
+      case "lastName" : editButtonText=window.__S.LAST_NAME;
+      break;
+      case "subject" : editButtonText=window.__S.SUBJECTS;
+      break;
+      case "location" : editButtonText=window.__S.CURRENT_LOCATION;
+      break;
+      case "avatar" : return this.getEditButton(index+1);
+      default : temp="gone";
     }
     return (<TextView
     padding="16,8,0,8"
@@ -120,7 +108,7 @@ class ProfileCreations extends View {
     visibility={temp}
     text= {"+ "+window.__S.ADD+" "+editButtonText}
     style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}
-    onClick={this.handleEditProfileClick}/>);
+    onClick={()=>this.handleEditProfileClick(this.props.data.missingFields[index])}/>);
   }
   getHorizontalSpace() {
     return (<LinearLayout
@@ -270,32 +258,34 @@ class ProfileCreations extends View {
     return this.layout.render();
   }
   
-  handleEditProfileClick = () => {
-    var editButtonText=this.props.data.missingFields[0];
-    if(editButtonText=="avatar")
-      {
-        editButtonText=this.props.data.missingFields[1]||"";
+  handleEditProfileClick = (editButtonText) => {
+    if(!JBridge.isNetworkAvailable()){
+      window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
+      return;      
+    }
+    var whatToSend = "";
+    var event="";
+    switch(editButtonText){ 
+      case "address" : 
+      whatToSend = { "profile": "" }
+      event = { tag: 'OPEN_AddressActivity', contents: whatToSend }
+      break;
+      case "education" :
+      whatToSend = { "profile": "" }
+      event = { tag: 'OPEN_EducationActivity', contents: whatToSend }
+      break;
+      case "jobProfile" :
+      whatToSend = { "profile": "" }
+      event = { tag: 'OPEN_ExperienceActivity', contents: whatToSend }
+      break;
+      case "avatar" : 
+      return;      
+      default :
+      whatToSend = { "profile" : JSON.stringify(this.props.data)}
+      event ={ tag: "OPEN_EditProfileActivity", contents: whatToSend }
       }
-    if(editButtonText=="address"){
-      window.__AddressPopUp.data=undefined;
-      window.__AddressPopUp.show();
-      return ;
-      }
-    else if(editButtonText=="education"){
-      window.__EducationPopUp.data=undefined;
-      window.__EducationPopUp.show();
-      return;
-      }
-    else if(editButtonText=="jobProfile"){
-      window.__ExperiencePopUp.data=undefined;
-      window.__ExperiencePopUp.show();
-      return;
-      }
-       var whatToSend = { "profile" : JSON.stringify(this.props.data)}
-        var event ={ tag: "OPEN_EditProfileActivity", contents: whatToSend }
-        window.__runDuiCallback(event);
-    
-      }
+      window.__runDuiCallback(event);      
+  }
 
 }
 

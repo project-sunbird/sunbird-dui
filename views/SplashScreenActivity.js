@@ -75,8 +75,11 @@ class SplashScreenActivity extends View {
     this.getApiUrl();
 
     setTimeout(() => {
-      var whatToSend = []
-      var event = { tag: "OPEN_UserActivity", contents: whatToSend}
+      var whatToSend = [];
+      var event = { tag: "OPEN_WelcomeScreenActivity", contents: whatToSend};
+      if(("YES"==JBridge.getFromSharedPrefs("logged_in"))){
+        var event = { tag: "OPEN_UserActivity", contents: whatToSend}
+    }
       window.__runDuiCallback(event);
     }, 2000);
   }
@@ -99,7 +102,6 @@ class SplashScreenActivity extends View {
     this.layout = (
       <LinearLayout
         root="true"
-        clickable="true"
         width="match_parent"
         height="match_parent"
         gravity="center"

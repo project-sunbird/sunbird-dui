@@ -15,12 +15,10 @@ var objectAssign = require('object-assign');
 
 var LoaderDialog = require('../components/Sunbird/core/LoaderDialog');
 var PageFilterPopup = require('../components/Sunbird/PageFilterPopup');
+var CustomPopUp = require('../components/Sunbird/CustomPopUp');
 var PreviewImagePopup = require('../components/Sunbird/PreviewImagePopup');
 var ContentLoaderDialog = require('../components/Sunbird/core/ContentLoaderDialog');
 var PermissionDeniedDialog = require('../components/Sunbird/core/PermissionDeniedDialog');
-var ExperiencePopUp = require('../components/Sunbird/ExperiencePopUp');
-var EducationPopUp = require('../components/Sunbird/EducationPopUp');
-var AddressPopUp = require('../components/Sunbird/AddressPopUp');
 var LanguagePopup = require('../components/Sunbird/core/LanguagePopup');
 var ForceUpgradePopup = require('../components/Sunbird/ForceUpgradePopup');
 
@@ -92,9 +90,7 @@ class RootScreen extends View {
         <PageFilterPopup/>
         <ContentLoaderDialog/>
         <PermissionDeniedDialog/>
-        <ExperiencePopUp/>
-        <EducationPopUp/>
-        <AddressPopUp />
+        <CustomPopUp/>
         <PreviewImagePopup
           defaultImage="https://pbs.twimg.com/media/CRafzhtWIAEQ2c9.png"/>
         <LanguagePopup/>

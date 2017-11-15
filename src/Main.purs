@@ -2,25 +2,24 @@
 module Main where
 
 import Control.Monad.Aff
-
+import Control.Monad.Eff.Console
+import Prelude
+import Types.APITypes
+import Types.UITypes
+import UI
 import Utils
 
-import Fragments.CommunityFragment ( communityFragment)
-import Fragments.CourseFragment ( courseFragment)
-import Fragments.ProfileFragment ( profileFragment)
-import Fragments.ResourceFragment ( resourceFragment)
-import Fragments.HomeFragment ( homeFragment )
-
-import Control.Monad.Eff (Eff)
 import Control.Monad.Aff (launchAff)
-import Control.Monad.Eff.Console
-import Control.Monad.Eff.Class(liftEff)
-import Data.Foreign.Generic (encodeJSON)
+import Control.Monad.Eff (Eff)
+import Control.Monad.Eff.Class (liftEff)
 import Control.Monad.Eff.Exception (EXCEPTION)
-import Prelude
-import Types.UITypes
-import Types.APITypes
-import UI
+import DOM.HTML.HTMLElement (offsetHeight)
+import Data.Foreign.Generic (encodeJSON)
+import Fragments.CommunityFragment (communityFragment)
+import Fragments.CourseFragment (courseFragment)
+import Fragments.HomeFragment (homeFragment)
+import Fragments.ProfileFragment (profileFragment)
+import Fragments.ResourceFragment (resourceFragment)
 
 
 main :: Eff (exception::EXCEPTION, ui::UI, console::CONSOLE) Unit
@@ -30,9 +29,22 @@ splashScreenActivity :: Aff(ui::UI,console::CONSOLE) String
 splashScreenActivity = do
     event <- ui $ InitScreen
     case event of
+        OPEN_WelcomeScreenActivity -> welcomeScreenActivity
         OPEN_UserActivity -> userActivity "SplashScreenActivity"
         _ -> pure $ "SplashScreenActivity"
 
+welcomeScreenActivity = do
+    event <- ui $ WelcomeScreenActivity
+    case event of
+        OPEN_StateSelectActivity -> stateSelectActivity
+        _ -> welcomeScreenActivity
+        
+stateSelectActivity = do
+    event <- ui $ StateSelectActivity
+    case event of
+        OPEN_UserActivityFromStateSelection -> userActivity "StateSelectActivity"
+        BACK_StateSelectActivity -> welcomeScreenActivity
+        _ -> stateSelectActivity 
 
 userActivity input = do
     event <- ui $ UserActivity {whereFrom:input}

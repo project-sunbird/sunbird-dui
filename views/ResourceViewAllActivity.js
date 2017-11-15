@@ -7,7 +7,7 @@ var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget"
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
 var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
-var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
+var ScrollView = require("@juspay/mystique-backend/src/android_views/ScrollView");
 var ListView = require("@juspay/mystique-backend/src/android_views/ListView");
 
 
@@ -131,34 +131,34 @@ showList = () =>{
       {
         if(this.btnStatus=="visible"&&(this.jsonArray.length)>=10)
           {
-     JBridge.listViewAdapter(
-      this.idSet.listContainer,
-      JSON.stringify(this.jsonArray),
-      1000,
-      "View more",
-      callback1,
-      this.idSet.viewMoreButton,
-      0
-    );
-  }else
-  {
-    JBridge.listViewAdapter(
-      this.idSet.listContainer,
-      JSON.stringify(this.jsonArray),
-      1000,
-      null,
-      "",
-      "",
-      0
-    );
-  }
-}else
-  {
-      JBridge.appendToListView(
-      this.idSet.listContainer,
-      JSON.stringify(this.jsonArray),
-      1000);
-  }
+            JBridge.listViewAdapter(
+            this.idSet.listContainer,
+            JSON.stringify(this.jsonArray),
+            1000,
+            "View more",
+            callback1,
+            this.idSet.viewMoreButton,
+            0
+          );
+        }else
+        {
+          JBridge.listViewAdapter(
+            this.idSet.listContainer,
+            JSON.stringify(this.jsonArray),
+            1000,
+            null,
+            "",
+            "",
+            0
+          );
+        }
+      }else
+      {
+        JBridge.appendToListView(
+        this.idSet.listContainer,
+        JSON.stringify(this.jsonArray),
+        1000);
+      }
   }
 
 

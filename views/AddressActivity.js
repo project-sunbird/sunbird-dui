@@ -9,22 +9,22 @@ var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
 var ScrollView = require("@juspay/mystique-backend/src/android_views/ScrollView");
 var EditText = require("@juspay/mystique-backend/src/android_views/EditText");
-var TextInputView = require("./core/TextInputView");
-var Spinner = require("../Sunbird/core/Spinner");
-var RadioButton = require("../Sunbird/core/RadioButton");
+var TextInputView = require("../components/Sunbird/core/TextInputView");
+var Spinner = require("../components/Sunbird/core/Spinner");
+var RadioButton = require("../components/Sunbird/core/RadioButton");
 var CheckBox = require("@juspay/mystique-backend/src/android_views/CheckBox");
 var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
-var Styles = require("../../res/Styles");
+var Styles = require("../res/Styles");
 let IconStyle = Styles.Params.IconStyle;
-var SimplePopup = require("../../components/Sunbird/core/SimplePopup");
-var PageOption = require("../../components/Sunbird/core/PageOption")
-var FeatureButton = require("../../components/Sunbird/FeatureButton");
+var SimplePopup = require("../components/Sunbird/core/SimplePopup");
+var PageOption = require("../components/Sunbird/core/PageOption")
+var FeatureButton = require("../components/Sunbird/FeatureButton");
 
 var _this;
 
-class AddressPopUp extends View {
-  constructor(props, childern) {
-    super(props,childern);
+class AddressActivity extends View {
+  constructor(props, children, state) {
+    super(props, children, state);
     this.ADDRESS_TYPE = [
       "permanent",
       "current"
@@ -47,12 +47,20 @@ class AddressPopUp extends View {
       "btnsHolder",
       "addressConf"
     ]);
+    this.shouldCacheScreen = false;
+    this.state=state;
+    this.screenName="AddressActivity"
+    try{
+      this.data = JSON.parse(this.state.data.value0.profile);
+      }catch(e){
+        this.data=""
+      }
     _this=this;
+    this.singleClick=true;
     this.isVisible=false;
-    window.__AddressPopUp = this;
     this.props = props;
     this.responseCame=false;
-
+    window.__patchCallback = this.getPatchCallback ;
     this.delete = false;
     this.canSave = false;
 
@@ -63,86 +71,60 @@ class AddressPopUp extends View {
       id : this.idSet.delButton,
       isClickable : "true",
       onClick : this.handleDelClick,
-      visibility : window.__AddressPopUp.data ? "visible" : "gone"
+      visibility : this.data ? "visible" : "gone"
     };
 
     this.saveBtnState = {
       text : window.__S.SAVE,
       id : this.idSet.saveButton,
       isClickable : "false",
-      onClick : this.handleSaveClick,
+      onClick : this.handleSaveClickBody,
       alpha : "0.5"
     }
-  }
 
-
-  show = () => {
-    this.singleClick=true;
-    this.canSave = false;
-    this.isVisible=true;;
-    window.__patchCallback = this.getPatchCallback ;
-    this.responseCame=false;
-    this.updateSaveButtonStatus(false);
-    this.replaceChild(this.idSet.addressPopUpBody, this.getUi().render(),0);
-    this.setVisibility("visible");
     this.initializeData();
-    this.populateData();
-
-    var cmd = this.set({
-     id : this.idSet.saveButton,
-     alpha : "0.5",
-     clickable : "false"
-    });
-    cmd += this.set({
-      id: this.idSet.delButton,
-      visibility: window.__AddressPopUp.data ? "visible" : "gone"
-    });
-    Android.runInUI(cmd, 0)
-  }
-
-  hide = () => {
-    this.canSave = false;
-    this.isVisible=false;
-    JBridge.hideKeyboard();
-    this.setVisibility("gone");
-    window.__AddressPopUp.data=undefined;
-  }
-
-  getVisibility = (data) => {
-    return this.isVisible;
-  }
-
-  setVisibility = (data) => {
-    var cmd = this.set({
-      id: this.idSet.addressPopUpParent,
-      visibility: data
-    })
-    Android.runInUI(cmd, 0)
   }
 
 
   initializeData = () => {
-    if (window.__AddressPopUp.data != undefined) {
-      this.prevData.addressLine1 = window.__AddressPopUp.data.addressLine1;
-      this.prevData.addressLine2 = window.__AddressPopUp.data.addressLine2;
-      this.prevData.city = window.__AddressPopUp.data.city;
-      this.prevData.state = window.__AddressPopUp.data.state;
-      this.prevData.country = window.__AddressPopUp.data.country;
-      this.prevData.pincode = window.__AddressPopUp.data.zipcode ? window.__AddressPopUp.data.zipcode : "";
-      this.prevData.addressType = window.__AddressPopUp.data.addType;
-      return ;
+    this.addressTypeValue = [
+          {name:window.__S.PERMANENT,select:"0",icon:"ic_action_radio"},
+          {name:window.__S.CURRENT,select:"0",icon:"ic_action_radio"}
+        ];
+
+    this.index=-1;
+
+    if (this.data != undefined&&this.data!="") {
+      this.prevData.addressLine1 = this.data.addressLine1;
+      this.prevData.addressLine2 = this.data.addressLine2;
+      this.prevData.city = this.data.city;
+      this.prevData.state = this.data.state;
+      this.prevData.country = this.data.country;
+      this.prevData.pincode = this.data.zipcode ? this.data.zipcode : "";
+      this.prevData.addressType = this.data.addType;
+
+
+          if (this.prevData.addressType == "permanent") {
+            this.addressTypeValue[0].select = "1";
+            this.addressTypeValue[1].select = "0";
+            this.index = 0;
+          } else if (this.prevData.addressType == "current") {
+            this.addressTypeValue[0].select = "0";
+            this.addressTypeValue[1].select = "1";
+            this.index = 1;
+          }
+
     }
-    this.prevData.addressLine1 = "";
-    this.prevData.addressLine2 = "";
-    this.prevData.city = "";
-    this.prevData.state = "";
-    this.prevData.country = "";
-    this.prevData.pincode = "";
-    this.prevData.addressType = "";
-  }
+    else{
+        this.prevData.addressLine1 = "";
+        this.prevData.addressLine2 = "";
+        this.prevData.city = "";
+        this.prevData.state = "";
+        this.prevData.country = "";
+        this.prevData.pincode = "";
+        this.prevData.addressType = "";
 
-
-  populateData = () => {
+    }
     this.addressLine1 = this.prevData.addressLine1;
     this.addressLine2 = this.prevData.addressLine2;
     this.city = this.prevData.city;
@@ -150,59 +132,16 @@ class AddressPopUp extends View {
     this.country = this.prevData.country;
     this.pincode = this.prevData.pincode;
     this.addressType = this.prevData.addressType;
-
-    var cmd = this.set({
-      id: this.idSet.addressLine1Text,
-      text: this.prevData.addressLine1
-    })
-
-    cmd += this.set({
-      id: this.idSet.addressLine2Text,
-      text: this.prevData.addressLine2
-    })
-
-    cmd += this.set({
-      id: this.idSet.cityText,
-      text: this.prevData.city
-    })
-
-    cmd += this.set({
-      id: this.idSet.stateText,
-      text: this.prevData.state
-    })
-
-    cmd += this.set({
-      id: this.idSet.countryText,
-      text: this.prevData.country
-    })
-
-    cmd += this.set({
-      id: this.idSet.pincodeText,
-      text: this.prevData.pincode
-    })
-
-    var addressTypeValue = [
-      {name:window.__S.PERMANENT,select:"0",icon:"ic_action_radio"},
-      {name:window.__S.CURRENT,select:"0",icon:"ic_action_radio"}
-    ];
-
-    var index;
-
-    if (this.prevData.addressType == "permanent") {
-      addressTypeValue[0].select = "1";
-      addressTypeValue[1].select = "0";
-      index = 0;
-    } else if (this.prevData.addressType == "current") {
-      addressTypeValue[0].select = "0";
-      addressTypeValue[1].select = "1";
-      index = 1;
-    }
-
-    Android.runInUI(cmd, 0);
-
-    this.replaceChild(this.idSet.addressTypeRadioContainer,
-      this.getRadioButtionLayout(addressTypeValue, index).render(), 0);
   }
+
+
+  // populateData = () => {
+  //
+  //
+  //
+  //   this.replaceChild(this.idSet.addressTypeRadioContainer,
+  //     this.getRadioButtionLayout(addressTypeValue, index).render(), 0);
+  // }
 
   setAddressLine1 = (data) => {
     this.addressLine1 = data;
@@ -312,19 +251,13 @@ class AddressPopUp extends View {
       }
     return false;
   }
-  handleSaveClick =()=>{
+  handleSaveClickBody = () => {
     if(!JBridge.isNetworkAvailable()){
       window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
       return ;
     }
-    window.__LoaderDialog.show();
-    this.handleSaveClickBody();
-    window.__LoaderDialog.hide();
-  }
-  handleSaveClickBody = () => {
-
     if (this.singleClick && !this.canSave && !this.delete) {
-      if (window.__AddressPopUp.data){
+      if (this.data){
        window.__Snackbar.show(window.__S.WARNING_PLEASE_MAKE_SOME_CHANGES);
       }
       else{
@@ -348,7 +281,7 @@ class AddressPopUp extends View {
     var json;
     this.addressType = this.ADDRESS_TYPE[window.__RadioButton.currentIndex];
 
-    if (window.__AddressPopUp.data == undefined) {
+    if (this.data == undefined || this.data=="") {
       json = {
         "addressLine1": this.addressLine1,
         "addressLine2": this.addressLine2,
@@ -359,7 +292,7 @@ class AddressPopUp extends View {
         "addType": this.addressType
       }
     } else {
-      json = window.__AddressPopUp.data;
+      json = this.data;
       json.addressLine1 = this.addressLine1;
       json.addressLine2 = this.addressLine2;
       json.city = this.city;
@@ -441,6 +374,7 @@ class AddressPopUp extends View {
   }
 
   getPatchCallback = (data) =>{
+    console.log("Patch_api call back  -------");
     data=JSON.parse(data);
     if(this.responseCame){
       console.log("TIMEOUT")
@@ -451,9 +385,9 @@ class AddressPopUp extends View {
    this.responseCame=true;
    console.log(data)
    if(data.result.response=="SUCCESS"){
-     this.hide();
-     window.__BNavFlowRestart();
-   }
+     window.__LoaderDialog.show();
+    window.__BNavFlowRestart();
+  }
    else{
      this.singleClick =true;
      window.__Snackbar.show(data.params.errmsg);
@@ -480,6 +414,11 @@ class AddressPopUp extends View {
                 </LinearLayout>
             </LinearLayout>);
   }
+  handleBackPressed = () =>{
+    var whatToSend = []
+    var event = { tag: "BACK_AddressActivity", contents: whatToSend};
+    window.__runDuiCallback(event);
+  }
 
   getBack = () => {
     return (
@@ -488,7 +427,7 @@ class AddressPopUp extends View {
       style={IconStyle}
       height="48"
       width="48"
-      onClick={this.hide}
+      onClick={this.handleBackPressed}
       imageUrl = {"ic_action_arrow_left"}/>);
   }
 
@@ -577,30 +516,31 @@ class AddressPopUp extends View {
             width="wrap_content"
             gravity="center_vertical"
             padding = "4,0,0,0"
-            items={[{name:window.__S.PERMANENT,select:"0",icon:"ic_action_radio"},{name:window.__S.CURRENT,select:"0",icon:"ic_action_radio"}]}
+            items={this.addressTypeValue}
+            defaultIndex={this.index}
             onClick={this.handleRadioButtonClick}/>
         </LinearLayout>
-        {this.getEditTextView(this.idSet.addressLine1Text, window.__S.ADDRESS_LINE1, false, this.setAddressLine1)}
-        {this.getEditTextView(this.idSet.addressLine2Text, window.__S.ADDRESS_LINE2, true, this.setAddressLine2)}
-        {this.getEditTextView(this.idSet.cityText, window.__S.CITY, false, this.setCity)}
-        {this.getEditTextView(this.idSet.stateText, window.__S.STATE, true, this.setState)}
-        {this.getEditTextView(this.idSet.countryText, window.__S.COUNTRY, true, this.setCountry)}
-        {this.getEditTextView(this.idSet.pincodeText, window.__S.PINCODE, true, this.setPincode, "numeric")}
+        {this.getEditTextView(this.idSet.addressLine1Text,this.addressLine1, window.__S.ADDRESS_LINE1, false, this.setAddressLine1)}
+        {this.getEditTextView(this.idSet.addressLine2Text,this.addressLine2, window.__S.ADDRESS_LINE2, true, this.setAddressLine2)}
+        {this.getEditTextView(this.idSet.cityText,this.city, window.__S.CITY, false, this.setCity)}
+        {this.getEditTextView(this.idSet.stateText,this.state, window.__S.STATE, true, this.setState)}
+        {this.getEditTextView(this.idSet.countryText,this.country, window.__S.COUNTRY, true, this.setCountry)}
+        {this.getEditTextView(this.idSet.pincodeText,this.pincode, window.__S.PINCODE, true, this.setPincode, "numeric")}
        </LinearLayout>);
   }
 
-  getEditTextView = (id, label, optional,onChange, inputType) => {
+  getEditTextView = (id, text,label, optional,onChange, inputType) => {
     return (
       <TextInputView
         id = {id}
         height="wrap_content"
         width="match_parent"
-        hintText={optional ? window.__S.OPTIONAL : ""}
+        hintText={optional ?window.__S.OPTIONAL : label}
         labelText={label}
         mandatory = {optional ? "false" : "true"}
         margin = "0,0,0,16"
         _onChange={onChange}
-        text = ""
+        text = {text}
         textStyle = {window.__TextStyle.textStyle.HINT.SEMI}
         editTextStyle = {window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
         inputType = {inputType ? inputType : "text"}/>
@@ -622,7 +562,7 @@ class AddressPopUp extends View {
   handleConfirmDialog = (type) => {
     if (type == "positive") {
       this.delete = true;
-      this.handleSaveClick();
+      this.handleSaveClickBody();
     }
     window.__SimplePopup.hide(this.idSet.addressConf);
   }
@@ -639,9 +579,10 @@ class AddressPopUp extends View {
         orientation="vertical"
         width="match_parent"
         height="match_parent"
+        root="true"
         id={this.idSet.addressPopUpParent}
-        visibility="gone"
         gravity="center"
+        root="true"
         background = "#ffffff">
             {this.getUi()}
 
@@ -658,4 +599,4 @@ class AddressPopUp extends View {
   }
 }
 
-module.exports = AddressPopUp;
+module.exports = Connector(AddressActivity);

@@ -2,27 +2,27 @@
 module Types.UITypes where
 
 import Control.Monad.Aff
-import Prelude (bind, ($), (<>), pure, discard)
-import Control.Monad.Except.Trans (runExceptT)
-import Utils
-import Data.Argonaut.Core
-import Control.Monad.Eff (Eff)
-import Control.Monad.Aff (launchAff)
 import Control.Monad.Eff.Console
-import Control.Monad.Eff.Class(liftEff)
-import Data.Foreign.Class (class Decode, class Encode, encode)
-import Data.Generic.Rep (class Generic)
-import Data.Functor (void)
---import Data.Foreign.Generic (encodeJSON)
-import Control.Monad.Eff.Exception (EXCEPTION)
+import Data.Argonaut.Core
 import UI
+import Utils
+
+import Control.Monad.Aff (launchAff)
+import Control.Monad.Eff (Eff)
+import Control.Monad.Eff.Class (liftEff)
+import Control.Monad.Eff.Exception (EXCEPTION)
+import Control.Monad.Except.Trans (runExceptT)
+import Data.Foreign.Class (class Decode, class Encode, encode)
+import Data.Functor (void)
+import Data.Generic.Rep (class Generic)
+import Prelude (bind, discard, pure, ($), (<>), (||))
 --A.JSON import argonaut for json and try
 
 data InitScreen = InitScreen
-data InitScreenAction = ShowInit | OPEN_UserActivity
+data InitScreenAction = ShowInit | OPEN_UserActivity | OPEN_WelcomeScreenActivity
 
 instance initScreen :: UIScreen InitScreen InitScreenAction where
-  generateMockEvents _ = [ShowInit ,OPEN_UserActivity]
+  generateMockEvents _ = [ShowInit ,OPEN_UserActivity,OPEN_WelcomeScreenActivity]
   ui x = genericUI x (generateMockEvents x :: Array InitScreenAction)
 
 derive instance genericInitScreenAction  :: Generic InitScreenAction _
@@ -32,16 +32,39 @@ instance encodeInitScreenAction :: Encode InitScreenAction where encode = defaul
 
 data SplashScreenActivity = SplashScreenActivity
 data SplashScreenActivityAction = DummyUserActivityAction  |
-  BACK_SplashScreenActivity
-
+  BACK_SplashScreenActivity 
+  
 instance splashScreenActivity :: UIScreen SplashScreenActivity SplashScreenActivityAction where
-  generateMockEvents _ = [DummyUserActivityAction , BACK_SplashScreenActivity]
+  generateMockEvents _ = [DummyUserActivityAction , BACK_SplashScreenActivity ]
   ui x = genericUI x (generateMockEvents x :: Array SplashScreenActivityAction)
 
 derive instance genericSplashScreenActivityAction  :: Generic SplashScreenActivityAction _
 instance decodeSplashScreenActivityAction :: Decode SplashScreenActivityAction where decode = defaultDecode
 instance encodeSplashScreenActivityAction :: Encode SplashScreenActivityAction where encode = defaultEncode
 
+
+data WelcomeScreenActivity = WelcomeScreenActivity
+data WelcomeScreenActivityAction = DummyWelcomeScreenAction | OPEN_StateSelectActivity
+
+instance welcomeScreenActivity :: UIScreen WelcomeScreenActivity WelcomeScreenActivityAction where
+  generateMockEvents _ = [DummyWelcomeScreenAction , OPEN_StateSelectActivity]
+  ui x = genericUI x (generateMockEvents x :: Array WelcomeScreenActivityAction)
+
+derive instance genericWelcomeScreenActivityAction  :: Generic WelcomeScreenActivityAction _
+instance decodeWelcomeScreenActivityAction :: Decode WelcomeScreenActivityAction where decode = defaultDecode
+instance encodeWelcomeScreenActivityAction :: Encode WelcomeScreenActivityAction where encode = defaultEncode
+
+
+data StateSelectActivity = StateSelectActivity
+data StateSelectActivityAction = DummyStateSelectAction  | BACK_StateSelectActivity | OPEN_UserActivityFromStateSelection
+
+instance stateSelectActivity :: UIScreen StateSelectActivity StateSelectActivityAction where
+  generateMockEvents _ = [DummyStateSelectAction , BACK_StateSelectActivity , OPEN_UserActivityFromStateSelection]
+  ui x = genericUI x (generateMockEvents x :: Array StateSelectActivityAction)
+
+derive instance genericStateSelectActivityAction  :: Generic StateSelectActivityAction _
+instance decodeStateSelectActivityAction :: Decode StateSelectActivityAction where decode = defaultDecode
+instance encodeStateSelectActivityAction :: Encode StateSelectActivityAction where encode = defaultEncode
 
 data UserActivity = UserActivity {whereFrom::String}
 data UserActivityAction = OPEN_MainActivity |
@@ -84,6 +107,7 @@ data MainActivityAction = OPEN_HomeFragment |
   OPEN_CommunityFragment |
   OPEN_ProfileFragment |
   BACK_HomeActivity |
+  OPEN_AnnouncementViewAllActivity {announcementDetails :: String}|
   OPEN_CourseInfoActivity {course::String} |
   OPEN_EnrolledCourseActivity {course::String} |
   OPEN_CourseViewAllActivity {courseListDetails :: String} |
@@ -93,8 +117,12 @@ data MainActivityAction = OPEN_HomeFragment |
   OPEN_CommunityViewAllActivity |
   OPEN_NotificationActivity |
   OPEN_EditProfileActivity {profile::String} |
+  OPEN_AddressActivity {profile::String} |
+  OPEN_EducationActivity {profile::String} |
+  OPEN_ExperienceActivity {profile::String} |
   OPEN_SearchActivity {filterDetails::String}|
   OPEN_CommProfSearchActivity {filterDetails::String}|
+  OPEN_AnnouncementDetailActivity {announcementData::String}|
   OPEN_QRActivity |
   API_ResourceFragment {user_token::String, api_token::String}|
   API_CourseFragment {user_token::String, api_token::String} |
@@ -224,6 +252,23 @@ instance decodeResourceViewAllActivityAction :: Decode ResourceViewAllActivityAc
 instance encodeResourceViewAllActivityAction :: Encode ResourceViewAllActivityAction where encode = defaultEncode
 
 
+
+data AnnouncementViewAllActivity = AnnouncementViewAllActivity {announcementDetails::String}
+data AnnouncementViewAllActivityAction = DummyAnnouncementViewAllActivity |
+  BACK_AnnouncementViewAllActivity
+
+
+instance announcementViewAllActivity :: UIScreen AnnouncementViewAllActivity AnnouncementViewAllActivityAction where
+  generateMockEvents _ = [DummyAnnouncementViewAllActivity , BACK_AnnouncementViewAllActivity]
+  ui x = genericUI x (generateMockEvents x :: Array AnnouncementViewAllActivityAction)
+
+derive instance genericAnnouncementViewAllActivityAction  :: Generic AnnouncementViewAllActivityAction _
+instance decodeAnnouncementViewAllActivityAction :: Decode AnnouncementViewAllActivityAction where decode = defaultDecode
+instance encodeAnnouncementViewAllActivityAction :: Encode AnnouncementViewAllActivityAction where encode = defaultEncode
+
+
+
+
 data CourseViewAllActivity = CourseViewAllActivity {courseViewAllDetails::String}
 data CourseViewAllActivityAction = DummyCourseViewAllActivityAction |
   BACK_CourseViewAllActivity |
@@ -329,6 +374,57 @@ instance addtionalInsormationActivity :: UIScreen AdditionalInformationActivity 
 derive instance genericAdditionalInformationActivityAction  :: Generic AdditionalInformationActivityAction _
 instance decodeAdditionalInformationActivityAction :: Decode AdditionalInformationActivityAction where decode = defaultDecode
 instance encodeAdditionalInformationActivityAction :: Encode AdditionalInformationActivityAction where encode = defaultEncode
+
+data AnnouncementDetailActivity = AnnouncementDetailActivity {announcementData :: String}
+data AnnouncementDetailActivityAction = DummyAnnouncementDetailActivityAction  |
+  BACK_AnnouncementDetailActivity
+
+instance announcementDetailActivity :: UIScreen AnnouncementDetailActivity AnnouncementDetailActivityAction where
+  generateMockEvents _ = [DummyAnnouncementDetailActivityAction , BACK_AnnouncementDetailActivity]
+  ui x = genericUI x (generateMockEvents x :: Array AnnouncementDetailActivityAction)
+
+derive instance genericAnnouncementDetailActivityAction  :: Generic AnnouncementDetailActivityAction _
+instance decodeAnnouncementDetailActivityAction :: Decode AnnouncementDetailActivityAction where decode = defaultDecode
+instance encodeAnnouncementDetailActivityAction :: Encode AnnouncementDetailActivityAction where encode = defaultEncode
+data AddressActivity = AddressActivity {profile :: String}
+data AddressActivityAction = DummyAddressActivity |
+  BACK_AddressActivity
+
+instance addressActivity :: UIScreen AddressActivity AddressActivityAction where
+  generateMockEvents _ = [ DummyAddressActivity , BACK_AddressActivity]
+  ui x = genericUI x (generateMockEvents x :: Array AddressActivityAction)
+
+derive instance genericAddressActivityAction  :: Generic AddressActivityAction _
+instance decodeAddressActivityAction :: Decode AddressActivityAction where decode = defaultDecode
+instance encodeAddressActivityAction :: Encode AddressActivityAction where encode = defaultEncode
+---------------------------------------------------------------------------------
+
+data EducationActivity = EducationActivity {profile :: String}
+data EducationActivityAction = DummyEducationActivity |
+  BACK_EducationActivity
+
+instance educationActivity :: UIScreen EducationActivity EducationActivityAction where
+  generateMockEvents _ = [ DummyEducationActivity , BACK_EducationActivity]
+  ui x = genericUI x (generateMockEvents x :: Array EducationActivityAction)
+
+derive instance genericEducationActivityAction  :: Generic EducationActivityAction _
+instance decodeEducationActivityAction :: Decode EducationActivityAction where decode = defaultDecode
+instance encodeEducationActivityAction :: Encode EducationActivityAction where encode = defaultEncode
+---------------------------------------------------------------------------------
+
+data ExperienceActivity = ExperienceActivity {profile :: String}
+data ExperienceActivityAction = DummyExperienceActivity |
+  BACK_ExperienceActivity
+
+instance experienceActivity :: UIScreen ExperienceActivity ExperienceActivityAction where
+  generateMockEvents _ = [ DummyExperienceActivity , BACK_ExperienceActivity]
+  ui x = genericUI x (generateMockEvents x :: Array ExperienceActivityAction)
+
+derive instance genericExperienceActivityAction  :: Generic ExperienceActivityAction _
+instance decodeExperienceActivityAction :: Decode ExperienceActivityAction where decode = defaultDecode
+instance encodeExperienceActivityAction :: Encode ExperienceActivityAction where encode = defaultEncode
+
+---------------------------------------------------------------------------------
 
 data QRActivity = QRActivity
 data QRActivityAction = DummyQRActivity |

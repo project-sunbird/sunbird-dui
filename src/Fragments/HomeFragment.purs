@@ -17,7 +17,12 @@ homeFragment input whereFrom whatToSendBack = do
 		OPEN_EnrolledCourseActivity {course:output} -> enrolledCourseActivity output "HomeFragment" input
 		OPEN_SearchActivity {filterDetails : output} -> homeSearchActivity output "HomeFragment" input
 		OPEN_CourseViewAllActivity {courseListDetails : output} -> courseViewAllActivity output "HomeFragment" input
-		OPEN_EditProfileActivity {profile : output} -> additionalInformationActivity output "ProfileFragment"  input
+		OPEN_EditProfileActivity {profile : output} -> additionalInformationActivity output "HomeFragment"  input
+		OPEN_AnnouncementViewAllActivity {announcementDetails : output} -> announcementViewAllActivity output "HomeFragment" input
+		OPEN_AnnouncementDetailActivity {announcementData : output} -> announcementDetailActivity output "HomeFragment" input
+		OPEN_AddressActivity {profile: output} -> addressActivity output "HomeFragment"  input
+  		OPEN_EducationActivity {profile: output} -> educationActivity output "HomeFragment"  input
+  		OPEN_ExperienceActivity {profile : output} -> experienceActivity output "HomeFragment"  input
 		OPEN_QRActivity -> qrActivity "HomeFragment" input
 		API_UserEnrolledCourse {user_token:x,api_token:y}-> do
 			responseData <- getUserEnrolledCourses x y
@@ -67,6 +72,15 @@ courseViewAllActivity input whereFrom whatToSendBack = do
 			_ -> homeFragment whatToSendBack "Terminate" input
 		_ -> courseViewAllActivity input whereFrom whatToSendBack
 
+
+
+announcementViewAllActivity input whereFrom whatToSendBack = do
+	event <- ui $ AnnouncementViewAllActivity {announcementDetails : input}
+	case event of
+	    BACK_AnnouncementViewAllActivity -> homeFragment whatToSendBack "Terminate" input
+	    _ -> announcementViewAllActivity input whereFrom whatToSendBack
+	
+
 additionalInformationActivity input whereFrom whatToSendBack = do
 	event <- ui $ AdditionalInformationActivity {profile : input}
 	case event of
@@ -74,6 +88,15 @@ additionalInformationActivity input whereFrom whatToSendBack = do
 			"HomeFragment" -> homeFragment input "Terminate" input
 			_ -> homeFragment input "Terminate" input
 		_ -> additionalInformationActivity input whereFrom whatToSendBack
+
+
+announcementDetailActivity input whereFrom whatToSendBack = do
+	event <- ui $ AnnouncementDetailActivity {announcementData : input}
+	case event of
+		BACK_AnnouncementDetailActivity -> case whereFrom of
+			"HomeFragment" -> homeFragment input "Terminate" input
+			_ -> homeFragment input "Terminate" input
+		_ -> announcementDetailActivity input whereFrom whatToSendBack
 
 
 courseInfoActivity input whereFrom whatToSendBack= do
@@ -157,3 +180,36 @@ qrActivity whereFrom whatToSendBack = do
   OPEN_CourseInfoActivity_QR {course : output} -> courseInfoActivity output "HomeFragment" whatToSendBack
   BACK_QRActivity -> homeFragment whatToSendBack "Terminate" whatToSendBack
   _ -> homeFragment whatToSendBack "Terminate" whatToSendBack
+
+
+--------------------------------------------------------------------------------
+
+addressActivity input whereFrom whatToSendBack = do
+	event <- ui $ AddressActivity {profile : input}
+	case event of
+		BACK_AddressActivity -> case whereFrom of
+			"HomeFragment" -> homeFragment input "Terminate" input
+			_ -> homeFragment input "Terminate" input
+		_ -> addressActivity input whereFrom whatToSendBack
+
+--------------------------------------------------------------------------------
+
+educationActivity input whereFrom whatToSendBack = do
+	event <- ui $ EducationActivity {profile : input}
+	case event of
+		BACK_EducationActivity -> case whereFrom of
+			"HomeFragment" -> homeFragment input "Terminate" input
+			_ -> homeFragment input "Terminate" input
+		_ -> educationActivity input whereFrom whatToSendBack
+
+--------------------------------------------------------------------------------
+
+experienceActivity input whereFrom whatToSendBack = do
+	event <- ui $ ExperienceActivity {profile : input}
+	case event of
+		BACK_ExperienceActivity -> case whereFrom of
+			"HomeFragment" -> homeFragment input "Terminate" input
+			_ -> homeFragment input "Terminate" input
+		_ -> experienceActivity input whereFrom whatToSendBack
+
+--------------------------------------------------------------------------------

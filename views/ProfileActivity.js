@@ -305,7 +305,10 @@ class ProfileActivity extends View {
                     editable = {this.isEditable}
                     data = {this.jobProfile}
                     popUpType = {window.__PROFILE_POP_UP_TYPE.EXPERIENCE}
-                    heading = {window.__S.TITLE_EXPERIENCES}/>
+                    heading = {window.__S.TITLE_EXPERIENCE}/>
+
+                  <ProfileSkillTags
+                    editable = {this.isEditable}/>
 
                     <LinearLayout
                       width = "match_parent"

@@ -16,6 +16,9 @@ profileFragment input whereFrom whatToSendBack = do
 		OPEN_NotificationActivity -> notificationActivity "{}" "ProfileFragment"  input
 		OPEN_CommProfSearchActivity {filterDetails : output} -> searchProfileActivity output "ProfileFragment" input
 		OPEN_EditProfileActivity {profile: output} -> additionalInformationActivity output "ProfileFragment"  input
+		OPEN_AddressActivity {profile: output} -> addressActivity output "ProfileFragment"  input
+		OPEN_EducationActivity {profile: output} -> educationActivity output "ProfileFragment"  input
+		OPEN_ExperienceActivity {profile: output} -> experienceActivity output "ProfileFragment"  input
 		OPEN_EnrolledCourseActivity {course:output} -> enrolledCourseActivity output "ProfileFragment" input
 		OPEN_CourseInfoActivity {course:output} -> courseInfoActivity output "ProfileFragment" input
 		OPEN_ResourceDetailActivity {resourceDetails:output} -> resourceDetailActivity output "ProfileFragment" input
@@ -71,6 +74,36 @@ additionalInformationActivity input whereFrom whatToSendBack = do
 			"ProfileFragment" -> profileFragment input "Terminate" input
 			_ -> profileFragment input "Terminate" input
 		_ -> additionalInformationActivity input whereFrom whatToSendBack
+
+--------------------------------------------------------------------------------
+
+addressActivity input whereFrom whatToSendBack = do
+	event <- ui $ AddressActivity {profile : input}
+	case event of
+		BACK_AddressActivity -> case whereFrom of
+			"ProfileFragment" -> profileFragment input "Terminate" input
+			_ -> profileFragment input "Terminate" input
+		_ -> addressActivity input whereFrom whatToSendBack
+
+--------------------------------------------------------------------------------
+
+educationActivity input whereFrom whatToSendBack = do
+	event <- ui $ EducationActivity {profile : input}
+	case event of
+		BACK_EducationActivity -> case whereFrom of
+			"ProfileFragment" -> profileFragment input "Terminate" input
+			_ -> profileFragment input "Terminate" input
+		_ -> educationActivity input whereFrom whatToSendBack
+
+--------------------------------------------------------------------------------
+
+experienceActivity input whereFrom whatToSendBack = do
+	event <- ui $ ExperienceActivity {profile : input}
+	case event of
+		BACK_ExperienceActivity -> case whereFrom of
+			"ProfileFragment" -> profileFragment input "Terminate" input
+			_ -> profileFragment input "Terminate" input
+		_ -> experienceActivity input whereFrom whatToSendBack
 
 --------------------------------------------------------------------------------
 

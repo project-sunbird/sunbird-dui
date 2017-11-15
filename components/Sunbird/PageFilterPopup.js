@@ -12,6 +12,7 @@ var Space = require("@juspay/mystique-backend/src/android_views/Space");
 var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 var FeatureButton = require("../../components/Sunbird/FeatureButton");
 var PageFilterChooser = require('../Sunbird/PageFilterChooser');
+var PageOption = require("../../components/Sunbird/core/PageOption")
 
 var FilterItem = require('../Sunbird/FilterItem')
 
@@ -27,14 +28,33 @@ class PageFilterPopup extends View {
       "chooseItemContainer",
       "featureContainer",
       "parentContainer",
-      "contentContainer"
+      "contentContainer",
+      "cancelBtn",
+      "applyBtn"
     ]);
 
 
     window.__PageFilterPopup = this;
     this.filterListCource=FilterParamsCource.filterParamsCource;
+    this.filterListCource[0].name = window.__S.LANGUAGES;
+    this.filterListCource[1].name = window.__S.SUBJECTS;
+    this.filterListCource[2].name = window.__S.MEDIUM;
     this.filterListResource=FilterParamsResource.filterParamsResource;
     this.isForResouce=false;
+    this.cancelBtnState = {
+      text : window.__S.CANCEL,
+      id : this.idSet.cancelBtn,
+      isClickable : "true",
+      onClick : this.hide,
+      visibility : "visible",
+    };
+    this.applyBtnState = {
+      text : window.__S.APPLY,
+      id : this.idSet.applyBtn,
+      isClickable : "true",
+      onClick : this.onConfirm,
+      visibility : "visible",
+    };
 
   }
 
@@ -66,36 +86,6 @@ class PageFilterPopup extends View {
 
     Android.runInUI(cmd, 0)
   }
-
-
-
-  getFeatureButton = (text,invert,action) => {
-    return (<LinearLayout
-                  width = "0"
-                  weight="1"
-                  orientation="vertical"
-                  height="52"
-                  padding = "3,3,3,0"
-                  cornerRadius="5"
-                  gravity = "center">
-
-                  <FeatureButton
-                    typeface = "bold"
-                    clickable="true"
-                    width = "match_parent"
-                    height = "46"
-                    stroke = {"3," + (invert?window.__Colors.PRIMARY_ACCENT:window.__Colors.WHITE)}
-                    background = {invert?window.__Colors.WHITE:window.__Colors.PRIMARY_ACCENT}
-                    text = {text}
-                    buttonClick = {action}
-                    textColor = {invert?window.__Colors.PRIMARY_ACCENT:window.__Colors.WHITE}
-                    textSize = "18"/>
-
-                </LinearLayout>)
-
-
-  }
-
 
 
   setValues = (item,values) => {
@@ -179,16 +169,16 @@ class PageFilterPopup extends View {
   }
 
   getOptions = () => {
+    var buttonList = [this.cancelBtnState, this.applyBtnState];
     return (<LinearLayout
           height="wrap_content"
           width="match_parent"
-          padding="16,0,16,0">
-
-            {this.getFeatureButton(window.__S.CANCEL,true,this.hide)}
-
-            {this.getFeatureButton(window.__S.APPLY,false,this.onConfirm)}
-
-
+          alignParentBottom = "true, -1">
+          <PageOption
+            width="match_parent"
+            buttonItems={buttonList}
+            hideDivider={false}
+            onButtonClick={this.handlePageOption}/>
           </LinearLayout>)
   }
 
@@ -287,7 +277,6 @@ class PageFilterPopup extends View {
             background = { window.__Colors.PRIMARY_BLACK_44}
             orientation="vertical">
               <LinearLayout
-                height="0"
                 width="match_parent"
                 onClick={this.handleDismissClick}
                 weight="1"/>
