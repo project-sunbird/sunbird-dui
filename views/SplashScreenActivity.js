@@ -76,10 +76,10 @@ class SplashScreenActivity extends View {
 
     setTimeout(() => {
       var whatToSend = [];
-      var event = { tag: "OPEN_WelcomeScreenActivity", contents: whatToSend};
-      if(("YES"==JBridge.getFromSharedPrefs("logged_in"))){
+      // var event = { tag: "OPEN_WelcomeScreenActivity", contents: whatToSend};
+      // if(("YES"==JBridge.getFromSharedPrefs("logged_in"))){
         var event = { tag: "OPEN_UserActivity", contents: whatToSend}
-    }
+    // }
       window.__runDuiCallback(event);
     }, 2000);
   }

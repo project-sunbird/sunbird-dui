@@ -14,11 +14,18 @@ module.exports = function(action, payload, state) {
       localState.currScreen = "SplashScreenActivity";
       break;
 
-     case "SplashScreenActivity":
+    case "SplashScreenActivity":
       localState.isInit = false
       localState.currScreen = "SplashScreenActivity";
       break;
-
+    case "WelcomeScreenActivity":
+      localState.isInit = false
+      localState.currScreen = "WelcomeScreenActivity";
+      break;
+    case "StateSelectActivity":
+      localState.isInit = false
+      localState.currScreen = "StateSelectActivity";
+      break;
     case "ViewBatchActivity":
       localState.isInit = false
       localState.currScreen = "ViewBatchActivity";
@@ -55,7 +62,12 @@ module.exports = function(action, payload, state) {
       localState.currScreen = "ProfileActivity";
       break;
 
-     case "CourseViewAllActivity":
+    case "AnnouncementViewAllActivity":
+      localState.isInit = false;
+      localState.currScreen = "AnnouncementViewAllActivity";
+      break;
+
+    case "CourseViewAllActivity":
       localState.isInit = false;
       localState.currScreen = "CourseViewAllActivity";
       break;
@@ -113,6 +125,22 @@ module.exports = function(action, payload, state) {
     case "AdditionalInformationActivity":
       localState.isInit = false
       localState.currScreen ="AdditionalInformationActivity"
+      break;
+    case "AnnouncementDetailActivity":
+      localState.isInit = false
+      localState.currScreen ="AnnouncementDetailActivity"
+      break;
+    case "AddressActivity":
+      localState.isInit = false
+      localState.currScreen = "AddressActivity";
+      break;
+    case "EducationActivity":
+      localState.isInit = false
+      localState.currScreen = "EducationActivity";
+      break;
+    case "ExperienceActivity":
+      localState.isInit = false
+      localState.currScreen = "ExperienceActivity";
       break;
     case "GO_BACK":
       break;

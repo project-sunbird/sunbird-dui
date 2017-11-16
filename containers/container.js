@@ -13,6 +13,8 @@ const reducer = require("@juspay/mystique-backend/src/state_managers").reducer({
 // Screens
 const RootScreen = require("../views/RootScreen");
 const SplashScreenActivity = require("../views/SplashScreenActivity");
+const WelcomeScreenActivity = require("../views/WelcomeScreenActivity");
+const StateSelectActivity = require("../views/StateSelectActivity");
 
 //Home
 const MainActivity = require("../views/MainActivity");
@@ -33,11 +35,16 @@ const NotificationActivity = require("../views/NotificationActivity");
 const ResourceDetailActivity = require("../views/ResourceDetailActivity");
 const ResourceViewAllActivity = require("../views/ResourceViewAllActivity");
 const CourseViewAllActivity = require("../views/CourseViewAllActivity");
+const AnnouncementViewAllActivity = require("../views/AnnouncementViewAllActivity")
 const SearchActivity = require("../views/SearchActivity");
 const FilterActivity = require("../views/FilterActivity");
 const AdditionalInformationActivity = require("../views/AdditionalInformationActivity");
+const AddressActivity = require("../views/AddressActivity");
+const EducationActivity = require("../views/EducationActivity");
+const ExperienceActivity = require("../views/ExperienceActivity");
 const CommProfSearchActivity = require("../views/CommProfSearchActivity");
 const ProfileActivity = require("../views/ProfileActivity");
+const AnnouncementDetailActivity = require("../views/AnnouncementDetailActivity");
 
 const ContentPreviewScreen = require("../views/ContentPreviewScreen");
 const QRActivity = require("../views/QRActivity");
@@ -46,7 +53,7 @@ const RootScreenActions = require("../actions/RootScreenActions");
 
 var determineScreen = (screenName, state) => {
   var screen;
-   
+
 
   // Space has been added for dir strucuture
   // add accordingly
@@ -56,6 +63,12 @@ var determineScreen = (screenName, state) => {
       break;
     case "SplashScreenActivity":
       screen = new(SplashScreenActivity(dispatcher, RootScreenActions))(null, null, state);
+      break;
+    case "WelcomeScreenActivity":
+      screen = new(WelcomeScreenActivity(dispatcher, RootScreenActions))(null, null, state);
+      break;
+    case "StateSelectActivity":
+      screen = new(StateSelectActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
     case "MainActivity":
       screen = new(MainActivity(dispatcher, RootScreenActions))(null, null, state);
@@ -75,11 +88,15 @@ var determineScreen = (screenName, state) => {
     case "ContentPreviewScreen":
       screen = new(ContentPreviewScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
+
+    case "AnnouncementDetailActivity":
+       screen = new(AnnouncementDetailActivity(dispatcher,RootScreenActions))(null,null, state);
+       break;
     case "CourseInfoActivity":
       screen = new(CourseInfoActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
-    case "CourseViewAllActivity":
-      screen = new(CourseViewAllActivity(dispatcher, RootScreenActions))(null, null, state);
+    case "AnnouncementViewAllActivity":
+      screen = new(AnnouncementViewAllActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
     case "NotificationActivity":
       screen = new(NotificationActivity(dispatcher, RootScreenActions))(null, null, state);
@@ -109,6 +126,18 @@ var determineScreen = (screenName, state) => {
 
     case "ProfileActivity":
       screen = new(ProfileActivity(dispatcher, RootScreenActions))(null, null, state);
+      break;
+
+    case "AddressActivity":
+      screen = new(AddressActivity(dispatcher, RootScreenActions))(null, null, state);
+      break;
+
+    case "EducationActivity":
+      screen = new(EducationActivity(dispatcher, RootScreenActions))(null, null, state);
+      break;
+
+    case "ExperienceActivity":
+      screen = new(ExperienceActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
 
     case "RootScreen":
