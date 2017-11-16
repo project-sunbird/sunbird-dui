@@ -26,6 +26,10 @@ profileFragment input whereFrom whatToSendBack = do
 			responseData <- compositeSearch x y w
 			_ <- sendUpdatedState {response : responseData, responseFor : "API_CreatedBy", screen:"asas", sendBack:z}
 			pure $ "handled"
+		API_SetProfileVisibility {user_token:x, api_token:y , request:z } -> do
+			resData <- setProfileVisibility x y z
+			_ <- sendUpdatedState{response : resData, responseFor : "API_SetProfileVisibility", screen:"asas"}
+			pure $ "apiCalled"
 		_ -> profileFragment input whereFrom whatToSendBack
 
 notificationActivity input whereFrom whatToSendBack = do
@@ -70,6 +74,10 @@ profileActivity input whereFrom whatToSendBack = do
 additionalInformationActivity input whereFrom whatToSendBack = do
 	event <- ui $ AdditionalInformationActivity {profile : input}
 	case event of
+		API_ProfileVisibility {user_token:x, api_token:y , request:z } -> do
+			resData <- setProfileVisibility x y z
+			_ <- sendUpdatedState{response : resData, responseFor : "API_ProfileVisibility", screen:"asas"}
+			pure $ "apiCalled"
 		BACK_AdditionalInformationActivity -> case whereFrom of
 			"ProfileFragment" -> profileFragment input "Terminate" input
 			_ -> profileFragment input "Terminate" input

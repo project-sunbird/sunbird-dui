@@ -27,6 +27,7 @@ var ProfileAdditionalInfo = require('../components/Sunbird/ProfileAdditionalInfo
 var MultiSelectSpinner = require('../components/Sunbird/MultiSelectSpinner');
 var Styles = require("../res/Styles");
 var PageOption = require('../components/Sunbird/core/PageOption')
+var utils = require('../utils/GenericFunctions');
 
 let IconStyle = Styles.Params.IconStyle;
 
@@ -70,7 +71,7 @@ class AdditionalInformationActivity extends View{
       "twitterLI",
       "linkedinLI",
       "nameLI",
-      "lastNameLI" 
+      "lastNameLI"
     ]);
     this.shouldCacheScreen = false;
     this.state=state;
@@ -95,8 +96,20 @@ class AdditionalInformationActivity extends View{
     this.responseCame=false;
 
     this.prevData={};
+    this.currentData={};
     this.prevData.description=null;
-
+    this.prevData.lockStatus={
+      "email" : "public",
+      "location" :  "public",
+      "phone" : "public",
+      "language" : "public",
+      "dob" : "public",
+      "gender" : "public",
+      "profileSummary" : "public",
+      "grade" : "public",
+      "subject" : "public"
+    }
+    this.currentData.lockStatus= Object.assign({}, this.prevData.lockStatus);
     this.genderArray= "Select,Male,Female,Transgender";
     this.GenderArray=["Select","Male","Female","Transgender"];
     this.languageArray= "Select,Assamese,Bengali,English,Gujarati,Hindi,Kannada,Marathi,Punjabi,Tamil,Telugu";
@@ -106,6 +119,16 @@ class AdditionalInformationActivity extends View{
 
     this.data = JSON.parse(this.state.data.value0.profile);
     console.log("Info State  ----->", this.state);
+
+    if(this.data.profileVisibility!=undefined )
+    {
+      Object.keys(this.data.profileVisibility).map((item)=>{
+        if(this.data.profileVisibility[item]=="private")
+        this.prevData.lockStatus[item]="private";
+      })
+    }
+    this.currentData.lockStatus= Object.assign({},this.prevData.lockStatus);
+    console.log("lockStatus",this.currentData.lockStatus);
 
     this.saveBtnState = {
       text : window.__S.SAVE,
@@ -251,7 +274,7 @@ class AdditionalInformationActivity extends View{
           <MultiSelectSpinner
             width="match_parent"
             height="wrap_content"
-            addLayout={this.getLockIcon(this.idSet.gradeLI,true)}
+            addLayout={this.getLockIcon(this.idSet.gradeLI,true,"grade")}
             data={this.GradeArray}
             selectedData={items}
             onItemChange={this.onMultiSelectGradeItemChange}/>
@@ -281,7 +304,7 @@ class AdditionalInformationActivity extends View{
           <MultiSelectSpinner
             width="match_parent"
             height="wrap_content"
-            addLayout={this.getLockIcon(this.idSet.subjectsLI,true)}
+            addLayout={this.getLockIcon(this.idSet.subjectsLI,true,"subject")}
             data={this.subjectDictionary}
             selectedData={items}
             onItemChange={this.onMultiSelectSubjectItemChange}/>
@@ -319,7 +342,7 @@ class AdditionalInformationActivity extends View{
     );
   }
 
-  getSingleSelectSpinner = (id,label,optional,callSpinner,lockIconVisibility,lockIconId) => {
+  getSingleSelectSpinner = (id,label,optional,callSpinner,lockIconVisibility,lockIconId,lockName) => {
     return(
       <LinearLayout
       width="match_parent"
@@ -338,29 +361,29 @@ class AdditionalInformationActivity extends View{
            weight="1">
             {callSpinner()}
           </LinearLayout>
-            {this.getLockIcon(lockIconId,lockIconVisibility)}
+            {this.getLockIcon(lockIconId,lockIconVisibility,lockName)}
          </LinearLayout>
          {this.getLineSeperator()}
        </LinearLayout>
     )
   }
-  getLockIcon =(id,visibility)=>{
+  getLockIcon =(id,visibility,lockName)=>{
     return (<LinearLayout
     height="36"
     width="36"
     id={id}
     visibility={visibility?"visible":"gone"}
-    onClick={()=>this.privacyChange(id)}
+    onClick={()=>this.privacyChange(id,lockName)}
     alignParentRight="true,-1"
     gravity="right">
       <ImageView
       height="16"
       width="16"
-      imageUrl={this.lockStatus?"ic_action_lock":"ic_action_unlock"}/>
+      imageUrl={this.currentData.lockStatus[lockName]=="private"?"ic_action_lock":"ic_action_unlock"}/>
   </LinearLayout>);
   }
 
-  getEditTextView = (id, label, hint , optional , onChange, inputType,lockIconVisibility,lockIconId) =>{
+  getEditTextView = (id, label, hint , optional , onChange, inputType,lockIconVisibility,lockIconId,lockName) =>{
     console.log("getedittextview :",label,"   ",lockIconVisibility);
     return(
       <RelativeLayout
@@ -380,32 +403,35 @@ class AdditionalInformationActivity extends View{
         textStyle = {window.__TextStyle.textStyle.HINT.SEMI}
         editTextStyle = {window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
         inputType = {inputType ? inputType : "text"}/>
-        {this.getLockIcon(lockIconId,lockIconVisibility)}
+        {this.getLockIcon(lockIconId,lockIconVisibility,lockName)}
         </RelativeLayout>)
   }
 
-  privacyChange = (id)=>{
-    this.lockStatus=!this.lockStatus;
-    
+  privacyChange = (id,lockName)=>{
+    this.currentData.lockStatus[lockName]=this.currentData.lockStatus[lockName]=="public"?"private":"public";
+    this.updateSaveButtonStatus(this.checkCompleteStatus());
+    console.log("curentlock: ",this.currentData.lockStatus);
+    console.log("prevlock: ",this.prevData.lockStatus);
+
     var tempLayout=( <LinearLayout
       height="36"
       width="36"
       id={id}
-      onClick={()=>this.privacyChange(id)}
+      onClick={()=>this.privacyChange(id,lockName)}
       alignParentRight="true,-1">
         <ImageView
         height="16"
         width="16"
-        imageUrl={this.lockStatus?"ic_action_lock":"ic_action_unlock"}/>
+        imageUrl={this.currentData.lockStatus[lockName]=="private"?"ic_action_lock":"ic_action_unlock"}/>
      </LinearLayout>
        );
     this.replaceChild(id,tempLayout.render(), 0);
-    if(this.lockStatus){
-      window.__Snackbar.show(window.__S.PRIVATE);
+    if(this.currentData.lockStatus[lockName]=="private"){
+      window.__Snackbar.show("Hiding "+lockName+" from all");
     }else{
-      window.__Snackbar.show(window.__S.PUBLIC);
-      
+      window.__Snackbar.show("Showing "+lockName+" to all");
     }
+
   }
 
   getLabel = (label,optional) =>{
@@ -456,9 +482,9 @@ class AdditionalInformationActivity extends View{
         padding="15,15,15,15"
         orientation="vertical">
 
-                  {this.getEditTextView(this.idSet.nameText,window.__S.FIRST_NAME,window.__S.FIRST_NAME_HINT,false,this.setName,undefined,false,this.idSet.nameLI)}
-                  {this.getEditTextView(this.idSet.lastNameText,window.__S.LAST_NAME,window.__S.LAST_NAME_HINT,true,this.setLastName,undefined,false,this.idSet.lastNameLI)}
-                  {this.getSingleSelectSpinner(this.idSet.languageSpinnerContainer,window.__S.LANGUAGES,false,this.loadLanguageSpinner,true,this.idSet.languageLI)}
+                  {this.getEditTextView(this.idSet.nameText,window.__S.FIRST_NAME,window.__S.FIRST_NAME_HINT,false,this.setName,undefined,false,this.idSet.nameLI,"firstName")}
+                  {this.getEditTextView(this.idSet.lastNameText,window.__S.LAST_NAME,window.__S.LAST_NAME_HINT,true,this.setLastName,undefined,false,this.idSet.lastNameLI,"lastName")}
+                  {this.getSingleSelectSpinner(this.idSet.languageSpinnerContainer,window.__S.LANGUAGES,false,this.loadLanguageSpinner,true,this.idSet.languageLI,"language")}
                    <LinearLayout
                    height="wrap_content"
                    width="match_parent"
@@ -484,13 +510,13 @@ class AdditionalInformationActivity extends View{
                                 weight="1"
                                 id= {this.idSet.emailText}
                                 style={window.__TextStyle.textStyle.CARD.BODY.DARK.FADED}/>
-                                {this.getLockIcon(this.idSet.emailLI,true)}
+                                {this.getLockIcon(this.idSet.emailLI,true,"email")}
                           </LinearLayout>
                           {this.getLineSeperator()}
                          </LinearLayout>
 
-                       {this.getEditTextView(this.idSet.phoneText,window.__S.PHONE,window.__S.HINT_MOBILE_NUMBER,false,this.setPhone,"numeric",true,this.idSet.phoneLI)}
-                       {this.getEditTextView(this.idSet.descriptionText,window.__S.DESCRIPTION,"",true,this.setDescription,undefined,true,this.idSet.descriptionLI)}
+                       {this.getEditTextView(this.idSet.phoneText,window.__S.PHONE,window.__S.HINT_MOBILE_NUMBER,false,this.setPhone,"numeric",true,this.idSet.phoneLI,"phone")}
+                       {this.getEditTextView(this.idSet.descriptionText,window.__S.DESCRIPTION,"",true,this.setDescription,undefined,true,this.idSet.descriptionLI,"profileSummary")}
                        <LinearLayout
                          width="match_parent"
                          height="wrap_content"
@@ -507,12 +533,12 @@ class AdditionalInformationActivity extends View{
                            <MultiSelectSpinner
                              width="match_parent"
                              height="wrap_content"
-                             addLayout={this.getLockIcon(this.idSet.subjectsLI,true)}
+                             addLayout={this.getLockIcon(this.idSet.subjectsLI,true,"subject")}
                              data={this.subjectDictionary}
                              selectedData={this.selectedSubjects}
                              onItemChange={this.onMultiSelectSubjectItemChange}/>
                        </LinearLayout>
-                       {this.getSingleSelectSpinner(this.idSet.spinnerContainer,window.__S.GENDER,true,this.loadGenderSpinner,true,this.idSet.genderLI)}
+                       {this.getSingleSelectSpinner(this.idSet.spinnerContainer,window.__S.GENDER,true,this.loadGenderSpinner,true,this.idSet.genderLI,"gender")}
 
                        <LinearLayout
                        width="match_parent"
@@ -546,7 +572,7 @@ class AdditionalInformationActivity extends View{
                                 onClick={this.showCalendar}/>
                                 <LinearLayout
                                 weight="1"/>
-                                {this.getLockIcon(this.idSet.dobLI,true)}      
+                                {this.getLockIcon(this.idSet.dobLI,true,"dob")}
                           </LinearLayout>
                           {this.getLineSeperator()}
                          </LinearLayout>
@@ -566,12 +592,12 @@ class AdditionalInformationActivity extends View{
                             <MultiSelectSpinner
                               width="match_parent"
                               height="wrap_content"
-                              addLayout={this.getLockIcon(this.idSet.gradeLI,true)}
+                              addLayout={this.getLockIcon(this.idSet.gradeLI,true,"grade")}
                               data={this.GradeArray}
                               selectedData={this.grade}
                               onItemChange={this.onMultiSelectGradeItemChange}/>
                         </LinearLayout>
-                        {this.getEditTextView(this.idSet.locationText,window.__S.CURRENT_LOCATION,"",true,this.setLocation,undefined,true,this.idSet.locationLI)}
+                        {this.getEditTextView(this.idSet.locationText,window.__S.CURRENT_LOCATION,"",true,this.setLocation,undefined,true,this.idSet.locationLI,"location")}
                         {/*{this.getEditTextView(this.idSet.fbText,window.__S.FACEBOOK,"",true,this.setFb,undefined,true,this.idSet.fbLI)}
                         {this.getEditTextView(this.idSet.twitterText,window.__S.TWITTER,"",true,this.setTwitter,undefined,true,this.idSet.twitterLI)}
                         {this.getEditTextView(this.idSet.linkedinText,window.__S.LINKEDIN,"",true,this.setLinkedin,undefined,true,this.idSet.linkedinLI)}*/}
@@ -1286,18 +1312,24 @@ class AdditionalInformationActivity extends View{
   console.log(JSON.stringify(body),"sendingJson");
   this.responseCame=false;
   if(JBridge.isNetworkAvailable()){
-      JBridge.patchApi(url,JSON.stringify(body),window.__user_accessToken,window.__apiToken);
-      window.__LoaderDialog.show();
+   if(!this.checkProfileSameData()){
+            JBridge.patchApi(url,JSON.stringify(body),window.__user_accessToken,window.__apiToken);
+            window.__LoaderDialog.show();
 
-     setTimeout(() => {
-         if(this.responseCame){
-           return;
-         }
-         window.__Snackbar.show(window.__S.ERROR_SERVER_CONNECTION);
-         window.__LoaderDialog.hide();
-         this.responseCame=false;
-     },window.__API_TIMEOUT);
- }else {
+           setTimeout(() => {
+               if(this.responseCame){
+                 return;
+               }
+               window.__Snackbar.show(window.__S.ERROR_SERVER_CONNECTION);
+               window.__LoaderDialog.hide();
+               this.responseCame=false;
+           },window.__API_TIMEOUT);
+      }
+      else if(!this.checkPrivacySameData()){
+        console.log("privacy api calling");
+           this.privacyStatusApiCall();
+      }
+    }else {
    window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
  }
 }
@@ -1311,11 +1343,77 @@ class AdditionalInformationActivity extends View{
    this.responseCame=true;
    console.log(data)
    if(data.result.response=="SUCCESS"){
-     window.__BNavFlowRestart();
-     this.onBackPressed();
+    if(!this.checkPrivacySameData())
+     {
+       console.log("making privacy call");
+       this.privacyStatusApiCall();
+     }
+     else{
+        window.__BNavFlowRestart();
+        this.onBackPressed();
+     }
    }else{
      window.__Snackbar.show(data.params.errmsg);
    }
+  }
+
+privacyStatusApiCall = () => {
+    var fields=["email","location","phone" ,"language","dob","gender","profileSummary","grade","subject"];
+    var publicArray=[];
+    var privateArray=[];
+
+    fields.map((item)=>{
+       if(this.prevData.lockStatus[item]!=this.currentData.lockStatus[item])
+       {
+           if(this.currentData.lockStatus[item]=="private")
+              privateArray.push(item);
+           else
+              publicArray.push(item);
+       }
+    })
+
+    console.log(privateArray , "private");
+    console.log(publicArray , "public");
+
+    var whatToSend = {
+      user_token : window.__user_accessToken,
+      api_token : window.__apiToken,
+      request:{ userId: window.__userToken }
+    };
+    if(privateArray.length>0)
+       whatToSend.request['private']=privateArray;
+
+   if(publicArray.length>0)
+      whatToSend.request['public']=publicArray;
+
+    console.log("whatToSend",whatToSend);
+    whatToSend.request=JSON.stringify(whatToSend.request);
+    var event = { tag: "API_ProfileVisibility", contents: whatToSend }
+    window.__runDuiCallback(event);
+  }
+
+  handleStateChange = (state) =>{
+    var res = utils.processResponse(state);
+    if(res.code!=504){
+        var response = res.data;
+          console.log(res, "response details------>")
+        var responseCode = res.code;
+        if(responseCode == "200"){
+
+          window.__BNavFlowRestart();
+          this.onBackPressed();
+
+        } else {
+          window.__LoaderDialog.hide();
+          window.__Snackbar.show("failed");
+          //_this.onBackPressed();
+        }
+
+    }else{
+      window.__LoaderDialog.hide();
+      window.__Snackbar.show(window.__S.TIME_OUT)
+    //  _this.onBackPressed();
+    }
   }
 
   checkCompleteStatus = () =>{
@@ -1329,6 +1427,12 @@ class AdditionalInformationActivity extends View{
 
   checkSameData = () =>{
     console.log(JSON.stringify(this.grade) +" gfgh "+ JSON.stringify(this.prevData.grade));
+    if(this.checkProfileSameData() && this.checkPrivacySameData())
+      return true;
+    return false;
+  }
+
+  checkProfileSameData = () => {
     if(this.name == this.prevData.name
        && this.lastName == this.prevData.lastName
        && JSON.stringify(this.language) == JSON.stringify(this.prevData.language)
@@ -1337,15 +1441,22 @@ class AdditionalInformationActivity extends View{
        && this.description == this.prevData.description
        && this.dob == this.prevData.dob
        && this.location == this.prevData.location
-       && this.fb==this.prevData.fb
-       && this.linkedin==this.prevData.linkedin
-       && this.twitter==this.prevData.twitter
+      //  && this.fb==this.prevData.fb
+      //  && this.linkedin==this.prevData.linkedin
+      //  && this.twitter==this.prevData.twitter
        && (this.gender == this.prevData.gender || this.gender.toLowerCase() == this.prevData.gender.toLowerCase())
        && this.arrayEquals(this.grade,this.prevData.grade)
-       && this.arrayEquals(this.selectedSubjects,this.prevData.selectedSubjects)){
+       && this.arrayEquals(this.selectedSubjects,this.prevData.selectedSubjects) ){
                return true;
       }
       return false;
+  }
+
+  checkPrivacySameData = () => {
+    if(JSON.stringify(this.prevData.lockStatus)==JSON.stringify(this.currentData.lockStatus) ){
+            return true;
+   }
+   return false;
   }
 
   updateSaveButtonStatus = (enabled) => {

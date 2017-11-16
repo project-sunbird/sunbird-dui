@@ -8,6 +8,7 @@ var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget"
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
 var utils = require('../../utils/GenericFunctions')
+var RelativeLayout = require("@juspay/mystique-backend/src/android_views/RelativeLayout");
 
 var _this;
 class ProfileSkillTags extends View {
@@ -15,7 +16,8 @@ class ProfileSkillTags extends View {
     super(props, children);
 
     this.setIds([
-
+      "lockIcon",
+      "unlockIcon"
     ]);
     _this = this;
     this.isEditable = this.props.editable;
@@ -33,6 +35,7 @@ class ProfileSkillTags extends View {
       "name": "Mastery in Organic  Chemistrydnfnwerierjwoeirjoiewjrweijreiewjeij",
       "tagCount": "+14"
     }]
+    this.lockIconVisibility=this.props.privacyStatus;
 
   }
 
@@ -52,13 +55,35 @@ class ProfileSkillTags extends View {
               height="0"
               weight="1"/>
 
-              <TextView
+              <LinearLayout
               width="wrap_content"
               height="wrap_content"
-              text={window.__S.ADD}
-              onClick = {this.props.onAddClicked}
-              visibility = {this.isEditable=="true" ? "visible" : "gone"}
-              style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
+              layout="horizontal"
+              visibility = {this.isEditable=="true" ? "visible" : "gone"}>
+                  <TextView
+                  width="wrap_content"
+                  height="wrap_content"
+                  margin="0,0,10,0"
+                  text={window.__S.ADD}
+                  onClick = {this.props.onAddClicked}
+                  style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
+                  <RelativeLayout>
+                    <ImageView
+                    height="14"
+                    width="14"
+                    onClick={()=>{this.props.handleLock("skills",this.lockIconVisibility)}}
+                    id={this.idSet.lockIcon}
+                    visibility={this.lockIconVisibility?"visible":"gone"}
+                    imageUrl="ic_action_lock"/>
+                    <ImageView
+                    id={this.idSet.unlockIcon}
+                    height="14"
+                    width="14"
+                    onClick={()=>{this.props.handleLock("skills",this.lockIconVisibility)}}
+                    visibility={this.lockIconVisibility?"gone":"visible"}
+                    imageUrl="ic_action_unlock"/>
+                  </RelativeLayout>
+              </LinearLayout>
 
               </LinearLayout>)
   }
@@ -84,7 +109,7 @@ class ProfileSkillTags extends View {
               height="wrap_content"
               cornerRadius="20"
               orientation="horizontal"
-              background={window.__Colors.WHITE_F4}>              
+              background={window.__Colors.WHITE_F4}>
               <TextView
               weight="1"
               height="wrap_content"

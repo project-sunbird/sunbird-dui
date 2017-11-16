@@ -150,7 +150,10 @@ class ProfileFragment extends View {
               margin = "0,0,0,16"
               width = "match_parent"
               headText = { window.__S.DESCRIPTION }
-              contentText = { this.details.profileSummary }/>
+              contentText = { this.details.profileSummary }
+              privacyStatus={this.checkPrivacy("profileSummary")}
+              handleLock = {this.handleLockClick}
+              editable = {this.isEditable}/>
 
         </LinearLayout>
       )
@@ -239,6 +242,44 @@ class ProfileFragment extends View {
     window.__CustomPopUp.show();
   }
 
+  checkPrivacy = (name) => {
+    var privateFlag=false;
+    if(this.details.profileVisibility[name] && this.details.profileVisibility[name]=='private')
+       privateFlag=true;
+
+    return privateFlag;
+  }
+
+  handleLockClick = (name,locked) => {
+
+    var whatToSend = {
+      user_token : window.__user_accessToken,
+      api_token : window.__apiToken,
+      request:{ userId: window.__userToken }
+    };
+    if(locked){
+      whatToSend.request['public']=[name];
+    }
+    else {
+      whatToSend.request['private']=[name];
+    }
+    console.log("whatToSend",whatToSend);
+    whatToSend.request=JSON.stringify(whatToSend.request);
+    var event = { tag: "API_SetProfileVisibility", contents: whatToSend }
+    if(JBridge.isNetworkAvailable())
+    {
+      if(locked)
+      window.__Snackbar.show("Showing "+name+" to all");
+      else {
+        window.__Snackbar.show("Hiding "+name+" from all");
+      }
+      window.__runDuiCallback(event);
+    }
+    else{
+      window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
+    }
+  }
+
   render() {
     var popUpdata = {
       negButtonText : "Cancel",
@@ -294,22 +335,31 @@ class ProfileFragment extends View {
                   editable = {this.isEditable}
                   data = {this.education}
                   popUpType={window.__PROFILE_POP_UP_TYPE.EDUCATION}
-                  heading = {window.__S.TITLE_EDUCATION} />
+                  heading = {window.__S.TITLE_EDUCATION} 
+                  privacyStatus={this.checkPrivacy("education")}
+                  handleLock = {this.handleLockClick}/>
 
                 <ProfileExperiences
                   editable = {this.isEditable}
                   data = {this.jobProfile}
                   popUpType={window.__PROFILE_POP_UP_TYPE.EXPERIENCE}
-                  heading = {window.__S.TITLE_EXPERIENCE} />
+                  heading = {window.__S.TITLE_EXPERIENCE}
+                  privacyStatus={this.checkPrivacy("jobProfile")}
+                  handleLock = {this.handleLockClick}/>
+
 
                 <ProfileExperiences
                   editable = {this.isEditable}
                   data = {this.address}
                   popUpType={window.__PROFILE_POP_UP_TYPE.ADDRESS}
-                  heading = {window.__S.TITLE_ADDRESS} />
+                  heading = {window.__S.TITLE_ADDRESS} 
+                  privacyStatus={this.checkPrivacy("address")}
+                  handleLock = {this.handleLockClick}/>
                 <ProfileSkillTags
                   editable = {this.isEditable}
-                  onAddClicked={this.addSkills}/>
+                  onAddClicked={this.addSkills}
+                  privacyStatus={this.checkPrivacy("skills")}
+                  handleLock = {this.handleLockClick}/>
 
                 <LinearLayout
                   width = "match_parent"

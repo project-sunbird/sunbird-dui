@@ -25,6 +25,8 @@ class CropParagraph extends View {
     if(this.str.length > this.len) this.str = this.str.substring(0,this.len) + "...";
 
     this.max = false;
+    this.lockIconVisibility=this.props.privacyStatus;
+    this.name="profileSummary";
   }
 
   handleMoreClick = (data) => {
@@ -65,10 +67,43 @@ class CropParagraph extends View {
       layoutTransition="true"
       orientation="vertical">
 
-        <TextView
-          text = {this.props.headText}
-          style= {window.__TextStyle.textStyle.CARD.TITLE.DARK}
-          margin="0,0,0,8"/>
+          <LinearLayout
+        height="wrap_content"
+        width="wrap_content"
+        layout="horizontal">
+            <TextView
+              text = {this.props.headText}
+              style= {window.__TextStyle.textStyle.CARD.TITLE.DARK}
+              margin="0,0,0,8"/>
+
+              <ViewWidget
+              height="0"
+              weight="1"/>
+
+              <LinearLayout
+              width="wrap_content"
+              height="wrap_content"
+              layout="horizontal"
+              visibility = {this.props.editable=="true" ? "visible" : "gone"}>
+                  <RelativeLayout>
+                    <ImageView
+                    height="14"
+                    width="14"
+                    onClick={()=>{this.props.handleLock(this.name,this.lockIconVisibility)}}
+                    id={this.idSet.lockIcon}
+                    visibility={this.lockIconVisibility?"visible":"gone"}
+                    imageUrl="ic_action_lock"/>
+                    <ImageView
+                    id={this.idSet.unlockIcon}
+                    height="14"
+                    width="14"
+                    onClick={()=>{this.props.handleLock(this.name,this.lockIconVisibility)}}
+                    visibility={this.lockIconVisibility?"gone":"visible"}
+                    imageUrl="ic_action_unlock"/>
+                  </RelativeLayout>
+              </LinearLayout>
+          </LinearLayout>
+
 
           <LinearLayout
             orientation = "vertical"

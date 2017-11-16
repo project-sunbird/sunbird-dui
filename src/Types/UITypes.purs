@@ -130,7 +130,8 @@ data MainActivityAction = OPEN_HomeFragment |
   API_UserEnrolledCourse {user_token::String, api_token::String} |
   API_FilterPage {user_token::String, api_token::String,filter_to_send::String} |
   API_CreatedBy {user_token::String, api_token::String, sendBack::String, filters::String }|
-  API_Tenant {user_token::String, api_token::String, slug::String }
+  API_Tenant {user_token::String, api_token::String, slug::String }|
+  API_SetProfileVisibility {user_token::String, api_token::String, request::String }
 
 instance homeActivity :: UIScreen MainActivity MainActivityAction where
   generateMockEvents _ = [BACK_HomeActivity , OPEN_HomeFragment , OPEN_CourseFragment , OPEN_ResourceFragment , OPEN_CommunityFragment , OPEN_ProfileFragment ]
@@ -365,7 +366,8 @@ instance encodeViewBatchActivityAction :: Encode ViewBatchActivityAction where e
 
 data AdditionalInformationActivity = AdditionalInformationActivity {profile :: String}
 data AdditionalInformationActivityAction = DummyAdditionalInformationActivity |
-  BACK_AdditionalInformationActivity
+  BACK_AdditionalInformationActivity|
+  API_ProfileVisibility {user_token::String, api_token::String, request::String }
 
 instance addtionalInsormationActivity :: UIScreen AdditionalInformationActivity AdditionalInformationActivityAction where
   generateMockEvents _ = [ DummyAdditionalInformationActivity , BACK_AdditionalInformationActivity]

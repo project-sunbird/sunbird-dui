@@ -21,7 +21,15 @@ class ProfileExperiences extends View {
     this.isEditable = this.props.editable;
     this.popUpType = this.props.popUpType;
     this.jobs = (this.props.data != undefined)? this.props.data : [];
+    this.lockIconVisibility=this.props.privacyStatus;
 
+    if (this.props.popUpType == window.__PROFILE_POP_UP_TYPE.EXPERIENCE) {
+      this.name="jobProfile"
+    } else if (this.props.popUpType == window.__PROFILE_POP_UP_TYPE.EDUCATION) {
+      this.name="education"
+    } else if (this.props.popUpType == window.__PROFILE_POP_UP_TYPE.ADDRESS) {
+      this.name="address"
+    }
   }
 
 
@@ -46,16 +54,38 @@ class ProfileExperiences extends View {
               <ViewWidget
                 height="0"
                 weight="1"/>
+              <LinearLayout
+              width="wrap_content"
+              height="wrap_content"
+              layout="horizontal"
+              padding = "16,16,0,16"
+              visibility = {(this.isEditable == "true") ? "visible" : "gone"}>
 
               <TextView
               width="wrap_content"
               height="wrap_content"
               text={window.__S.ADD}
-              padding = "16,16,0,16"
               onClick = {() => this.showPopUp()}
-              visibility = {(this.isEditable == "true") ? "visible" : "gone"}
-              style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
+              style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}
+              margin="0,0,10,0"/>
 
+              <RelativeLayout>
+                      <ImageView
+                      height="14"
+                      width="14"
+                      onClick={()=>{this.props.handleLock(this.name,this.lockIconVisibility)}}
+                      id={this.idSet.lockIcon}
+                      visibility={this.lockIconVisibility?"visible":"gone"}
+                      imageUrl="ic_action_lock"/>
+                      <ImageView
+                      id={this.idSet.unlockIcon}
+                      height="14"
+                      width="14"
+                      onClick={()=>{this.props.handleLock(this.name,this.lockIconVisibility)}}
+                      visibility={this.lockIconVisibility?"gone":"visible"}
+                      imageUrl="ic_action_unlock"/>
+                  </RelativeLayout>
+               </LinearLayout>
               </LinearLayout>)
   }
 
@@ -113,14 +143,14 @@ class ProfileExperiences extends View {
     console.log(item, "showPopUp");
     if(!JBridge.isNetworkAvailable()){
       window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
-      return;      
+      return;
     }
     if(item==undefined)
       {item=""}
 
     if (this.props.popUpType == window.__PROFILE_POP_UP_TYPE.EXPERIENCE) {
       this.getCurrentJobStatus();
-      window.__currentJobSelected=this.currJobFlag  ;      
+      window.__currentJobSelected=this.currJobFlag  ;
       var whatToSend = { "profile": JSON.stringify(item) }
       var event = { tag: 'OPEN_ExperienceActivity', contents: whatToSend }
       window.__runDuiCallback(event);
@@ -129,7 +159,7 @@ class ProfileExperiences extends View {
       var whatToSend = { "profile": JSON.stringify(item) }
       var event = { tag: 'OPEN_EducationActivity', contents: whatToSend }
       window.__runDuiCallback(event);
-    
+
     } else if (this.props.popUpType == window.__PROFILE_POP_UP_TYPE.ADDRESS) {
       var whatToSend = { "profile": JSON.stringify(item) }
       var event = { tag: 'OPEN_AddressActivity', contents: whatToSend }

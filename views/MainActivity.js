@@ -67,7 +67,7 @@ class MainActivity extends View {
 
   onPop = () => {
 
-    
+
     Android.runInUI(
       this.animateView(),
       null
@@ -261,6 +261,30 @@ class MainActivity extends View {
       window.__enrolledCourses = responseData.result.courses;
       window.setEnrolledCourses(responseData.result.courses);
       return;
+    }
+
+    if (state.responseFor == "API_SetProfileVisibility") {
+      console.log("API_SetProfileVisibility response",state);
+      var res = utils.processResponse(state);
+      if(res.code!=504){
+          var response = res.data;
+            console.log(res, "response details------>")
+          var responseCode = res.code;
+          if(responseCode == "200"){
+
+            window.__BNavFlowRestart();
+
+          } else {
+            window.__LoaderDialog.hide();
+            window.__Snackbar.show("failed");
+            //_this.onBackPressed();
+          }
+
+      }else{
+        window.__LoaderDialog.hide();
+        window.__Snackbar.show(window.__S.TIME_OUT)
+      //  _this.onBackPressed();
+      }
     }
 
     switch (this.currentPageIndex) {
@@ -464,7 +488,7 @@ class MainActivity extends View {
     var event;
     var whatToSend;
     if(this.currentPageIndex!=0){
-      window.__Check = 0;      
+      window.__Check = 0;
     }
     switch (this.currentPageIndex) {
       case 0:

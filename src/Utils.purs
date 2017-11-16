@@ -127,7 +127,7 @@ getUserId = readFromMemory "user_id"
 generateRequestHeaders user_access_token api_token=
   let filtered = filter (\x -> not $ snd(x) == "__failed")  [(Tuple "Authorization" ("Bearer " <> api_token))
                                                             ,(Tuple "x-authenticated-user-token" user_access_token) --getUserToken
-                                                            ,(Tuple "X-Consumer-ID" getUserId) --getUserId
+                                                            ,(Tuple "X-Consumer-ID" (getUserToken unit)) --getUserId
                                                             ,(Tuple "X-Device-ID" "X-Device-ID")
                                                             ,(Tuple "X-msgid" "8e27cbf5-e299-43b0-bca7-8347f7e5abcf")
                                                             ,(Tuple "ts" (getCurrDate unit))
@@ -256,6 +256,16 @@ searchUser user_access_token api_token filter_to_use=
                                                    , (Tuple "request" (getJsonFromString filter_to_use))
                                                    ]) in
   (post requestUrl headers payload)
+
+
+setProfileVisibility user_access_token api_token request=
+  let requestUrl = "/user/v1/profile/visibility"
+      headers = (generateRequestHeaders user_access_token api_token)
+      payload = A.fromObject (StrMap.fromFoldable [ (Tuple "id" (A.fromString "unique API ID"))
+                                                   , (Tuple "request" (getJsonFromString request))
+                                                   ]) in
+  (post requestUrl headers payload)
+
 
 compositeSearch user_access_token api_token filter_to_use=
   let requestUrl = "/composite/v1/search"
