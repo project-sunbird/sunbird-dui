@@ -122,6 +122,10 @@ class ProfileHeader extends View {
     else return string;
   }
 
+  showProfileImagePopup = () => {
+    window.__ProfileImagePopUp.show(this.imageUrl);
+  }
+
   render() {
     this.layout = (
             <LinearLayout
@@ -141,7 +145,8 @@ class ProfileHeader extends View {
               height="80"
               circularImageUrl={"0,"+this.imageUrl}
               stroke ={"2," + "#d8d8d8"}
-              cornerRadius="40"/>
+              cornerRadius="40"
+              onClick = {this.showProfileImagePopup}/>
               <TextView
               width="wrap_content"
               height="wrap_content"

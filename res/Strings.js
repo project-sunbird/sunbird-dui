@@ -259,6 +259,10 @@ const stringsRes = {
 		CAMERA_PERMISSION_DENIED : "Camera Permission denied",
 		SELECT_STATE_TO_GET_STARTED : "Select state to get started",
 		MSG_ALREADY_IMPORTED : "Already Imported",
+		ERROR_UPLOADING_IMG : "Error while uploading image",
+		CHANGE : "Change",
+		REMOVE : "Remove"
+
 	},
 	"hi_IN" : {
 		ALREADY_HAVE_ACC : "मौजूदा उपयोगकर्ता, साइन इन करें",

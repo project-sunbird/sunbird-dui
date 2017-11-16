@@ -21,6 +21,7 @@ var ContentLoaderDialog = require('../components/Sunbird/core/ContentLoaderDialo
 var PermissionDeniedDialog = require('../components/Sunbird/core/PermissionDeniedDialog');
 var LanguagePopup = require('../components/Sunbird/core/LanguagePopup');
 var ForceUpgradePopup = require('../components/Sunbird/ForceUpgradePopup');
+var ProfileImagePopUp = require('../components/Sunbird/ProfileImagePopUp');
 
 
 const Str = require("../res/Strings") ;
@@ -94,8 +95,11 @@ class RootScreen extends View {
         <PreviewImagePopup
           defaultImage="https://pbs.twimg.com/media/CRafzhtWIAEQ2c9.png"/>
         <LanguagePopup/>
+        <ProfileImagePopUp
+          height="match_parent"
+          width="match_parent"/>
         <Snackbar/>
-        
+
       </RelativeLayout>
     );
   }
