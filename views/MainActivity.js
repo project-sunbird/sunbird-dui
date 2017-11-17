@@ -162,7 +162,13 @@ class MainActivity extends View {
       window.__AnnouncementApiCalled=false;      
       window.__AnnouncementApiData="";
       if(state.response.status[0]=="success"&&state.response.status[2]=="200"){
-        console.log("API_GetAnnouncementData :",utils.decodeBase64(state.response.status[1]));
+        try{
+          var data = JSON.parse(utils.decodeBase64(state.response.status[1]));
+          console.log("API_GetAnnouncementData :",data);
+          window.__AnnouncementApiData=data.result.announcements;
+        }catch(e){
+          console.log("Exception in handlestatechange got API_GetAnnouncement : ",e);
+        }
       }
     }
     if(state.responseFor=="API_EndorseSkill"){

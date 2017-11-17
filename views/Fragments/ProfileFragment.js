@@ -141,7 +141,8 @@ class ProfileFragment extends View {
             id = {window.__userToken} 
             editable = {this.isEditable}
             data={data.result.skills}
-            onAddClicked={this.addSkills}/>
+            onAddClicked={this.addSkills}
+            handleLock = {this.handleLockClick}/>
           );
         this.replaceChild(this.idSet.skillTagComponent, layout.render(), 0);   
       }     

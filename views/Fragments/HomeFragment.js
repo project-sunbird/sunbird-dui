@@ -250,7 +250,7 @@ class HomeFragment extends View {
   }
   getAnnouncementCard=()=>{
     var viewAllVisibility="gone";
-    if(CommunityParams.eventParams.length==0)
+    if(window.__AnnouncementApiData==undefined||window.__AnnouncementApiData.length==0)
       {
         var cards= (<LinearLayout
                     width="match_parent"
@@ -264,15 +264,23 @@ class HomeFragment extends View {
                   </LinearLayout>
           );
       }else{
-        viewAllVisibility="visible"
-   var cards = CommunityParams.eventParams.map((item, i) => {
-      return (
-        <AnnouncementCard
-         params={item}
-         onClick={()=>this.handleAnnouncementClick(item)}/>
-      )
-    });
-  }
+        viewAllVisibility="visible";
+        var card1=(<LinearLayout/>),card2=(<LinearLayout/>);
+        if(window.__AnnouncementApiData.length>0){
+          card1 = (
+          <AnnouncementCard
+            params={window.__AnnouncementApiData[0]}
+            onClick={()=>this.handleAnnouncementClick(window.__AnnouncementApiData[0])}/>
+          );
+        }
+        if(window.__AnnouncementApiData.length>1){
+          card2 = (
+            <AnnouncementCard
+            params={window.__AnnouncementApiData[1]}
+            onClick={()=>this.handleAnnouncementClick(window.__AnnouncementApiData[0])}/>
+            );
+        }
+      }
     return (<LinearLayout
               height="wrap_content"
               width="match_parent"
@@ -294,11 +302,12 @@ class HomeFragment extends View {
                     gravity="right"
                     padding="5,0,15,0"
                     visibility={viewAllVisibility}
-                    onClick={()=>this.handleAnnouncementViewAllClick(CommunityParams.eventParams)}
+                    onClick={()=>this.handleAnnouncementViewAllClick(window.__AnnouncementApiData)}
                     text={window.__S.VIEW_ALL}
                     style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
                 </LinearLayout>
-                {cards}
+                {card1}
+                {card2}
               </LinearLayout>);
  }
  handleAnnouncementViewAllClick= (data1) =>{
