@@ -577,7 +577,7 @@ class CourseEnrolledActivity extends View {
   }
 
   handleResumeClick = () =>{
-    console.log("handleResumeClick this.details",this.details)
+    console.log(this.details,"handleResumeClick this.details")
     var id;
     if(this.enrolledCourses.hasOwnProperty('lastReadContentId') && this.enrolledCourses.lastReadContentId !=null){
       console.log("this.enrolledCourses.lastReadContentId", this.enrolledCourses.lastReadContentId);
@@ -595,11 +595,31 @@ class CourseEnrolledActivity extends View {
       window.__Snackbar.show(window.__S.ERROR_NO_RESUME_CONTENT_AVAILABLE)
     }
     console.log("id before JBridge.getChildContent ", id);
+    console.log("courseContent children",this.courseContent.children);
     if (id) {
-      this.courseContent.children.map((item, i) => {
-        if (item.identifier == id) this.handleModuleClick(item.contentData.name,item)
-      })
+
+        var item = this.getContentById(id,this.courseContent.children);
+        console.log("get content by id", item);
+        if(item=="failed")
+          window.__Snackbar.show(window.__S.ERROR_NO_RESUME_CONTENT_AVAILABLE)
+        else
+          this.handleModuleClick(item.contentData.name,item)
+          
     } else window.__Snackbar.show(window.__S.ERROR_NO_RESUME_CONTENT_AVAILABLE)
+  }
+
+  getContentById = (id,content) => {
+    var ret="failed"
+    content.map((item,i) =>{
+      if(item.identifier==id) ret=item;
+      else if(item.children!=undefined)
+         {
+           var temp=_this.getContentById(id,item.children)
+           if(temp!="failed")
+              ret=temp;
+         }
+    })
+    return ret
   }
 
   changeOverFlow = () =>{
