@@ -18,6 +18,8 @@ var FilterItem = require('../Sunbird/FilterItem')
 var Styles = require("../../res/Styles");
 var FilterParamsCource = require("../../FilterParamsCource")
 var FilterParamsResource = require("../../FilterParamsResource")
+var utils = require("../../src/Utils")
+
 let IconStyle = Styles.Params.IconStyle;
 
 class PageFilterPopup extends View {
@@ -253,7 +255,9 @@ class PageFilterPopup extends View {
     }
     this.hide();
 
-    this.filter.channel = JBridge.getFromSharedPrefs("channelId");
+    if (JBridge.isChannelIdSet() == true){
+      this.filter.channel = utils.getChannelId();
+    }
     var sendFilter=JSON.stringify(this.filter);
 
     console.log("sendFilter : ", sendFilter);

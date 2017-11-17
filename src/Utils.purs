@@ -90,6 +90,7 @@ foreign import getCurrDate :: Unit -> String
 foreign import getUserToken :: Unit -> String
 foreign import getUserAccessToken :: Unit -> String
 foreign import getChannelId :: Unit -> String
+foreign import isChannelIdSet :: Unit -> Boolean
 
 getEulerLocation1 = getApiUrl unit
 getEulerLocation2 = getApiUrl1 unit
@@ -122,6 +123,10 @@ updateState changes state = makeAff(\error success -> updateState' success error
 
 getUserId ::String
 getUserId = readFromMemory "user_id"
+
+getFilterParams = if (isChannelIdSet unit) == true
+                    then [(Tuple "status" (A.fromString "Live")),(Tuple "channel" (A.fromString (getChannelId unit)))]
+                    else [(Tuple "status" (A.fromString "Live"))]
 
 
 --API CALLS
@@ -180,29 +185,27 @@ enrollInBatch bodyToSend user_access_token api_token =
 
 
 getCoursesPageApi user_access_token api_token =
-  let requestUrl = "/data/v1/page/assemble"
+  let filterParams = getFilterParams
+      requestUrl = "/data/v1/page/assemble"
       headers = (generateRequestHeaders user_access_token api_token)
       payload = A.fromObject (StrMap.fromFoldable [ (Tuple "id" (A.fromString "unique API ID"))
                                                    , (Tuple "ts" (A.fromString "2013/10/15 16:16:3"))
                                                    , (Tuple "request" (A.fromObject (StrMap.fromFoldable  [ (Tuple "name" (A.fromString "Course"))
                                                                                                           , (Tuple "source" (A.fromString "web"))
-                                                                                                          , (Tuple "filters" (A.fromObject (StrMap.fromFoldable[ (Tuple "status" (A.fromString "Live"))
-                                                                                                                                                                ,(Tuple "channel" (A.fromString (getChannelId unit)))
-                                                                                                                                                                ])))
+                                                                                                          , (Tuple "filters" (A.fromObject (StrMap.fromFoldable filterParams)))
                                                                                                           ])))
                                                    ]) in
   (post requestUrl headers payload)
 
 getResourcePageApi user_access_token api_token =
-  let requestUrl = "/data/v1/page/assemble"
+  let filterParams = getFilterParams
+      requestUrl = "/data/v1/page/assemble"
       headers = (generateRequestHeaders user_access_token api_token)
       payload = A.fromObject (StrMap.fromFoldable [ (Tuple "id" (A.fromString "unique API ID"))
                                                    , (Tuple "ts" (A.fromString "2013/10/15 16:16:3"))
                                                    , (Tuple "request" (A.fromObject (StrMap.fromFoldable  [ (Tuple "name" (A.fromString "Resource"))
                                                                                                           , (Tuple "source" (A.fromString "web"))
-                                                                                                          , (Tuple "filters" (A.fromObject (StrMap.fromFoldable[ (Tuple "status" (A.fromString "Live"))
-                                                                                                                                                                ,(Tuple "channel" (A.fromString (getChannelId unit)))
-                                                                                                                                                                ])))
+                                                                                                          , (Tuple "filters" (A.fromObject (StrMap.fromFoldable filterParams)))
                                                                                                           ])))
                                                    ]) in
   (post requestUrl headers payload)

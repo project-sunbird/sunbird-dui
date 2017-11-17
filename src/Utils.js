@@ -373,5 +373,11 @@ exports["getUserAccessToken"] = function () {
 }
 
 exports["getChannelId"] = function () {
-  return JBridge.getFromSharedPrefs("channelId");
+  var cId = JBridge.getFromSharedPrefs("channelId");
+  if (cId == "__failed") return JBridge.defaultChannelId();
+  return cId;
+}
+
+exports["isChannelIdSet"] = function () {
+  return JBridge.isChannelIdSet();
 }
