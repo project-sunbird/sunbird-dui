@@ -123,7 +123,7 @@ updateState changes state = makeAff(\error success -> updateState' success error
 getUserId ::String
 getUserId = readFromMemory "user_id"
 
-getFilterParams = if (isChannelIdSet unit) == true
+getFilterParams isSet = if isSet
                     then [(Tuple "status" (A.fromString "Live")),(Tuple "channel" (A.fromString (getChannelId unit)))]
                     else [(Tuple "status" (A.fromString "Live"))]
 
@@ -173,7 +173,7 @@ enrollInBatch bodyToSend user_access_token api_token =
 
 
 getCoursesPageApi user_access_token api_token =
-  let filterParams = getFilterParams
+  let filterParams = getFilterParams $ isChannelIdSet unit
       requestUrl = "/data/v1/page/assemble"
       headers = (generateRequestHeaders user_access_token api_token)
       payload = A.fromObject (StrMap.fromFoldable [ (Tuple "id" (A.fromString "unique API ID"))
@@ -186,7 +186,7 @@ getCoursesPageApi user_access_token api_token =
   (post requestUrl headers payload)
 
 getResourcePageApi user_access_token api_token =
-  let filterParams = getFilterParams
+  let filterParams = getFilterParams $ isChannelIdSet unit
       requestUrl = "/data/v1/page/assemble"
       headers = (generateRequestHeaders user_access_token api_token)
       payload = A.fromObject (StrMap.fromFoldable [ (Tuple "id" (A.fromString "unique API ID"))

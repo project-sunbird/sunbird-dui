@@ -23,7 +23,8 @@
     "source-map": "^0.5.6",
     "webpack": "^1.15.0",
     "webpack-dev-server": "^1.14.0",
-    "webpack-shell-plugin": "^0.5.0"
+    "webpack-shell-plugin": "^0.5.0",
+    "blueimp-md5": "^2.10.0"
   },
   "devDependencies": {
     "babel-core": "^6.24.1",

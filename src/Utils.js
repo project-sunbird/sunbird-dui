@@ -358,7 +358,9 @@ exports["getUserAccessToken"] = function () {
 
 exports["getChannelId"] = function () {
   var cId = JBridge.getFromSharedPrefs("channelId");
+  console.log("cid before", cId);
   if (cId == "__failed") return JBridge.defaultChannelId();
+  console.log("cid after", cId);
   return cId;
 }
 
