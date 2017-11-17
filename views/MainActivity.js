@@ -141,6 +141,31 @@ class MainActivity extends View {
 
   handleStateChange = (state) => {
     var res = utils.processResponse(state);
+    if(state.responseFor=="API_EndorseSkill"){
+      if(state.response.status[0]=='success'&&state.response.status[2]=="200"){
+        window.__Snackbar.show(window.__S.SKILLS_ADDED_SUCCESSFULLY);
+      }
+        window.__BNavFlowRestart();
+        return;
+      }
+    if(state.responseFor=="API_GetSkillsList"){
+      window.__PopulateSkillsList="";
+      if(state.response.status[0]=="success"&&state.response.status[2]=="200"){
+        try{
+          var data=JSON.parse(utils.decodeBase64(state.response.status[1]))
+          window.__PopulateSkillsList=data.result.skills;
+        }catch(e){
+          console.log("Exception : ",e);
+        }        
+      }
+      console.log("window.__PopulateSkillsList-->",window.__PopulateSkillsList,"++++++]]]");
+      window.__CustomPopUp.show();
+      return;
+    }
+    if(state.responseFor=="API_GetSkills"){
+      window.__ProfileFragmentHandleStateChange(state);
+      return;
+    }
     if (!state.local && !res.hasOwnProperty("err") && state.responseFor == "API_ProfileFragment"){
       console.log("Saving state");
       var data = utils.encodeBase64(JSON.stringify(state));

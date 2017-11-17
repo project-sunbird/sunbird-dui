@@ -30,6 +30,18 @@ profileFragment input whereFrom whatToSendBack = do
 			resData <- setProfileVisibility x y z
 			_ <- sendUpdatedState{response : resData, responseFor : "API_SetProfileVisibility", screen:"asas"}
 			pure $ "apiCalled"
+		API_EndorseSkill {user_token: user_token,api_token: api_token,requestBody:request} -> do
+			responseData <- endorseSkill user_token api_token request
+			_ <- sendUpdatedState {response : responseData, responseFor : "API_EndorseSkill", screen:"asas"}
+			pure $ "handled"
+		API_GetSkills {user_token: user_token,api_token: api_token,requestBody:request} -> do
+			responseData <- getSkills user_token api_token request
+			_ <- sendUpdatedState {response : responseData, responseFor : "API_GetSkills", screen:"asas"}
+			pure $ "handled"
+		API_GetSkillsList {user_token : user_token,api_token : api_token} -> do
+			responseData <- getSkillsList user_token api_token
+			_ <- sendUpdatedState {response : responseData, responseFor : "API_GetSkillsList", screen:"asas"}
+			pure $ "handled"
 		_ -> profileFragment input whereFrom whatToSendBack
 
 notificationActivity input whereFrom whatToSendBack = do
@@ -68,6 +80,14 @@ profileActivity input whereFrom whatToSendBack = do
 		OPEN_EnrolledCourseActivity_Prof {course:output} -> enrolledCourseActivity output "ProfileActivity" input
 		OPEN_CourseInfoActivity_Prof {course:output} -> courseInfoActivity output "ProfileActivity" input
 		OPEN_ResourceDetailActivity_Prof {resourceDetails:output} -> resourceDetailActivity output "ProfileActivity" input
+		API_EndorseSkill1 {user_token: user_token,api_token: api_token,requestBody:request} -> do
+			responseData <- endorseSkill user_token api_token request
+			_ <- sendUpdatedState {response : responseData, responseFor : "API_EndorseSkill1", screen:"asas"}
+			pure $ "handled"
+		API_GetSkills1 {user_token: user_token,api_token: api_token,requestBody:request} -> do
+			responseData <- getSkills user_token api_token request
+			_ <- sendUpdatedState {response : responseData, responseFor : "API_GetSkills1", screen:"asas"}
+			pure $ "handled"
 		BACK_ProfileActivity -> searchProfileActivity whatToSendBack "Terminate" input
 		_ -> profileActivity input whereFrom whatToSendBack
 

@@ -234,6 +234,27 @@ flagContent user_access_token api_token request identifier=
                                                    ]) in
   (post requestUrl headers payload)
 
+---------------------------------------------------------------
+
+getSkills user_access_token api_token request=
+  let requestUrl = "/user/v1/skill/read"
+      headers = (generateRequestHeaders user_access_token api_token)
+      payload = A.fromObject (StrMap.fromFoldable [(Tuple "request" (getJsonFromString request))
+                                                    ]) in
+  (post requestUrl headers payload)
+
+
+---------------------------------------------------------------
+
+endorseSkill user_access_token api_token request=
+  let requestUrl = "/user/v1/skill/add"
+      headers = (generateRequestHeaders user_access_token api_token)
+      payload = A.fromObject (StrMap.fromFoldable [(Tuple "params" (getJsonFromString "{}"))
+                                                  ,(Tuple "request" (getJsonFromString request))
+                                                   ]) in
+  (post requestUrl headers payload)
+
+----------------------------------------------------------------
 
 getResourcePageFilterApi user_access_token api_token filter_to_use=
   let requestUrl = "/data/v1/page/assemble"
@@ -293,7 +314,13 @@ getBatchDetails user_access_token api_token batch_id=
       headers = (generateRequestHeaders user_access_token api_token) in
   (get requestUrl headers)
 
+---------------------------------------------------------------
+getSkillsList user_access_token api_token =
+  let requestUrl = "/data/v1/skills"
+      headers = (generateRequestHeaders user_access_token api_token) in
+  (get requestUrl headers)
 
+---------------------------------------------------------------
 
 getUserEnrolledCourses user_access_token api_token =
   let requestUrl = "/course/v1/user/enrollment/list/" <> (getUserToken unit)

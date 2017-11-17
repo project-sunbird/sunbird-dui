@@ -130,8 +130,11 @@ data MainActivityAction = OPEN_HomeFragment |
   API_UserEnrolledCourse {user_token::String, api_token::String} |
   API_FilterPage {user_token::String, api_token::String,filter_to_send::String} |
   API_CreatedBy {user_token::String, api_token::String, sendBack::String, filters::String }|
-  API_Tenant {user_token::String, api_token::String, slug::String }|
-  API_SetProfileVisibility {user_token::String, api_token::String, request::String }
+  API_SetProfileVisibility {user_token::String, api_token::String, request::String }|
+  API_EndorseSkill {user_token::String,api_token::String,requestBody::String} |
+  API_GetSkillsList {user_token::String,api_token::String} |
+  API_GetSkills {user_token::String,api_token::String,requestBody::String} |
+  API_Tenant {user_token::String, api_token::String, slug::String }
 
 instance homeActivity :: UIScreen MainActivity MainActivityAction where
   generateMockEvents _ = [BACK_HomeActivity , OPEN_HomeFragment , OPEN_CourseFragment , OPEN_ResourceFragment , OPEN_CommunityFragment , OPEN_ProfileFragment ]
@@ -321,13 +324,15 @@ instance encodeCommProfSearchActivityAction :: Encode CommProfSearchActivityActi
 data ProfileActivity = ProfileActivity {profile::String}
 data ProfileActivityAction = DummyProfileActivity |
   BACK_ProfileActivity |
+  API_EndorseSkill1 {user_token::String,api_token::String,requestBody::String} |
+  API_GetSkills1 {user_token::String,api_token::String,requestBody::String} |
 	OPEN_CommProfSearchActivity_Prof {filterDetails :: String}|
   OPEN_EnrolledCourseActivity_Prof {course::String} |
   OPEN_CourseInfoActivity_Prof {course::String} |
   OPEN_ResourceDetailActivity_Prof {resourceDetails::String}
 
 instance profileActivity :: UIScreen ProfileActivity ProfileActivityAction where
-  generateMockEvents _ = [DummyProfileActivity , BACK_ProfileActivity ]
+  generateMockEvents _ = [DummyProfileActivity , BACK_ProfileActivity]
   ui x = genericUI x (generateMockEvents x :: Array ProfileActivityAction)
 
 derive instance genericProfileActivityAction  :: Generic ProfileActivityAction _

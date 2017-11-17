@@ -21,21 +21,7 @@ class ProfileSkillTags extends View {
     ]);
     _this = this;
     this.isEditable = this.props.editable;
-    console.log("Profile skill tags :",this.props.editable)
-    this.data = [{
-      "name": "Leadership",
-      "tagCount": "+24"
-    }, {
-      "name": undefined,
-      "tagCount": "-4"
-    }, {
-      "name": "Advanced Chemistry",
-      "tagCount": "+12"
-    }, {
-      "name": "Mastery in Organic  Chemistrydnfnwerierjwoeirjoiewjrweijreiewjeij",
-      "tagCount": "+14"
-    }]
-    this.lockIconVisibility=this.props.privacyStatus;
+    this.data = this.props.data||[];
 
   }
 
@@ -44,7 +30,6 @@ class ProfileSkillTags extends View {
     return (<LinearLayout
               width="wrap_content"
               height="wrap_content">
-
               <TextView
               width="wrap_content"
               height="wrap_content"
@@ -98,11 +83,14 @@ class ProfileSkillTags extends View {
 
 
   getRows(input) {
+    if(input.skillName==undefined){
+        input.skillName="Not available";
+      }      
     return (<LinearLayout
               width="match_parent"
               height="wrap_content"
               margin="0,24,0,0"
-              visibility={input.name==undefined?"gone":"visible"}
+              visibility={input.skillName==undefined?"gone":"visible"}
               gravity="center_vertical">
               <LinearLayout
               weight="1"
@@ -113,7 +101,7 @@ class ProfileSkillTags extends View {
               <TextView
               weight="1"
               height="wrap_content"
-              text={ utils.cropText(input.name,50)}
+              text={ utils.cropText(input.skillName,50)}
               padding="12,7,12,7"
               style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
               <LinearLayout
@@ -126,27 +114,54 @@ class ProfileSkillTags extends View {
               width="wrap_content"
               height="match_parent"
               gravity="center"
-              text={input.tagCount}
+              text={input.endorsementcount}
               padding="8,0,12,0"
               style={window.__TextStyle.textStyle.HINT.REGULAR}/>
               </LinearLayout>
-              <TextView
-              width="wrap_content"
-              height="wrap_content"
-              visibility={this.isEditable=="true"?"gone":"visible"}
-              text={"+1"}
-              margin="5,0,5,0"
-              padding="10,3,10,3"
-              cornerRadius="15"
-              stroke={"2,"+window.__Colors.PRIMARY_BLACK_22}
-              style={window.__TextStyle.textStyle.HINT.REGULAR}/>
-              </LinearLayout>)
+              <LinearLayout
+               width="wrap_content"
+               height="wrap_content"
+               onClick={()=>this.handleEndorseSkill(input.skillName)}>
+                <TextView
+                width="wrap_content"
+                height="wrap_content"
+                visibility={this.isEditable=="true"?"gone":"visible"}
+                text={"+1"}
+                margin="5,0,5,0"
+                padding="10,3,10,3"
+                cornerRadius="15"
+                stroke={"2,"+}
+                style={window.__TextStyle.textStyle.HINT.REGULAR}/>
+              </LinearLayout>
+            </LinearLayout>)
   }
+
+  handleEndorseSkill=(input)=>{
+    if(!JBridge.isNetworkAvailable()){
+      window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE);
+      return;
+    }
+    window.__LoaderDialog.show();
+   var request = {
+      "endorsedUserId":window.__userToken,
+      "skillName":[input]
+  }
+  var whatToSend = {
+    "user_token" : window.__user_accessToken,
+    "api_token" : window.__apiToken,
+    "requestBody" : JSON.stringify(request)
+  }
+  var event= { "tag": "API_EndorseSkill1", contents: whatToSend };
+  window.__runDuiCallback(event);
+}
 
 
   skillTagBody() {
-
-    var rows = this.data.map((item, i) => {
+    var rows = (<LinearLayout
+    height="0"
+    width="0"/>);
+    if(this.data!=undefined&& this.data.length>0){
+      rows = this.data.map((item, i) => {
       return (<LinearLayout
                 width="match_parent"
                 height="wrap_content"
@@ -155,28 +170,29 @@ class ProfileSkillTags extends View {
 
                 </LinearLayout>)
     });
-
+  }
     return rows;
 
   }
 
 
   render() {
-    this.layout = (
-      <LinearLayout
-                width="wrap_content"
-                height="wrap_content"
-                margin="0,16,0,24"
-                orientation="vertical">
+      this.layout = (
+        <LinearLayout
+                  width="wrap_content"
+                  height="wrap_content"
+                  margin="0,16,0,24"
+                  visibility={((this.data!=undefined&&this.data.length>0)||(this.isEditable=="true"))?"visible":"gone"}
+                  orientation="vertical">
 
-                {this.getLineSeperator()}
+                  {this.getLineSeperator()}
 
-                {this.getHeader()}
+                  {this.getHeader()}
 
-                {this.skillTagBody()}
+                  {this.skillTagBody()}
 
-              </LinearLayout>
-    )
+                </LinearLayout>
+      );
     return this.layout.render();
   }
 }

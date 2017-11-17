@@ -261,8 +261,9 @@ const stringsRes = {
 		MSG_ALREADY_IMPORTED : "Already Imported",
 		ERROR_UPLOADING_IMG : "Error while uploading image",
 		CHANGE : "Change",
-		REMOVE : "Remove"
-
+		REMOVE : "Remove",
+		SKILLS_ADDED_SUCCESSFULLY : "Skills added successfully",
+		SKILL_ENDORSED : "Skill endorsed"
 	},
 	"hi_IN" : {
 		ALREADY_HAVE_ACC : "मौजूदा उपयोगकर्ता, साइन इन करें",

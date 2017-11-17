@@ -41,7 +41,8 @@ class ProfileActivity extends View {
 
     this.setIds([
       "mainHolder",
-      "createdByHolder"
+      "createdByHolder",
+      "skillTagComponent"
     ]);
 
     this.popupMenu="Logout";
@@ -51,7 +52,7 @@ class ProfileActivity extends View {
 
     this.state = state;
     this.profile = JSON.parse(this.state.data.value0.profile);
-    console.log(this.data, "profileData in ProfileActivity");
+    console.log("profileData in ProfileActivity::", this.profile);
 
     this.profileData = this.profile.data;
     this.jobProfile = this.profileData.jobProfile;
@@ -60,7 +61,8 @@ class ProfileActivity extends View {
     console.log("this.profileData", this.profileData);
     console.log("this.createdBy", this.createdBy);
     this.isEditable = "false"
-  }
+    this.skills = "";
+    }
 
   isAllFeildsPresent = () => {
     if ((this.profileData.profileSummary && this.profileData.profileSummary == "") || (this.education && this.education.length > 0) || (this.jobProfile && this.jobProfile.length > 0) || (this.createdBy && this.createdBy.content) || (this.profileData && this.profileData.language.length && this.profileData.language.length > 0 && this.profileData.address && this.profileData.address.length))
@@ -212,7 +214,24 @@ class ProfileActivity extends View {
         JBridge.searchContent(callback, "userToken", window.__userToken, "Combined", "true", 10);
       else
         console.log("JBridge.searchContent failed, no internet");
+        this.getSkills()
     }
+  }
+  getSkills=()=>{
+    if(!JBridge.isNetworkAvailable()){
+      window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE);
+      return;
+    }
+    var request = {
+      "endorsedUserId": this.profileData.id,
+  }
+  var whatToSend = {
+    "user_token" : window.__user_accessToken,
+    "api_token" : window.__apiToken,
+    "requestBody" : JSON.stringify(request)
+  }
+  var event= { "tag": "API_GetSkills1", contents: whatToSend };
+  window.__runDuiCallback(event);
   }
 
   handleCreatedCardClick = (item) => {
@@ -250,7 +269,28 @@ class ProfileActivity extends View {
     }
   }
 
+  handleStateChange = (state) =>{
+    var data=JSON.parse(utils.decodeBase64(state.response.status[1]));
+    if(state.responseFor=="API_GetSkills1"&&state.response.status[0]=="success"&&state.response.status[2]=="200")
+      {
+        if(data.hasOwnProperty("result")&&data.result.hasOwnProperty("skills")&&data.result.skills!=undefined){
+          var layout=(
+          <ProfileSkillTags
+            id = {this.profileData.id} 
+            editable = {this.isEditable}
+            data={data.result.skills}/>
+          );
+        this.replaceChild(this.idSet.skillTagComponent, layout.render(), 0);   
+      }     
+      }else if(state.responseFor=="API_EndorseSkill1"&&state.response.status[0]=="success"&&state.response.status[2]=="200"){
+        window.__Snackbar.show(window.__S.SKILL_ENDORSED);
+        this.getSkills();
+      }
+      window.__LoaderDialog.hide();      
+  }
+
   render() {
+    window.__LoaderDialog.show();    
     this.layout = (
 
       <LinearLayout
@@ -307,9 +347,14 @@ class ProfileActivity extends View {
                     popUpType = {window.__PROFILE_POP_UP_TYPE.EXPERIENCE}
                     heading = {window.__S.TITLE_EXPERIENCE}/>
 
-                  <ProfileSkillTags
-                    editable = {this.isEditable}/>
-
+                  <LinearLayout
+                    height="wrap_content"
+                    width="wrap_content"
+                    id={this.idSet.skillTagComponent}>
+                    <ProfileSkillTags
+                      id = {this.profileData.id} 
+                      editable = {this.isEditable}/>
+                  </LinearLayout>
                     <LinearLayout
                       width = "match_parent"
                       id = {this.idSet.createdByHolder}>

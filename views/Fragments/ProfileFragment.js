@@ -35,9 +35,10 @@ class ProfileFragment extends View {
 
     this.props.appendText = this.props.appendText || "";
     this.setIds([
-      'createdByHolder'
+      'createdByHolder',
+      'skillTagComponent'
     ]);
-
+    
     _this = this;
     this.isEditable = this.props.editable;
     this.menuData = {
@@ -50,6 +51,7 @@ class ProfileFragment extends View {
     this.popupMenu=window.__S.CHANGE_LANGUAGE + "," + window.__S.LOGOUT;
     // this.popupMenu=window.__S.LOGOUT;
     window.__LanguagePopup.props.buttonClick = this.handleChangeLang;
+    window.__ProfileFragmentHandleStateChange=this.handleStateChange;
 
     this.handleResponse();
     JBridge.logTabScreenEvent("PROFILE");
@@ -121,11 +123,52 @@ class ProfileFragment extends View {
     else
       console.log("JBridge.searchContent failed, no internet");
     window.__ContentLoadingComponent.hideLoader();
-    window.__LoaderDialog.hide();
     if(!JBridge.isNetworkAvailable()){
+      window.__LoaderDialog.hide();      
       window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
       return ;
     }
+    _this.getSkills();
+  }
+
+  handleStateChange = (state) =>{
+    var data=JSON.parse(utils.decodeBase64(state.response.status[1]));
+    if(state.responseFor=="API_GetSkills"&&state.response.status[0]=="success"&&state.response.status[2]=="200")
+      {
+        if(data.hasOwnProperty("result")&&data.result.hasOwnProperty("skills")&&data.result.skills!=undefined){
+          var layout=(
+          <ProfileSkillTags
+            id = {window.__userToken} 
+            editable = {this.isEditable}
+            data={data.result.skills}
+            onAddClicked={this.addSkills}/>
+          );
+        this.replaceChild(this.idSet.skillTagComponent, layout.render(), 0);   
+      }     
+  }
+  window.__LoaderDialog.hide();        
+}
+
+  getSkills=()=>{
+    if(!JBridge.isNetworkAvailable()){
+      window.__LoaderDialog.hide();              
+      window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE);
+      return;
+    }
+    var request = {
+      "endorsedUserId": window.__userToken,
+  }
+  var whatToSend = {
+    "user_token" : window.__user_accessToken,
+    "api_token" : window.__apiToken,
+    "requestBody" : JSON.stringify(request)
+  }
+  var event= { "tag": "API_GetSkills", contents: whatToSend };
+  window.__runDuiCallback(event);
+  }
+
+  getSkillsList=(stat)=>{
+
   }
 
   getDescription = () => {
@@ -235,11 +278,15 @@ class ProfileFragment extends View {
     }
   }
   addSkills = ()=>{
-    if(!JBridge.isNetworkAvailable()){
+    var whatToSend = {
+      "user_token" : window.__user_accessToken,
+      "api_token" : window.__apiToken,
+    }
+    var event= { "tag": "API_GetSkillsList", contents: whatToSend };
+    if(JBridge.isNetworkAvailable())
+      window.__runDuiCallback(event);
+    else
       window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
-      return;      
-    }    
-    window.__CustomPopUp.show();
   }
 
   checkPrivacy = (name) => {
@@ -355,12 +402,18 @@ class ProfileFragment extends View {
                   heading = {window.__S.TITLE_ADDRESS} 
                   privacyStatus={this.checkPrivacy("address")}
                   handleLock = {this.handleLockClick}/>
-                <ProfileSkillTags
-                  editable = {this.isEditable}
-                  onAddClicked={this.addSkills}
-                  privacyStatus={this.checkPrivacy("skills")}
-                  handleLock = {this.handleLockClick}/>
-
+                <LinearLayout
+                  height="wrap_content"
+                  width="wrap_content"
+                  id={this.idSet.skillTagComponent}>
+                    <ProfileSkillTags
+                      id = {window.__userToken} 
+                      editable = {this.isEditable}
+                      onAddClicked={this.addSkills}
+                      privacyStatus={this.checkPrivacy("skills")}
+                      handleLock = {this.handleLockClick}/>
+                  </LinearLayout>
+                
                 <LinearLayout
                   width = "match_parent"
                   id = {this.idSet.createdByHolder}>

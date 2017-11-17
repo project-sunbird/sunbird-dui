@@ -1,4 +1,4 @@
-const View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
+const View = require("@juspay/mystique-backend").baseViews.AndroidBaseView;
 var dom = require("@juspay/mystique-backend/src/doms/android");
 var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
 var RelativeLayout = require("@juspay/mystique-backend/src/android_views/RelativeLayout");
@@ -6,6 +6,8 @@ var EditText = require("@juspay/mystique-backend/src/android_views/EditText");
 var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var ScrollView = require("@juspay/mystique-backend/src/android_views/ScrollView");
+var PageOption = require("../../components/Sunbird/core/PageOption");
+var HorizontalScrollView = require("@juspay/mystique-backend/src/android_views/HorizontalScrollView");
 
 
 class CustomPopUp extends View{
@@ -20,9 +22,25 @@ class CustomPopUp extends View{
     this.dictionary=["train","tame","tackle","tounge","tickle","tram","taunt","taunting"]
     this.props=props;
     this.selectedSkills=[];
+    this.cancelBtnState = {
+      text : window.__S.CANCEL,
+      id : this.idSet.cancelBtn,
+      isClickable : "true",
+      onClick : this.hide,
+      visibility : "visible",
+    };
+    this.applyBtnState = {
+      text : window.__S.APPLY,
+      id : this.idSet.applyBtn,
+      isClickable : "true",
+      onClick : this.onConfirm,
+      visibility : "visible",
+    };
+
   }
 
   show = () => {
+    this.dictionary=window.__PopulateSkillsList;
     this.setVisibility("visible");
   }
 
@@ -39,6 +57,38 @@ class CustomPopUp extends View{
 
     Android.runInUI(cmd, 0)
   }
+  getOptions = () => {
+    var buttonList = [this.cancelBtnState, this.applyBtnState];
+    return (<LinearLayout
+          height="wrap_content"
+          width="match_parent"
+          alignParentBottom = "true, -1">
+          <PageOption
+            width="match_parent"
+            buttonItems={buttonList}
+            hideDivider={false}
+            onButtonClick={this.handlePageOption}/>
+          </LinearLayout>)
+  }
+  onConfirm=()=>{
+    this.hide();
+    if(!JBridge.isNetworkAvailable()){
+      window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE);
+      return;
+    }
+    window.__LoaderDialog.show();
+    var request = {
+       "endorsedUserId" :window.__userToken,
+       "skillName": this.selectedSkills
+   }
+   var whatToSend = {
+     "user_token" : window.__user_accessToken,
+     "api_token" : window.__apiToken,
+     "requestBody" : JSON.stringify(request)
+   }
+   var event= { "tag": "API_EndorseSkill", contents: whatToSend };
+   window.__runDuiCallback(event); 
+  }
 
   render(){
     this.layout=(
@@ -53,48 +103,58 @@ class CustomPopUp extends View{
           <LinearLayout
           height= "match_parent"
           width="match_parent"
-          weight="4"
-          onClick={this.hide}
-          />
-          <LinearLayout
+          weight="2"
+          onClick={this.hide}/>
+          <RelativeLayout
           height = "match_parent"
           width = "match_parent"
           weight= "1"
-          background="#ffffff"
+          background="#ffffff">
+          <LinearLayout
+          height = "match_parent"
+          width = "match_parent"
+          onClick={()=>this.getPredictions("")}
           orientation="vertical">
               <TextView
               height="wrap_content"
               width="match_parent"
-              text={window.__S.LABEL_ADD_A_SKILL}
+              text="Add a skill"
               margin="16,16,0,0"
               style={window.__TextStyle.textStyle.CARD.TITLE.DARK}
-              textSize="22"/>
+              textSize="22"
+              />
               <EditText
               height="wrap_content"
               margin="16,0,16,0"
               width="match_parent"
-              hint={window.__S.TYPE_TO_ADD_A_SKILL}
+              hint="Start Typing to Add a skill "
               gravity="center_vertical"
               color="#000000"
               maxLines="1"
               onChange={this.getPredictions}
-              textSize="18"/>
+              textSize="18"
+              />
+
               <RelativeLayout
               width="match_parent"
               height="match_parent">
+                <HorizontalScrollView
+                width="match_parent"
+                height="wrap_content"
+                margin="17,0,17,0">
                  <LinearLayout
                  height="wrap_content"
                  width="wrap_content"
-                 margin="17,0,17,0"
                  id={this.idSet.skillLayout}/>
+                 </HorizontalScrollView>
                  <LinearLayout
-                 height="wrap_content"
+                 height="200"
                  width="match_parent"
-                 background="#E0E0E0"
-                 margin="17,0,17,0">
+                 margin="17,2,17,2">
                     <ScrollView
                     height="wrap_content"
                     width="match_parent"
+                    stroke={"2,#000000"}
                     margin="2,0,2,0">
                         <LinearLayout
                         height="wrap_content"
@@ -107,6 +167,8 @@ class CustomPopUp extends View{
                  </LinearLayout>
               </RelativeLayout>
           </LinearLayout>
+          </RelativeLayout>
+          {this.getOptions()}
       </LinearLayout>
     );
     return this.layout.render();
@@ -153,7 +215,6 @@ class CustomPopUp extends View{
        orientation="vertical"
        margin="16,0,16,0">
 
-         {predictionContent}
          <LinearLayout
          height="match_parent"
          width="match_parent">
@@ -166,12 +227,8 @@ class CustomPopUp extends View{
             text={addDictionaryString}
             textColor="#FF333333"/>
          </LinearLayout>
-         <LinearLayout
-         height="3"
-         width="328"
-         background="#E0E0E0">
-         </LinearLayout>
-       </LinearLayout>);
+         {predictionContent}
+         </LinearLayout>);
 
     this.replaceChild(this.idSet.predictionLayout, this.predictlayout.render(), 0);
   }
@@ -182,8 +239,11 @@ class CustomPopUp extends View{
       <LinearLayout
       height="wrap_content"
       width="match_parent"
-
       orientation="vertical">
+      <LinearLayout
+          height="1"
+          width="328"
+          background={window.__Colors.PRIMARY_BLACK_66}/>
           <TextView
            height="wrap_content"
            width="match_parent"
@@ -191,13 +251,7 @@ class CustomPopUp extends View{
            textSize="20"
            onClick={()=>{this.selectItem(item)}}
            text= {item}
-           textColor="#FF333333"
-          />
-          <LinearLayout
-          height="1"
-          width="328"
-          background={window.__Colors.PRIMARY_BLACK_66}>
-          </LinearLayout>
+           textColor="#FF333333"/>
       </LinearLayout>
     );
   }
@@ -243,7 +297,7 @@ class CustomPopUp extends View{
     }
     else {
       JBridge.hideKeyboard();
-      window.__Snackbar.show(window.__S.ERROR_ALREADY_ADDED);
+      JBridge.showSnackBar("Already Added");
     }
   }
 
@@ -251,28 +305,27 @@ class CustomPopUp extends View{
     return (
       <LinearLayout
       height="wrap_content"
-      width="wrap_content">
-            <LinearLayout
-            height="32"
-            width="wrap_content"
-            background="#66D8D8D8"
-            cornerRadius="12,12,12,12">
-                <TextView
-                height="28"
-                width="wrap_content"
-                textColor="#ffffff"
-                text={item}
-                margin="12,2,0,0"/>
-                <ImageView
-                margin="11,8,11,8"
-                height="match_parent"
-                width="match_parent"
-                imageFromUrl="https://ls.iu.edu/Images/close.png"
-                onClick={()=>{this.removeSkill(item)}}/>
-            </LinearLayout>
-            <LinearLayout
-            height="wrap_content"
-            width="10"/>
+      width="wrap_content"
+      padding="12,4,12,4"
+      margin="0,0,10,0"
+      cornerRadius="16,16,16,16"
+      background={window.__Colors.DARK_GRAY_44}
+      gravity="center">
+
+       <TextView
+         height="wrap_content"
+         width="wrap_content"
+         text={item}
+         margin="0,0,4,0"
+         textStyle={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
+
+       <ImageView
+         height="15"
+         width="15"
+         imageUrl="ic_action_close"
+         margin="0,1,0,0"
+         onClick={()=>{this.removeSkill(item)}}
+         />
     </LinearLayout>
   );
   }
@@ -290,7 +343,7 @@ class CustomPopUp extends View{
       console.log(this.selectedSkills," skiilll");
       this.updatedSkills=(
        <LinearLayout
-       height="match_parent"
+       height="wrap_content"
        width="match_parent"
        orientation="horizontal">
           {skills}
