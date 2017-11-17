@@ -167,7 +167,7 @@ const stringsRes = {
 		LANGUAGE : "Language",
 		COMING_SOON : "Details coming soon",
 		TITLE_EDUCATION : "Education",
-		TITLE_EXPERIENCES : "Experiences",
+		TITLE_EXPERIENCE : "Experience",
 		TITLE_ADDRESS : "Address",
 		LAST_NAME : "Last Name",
 		LAST_NAME_HINT : "Enter your last name",
@@ -263,7 +263,8 @@ const stringsRes = {
 		CHANGE : "Change",
 		REMOVE : "Remove",
 		SKILLS_ADDED_SUCCESSFULLY : "Skills added successfully",
-		SKILL_ENDORSED : "Skill endorsed"
+		SKILL_ENDORSED : "Skill endorsed",
+		SKILL_NOT_ADDED : "Unsucessful, could not add skill"
 	},
 	"hi_IN" : {
 		ALREADY_HAVE_ACC : "मौजूदा उपयोगकर्ता, साइन इन करें",

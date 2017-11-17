@@ -49,7 +49,7 @@ class MainActivity extends View {
     //CurrentIndexOfViewPager
     this.currentPageIndex = 0;
 
-
+    window.__AnnouncementApiCalled=false;    
     //BackPressCount of MainActivity
     this.backPressCount = 0;
 
@@ -115,6 +115,23 @@ class MainActivity extends View {
     }
 
   }
+  getAnnouncemetData = () => {
+    window.__AnnouncementApiCalled=true;
+    if(JBridge.isNetworkAvailable()){
+      var request = {
+        "userId": window.__userToken,
+    }
+    var whatToSend = {
+      "user_token" : window.__user_accessToken,
+      "api_token" : window.__apiToken,
+      "requestBody" : JSON.stringify(request)
+    }
+    var event= { "tag": "API_GetAnnouncementData", contents: whatToSend };
+    window.__runDuiCallback(event);
+    }else{
+      console.log("__failed to getAnnouncementData");
+    }
+  }
 
   onBackPressed = () => {
 
@@ -141,9 +158,18 @@ class MainActivity extends View {
 
   handleStateChange = (state) => {
     var res = utils.processResponse(state);
+    if(state.responseFor=="API_GetAnnouncementData"){
+      window.__AnnouncementApiCalled=false;      
+      window.__AnnouncementApiData="";
+      if(state.response.status[0]=="success"&&state.response.status[2]=="200"){
+        console.log("API_GetAnnouncementData :",utils.decodeBase64(state.response.status[1]));
+      }
+    }
     if(state.responseFor=="API_EndorseSkill"){
       if(state.response.status[0]=='success'&&state.response.status[2]=="200"){
         window.__Snackbar.show(window.__S.SKILLS_ADDED_SUCCESSFULLY);
+      }else{
+        window.__Snackbar.show(window.__S.SKILL_NOT_ADDED);        
       }
         window.__BNavFlowRestart();
         return;
@@ -152,7 +178,7 @@ class MainActivity extends View {
       window.__PopulateSkillsList="";
       if(state.response.status[0]=="success"&&state.response.status[2]=="200"){
         try{
-          var data=JSON.parse(utils.decodeBase64(state.response.status[1]))
+          var data=JSON.parse(utils.decodeBase64(state.response.status[1]));
           window.__PopulateSkillsList=data.result.skills;
         }catch(e){
           console.log("Exception : ",e);
@@ -519,6 +545,9 @@ class MainActivity extends View {
       case 0:
       if(!JBridge.isNetworkAvailable()&&window.__Check==0){
         window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
+        }
+        if(window.__AnnouncementApiCalled==false){
+          this.getAnnouncemetData();
         }
         whatToSend= { "name": "SoMEOnE" };
         event = { "tag": "OPEN_HomeFragment", contents: whatToSend };

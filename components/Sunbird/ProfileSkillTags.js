@@ -130,7 +130,7 @@ class ProfileSkillTags extends View {
                 margin="5,0,5,0"
                 padding="10,3,10,3"
                 cornerRadius="15"
-                stroke={"2,"+}
+                stroke={"2,"+window.__Colors.PRIMARY_BLACK_22}
                 style={window.__TextStyle.textStyle.HINT.REGULAR}/>
               </LinearLayout>
             </LinearLayout>)

@@ -172,6 +172,10 @@ mainActivity input whereFrom whatToSendBack = do
             responseData <- getProfileDetail x y
             _ <- sendUpdatedState {response : responseData, responseFor : "API_ProfileFragment", screen:"asas"}
             pure $ "handled"
+        API_GetAnnouncementData {user_token: user_token,api_token: api_token,requestBody:request}-> do
+			responseData <- getAnnouncementData user_token api_token request
+			_ <- sendUpdatedState {response : responseData, responseFor : "API_GetAnnouncementData", screen:"asas"}
+			pure $ "handled"
         API_Tenant {user_token:x, api_token:y, slug:z} -> do
           responseData <- getTenantDetail x y z
           _ <- sendUpdatedState {response : responseData, responseFor : "API_Tenant", screen:"asas"}

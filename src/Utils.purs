@@ -245,6 +245,15 @@ getSkills user_access_token api_token request=
 
 
 ---------------------------------------------------------------
+getAnnouncementData user_access_token api_token request=
+  let requestUrl = "/announcement/v1/user/inbox"
+      headers = (generateRequestHeaders user_access_token api_token)
+      payload = A.fromObject (StrMap.fromFoldable [(Tuple "request" (getJsonFromString request))
+                                                    ]) in
+  (post requestUrl headers payload)
+
+---------------------------------------------------------------
+
 
 endorseSkill user_access_token api_token request=
   let requestUrl = "/user/v1/skill/add"
