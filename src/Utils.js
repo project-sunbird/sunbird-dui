@@ -216,17 +216,6 @@ exports["getLoginStatus'"] = function(success) {
   };
 };
 
-exports["getCurrentDay"] = function(days) {
-  var d = new Date();
-  var mm = d.getMonth() + 1;
-  var dd = d.getDate();
-  dd = dd + days;
-  return [d.getFullYear(),
-    (mm > 9 ? '' : '0') + mm,
-    (dd > 9 ? '' : '0') + dd
-  ].join('');
-}
-
 exports["callAPI'"] = function(success) {
   return function(err) {
     return function(method) {
@@ -343,11 +332,6 @@ exports["getUserId'"] = function(success) {
     };
   };
 };
-
-exports["getCurrDate"] = function(){
-  var d = new Date();
-  return this.formatDate(d)
-}
 
 exports["formatDate"] = function(d){
   var temp = d.toString();

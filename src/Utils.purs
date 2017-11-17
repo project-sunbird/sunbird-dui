@@ -86,7 +86,6 @@ foreign import readFromMemory :: String -> String
 foreign import getJsonFromString :: String -> A.Json
 foreign import getApiUrl :: Unit -> String
 foreign import getApiUrl1 :: Unit -> String
-foreign import getCurrDate :: Unit -> String
 foreign import getUserToken :: Unit -> String
 foreign import getUserAccessToken :: Unit -> String
 foreign import getChannelId :: Unit -> String
@@ -133,27 +132,16 @@ getFilterParams = if (isChannelIdSet unit) == true
 generateRequestHeaders user_access_token api_token=
   let filtered = filter (\x -> not $ snd(x) == "__failed")  [(Tuple "Authorization" ("Bearer " <> api_token))
                                                             ,(Tuple "x-authenticated-user-token" user_access_token) --getUserToken
-                                                            ,(Tuple "X-Consumer-ID" getUserId) --getUserId
-                                                            ,(Tuple "X-Device-ID" "X-Device-ID")
-                                                            ,(Tuple "X-msgid" "8e27cbf5-e299-43b0-bca7-8347f7e5abcf")
-                                                            ,(Tuple "ts" (getCurrDate unit))
                                                             ,(Tuple "Accept" "application/json")
-                                                            ,(Tuple "X-Source" "web")
-
-
+                                                            ,(Tuple "Content-Type" "application/json")
                                                             ] in
   map (\x -> (RequestHeader (fst x) (snd x))) filtered
 
 
 getDummyHeader api_token=
-  let filtered = filter (\x -> not $ snd(x) == "__failed")  [(Tuple "Authorization" ("Bearer " <> api_token)) --getUserId
-                                                            ,(Tuple "X-Device-ID" "X-Device-ID")
-                                                            ,(Tuple "X-msgid" "8e27cbf5-e299-43b0-bca7-8347f7e5abcf")
-                                                            ,(Tuple "ts" "2017-05-28 10:52:56:578+0530")
+  let filtered = filter (\x -> not $ snd(x) == "__failed")  [(Tuple "Authorization" ("Bearer " <> api_token))
                                                             ,(Tuple "Accept" "application/json")
-                                                            ,(Tuple "X-Source" "web")
-
-
+                                                            ,(Tuple "Content-Type" "application/json")
                                                             ] in
   map (\x -> (RequestHeader (fst x) (snd x))) filtered
 
