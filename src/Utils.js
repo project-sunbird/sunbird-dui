@@ -371,3 +371,7 @@ exports["getUserToken"] = function () {
 exports["getUserAccessToken"] = function () {
   return window.__user_accessToken;
 }
+
+exports["getChannelId"] = function () {
+  return JBridge.getFromSharedPrefs("channelId");
+}

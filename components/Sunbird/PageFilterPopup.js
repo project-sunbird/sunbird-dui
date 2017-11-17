@@ -253,7 +253,10 @@ class PageFilterPopup extends View {
     }
     this.hide();
 
+    this.filter.channel = JBridge.getFromSharedPrefs("channelId");
     var sendFilter=JSON.stringify(this.filter);
+
+    console.log("sendFilter : ", sendFilter);
 
     var whatToSend = {"user_token":window.__user_accessToken,"api_token": window.__apiToken,"filter_to_send":sendFilter}
     var event = { "tag": "API_FilterPage", contents: whatToSend};

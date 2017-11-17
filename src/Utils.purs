@@ -89,6 +89,7 @@ foreign import getApiUrl1 :: Unit -> String
 foreign import getCurrDate :: Unit -> String
 foreign import getUserToken :: Unit -> String
 foreign import getUserAccessToken :: Unit -> String
+foreign import getChannelId :: Unit -> String
 
 getEulerLocation1 = getApiUrl unit
 getEulerLocation2 = getApiUrl1 unit
@@ -186,6 +187,7 @@ getCoursesPageApi user_access_token api_token =
                                                    , (Tuple "request" (A.fromObject (StrMap.fromFoldable  [ (Tuple "name" (A.fromString "Course"))
                                                                                                           , (Tuple "source" (A.fromString "web"))
                                                                                                           , (Tuple "filters" (A.fromObject (StrMap.fromFoldable[ (Tuple "status" (A.fromString "Live"))
+                                                                                                                                                                ,(Tuple "channel" (A.fromString (getChannelId unit)))
                                                                                                                                                                 ])))
                                                                                                           ])))
                                                    ]) in
@@ -199,6 +201,7 @@ getResourcePageApi user_access_token api_token =
                                                    , (Tuple "request" (A.fromObject (StrMap.fromFoldable  [ (Tuple "name" (A.fromString "Resource"))
                                                                                                           , (Tuple "source" (A.fromString "web"))
                                                                                                           , (Tuple "filters" (A.fromObject (StrMap.fromFoldable[ (Tuple "status" (A.fromString "Live"))
+                                                                                                                                                                ,(Tuple "channel" (A.fromString (getChannelId unit)))
                                                                                                                                                                 ])))
                                                                                                           ])))
                                                    ]) in
