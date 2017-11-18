@@ -260,7 +260,8 @@ instance encodeResourceViewAllActivityAction :: Encode ResourceViewAllActivityAc
 
 data AnnouncementViewAllActivity = AnnouncementViewAllActivity {announcementDetails::String}
 data AnnouncementViewAllActivityAction = DummyAnnouncementViewAllActivity |
-  BACK_AnnouncementViewAllActivity
+  BACK_AnnouncementViewAllActivity |
+  OPEN_AnnouncementDetailActivityFromViewAll {announcementData::String}
 
 
 instance announcementViewAllActivity :: UIScreen AnnouncementViewAllActivity AnnouncementViewAllActivityAction where

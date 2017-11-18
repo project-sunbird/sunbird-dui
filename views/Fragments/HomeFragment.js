@@ -118,7 +118,7 @@ class HomeFragment extends View {
 
   getSpaceSeparator = () => {
     return (<LinearLayout
-             height="6"
+             height="4"
              orientation="vertical"
              width="match_parent"
              background={window.__Colors.WHITE_F2}/>)
@@ -277,7 +277,7 @@ class HomeFragment extends View {
           card2 = (
             <AnnouncementCard
             params={window.__AnnouncementApiData[1]}
-            onClick={()=>this.handleAnnouncementClick(window.__AnnouncementApiData[0])}/>
+            onClick={()=>this.handleAnnouncementClick(window.__AnnouncementApiData[1])}/>
             );
         }
       }
@@ -307,6 +307,7 @@ class HomeFragment extends View {
                     style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
                 </LinearLayout>
                 {card1}
+                {this.getSpaceSeparator()}
                 {card2}
               </LinearLayout>);
  }

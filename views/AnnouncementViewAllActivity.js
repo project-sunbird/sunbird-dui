@@ -79,6 +79,7 @@ class AnnouncementViewAllActivity extends View {
             var card = (
               <AnnouncementCard
                params={item}
+               onClick={()=>{this.handleAnnouncementClick(item)}}
                />
             )
             this.jsonArray.push({ view: this.getView(card.render()),value:"",viewType:0});
@@ -91,10 +92,17 @@ class AnnouncementViewAllActivity extends View {
             null,
             "",
             "",
-            0
+            10
           );
           console.log("end of showlist");
     }
+    handleAnnouncementClick = (item) => {
+        
+        var whatToSend = { "announcementData" : JSON.stringify(item)}
+        var event ={ tag: "OPEN_AnnouncementDetailActivityFromViewAll", contents: whatToSend }
+        window.__runDuiCallback(event);
+    
+      }
     afterRender(){
         console.log("AnnouncementViewAllActivity after render");
         _this.showList();

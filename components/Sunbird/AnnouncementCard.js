@@ -22,26 +22,45 @@ class AnnouncementCard extends View {
 
     _this = this;
     this.props=this.props||"";
+    this.data=this.props.params||"";
+    this.hasAttachments = this.checkAttachments();
 
-    if(this.props.params.hasOwnProperty("attachments")&&this.props.params.attachments.length>0){
-        this.props.params.attachments.map((item,index) => {
-        this.props.params.attachments[index]=JSON.parse(this.props.params.attachments[index]);
+    if(this.hasAttachments){
+        this.data.attachments.map((item,index) => {
+          try{
+        this.data.attachments[index]=JSON.parse(this.data.attachments[index]);
+          }catch(e){
+            this.data.attachments[index]=""
+          }
       });
     }else{
-      this.props.params.attachments=[];
+      this.data.attachments=[];
     }
+  }
+  checkAttachments = ()=>{
+    if(this.data.hasOwnProperty("attachments")
+       &&this.data.attachments!=undefined
+       &&this.data.attachments.length>0
+       &&this.data.attachments[0].length>1){
+         return true;
+       }
+       return false;
   }
 
   afterRender = () => {
   }
 
   getLabel = () =>{
+    var type = "NA";
+    if(this.data.hasOwnProperty("details")&&this.data.details.hasOwnProperty("type")){
+      type = this.data.details.type||"NA"
+    }
     return(<TextView
             width="wrap_content"
             height="wrap_content"
             margin = "0,0,10,10"
-            visibility={this.props.params.details.type?"visible":"gone"}
-            text= {this.props.params.details.type}
+            visibility={type!="NA"?"visible":"gone"}
+            text= {type}
             padding="5,3,5,3"
             cornerRadius="4"
             background={window.__Colors.PRIMARY_BLACK_66}
@@ -53,16 +72,16 @@ class AnnouncementCard extends View {
     var size=""
     var attachmentsCount=0;
     var  linksCount=0;
-    /*if(this.props.params.hasOwnProperty("links")&&this.props.params.links!=undefined&&this.props.params.links.length!=0){
-      linksCount=this.props.params.links.length;
-    }*/
-    if(this.props.params.hasOwnProperty("attachments")&&this.props.params.attachments.length!=0){
-        attachmentsCount=this.props.params.attachments.length;
-      size=this.props.params.attachments[0].hasOwnProperty("size") ? window.__S.FILE_SIZE.format(utils.formatBytes(this.props.params.attachments[0].size)) : "NA";
+    if(this.data.hasOwnProperty("links")&&this.data.links!=undefined&&this.data.links.length!=0){
+      linksCount=this.data.links.length;
+    }
+    if(this.hasAttachments){
+        attachmentsCount=this.data.attachments.length;
+      size=this.data.attachments[0].hasOwnProperty("size") ? window.__S.FILE_SIZE.format(utils.formatBytes(this.data.attachments[0].size)) : "NA";
         if(size!="NA")
         size=size.substring(6,size.length-1);
     }
-    var content = this.props.params.details.description;
+    var content = this.data.details.description;
     if(content==undefined||content==""){
         content="";
       }else{
@@ -79,15 +98,15 @@ class AnnouncementCard extends View {
             width="wrap_content"
             height="wrap_content"
             margin="0,0,0,7"
-            text={this.props.params.details.title}
+            text={this.data.details.title}
             style={window.__TextStyle.textStyle.CARD.TITLE.DARK_16}/>
 
           <TextView
             width="match_parent"
             height="wrap_content"
-            margin="0,0,10,10"
-            visibility={this.props.params.details.from==undefined?"gone":"visible"}
-            text={this.props.params.details.from||""}
+            margin="0,0,0,10"
+            visibility={this.data.details.from==undefined?"gone":"visible"}
+            text={this.data.details.from||""}
             style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
           {this.getDescription(content)}
@@ -95,15 +114,15 @@ class AnnouncementCard extends View {
           <TextView
             widht="match_parent"
             height="wrap_content"
-            padding="23,0,0,0"
-            visibility={linksCount>0?"visible":"gone"}
+            padding="23,0,0,8"
+            visibility={linksCount>1?"visible":"gone"}
             text={"+"+(linksCount-1)+" "+window.__S.WEBLINKS}/>
           {this.getAttachment(size)}
           <TextView
             widht="match_parent"
             height="wrap_content"
             padding="23,0,0,0"
-            visibility={attachmentsCount>0?"visible":"gone"}
+            visibility={(attachmentsCount>1)&&this.hasAttachments?"visible":"gone"}
             text={"+"+attachmentsCount-1+" "+window.__S.ATTACHMENTS}/>
           <LinearLayout
             width="match_parent"
@@ -119,8 +138,8 @@ class AnnouncementCard extends View {
   getDescription=(content)=>{
     return(<RelativeLayout
       widht="match_parent"
-      height="50"
-      margin="0,0,0,15"
+      height="wrap_content"
+      padding="0,0,0,10"
       visibility={content==""?"gone":"visible"}>
       <TextView
         width="wrap_content"
@@ -132,7 +151,8 @@ class AnnouncementCard extends View {
         <TextView
         width="wrap_content"
         height="wrap_content"
-        padding="0,5,5,5"
+        padding="5,0,5,3"
+        background={window.__Colors.WHITE}
         alignParentRight="true,-1"
         alignParentBottom="true,-1"
         visibility={content.length>60?"visible":"gone"}
@@ -144,14 +164,14 @@ class AnnouncementCard extends View {
 
   getWebLinks=()=>{
     var link = "";
-    if((this.props.params.hasOwnProperty("links")&&this.props.params.links[0]!=undefined)){
-      link=this.props.params.links[0];
+    if((this.data.hasOwnProperty("links")&&this.data.links[0]!=undefined)){
+      link=this.data.links[0];
     }      
     return(<LinearLayout
       width="match_parent"
       height="wrap_content"
       visibility={link!=""?"visible":"gone"}
-      margin="0,0,0,10"
+      padding="0,0,0,3"
       orientation="horizontal">
       <ImageView
       height="18"
@@ -168,16 +188,21 @@ class AnnouncementCard extends View {
       );
   }
 
-  getAttachment=(size)=>{
-    var temp=(this.props.params.hasOwnProperty("attachments")&&this.props.params.attachments!=undefined&&this.props.params.attachments.length>0)       
-    if(temp==false){
-      return (<LinearLayout/>);
+  getAttachment=(size)=>{  
+    if(size=="NAN GB"){
+      size="NA"
+    }     
+    if(this.hasAttachments==false){
+      return (<LinearLayout
+      height="0"
+      width="0"/>);
     }
+    if(this.data.hasOwnProperty("attachments"))
     return(<LinearLayout
       width="wrap_content"
       height="wrap_content"
-      margin="0,0,0,5"
-      visibility={temp?"visible":"gone"}
+      padding="0,0,0,3"
+      visibility={this.hasAttachments?"visible":"gone"}
       orientation="horizontal">
       <ImageView
       height="18"
@@ -188,13 +213,13 @@ class AnnouncementCard extends View {
       height="match_parent"
       gravity="center_vertical"
       padding="5,0,5,0"
-      text={this.props.params.attachments[0].name||"Attachment"}
+      text={this.data.attachments[0].name||"Attachments"}
       style={window.__TextStyle.textStyle.CLICKABLE.BLUE_SEMI}/>
       <TextView
       width="wrap_content"
       height="match_parent"
       padding="5,0,5,0"
-      text={"("+(this.props.params.attachments[0].name||"NA") +","+(size) +")"}/>
+      text={"("+(this.data.attachments[0].mimetype||"NA") +","+(size) +")"}/>
       </LinearLayout>
       );
   }
@@ -214,18 +239,12 @@ class AnnouncementCard extends View {
         width="match_parent"
         height="wrap_content"
         root="true"
-        orientation="vertical"
         onClick={this.props.onClick}
-        background={window.__Colors.LIGHT_GRAY}>
-      <LinearLayout
-        width="match_parent"
-        height="wrap_content"
-        margin="0,0,0,6"
         orientation="horizontal">
       <LinearLayout
       width="4"
       height="match_parent"
-      background={this.props.params.read?window.__Colors.PRIMARY_LIGHT:window.__Colors.PRIMARY_DARK}/>
+      background={this.data.read?window.__Colors.PRIMARY_LIGHT:window.__Colors.PRIMARY_DARK}/>
       <LinearLayout
         width="match_parent"
         height="wrap_content"
@@ -237,7 +256,6 @@ class AnnouncementCard extends View {
 
         {this.getBody()}
 
-     </LinearLayout>
      </LinearLayout>
      </LinearLayout>
     );
