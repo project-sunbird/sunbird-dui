@@ -18,6 +18,7 @@ var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callb
 var objectAssign = require('object-assign');
 var debounce = require("debounce");
 var utils = require('../utils/GenericFunctions');
+var md5 = require("blueimp-md5");
 const Str = require("../res/Strings") ;
 
 window.R = require("ramda");
@@ -266,9 +267,16 @@ class MainActivity extends View {
     if (responseData.result.response && responseData.result.response.rootOrg && !window.__API_Profile_Called && (JBridge.getFromSharedPrefs("logo_url") == "__failed" || JBridge.getFromSharedPrefs("orgName") == "__failed" || JBridge.getFromSharedPrefs("channelId") == "__failed")){
       console.log("slug", responseData.result.response.rootOrg.slug);
       window.__orgName = responseData.result.response.rootOrg.orgName;
-      if (responseData.result.response.rootOrg.hashTagId) {
-        JBridge.setInSharedPrefs("channelId", responseData.result.response.rootOrg.hashTagId);
-        console.log("channelId", JBridge.getFromSharedPrefs("channelId"));
+      //TODO revert after nile update
+      // if (responseData.result.response.rootOrg.hashTagId) {
+      //   JBridge.setInSharedPrefs("channelId", responseData.result.response.rootOrg.hashTagId);
+      //   console.log("channelId", JBridge.getFromSharedPrefs("channelId"));
+      //   JBridge.setParams();
+      // }
+      if (responseData.result.response.rootOrgId) {
+        JBridge.setInSharedPrefs("channelId", md5(responseData.result.response.rootOrgId));
+        console.log("rootOrgId ", responseData.result.response.rootOrgId);
+        console.log("channelId ", JBridge.getFromSharedPrefs("channelId"));
         JBridge.setParams();
       }
       if (responseData.result.response.rootOrg.hasOwnProperty("preferredLanguage") && responseData.result.response.rootOrg.preferredLanguage != null) {

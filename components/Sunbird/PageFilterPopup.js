@@ -19,6 +19,8 @@ var FilterItem = require('../Sunbird/FilterItem')
 var Styles = require("../../res/Styles");
 var FilterParamsCource = require("../../FilterParamsCource")
 var FilterParamsResource = require("../../FilterParamsResource")
+var utils = require("../../src/Utils")
+
 let IconStyle = Styles.Params.IconStyle;
 
 class PageFilterPopup extends View {
@@ -243,7 +245,12 @@ class PageFilterPopup extends View {
     }
     this.hide();
 
+    if (JBridge.isChannelIdSet() == true){
+      this.filter.channel = utils.getChannelId();
+    }
     var sendFilter=JSON.stringify(this.filter);
+
+    console.log("sendFilter : ", sendFilter);
 
     var whatToSend = {"user_token":window.__user_accessToken,"api_token": window.__apiToken,"filter_to_send":sendFilter}
     var event = { "tag": "API_FilterPage", contents: whatToSend};
