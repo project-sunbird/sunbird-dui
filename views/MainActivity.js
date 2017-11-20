@@ -582,9 +582,8 @@ class MainActivity extends View {
             }
           }
         }
-        whatToSend= { "name": "SoMEOnE" };
+        whatToSend= {};
         event = { "tag": "OPEN_HomeFragment", contents: whatToSend };
-        this.getUserProfileData();
         window.__Check=1;
         break;
       case 1:

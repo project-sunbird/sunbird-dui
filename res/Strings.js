@@ -264,6 +264,7 @@ const stringsRes = {
 		REMOVE : "Remove",
 		SKILLS_ADDED_SUCCESSFULLY : "Skills added successfully",
 		SKILL_ENDORSED : "Skill endorsed",
+		SKILL_COULD_NOT_BE_ENDORSED : "Skill endorsment unsucessfull",
 		SKILL_NOT_ADDED : "Unsucessful, could not add skill",
 		SKILL_ALREADY_ENDORSED :"Skill alreay endorsed"
 	},

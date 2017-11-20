@@ -270,9 +270,9 @@ class ProfileActivity extends View {
   }
 
   handleStateChange = (state) =>{
-    var data=JSON.parse(utils.decodeBase64(state.response.status[1]));
     if(state.responseFor=="API_GetSkills1"&&state.response.status[0]=="success"&&state.response.status[2]=="200")
       {
+        var data=JSON.parse(utils.decodeBase64(state.response.status[1]));        
         if(data.hasOwnProperty("result")&&data.result.hasOwnProperty("skills")&&data.result.skills!=undefined){
           var layout=(
           <ProfileSkillTags
@@ -282,10 +282,14 @@ class ProfileActivity extends View {
           );
         this.replaceChild(this.idSet.skillTagComponent, layout.render(), 0);   
       }     
-      }else if(state.responseFor=="API_EndorseSkill1"&&state.response.status[0]=="success"&&state.response.status[2]=="200"){
+      }else if(state.responseFor=="API_EndorseSkill1"){
+      if(state.response.status[0]=="success"&&state.response.status[2]=="200"){
         window.__Snackbar.show(window.__S.SKILL_ENDORSED);
         this.getSkills();
+      }else{
+        window.__Snackbar.show(window.__S.SKILL_COULD_NOT_BE_ENDORSED);        
       }
+    }
       window.__LoaderDialog.hide();      
   }
 

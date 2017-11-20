@@ -132,9 +132,9 @@ class ProfileFragment extends View {
   }
 
   handleStateChange = (state) =>{
-    var data=JSON.parse(utils.decodeBase64(state.response.status[1]));
     if(state.responseFor=="API_GetSkills"&&state.response.status[0]=="success"&&state.response.status[2]=="200")
       {
+        var data=JSON.parse(utils.decodeBase64(state.response.status[1]));        
         if(data.hasOwnProperty("result")&&data.result.hasOwnProperty("skills")&&data.result.skills!=undefined){
           var layout=(
           <ProfileSkillTags
@@ -292,7 +292,7 @@ class ProfileFragment extends View {
 
   checkPrivacy = (name) => {
     var privateFlag=false;
-    if(this.details.profileVisibility[name] && this.details.profileVisibility[name]=='private')
+    if(this.details.hasOwnProperty("profileVisibility")&&this.details.profileVisibility[name] && this.details.profileVisibility[name]=='private')
        privateFlag=true;
 
     return privateFlag;

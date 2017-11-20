@@ -94,7 +94,7 @@ class ExperienceActivity extends View{
       onClick : this.sendJSONBody,
       alpha : "0.5"
     }
-
+    this.initializeData();
  }
 
  initializeData = () =>{
@@ -132,7 +132,7 @@ class ExperienceActivity extends View{
 
  populateData = () =>{
 
-
+  
    var jobTypeValue = [
      {name:window.__S.YES,select:"0",icon:"ic_action_radio"},
      {name:window.__S.NO,select:"0",icon:"ic_action_radio"}
@@ -227,9 +227,9 @@ class ExperienceActivity extends View{
      id={this.idSet.scrollView}
      padding="15,15,15,15">
 
-      {this.getEditTextView(this.idSet.jobText, window.__S.JOB_NAME, false, this.setJobName)}
-      {this.getEditTextView(this.idSet.organizationText, window.__S.ORGANIZATION, false, this.setOrganization)}
-      {this.getEditTextView(this.idSet.positionText, window.__S.POSITION, true, this.setPosition)}
+      {this.getEditTextView(this.idSet.jobText,this.jobName, window.__S.JOB_NAME, false, this.setJobName)}
+      {this.getEditTextView(this.idSet.organizationText, this.Organization,window.__S.ORGANIZATION, false, this.setOrganization)}
+      {this.getEditTextView(this.idSet.positionText,this.Position,window.__S.POSITION, true, this.setPosition)}
 
       {this.getSpinner()}
       <LinearLayout
@@ -461,7 +461,7 @@ class ExperienceActivity extends View{
  }
 
 
-  getEditTextView = (id, label, optional,onChange, inputType) => {
+  getEditTextView = (id, text,label, optional,onChange, inputType) => {
     return (
 
       <TextInputView
@@ -473,6 +473,7 @@ class ExperienceActivity extends View{
         mandatory = {optional ? "false" : "true"}
         margin = "0,0,0,18"
         _onChange={onChange}
+        text={text}
         textStyle = {window.__TextStyle.textStyle.HINT.SEMI}
         editTextStyle = {window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
         inputType = {inputType ? inputType : "text"}/>
@@ -801,7 +802,6 @@ class ExperienceActivity extends View{
          }
 
      checkCompleteStatus = () =>{
-       console.log("1,",this.data,"2,",this.jobName,"3,",this.prevData.jobName,"4,");
        if(this.data != undefined  && this.data!=""
           && this.jobName == this.prevData.jobName
           && this.Organization == this.prevData.Organization

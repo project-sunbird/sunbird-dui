@@ -41,6 +41,7 @@ class CustomPopUp extends View{
 
   show = () => {
     this.dictionary=window.__PopulateSkillsList;
+    this.selectedSkills=[];
     this.setVisibility("visible");
   }
 
