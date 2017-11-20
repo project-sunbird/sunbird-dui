@@ -50,7 +50,7 @@ class MainActivity extends View {
     //CurrentIndexOfViewPager
     this.currentPageIndex = 0;
 
-    window.__AnnouncementApiCalled=false;    
+    window.__AnnouncementApiCalled=false;
     //BackPressCount of MainActivity
     this.backPressCount = 0;
 
@@ -160,7 +160,7 @@ class MainActivity extends View {
   handleStateChange = (state) => {
     var res = utils.processResponse(state);
     if(state.responseFor=="API_GetAnnouncementData"){
-      window.__AnnouncementApiCalled=false;      
+      window.__AnnouncementApiCalled=false;
       window.__AnnouncementApiData="";
       if(state.response.status[0]=="success"&&state.response.status[2]=="200"){
         try{
@@ -176,7 +176,7 @@ class MainActivity extends View {
       if(state.response.status[0]=='success'&&state.response.status[2]=="200"){
         window.__Snackbar.show(window.__S.SKILLS_ADDED_SUCCESSFULLY);
       }else{
-        window.__Snackbar.show(window.__S.SKILL_NOT_ADDED);        
+        window.__Snackbar.show(window.__S.SKILL_NOT_ADDED);
       }
         window.__BNavFlowRestart();
         return;
@@ -189,7 +189,7 @@ class MainActivity extends View {
           window.__PopulateSkillsList=data.result.skills;
         }catch(e){
           console.log("Exception : ",e);
-        }        
+        }
       }
       console.log("window.__PopulateSkillsList-->",window.__PopulateSkillsList,"++++++]]]");
       window.__CustomPopUp.show();
@@ -268,17 +268,17 @@ class MainActivity extends View {
       console.log("slug", responseData.result.response.rootOrg.slug);
       window.__orgName = responseData.result.response.rootOrg.orgName;
       //TODO revert after nile update
-      // if (responseData.result.response.rootOrg.hashTagId) {
-      //   JBridge.setInSharedPrefs("channelId", responseData.result.response.rootOrg.hashTagId);
-      //   console.log("channelId", JBridge.getFromSharedPrefs("channelId"));
-      //   JBridge.setParams();
-      // }
-      if (responseData.result.response.rootOrgId) {
-        JBridge.setInSharedPrefs("channelId", md5(responseData.result.response.rootOrgId));
-        console.log("rootOrgId ", responseData.result.response.rootOrgId);
-        console.log("channelId ", JBridge.getFromSharedPrefs("channelId"));
+      if (responseData.result.response.rootOrg.hashTagId) {
+        JBridge.setInSharedPrefs("channelId", responseData.result.response.rootOrg.hashTagId);
+        console.log("channelId", JBridge.getFromSharedPrefs("channelId"));
         JBridge.setParams();
       }
+      // if (responseData.result.response.rootOrgId) {
+      //   JBridge.setInSharedPrefs("channelId", md5(responseData.result.response.rootOrgId));
+      //   console.log("rootOrgId ", responseData.result.response.rootOrgId);
+      //   console.log("channelId ", JBridge.getFromSharedPrefs("channelId"));
+      //   JBridge.setParams();
+      // }
       if (responseData.result.response.rootOrg.hasOwnProperty("preferredLanguage") && responseData.result.response.rootOrg.preferredLanguage != null) {
         this.handleChangeLang(responseData.result.response.rootOrg.preferredLanguage)
       }
