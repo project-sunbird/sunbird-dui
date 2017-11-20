@@ -59,6 +59,7 @@ class MainActivity extends View {
 
     this.deipalayName = "MainActivity"
     this.profileDataTag = "savedProfile";
+    this.announcementsDataTag = "savedAnnouncemtens"
 
     window.__API_Profile_Called = false;
     this.apiToken = window.__apiToken;
@@ -160,16 +161,22 @@ class MainActivity extends View {
   handleStateChange = (state) => {
     var res = utils.processResponse(state);
     if(state.responseFor=="API_GetAnnouncementData"){
-      window.__AnnouncementApiCalled=false;
-      window.__AnnouncementApiData="";
+      window.__AnnouncementApiCalled=false; 
+      window.__AnnouncementApiData="";      
       if(state.response.status[0]=="success"&&state.response.status[2]=="200"){
         try{
           var data = JSON.parse(utils.decodeBase64(state.response.status[1]));
           console.log("API_GetAnnouncementData :",data);
+          var dataToBeSaved = utils.encodeBase64(JSON.stringify(state));          
+          JBridge.saveData(this.announcementsDataTag, dataToBeSaved);          
           window.__AnnouncementApiData=data.result.announcements;
         }catch(e){
           console.log("Exception in handlestatechange got API_GetAnnouncement : ",e);
         }
+      }else if (JBridge.getSavedData(this.announcementsDataTag) != "__failed"){
+        var data = JSON.parse(utils.decodeBase64(JBridge.getSavedData(this.announcementsDataTag)));
+        data = JSON.parse(utils.decodeBase64(state.response.status[1]));   
+        window.__AnnouncementApiData=data.result.announcements;
       }
     }
     if(state.responseFor=="API_EndorseSkill"){
@@ -186,18 +193,18 @@ class MainActivity extends View {
       if(state.response.status[0]=="success"&&state.response.status[2]=="200"){
         try{
           var data=JSON.parse(utils.decodeBase64(state.response.status[1]));
+          var data = utils.encodeBase64(JSON.stringify(state));
           window.__PopulateSkillsList=data.result.skills;
         }catch(e){
           console.log("Exception : ",e);
         }
       }
-      console.log("window.__PopulateSkillsList-->",window.__PopulateSkillsList,"++++++]]]");
       window.__CustomPopUp.show();
       return;
     }
     if(state.responseFor=="API_GetSkills"){
       window.__ProfileFragmentHandleStateChange(state);
-      return;
+      return; 
     }
     if (!state.local && !res.hasOwnProperty("err") && state.responseFor == "API_ProfileFragment"){
       console.log("Saving state");
@@ -561,7 +568,19 @@ class MainActivity extends View {
         window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
         }
         if(window.__AnnouncementApiCalled==false){
+          if(JBridge.isNetworkAvailable())
           this.getAnnouncemetData();
+          else{
+            if (JBridge.getSavedData(this.announcementsDataTag) != "__failed"){
+              try{
+              var data = JSON.parse(utils.decodeBase64(JBridge.getSavedData(this.profileDataTag)));
+              data = JSON.parse(utils.decodeBase64(state.response.status[1]));   
+              window.__AnnouncementApiData=data.result.announcements;
+              }catch(e){
+                console.log("Error in getting saved data :",e);
+              }
+            }
+          }
         }
         whatToSend= { "name": "SoMEOnE" };
         event = { "tag": "OPEN_HomeFragment", contents: whatToSend };

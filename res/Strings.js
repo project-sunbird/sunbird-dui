@@ -264,7 +264,8 @@ const stringsRes = {
 		REMOVE : "Remove",
 		SKILLS_ADDED_SUCCESSFULLY : "Skills added successfully",
 		SKILL_ENDORSED : "Skill endorsed",
-		SKILL_NOT_ADDED : "Unsucessful, could not add skill"
+		SKILL_NOT_ADDED : "Unsucessful, could not add skill",
+		SKILL_ALREADY_ENDORSED :"Skill alreay endorsed"
 	},
 	"hi_IN" : {
 		ALREADY_HAVE_ACC : "मौजूदा उपयोगकर्ता, साइन इन करें",

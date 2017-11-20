@@ -250,22 +250,23 @@ class HomeFragment extends View {
   }
   getAnnouncementCard=()=>{
     var viewAllVisibility="gone";
+    var cards = <LinearLayout/>
+    var card1=(<LinearLayout/>),card2=(<LinearLayout/>);    
     if(window.__AnnouncementApiData==undefined||window.__AnnouncementApiData.length==0)
       {
-        var cards= (<LinearLayout
+        cards= (<LinearLayout
                     width="match_parent"
                     height="wrap_content"
                     background={window.__Colors.PRIMARY_LIGHT}>
                     <TextView
-                      width="wrap_content"
-                      height="wrap_content"
-                      padding="15,100,5,30"
+                      width="match_parent"
+                      height="70"
+                      gravity="center"
                       text={window.__S.NO_ANNOUNCEMENTS}/>
                   </LinearLayout>
           );
       }else{
         viewAllVisibility="visible";
-        var card1=(<LinearLayout/>),card2=(<LinearLayout/>);
         if(window.__AnnouncementApiData.length>0){
           card1 = (
           <AnnouncementCard
@@ -280,6 +281,16 @@ class HomeFragment extends View {
             onClick={()=>this.handleAnnouncementClick(window.__AnnouncementApiData[1])}/>
             );
         }
+        cards = (
+          <LinearLayout
+          height="wrap_content"
+          width="match_parent"
+          orientation="vertical">
+          {card1}
+          {this.getSpaceSeparator()}
+          {card2}
+          </LinearLayout>
+        )
       }
     return (<LinearLayout
               height="wrap_content"
@@ -306,9 +317,7 @@ class HomeFragment extends View {
                     text={window.__S.VIEW_ALL}
                     style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
                 </LinearLayout>
-                {card1}
-                {this.getSpaceSeparator()}
-                {card2}
+                {cards}
               </LinearLayout>);
  }
  handleAnnouncementViewAllClick= (data1) =>{

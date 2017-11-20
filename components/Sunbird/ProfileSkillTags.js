@@ -19,9 +19,10 @@ class ProfileSkillTags extends View {
       "lockIcon",
       "unlockIcon"
     ]);
+    console.log("Profileskillstag",this.props.data);
     _this = this;
     this.isEditable = this.props.editable;
-    this.data = this.props.data||[];
+    this.data = this.props.data;
 
   }
 
@@ -29,7 +30,8 @@ class ProfileSkillTags extends View {
   getHeader() {
     return (<LinearLayout
               width="wrap_content"
-              height="wrap_content">
+              height="wrap_content"
+              gravity="center">
               <TextView
               width="wrap_content"
               height="wrap_content"
@@ -85,7 +87,8 @@ class ProfileSkillTags extends View {
   getRows(input) {
     if(input.skillName==undefined){
         input.skillName="Not available";
-      }      
+      }
+      var temp = this.checkIfEndorsed(input.endorsersList);     
     return (<LinearLayout
               width="match_parent"
               height="wrap_content"
@@ -121,7 +124,7 @@ class ProfileSkillTags extends View {
               <LinearLayout
                width="wrap_content"
                height="wrap_content"
-               onClick={()=>this.handleEndorseSkill(input.skillName)}>
+               onClick={()=>this.handleEndorseSkill(input.skillName,temp)}>
                 <TextView
                 width="wrap_content"
                 height="wrap_content"
@@ -130,13 +133,26 @@ class ProfileSkillTags extends View {
                 margin="5,0,5,0"
                 padding="10,3,10,3"
                 cornerRadius="15"
-                stroke={"2,"+window.__Colors.PRIMARY_BLACK_22}
-                style={window.__TextStyle.textStyle.HINT.REGULAR}/>
+                stroke={"2,"+(temp?window.__Colors.PRIMARY_BLACK_22:window.__Colors.PRIMARY_BLACK)}
+                style={temp?window.__TextStyle.textStyle.HINT.REGULAR:window.__TextStyle.textStyle.FILTER.REGULAR_BLACK}/>
               </LinearLayout>
             </LinearLayout>)
   }
-
-  handleEndorseSkill=(input)=>{
+  checkIfEndorsed=(endorsersList)=>{
+    if(endorsersList!=undefined){
+    endorsersList.map((item,i)=>{
+      if(window.__userToken==endorsersList[i].userId){
+        return true;
+      }
+    });
+  }
+    return false;
+  }
+  handleEndorseSkill=(input,temp)=>{
+    if(temp){
+      JBridge.__Snackbar.show(window.__S.SKILL_ALREADY_ENDORSED);
+      return
+    }
     if(!JBridge.isNetworkAvailable()){
       window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE);
       return;
