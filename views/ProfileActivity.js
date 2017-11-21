@@ -278,8 +278,11 @@ class ProfileActivity extends View {
   }
 
   handleStateChange = (state) =>{
+<<<<<<< HEAD
     if(this.getSkillsResponseCame) return;
     this.getSkillsResponseCame=true;
+=======
+>>>>>>> 3859fcf67361528359a628a34d38d1c18dbe04ce
     var res = utils.processResponse(state);
     console.log("res in ProfileActivity ", res);
     var isErr = res.hasOwnProperty("err");
@@ -304,15 +307,24 @@ class ProfileActivity extends View {
         if (isErr) {
           console.log("Error API_EndorseSkill1, responseCode: ", res.responseCode);
         } else {
+<<<<<<< HEAD
           setTimeout(() => {
             window.__Snackbar.show(window.__S.SKILL_ENDORSED);          
             this.getSkills();          
           }, 1000);
+=======
+          window.__Snackbar.show(window.__S.SKILL_ENDORSED);
+          this.getSkills();
+>>>>>>> 3859fcf67361528359a628a34d38d1c18dbe04ce
         }
       default:
         break;
     }
+<<<<<<< HEAD
     window.__LoaderDialog.hide();        
+=======
+    window.__LoaderDialog.hide();     
+>>>>>>> 3859fcf67361528359a628a34d38d1c18dbe04ce
   }
 
   render() {
@@ -379,7 +391,10 @@ class ProfileActivity extends View {
                     id={this.idSet.skillTagComponent}>
                     <ProfileSkillTags
                       id = {this.profileData.id}
+<<<<<<< HEAD
                       data = {this.profileData.skills}
+=======
+>>>>>>> 3859fcf67361528359a628a34d38d1c18dbe04ce
                       editable = {this.isEditable}/>
                   </LinearLayout>
                     <LinearLayout
