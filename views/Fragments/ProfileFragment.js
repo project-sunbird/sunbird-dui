@@ -38,7 +38,7 @@ class ProfileFragment extends View {
       'createdByHolder',
       'skillTagComponent'
     ]);
-    
+
     _this = this;
     this.isEditable = this.props.editable;
     this.menuData = {
@@ -124,7 +124,7 @@ class ProfileFragment extends View {
       console.log("JBridge.searchContent failed, no internet");
     window.__ContentLoadingComponent.hideLoader();
     if(!JBridge.isNetworkAvailable()){
-      window.__LoaderDialog.hide();      
+      window.__LoaderDialog.hide();
       window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
       return ;
     }
@@ -138,21 +138,21 @@ class ProfileFragment extends View {
         if(data.hasOwnProperty("result")&&data.result.hasOwnProperty("skills")&&data.result.skills!=undefined){
           var layout=(
           <ProfileSkillTags
-            id = {window.__userToken} 
+            id = {window.__userToken}
             editable = {this.isEditable}
             data={data.result.skills}
             onAddClicked={this.addSkills}
             handleLock = {this.handleLockClick}/>
           );
-        this.replaceChild(this.idSet.skillTagComponent, layout.render(), 0);   
-      }     
+        this.replaceChild(this.idSet.skillTagComponent, layout.render(), 0);
+      }
   }
-  window.__LoaderDialog.hide();        
+  window.__LoaderDialog.hide();
 }
 
   getSkills=()=>{
     if(!JBridge.isNetworkAvailable()){
-      window.__LoaderDialog.hide();              
+      window.__LoaderDialog.hide();
       window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE);
       return;
     }
@@ -292,7 +292,7 @@ class ProfileFragment extends View {
 
   checkPrivacy = (name) => {
     var privateFlag=false;
-    if(this.details.profileVisibility[name] && this.details.profileVisibility[name]=='private')
+    if(this.details.hasOwnProperty("profileVisibility") && this.details.profileVisibility[name] && this.details.profileVisibility[name]=='private')
        privateFlag=true;
 
     return privateFlag;
@@ -383,7 +383,7 @@ class ProfileFragment extends View {
                   editable = {this.isEditable}
                   data = {this.education}
                   popUpType={window.__PROFILE_POP_UP_TYPE.EDUCATION}
-                  heading = {window.__S.TITLE_EDUCATION} 
+                  heading = {window.__S.TITLE_EDUCATION}
                   privacyStatus={this.checkPrivacy("education")}
                   handleLock = {this.handleLockClick}/>
 
@@ -400,7 +400,7 @@ class ProfileFragment extends View {
                   editable = {this.isEditable}
                   data = {this.address}
                   popUpType={window.__PROFILE_POP_UP_TYPE.ADDRESS}
-                  heading = {window.__S.TITLE_ADDRESS} 
+                  heading = {window.__S.TITLE_ADDRESS}
                   privacyStatus={this.checkPrivacy("address")}
                   handleLock = {this.handleLockClick}/>
                 <LinearLayout
@@ -408,13 +408,13 @@ class ProfileFragment extends View {
                   width="wrap_content"
                   id={this.idSet.skillTagComponent}>
                     <ProfileSkillTags
-                      id = {window.__userToken} 
+                      id = {window.__userToken}
                       editable = {this.isEditable}
                       onAddClicked={this.addSkills}
                       privacyStatus={this.checkPrivacy("skills")}
                       handleLock = {this.handleLockClick}/>
                   </LinearLayout>
-                
+
                 <LinearLayout
                   width = "match_parent"
                   id = {this.idSet.createdByHolder}>
