@@ -12,7 +12,7 @@ const stringsRes = {
 		CONFIRM : "Confirm",
 		COURSE : "COURSE",
 		COURSE_ENROLLED : "Course enrolled",
-		COURSE_PROGRESS_COMPLETED : "Complete: %s %",
+		COURSE_PROGRESS_COMPLETED : "Completed: %s %",
 		CONTENT_FLAGGED_MSG : "Content flagged successfully",
 		CONTENT_FLAG_FAIL : "Content flagging failed",
 		COURSES_BNAV : "COURSES",
