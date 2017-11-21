@@ -270,34 +270,41 @@ class ProfileActivity extends View {
   }
 
   handleStateChange = (state) =>{
-    if(state.responseFor=="API_GetSkills1"&&state.response.status[0]=="success"&&state.response.status[2]=="200")
-      {
-        var data=JSON.parse(utils.decodeBase64(state.response.status[1]));        
-        if(data.hasOwnProperty("result")&&data.result.hasOwnProperty("skills")&&data.result.skills!=undefined){
-          var layout=(
-          <ProfileSkillTags
-            id = {this.profileData.id} 
-            editable = {this.isEditable}
-            data={data.result.skills}/>
-          );
-        this.replaceChild(this.idSet.skillTagComponent, layout.render(), 0);   
-      }     
-      }else if(state.responseFor=="API_EndorseSkill1"){
-      if(state.response.status[0]=="success"&&state.response.status[2]=="200"){
-        setTimeout(() => {
-          window.__Snackbar.show(window.__S.SKILL_ENDORSED);          
-          this.getSkills();          
-        }, 1000);
-        return;
-      }else{
-        window.__Snackbar.show(window.__S.SKILL_COULD_NOT_BE_ENDORSED);        
-      }
+    var res = utils.processResponse(state);
+    console.log("res in ProfileActivity ", res);
+    var isErr = res.hasOwnProperty("err");
+    switch (state.responseFor) {
+      case "API_GetSkills1":
+        if (isErr) {
+          console.log("Error API_GetSkills1, responseCode: ", res.responseCode);
+        } else {
+          var data = res.data;
+          if(data.hasOwnProperty("result") && data.result.hasOwnProperty("skills") && data.result.skills!=undefined){
+            var layout=(
+              <ProfileSkillTags
+              id = {this.profileData.id}
+              editable = {this.isEditable}
+              data={data.result.skills}/>
+            );
+            this.replaceChild(this.idSet.skillTagComponent, layout.render(), 0);
+          }
+        }
+        break;
+      case "API_EndorseSkill1":
+        if (isErr) {
+          console.log("Error API_EndorseSkill1, responseCode: ", res.responseCode);
+        } else {
+          window.__Snackbar.show(window.__S.SKILL_ENDORSED);
+          this.getSkills();
+        }
+      default:
+        break;
     }
-      window.__LoaderDialog.hide();      
+    window.__LoaderDialog.hide();     
   }
 
   render() {
-    window.__LoaderDialog.show();    
+    window.__LoaderDialog.show();
     this.layout = (
 
       <LinearLayout
@@ -359,7 +366,7 @@ class ProfileActivity extends View {
                     width="wrap_content"
                     id={this.idSet.skillTagComponent}>
                     <ProfileSkillTags
-                      id = {this.profileData.id} 
+                      id = {this.profileData.id}
                       editable = {this.isEditable}/>
                   </LinearLayout>
                     <LinearLayout
