@@ -38,9 +38,6 @@ class PageFilterPopup extends View {
 
     window.__PageFilterPopup = this;
     this.filterListCource=FilterParamsCource.filterParamsCource;
-    this.filterListCource[0].name = window.__S.LANGUAGES;
-    this.filterListCource[1].name = window.__S.SUBJECTS;
-    this.filterListCource[2].name = window.__S.MEDIUM;
     this.filterListResource=FilterParamsResource.filterParamsResource;
     this.isForResouce=false;
     this.cancelBtnState = {
