@@ -159,7 +159,7 @@ class ProfileSkillTags extends View {
     }
     window.__LoaderDialog.show();
    var request = {
-      "endorsedUserId":window.__userToken,
+      "endorsedUserId":this.props.id,
       "skillName":[input]
   }
   var whatToSend = {

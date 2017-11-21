@@ -18,6 +18,7 @@ class CustomPopUp extends View{
       "predictionLayout",
       "skillLayout"
     ]);
+    this.customPopUpVisibility="gone";    
     window.__CustomPopUp = this;
     this.dictionary=["train","tame","tackle","tounge","tickle","tram","taunt","taunting"]
     this.props=props;
@@ -40,14 +41,16 @@ class CustomPopUp extends View{
   }
 
   show = () => {
+    this.customPopUpVisibility="visible";
     this.dictionary=window.__PopulateSkillsList;
     this.selectedSkills=[];
     this.setVisibility("visible");
   }
 
   hide = () => {
+    this.customPopUpVisibility="gone";
+    JBridge.hideKeyboard();    
     this.setVisibility("gone");
-    JBridge.hideKeyboard();
   }
 
   setVisibility = (data) => {

@@ -128,10 +128,14 @@ class ProfileFragment extends View {
       window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
       return ;
     }
-    _this.getSkills();
+    setTimeout(() => {
+      _this.getSkills();          
+    }, 1000);
   }
 
   handleStateChange = (state) =>{
+    if(this.getSkillsResponseCame) return;
+    this.getSkillsResponseCame=true;
     if(state.responseFor=="API_GetSkills"&&state.response.status[0]=="success"&&state.response.status[2]=="200")
       {
         var data=JSON.parse(utils.decodeBase64(state.response.status[1]));
@@ -164,7 +168,14 @@ class ProfileFragment extends View {
     "api_token" : window.__apiToken,
     "requestBody" : JSON.stringify(request)
   }
-  var event= { "tag": "API_GetSkills", contents: whatToSend };
+  this.getSkillsResponseCame=false;
+  var event= { "tag": "API_GetSkills", contents: whatToSend }; 
+  setTimeout(() => {
+    if (this.getSkillsResponseCame) return;
+    this.getSkillsResponseCame = true;
+    window.__LoaderDialog.hide();
+    window.__Snackbar.show("Error getting skills");
+  }, window.__API_TIMEOUT);
   window.__runDuiCallback(event);
   }
 
@@ -279,15 +290,21 @@ class ProfileFragment extends View {
     }
   }
   addSkills = ()=>{
+    if(!JBridge.isNetworkAvailable()){
+      window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
+      return;
+    }       
     var whatToSend = {
       "user_token" : window.__user_accessToken,
       "api_token" : window.__apiToken,
     }
     var event= { "tag": "API_GetSkillsList", contents: whatToSend };
-    if(JBridge.isNetworkAvailable())
+      setTimeout(() => {
+        if (window.__CustomPopUp.customPopUpVisibility=="visible") return;
+        window.__CustomPopUp.show();
+        window.__LoaderDialog.hide();        
+      }, window.__API_TIMEOUT);
       window.__runDuiCallback(event);
-    else
-      window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
   }
 
   checkPrivacy = (name) => {

@@ -189,7 +189,7 @@ class MainActivity extends View {
         return;
       }
     if(state.responseFor=="API_GetSkillsList"){
-      window.__PopulateSkillsList="";
+      window.__PopulateSkillsList=[];
       if(state.response.status[0]=="success"&&state.response.status[2]=="200"){
         try{
           var data=JSON.parse(utils.decodeBase64(state.response.status[1]));

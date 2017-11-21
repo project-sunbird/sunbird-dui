@@ -284,8 +284,11 @@ class ProfileActivity extends View {
       }     
       }else if(state.responseFor=="API_EndorseSkill1"){
       if(state.response.status[0]=="success"&&state.response.status[2]=="200"){
-        window.__Snackbar.show(window.__S.SKILL_ENDORSED);
-        this.getSkills();
+        setTimeout(() => {
+          window.__Snackbar.show(window.__S.SKILL_ENDORSED);          
+          this.getSkills();          
+        }, 1000);
+        return;
       }else{
         window.__Snackbar.show(window.__S.SKILL_COULD_NOT_BE_ENDORSED);        
       }
