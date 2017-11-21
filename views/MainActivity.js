@@ -160,57 +160,13 @@ class MainActivity extends View {
 
   handleStateChange = (state) => {
     var res = utils.processResponse(state);
-    if(state.responseFor=="API_GetAnnouncementData"){
-      window.__AnnouncementApiCalled=false; 
-      window.__AnnouncementApiData="";      
-      if(state.response.status[0]=="success"&&state.response.status[2]=="200"){
-        try{
-          var data = JSON.parse(utils.decodeBase64(state.response.status[1]));
-          console.log("API_GetAnnouncementData :",data);
-          var dataToBeSaved = utils.encodeBase64(JSON.stringify(state));          
-          JBridge.saveData(this.announcementsDataTag, dataToBeSaved);          
-          window.__AnnouncementApiData=data.result.announcements;
-        }catch(e){
-          console.log("Exception in handlestatechange got API_GetAnnouncement : ",e);
-        }
-      }else if (JBridge.getSavedData(this.announcementsDataTag) != "__failed"){
-        var data = JSON.parse(utils.decodeBase64(JBridge.getSavedData(this.announcementsDataTag)));
-        data = JSON.parse(utils.decodeBase64(state.response.status[1]));   
-        window.__AnnouncementApiData=data.result.announcements;
-      }
-    }
-    if(state.responseFor=="API_EndorseSkill"){
-      if(state.response.status[0]=='success'&&state.response.status[2]=="200"){
-        window.__Snackbar.show(window.__S.SKILLS_ADDED_SUCCESSFULLY);
-      }else{
-        window.__Snackbar.show(window.__S.SKILL_NOT_ADDED);
-      }
-        window.__BNavFlowRestart();
-        return;
-      }
-    if(state.responseFor=="API_GetSkillsList"){
-      window.__PopulateSkillsList=[];
-      if(state.response.status[0]=="success"&&state.response.status[2]=="200"){
-        try{
-          var data=JSON.parse(utils.decodeBase64(state.response.status[1]));
-          var data = utils.encodeBase64(JSON.stringify(state));
-          window.__PopulateSkillsList=data.result.skills;
-        }catch(e){
-          console.log("Exception : ",e);
-        }
-      }
-      window.__CustomPopUp.show();
-      return;
-    }
-    if(state.responseFor=="API_GetSkills"){
-      window.__ProfileFragmentHandleStateChange(state);
-      return; 
-    }
+
     if (!state.local && !res.hasOwnProperty("err") && state.responseFor == "API_ProfileFragment"){
       console.log("Saving state");
       var data = utils.encodeBase64(JSON.stringify(state));
       JBridge.saveData(this.profileDataTag, data);
     }
+
     this.currentPageIndex = isNaN(this.currentPageIndex) ? 0 : this.currentPageIndex;
     var shouldBeModified = false;
     var status = res.status;
@@ -228,136 +184,132 @@ class MainActivity extends View {
           }
         }
       }
-
-    // if(responseCode == 401){
-    //   var callback  = callbackMapper.map(function(token){
-    //     window.__apiToken = token;
-    //     var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken}
-    //     var event = { "tag": state.responseFor, contents: whatToSend };
-    //     window.__runDuiCallback(event);
-    //   });
-    //   JBridge.getApiToken(callback);
-    //   return;
+    ///////////////////////////////////////////////////////////////////////////
     var isErr = res.hasOwnProperty("err");
-    if(isErr) {
-      if (state.responseFor == "API_ProfileFragment") {
-        this.profAPIerrCount++;
-        console.log("this.profAPIerrCount", this.profAPIerrCount);
-        if (JBridge.getSavedData(this.profileDataTag) != "__failed"){
-          var data = JSON.parse(utils.decodeBase64(JBridge.getSavedData(this.profileDataTag)));
-          data.local = true;
-          this.handleStateChange(data)
+    console.log("response data in MainActivity",responseData)
+    if(state.sendBack){
+      responseData.sendBack = state.sendBack;
+    }
+
+    switch (state.responseFor) {
+      case "API_ProfileFragment":
+        if (isErr) {
+          this.handleProfileFragAPIResErr();
+          responseData=tmp;
         } else {
-          // window.__BNavFlowRestart();
-          window.__LoaderDialog.hide();
+          this.profAPIerrCount = 0;
+          console.log("profileData", responseData);
+          window.__userName = responseData.result.response.userName;
+
+          //check for rootOrg details
+          console.log("JBridge.getFromSharedPrefs('logo_url')",JBridge.getFromSharedPrefs("logo_url"));
+          if (responseData.result.response && responseData.result.response.rootOrg && !window.__API_Profile_Called && (JBridge.getFromSharedPrefs("logo_url") == "__failed" || JBridge.getFromSharedPrefs("orgName") == "__failed" || JBridge.getFromSharedPrefs("channelId") == "__failed")){
+            console.log("slug", responseData.result.response.rootOrg.slug);
+            window.__orgName = responseData.result.response.rootOrg.orgName;
+            if (responseData.result.response.rootOrg.hashTagId) {
+              JBridge.setInSharedPrefs("channelId", responseData.result.response.rootOrg.hashTagId);
+              console.log("channelId", JBridge.getFromSharedPrefs("channelId"));
+              JBridge.setParams();
+            }
+            if (responseData.result.response.rootOrg.hasOwnProperty("preferredLanguage") && responseData.result.response.rootOrg.preferredLanguage != null) {
+              this.handleChangeLang(responseData.result.response.rootOrg.preferredLanguage)
+            }
+            window.__API_Profile_Called = true;
+            if (window.__userName != undefined) window.__Snackbar.show(window.__S.WELCOME_BACK.format(window.__userName));
+            var whatToSend = {"user_token":window.__user_accessToken,"api_token": window.__apiToken, "slug": responseData.result.response.rootOrg.slug};
+            var event = { tag: "API_Tenant", contents: whatToSend};
+            window.__runDuiCallback(event);
+          }
         }
-      }
-      responseData=tmp;
-    } else {
-     // responseData = utils.jsonifyData(responseData);
-      // responseData = utils.decodeBase64(responseData)
-      // responseData = JSON.parse(responseData);
-      console.log("response data in MainActivity",responseData)
-      if(state.sendBack){
-        responseData.sendBack = state.sendBack;
-      }
+        break;
+      case "API_Tenant":
+        if (isErr) {
 
-    }
-    if (!isErr && state.responseFor == "API_ProfileFragment"){
-      this.profAPIerrCount = 0;
-      console.log("profileData", responseData);
-      window.__userName = responseData.result.response.userName;
-    }
-    console.log("window.__API_Profile_Called", window.__API_Profile_Called);
-
-    console.log("JBridge.getFromSharedPrefs('logo_url')",JBridge.getFromSharedPrefs("logo_url"));
-    if (responseData.result.response && responseData.result.response.rootOrg && !window.__API_Profile_Called && (JBridge.getFromSharedPrefs("logo_url") == "__failed" || JBridge.getFromSharedPrefs("orgName") == "__failed" || JBridge.getFromSharedPrefs("channelId") == "__failed")){
-      console.log("slug", responseData.result.response.rootOrg.slug);
-      window.__orgName = responseData.result.response.rootOrg.orgName;
-      //TODO revert after nile update
-      if (responseData.result.response.rootOrg.hashTagId) {
-        JBridge.setInSharedPrefs("channelId", responseData.result.response.rootOrg.hashTagId);
-        console.log("channelId", JBridge.getFromSharedPrefs("channelId"));
-        JBridge.setParams();
-      }
-      // if (responseData.result.response.rootOrgId) {
-      //   JBridge.setInSharedPrefs("channelId", md5(responseData.result.response.rootOrgId));
-      //   console.log("rootOrgId ", responseData.result.response.rootOrgId);
-      //   console.log("channelId ", JBridge.getFromSharedPrefs("channelId"));
-      //   JBridge.setParams();
-      // }
-      if (responseData.result.response.rootOrg.hasOwnProperty("preferredLanguage") && responseData.result.response.rootOrg.preferredLanguage != null) {
-        this.handleChangeLang(responseData.result.response.rootOrg.preferredLanguage)
-      }
-      window.__API_Profile_Called = true;
-      if (window.__userName != undefined) window.__Snackbar.show(window.__S.WELCOME_BACK.format(window.__userName));
-      var whatToSend = {"user_token":window.__user_accessToken,"api_token": window.__apiToken, "slug": responseData.result.response.rootOrg.slug};
-      var event = { tag: "API_Tenant", contents: whatToSend};
-      window.__runDuiCallback(event);
-    }
-
-    if (!window.__API_Profile_Called){
-      window.__API_Profile_Called = true;
-      if (window.__userName != undefined) {
-        window.__Snackbar.show(window.__S.WELCOME_BACK.format(window.__userName));
-      }
-    }
-
-
-    if (state.responseFor == "API_Tenant"){
-      console.log("responseFor API_Tenant", responseData);
-      JBridge.setInSharedPrefs("logo_url", responseData.result.logo);
-      JBridge.setInSharedPrefs("orgName", window.__orgName);
-      JBridge.downloadImage(responseData.result.logo);
-      return;
-    }
-
-    // if (responseData.params && responseData.params.err) {
-    //     return;
-    //   // window.__Snackbar.show(window.__S.ERROR_SERVER_MESSAGE + responseData.params.errmsg)
-    //   // return;
-    // }
-
-    if (state.responseFor == "API_UserEnrolledCourse") {
-      if (isErr){
-        var tmpData = JBridge.getSavedData("savedCourse");
-        if (tmpData && tmpData != "__failed"){
-          console.log("fetched enrolledCourses");
-          window.__enrolledCourses = JSON.parse(utils.decodeBase64(tmpData));
-          window.setEnrolledCourses(JSON.parse(utils.decodeBase64(tmpData)));
+        } else {
+          console.log("responseFor API_Tenant", responseData);
+          JBridge.setInSharedPrefs("logo_url", responseData.result.logo);
+          JBridge.setInSharedPrefs("orgName", window.__orgName);
+        }
+        break;
+      case "API_UserEnrolledCourse":
+        if (isErr) {
+          var tmpData = JBridge.getSavedData("savedCourse");
+          if (tmpData && tmpData != "__failed"){
+            console.log("fetched enrolledCourses");
+            window.__enrolledCourses = JSON.parse(utils.decodeBase64(tmpData));
+            window.setEnrolledCourses(JSON.parse(utils.decodeBase64(tmpData)));
+            return;
+          }
+        } else {
+          JBridge.saveData("savedCourse", utils.encodeBase64(JSON.stringify(responseData.result.courses)));
+          window.__enrolledCourses = responseData.result.courses;
+          window.setEnrolledCourses(responseData.result.courses);
           return;
         }
-      } else {
-        JBridge.saveData("savedCourse", utils.encodeBase64(JSON.stringify(responseData.result.courses)));
-      }
-      window.__enrolledCourses = responseData.result.courses;
-      window.setEnrolledCourses(responseData.result.courses);
-      return;
-    }
+        break;
+      case "API_GetAnnouncementData":
+        window.__AnnouncementApiCalled=false;
+        window.__AnnouncementApiData=[];
+        if (isErr) {
+          if (JBridge.getSavedData(this.announcementsDataTag) != "__failed") {
+            var data = JSON.parse(utils.decodeBase64(JBridge.getSavedData(this.announcementsDataTag)));
+            data = JSON.parse(utils.decodeBase64(state.response.status[1]));
+            window.__AnnouncementApiData=data.result.announcements;
+          }
+        } else {
+          try{
+            var data = JSON.parse(utils.decodeBase64(state.response.status[1]));
+            console.log("API_GetAnnouncementData :",data);
+            var dataToBeSaved = utils.encodeBase64(JSON.stringify(state));
+            JBridge.saveData(this.announcementsDataTag, dataToBeSaved);
+            window.__AnnouncementApiData=data.result.announcements;
+          }catch(e){
+            console.log("Exception in handlestatechange got API_GetAnnouncement : ",e);
+          }
+        }
+        break;
+      case "API_EndorseSkill":
+        if (isErr) {
+          window.__Snackbar.show(window.__S.SKILL_NOT_ADDED);
+        } else {
+          window.__Snackbar.show(window.__S.SKILLS_ADDED_SUCCESSFULLY);
+        }
+        window.__BNavFlowRestart();
+        return;
+      case "API_GetSkillsList":
+        window.__PopulateSkillsList=[];
+        if (isErr) {
 
-    if (state.responseFor == "API_SetProfileVisibility") {
-      console.log("API_SetProfileVisibility response",state);
-      var res = utils.processResponse(state);
-      if(res.code!=504){
-          var response = res.data;
-            console.log(res, "response details------>")
-          var responseCode = res.code;
-          if(responseCode == "200"){
-
-            window.__BNavFlowRestart();
-
+        } else {
+          try{
+            var data=JSON.parse(utils.decodeBase64(state.response.status[1]));
+            var data = utils.encodeBase64(JSON.stringify(state));
+            window.__PopulateSkillsList=data.result.skills;
+          }catch(e){
+            console.log("Exception : ",e);
+          }
+        }
+        window.__CustomPopUp.show();
+        return;
+      case "API_GetSkills":
+        window.__ProfileFragmentHandleStateChange(state);
+        return;
+      case "API_SetProfileVisibility":
+        if (isErr) {
+          if (responseCode == 504) {
+            window.__LoaderDialog.hide();
+            window.__Snackbar.show(window.__S.TIME_OUT)
           } else {
             window.__LoaderDialog.hide();
             window.__Snackbar.show("failed");
-            //_this.onBackPressed();
           }
-
-      }else{
-        window.__LoaderDialog.hide();
-        window.__Snackbar.show(window.__S.TIME_OUT)
-      //  _this.onBackPressed();
-      }
+        } else {
+          window.__BNavFlowRestart();
+        }
+      default:
+        break;
     }
+    //////////////////////////////////////////////////////////////////////////////
 
     switch (this.currentPageIndex) {
       case 0:
@@ -574,7 +526,7 @@ class MainActivity extends View {
             if (JBridge.getSavedData(this.announcementsDataTag) != "__failed"){
               try{
               var data = JSON.parse(utils.decodeBase64(JBridge.getSavedData(this.profileDataTag)));
-              data = JSON.parse(utils.decodeBase64(state.response.status[1]));   
+              data = JSON.parse(utils.decodeBase64(state.response.status[1]));
               window.__AnnouncementApiData=data.result.announcements;
               }catch(e){
                 console.log("Error in getting saved data :",e);
