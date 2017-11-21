@@ -236,7 +236,7 @@ class CustomPopUp extends View{
      {
        this.predictlayout =(<LinearLayout
           height="wrap_content"
-          width="wrap_content"/>);
+          width="match_parent"/>);
 
        this.replaceChild(this.idSet.predictionLayout, this.predictlayout.render(), 0);
      }
@@ -253,7 +253,7 @@ class CustomPopUp extends View{
     addDictionaryString = addDictionaryString.replace("String", data);
     this.predictlayout =(<LinearLayout
        height="match_parent"
-       width="wrap_content"
+       width="match_parent"
        orientation="vertical"
        margin="16,0,16,0">
 
@@ -284,7 +284,7 @@ class CustomPopUp extends View{
       orientation="vertical">
       <LinearLayout
           height="1"
-          width="328"
+          width="match_parent"
           background={window.__Colors.PRIMARY_BLACK_66}/>
           <TextView
            height="wrap_content"
@@ -344,7 +344,7 @@ class CustomPopUp extends View{
     }
     else {
       JBridge.hideKeyboard();
-      JBridge.showSnackBar("Already Added");
+      window.__Snackbar.show(window.__S.ERROR_ALREADY_ADDED);
     }
   }
 

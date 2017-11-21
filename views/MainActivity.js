@@ -80,17 +80,7 @@ class MainActivity extends View {
     }
 
     this.backPressCount = 0;
-<<<<<<< HEAD
     window.__BNavFlowRestart();
-=======
-
-    if(this.currentPageIndex==1 || this.currentPageIndex==0){
-      window.__fetchCourse();
-    }else if(this.currentPageIndex==2){
-      window.__UpdateOfflineContent();
-    }
-    // window.__BNavFlowRestart();
->>>>>>> 3859fcf67361528359a628a34d38d1c18dbe04ce
   }
 
   getUserProfileData = () => {
@@ -491,16 +481,11 @@ class MainActivity extends View {
     }
     switch (this.currentPageIndex) {
       case 0:
-<<<<<<< HEAD
       if (window.__Check == 0) {
         if(!JBridge.isNetworkAvailable()){
           window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
         }else{
           this.getUserProfileData();          
-=======
-        if (!JBridge.isNetworkAvailable() && window.__Check == 0) {
-          window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
->>>>>>> 3859fcf67361528359a628a34d38d1c18dbe04ce
         }
       }
         if(window.__AnnouncementApiCalled==false){

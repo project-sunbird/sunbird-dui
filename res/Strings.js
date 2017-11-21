@@ -12,11 +12,7 @@ const stringsRes = {
 		CONFIRM : "Confirm",
 		COURSE : "COURSE",
 		COURSE_ENROLLED : "Course enrolled",
-<<<<<<< HEAD
 		COURSE_PROGRESS_COMPLETED : "Complete: %s %",
-=======
-		COURSE_PROGRESS_COMPLETED : "Completed: %s %",
->>>>>>> 3859fcf67361528359a628a34d38d1c18dbe04ce
 		CONTENT_FLAGGED_MSG : "Content flagged successfully",
 		CONTENT_FLAG_FAIL : "Content flagging failed",
 		COURSES_BNAV : "COURSES",
@@ -276,11 +272,8 @@ const stringsRes = {
 		SKILL_COULD_NOT_BE_ENDORSED : "Skill endorsment unsucessfull",
 		SKILL_ALREADY_ENDORSED : "Skill already endorsed",
 		ERROR_GETTING_SKILLS : "Error getting skills",
-<<<<<<< HEAD
 		NO_SKILL_ADDED :"No skill to be added",
 		AVATAR : "Avatar"
-=======
->>>>>>> 3859fcf67361528359a628a34d38d1c18dbe04ce
 	},
 	"hi_IN" : {
 		ALREADY_HAVE_ACC : "मौजूदा उपयोगकर्ता, साइन इन करें",
