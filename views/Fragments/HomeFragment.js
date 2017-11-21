@@ -35,7 +35,7 @@ class HomeFragment extends View {
 
     this.menuData = {
       url: [
-        // { imageUrl: "ic_scanqr"}, // hide qr scanner feature
+       // { imageUrl: "ic_scanqr"}, // hide qr scanner feature
         { imageUrl: "ic_action_search" }
       ]
     }
@@ -53,7 +53,7 @@ class HomeFragment extends View {
 
 
   handleAnnouncementClick = (item) => {
-    
+
     var whatToSend = { "announcementData" : JSON.stringify(item)}
     var event ={ tag: "OPEN_AnnouncementDetailActivity", contents: whatToSend }
     window.__runDuiCallback(event);
@@ -160,16 +160,17 @@ class HomeFragment extends View {
         break;
         case "profileSummary" : editButtonText=window.__S.DESCRIPTION;
         break;
-        case "lastName" : editButtonText=window.__S.LAST_NAME; 
+        case "lastName" : editButtonText=window.__S.LAST_NAME;
         break;
         case "subject" : editButtonText=window.__S.SUBJECTS;
         break;
         case "location" : editButtonText=window.__S.CURRENT_LOCATION;
         break;
-        case "avatar" : return this.getTodoProfileCard(index+1);
+        case "avatar" : editButtonText=window.__S.AVATAR;
+        break;
         default : this.profileUpdateCardVisibility="gone";
       }
-
+      this.avatarImageUrl=data.avatar ? data.avatar : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR1X3cm5xzR4D1W9oPb2QWioKlrfLVd0DvXFUNqSjZfg-M0bpc";
     return(
       <LinearLayout
       width="200"
@@ -198,7 +199,7 @@ class HomeFragment extends View {
               width="74"
               height="74"
               margin="16,16,0,0"
-              circularImageUrl={"0,"+(data.avatar ? data.avatar : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR1X3cm5xzR4D1W9oPb2QWioKlrfLVd0DvXFUNqSjZfg-M0bpc")}
+              circularImageUrl={"0,"+(this.avatarImageUrl)}
               stroke ={"2," + "#d8d8d8"}
               cornerRadius="37"/>
             <LinearLayout
@@ -251,7 +252,7 @@ class HomeFragment extends View {
   getAnnouncementCard=()=>{
     var viewAllVisibility="gone";
     var cards = <LinearLayout/>
-    var card1=(<LinearLayout/>),card2=(<LinearLayout/>);    
+    var card1=(<LinearLayout/>),card2=(<LinearLayout/>);
     if(window.__AnnouncementApiData==undefined||window.__AnnouncementApiData.length==0)
       {
         cards= (<LinearLayout
@@ -411,12 +412,13 @@ var whatToSend ={ "announcementDetails": JSON.stringify(data)}
       whatToSend = { "profile": "" }
       event = { tag: 'OPEN_ExperienceActivity', contents: whatToSend }
       break;
-      case "avatar" : return;
+      case "avatar" : window.__ProfileImagePopUp.show(); 
+      return;     
       default :
       whatToSend = { "profile" : JSON.stringify(this.profileData.result.response)}
       event ={ tag: "OPEN_EditProfileActivity", contents: whatToSend }
       }
-      window.__runDuiCallback(event);          
+      window.__runDuiCallback(event);
     }
 }
 

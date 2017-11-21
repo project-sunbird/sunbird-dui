@@ -133,7 +133,6 @@ data MainActivityAction = OPEN_HomeFragment |
   API_SetProfileVisibility {user_token::String, api_token::String, request::String }|
   API_EndorseSkill {user_token::String,api_token::String,requestBody::String} |
   API_GetSkillsList {user_token::String,api_token::String} |
-  API_GetSkills {user_token::String,api_token::String,requestBody::String} |
   API_GetAnnouncementData {user_token::String,api_token::String,requestBody::String} |
   API_Tenant {user_token::String, api_token::String, slug::String }
 

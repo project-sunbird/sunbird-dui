@@ -34,10 +34,6 @@ profileFragment input whereFrom whatToSendBack = do
 			responseData <- endorseSkill user_token api_token request
 			_ <- sendUpdatedState {response : responseData, responseFor : "API_EndorseSkill", screen:"asas"}
 			pure $ "handled"
-		API_GetSkills {user_token: user_token,api_token: api_token,requestBody:request} -> do
-			responseData <- getSkills user_token api_token request
-			_ <- sendUpdatedState {response : responseData, responseFor : "API_GetSkills", screen:"asas"}
-			pure $ "handled"
 		API_GetSkillsList {user_token : user_token,api_token : api_token} -> do
 			responseData <- getSkillsList user_token api_token
 			_ <- sendUpdatedState {response : responseData, responseFor : "API_GetSkillsList", screen:"asas"}

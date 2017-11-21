@@ -153,9 +153,9 @@ class ModuleDetailActivity extends View {
             Android.runInUI(cmd, 0);
         }
     }
-
-    checkContentType = (type) =>{
-        if(type.toLowerCase() == "story" || type.toLowerCase() == "worksheet" || type.toLowerCase() == "game")
+ 
+    checkContentType = (mimeType) =>{
+        if(mimeType.toLowerCase() != "application/vnd.ekstep.content-collection")
             return true;
         else
             return false;
@@ -164,7 +164,7 @@ class ModuleDetailActivity extends View {
     checkContentLocalStatus = (module) => {
         _this = this;
         console.log('module',module);
-        if(this.checkContentType(module.contentType)){
+        if(this.checkContentType(module.mimeType)){
             this.localStatus = false;
             window.__ProgressButton.setLocalStatus(false);
             console.log("content",module)
@@ -209,7 +209,6 @@ class ModuleDetailActivity extends View {
                         window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE)
                     }
                 });
-
                 if (!module.isAvailableLocally || module.isUpdateAvailable) {
                     window.__getDownloadStatus = this.getSpineStatus;
                     JBridge.getContentDetails(module.identifier, callback);
@@ -252,17 +251,29 @@ class ModuleDetailActivity extends View {
     renderModuleChildren = (module) => {
         var layout;
 
-        if (module.children) {
-            layout = ( <CourseCurriculum
-                height = "match_parent"
-                width = "match_parent"
-                root = "true"
-                margin = "0,0,0,12"
-                brief = { true } title = ""
-                currIndex = {module.index}
-                onClick = { this.handleModuleClick }
-                content = { module.children }  />
-            )
+        if (module.mimeType.toLowerCase() == "application/vnd.ekstep.content-collection") {
+            if (module.children){
+                layout = ( <CourseCurriculum
+                    height = "match_parent"
+                    width = "match_parent"
+                    root = "true"
+                    margin = "0,0,0,12"
+                    brief = { true } title = ""
+                    currIndex = {module.index}
+                    onClick = { this.handleModuleClick }
+                    content = { module.children }  />
+                )
+            } else {
+                layout = (
+                        <TextView
+                            width = "match_parent"
+                            height = "match_parent"
+                            padding="0,20,0,0"
+                            gravity = "center"
+                            text = {window.__S.ERROR_CONTENT_NOT_AVAILABLE}/>
+                            );
+            }
+            
             this.replaceChild(this.idSet.descriptionContainer, layout.render(), 0);
         } else {
             var cmd = this.set({

@@ -88,17 +88,7 @@ class MainActivity extends View {
 
 
     this.backPressCount = 0;
-
-    // if(this.currentPageIndex==1 || this.currentPageIndex==0){
-    //   // var whatToSend = {"user_token":window.__user_accessToken,"api_token": window.__apiToken}
-    //   // var event ={ "tag": "API_UserEnrolledCourse", contents: whatToSend};
-    //   // window.__runDuiCallback(event);
-    //   window.__fetchCourse();
-    // }else if(this.currentPageIndex==2){
-    //   window.__UpdateOfflineContent();
-    // }
     window.__BNavFlowRestart();
-
   }
 
   getUserProfileData = () => {
@@ -290,9 +280,6 @@ class MainActivity extends View {
           }
         }
         window.__CustomPopUp.show();
-        return;
-      case "API_GetSkills":
-        window.__ProfileFragmentHandleStateChange(state);
         return;
       case "API_SetProfileVisibility":
         if (isErr) {
@@ -516,9 +503,13 @@ class MainActivity extends View {
     }
     switch (this.currentPageIndex) {
       case 0:
-      if(!JBridge.isNetworkAvailable()&&window.__Check==0){
-        window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
+      if (window.__Check == 0) {
+        if(!JBridge.isNetworkAvailable()){
+          window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
+        }else{
+          this.getUserProfileData();          
         }
+      }
         if(window.__AnnouncementApiCalled==false){
           if(JBridge.isNetworkAvailable())
           this.getAnnouncemetData();

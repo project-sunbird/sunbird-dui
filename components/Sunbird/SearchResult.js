@@ -33,10 +33,10 @@ class SearchResult extends View {
   showList=()=>{
      this.props.data.map((item, index) => {
       var appIcon = "ic_launcher";
-      if (this.type == "Resource"  || this.type == "Course"){
-        appIcon = item.hasOwnProperty("appIcon") ? item.appIcon : "ic_launcher" ;
-      } else if (this.type == "Profile"){
+      if (this.type == "Profile"){
         appIcon = (item.data && item.data.avatar) ? item.data.avatar : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR1X3cm5xzR4D1W9oPb2QWioKlrfLVd0DvXFUNqSjZfg-M0bpc";
+      }else{
+        appIcon = item.hasOwnProperty("appIcon") ? item.appIcon : "ic_launcher" ;
       }
       var resultLayout = (
         <LinearLayout

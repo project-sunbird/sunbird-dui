@@ -16,12 +16,15 @@ class CustomPopUp extends View{
     this.setIds([
       "popUpParent",
       "predictionLayout",
-      "skillLayout"
+      "skillLayout",
+      "cancelBtn",
+      "applyBtn"
     ]);
     this.customPopUpVisibility="gone";    
     window.__CustomPopUp = this;
     this.dictionary=["train","tame","tackle","tounge","tickle","tram","taunt","taunting"]
     this.props=props;
+    this.canSave=true   
     this.selectedSkills=[];
     this.cancelBtnState = {
       text : window.__S.CANCEL,
@@ -44,13 +47,44 @@ class CustomPopUp extends View{
     this.customPopUpVisibility="visible";
     this.dictionary=window.__PopulateSkillsList;
     this.selectedSkills=[];
+    this.dumyLayout=(
+      <LinearLayout
+      height="match_parent"
+      width="match_parent"/>);
+    this.replaceChild(this.idSet.skillLayout,this.dumyLayout.render(),0);
+    this.updateSaveButtonStatus(false);
     this.setVisibility("visible");
   }
 
   hide = () => {
     this.customPopUpVisibility="gone";
+    this.updateSaveButtonStatus(false);    
     JBridge.hideKeyboard();    
     this.setVisibility("gone");
+  }
+
+  updateSaveButtonStatus = (enabled) => {
+    console.log("updateSaveButtonStatus",enabled)
+    var alpha;
+    var isClickable;
+
+    if (enabled) {
+      alpha = "1";
+      isClickable = "true";
+      this.canSave=true
+    } else {
+      alpha = "0.5";
+      isClickable = "false";
+      this.canSave=false      
+    }
+
+    var cmd = this.set({
+      id: this.idSet.applyBtn,
+      alpha: alpha,
+      clickable: isClickable
+    })
+
+    Android.runInUI(cmd, 0);
   }
 
   setVisibility = (data) => {
@@ -75,6 +109,10 @@ class CustomPopUp extends View{
           </LinearLayout>)
   }
   onConfirm=()=>{
+    if(!this.canSave){
+      window.__Snackbar.show(window.__S.NO_SKILL_ADDED);
+      return;
+    }
     this.hide();
     if(!JBridge.isNetworkAvailable()){
       window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE);
@@ -122,7 +160,7 @@ class CustomPopUp extends View{
               <TextView
               height="wrap_content"
               width="match_parent"
-              text="Add a skill"
+              text={window.__S.LABEL_ADD_A_SKILL}
               margin="16,16,0,0"
               style={window.__TextStyle.textStyle.CARD.TITLE.DARK}
               textSize="22"
@@ -131,7 +169,7 @@ class CustomPopUp extends View{
               height="wrap_content"
               margin="16,0,16,0"
               width="match_parent"
-              hint="Start Typing to Add a skill "
+              hint={window.__S.TYPE_TO_ADD_A_SKILL}
               gravity="center_vertical"
               color="#000000"
               maxLines="1"
@@ -184,7 +222,7 @@ class CustomPopUp extends View{
     var predictions=[];
     var i;
 
-    if(data!=""){
+    if(data!=""&&data.replace(/\s/g, '').length){
        for(i=0; i < this.dictionary.length;i++)
        {
          if(this.dictionary[i].startsWith(text))
@@ -211,7 +249,7 @@ class CustomPopUp extends View{
       return (this.getPredictionCard(item))
     });
 
-    var addDictionaryString="Add \"String\"";
+    var addDictionaryString=window.__S.ADD+"\"String\"";
     addDictionaryString = addDictionaryString.replace("String", data);
     this.predictlayout =(<LinearLayout
        height="match_parent"
@@ -291,6 +329,11 @@ class CustomPopUp extends View{
       this.replaceChild(this.idSet.skillLayout,this.updatedSkills.render(),0);
 
    }
+   if(this.selectedSkills.length>0){
+    this.updateSaveButtonStatus(true);        
+   }else{
+    this.updateSaveButtonStatus(false);        
+   }
   }
 
   addItem = (data) =>{
@@ -365,6 +408,11 @@ class CustomPopUp extends View{
         this.replaceChild(this.idSet.skillLayout,this.updatedSkills.render(),0);
 
     }
+    if(this.selectedSkills.length>0){
+      this.updateSaveButtonStatus(true);        
+     }else{
+      this.updateSaveButtonStatus(false);        
+     }
   }
 }
 

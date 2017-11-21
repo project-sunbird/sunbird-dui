@@ -98,7 +98,8 @@ class ProfileCreations extends View {
       break;
       case "location" : editButtonText=window.__S.CURRENT_LOCATION;
       break;
-      case "avatar" : return this.getEditButton(index+1);
+      case "avatar" : editButtonText=window.__S.AVATAR;
+      break;
       default : temp="gone";
     }
     return (<TextView
@@ -278,7 +279,7 @@ class ProfileCreations extends View {
       whatToSend = { "profile": "" }
       event = { tag: 'OPEN_ExperienceActivity', contents: whatToSend }
       break;
-      case "avatar" : 
+      case "avatar" : window.__ProfileImagePopUp.show(); 
       return;      
       default :
       whatToSend = { "profile" : JSON.stringify(this.props.data)}

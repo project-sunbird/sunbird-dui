@@ -128,59 +128,7 @@ class ProfileFragment extends View {
       window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
       return ;
     }
-    setTimeout(() => {
-      _this.getSkills();          
-    }, 1000);
-  }
-
-  handleStateChange = (state) =>{
-    if(this.getSkillsResponseCame) return;
-    this.getSkillsResponseCame=true;
-    if(state.responseFor=="API_GetSkills"&&state.response.status[0]=="success"&&state.response.status[2]=="200")
-      {
-        var data=JSON.parse(utils.decodeBase64(state.response.status[1]));
-        if(data.hasOwnProperty("result")&&data.result.hasOwnProperty("skills")&&data.result.skills!=undefined){
-          var layout=(
-          <ProfileSkillTags
-            id = {window.__userToken}
-            editable = {this.isEditable}
-            data={data.result.skills}
-            onAddClicked={this.addSkills}
-            handleLock = {this.handleLockClick}/>
-          );
-        this.replaceChild(this.idSet.skillTagComponent, layout.render(), 0);
-      }
-  }
-  window.__LoaderDialog.hide();
-}
-
-  getSkills=()=>{
-    if(!JBridge.isNetworkAvailable()){
-      window.__LoaderDialog.hide();
-      window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE);
-      return;
-    }
-    var request = {
-      "endorsedUserId": window.__userToken,
-  }
-  var whatToSend = {
-    "user_token" : window.__user_accessToken,
-    "api_token" : window.__apiToken,
-    "requestBody" : JSON.stringify(request)
-  }
-  this.getSkillsResponseCame=false;
-  var event= { "tag": "API_GetSkills", contents: whatToSend }; 
-  setTimeout(() => {
-    if (this.getSkillsResponseCame) return;
-    this.getSkillsResponseCame = true;
-    window.__LoaderDialog.hide();
-    window.__Snackbar.show("Error getting skills");
-  }, window.__API_TIMEOUT);
-  window.__runDuiCallback(event);
-  }
-
-  getSkillsList=(stat)=>{
-
+    window.__LoaderDialog.hide();    
   }
 
   getDescription = () => {
@@ -291,27 +239,26 @@ class ProfileFragment extends View {
   }
   addSkills = ()=>{
     if(!JBridge.isNetworkAvailable()){
-      window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
-      return;
-    }       
+          window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
+          return;
+       }    
+    window.__LoaderDialog.show();
     var whatToSend = {
       "user_token" : window.__user_accessToken,
       "api_token" : window.__apiToken,
     }
     var event= { "tag": "API_GetSkillsList", contents: whatToSend };
-      setTimeout(() => {
-        if (window.__CustomPopUp.customPopUpVisibility=="visible") return;
-        window.__CustomPopUp.show();
-        window.__LoaderDialog.hide();        
-      }, window.__API_TIMEOUT);
-      window.__runDuiCallback(event);
-  }
+    setTimeout(() => {
+             if (window.__CustomPopUp.customPopUpVisibility=="visible") return;
+              window.__CustomPopUp.show();
+              window.__LoaderDialog.hide();        
+            }, window.__API_TIMEOUT);
+    }
 
   checkPrivacy = (name) => {
     var privateFlag=false;
     if(this.details.hasOwnProperty("profileVisibility") && this.details.profileVisibility[name] && this.details.profileVisibility[name]=='private')
        privateFlag=true;
-
     return privateFlag;
   }
 
@@ -428,6 +375,7 @@ class ProfileFragment extends View {
                       id = {window.__userToken}
                       editable = {this.isEditable}
                       onAddClicked={this.addSkills}
+                      data={this.details.skills}
                       privacyStatus={this.checkPrivacy("skills")}
                       handleLock = {this.handleLockClick}/>
                   </LinearLayout>
