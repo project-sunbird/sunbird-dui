@@ -270,9 +270,8 @@ class MainActivity extends View {
         if (isErr) {
         } else {
           try {
-            var data = JSON.parse(utils.decodeBase64(state.response.status[1]));
-            var data = utils.encodeBase64(JSON.stringify(state));
-            window.__PopulateSkillsList = data.result.skills;
+            console.log("skills ", responseData.data.result.skills);
+            window.__PopulateSkillsList = responseData.data.result.skills;
           } catch (e) {
             console.log("Exception : ", e);
           }
@@ -485,7 +484,7 @@ class MainActivity extends View {
         if(!JBridge.isNetworkAvailable()){
           window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
         }else{
-          this.getUserProfileData();          
+          this.getUserProfileData();
         }
       }
         if(window.__AnnouncementApiCalled==false){
