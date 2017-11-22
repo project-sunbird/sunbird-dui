@@ -1444,7 +1444,7 @@ privacyStatusApiCall = () => {
       //  && this.fb==this.prevData.fb
       //  && this.linkedin==this.prevData.linkedin
       //  && this.twitter==this.prevData.twitter
-       && (this.gender == this.prevData.gender || this.gender.toLowerCase() == this.prevData.gender.toLowerCase())
+      && (this.gender == this.prevData.gender || (this.gender && this.prevData.gender && this.gender.toLowerCase() == this.prevData.gender.toLowerCase()))
        && this.arrayEquals(this.grade,this.prevData.grade)
        && this.arrayEquals(this.selectedSubjects,this.prevData.selectedSubjects) ){
                return true;

@@ -253,6 +253,7 @@ class ProfileFragment extends View {
               window.__CustomPopUp.show();
               window.__LoaderDialog.hide();
             }, window.__API_TIMEOUT);
+        window.__runDuiCallback(event);
     }
 
   checkPrivacy = (name) => {

@@ -45,7 +45,7 @@ class CustomPopUp extends View{
 
   show = () => {
     this.customPopUpVisibility="visible";
-    this.dictionary=window.__PopulateSkillsList;
+    this.dictionary=window.__PopulateSkillsList||[];
     this.selectedSkills=[];
     this.dumyLayout=(
       <LinearLayout
@@ -251,6 +251,7 @@ class CustomPopUp extends View{
 
     var addDictionaryString=window.__S.ADD+"\"String\"";
     addDictionaryString = addDictionaryString.replace("String", data);
+    data = data.replace(/^[ ]+|[ ]+$/g,'')        
     this.predictlayout =(<LinearLayout
        height="match_parent"
        width="match_parent"
