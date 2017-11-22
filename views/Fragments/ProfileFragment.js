@@ -128,7 +128,7 @@ class ProfileFragment extends View {
       window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
       return ;
     }
-    window.__LoaderDialog.hide();    
+    window.__LoaderDialog.hide();
   }
 
   getDescription = () => {
@@ -241,7 +241,7 @@ class ProfileFragment extends View {
     if(!JBridge.isNetworkAvailable()){
           window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
           return;
-       }    
+       }
     window.__LoaderDialog.show();
     var whatToSend = {
       "user_token" : window.__user_accessToken,
@@ -251,7 +251,7 @@ class ProfileFragment extends View {
     setTimeout(() => {
              if (window.__CustomPopUp.customPopUpVisibility=="visible") return;
               window.__CustomPopUp.show();
-              window.__LoaderDialog.hide();        
+              window.__LoaderDialog.hide();
             }, window.__API_TIMEOUT);
     }
 
@@ -262,7 +262,7 @@ class ProfileFragment extends View {
     return privateFlag;
   }
 
-  handleLockClick = (name,locked) => {
+  handleLockClick = (name,locked,label) => {
 
     var whatToSend = {
       user_token : window.__user_accessToken,
@@ -281,9 +281,9 @@ class ProfileFragment extends View {
     if(JBridge.isNetworkAvailable())
     {
       if(locked)
-      window.__Snackbar.show("Showing "+name+" to all");
+    window.__Snackbar.show("Showing "+label+" to all");
       else {
-        window.__Snackbar.show("Hiding "+name+" from all");
+        window.__Snackbar.show("Hiding "+label+" from all");
       }
       window.__runDuiCallback(event);
     }

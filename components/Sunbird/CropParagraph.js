@@ -26,7 +26,7 @@ class CropParagraph extends View {
 
     this.max = false;
     this.lockIconVisibility=this.props.privacyStatus;
-    this.name="profileSummary";
+    this.name=this.props.headText==window.__S.DESCRIPTION?"profileSummary":"";
   }
 
   handleMoreClick = (data) => {
@@ -89,7 +89,7 @@ class CropParagraph extends View {
                     <ImageView
                     height="14"
                     width="14"
-                    onClick={()=>{this.props.handleLock(this.name,this.lockIconVisibility)}}
+                    onClick={()=>{this.props.handleLock(this.name,this.lockIconVisibility,this.props.headText)}}
                     id={this.idSet.lockIcon}
                     visibility={this.lockIconVisibility?"visible":"gone"}
                     imageUrl="ic_action_lock"/>
@@ -97,7 +97,7 @@ class CropParagraph extends View {
                     id={this.idSet.unlockIcon}
                     height="14"
                     width="14"
-                    onClick={()=>{this.props.handleLock(this.name,this.lockIconVisibility)}}
+                    onClick={()=>{this.props.handleLock(this.name,this.lockIconVisibility,this.props.headText)}}
                     visibility={this.lockIconVisibility?"gone":"visible"}
                     imageUrl="ic_action_unlock"/>
                   </RelativeLayout>
