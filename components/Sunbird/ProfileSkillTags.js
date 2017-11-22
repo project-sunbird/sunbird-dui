@@ -23,7 +23,7 @@ class ProfileSkillTags extends View {
     _this = this;
     this.isEditable = this.props.editable;
     this.data = this.props.data;
-
+    this.endorseSkillResponseCame = false; 
   }
 
 
@@ -168,6 +168,12 @@ class ProfileSkillTags extends View {
     "requestBody" : JSON.stringify(request)
   }
   var event= { "tag": "API_EndorseSkill1", contents: whatToSend };
+  setTimeout(() => {
+    if (this.endorseSkillResponseCame) return;
+    this.endorseSkillResponseCame = true;
+    window.__LoaderDialog.hide();
+    window.__Snackbar.show(window.__S.SKILL_COULD_NOT_BE_ENDORSED);
+  }, window.__API_TIMEOUT);
   window.__runDuiCallback(event);
 }
 
@@ -193,6 +199,7 @@ class ProfileSkillTags extends View {
 
 
   render() {
+    this.endorseSkillResponseCame = true;        
       this.layout = (
         <LinearLayout
                   width="wrap_content"
