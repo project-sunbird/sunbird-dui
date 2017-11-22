@@ -118,7 +118,7 @@ networkCheck =()=>{
 
       this.details = this.props.response.result.response;
       if ((!this.details.hasOwnProperty("name"))
-          || (this.details.sections==undefined && this.details.sections.length==0)) {
+          || (this.details.sections==undefined || this.details.sections.length==0)) {
             window.__ContentLoadingComponent.hideLoader();
             window.__LoaderDialog.hide();
         window.__Snackbar.show(window.__S.ERROR_FETCHING_DATA);

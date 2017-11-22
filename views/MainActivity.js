@@ -61,6 +61,8 @@ class MainActivity extends View {
 
     window.__API_Profile_Called = false;
     this.apiToken = window.__apiToken;
+    window.__PopulateSkillsList=[];
+    window.__AnnouncementApiData = [];    
     window.__BNavFlowRestart = this.setupDuiCallback;
     this.profAPIerrCount = 0;
   }
