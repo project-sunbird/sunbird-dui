@@ -90,10 +90,11 @@ class ProfileExperiences extends View {
   }
 
   getLineSeperator = () => {
-    var temp=this.props.hasOwnProperty("data")&&this.props.data!=undefined;
-    if(this.props.isEditable=="false"&&temp&&this.props.data.length==0){
-      temp=false;
-    }
+    var temp= true;
+    if((this.props.data==undefined)||(this.props.data.length==0&&this.isEditable=="false"))
+      {
+        temp = false;
+      }
     return (<LinearLayout
               width="match_parent"
               height="1"
