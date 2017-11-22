@@ -25,7 +25,7 @@ class ProfileAdditionalInfo extends View {
     this.languages = "";
     this.email = this.data.email ? this.data.email : "";
     this.phone = this.data.phone ? this.data.phone : "";
-    this.gender = this.data.gender ? this.data.gender : "";
+    this.gender = this.data.gender ? utils.firstLeterCapital(this.data.gender) : "";
     this.subjects = "";
     this.dob = this.data.dob ? this.data.dob : "";
     this.grade = "";
@@ -49,7 +49,7 @@ class ProfileAdditionalInfo extends View {
   }
     this.subject = utils.cropText(this.subject, this.maxLen);
 
-    if(this.data.hasOwnProperty("grade")&&this.data.grade.length>0){ 
+    if(this.data.hasOwnProperty("grade")&&this.data.grade.length>0){
     this.data.grade.map((item, i) => {
       var append = ",";
       if (i == this.data.grade.length - 1) append = "";

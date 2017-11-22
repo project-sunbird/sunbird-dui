@@ -73,7 +73,7 @@ class ProfileExperiences extends View {
                       <ImageView
                       height="14"
                       width="14"
-                      onClick={()=>{this.props.handleLock(this.name,this.lockIconVisibility)}}
+                      onClick={()=>{this.props.handleLock(this.name,this.lockIconVisibility,this.props.heading)}}
                       id={this.idSet.lockIcon}
                       visibility={this.lockIconVisibility?"visible":"gone"}
                       imageUrl="ic_action_lock"/>
@@ -81,7 +81,7 @@ class ProfileExperiences extends View {
                       id={this.idSet.unlockIcon}
                       height="14"
                       width="14"
-                      onClick={()=>{this.props.handleLock(this.name,this.lockIconVisibility)}}
+                      onClick={()=>{this.props.handleLock(this.name,this.lockIconVisibility,this.props.heading)}}
                       visibility={this.lockIconVisibility?"gone":"visible"}
                       imageUrl="ic_action_unlock"/>
                   </RelativeLayout>

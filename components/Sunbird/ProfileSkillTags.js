@@ -24,6 +24,7 @@ class ProfileSkillTags extends View {
     this.isEditable = this.props.editable;
     this.data = this.props.data;
     this.endorseSkillResponseCame = false; 
+    this.lockIconVisibility=this.props.privacyStatus;
   }
 
 
@@ -88,7 +89,7 @@ class ProfileSkillTags extends View {
     if(input.skillName==undefined){
         input.skillName="Not available";
       }
-      var temp = this.checkIfEndorsed(input.endorsersList);     
+      var temp = this.checkIfEndorsed(input.endorsersList);
     return (<LinearLayout
               width="match_parent"
               height="wrap_content"
