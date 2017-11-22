@@ -124,7 +124,7 @@ class ModuleDetailActivity extends View {
         var textToShow = "";
         if(data.status == "NOT_FOUND"){
           window.__ContentLoaderDialog.hide();
-          window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
+          window.__Snackbar.show(window.__S.ERROR_COLLECTION_IS_EMPTY);
           this.onBackPressed();
           return;
         }

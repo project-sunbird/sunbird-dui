@@ -273,7 +273,8 @@ const stringsRes = {
 		SKILL_ALREADY_ENDORSED : "Skill already endorsed",
 		ERROR_GETTING_SKILLS : "Error getting skills",
 		NO_SKILL_ADDED :"No skill to be added",
-		AVATAR : "Avatar"
+		AVATAR : "Avatar",
+		ERROR_COLLECTION_IS_EMPTY : "Collection is empty"		
 	},
 	"hi_IN" : {
 		ALREADY_HAVE_ACC : "मौजूदा उपयोगकर्ता, साइन इन करें",
