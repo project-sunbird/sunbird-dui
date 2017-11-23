@@ -335,6 +335,7 @@ class ProfileFragment extends View {
                 layoutTransition = "true">
 
                 <ProfileHeader
+                  editable = {this.isEditable}
                   data={this.details}
                   textStyle = {window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
                 <ProfileProgress

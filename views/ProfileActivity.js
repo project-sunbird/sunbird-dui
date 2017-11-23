@@ -215,7 +215,7 @@ class ProfileActivity extends View {
       else
         console.log("JBridge.searchContent failed, no internet");
     }
-    window.__LoaderDialog.hide();    
+    window.__LoaderDialog.hide();
   }
   getSkills=()=>{
      if(!JBridge.isNetworkAvailable()){
@@ -232,7 +232,7 @@ class ProfileActivity extends View {
   }
   var event= { "tag": "API_GetSkills1", contents: whatToSend };
   this.getSkillsResponseCame=false;
-    var event= { "tag": "API_GetSkills", contents: whatToSend }; 
+    var event= { "tag": "API_GetSkills", contents: whatToSend };
     setTimeout(() => {
       if (this.getSkillsResponseCame) return;
       this.getSkillsResponseCame = true;
@@ -305,14 +305,14 @@ class ProfileActivity extends View {
           console.log("Error API_EndorseSkill1, responseCode: ", res.responseCode);
         } else {
           setTimeout(() => {
-            window.__Snackbar.show(window.__S.SKILL_ENDORSED);          
-            this.getSkills();          
+            window.__Snackbar.show(window.__S.SKILL_ENDORSED);
+            this.getSkills();
           }, 1000);
         }
       default:
         break;
     }
-    window.__LoaderDialog.hide();        
+    window.__LoaderDialog.hide();
   }
 
   render() {
@@ -351,6 +351,7 @@ class ProfileActivity extends View {
                 orientation="vertical">
 
                 <ProfileHeader
+                  editable = {this.isEditable}
                   data={this.profileData}/>
 
                 <LinearLayout
