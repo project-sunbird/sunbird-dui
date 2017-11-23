@@ -51,7 +51,6 @@ class ProfileFragment extends View {
     this.popupMenu=window.__S.CHANGE_LANGUAGE + "," + window.__S.LOGOUT;
     // this.popupMenu=window.__S.LOGOUT;
     window.__LanguagePopup.props.buttonClick = this.handleChangeLang;
-    window.__ProfileFragmentHandleStateChange=this.handleStateChange;
 
     this.handleResponse();
     JBridge.logTabScreenEvent("PROFILE");
