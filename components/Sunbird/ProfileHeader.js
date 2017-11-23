@@ -123,7 +123,9 @@ class ProfileHeader extends View {
   }
 
   showProfileImagePopup = () => {
-    window.__ProfileImagePopUp.show(this.imageUrl);
+    if(this.isEditable){
+      window.__ProfileImagePopUp.show(this.imageUrl);
+    }
   }
 
   render() {
