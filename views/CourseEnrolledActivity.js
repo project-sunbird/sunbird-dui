@@ -101,6 +101,7 @@ class CourseEnrolledActivity extends View {
       JBridge.logCourseDetailScreenEvent(this.baseIdentifier)
     }
 
+    this.name = this.details.name;
 
     if(window.__enrolledCourses != undefined){
       window.__enrolledCourses.map((item)=>{
@@ -117,7 +118,7 @@ class CourseEnrolledActivity extends View {
     }
 
     this.data = {
-      courseName: this.details ? this.details.courseName : "",
+      courseName: (this.name && this.name != "") ? this.name : (this.details ? this.details.courseName : ""),
       courseDesc: this.details ? this.details.courseDesc : "",
       completedProgress: this.downloadProgress
     };
@@ -610,7 +611,7 @@ class CourseEnrolledActivity extends View {
           window.__Snackbar.show(window.__S.ERROR_NO_RESUME_CONTENT_AVAILABLE)
         else
           this.handleModuleClick(item.contentData.name,item)
-          
+
     } else window.__Snackbar.show(window.__S.ERROR_NO_RESUME_CONTENT_AVAILABLE)
   }
 
