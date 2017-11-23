@@ -724,6 +724,10 @@ class AdditionalInformationActivity extends View{
 
   showCalendar = () =>{
     var _this = this;
+    var today = new Date();    
+    var maxDate = (today.getFullYear()-18)+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var selectedDate = (this.dob!=undefined && this.dob!="")?this.dob:maxDate;     
+    var minDate = (today.getFullYear()-128)+'-'+(today.getMonth()+1)+'-'+today.getDate();
     var callback = callbackMapper.map(
       function (data){
 
@@ -737,11 +741,9 @@ class AdditionalInformationActivity extends View{
               });
               Android.runInUI(cmd, 0);
 
-              _this.updateSaveButtonStatus(_this.checkCompleteStatus());});
-              var today = new Date();
-              var date = (today.getFullYear()-18)+'-'+(today.getMonth()+1)+'-'+today.getDate();
-              console.log("current date ", date);
-      JBridge.showCalender(callback,"",date,date);
+      _this.updateSaveButtonStatus(_this.checkCompleteStatus());});
+      console.log("current date ", selectedDate);
+      JBridge.showCalender(callback,minDate,maxDate,selectedDate);
   }
 
   formatDate = (date) =>{

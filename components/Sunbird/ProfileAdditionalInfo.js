@@ -179,6 +179,7 @@ class ProfileAdditionalInfo extends View {
           width = "wrap_content"
           height = "wrap_content"
           padding = "10,5,0,10"
+          visibility = {this.visibility}
           onClick={this.handleEditProfileClick}>
           <ImageView
           width="18"
@@ -310,8 +311,7 @@ class ProfileAdditionalInfo extends View {
                 margin="0,0,0,0"
                 orientation="vertical"
                 id = {this.idSet.holder}
-                gravity = "center"
-                visibility = {this.visibility}>
+                gravity = "center">
 
                 {this.getLineSeperator()}
 
