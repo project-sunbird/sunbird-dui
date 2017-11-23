@@ -71,7 +71,8 @@ class AdditionalInformationActivity extends View{
       "twitterLI",
       "linkedinLI",
       "nameLI",
-      "lastNameLI"
+      "lastNameLI",
+      "webLinksLI"
     ]);
     this.shouldCacheScreen = false;
     this.state=state;
@@ -107,7 +108,8 @@ class AdditionalInformationActivity extends View{
       "gender" : "public",
       "profileSummary" : "public",
       "grade" : "public",
-      "subject" : "public"
+      "subject" : "public",
+      "webPages" : "public"
     }
     this.currentData.lockStatus= Object.assign({}, this.prevData.lockStatus);
     this.genderArray= "Select,Male,Female,Transgender";
@@ -605,9 +607,28 @@ class AdditionalInformationActivity extends View{
                               onItemChange={this.onMultiSelectGradeItemChange}/>
                         </LinearLayout>
                         {this.getEditTextView(this.idSet.locationText,window.__S.CURRENT_LOCATION,"",true,this.setLocation,undefined,true,this.idSet.locationLI,"location")}
-                        {/*{this.getEditTextView(this.idSet.fbText,window.__S.FACEBOOK,"",true,this.setFb,undefined,true,this.idSet.fbLI)}
-                        {this.getEditTextView(this.idSet.twitterText,window.__S.TWITTER,"",true,this.setTwitter,undefined,true,this.idSet.twitterLI)}
-                        {this.getEditTextView(this.idSet.linkedinText,window.__S.LINKEDIN,"",true,this.setLinkedin,undefined,true,this.idSet.linkedinLI)}*/}
+
+                      <LinearLayout
+                        height="wrap_content"
+                        width="match_parent"
+                        margin="4,0,0,6"
+                        orientation="horizontal">
+                            <TextView
+                            height="wrap_content"
+                            width="wrap_content"
+                            style={window.__TextStyle.textStyle.HINT.SEMI}
+                            text={window.__S.WEBLINKS}
+                            textAllCaps = "true"
+                            />
+                            <ViewWidget
+                            height="0"
+                            weight="1"
+                            />
+                            {this.getLockIcon(this.idSet.webLinksLI,true,"webPages",window.__S.WEBLINKS)}
+                      </LinearLayout>
+                      {this.getEditTextView(this.idSet.fbText,window.__S.FACEBOOK,"",true,this.setFb,undefined,false,this.idSet.fbLI)}
+                      {this.getEditTextView(this.idSet.twitterText,window.__S.TWITTER,"",true,this.setTwitter,undefined,false,this.idSet.twitterLI)}
+                      {this.getEditTextView(this.idSet.linkedinText,window.__S.LINKEDIN,"",true,this.setLinkedin,undefined,false,this.idSet.linkedinLI)}
 
                     </LinearLayout>
         </LinearLayout>
@@ -1279,34 +1300,33 @@ class AdditionalInformationActivity extends View{
       delete json.profileSummary;
 
 
-    if(this.fb != this.prevData.fb || this.twitter!= this.data.twitter || this.linkedin != this.prevData.linkedin){
-        json.webPages=this.data.webPages;
-        if(json.webPages==undefined)
-          json.webPages=[];
-        if(this.fb != this.prevData.fb)
-          { var obj={
-            "type":"fb",
-            "url": this.fb}
-            json.webPages.push(obj);
-          }
+      json.webPages=[];
 
-        if(this.twitter != this.prevData.twitter)
-          { var obj={
-            "type":"twitter",
-            "url": this.twitter}
-            json.webPages.push(obj);
-          }
+       if(this.fb!="")
+         {
+              var obj={
+               "type":"fb",
+               "url": this.fb}
+               json.webPages.push(obj);
+         }
 
-        if(this.linkedin != this.prevData.linkedin)
-          { var obj={
-            "type":"linkedin",
-            "url": this.linkedin}
-            json.webPages.push(obj);
-          }
 
-    }
-    else
-      delete json.webPages;
+       if(this.twitter!="")
+         {
+              var obj={
+               "type":"twitter",
+               "url": this.twitter}
+               json.webPages.push(obj);
+         }
+
+       if(this.linkedin!="")
+         {
+              var obj={
+               "type":"linkedin",
+               "url": this.linkedin}
+               json.webPages.push(obj);
+         }
+
 
       json.userId=window.__userToken;
 
@@ -1367,7 +1387,7 @@ class AdditionalInformationActivity extends View{
   }
 
 privacyStatusApiCall = () => {
-    var fields=["email","location","phone" ,"language","dob","gender","profileSummary","grade","subject"];
+    var fields=["email","location","phone" ,"language","dob","gender","profileSummary","grade","subject","webPages"];
     var publicArray=[];
     var privateArray=[];
 
@@ -1450,9 +1470,9 @@ privacyStatusApiCall = () => {
        && this.description == this.prevData.description
        && this.dob == this.prevData.dob
        && this.location == this.prevData.location
-      //  && this.fb==this.prevData.fb
-      //  && this.linkedin==this.prevData.linkedin
-      //  && this.twitter==this.prevData.twitter
+         && this.fb==this.prevData.fb
+         && this.linkedin==this.prevData.linkedin
+         && this.twitter==this.prevData.twitter
       && (this.gender == this.prevData.gender || (this.gender && this.prevData.gender && this.gender.toLowerCase() == this.prevData.gender.toLowerCase()))
        && this.arrayEquals(this.grade,this.prevData.grade)
        && this.arrayEquals(this.selectedSubjects,this.prevData.selectedSubjects) ){
