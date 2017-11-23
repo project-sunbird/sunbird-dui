@@ -141,11 +141,11 @@ class ProfileSkillTags extends View {
   }
   checkIfEndorsed=(endorsersList)=>{
     if(endorsersList!=undefined){
-    endorsersList.map((item,i)=>{
+    for(var i=0;i<endorsersList.length;i++){
       if(window.__userToken==endorsersList[i].userId){
-        return true;
+          return true;
       }
-    });
+    }
   }
     return false;
   }
