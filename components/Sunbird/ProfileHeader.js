@@ -123,7 +123,7 @@ class ProfileHeader extends View {
   }
 
   showProfileImagePopup = () => {
-    if(this.isEditable){
+    if(this.isEditable == "true"){
       window.__ProfileImagePopUp.show(this.imageUrl);
     }
   }
@@ -166,18 +166,6 @@ class ProfileHeader extends View {
               text={this.address}
               padding="0,0,0,8"
               style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>
-
-              <LinearLayout
-                orientation = "vertical"
-                height = "wrap_content"
-                width = "wrap_content"
-                background = "#FFD8D8D8"
-                cornerRadius = "4"
-                visibility = {(this.userName != "" && this.isEditable == "true") ? "visible" : "gone"}>
-                <TextView
-                  padding = "10, 2, 10, 2"
-                  text = {window.__S.USERNAME+  ": @" + this.userName} />
-              </LinearLayout>
               </LinearLayout>)
     return this.layout.render();
   }
