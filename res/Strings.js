@@ -263,6 +263,7 @@ const stringsRes = {
 		SELECT_STATE_TO_GET_STARTED : "Select state to get started",
 		MSG_ALREADY_IMPORTED : "Already Imported",
 		SCAN_QR_CODE : "Scan QR Code",
+		SCAN_QR_INSTRUCTION : "Point your phone at the QR Code to scan it",
 		ERROR_UPLOADING_IMG : "Error while uploading image",
 		CHANGE : "Change",
 		REMOVE : "Remove",
@@ -274,7 +275,7 @@ const stringsRes = {
 		ERROR_GETTING_SKILLS : "Error getting skills",
 		NO_SKILL_ADDED :"No skill to be added",
 		AVATAR : "Avatar",
-		ERROR_COLLECTION_IS_EMPTY : "Collection is empty"		
+		ERROR_COLLECTION_IS_EMPTY : "Collection is empty"
 	},
 	"hi_IN" : {
 		ALREADY_HAVE_ACC : "मौजूदा उपयोगकर्ता, साइन इन करें",

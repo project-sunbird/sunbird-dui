@@ -298,14 +298,22 @@ class QRActivity extends View {
         <LinearLayout
           width="match_parent"
           height="match_parent"
-          orientation="vertical">
+          orientation="vertical"
+          background="#F5F5F7">
           <SimpleToolbar
-             title="Scan QR Code"
+             title={window.__S.SCAN_QR_CODE}
              width="match_parent"
              showMenu="true"
              invert="true"
              menuData={this.menuData}
              onBackPress={this.onBackPressed}/>
+           <TextView
+             padding = "0, 16, 0, 8"
+             width = "match_parent"
+             height = "wrap_content"
+             gravity = "center"
+             text = {window.__S.SCAN_QR_INSTRUCTION}
+             textStyle = {window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
           <ImageView
             margin="0,0, 0,0"
             width="match_parent"
