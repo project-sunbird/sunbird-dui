@@ -439,7 +439,7 @@ class EducationActivity extends View {
         height="wrap_content"
         width="match_parent"
         hintText={optional ?window.__S.OPTIONAL : label}
-        labelText={label}
+        labelText={label.toUpperCase(label)}
         mandatory = {optional ? "false" : "true"}
         margin = "0,0,0,18"
         _onChange={onChange}
