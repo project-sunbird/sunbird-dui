@@ -249,7 +249,7 @@ class CustomPopUp extends View{
       return (this.getPredictionCard(item))
     });
 
-    var addDictionaryString=window.__S.ADD+"\"String\"";
+    var addDictionaryString=window.__S.ADD+" \"String\"";
     addDictionaryString = addDictionaryString.replace("String", data);
     data = data.replace(/^[ ]+|[ ]+$/g,'')        
     this.predictlayout =(<LinearLayout
