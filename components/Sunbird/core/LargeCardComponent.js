@@ -37,7 +37,7 @@ class ResourceViewAllCard extends View {
   }
 
  shortenText =(data) =>{
-   if(((data+"").length)>15)
+   if(((data+"").length)>17)
       {
 
         return ((data+"").substr(0,15)+"...");
@@ -63,6 +63,7 @@ class ResourceViewAllCard extends View {
                       height="wrap_content"
                       style={window.__TextStyle.textStyle.FILTER.REGULAR_BLACK}
                       enableEllipse="true"
+                      visibility={this.props.data.footerSubTitle==""?"gone":"visible"}
                       text={this.props.data.footerTitle}/>
 
                     <TextView

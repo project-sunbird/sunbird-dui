@@ -141,7 +141,7 @@ class ProfileSkillTags extends View {
   }
   checkIfEndorsed=(endorsersList)=>{
     if(endorsersList!=undefined){
-    for(var i=0;i<endorsersList.length;i++){
+    for(var i=0;i!=endorsersList.length;i++){
       if(window.__userToken==endorsersList[i].userId){
           return true;
       }

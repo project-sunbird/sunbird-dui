@@ -75,35 +75,23 @@ showList = () =>{
     var rows = data.map((item,i) => {
       console.log("item date",item.createdOn)
       if(item.contentType != "course"){
+            this.size = " [" + utils.formatBytes(item.size) + "]";
+            this.fileImageUrl = item.appIcon?item.appIcon:"ic_action_resource";
+            this.cType = item.contentType
+            this.name = item.name;
+            if(item.hasOwnProperty("lastPublishedOn")){
+            var d =  new Date(item.lastPublishedOn);
+            this.time = utils.prettifyDate(d);                     
+          }else if(item.hasOwnProperty("createdOn")){
+            var d =  new Date(item.createdOn);
+            this.time = utils.prettifyDate(d);
+          }
+          else{
+            this.time="";
+          }
 
-                if(item.hasOwnProperty("contentData")){
-
-                  var appIconExist = item.contentData.hasOwnProperty("appIcon");
-
-                  this.fileImageUrl = appIconExist?("file://"+item.basePath + "/" +item.contentData.appIcon):"ic_action_resource";
-                  this.size = item.hasOwnProperty("size") ? " ["+ utils.formatBytes(item.size)+"]" : "";
-                  this.cType = item.contentData.contentType;
-                  this.name = item.contentData.name;
-                  this.time = utils.prettifyDate(item.lastUpdatedTime);
-                }
-                else{
-                   this.size = " [" + utils.formatBytes(item.size) + "]";
-                   this.fileImageUrl = item.appIcon?item.appIcon:"ic_action_resource";
-                   this.cType = item.contentType
-                   this.name = item.name;
-                    if(item.hasOwnProperty("createdOn")){
-                     var d =  new Date(item.createdOn);
-
-                   }
-                   else{
-                    var d = new Date();
-                   }
-
-                  this.time = utils.prettifyDate(d);
-                  console.log(this.time)
-                }
-
-
+          this.time = utils.prettifyDate(d);
+          console.log(this.time)
 
                 var temp = {};
                 temp['imageUrl'] = this.fileImageUrl;
