@@ -18,13 +18,14 @@ class CustomPopUp extends View{
       "predictionLayout",
       "skillLayout",
       "cancelBtn",
-      "applyBtn"
+      "applyBtn",
+      "addSkillEditText"
     ]);
-    this.customPopUpVisibility="gone";    
+    this.customPopUpVisibility="gone";
     window.__CustomPopUp = this;
     this.dictionary=["train","tame","tackle","tounge","tickle","tram","taunt","taunting"]
     this.props=props;
-    this.canSave=true   
+    this.canSave=true
     this.selectedSkills=[];
     this.cancelBtnState = {
       text : window.__S.CANCEL,
@@ -44,23 +45,28 @@ class CustomPopUp extends View{
   }
 
   show = () => {
-    this.customPopUpVisibility="visible";
-    this.dictionary=window.__PopulateSkillsList||[];
+    this.dictionary=window.__PopulateSkillsList||[]
     this.selectedSkills=[];
+    
     this.dumyLayout=(
       <LinearLayout
       height="match_parent"
       width="match_parent"/>);
+
     this.replaceChild(this.idSet.skillLayout,this.dumyLayout.render(),0);
     this.updateSaveButtonStatus(false);
     this.setVisibility("visible");
+    var cmd = this.set({
+      id: this.idSet.addSkillEditText,
+      text: "",
+    });
+    Android.runInUI(cmd, 0);    
+    window.__LoaderDialog.hide();
   }
 
   hide = () => {
-    this.customPopUpVisibility="gone";
-    this.updateSaveButtonStatus(false);    
-    JBridge.hideKeyboard();    
     this.setVisibility("gone");
+    JBridge.hideKeyboard();
   }
 
   updateSaveButtonStatus = (enabled) => {
@@ -75,7 +81,7 @@ class CustomPopUp extends View{
     } else {
       alpha = "0.5";
       isClickable = "false";
-      this.canSave=false      
+      this.canSave=false
     }
 
     var cmd = this.set({
@@ -129,7 +135,14 @@ class CustomPopUp extends View{
      "requestBody" : JSON.stringify(request)
    }
    var event= { "tag": "API_EndorseSkill", contents: whatToSend };
-   window.__runDuiCallback(event); 
+   window.__CustomPopUp.endorseSkillListResponseCame=false;
+   setTimeout(() => {
+            if (window.__CustomPopUp.endorseSkillListResponseCame) return;
+            window.__CustomPopUp.endorseSkillListResponseCame=true;
+            window.__Snackbar.show(window.__S.TIME_OUT);
+            window.__BNavFlowRestart();
+           }, window.__API_TIMEOUT);
+   window.__runDuiCallback(event);
   }
 
   render(){
@@ -169,6 +182,7 @@ class CustomPopUp extends View{
               height="wrap_content"
               margin="16,0,16,0"
               width="match_parent"
+              id={this.idSet.addSkillEditText}
               hint={window.__S.TYPE_TO_ADD_A_SKILL}
               gravity="center_vertical"
               color="#000000"
@@ -250,8 +264,8 @@ class CustomPopUp extends View{
     });
 
     var addDictionaryString=window.__S.ADD+" \"String\"";
+    data = data.replace(/^[ ]+|[ ]+$/g,'')
     addDictionaryString = addDictionaryString.replace("String", data);
-    data = data.replace(/^[ ]+|[ ]+$/g,'')        
     this.predictlayout =(<LinearLayout
        height="match_parent"
        width="match_parent"
@@ -331,9 +345,9 @@ class CustomPopUp extends View{
 
    }
    if(this.selectedSkills.length>0){
-    this.updateSaveButtonStatus(true);        
+    this.updateSaveButtonStatus(true);
    }else{
-    this.updateSaveButtonStatus(false);        
+    this.updateSaveButtonStatus(false);
    }
   }
 
@@ -410,9 +424,9 @@ class CustomPopUp extends View{
 
     }
     if(this.selectedSkills.length>0){
-      this.updateSaveButtonStatus(true);        
+      this.updateSaveButtonStatus(true);
      }else{
-      this.updateSaveButtonStatus(false);        
+      this.updateSaveButtonStatus(false);
      }
   }
 }
