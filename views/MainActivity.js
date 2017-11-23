@@ -220,7 +220,7 @@ class MainActivity extends View {
         if (isErr) {
         } else {
           console.log("responseFor API_Tenant", responseData);
-          JBridge.setInSharedPrefs("logo_url", responseData.result.logo);
+          JBridge.setInSharedPrefs("logo_url", responseData.result.appLogo);
           JBridge.setInSharedPrefs("orgName", window.__orgName);
         }
         break;
