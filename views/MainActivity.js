@@ -62,7 +62,7 @@ class MainActivity extends View {
     window.__API_Profile_Called = false;
     this.apiToken = window.__apiToken;
     window.__PopulateSkillsList=[];
-    window.__AnnouncementApiData = [];    
+    window.__AnnouncementApiData = [];
     window.__BNavFlowRestart = this.setupDuiCallback;
     this.profAPIerrCount = 0;
   }
@@ -338,6 +338,18 @@ class MainActivity extends View {
       console.log("GOT SAME DATA, not modifying");
     }
   };
+
+  handleProfileFragAPIResErr = () => {
+    this.profAPIerrCount++;
+    console.log("this.profAPIerrCount", this.profAPIerrCount);
+    if (JBridge.getSavedData(this.profileDataTag) != "__failed"){
+      var data = JSON.parse(utils.decodeBase64(JBridge.getSavedData(this.profileDataTag)));
+      data.local = true;
+      this.handleStateChange(data)
+    } else {
+      window.__LoaderDialog.hide();
+    }
+  }
 
   logCorrelationPageEvent = page => {
     if (this.responseData.hasOwnProperty("params") && this.responseData.hasOwnProperty("id"))
