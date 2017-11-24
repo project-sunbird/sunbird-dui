@@ -166,7 +166,7 @@ class AdditionalInformationActivity extends View{
         {
           _this.twitter=data.url;
         }
-        else if(data.type=="linkedin")
+        else if(data.type=="in")
         {
           _this.linkedin=data.url;
         }
@@ -1315,7 +1315,7 @@ class AdditionalInformationActivity extends View{
        if(this.linkedin!="")
          {
               var obj={
-               "type":"linkedin",
+               "type":"in",
                "url": this.linkedin}
                json.webPages.push(obj);
          }
