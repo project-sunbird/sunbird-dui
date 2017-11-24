@@ -262,6 +262,7 @@ class ExperienceActivity extends View{
                <TextView
                 height="wrap_content"
                 width="wrap_content"
+                textAllCaps="true"
                 text={window.__S.FROM}
                 textStyle={window.__TextStyle.textStyle.HINT.SEMI}
                 margin="0,0,0,10"/>
@@ -299,6 +300,7 @@ class ExperienceActivity extends View{
                <TextView
                 height="wrap_content"
                 width="wrap_content"
+                textAllCaps="true"
                 text={window.__S.TO}
                 textStyle={window.__TextStyle.textStyle.HINT.SEMI}
                 margin="0,0,0,10"/>
@@ -394,6 +396,7 @@ class ExperienceActivity extends View{
        <TextView
         height="wrap_content"
         width="wrap_content"
+        textAllCaps="true"
         text={window.__S.SUBJECTS}
         textStyle={window.__TextStyle.textStyle.HINT.SEMI}
         margin="0,0,0,8"
@@ -469,7 +472,7 @@ class ExperienceActivity extends View{
         height="wrap_content"
         width="match_parent"
         hintText={optional ?window.__S.OPTIONAL : label}
-        labelText={label}
+        labelText={label.toUpperCase(label)}
         mandatory = {optional ? "false" : "true"}
         margin = "0,0,0,18"
         _onChange={onChange}

@@ -269,6 +269,7 @@ class AdditionalInformationActivity extends View{
           <TextView
            width="match_parent"
            height="wrap_content"
+           textAllCaps="true"
            style={window.__TextStyle.textStyle.HINT.SEMI}
            text={window.__S.GRADE}
            margin="0,0,0,8"
@@ -299,6 +300,7 @@ class AdditionalInformationActivity extends View{
           <TextView
            width="match_parent"
            height="20"
+           textAllCaps="true"
            style={window.__TextStyle.textStyle.HINT.SEMI}
            text={window.__S.SUBJECTS}
            margin="0,0,0,8"
@@ -396,7 +398,7 @@ class AdditionalInformationActivity extends View{
         height="wrap_content"
         width="match_parent"
         hintText={hint + (optional ? " (Optional)" : "")}
-        labelText={label}
+        labelText={label.toUpperCase(label)}
         mandatory = {optional ? "false" : "true"}
         margin = "0,0,0,18"
         editTextPadding="4,4,41,10"
@@ -444,6 +446,7 @@ class AdditionalInformationActivity extends View{
           height="wrap_content"
           style={window.__TextStyle.textStyle.HINT.SEMI}
           text={label}
+          textAllCaps="true"
           margin="0,0,0,8"
           padding="4,0,0,4"/>);
 
@@ -457,6 +460,7 @@ class AdditionalInformationActivity extends View{
        <TextView
         width="match_parent"
         height="wrap_content"
+        textAllCaps="true"
         style={window.__TextStyle.textStyle.HINT.SEMI}
         text={label}/>
        <TextView
@@ -500,6 +504,7 @@ class AdditionalInformationActivity extends View{
                          <TextView
                           width="match_parent"
                           height="wrap_content"
+                          textAllCaps="true"
                           style={window.__TextStyle.textStyle.HINT.SEMI}
                           text={window.__S.EMAIL_ID}/>
                           <LinearLayout
@@ -529,6 +534,7 @@ class AdditionalInformationActivity extends View{
                             width="match_parent"
                             height="20"
                             style={window.__TextStyle.textStyle.HINT.SEMI}
+                            textAllCaps="true"
                             text={window.__S.SUBJECTS}
                             margin="0,0,0,8"
                             padding ="4,0,4,0"/>
@@ -550,6 +556,7 @@ class AdditionalInformationActivity extends View{
                          <TextView
                           width="match_parent"
                           height="wrap_content"
+                          textAllCaps="true"
                           style={window.__TextStyle.textStyle.HINT.SEMI}
                           text={window.__S.DATE_OF_BIRTH}/>
                           <LinearLayout
