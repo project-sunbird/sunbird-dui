@@ -47,14 +47,16 @@ class SplashScreenActivity extends View {
   }
 
   getUserToken = ()=>{
-    console.log("in user token")
+    console.log("in user token");
+    window.__apiToken = JBridge.getFromSharedPrefs("api_token");
     var callback = callbackMapper.map(function(token){
       console.log("user token",token[0]);
       window.__apiToken = token[0];
+      JBridge.setInSharedPrefs("api_token", token[0]);
     });
 
-    JBridge.getApiToken(callback);
-
+    if (window.__apiToken == "__failed")
+      JBridge.getApiToken(callback);
 
   }
 
