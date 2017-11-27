@@ -150,6 +150,7 @@ exports.processResponse = (state) => {
 			if (window.__apiTokenExpireCount < 2){
 				var callback  = callbackMapper.map(function(token){
 					window.__apiToken = token;
+					JBridge.setInSharedPrefs("api_token", token);
 					window.__apiTokenExpireCount--;
 					var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken}
 					var event = { "tag": state.responseFor, contents: whatToSend };
