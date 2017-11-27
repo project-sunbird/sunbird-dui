@@ -32,8 +32,8 @@ instance encodeInitScreenAction :: Encode InitScreenAction where encode = defaul
 
 data SplashScreenActivity = SplashScreenActivity
 data SplashScreenActivityAction = DummyUserActivityAction  |
-  BACK_SplashScreenActivity 
-  
+  BACK_SplashScreenActivity
+
 instance splashScreenActivity :: UIScreen SplashScreenActivity SplashScreenActivityAction where
   generateMockEvents _ = [DummyUserActivityAction , BACK_SplashScreenActivity ]
   ui x = genericUI x (generateMockEvents x :: Array SplashScreenActivityAction)
@@ -71,7 +71,9 @@ data UserActivityAction = OPEN_MainActivity |
   OPEN_Deeplink_ResourceDetail {resource :: String} |
   OPEN_Deeplink_CourseEnrolled {course::String}|
   OPEN_DeepLink_CourseInfo {course::String}|
-  OPEN_DeepLink_ContentPreview{details::String} |
+  OPEN_DeepLink_ContentPreview {details::String} |
+  OPEN_Notif_AnnouncementDetail {announcementID::String} |
+  OPEN_Notif_AnnouncementList |
   API_LogIn {userName::String, userPass::String} |
   API_SignUp {request::String, api_token::String} |
   API_EnrolledCourses {user_token::String, api_token::String} |

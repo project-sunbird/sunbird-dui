@@ -220,7 +220,9 @@ const runDuiCallback = (state) => {
 const logoutUser = () => {
   if (JBridge.isNetworkAvailable()){
     JBridge.logLogoutSuccess(window.__userToken);
-    window.__Snackbar.show("Logged out")
+    window.__Snackbar.show("Logged out");
+    JBridge.unregisterFCM();
+    JBridge.setInSharedPrefs("intentNotification", "__failed");
     JBridge.setInSharedPrefs("logged_in","NO");
     JBridge.setInSharedPrefs("user_id", "__failed");
     JBridge.setInSharedPrefs("user_name",  "__failed");

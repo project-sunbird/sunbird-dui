@@ -17,7 +17,7 @@ import DOM.HTML.HTMLElement (offsetHeight)
 import Data.Foreign.Generic (encodeJSON)
 import Fragments.CommunityFragment (communityFragment)
 import Fragments.CourseFragment (courseFragment)
-import Fragments.HomeFragment (homeFragment)
+import Fragments.HomeFragment (homeFragment, announcementViewAllActivity, announcementDetailActivity)
 import Fragments.ProfileFragment (profileFragment)
 import Fragments.ResourceFragment (resourceFragment)
 
@@ -38,13 +38,13 @@ welcomeScreenActivity = do
     case event of
         OPEN_StateSelectActivity -> stateSelectActivity
         _ -> welcomeScreenActivity
-        
+
 stateSelectActivity = do
     event <- ui $ StateSelectActivity
     case event of
         OPEN_UserActivityFromStateSelection -> userActivity "StateSelectActivity"
         BACK_StateSelectActivity -> welcomeScreenActivity
-        _ -> stateSelectActivity 
+        _ -> stateSelectActivity
 
 userActivity input = do
     event <- ui $ UserActivity {whereFrom:input}
@@ -66,7 +66,8 @@ userActivity input = do
         OPEN_Deeplink_CourseEnrolled {course:details} -> enrolledCourseActivity details "Deeplink" details
         OPEN_DeepLink_CourseInfo {course:details} -> courseInfoActivity details "Deeplink" details
         OPEN_DeepLink_ContentPreview {details:details} -> contentPreviewActivity details "Deeplink" details
-
+        OPEN_Notif_AnnouncementDetail {announcementID:id} -> announcementDetailActivity id "Notif" id
+        OPEN_Notif_AnnouncementList -> announcementViewAllActivity "{}" "Notif" "{}"
         _ -> pure $ "UserActivity"
 
 contentPreviewActivity input whereFrom whatToSendBack = do

@@ -32,6 +32,9 @@ class AnnouncementDetailActivity extends View{
                   "updateInfo"]);
     console.log(state);
     this.data = JSON.parse(state.data.value0.announcementData);
+    if (this.data.hasOwnProperty("announcementID")) {
+      //coming in from notification
+    }
     console.log("Info State", this.data);
     this.screenName = "AnnouncementViewAllActivity";
     this.shouldCacheScreen = false;

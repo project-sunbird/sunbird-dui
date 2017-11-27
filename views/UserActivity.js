@@ -207,7 +207,7 @@ class UserActivity extends View {
     console.log("GOT LOGIN RESPONSE ",response)
 
     window.__LoaderDialog.hide()
-    
+
     if(!this.enableLoginCallback){
       return;
     }
@@ -254,17 +254,11 @@ class UserActivity extends View {
       console.log("login patch call", data);
     }
     JBridge.patchApi(window.__loginUrl + "/api/user/v1/update/logintime", JSON.stringify(body), window.__user_accessToken, window.__apiToken);
-    this.setLoginPreferences();  
+    this.setLoginPreferences();
     var whatToSend = []
     var event = { tag: "OPEN_MainActivity", contents: whatToSend };
     window.__runDuiCallback(event);
   }
-
-
-
-
-
-
 
   onBackPressed = () => {
     this.backPressCount++;
@@ -424,6 +418,35 @@ class UserActivity extends View {
     });
     Android.runInUI(cmd, 0);
 
+  }
+
+  handleNotificationAction = () => {
+    var notifData = JBridge.getFromSharedPrefs("intentNotification");
+    if (notifData != "__failed") {
+      notifData = JSON.parse(utils.decodeBase64(notifData));
+      console.log("notifData ", notifData);
+      JBridge.setInSharedPrefs("intentNotification", "__failed");
+      switch (JBridge.getFromSharedPrefs("screenToOpen")) {
+        case "ANNOUNCEMENT_DETAIL":
+          var data = {
+            announcementID: notifData.actiondata.announcementId
+          }
+          var whatToSend = { announcementID: JSON.stringify(data) }
+          var event = { tag: "OPEN_Notif_AnnouncementDetail", contents: whatToSend };
+          break;
+        case "ANNOUNCEMENT_LIST":
+          var event = { tag: "OPEN_Notif_AnnouncementList", contents: [] };
+          break;
+        case "DO_NOTHING":
+        default:
+          var whatToSend = []
+          var event = { tag: "OPEN_MainActivity", contents: whatToSend };
+          break;
+      }
+    } else {
+      var event = { tag: "OPEN_MainActivity", contents: [] };
+    }
+    window.__runDuiCallback(event);
   }
 
   handleSignUpClick = () => {
@@ -802,6 +825,7 @@ class UserActivity extends View {
     window.__refreshToken = JBridge.getFromSharedPrefs("refresh_token");
     window.__user_accessToken = JBridge.getFromSharedPrefs("user_access_token");
     JBridge.setProfile(window.__userToken);
+    JBridge.registerFCM();
   }
 
   clearDeeplinkPreferences = () =>{
@@ -848,7 +872,10 @@ class UserActivity extends View {
     console.log("SHARED PREFERENCES FOR link",JBridge.getFromSharedPrefs("intentLinkPath"));
     console.log("SHARED PREFERENCES FOR file",JBridge.getFromSharedPrefs("intentFilePath"));
 
-
+    if ("__failed" != JBridge.getFromSharedPrefs("intentNotification")){
+      console.log("Assuming user has logged in, notification data: ", JBridge.getFromSharedPrefs("intentNotification"));
+      this.handleNotificationAction();
+    } else
 //from link
       if(("__failed" != JBridge.getFromSharedPrefs("intentFilePath"))||("__failed" != JBridge.getFromSharedPrefs("intentLinkPath"))){
 
