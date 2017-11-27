@@ -5,6 +5,7 @@ const stringsRes = {
 		APPLY_FILTER : "APPLY FILTER",
 		AS_FILE : "As File",
 		AS_LINK : "As Link",
+		BLOG : "Blog",
 		BACK_TO_EXIT : "Tap back again to exit app",
 		CANCEL_DOWNLOAD : "CANCEL DOWNLOAD",
 		COMING_SOON : "Coming soon..",

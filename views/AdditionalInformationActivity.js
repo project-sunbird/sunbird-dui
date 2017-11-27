@@ -58,6 +58,7 @@ class AdditionalInformationActivity extends View{
       "fbText",
       "twitterText",
       "linkedinText",
+      "blogText",
       "languageLI",
       "emailLI",
       "phoneLI",
@@ -70,6 +71,7 @@ class AdditionalInformationActivity extends View{
       "fbLI",
       "twitterLI",
       "linkedinLI",
+      "blogLI",
       "nameLI",
       "lastNameLI",
       "webLinksLI"
@@ -94,6 +96,7 @@ class AdditionalInformationActivity extends View{
     this.fb=null;
     this.twitter=null;
     this.linkedin=null;
+    this.blog=null;
     this.responseCame=false;
 
     this.prevData={};
@@ -170,6 +173,9 @@ class AdditionalInformationActivity extends View{
         {
           _this.linkedin=data.url;
         }
+        else if (data.type=="blog") {
+        _this.blog=data.url;
+        }
       })
     }
     this.grade=this.data.grade!=null ? this.data.grade.slice():null;
@@ -187,6 +193,7 @@ class AdditionalInformationActivity extends View{
     this.prevData.description=this.data.profileSummary;
     this.prevData.fb=this.fb;
     this.prevData.linkedin=this.linkedin;
+    this.prevData.blog=this.blog;
     this.prevData.twitter=this.twitter;
     this.prevData.grade = this.data.grade!=null ? this.data.grade.slice():null;
     this.prevData.selectedSubjects = this.data.subject!=null ? this.data.subject.slice():null;
@@ -245,6 +252,11 @@ class AdditionalInformationActivity extends View{
       id: this.idSet.linkedinText,
       text: this.linkedin
     })
+
+    cmd += this.set({
+    id: this.idSet.blogText,
+    text: this.blog
+  })
 
     Android.runInUI(cmd, 0);
 
@@ -629,6 +641,7 @@ class AdditionalInformationActivity extends View{
                       {this.getEditTextView(this.idSet.fbText,window.__S.FACEBOOK,"",true,this.setFb,undefined,false,this.idSet.fbLI)}
                       {this.getEditTextView(this.idSet.twitterText,window.__S.TWITTER,"",true,this.setTwitter,undefined,false,this.idSet.twitterLI)}
                       {this.getEditTextView(this.idSet.linkedinText,window.__S.LINKEDIN,"",true,this.setLinkedin,undefined,false,this.idSet.linkedinLI)}
+                      {this.getEditTextView(this.idSet.blogText,window.__S.BLOG,"",true,this.setBlog,undefined,false,this.idSet.blogLI)}
 
                     </LinearLayout>
         </LinearLayout>
@@ -752,9 +765,9 @@ class AdditionalInformationActivity extends View{
 
   showCalendar = () =>{
     var _this = this;
-    var today = new Date();    
+    var today = new Date();
     var maxDate = (today.getFullYear()-18)+'-'+(today.getMonth()+1)+'-'+today.getDate();
-    var selectedDate = (this.dob!=undefined && this.dob!="")?this.dob:maxDate;     
+    var selectedDate = (this.dob!=undefined && this.dob!="")?this.dob:maxDate;
     var minDate = (today.getFullYear()-128)+'-'+(today.getMonth()+1)+'-'+today.getDate();
     var callback = callbackMapper.map(
       function (data){
@@ -1328,6 +1341,15 @@ class AdditionalInformationActivity extends View{
          }
 
 
+        if(this.blog!="")
+        {
+          var obj={
+           "type":"blog",
+           "url": this.blog}
+           json.webPages.push(obj);
+        }
+
+
       json.userId=window.__userToken;
 
    var url=window.__apiUrl + "/api/user/v1/update"
@@ -1473,6 +1495,7 @@ privacyStatusApiCall = () => {
          && this.fb==this.prevData.fb
          && this.linkedin==this.prevData.linkedin
          && this.twitter==this.prevData.twitter
+         && this.blog == this.prevData.blog
       && (this.gender == this.prevData.gender || (this.gender && this.prevData.gender && this.gender.toLowerCase() == this.prevData.gender.toLowerCase()))
        && this.arrayEquals(this.grade,this.prevData.grade)
        && this.arrayEquals(this.selectedSubjects,this.prevData.selectedSubjects) ){
@@ -1564,5 +1587,11 @@ privacyStatusApiCall = () => {
     this.linkedin=data;
     this.updateSaveButtonStatus(this.checkCompleteStatus());
   }
+
+
+  setBlog= (data)=>{
+   this.blog=data;
+   this.updateSaveButtonStatus(this.checkCompleteStatus());
+ }
 }
 module.exports = Connector(AdditionalInformationActivity);
