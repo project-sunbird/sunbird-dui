@@ -43,11 +43,12 @@ class HomeFragment extends View {
     window.setEnrolledCourses = this.setEnrolledCourses;
     this.profileData="";
     this.profileUpdateCardVisibility="gone";
+    this.announcementsDataTag = "savedAnnouncemtens";
+
   }
 
   setEnrolledCourses = (list) => {
     this.enrolledCourses = list;
-
     window.__UpdateUserCourses(this.enrolledCourses);
   }
 
@@ -253,7 +254,9 @@ class HomeFragment extends View {
     var viewAllVisibility="gone";
     var cards = <LinearLayout/>
     var card1=(<LinearLayout/>),card2=(<LinearLayout/>);
-    if(window.__AnnouncementApiData==undefined||window.__AnnouncementApiData.length==0)
+    var announcementApiData = JBridge.getSavedData(this.announcementsDataTag);
+    announcementApiData = announcementApiData=="__failed" ? "__failed":JSON.parse(utils.decodeBase64(announcementApiData));
+    if(announcementApiData=="__failed" || announcementApiData.length==0)
       {
         cards= (<LinearLayout
                     width="match_parent"
@@ -268,18 +271,18 @@ class HomeFragment extends View {
           );
       }else{
         viewAllVisibility="visible";
-        if(window.__AnnouncementApiData.length>0){
+        if(announcementApiData.length>0){
           card1 = (
           <AnnouncementCard
-            params={window.__AnnouncementApiData[0]}
-            onClick={()=>this.handleAnnouncementClick(window.__AnnouncementApiData[0])}/>
+            params={announcementApiData[0]}
+            onClick={()=>this.handleAnnouncementClick(announcementApiData[0].id)}/>
           );
         }
-        if(window.__AnnouncementApiData.length>1){
+        if(announcementApiData.length>1){
           card2 = (
             <AnnouncementCard
-            params={window.__AnnouncementApiData[1]}
-            onClick={()=>this.handleAnnouncementClick(window.__AnnouncementApiData[1])}/>
+            params={announcementApiData[1]}
+            onClick={()=>this.handleAnnouncementClick(announcementApiData[1].id)}/>
             );
         }
         cards = (
@@ -314,16 +317,16 @@ class HomeFragment extends View {
                     gravity="right"
                     padding="5,0,15,0"
                     visibility={viewAllVisibility}
-                    onClick={()=>this.handleAnnouncementViewAllClick(window.__AnnouncementApiData)}
+                    onClick={()=>this.handleAnnouncementViewAllClick()}
                     text={window.__S.VIEW_ALL}
                     style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
                 </LinearLayout>
                 {cards}
               </LinearLayout>);
  }
- handleAnnouncementViewAllClick= (data1) =>{
+ handleAnnouncementViewAllClick= () =>{
    var data = {
-     "details" : data1
+     "details" : {}
    }
 
 var whatToSend ={ "announcementDetails": JSON.stringify(data)}
@@ -412,8 +415,8 @@ var whatToSend ={ "announcementDetails": JSON.stringify(data)}
       whatToSend = { "profile": "" }
       event = { tag: 'OPEN_ExperienceActivity', contents: whatToSend }
       break;
-      case "avatar" : window.__ProfileImagePopUp.show(); 
-      return;     
+      case "avatar" : window.__ProfileImagePopUp.show();
+      return;
       default :
       whatToSend = { "profile" : JSON.stringify(this.profileData.result.response)}
       event ={ tag: "OPEN_EditProfileActivity", contents: whatToSend }

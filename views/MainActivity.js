@@ -84,7 +84,6 @@ class MainActivity extends View {
     }
 
     this.backPressCount = 0;
-    window.__Check = 0;
     window.__BNavFlowRestart();
   }
 
@@ -105,8 +104,8 @@ class MainActivity extends View {
       this.handleStateChange(data);
     } else {
       console.log("__failed in getUserProfileData");
+      window.__LoaderDialog.hide();
     }
-    window.__LoaderDialog.hide();    
   }
 
   getAnnouncemetData = () => {
@@ -241,13 +240,14 @@ class MainActivity extends View {
           return;
         }
         break;
-      case "API_GetAnnouncementData":    
+      case "API_GetAnnouncementData":
+        window.__AnnouncementApiCalled = false;
         window.__AnnouncementApiData = [];
         if (isErr) {
           if (JBridge.getSavedData(this.announcementsDataTag) != "__failed") {
             var data = JSON.parse(utils.decodeBase64(JBridge.getSavedData(this.announcementsDataTag)));
             data = JSON.parse(utils.decodeBase64(state.response.status[1]));
-            window.__AnnouncementApiData = data.result.announcements;
+          //  window.__AnnouncementApiData = data.result.announcements;
           }
         } else {
           try {
@@ -493,34 +493,35 @@ class MainActivity extends View {
     var whatToSend;
     if (this.currentPageIndex != 0) {
       window.__Check = 0;
+      window.__AnnouncementApiCalled=false;
     }
     switch (this.currentPageIndex) {
       case 0:
+      if (window.__Check == 0) {
+        if(!JBridge.isNetworkAvailable()){
+          window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
+        }else{
+          this.getUserProfileData();
+        }
+      }
         if(window.__AnnouncementApiCalled==false){
-        if(JBridge.isNetworkAvailable()){
-          this.getAnnouncemetData();
-        }            
-        else{
-          if (JBridge.getSavedData(this.announcementsDataTag) != "__failed"){
-            try{
-            var data = JSON.parse(utils.decodeBase64(JBridge.getSavedData(this.profileDataTag)));
-            data = JSON.parse(utils.decodeBase64(state.response.status[1]));
-            window.__AnnouncementApiData=data.result.announcements;
-            }catch(e){
-              console.log("Error in getting saved data :",e);
+          if(JBridge.isNetworkAvailable())
+            this.getAnnouncemetData();
+          else{
+            if (JBridge.getSavedData(this.announcementsDataTag) != "__failed"){
+              try{
+              var data = JSON.parse(utils.decodeBase64(JBridge.getSavedData(this.profileDataTag)));
+              data = JSON.parse(utils.decodeBase64(state.response.status[1]));
+              window.__AnnouncementApiData=data.result.announcements;
+              }catch(e){
+                console.log("Error in getting saved data :",e);
+              }
             }
           }
         }
-      }
-      if (window.__Check == 0) {
-        window.__Check = 1;
-        this.getUserProfileData();
-        if(!JBridge.isNetworkAvailable()){
-          window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
-        }
-      }
         whatToSend = [];
         event = {tag: "OPEN_HomeFragment", contents: whatToSend};
+        window.__Check = 1;
         break;
       case 1:
         if (!JBridge.isNetworkAvailable()) {

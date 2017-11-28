@@ -24,11 +24,11 @@ class AnnouncementViewAllActivity extends View {
       this.setIds([
           "announcementListContainer",
       ]);
-      this.details=JSON.parse(state.data.value0.announcementDetails);
+      this.details=JSON.parse(utils.decodeBase64(JBridge.getSavedData("savedAnnouncemtens")));
       console.log("AnnouncementViewAllActivity -->:",this.details);
       this.screenName = "AnnouncementViewAllActivity";
       this.shouldCacheScreen = false;
-      _this = this  
+      _this = this
     }
     getToolbar  = () =>{
         return( <LinearLayout
@@ -79,7 +79,7 @@ class AnnouncementViewAllActivity extends View {
             var card = (
               <AnnouncementCard
                params={item}
-               onClick={()=>{this.handleAnnouncementClick(item)}}
+               onClick={()=>{this.handleAnnouncementClick(item.id)}}
                />
             )
             this.jsonArray.push({ view: this.getView(card.render()),value:"",viewType:0});
@@ -97,11 +97,11 @@ class AnnouncementViewAllActivity extends View {
           console.log("end of showlist");
     }
     handleAnnouncementClick = (item) => {
-        
+
         var whatToSend = { "announcementData" : JSON.stringify(item)}
         var event ={ tag: "OPEN_AnnouncementDetailActivityFromViewAll", contents: whatToSend }
         window.__runDuiCallback(event);
-    
+
       }
     afterRender(){
         console.log("AnnouncementViewAllActivity after render");
@@ -124,5 +124,3 @@ class AnnouncementViewAllActivity extends View {
     }
 }
 module.exports = Connector(AnnouncementViewAllActivity);
-
-  
