@@ -13,17 +13,36 @@ var objectAssign = require('object-assign');
 window.R = require("ramda");
 
 class SplashScreenActivity extends View {
+
+  icon;
+  textToDisplay;
+
   constructor(props, children, state) {
+
     super(props, children, state);
-    this.state = state;
-    this.screenName = "SplashScreenActivity"
-    window.__apiToken = ""
     window.__Check = 0;
-    this.getUserToken()
+    this.getUserToken();
+    this.getApiUrl();
+    this.getIcon();
+    this.getTextToDisplay();
     window.__pressedLoggedOut=false;
 
-    this.icon = JBridge.getFromSharedPrefs("logo_url") == "__failed" ? "ic_launcher" : JBridge.getFromSharedPrefs("logo_url");
+  }
 
+  getTextToDisplay = () => {
+      var textToDisplay = JBridge.getFromSharedPrefs("orgName");
+      if (textToDisplay == "__failed" || textToDisplay == ""){
+          textToDisplay = JBridge.getAppName();
+      }
+      this.textToDisplay = textToDisplay;
+  }
+
+  getIcon = () => {
+    var icon = JBridge.getFromSharedPrefs("logo_url");
+    if (icon  == "__failed" || icon == "") {
+      icon = "ic_launcher";
+    }
+    this.icon = icon;
   }
 
   onPop = () => {
@@ -34,54 +53,33 @@ class SplashScreenActivity extends View {
   }
 
   getApiUrl = ()=>{
-
     var Url = JBridge.getApiUrl();
-
     window.__loginUrl = "https://"+Url;
-
     window.__apiUrl = "https://"+Url
-
     window.__deepLinkUrl = Url;
-
-
   }
 
   getUserToken = ()=>{
-    console.log("in user token", JBridge.getFromSharedPrefs("api_token"));
     window.__apiToken = JBridge.getFromSharedPrefs("api_token");
-    var callback = callbackMapper.map(function(token){
-      console.log("user token",token[0]);
-      window.__apiToken = token[0];
-      JBridge.setInSharedPrefs("api_token", token[0]);
-    });
+    console.log("in user token", window.__apiToken);
 
-    if (window.__apiToken == "__failed" || window.__apiToken == "")
-      JBridge.getApiToken(callback);
-
+    if (window.__apiToken == "__failed" || window.__apiToken == "") {
+        JBridge.getApiToken(callbackMapper.map(token => {
+            console.log("user token", token[0]);
+            window.__apiToken = token[0];
+            JBridge.setInSharedPrefs("api_token", token[0]);
+        }));
+    }
   }
 
   afterRender = () => {
     JBridge.syncTelemetry();
     JBridge.logsplashScreenEvent();
     JBridge.logCorrelationPageEvent("SPLASHSCREEN","","");
-    // JBridge.setInSharedPrefs("logged_in","YES");
-    // JBridge.setInSharedPrefs("user_id", "029c72b5-4691-4bf2-a6de-72b18df0b748");
-    // JBridge.setInSharedPrefs("user_name", "vinay");
-    // JBridge.setInSharedPrefs("user_token", "029c72b5-4691-4bf2-a6de-72b18df0b748");
-
-    // window.__loginUrl = "https://staging.ntp.net.in";
-
-    // window.__apiUrl = "https://staging.ntp.net.in";
-
-    // window.__deepLinkUrl = "staging.ntp.net.in";
-    this.getApiUrl();
 
     setTimeout(() => {
       var whatToSend = [];
-      // var event = { tag: "OPEN_WelcomeScreenActivity", contents: whatToSend};
-      // if(("YES"==JBridge.getFromSharedPrefs("logged_in"))){
-        var event = { tag: "OPEN_UserActivity", contents: whatToSend}
-    // }
+      var event = { tag: "OPEN_UserActivity", contents: whatToSend}
       window.__runDuiCallback(event);
     }, 2000);
   }
@@ -92,14 +90,6 @@ class SplashScreenActivity extends View {
   }
 
   render() {
-    var imgUrl = "ic_launcher";
-    var textToDisplay = JBridge.getAppName();//window.__S.SPLASH_MESSAGE;
-    if (JBridge.getFromSharedPrefs("logo_url") != "__failed"){
-      imgUrl = JBridge.getFromSharedPrefs("logo_url");
-    }
-    if (JBridge.getFromSharedPrefs("orgName") != "__failed"){
-      textToDisplay = JBridge.getFromSharedPrefs("orgName");
-    }
 
     this.layout = (
       <LinearLayout
@@ -114,9 +104,9 @@ class SplashScreenActivity extends View {
             height="250"
             width="250"
             layout_gravity="center"
-            circularImageUrl = {"1," + imgUrl}/>
+            circularImageUrl = {"1," + this.icon}/>
           <TextView
-            text={textToDisplay}
+            text={this.textToDisplay}
             margin="20,120,20,20"
             layout_gravity="center"
             height="wrap_content"/>
