@@ -57,7 +57,7 @@ class MainActivity extends View {
 
     this.deipalayName = "MainActivity";
     this.profileDataTag = "savedProfile";
-    this.announcementsDataTag = "savedAnnouncemtens";
+    this.announcementsDataTag = "savedAnnouncements";
 
     window.__API_Profile_Called = false;
     this.apiToken = window.__apiToken;
@@ -106,7 +106,7 @@ class MainActivity extends View {
     } else {
       console.log("__failed in getUserProfileData");
     }
-    window.__LoaderDialog.hide();    
+    window.__LoaderDialog.hide();
   }
 
   getAnnouncemetData = () => {
@@ -241,7 +241,7 @@ class MainActivity extends View {
           return;
         }
         break;
-      case "API_GetAnnouncementData":    
+      case "API_GetAnnouncementData":
         window.__AnnouncementApiData = [];
         if (isErr) {
           if (JBridge.getSavedData(this.announcementsDataTag) != "__failed") {
@@ -250,15 +250,12 @@ class MainActivity extends View {
             window.__AnnouncementApiData = data.result.announcements;
           }
         } else {
-          try {
-            var data = JSON.parse(utils.decodeBase64(state.response.status[1]));
-            console.log("API_GetAnnouncementData :", data);
-            var dataToBeSaved = utils.encodeBase64(JSON.stringify(state));
-            JBridge.saveData(this.announcementsDataTag, dataToBeSaved);
-            window.__AnnouncementApiData = data.result.announcements;
-          } catch (e) {
-            console.log("Exception in handlestatechange got API_GetAnnouncement : ", e);
-          }
+          var data = JSON.parse(utils.decodeBase64(state.response.status[1]));
+          console.log("API_GetAnnouncementData :", data);
+          var dataToBeSaved = utils.encodeBase64(JSON.stringify(data));
+          console.log("dataToBeSaved ", state);
+          JBridge.saveData(this.announcementsDataTag, dataToBeSaved);
+          window.__AnnouncementApiData = data.result.announcements;
         }
         break;
       case "API_EndorseSkill":
@@ -493,18 +490,18 @@ class MainActivity extends View {
     var whatToSend;
     if (this.currentPageIndex != 0) {
       window.__Check = 0;
+      window.__AnnouncementApiCalled = false;
     }
     switch (this.currentPageIndex) {
       case 0:
         if(window.__AnnouncementApiCalled==false){
         if(JBridge.isNetworkAvailable()){
           this.getAnnouncemetData();
-        }            
+        }
         else{
           if (JBridge.getSavedData(this.announcementsDataTag) != "__failed"){
             try{
             var data = JSON.parse(utils.decodeBase64(JBridge.getSavedData(this.profileDataTag)));
-            data = JSON.parse(utils.decodeBase64(state.response.status[1]));
             window.__AnnouncementApiData=data.result.announcements;
             }catch(e){
               console.log("Error in getting saved data :",e);
