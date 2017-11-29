@@ -80,7 +80,7 @@ announcementViewAllActivity input whereFrom whatToSendBack = do
 		OPEN_AnnouncementDetailActivityFromViewAll {announcementData : output} -> announcementDetailActivity output "AnnouncementViewAllActivity" input
 		BACK_AnnouncementViewAllActivity -> homeFragment whatToSendBack "Terminate" input
 		_ -> announcementViewAllActivity input whereFrom whatToSendBack
-	
+
 
 additionalInformationActivity input whereFrom whatToSendBack = do
 	event <- ui $ AdditionalInformationActivity {profile : input}
@@ -96,6 +96,7 @@ announcementDetailActivity input whereFrom whatToSendBack = do
 	case event of
 		BACK_AnnouncementDetailActivity -> case whereFrom of
 			"AnnouncementViewAllActivity" -> announcementViewAllActivity whatToSendBack "Terminate" whatToSendBack
+			"Notif" -> announcementViewAllActivity whatToSendBack "Terminate" whatToSendBack
 			_ -> homeFragment input "Terminate" input
 		_ -> announcementDetailActivity input whereFrom whatToSendBack
 
