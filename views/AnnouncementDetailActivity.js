@@ -31,7 +31,14 @@ class AnnouncementDetailActivity extends View{
                  "webLink",
                   "updateInfo"]);
     console.log(state);
-    this.data = JSON.parse(state.data.value0.announcementData);
+    this.details=JSON.parse(utils.decodeBase64(JBridge.getSavedData("savedAnnouncemtens")));
+
+    this.data = {};
+    this.details.map((item)=> {
+      if(item.id==JSON.parse(state.data.value0.announcementData))
+        this.data=item;
+    })
+
     if (this.data.hasOwnProperty("announcementID")) {
       //coming in from notification
     }
@@ -182,14 +189,14 @@ class AnnouncementDetailActivity extends View{
       return _this.getAttachmentCard(item);
     })
     console.log(cards , "cardssss");
-    var cardSection = (<LinearLayout
+    return  (<LinearLayout
                    height="wrap_content"
                    width="match_parent"
                    orientation="vertical">
                    {cards}
                    </LinearLayout>)
 
-    this.replaceChild(this.idSet.attachmentCardSection,cardSection.render(),0);
+
   }
   openLink = (url) => {
     if(url==undefined)
@@ -271,92 +278,185 @@ class AnnouncementDetailActivity extends View{
 
   getAttachment(){
      console.log("get Attachments");
-     return(<LinearLayout
-      height="wrap_content"
-      width="match_parent"
-      orientation="vertical"
-      id={this.idSet.attachmentSection}
-      margin="0,0,0,0">
-        <TextView
-         height="wrap_content"
-         width="match_parent"
-         text="Attachments"
-         margin="0,0,0,6"
-         style={window.__TextStyle.textStyle.TOOLBAR.HEADING}
-         />
-         <LinearLayout
-         height="wrap_content"
-         width="match_parent"
-         id={this.idSet.attachmentCardSection}>
-         </LinearLayout>
-      </LinearLayout>
-    );
-  }
+     if(this.data.hasOwnProperty("attachments") && this.data.attachments.length>0)
+         return(<LinearLayout
+          height="wrap_content"
+          width="match_parent"
+          orientation="vertical"
+          id={this.idSet.attachmentSection}
+          margin="0,0,0,0">
+            <TextView
+             height="wrap_content"
+             width="match_parent"
+             text="Attachments"
+             margin="0,0,0,6"
+             style={window.__TextStyle.textStyle.TOOLBAR.HEADING}
+             />
+             <LinearLayout
+             height="wrap_content"
+             width="match_parent"
+             id={this.idSet.attachmentCardSection}>
+              {this.populateAttachments()}
+             </LinearLayout>
+          </LinearLayout>
+        );
 
-  getWeblinks(){
     return(
       <LinearLayout
+      width="wrap_content"
+      height="wrap_content"/>
+    )
+  }
+
+  getSingleLink=(item)=>{
+    <LinearLayout
       height="wrap_content"
-      width="match_parent"
-      orientation="vertical"
-      margin="0,0,0,16"
-      id={this.idSet.webLinkSection}>
+      width="match_parent">
       <TextView
        height="wrap_content"
        width="match_parent"
-       text="Weblinks"
-       margin="0,0,0,6"
-       style={window.__TextStyle.textStyle.TOOLBAR.HEADING}/>
-      <TextView
-       height="wrap_content"
-       width="match_parent"
-       text="www.google.com/github"
+       text={item}
        onClick={this.openLink}
        id={this.idSet.webLink}
        style={window.__TextStyle.textStyle.CLICKABLE.BLUE_SEMI}
       />
-      </LinearLayout>
-    );
+    </LinearLayout>
+  }
+
+  getLinks(){
+    var links = this.data.links.map((item)=>{
+      if(item==undefined)
+        return(
+          <LinearLayout
+          height="wrap_content"
+          width="wrap_content"/>
+        )
+       return(
+         getSingleLink(item);
+       )
+     })
+
+     return(
+       <LinearLayout
+       width="match_parent"
+       height="wrap_content">
+         {links}
+       </LinearLayout>
+     )
+
+  }
+
+  getWeblinks(){
+    if (this.data.hasOwnProperty("links")&& this.data.links.length>0)
+        return(
+          <LinearLayout
+          height="wrap_content"
+          width="match_parent"
+          orientation="vertical"
+          margin="0,0,0,16"
+          id={this.idSet.webLinkSection}>
+          <TextView
+           height="wrap_content"
+           width="match_parent"
+           text={window.__S.WEBLINKS}
+           margin="0,0,0,6"
+           style={window.__TextStyle.textStyle.TOOLBAR.HEADING}/>
+           {this.getSingleLink()}
+          </LinearLayout>
+        );
+     else
+       return (
+         <LinearLayout
+         width="wrap_content"
+         height="wrap_content"/>
+       )
   }
 
   getDescription(){
+    if(this.data.hasOwnProperty("details")&& this.data.details.hasOwnProperty("title"))
+      return(
+        <TextView
+         height="wrap_content"
+         width="match_parent"
+         id={this.idSet.announcementBody}
+         text={this.data.details.title}
+         margin="0,0,0,18"
+         style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
+      );
+    else
     return(
-      <TextView
+      <LinearLayout
+      height="wrap_content"
+      width="wrap_content"/>
+    )
+
+  }
+
+  getAnnouncementFrom(){
+    if(this.data.hasOwnProperty("details")&& this.data.details.hasOwnProperty("from"))
+      return(
+        <TextView
        height="wrap_content"
-       width="match_parent"
-       id={this.idSet.announcementBody}
-       text="It has survived not only five centuries, but also the leap into electronic typesetting. It has survived not only five centuries, but also the leap into electronic typesetting, remaining stuff goes here. It has survived not only five centuries, but also the leap into electronic typesetting. It has survived not only five centuries, but also the leap into electronic typesetting, remaining stuff goes here."
-       margin="0,0,0,18"
-       style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
-    );
+       width="wrap_content"
+       padding="0,0,10,10"
+       id={this.idSet.announcementFrom}
+       text={this.details.from}
+       style={window.__TextStyle.textStyle.HINT.REGULAR}/>
+     )
+     else
+       return(
+         <LinearLayout
+         height="wrap_content"
+         width="wrap_content"/>
+       )
   }
 
   getAnnouncementTitle(){
+    if(this.data.hasOwnProperty("details")&& this.data.details.hasOwnProperty("title"))
     return (
       <TextView
        height="wrap_content"
        width="match_parent"
-       text="Exam Dates Announced For CBSE And Other State Boards"
+       text={this.data.details.title}
        id={this.idSet.announcementHeading}
        margin="0,0,0,10"
        style={window.__TextStyle.textStyle.CARD.TITLE.DARK_16}/>
     );
+
+    else
+      return(
+        <LinearLayout
+        height="wrap_content"
+        width="wrap_content"/>
+      )
+
   }
 
   getAnnouncementInfo(){
+
+    if(this.data.hasOwnProperty("details") && this.data.details.hasOwnProperty("type"))
     return(
         <TextView
             width="wrap_content"
             height="wrap_content"
             margin = "0,0,10,10"
-            text= "General"
+            text= {this.data.details.type}
             id={this.idSet.announcementType}
             padding="5,3,5,3"
             cornerRadius="4"
             background={window.__Colors.PRIMARY_BLACK_66}
             style={window.__TextStyle.textStyle.SYMBOL.STATUSBAR.LABEL}/>
    );
+
+   else
+     return(
+       <LinearLayout
+       height="wrap_content"
+       width="wrap_content"/>
+     )
+
   }
+
   getBody(){
     return (
     <LinearLayout
@@ -366,13 +466,7 @@ class AnnouncementDetailActivity extends View{
     padding="15,20,15,0">
       {this.getAnnouncementInfo()}
       {this.getAnnouncementTitle()}
-       <TextView
-        height="wrap_content"
-        width="wrap_content"
-        padding="0,0,10,10"
-        id={this.idSet.announcementFrom}
-        text="Notification Council For Teacher Education"
-        style={window.__TextStyle.textStyle.HINT.REGULAR}/>
+      {this.getAnnouncementFrom()}
       {this.getDescription()}
       {this.getWeblinks()}
       {this.getAttachment()}

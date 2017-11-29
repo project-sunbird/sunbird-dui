@@ -84,7 +84,6 @@ class MainActivity extends View {
     }
 
     this.backPressCount = 0;
-    window.__Check = 0;
     window.__BNavFlowRestart();
   }
 
@@ -105,6 +104,7 @@ class MainActivity extends View {
       this.handleStateChange(data);
     } else {
       console.log("__failed in getUserProfileData");
+      window.__LoaderDialog.hide();
     }
     window.__LoaderDialog.hide();
   }
@@ -247,7 +247,7 @@ class MainActivity extends View {
           if (JBridge.getSavedData(this.announcementsDataTag) != "__failed") {
             var data = JSON.parse(utils.decodeBase64(JBridge.getSavedData(this.announcementsDataTag)));
             data = JSON.parse(utils.decodeBase64(state.response.status[1]));
-            window.__AnnouncementApiData = data.result.announcements;
+          //  window.__AnnouncementApiData = data.result.announcements;
           }
         } else {
           var data = JSON.parse(utils.decodeBase64(state.response.status[1]));
@@ -510,14 +510,15 @@ class MainActivity extends View {
         }
       }
       if (window.__Check == 0) {
-        window.__Check = 1;
-        this.getUserProfileData();
         if(!JBridge.isNetworkAvailable()){
           window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
+        }else{
+          this.getUserProfileData();
         }
       }
         whatToSend = [];
         event = {tag: "OPEN_HomeFragment", contents: whatToSend};
+        window.__Check = 1;
         break;
       case 1:
         if (!JBridge.isNetworkAvailable()) {
