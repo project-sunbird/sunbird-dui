@@ -32,17 +32,22 @@ class AnnouncementDetailActivity extends View{
                  "webLink",
                   "updateInfo"]);
     console.log(state,"AnnouncementDetailActivity");
-    this.details=JSON.parse(utils.decodeBase64(JBridge.getSavedData("savedAnnouncements")));
+    this.data = JSON.parse(state.data.value0.announcementData);
+    console.log("Recieved data in AnnouncementDetailActivity ", this.data);
 
-    this.data = {};
-    this.details.announcements.map((item)=> {
-      if(item.id==JSON.parse(state.data.value0.announcementData))
-        this.data=item;
-    })
 
-    if (this.data.hasOwnProperty("announcementID")) {
-      //coming in from notification
+    var announcementList = [];
+    if (JBridge.getSavedData("savedAnnouncements") != "__failed"){
+      announcementList = JSON.parse(utils.decodeBase64(JBridge.getSavedData("savedAnnouncements")));
     }
+
+    this.announcementData = {};
+    announcementList.map((item) => {
+      if (item.id == this.data.announcementID) {
+        this.data = item;
+      }
+    });
+    
     console.log("Info State", this.data);
     this.screenName = "AnnouncementViewAllActivity";
     this.shouldCacheScreen = false;
@@ -401,7 +406,7 @@ class AnnouncementDetailActivity extends View{
        width="wrap_content"
        padding="0,0,10,10"
        id={this.idSet.announcementFrom}
-       text={this.details.from}
+       text={this.announcementData.from}
        style={window.__TextStyle.textStyle.HINT.REGULAR}/>
      )
      else
