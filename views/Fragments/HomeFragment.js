@@ -55,7 +55,7 @@ class HomeFragment extends View {
 
   handleAnnouncementClick = (item) => {
 
-    var whatToSend = { "announcementData" : JSON.stringify(item)}
+    var whatToSend = { "announcementData" : item}
     var event ={ tag: "OPEN_AnnouncementDetailActivity", contents: whatToSend }
     window.__runDuiCallback(event);
 
@@ -277,14 +277,14 @@ class HomeFragment extends View {
           card1 = (
           <AnnouncementCard
             params={announcementApiData.announcements[0]}
-            onClick={()=>this.handleAnnouncementClick(announcementApiData.announcements[0].id)}/>
+            onClick={()=>this.handleAnnouncementClick((announcementApiData.announcements[0]).id)}/>
           );
         }
         if(announcementApiData.count>1){
           card2 = (
             <AnnouncementCard
             params={announcementApiData.announcements[1]}
-            onClick={()=>this.handleAnnouncementClick(announcementApiData.announcements[1].id)}/>
+            onClick={()=>this.handleAnnouncementClick((announcementApiData.announcements[1]).id)}/>
             );
         }
         cards = (
@@ -328,7 +328,7 @@ class HomeFragment extends View {
  }
  handleAnnouncementViewAllClick= () =>{
    var data = {
-     "details" : {}
+     "details" : ""
    }
 
 var whatToSend ={ "announcementDetails": JSON.stringify(data)}

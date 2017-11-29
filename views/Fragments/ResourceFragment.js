@@ -136,7 +136,7 @@ class ResourceComponent extends View {
 
 
 handleResourceViewAllClick= (data,title,searchQuery,visibility) =>{
-  
+
    var resourceDetails = {
                             "title" : title,
                             "resourceDetails" : data,
@@ -234,7 +234,7 @@ handleResourceViewAllClick= (data,title,searchQuery,visibility) =>{
         height="match_parent">
 
           <SimpleToolbar
-            title={window.__S.RESOURCES_LW}
+            title={window.__S.LIBRARY_LW}
             width="match_parent"
             showMenu="true"
             invert="true"
