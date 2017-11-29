@@ -337,7 +337,7 @@ var whatToSend ={ "announcementDetails": JSON.stringify(data)}
 
   render() {
     var imgUrl = "ic_launcher";
-    if (JBridge.getFromSharedPrefs("logo_url") != "__failed"){
+    if (JBridge.getFromSharedPrefs("logo_url") != "__failed" && JBridge.getFromSharedPrefs("logo_url") != "undefined"){
       imgUrl = JBridge.getFromSharedPrefs("logo_url");
     }
     this.layout = (

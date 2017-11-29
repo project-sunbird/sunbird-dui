@@ -39,7 +39,7 @@ class SplashScreenActivity extends View {
 
   getIcon = () => {
     var icon = JBridge.getFromSharedPrefs("logo_url");
-    if (icon  == "__failed" || icon == "") {
+    if (icon  == "__failed" || icon == "undefined" || icon == "") {
       icon = "ic_launcher";
     }
     this.icon = icon;
