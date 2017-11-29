@@ -825,7 +825,6 @@ class UserActivity extends View {
     window.__refreshToken = JBridge.getFromSharedPrefs("refresh_token");
     window.__user_accessToken = JBridge.getFromSharedPrefs("user_access_token");
     JBridge.setProfile(window.__userToken);
-    JBridge.registerFCM();
   }
 
   clearDeeplinkPreferences = () =>{

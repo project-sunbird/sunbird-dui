@@ -193,7 +193,11 @@ class MainActivity extends View {
 
           //check for rootOrg details
           console.log("JBridge.getFromSharedPrefs('logo_url')", JBridge.getFromSharedPrefs("logo_url"));
-          if (responseData.result.response && responseData.result.response.rootOrg && !window.__API_Profile_Called && (JBridge.getFromSharedPrefs("logo_url") == "__failed" || JBridge.getFromSharedPrefs("orgName") == "__failed" || JBridge.getFromSharedPrefs("channelId") == "__failed")) {
+          if (responseData.result.response && responseData.result.response.rootOrg && !window.__API_Profile_Called
+              && (JBridge.getFromSharedPrefs("logo_url") == "__failed"
+                  || JBridge.getFromSharedPrefs("orgName") == "__failed"
+                  || JBridge.getFromSharedPrefs("channelId") == "__failed")
+              ) {
             console.log("slug", responseData.result.response.rootOrg.slug);
             window.__orgName = responseData.result.response.rootOrg.orgName;
             if (responseData.result.response.rootOrg.hashTagId) {
@@ -203,6 +207,11 @@ class MainActivity extends View {
             }
             if (responseData.result.response.rootOrg.hasOwnProperty("preferredLanguage") && responseData.result.response.rootOrg.preferredLanguage != null) {
               this.handleChangeLang(responseData.result.response.rootOrg.preferredLanguage);
+            }
+            if (responseData.result.response.topics && responseData.result.response.topics.length != 0) {
+              console.log("setting topics", responseData.result.response.topics);
+              JBridge.setInSharedPrefs("topics", JSON.stringify(responseData.result.response.topics));
+              JBridge.registerFCM(responseData.result.response.topics);
             }
             window.__API_Profile_Called = true;
             if (window.__userName != undefined)
@@ -339,7 +348,7 @@ class MainActivity extends View {
 
   handleProfileFragAPIResErr = () => {
     this.profAPIerrCount++;
-    console.log("this.profAPIerrCount", this.profAPIerrCount);
+    console.log("handleProfileFragAPIResErr this.profAPIerrCount", this.profAPIerrCount);
     if (JBridge.getSavedData(this.profileDataTag) != "__failed"){
       var data = JSON.parse(utils.decodeBase64(JBridge.getSavedData(this.profileDataTag)));
       data.local = true;

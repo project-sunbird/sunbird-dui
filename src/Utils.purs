@@ -331,7 +331,7 @@ getUserEnrolledCourses user_access_token api_token =
   (get requestUrl headers)
 
 getProfileDetail user_access_token api_token =
-  let requestUrl = "/user/v1/read/" <> (getUserToken unit) <> "?fields=completeness,missingFields,lastLoginTime"
+  let requestUrl = "/user/v1/read/" <> (getUserToken unit) <> "?fields=completeness,missingFields,lastLoginTime,topics"
       headers = (generateRequestHeaders user_access_token api_token) in
   (get requestUrl headers)
 
