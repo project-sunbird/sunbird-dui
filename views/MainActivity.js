@@ -246,16 +246,15 @@ class MainActivity extends View {
         if (isErr) {
           if (JBridge.getSavedData(this.announcementsDataTag) != "__failed") {
             var data = JSON.parse(utils.decodeBase64(JBridge.getSavedData(this.announcementsDataTag)));
-            data = JSON.parse(utils.decodeBase64(state.response.status[1]));
+            // data = JSON.parse(utils.decodeBase64(state.response.status[1]));
           //  window.__AnnouncementApiData = data.result.announcements;
           }
         } else {
-          var data = JSON.parse(utils.decodeBase64(state.response.status[1]));
-          console.log("API_GetAnnouncementData :", data);
-          var dataToBeSaved = utils.encodeBase64(JSON.stringify(data));
-          console.log("dataToBeSaved ", state);
+          console.log("API_GetAnnouncementData :", responseData);
+          var dataToBeSaved = utils.encodeBase64(JSON.stringify(responseData.result));
+          console.log("dataToBeSaved ", responseData.result);
           JBridge.saveData(this.announcementsDataTag, dataToBeSaved);
-          window.__AnnouncementApiData = data.result.announcements;
+          window.__AnnouncementApiData = responseData.result.announcements;
         }
         break;
       case "API_EndorseSkill":

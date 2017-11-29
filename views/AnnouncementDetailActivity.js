@@ -15,6 +15,7 @@ var TextInputView = require('../components/Sunbird/core/TextInputView');
 var FeatureButton = require('../components/Sunbird/FeatureButton');
 var Spinner = require('../components/Sunbird/core/Spinner');
 var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
+var utils = require('../utils/GenericFunctions');
 var Styles = require("../res/Styles");
 let IconStyle = Styles.Params.IconStyle;
 
@@ -332,7 +333,7 @@ class AnnouncementDetailActivity extends View{
           width="wrap_content"/>
         )
        return(
-         getSingleLink(item);
+         getSingleLink(item)
        )
      })
 

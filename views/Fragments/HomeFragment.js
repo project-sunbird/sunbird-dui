@@ -43,7 +43,7 @@ class HomeFragment extends View {
     window.setEnrolledCourses = this.setEnrolledCourses;
     this.profileData="";
     this.profileUpdateCardVisibility="gone";
-    this.announcementsDataTag = "savedAnnouncemtens";
+    this.announcementsDataTag = "savedAnnouncements";
 
   }
 
@@ -255,8 +255,10 @@ class HomeFragment extends View {
     var cards = <LinearLayout/>
     var card1=(<LinearLayout/>),card2=(<LinearLayout/>);
     var announcementApiData = JBridge.getSavedData(this.announcementsDataTag);
+    console.log("announcementApiData ", announcementApiData);
     announcementApiData = announcementApiData=="__failed" ? "__failed":JSON.parse(utils.decodeBase64(announcementApiData));
-    if(announcementApiData=="__failed" || announcementApiData.length==0)
+    console.log("announcementApiData ", announcementApiData);
+    if(announcementApiData=="__failed" || announcementApiData.count==0)
       {
         cards= (<LinearLayout
                     width="match_parent"
@@ -271,18 +273,18 @@ class HomeFragment extends View {
           );
       }else{
         viewAllVisibility="visible";
-        if(announcementApiData.length>0){
+        if(announcementApiData.count>0){
           card1 = (
           <AnnouncementCard
-            params={announcementApiData[0]}
-            onClick={()=>this.handleAnnouncementClick(announcementApiData[0].id)}/>
+            params={announcementApiData.announcements[0]}
+            onClick={()=>this.handleAnnouncementClick(announcementApiData.announcements[0].id)}/>
           );
         }
-        if(announcementApiData.length>1){
+        if(announcementApiData.count>1){
           card2 = (
             <AnnouncementCard
-            params={announcementApiData[1]}
-            onClick={()=>this.handleAnnouncementClick(announcementApiData[1].id)}/>
+            params={announcementApiData.announcements[1]}
+            onClick={()=>this.handleAnnouncementClick(announcementApiData.announcements[1].id)}/>
             );
         }
         cards = (

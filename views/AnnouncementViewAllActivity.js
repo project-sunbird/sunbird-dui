@@ -24,11 +24,12 @@ class AnnouncementViewAllActivity extends View {
       this.setIds([
           "announcementListContainer",
       ]);
-      this.details=JSON.parse(utils.decodeBase64(JBridge.getSavedData("savedAnnouncemtens")));
+      this.details=JSON.parse(utils.decodeBase64(JBridge.getSavedData("savedAnnouncements")));
       console.log("AnnouncementViewAllActivity -->:",this.details);
       this.screenName = "AnnouncementViewAllActivity";
       this.shouldCacheScreen = false;
-      _this = this
+      _this = this;
+      window.__LoaderDialog.show();
     }
     getToolbar  = () =>{
         return( <LinearLayout
@@ -75,7 +76,7 @@ class AnnouncementViewAllActivity extends View {
     showList = () =>{
         console.log("showlist",this.details);
         this.jsonArray=[]
-        this.details.details.map((item, i) => {
+        this.details.announcements.map((item, i) => {
             var card = (
               <AnnouncementCard
                params={item}
@@ -95,6 +96,7 @@ class AnnouncementViewAllActivity extends View {
             10
           );
           console.log("end of showlist");
+          window.__LoaderDialog.hide();
     }
     handleAnnouncementClick = (item) => {
 
