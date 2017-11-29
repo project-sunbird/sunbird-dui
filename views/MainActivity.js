@@ -583,7 +583,7 @@ class MainActivity extends View {
         icon: "ic_courses"
       },
       {
-        name: window.__S.RESOURCES_BNAV,
+        name: window.__S.LIBRARY_BNAV,
         select: "0",
         icon: "ic_notebook"
       },

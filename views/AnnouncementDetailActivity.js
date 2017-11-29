@@ -31,11 +31,11 @@ class AnnouncementDetailActivity extends View{
                  "webLinkSection",
                  "webLink",
                   "updateInfo"]);
-    console.log(state);
-    this.details=JSON.parse(utils.decodeBase64(JBridge.getSavedData("savedAnnouncemtens")));
+    console.log(state,"AnnouncementDetailActivity");
+    this.details=JSON.parse(utils.decodeBase64(JBridge.getSavedData("savedAnnouncements")));
 
     this.data = {};
-    this.details.map((item)=> {
+    this.details.announcements.map((item)=> {
       if(item.id==JSON.parse(state.data.value0.announcementData))
         this.data=item;
     })
@@ -149,7 +149,7 @@ class AnnouncementDetailActivity extends View{
 
 
   afterRender = () => {
-    this.initData();
+  //  this.initData();
   }
 
   getFooter(){
@@ -278,7 +278,7 @@ class AnnouncementDetailActivity extends View{
   }
 
   getAttachment(){
-     console.log("get Attachments");
+     console.log("get Attachments", this.data);
      if(this.data.hasOwnProperty("attachments") && this.data.attachments.length>0)
          return(<LinearLayout
           height="wrap_content"

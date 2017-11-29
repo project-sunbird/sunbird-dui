@@ -25,6 +25,7 @@ class AnnouncementViewAllActivity extends View {
           "announcementListContainer",
       ]);
       this.details=JSON.parse(utils.decodeBase64(JBridge.getSavedData("savedAnnouncements")));
+      //this.details=this.details.announcements;
       console.log("AnnouncementViewAllActivity -->:",this.details);
       this.screenName = "AnnouncementViewAllActivity";
       this.shouldCacheScreen = false;
