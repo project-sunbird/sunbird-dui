@@ -429,9 +429,11 @@ class UserActivity extends View {
       switch (JBridge.getFromSharedPrefs("screenToOpen")) {
         case "ANNOUNCEMENT_DETAIL":
           var data = {
-            announcementID: notifData.actiondata.announcementId
+            announcementId: notifData.actiondata.announcementId,
+            whereFrom: "",
+            details: {}
           }
-          var whatToSend = { announcementID: JSON.stringify(data) }
+          var whatToSend = { announcementData: JSON.stringify(data) }
           var event = { tag: "OPEN_Notif_AnnouncementDetail", contents: whatToSend };
           break;
         case "ANNOUNCEMENT_LIST":

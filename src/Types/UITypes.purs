@@ -72,7 +72,7 @@ data UserActivityAction = OPEN_MainActivity |
   OPEN_Deeplink_CourseEnrolled {course::String}|
   OPEN_DeepLink_CourseInfo {course::String}|
   OPEN_DeepLink_ContentPreview {details::String} |
-  OPEN_Notif_AnnouncementDetail {announcementID::String} |
+  OPEN_Notif_AnnouncementDetail {announcementData::String} |
   OPEN_Notif_AnnouncementList |
   API_LogIn {userName::String, userPass::String} |
   API_SignUp {request::String, api_token::String} |
