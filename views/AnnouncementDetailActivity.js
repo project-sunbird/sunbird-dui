@@ -32,11 +32,11 @@ class AnnouncementDetailActivity extends View{
                  "webLink",
                   "updateInfo"]);
     console.log(state,"AnnouncementDetailActivity");
-    this.data = JSON.parse(state.data.value0.announcementData);
+    this.data = JSON.parse(state.data.value0.announcementData); //data Recieved from intent
     console.log("Recieved data in AnnouncementDetailActivity ", this.data);
 
 
-    var announcementList = [];
+    var announcementList = []; //list of announcementData in local storage
     if (JBridge.getSavedData("savedAnnouncements") != "__failed"){
       announcementList = JSON.parse(utils.decodeBase64(JBridge.getSavedData("savedAnnouncements")));
     }
@@ -44,10 +44,12 @@ class AnnouncementDetailActivity extends View{
     this.announcementData = {};
     announcementList.map((item) => {
       if (item.id == this.data.announcementID) {
-        this.data = item;
+        this.announcementData = item; //setting current announcement details
       }
     });
-    
+
+    //TODO handle no announcement data in this.announcementData
+
     console.log("Info State", this.data);
     this.screenName = "AnnouncementViewAllActivity";
     this.shouldCacheScreen = false;
