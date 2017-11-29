@@ -221,7 +221,10 @@ const logoutUser = () => {
   if (JBridge.isNetworkAvailable()){
     JBridge.logLogoutSuccess(window.__userToken);
     window.__Snackbar.show("Logged out");
-    JBridge.unregisterFCM();
+    if (JBridge.getFromSharedPrefs("topics") != "__failed"){
+      console.log("unsetting topics", JBridge.getFromSharedPrefs("topics"));
+      JBridge.unregisterFCM(JSON.parse(JBridge.getFromSharedPrefs("topics")));
+    }
     JBridge.setInSharedPrefs("intentNotification", "__failed");
     JBridge.setInSharedPrefs("logged_in","NO");
     JBridge.setInSharedPrefs("user_id", "__failed");
