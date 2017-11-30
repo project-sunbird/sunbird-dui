@@ -55,7 +55,13 @@ class HomeFragment extends View {
 
   handleAnnouncementClick = (item) => {
 
-    var whatToSend = { "announcementData" : item}
+    var whatToSend = {
+                      "announcementData": JSON.stringify({
+                        "announcementID" : item,
+                        "whereFrom": "HomeFragment",
+                        "details" : {}
+                      })
+                     }
     var event ={ tag: "OPEN_AnnouncementDetailActivity", contents: whatToSend }
     window.__runDuiCallback(event);
 

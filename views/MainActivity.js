@@ -62,7 +62,6 @@ class MainActivity extends View {
     window.__API_Profile_Called = false;
     this.apiToken = window.__apiToken;
     window.__PopulateSkillsList=[];
-    window.__AnnouncementApiData = [];
     window.__BNavFlowRestart = this.setupDuiCallback;
     this.profAPIerrCount = 0;
 
@@ -251,7 +250,6 @@ class MainActivity extends View {
         }
         break;
       case "API_GetAnnouncementData":
-        window.__AnnouncementApiData = [];
         if (isErr) {
           if (JBridge.getSavedData(this.announcementsDataTag) != "__failed") {
             var data = JSON.parse(utils.decodeBase64(JBridge.getSavedData(this.announcementsDataTag)));
@@ -263,7 +261,6 @@ class MainActivity extends View {
           var dataToBeSaved = utils.encodeBase64(JSON.stringify(responseData.result));
           console.log("dataToBeSaved ", responseData.result);
           JBridge.saveData(this.announcementsDataTag, dataToBeSaved);
-          window.__AnnouncementApiData = responseData.result.announcements;
         }
         break;
       case "API_EndorseSkill":
@@ -510,7 +507,6 @@ class MainActivity extends View {
           if (JBridge.getSavedData(this.announcementsDataTag) != "__failed"){
             try{
             var data = JSON.parse(utils.decodeBase64(JBridge.getSavedData(this.profileDataTag)));
-            window.__AnnouncementApiData=data.result.announcements;
             }catch(e){
               console.log("Error in getting saved data :",e);
             }

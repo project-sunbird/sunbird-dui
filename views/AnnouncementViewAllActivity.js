@@ -101,9 +101,15 @@ class AnnouncementViewAllActivity extends View {
     }
     handleAnnouncementClick = (item) => {
 
-        var whatToSend = { "announcementData" : JSON.stringify(item)}
-        var event ={ tag: "OPEN_AnnouncementDetailActivityFromViewAll", contents: whatToSend }
-        window.__runDuiCallback(event);
+      var whatToSend = {
+                        "announcementData": JSON.stringify({
+                          "announcementID" : item,
+                          "whereFrom": "HomeFragment",
+                          "details" : {}
+                        })
+                       }
+      var event ={ tag: "OPEN_AnnouncementDetailActivityFromViewAll", contents: whatToSend }
+      window.__runDuiCallback(event);
 
       }
     afterRender(){
