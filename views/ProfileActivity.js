@@ -57,6 +57,7 @@ class ProfileActivity extends View {
     this.profileData = this.profile.data;
     this.jobProfile = this.profileData.jobProfile;
     this.education = this.profileData.education;
+    this.address = this.profileData.address;
     this.createdBy = {}
     console.log("this.profileData", this.profileData);
     console.log("this.createdBy", this.createdBy);
@@ -65,10 +66,22 @@ class ProfileActivity extends View {
     }
 
   isAllFeildsPresent = () => {
-    if ((this.profileData.profileSummary && this.profileData.profileSummary == "") || (this.education && this.education.length > 0) || (this.jobProfile && this.jobProfile.length > 0) || (this.createdBy && this.createdBy.content) || (this.profileData && this.profileData.language.length && this.profileData.language.length > 0 && this.profileData.address && this.profileData.address.length))
+    if ((this.profileData.profileSummary && this.profileData.profileSummary == "")
+      || (this.education && this.education.length > 0)
+      || (this.jobProfile && this.jobProfile.length > 0)
+      || (this.address && this.address.length>0)    
+      ||(this.profileData.skills &&this.profileData.skills.length>0)
+      || (this.checkProfileAdditonalInfo()))
       return true;
     else
       return false;
+  }
+  
+  checkProfileAdditonalInfo = () =>{
+    if(this.profileData && this.profileData.language && this.profileData.language.length > 0 ){
+      return true;
+    }
+
   }
 
   onBackPressed = () => {
@@ -169,6 +182,30 @@ class ProfileActivity extends View {
   }
 
   afterRender = () => {
+      var callback = callbackMapper.map((data) => {
+        if(data[0]=="error"){
+          this.getEmptyLayout();
+        }else{
+          console.log("createdBy data", JSON.parse(utils.decodeBase64(data[0])));
+          _this.createdBy = JSON.parse(utils.decodeBase64(data[0]));
+          var layout = (
+            <ProfileCreations
+              data = {_this.createdBy}
+              editable = {_this.editable}
+              onCardClick = {_this.handleCreatedCardClick}/>
+          );
+          _this.replaceChild(_this.idSet.createdByHolder, layout.render(), 0);
+        }
+      });
+      if (JBridge.isNetworkAvailable())
+        JBridge.searchContent(callback, "userToken", this.profileData.id, "Combined", "true", 10);
+      else{   
+        this.getEmptyLayout(); 
+          }
+    window.__LoaderDialog.hide();
+  }
+
+  getEmptyLayout = ()=>{
     if(!this.isAllFeildsPresent()){
       console.log("displaying nothing");
       var layout = (
@@ -198,24 +235,7 @@ class ProfileActivity extends View {
         </LinearLayout>
       )
       this.replaceChild(this.idSet.mainHolder, layout.render(), 0);
-    } else {
-      var callback = callbackMapper.map((data) => {
-        console.log("createdBy data", JSON.parse(utils.decodeBase64(data[0])));
-        _this.createdBy = JSON.parse(utils.decodeBase64(data[0]));
-        var layout = (
-          <ProfileCreations
-            data = {_this.createdBy}
-            editable = {_this.editable}
-            onCardClick = {_this.handleCreatedCardClick}/>
-        );
-        _this.replaceChild(_this.idSet.createdByHolder, layout.render(), 0);
-      });
-      if (JBridge.isNetworkAvailable())
-        JBridge.searchContent(callback, "userToken", window.__userToken, "Combined", "true", 10);
-      else
-        console.log("JBridge.searchContent failed, no internet");
-    }
-    window.__LoaderDialog.hide();
+      }
   }
   getSkills=()=>{
      if(!JBridge.isNetworkAvailable()){
@@ -232,7 +252,6 @@ class ProfileActivity extends View {
   }
   var event= { "tag": "API_GetSkills1", contents: whatToSend };
   this.getSkillsResponseCame=false;
-    var event= { "tag": "API_GetSkills", contents: whatToSend };
     setTimeout(() => {
       if (this.getSkillsResponseCame) return;
       this.getSkillsResponseCame = true;
@@ -278,13 +297,13 @@ class ProfileActivity extends View {
   }
 
   handleStateChange = (state) =>{
-    if(this.getSkillsResponseCame) return;
-    this.getSkillsResponseCame=true;
     var res = utils.processResponse(state);
     console.log("res in ProfileActivity ", res);
     var isErr = res.hasOwnProperty("err");
     switch (state.responseFor) {
       case "API_GetSkills1":
+        if(this.getSkillsResponseCame) break;
+        this.getSkillsResponseCame=true;
         if (isErr) {
           console.log("Error API_GetSkills1, responseCode: ", res.responseCode);
         } else {
@@ -373,6 +392,12 @@ class ProfileActivity extends View {
                     data = {this.jobProfile}
                     popUpType = {window.__PROFILE_POP_UP_TYPE.EXPERIENCE}
                     heading = {window.__S.TITLE_EXPERIENCE}/>
+                  
+                  <ProfileExperiences
+                    editable = {this.isEditable}
+                    data = {this.address}
+                    popUpType={window.__PROFILE_POP_UP_TYPE.ADDRESS}
+                    heading = {window.__S.TITLE_ADDRESS}/>
 
                   <LinearLayout
                     height="wrap_content"
