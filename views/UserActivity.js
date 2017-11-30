@@ -78,6 +78,12 @@ class UserActivity extends View {
          identifier = jsonResponse.identifier;
          _this.handleDeepLinkAction(identifier);
       }
+      else{
+        JBridge.showToast(window.__S.MSG_IMPORTED_SUCCESSFULLY,"short");                
+        var whatToSend = []
+        var event = { tag: "OPEN_MainActivity", contents: whatToSend };
+        window.__runDuiCallback(event);
+      }
     }else{
         JBridge.showToast(window.__S.MSG_ALREADY_IMPORTED,"short");
         console.log("Successfully IMPORTED CONTENT")
@@ -836,12 +842,10 @@ class UserActivity extends View {
 
   performDeeplinkAction = () =>{
     if("__failed" != JBridge.getFromSharedPrefs("intentFilePath")){
-
-                console.log("INSIDE FILE PATH INTENT");
-
+                
                 var filePath = JBridge.getFromSharedPrefs("intentFilePath");
+                JBridge.setInSharedPrefs("intentFilePath", "__failed");                 
                 JBridge.importEcar(filePath);
-
 
     }else if("__failed" != JBridge.getFromSharedPrefs("intentLinkPath")){
 
