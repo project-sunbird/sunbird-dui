@@ -245,16 +245,14 @@ class UserActivity extends View {
 
   performLogin = () => {
     var body = {
-     "params": { },
-        "request":{
-                "userId":window.__userToken
-        }
+     "params": {},
+     "request":{}
     }
     window.__patchCallback = (data) => {
       console.log("login patch call", data);
     }
-    JBridge.patchApi(window.__loginUrl + "/api/user/v1/update/logintime", JSON.stringify(body), window.__user_accessToken, window.__apiToken);
     this.setLoginPreferences();
+    JBridge.patchApi(window.__loginUrl + "/api/user/v1/update/logintime", JSON.stringify(body), window.__user_accessToken, window.__apiToken);
     var whatToSend = []
     var event = { tag: "OPEN_MainActivity", contents: whatToSend };
     window.__runDuiCallback(event);
