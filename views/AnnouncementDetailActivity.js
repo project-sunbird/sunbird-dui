@@ -38,7 +38,7 @@ class AnnouncementDetailActivity extends View{
 
     var announcementList = []; //list of announcementData in local storage
     if (JBridge.getSavedData("savedAnnouncements") != "__failed"){
-      announcementList = JSON.parse(utils.decodeBase64(JBridge.getSavedData("savedAnnouncements")));
+      announcementList = JSON.parse(utils.decodeBase64(JBridge.getSavedData("savedAnnouncements"))).announcements;
     }
 
     this.announcementData = {};
@@ -49,117 +49,19 @@ class AnnouncementDetailActivity extends View{
     });
 
     //TODO handle no announcement data in this.announcementData
-
+    console.log("current announcement details: ", this.announcementData);
     console.log("Info State", this.data);
-    this.screenName = "AnnouncementViewAllActivity";
+    this.screenName = "AnnouncementDetailActivity";
     this.shouldCacheScreen = false;
-
-    // this.data1={
-    //   "labelText":"Announcement",
-    //   "announcementBy":"National Council for teacehers education (NCTE )",
-    //   "labelIcon":"ic_action_horn",
-    //   "date":"Wed Jun 7, 2017",
-    //   "bodyIcon":"ic_action_exam",
-    //   "bodyHeading":"Exam dates announced for CBSE and state board exams.",
-    //   "bodyContent":"",
-    //   "read":true,
-    //   "footerTitle":"See in Calendar >",
-    //   "attachments":[
-    //      {
-    //         "type":"pdf",
-    //         "size":"1011",
-    //         "text":"1"
-    //      },
-    //      {
-    //         "type":undefined,
-    //         "size":"123",
-    //         "text":"2"
-    //      }]
-    //   }
-
-  }
-
-  initData = () => {
-    var cmd = this.set({
-      id: this.idSet.announcementType,
-      text: this.data.labelText
-    })
-
-    if(this.data.announcementBy==undefined)
-     cmd += this.set({
-      id: this.idSet.announcementFrom,
-      visibility: "gone"
-     })
-    else
-    cmd += this.set({
-      id: this.idSet.announcementFrom,
-      text: this.data.announcementBy
-    })
-
-    cmd += this.set({
-      id: this.idSet.announcementHeading,
-      text: this.data.bodyHeading
-    })
-
-    if(this.data.bodyContent!=""){
-      cmd += this.set({
-        id: this.idSet.announcementBody,
-        text: this.data.bodyContent,
-        visibility : "visible"
-      })
-    }
-    else {
-      cmd += this.set({
-        id: this.idSet.announcementBody,
-        visibility: "gone"
-      })
-    }
-
-    if(this.data.weblinks!="")
-    {
-      cmd += this.set({
-        id: this.idSet.webLinkSection,
-        visibility : "visible"
-      })
-      cmd += this.set({
-        id: this.idSet.webLink,
-        text: this.data.weblinks,
-      })
-
-    }
-    else{
-      cmd += this.set({
-        id: this.idSet.webLinkSection,
-        visibility : "gone"
-      })
-    }
-
-    if(this.data.attachments.length==0)
-    {
-      cmd += this.set({
-        id: this.idSet.attachmentSection,
-        visibility : "gone"
-      })
-    }
-    else{
-      this.populateAttachments();
-    }
-
-    cmd += this.set({
-      id: this.idSet.updateInfo,
-      text: this.data.footerTitle
-    })
-
-    Android.runInUI(cmd,0);
-
   }
 
 
-  afterRender = () => {
-  //  this.initData();
+  shareAction = () => {
+
   }
 
   getFooter(){
+    var footerText = window.__S.SENT_ON;
     return (
       <LinearLayout
       width="match_parent"
@@ -169,7 +71,7 @@ class AnnouncementDetailActivity extends View{
         <TextView
         height="wrap_content"
         width="wrap_content"
-        text="Updated on 16th May ‘17"
+        text={footerText}
         id={this.idSet.updateInfo}
         style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>
         <ViewWidget
@@ -178,7 +80,8 @@ class AnnouncementDetailActivity extends View{
         <ImageView
         height="14"
         width="14"
-        imageUrl="ic_action_share_black"/>
+        imageUrl="ic_action_share_black"
+        onClick={this.shareAction}/>
       </LinearLayout>
     )
   }
@@ -193,7 +96,7 @@ class AnnouncementDetailActivity extends View{
 
   populateAttachments = () =>{
     var _this= this;
-    var cards = this.data.attachments.map((item)=>{
+    var cards = this.announcementData.attachments.map((item)=>{
       return _this.getAttachmentCard(item);
     })
     console.log(cards , "cardssss");
@@ -285,8 +188,8 @@ class AnnouncementDetailActivity extends View{
   }
 
   getAttachment(){
-     console.log("get Attachments", this.data);
-     if(this.data.hasOwnProperty("attachments") && this.data.attachments.length>0)
+    // console.log("get Attachments", this.data);
+     if(this.announcementData.hasOwnProperty("attachments") && this.announcementData.attachments.length>0)
          return(<LinearLayout
           height="wrap_content"
           width="match_parent"
@@ -317,7 +220,7 @@ class AnnouncementDetailActivity extends View{
   }
 
   getSingleLink=(item)=>{
-    <LinearLayout
+    return(<LinearLayout
       height="wrap_content"
       width="match_parent">
       <TextView
@@ -329,10 +232,11 @@ class AnnouncementDetailActivity extends View{
        style={window.__TextStyle.textStyle.CLICKABLE.BLUE_SEMI}
       />
     </LinearLayout>
+   )
   }
 
   getLinks(){
-    var links = this.data.links.map((item)=>{
+    var links = this.announcementData.links.map((item)=>{
       if(item==undefined)
         return(
           <LinearLayout
@@ -340,7 +244,7 @@ class AnnouncementDetailActivity extends View{
           width="wrap_content"/>
         )
        return(
-         getSingleLink(item)
+         this.getSingleLink(item)
        )
      })
 
@@ -355,7 +259,7 @@ class AnnouncementDetailActivity extends View{
   }
 
   getWeblinks(){
-    if (this.data.hasOwnProperty("links")&& this.data.links.length>0)
+    if (this.announcementData.hasOwnProperty("links")&& this.announcementData.links.length>0)
         return(
           <LinearLayout
           height="wrap_content"
@@ -369,7 +273,7 @@ class AnnouncementDetailActivity extends View{
            text={window.__S.WEBLINKS}
            margin="0,0,0,6"
            style={window.__TextStyle.textStyle.TOOLBAR.HEADING}/>
-           {this.getSingleLink()}
+           {this.getLinks()}
           </LinearLayout>
         );
      else
@@ -381,13 +285,13 @@ class AnnouncementDetailActivity extends View{
   }
 
   getDescription(){
-    if(this.data.hasOwnProperty("details")&& this.data.details.hasOwnProperty("title"))
+    if(this.announcementData.hasOwnProperty("details")&& this.announcementData.details.hasOwnProperty("description"))
       return(
         <TextView
          height="wrap_content"
          width="match_parent"
          id={this.idSet.announcementBody}
-         text={this.data.details.title}
+         text={this.announcementData.details.description}
          margin="0,0,0,18"
          style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
       );
@@ -401,14 +305,14 @@ class AnnouncementDetailActivity extends View{
   }
 
   getAnnouncementFrom(){
-    if(this.data.hasOwnProperty("details")&& this.data.details.hasOwnProperty("from"))
+    if(this.announcementData.hasOwnProperty("details")&& this.announcementData.details.hasOwnProperty("from"))
       return(
         <TextView
        height="wrap_content"
        width="wrap_content"
        padding="0,0,10,10"
        id={this.idSet.announcementFrom}
-       text={this.announcementData.from}
+       text={this.announcementData.details.from}
        style={window.__TextStyle.textStyle.HINT.REGULAR}/>
      )
      else
@@ -420,14 +324,14 @@ class AnnouncementDetailActivity extends View{
   }
 
   getAnnouncementTitle(){
-    if(this.data.hasOwnProperty("details")&& this.data.details.hasOwnProperty("title"))
+    if(this.announcementData.hasOwnProperty("details")&& this.announcementData.details.hasOwnProperty("title"))
     return (
       <TextView
        height="wrap_content"
        width="match_parent"
-       text={this.data.details.title}
+       text={this.announcementData.details.title}
        id={this.idSet.announcementHeading}
-       margin="0,0,0,10"
+       margin="0,0,0,6"
        style={window.__TextStyle.textStyle.CARD.TITLE.DARK_16}/>
     );
 
@@ -442,18 +346,19 @@ class AnnouncementDetailActivity extends View{
 
   getAnnouncementInfo(){
 
-    if(this.data.hasOwnProperty("details") && this.data.details.hasOwnProperty("type"))
+    if(this.announcementData.hasOwnProperty("details") && this.announcementData.details.hasOwnProperty("type"))
     return(
         <TextView
             width="wrap_content"
             height="wrap_content"
             margin = "0,0,10,10"
-            text= {this.data.details.type}
+            text= {this.announcementData.details.type}
+            textAllCaps="true"
             id={this.idSet.announcementType}
-            padding="5,3,5,3"
+            padding="8,3,8,3"
             cornerRadius="4"
             background={window.__Colors.PRIMARY_BLACK_66}
-            style={window.__TextStyle.textStyle.SYMBOL.STATUSBAR.LABEL}/>
+            style={window.__TextStyle.textStyle.SYMBOL.STATUSBAR.TIME}/>
    );
 
    else
