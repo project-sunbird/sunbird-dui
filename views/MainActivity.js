@@ -112,7 +112,6 @@ class MainActivity extends View {
     window.__AnnouncementApiCalled = true;
     if (JBridge.isNetworkAvailable()) {
       var request = {
-        userId: window.__userToken
       };
       var whatToSend = {
         user_token: window.__user_accessToken,

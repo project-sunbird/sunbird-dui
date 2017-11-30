@@ -40,20 +40,61 @@ class AnnouncementDetailActivity extends View{
     if (JBridge.getSavedData("savedAnnouncements") != "__failed"){
       announcementList = JSON.parse(utils.decodeBase64(JBridge.getSavedData("savedAnnouncements"))).announcements;
     }
+    else {
+      console.log("got __failed");
+    }
 
     this.announcementData = {};
     announcementList.map((item) => {
-      if (item.id == this.data.announcementID) {
+      if (item.id == this.data.announcementId) {
         this.announcementData = item; //setting current announcement details
       }
     });
 
     //TODO handle no announcement data in this.announcementData
+
     console.log("current announcement details: ", this.announcementData);
     console.log("Info State", this.data);
     this.screenName = "AnnouncementDetailActivity";
     this.shouldCacheScreen = false;
   }
+
+  handleStateChange = (state) => {
+    var res = utils.processResponse(state);
+
+    if(!res.hasOwnProperty("err") && res.responseFor=="API_ReadAnnouncement")
+    {
+      console.log("announcement read successful");
+    }
+    else{
+      console.log("announcement read unsuccessful");
+    }
+
+  }
+
+  afterRender = () => {
+    if(!(this.announcementData.hasOwnProperty("read") && this.announcementData.read)){
+          if (JBridge.isNetworkAvailable()) {
+            var request = {
+            announcementId: this.data.announcementId ,
+              channel: "mobile"
+            };
+            var whatToSend = {
+              user_token: window.__user_accessToken,
+              api_token: window.__apiToken,
+              requestBody: JSON.stringify(request)
+            };
+            var event = {tag: "API_ReadAnnouncement", contents: whatToSend};
+            window.__runDuiCallback(event);
+          } else {
+            console.log("__failed to Read Announcement");
+          }
+     }
+  else{
+     console.log("Announcement has already been read");
+  }
+}
+
 
 
   shareAction = () => {
@@ -121,7 +162,7 @@ class AnnouncementDetailActivity extends View{
   }
 
   getAttachmentCard = (item) => {
-    if(item==undefined)
+    if(item==undefined || item=="")
     return(
       <LinearLayout
       height="wrap_content"
@@ -129,6 +170,8 @@ class AnnouncementDetailActivity extends View{
       </LinearLayout>
     )
 
+    item=JSON.parse(item);
+    console.log("Attachments item: ",item);
     return (
       <LinearLayout
       onClick={()=>{this.openLink(item.link)}}
@@ -157,8 +200,8 @@ class AnnouncementDetailActivity extends View{
           <TextView
           height="wrap_content"
           width="wrap_content"
-          text={item.type}
-          style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>
+          text={item.name}
+          style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
           <TextView
           height="wrap_content"
           width="wrap_content"

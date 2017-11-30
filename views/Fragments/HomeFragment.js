@@ -57,7 +57,7 @@ class HomeFragment extends View {
 
     var whatToSend = {
                       "announcementData": JSON.stringify({
-                        "announcementID" : item,
+                        "announcementId" : item,
                         "whereFrom": "HomeFragment",
                         "details" : {}
                       })

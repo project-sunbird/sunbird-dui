@@ -387,7 +387,9 @@ instance encodeAdditionalInformationActivityAction :: Encode AdditionalInformati
 
 data AnnouncementDetailActivity = AnnouncementDetailActivity {announcementData :: String}
 data AnnouncementDetailActivityAction = DummyAnnouncementDetailActivityAction  |
-  BACK_AnnouncementDetailActivity
+  BACK_AnnouncementDetailActivity |
+  API_ReadAnnouncement {user_token::String,api_token::String,requestBody::String}
+
 
 instance announcementDetailActivity :: UIScreen AnnouncementDetailActivity AnnouncementDetailActivityAction where
   generateMockEvents _ = [DummyAnnouncementDetailActivityAction , BACK_AnnouncementDetailActivity]

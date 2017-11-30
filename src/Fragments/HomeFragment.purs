@@ -94,11 +94,15 @@ additionalInformationActivity input whereFrom whatToSendBack = do
 announcementDetailActivity input whereFrom whatToSendBack = do
 	event <- ui $ AnnouncementDetailActivity {announcementData : input}
 	case event of
-		BACK_AnnouncementDetailActivity -> case whereFrom of
+	  API_ReadAnnouncement {user_token:x,api_token:y,requestBody:z}-> do
+			responseData <- readAnnouncement x y z
+	 		_ <- sendUpdatedState {response : responseData, responseFor : "API_ReadAnnouncement", screen:"asas"}
+			pure $ "apiDefault"
+	  BACK_AnnouncementDetailActivity -> case whereFrom of
 			"AnnouncementViewAllActivity" -> announcementViewAllActivity whatToSendBack "Terminate" whatToSendBack
 			"Notif" -> announcementViewAllActivity whatToSendBack "Terminate" whatToSendBack
 			_ -> homeFragment input "Terminate" input
-		_ -> announcementDetailActivity input whereFrom whatToSendBack
+	  _ -> announcementDetailActivity input whereFrom whatToSendBack
 
 
 courseInfoActivity input whereFrom whatToSendBack= do

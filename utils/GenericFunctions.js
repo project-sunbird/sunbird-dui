@@ -187,7 +187,7 @@ exports.processResponse = (state) => {
 		else
 			response.err = "Unkown error"
 		console.log("Error : ", response.err);
-	} else if (response.code != 200) {
+	} else if (response.code != 200 && response.code != 201) {
 		response.status = "failure";
 		response.err = "Unkown error";
 	}

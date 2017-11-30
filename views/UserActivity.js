@@ -79,7 +79,7 @@ class UserActivity extends View {
          _this.handleDeepLinkAction(identifier);
       }
       else{
-        JBridge.showToast(window.__S.MSG_IMPORTED_SUCCESSFULLY,"short");                
+        JBridge.showToast(window.__S.MSG_IMPORTED_SUCCESSFULLY,"short");
         var whatToSend = []
         var event = { tag: "OPEN_MainActivity", contents: whatToSend };
         window.__runDuiCallback(event);
@@ -425,6 +425,7 @@ class UserActivity extends View {
   }
 
   handleNotificationAction = () => {
+    this.setLoginPreferences();
     var notifData = JBridge.getFromSharedPrefs("intentNotification");
     if (notifData != "__failed") {
       notifData = JSON.parse(utils.decodeBase64(notifData));
@@ -842,9 +843,9 @@ class UserActivity extends View {
 
   performDeeplinkAction = () =>{
     if("__failed" != JBridge.getFromSharedPrefs("intentFilePath")){
-                
+
                 var filePath = JBridge.getFromSharedPrefs("intentFilePath");
-                JBridge.setInSharedPrefs("intentFilePath", "__failed");                 
+                JBridge.setInSharedPrefs("intentFilePath", "__failed");
                 JBridge.importEcar(filePath);
 
     }else if("__failed" != JBridge.getFromSharedPrefs("intentLinkPath")){
