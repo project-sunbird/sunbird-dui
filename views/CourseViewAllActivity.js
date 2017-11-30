@@ -42,7 +42,7 @@ class CourseViewAllActivity extends View {
     this.btnStatus = this.totalDetails.viewMore;
     this.displayContent = [];
     this.start_index = 0;
-    this.appbarTitle = this.totalDetails.title; 
+    this.appbarTitle = this.totalDetails.title;
     this.totalDetails = this.totalDetails.courseListDetails;
     this.menuData = {
     url: [
@@ -67,7 +67,7 @@ class CourseViewAllActivity extends View {
   }
 
   checkEnrolledCourse = (identifier) =>{
-    
+
     var enrolled = false;
     window.__enrolledCourses.map(function(item){
       if(item.courseId == identifier){
@@ -90,10 +90,14 @@ class CourseViewAllActivity extends View {
      var list = this.totalDetails;
      this.jsonArray=[];
       list.map((item,i) => {
-                var progressCount = item.leafNodesCount == null ? 0 : (item.progress/item.leafNodesCount)*100;
-                progressCount = parseInt(progressCount)
+                if (item.leafNodesCount >= item.progress) {
+                  var progressCount = item.leafNodesCount == null ? 0 : (item.progress/item.leafNodesCount)*100;
+                  progressCount = parseInt(progressCount);
+                } else {
+                  progressCount = 0;
+                }
                 var appIcon;
-                
+
                   var appIcon,name,isProgress,size,actionText,type;
                   if(item.courseId){
                     appIcon = item.courseLogoUrl ? item.courseLogoUrl : "ic_action_course";
@@ -116,7 +120,7 @@ class CourseViewAllActivity extends View {
                     name = ""
                     isProgress = "false"
                   }
-                
+
 
                   var temp = {};
                   temp['imageUrl'] = appIcon;
@@ -125,9 +129,9 @@ class CourseViewAllActivity extends View {
                   temp['footerTitle'] = size;
                   temp['actionText'] = actionText;
                   temp["footerSubTitle"] = window.__S.ERROR_DURATION_NOT_AVAILABLE;
-                  temp["type"] = type; 
+                  temp["type"] = type;
 
-                  
+
 
            var layout = (
           <LargeCardComponent
@@ -139,10 +143,10 @@ class CourseViewAllActivity extends View {
        });
 
        var callback1 = callbackMapper.map(function() {
-        console.log("button pressed");  
+        console.log("button pressed");
         _this.handleViewMoreClick();
       });
-    
+
        if(this.start_index==0)
         {
           if(this.btnStatus=="visible"&&(this.jsonArray.length)>=10)
@@ -220,7 +224,7 @@ class CourseViewAllActivity extends View {
            var event = { tag: 'OPEN_EnrolledCourseFlowFromCourseViewAll', contents: whatToSend };
           }
           else{
-           var event = { tag: 'OPEN_CourseInfoFlowFromCourseViewAll', contents: whatToSend }; 
+           var event = { tag: 'OPEN_CourseInfoFlowFromCourseViewAll', contents: whatToSend };
           }
         window.__runDuiCallback(event);
   }
@@ -231,7 +235,7 @@ class CourseViewAllActivity extends View {
   }
 
   onBackPressed = () => {
-    
+
     if(window.__PermissionDeniedDialog.getVisibility() == "visible"){
       window.__PermissionDeniedDialog.hide();
       return;
@@ -242,7 +246,7 @@ class CourseViewAllActivity extends View {
     }
 
   }
-  
+
   handleViewMoreClick = () =>{
     window.__LoaderDialog.show();
     var listContent = [];
@@ -264,7 +268,7 @@ class CourseViewAllActivity extends View {
               ||(_this.displayContent.length>=999)){
                 _this.changeViewMoreButtonStatus();
               }
-              
+
               });
               JBridge.searchContent(callback, JSON.stringify(this.searchQuery), "", "Course", false,(_this.start_index+2)*10);
         }
@@ -272,14 +276,14 @@ class CourseViewAllActivity extends View {
           window.__LoaderDialog.hide();
           window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE)
         }
-    
+
   }
   changeViewMoreButtonStatus=()=>{
   JBridge.hideFooterView(
     this.idSet.listContainer,
     this.idSet.viewMoreButton
   );
-  } 
+  }
 
   render() {
     this.layout = (
@@ -298,8 +302,8 @@ class CourseViewAllActivity extends View {
           onBackPress={this.onBackPressed}
           showMenu="true"
           invert="true"
-          title= {this.appbarTitle}/>   
-                    
+          title= {this.appbarTitle}/>
+
                       {
                         this.getRows()
                       }

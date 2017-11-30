@@ -255,9 +255,7 @@ class HomeFragment extends View {
     var cards = <LinearLayout/>
     var card1=(<LinearLayout/>),card2=(<LinearLayout/>);
     var announcementApiData = JBridge.getSavedData(this.announcementsDataTag);
-    console.log("announcementApiData ", announcementApiData);
     announcementApiData = announcementApiData=="__failed" ? "__failed":JSON.parse(utils.decodeBase64(announcementApiData));
-    console.log("announcementApiData ", announcementApiData);
     if(announcementApiData=="__failed" || announcementApiData.count==0)
       {
         cards= (<LinearLayout

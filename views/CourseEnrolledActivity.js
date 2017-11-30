@@ -105,12 +105,16 @@ class CourseEnrolledActivity extends View {
 
     if(window.__enrolledCourses != undefined){
       window.__enrolledCourses.map((item)=>{
-      if(this.baseIdentifier == item.courseId){
-        this.enrolledCourses = item;
+        if(this.baseIdentifier == item.courseId){
+          this.enrolledCourses = item;
+        }
+      })
+      if (this.enrolledCourses.leafNodesCount != null && this.enrolledCourses.progress <= this.enrolledCourses.leafNodesCount) {
+        this.downloadProgress = this.details.leafNodesCount == null? 0 : (this.enrolledCourses.progress/this.enrolledCourses.leafNodesCount)*100;
+        this.downloadProgress = parseInt(isNaN(this.downloadProgress)?0:this.downloadProgress);
+      } else {
+        this.downloadProgress = 0;
       }
-    })
-      this.downloadProgress = this.details.leafNodesCount == null? 0 : (this.enrolledCourses.progress/this.enrolledCourses.leafNodesCount)*100;
-      this.downloadProgress = parseInt(isNaN(this.downloadProgress)?0:this.downloadProgress)
     }
     else{
 
