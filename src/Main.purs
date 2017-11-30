@@ -66,7 +66,7 @@ userActivity input = do
         OPEN_Deeplink_CourseEnrolled {course:details} -> enrolledCourseActivity details "Deeplink" details
         OPEN_DeepLink_CourseInfo {course:details} -> courseInfoActivity details "Deeplink" details
         OPEN_DeepLink_ContentPreview {details:details} -> contentPreviewActivity details "Deeplink" details
-        OPEN_Notif_AnnouncementDetail {announcementID:id} -> announcementDetailActivity id "Notif" id
+        OPEN_Notif_AnnouncementDetail {announcementData:details} -> announcementDetailActivity details "Notif" details
         OPEN_Notif_AnnouncementList -> announcementViewAllActivity "{}" "Notif" "{}"
         _ -> pure $ "UserActivity"
 
