@@ -73,6 +73,7 @@ class AnnouncementDetailActivity extends View{
   }
 
   afterRender = () => {
+    JBridge.logAnnouncementDeatilScreen(this.data.announcementId);
     if(!(this.announcementData.hasOwnProperty("read") && this.announcementData.read)){
           if (JBridge.isNetworkAvailable()) {
             var request = {

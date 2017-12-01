@@ -81,7 +81,7 @@ class AnnouncementViewAllActivity extends View {
             var card = (
               <AnnouncementCard
                params={item}
-               onClick={()=>{this.handleAnnouncementClick(item.id)}}
+               onClick={()=>{this.handleAnnouncementClick(item.id, i)}}
                />
             )
             this.jsonArray.push({ view: this.getView(card.render()),value:"",viewType:0});
@@ -99,8 +99,8 @@ class AnnouncementViewAllActivity extends View {
           console.log("end of showlist");
           window.__LoaderDialog.hide();
     }
-    handleAnnouncementClick = (item) => {
-
+    handleAnnouncementClick = (item, index) => {
+      JBridge.logAnnouncementClicked(item, index);
       var whatToSend = {
                         "announcementData": JSON.stringify({
                           "announcementId" : item,
@@ -113,8 +113,9 @@ class AnnouncementViewAllActivity extends View {
 
       }
     afterRender(){
-        console.log("AnnouncementViewAllActivity after render");
-        _this.showList();
+      JBridge.logAnnouncementListShow();
+      console.log("AnnouncementViewAllActivity after render");
+      _this.showList();
     }
     render(){
         this.layout=(
