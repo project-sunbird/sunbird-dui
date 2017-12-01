@@ -14,10 +14,13 @@ var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callb
 var TextInputView = require('../components/Sunbird/core/TextInputView');
 var FeatureButton = require('../components/Sunbird/FeatureButton');
 var Spinner = require('../components/Sunbird/core/Spinner');
+var Attachments = require('../components/Sunbird/Attachments');
 var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
 var utils = require('../utils/GenericFunctions');
 var Styles = require("../res/Styles");
 let IconStyle = Styles.Params.IconStyle;
+
+var _this;
 
 class AnnouncementDetailActivity extends View{
   constructor(props, children,state) {
@@ -31,6 +34,7 @@ class AnnouncementDetailActivity extends View{
                  "webLinkSection",
                  "webLink",
                   "updateInfo"]);
+     _this = this;
     console.log(state,"AnnouncementDetailActivity");
     this.data = JSON.parse(state.data.value0.announcementData); //data Recieved from intent
     console.log("Recieved data in AnnouncementDetailActivity ", this.data);
@@ -94,6 +98,9 @@ class AnnouncementDetailActivity extends View{
   else{
      console.log("Announcement has already been read");
   }
+  if(this.data.whereFrom=="webLinks"){
+    this.openLink(this.data.details);
+  }
 }
 
 
@@ -138,8 +145,15 @@ class AnnouncementDetailActivity extends View{
 
   populateAttachments = () =>{
     var _this= this;
-    var cards = this.announcementData.attachments.map((item)=>{
-      return _this.getAttachmentCard(item);
+    var check = (this.data.whereFrom=="attachments");
+    var cards = this.announcementData.attachments.map((item,index)=>{
+      return (
+        <Attachments
+         data={JSON.parse(item)}
+         id={this.data.announcementID}
+         index={index}
+         open={check&&(this.data.details==item)}/>
+      );
     })
     console.log(cards , "cardssss");
     return  (<LinearLayout
@@ -151,6 +165,7 @@ class AnnouncementDetailActivity extends View{
 
 
   }
+  
   openLink = (url) => {
     if(url==undefined)
       url="www.google.com/github";
@@ -161,75 +176,7 @@ class AnnouncementDetailActivity extends View{
     console.log(url,"urllll");
     JBridge.openLink(url+"");
   }
-
-  getAttachmentCard = (item) => {
-    if(item==undefined || item=="")
-    return(
-      <LinearLayout
-      height="wrap_content"
-      width="wrap_content">
-      </LinearLayout>
-    )
-
-    item=JSON.parse(item);
-    console.log("Attachments item: ",item);
-    return (
-      <LinearLayout
-      onClick={()=>{this.openLink(item.link)}}
-      height="wrap_content"
-      width="match_parent">
-      <LinearLayout
-      height="wrap_content"
-      width="match_parent"
-      orientation="horizontal"
-      padding="8,8,16,8"
-      margin="0,0,0,16"
-      stroke = {"2," + window.__Colors.PRIMARY_BLACK_44}
-      gravity="center_vertical"
-      cornerRadius="4">
-        <ImageView
-        height="56"
-        width="60"
-        margin="0,0,5,0"
-        cornerRadius="4,4,4,4"
-        background={window.__Colors.PRIMARY_BLACK_44}/>
-        <LinearLayout
-        height="match_parent"
-        width="wrap_content"
-        orientation="vertical"
-        gravity="center_vertical">
-          <TextView
-          height="wrap_content"
-          width="wrap_content"
-          text={item.name}
-          style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
-          <TextView
-          height="wrap_content"
-          width="wrap_content"
-          text={item.size}
-          style={window.__TextStyle.textStyle.CARD.BODY.FADED}/>
-        </LinearLayout>
-        <ViewWidget
-        height="0"
-        weight="1"/>
-        <LinearLayout
-         height="30"
-         width="wrap_content"
-         stroke = {"4," + window.__Colors.PRIMARY_DARK}
-         cornerRadius="4,4,4,4"
-         padding="16,0,16,0"
-         gravity="center_vertical">
-           <TextView
-           width="wrap_content"
-           height="wrap_content"
-           gravity="center"
-           style={window.__TextStyle.textStyle.CARD.ACTION.DARK}
-           text="View"/>
-         </LinearLayout>
-      </LinearLayout>
-    </LinearLayout>
-    )
-  }
+  
 
   getAttachment(){
     // console.log("get Attachments", this.data);
@@ -245,8 +192,7 @@ class AnnouncementDetailActivity extends View{
              width="match_parent"
              text="Attachments"
              margin="0,0,0,6"
-             style={window.__TextStyle.textStyle.TOOLBAR.HEADING}
-             />
+             style={window.__TextStyle.textStyle.TOOLBAR.HEADING}/>
              <LinearLayout
              height="wrap_content"
              width="match_parent"

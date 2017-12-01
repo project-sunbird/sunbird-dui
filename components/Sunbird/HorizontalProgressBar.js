@@ -43,7 +43,8 @@ class HorizontalProgressBar extends View {
       return(<RelativeLayout
       width="match_parent"
       height={myHeight}
-      root="true">
+      root="true"
+      visibility={this.props.visibility||"visible"}>
       <LinearLayout
         width="match_parent"
         multiCorners = {myCornerRadius+","+window.__Colors.PRIMARY_BLACK_22}

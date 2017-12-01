@@ -20,22 +20,10 @@ class AnnouncementCard extends View {
     this.setIds([
     ]);
 
-    _this = this;
+    _this = this; 
     this.props=this.props||"";
     this.data=this.props.params||"";
     this.hasAttachments = this.checkAttachments();
-
-    if(this.hasAttachments){
-        this.data.attachments.map((item,index) => {
-          try{
-        this.data.attachments[index]=JSON.parse(this.data.attachments[index]);
-          }catch(e){
-            this.data.attachments[index]=""
-          }
-      });
-    }else{
-      this.data.attachments=[];
-    }
   }
   checkAttachments = ()=>{
     if(this.data.hasOwnProperty("attachments")
@@ -70,16 +58,9 @@ class AnnouncementCard extends View {
 
   getBody(){
     var size=""
-    var attachmentsCount=0;
     var  linksCount=0;
     if(this.data.hasOwnProperty("links")&&this.data.links!=undefined&&this.data.links.length!=0){
       linksCount=this.data.links.length;
-    }
-    if(this.hasAttachments){
-        attachmentsCount=this.data.attachments.length;
-      size=this.data.attachments[0].hasOwnProperty("size") ? window.__S.FILE_SIZE.format(utils.formatBytes(this.data.attachments[0].size)) : "NA";
-        if(size!="NA")
-        size=size.substring(6,size.length-1);
     }
     var content = this.data.details.description;
     if(content==undefined||content==""){
@@ -117,13 +98,13 @@ class AnnouncementCard extends View {
             padding="23,0,0,8"
             visibility={linksCount>1?"visible":"gone"}
             text={"+"+(linksCount-1)+" "+window.__S.WEBLINKS}/>
-          {this.getAttachment(size)}
+          {this.getAttachment()}
           <TextView
             widht="match_parent"
             height="wrap_content"
             padding="23,0,0,0"
-            visibility={(attachmentsCount>1)&&this.hasAttachments?"visible":"gone"}
-            text={"+"+attachmentsCount-1+" "+window.__S.ATTACHMENTS}/>
+            visibility={this.hasAttachments&&(this.data.attachments.length>1)?"visible":"gone"}
+            text={"+"+this.data.attachments.count-1+" "+window.__S.ATTACHMENTS}/>
           <LinearLayout
             width="match_parent"
             height="2"
@@ -172,6 +153,7 @@ class AnnouncementCard extends View {
       height="wrap_content"
       visibility={link!=""?"visible":"gone"}
       padding="0,0,0,3"
+      onClick={()=>this.props.onClick(this.props.params.id,"webLink",link,this.props.index)}
       orientation="horizontal">
       <ImageView
       height="18"
@@ -188,20 +170,19 @@ class AnnouncementCard extends View {
       );
   }
 
-  getAttachment=(size)=>{  
-    if(size=="NAN GB"){
-      size="NA"
-    }     
+  getAttachment=()=>{       
     if(this.hasAttachments==false){
       return (<LinearLayout
       height="0"
       width="0"/>);
     }
+    var temp=JSON.parse(this.data.attachments[0]);
     if(this.data.hasOwnProperty("attachments"))
     return(<LinearLayout
       width="wrap_content"
       height="wrap_content"
       padding="0,0,0,3"
+      onClick={()=>this.props.onClick(this.props.params.id,"attachments",this.data.attachments[0],this.props.index)}
       visibility={this.hasAttachments?"visible":"gone"}
       orientation="horizontal">
       <ImageView
@@ -213,23 +194,26 @@ class AnnouncementCard extends View {
       height="match_parent"
       gravity="center_vertical"
       padding="5,0,5,0"
-      text={this.data.attachments[0].name||"Attachments"}
+      text={temp.name||"Attachments"}
       style={window.__TextStyle.textStyle.CLICKABLE.BLUE_SEMI}/>
       <TextView
       width="wrap_content"
       height="match_parent"
       padding="5,0,5,0"
-      text={"("+(this.data.attachments[0].mimetype||"NA") +","+(size) +")"}/>
+      text={"("+(temp.mimetype||"NA") +","+(temp.size) +")"}/>
       </LinearLayout>
       );
   }
 
   getFooter=()=>{
-    return(<TextView
-      width="match_parent"
-      height="match_parent"
-      text={window.__S.SENT_ON}
-      style={window.__TextStyle.textStyle.HINT.REGULAR}/>
+    var d =  new Date(this.data.createddate);
+    var time = utils.prettifyDate(d);
+    return(
+        <TextView
+          width="match_parent"
+          height="wrap_content"
+          text={window.__S.SENT_ON+" "+time}
+          style={window.__TextStyle.textStyle.HINT.REGULAR}/>
       );
   }
 
@@ -239,7 +223,7 @@ class AnnouncementCard extends View {
         width="match_parent"
         height="wrap_content"
         root="true"
-        onClick={this.props.onClick}
+        onClick={()=>this.props.onClick(this.props.params.id,"cardClick","",this.props.index)}
         orientation="horizontal">
       <LinearLayout
       width="4"

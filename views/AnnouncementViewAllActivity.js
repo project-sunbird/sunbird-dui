@@ -81,8 +81,8 @@ class AnnouncementViewAllActivity extends View {
             var card = (
               <AnnouncementCard
                params={item}
-               onClick={()=>{this.handleAnnouncementClick(item.id, i)}}
-               />
+               onClick={this.handleAnnouncementClick}
+               index={i}/>
             )
             this.jsonArray.push({ view: this.getView(card.render()),value:"",viewType:0});
           });
@@ -99,13 +99,13 @@ class AnnouncementViewAllActivity extends View {
           console.log("end of showlist");
           window.__LoaderDialog.hide();
     }
-    handleAnnouncementClick = (item, index) => {
+    handleAnnouncementClick = (item,whereFrom,details ,index) => {
       JBridge.logAnnouncementClicked(item, index);
       var whatToSend = {
                         "announcementData": JSON.stringify({
                           "announcementId" : item,
-                          "whereFrom": "HomeFragment",
-                          "details" : {}
+                          "whereFrom": whereFrom,
+                          "details" : details
                         })
                        }
       var event ={ tag: "OPEN_AnnouncementDetailActivityFromViewAll", contents: whatToSend }

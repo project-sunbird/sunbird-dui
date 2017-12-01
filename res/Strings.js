@@ -277,6 +277,12 @@ const stringsRes = {
 		ERROR_COLLECTION_IS_EMPTY : "Collection is empty",
 		SKILL_ALREADY_ADDED : "Skill already added",
 		BLOG : "Blog",
+		VIEW : "View",
+		DOWNLOADING_ATTACHMENT : "Downloading Attachment",
+		ERROR_FAILED_TO_DOWNLOAD_ATTACHMENT:"Failed to download attachment",
+		ATTACHMENT_DOWNLOADED : "Attachment downloaded",
+		DOWNLOAD_CANCELED : "Download canceled",
+
 	},
 	"hi_IN" : {
 		ALREADY_HAVE_ACC : "मौजूदा उपयोगकर्ता, साइन इन करें",

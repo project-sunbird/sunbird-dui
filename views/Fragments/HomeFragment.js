@@ -53,13 +53,13 @@ class HomeFragment extends View {
   }
 
 
-  handleAnnouncementClick = (item) => {
+  handleAnnouncementClick = (item,whereFrom,details) => {
 
     var whatToSend = {
                       "announcementData": JSON.stringify({
                         "announcementId" : item,
-                        "whereFrom": "HomeFragment",
-                        "details" : {}
+                        "whereFrom": whereFrom,
+                        "details" : details
                       })
                      }
     var event ={ tag: "OPEN_AnnouncementDetailActivity", contents: whatToSend }
