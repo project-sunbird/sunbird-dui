@@ -110,7 +110,9 @@ class AnnouncementDetailActivity extends View{
   }
 
   getFooter(){
-    var footerText = window.__S.SENT_ON;
+    var d =  new Date(this.announcementData.createddate);
+    var time = utils.prettifyDate(d);
+    var footerText = window.__S.SENT_ON+" "+time;    
     return (
       <LinearLayout
       width="match_parent"
@@ -355,7 +357,7 @@ class AnnouncementDetailActivity extends View{
      return(
        <LinearLayout
        height="wrap_content"
-       width="wrap_content"/>
+       width="wrap_content"/> 
      )
 
   }

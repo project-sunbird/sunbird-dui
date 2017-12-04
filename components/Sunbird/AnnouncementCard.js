@@ -57,10 +57,12 @@ class AnnouncementCard extends View {
   }
 
   getBody(){
+    var tempAttachmentsCount = this.hasAttachments?(this.data.attachments.length-1)+"":"";
     var size=""
     var  linksCount=0;
     if(this.data.hasOwnProperty("links")&&this.data.links!=undefined&&this.data.links.length!=0){
       linksCount=this.data.links.length;
+      var tempWeblinksCount = (linksCount-1)+""; 
     }
     var content = this.data.details.description;
     if(content==undefined||content==""){
@@ -97,14 +99,14 @@ class AnnouncementCard extends View {
             height="wrap_content"
             padding="23,0,0,8"
             visibility={linksCount>1?"visible":"gone"}
-            text={"+"+(linksCount-1)+" "+window.__S.WEBLINKS}/>
+            text={"+"+tempWeblinksCount+" "+window.__S.WEBLINKS}/>
           {this.getAttachment()}
           <TextView
             widht="match_parent"
             height="wrap_content"
             padding="23,0,0,0"
             visibility={this.hasAttachments&&(this.data.attachments.length>1)?"visible":"gone"}
-            text={"+"+this.data.attachments.count-1+" "+window.__S.ATTACHMENTS}/>
+            text={"+"+tempAttachmentsCount+" "+window.__S.ATTACHMENTS}/>
           <LinearLayout
             width="match_parent"
             height="2"
