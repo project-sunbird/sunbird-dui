@@ -498,20 +498,9 @@ class MainActivity extends View {
     }
     switch (this.currentPageIndex) {
       case 0:
-        if(window.__AnnouncementApiCalled==false){
-        if(JBridge.isNetworkAvailable()){
+        if((!window.__AnnouncementApiCalled) && JBridge.isNetworkAvailable()){
           this.getAnnouncemetData();
         }
-        else{
-          if (JBridge.getSavedData(this.announcementsDataTag) != "__failed"){
-            try{
-            var data = JSON.parse(utils.decodeBase64(JBridge.getSavedData(this.profileDataTag)));
-            }catch(e){
-              console.log("Error in getting saved data :",e);
-            }
-          }
-        }
-      }
       if (window.__Check == 0) {
         if(!JBridge.isNetworkAvailable()){
           window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);

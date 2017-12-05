@@ -3,22 +3,16 @@ var Connector = require("@juspay/mystique-backend/src/connectors/screen_connecto
 var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
 var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
 var RelativeLayout = require("@juspay/mystique-backend/src/android_views/RelativeLayout");
-var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
-var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget");
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
 var ScrollView = require("@juspay/mystique-backend/src/android_views/ScrollView");
 var EditText = require("@juspay/mystique-backend/src/android_views/EditText");
 var TextInputView = require("../components/Sunbird/core/TextInputView");
 var Spinner = require("../components/Sunbird/core/Spinner");
+var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
 var RadioButton = require("../components/Sunbird/core/RadioButton");
-var CheckBox = require("@juspay/mystique-backend/src/android_views/CheckBox");
-var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
-var Styles = require("../res/Styles");
-let IconStyle = Styles.Params.IconStyle;
 var SimplePopup = require("../components/Sunbird/core/SimplePopup");
 var PageOption = require("../components/Sunbird/core/PageOption")
-var FeatureButton = require("../components/Sunbird/FeatureButton");
 
 var _this;
 
@@ -30,9 +24,6 @@ class AddressActivity extends View {
       "current"
     ];
     this.setIds([
-      "addressPopUpParent",
-      "addressPopUpBody",
-      "addressTypeRadioContainer",
       "addressTypeRadio",
       "addressLine1Text",
       "addressLine2Text",
@@ -41,10 +32,7 @@ class AddressActivity extends View {
       "countryText",
       "pincodeText",
       "saveButton",
-      "saveButtonParent",
-      "saveButtonContainer",
       "delButton",
-      "btnsHolder",
       "addressConf"
     ]);
     this.shouldCacheScreen = false;
@@ -81,7 +69,6 @@ class AddressActivity extends View {
       onClick : this.handleSaveClickBody,
       alpha : "0.5"
     }
-
     this.initializeData();
   }
 
@@ -94,7 +81,7 @@ class AddressActivity extends View {
 
     this.index=-1;
 
-    if (this.data != undefined&&this.data!="") {
+    if (this.data != undefined&&this.data!="") {          //If user is editing a current Address
       this.prevData.addressLine1 = this.data.addressLine1;
       this.prevData.addressLine2 = this.data.addressLine2;
       this.prevData.city = this.data.city;
@@ -115,7 +102,7 @@ class AddressActivity extends View {
           }
 
     }
-    else{
+    else{                 //if user is adding a new address
         this.prevData.addressLine1 = "";
         this.prevData.addressLine2 = "";
         this.prevData.city = "";
@@ -134,46 +121,37 @@ class AddressActivity extends View {
     this.addressType = this.prevData.addressType;
   }
 
-
-  // populateData = () => {
-  //
-  //
-  //
-  //   this.replaceChild(this.idSet.addressTypeRadioContainer,
-  //     this.getRadioButtionLayout(addressTypeValue, index).render(), 0);
-  // }
-
-  setAddressLine1 = (data) => {
+  setAddressLine1 = (data) => {         //onChange for addressline1 editText field
     this.addressLine1 = data;
-    this.checkDataChanged();
+    this.checkDataChanged();            
   }
 
-  setAddressLine2 = (data) => {
+  setAddressLine2 = (data) => {        //onChange for addressline editText field
     this.addressLine2 = data;
     this.checkDataChanged();
   }
 
-  setCity = (data) => {
+  setCity = (data) => {                //onChange for City editText field
     this.city = data;
     this.checkDataChanged();
   }
 
-  setState = (data) => {
+  setState = (data) => {              //onChange for State editText field
     this.state = data;
     this.checkDataChanged();
   }
 
-  setCountry = (data) => {
+  setCountry = (data) => {             //onChange for country editText field
     this.country = data;
     this.checkDataChanged();
   }
 
-  setPincode = (data) => {
+  setPincode = (data) => {             //onChange for pincode editText field
     this.pincode = data;
     this.checkDataChanged();
   }
 
-  checkDataChanged = () => {
+  checkDataChanged = () => {           //Check if any field was changed
     var isChanged = true;
 
     if (this.addressLine1 == this.prevData.addressLine1
@@ -185,13 +163,13 @@ class AddressActivity extends View {
       && this.addressType == this.prevData.addressType) {
          isChanged = false;
       }
-    this.updateSaveButtonStatus((this.isValid() && isChanged));
+    this.updateSaveButtonStatus(isChanged&&this.isValid());   //Updating save button status
   }
 
-  isValid = () => {
+  isValid = () => {                            //Function to check if mandatory fields are entered
     if (this.addressLine1 == undefined
         || this.addressLine1.length == 0
-        ||this.city == undefined
+        || this.city == undefined
         || this.city.length == 0
         || this.addressType == undefined
         || this.addressType.length == 0 ) {
@@ -200,7 +178,7 @@ class AddressActivity extends View {
     return true;
   }
 
-  updateSaveButtonStatus = (enabled) => {
+  updateSaveButtonStatus = (enabled) => {       //Change save button status
     var cmd;
 
     this.canSave = enabled;
@@ -227,7 +205,7 @@ class AddressActivity extends View {
         width = "match_parent"
         height = "wrap_content"
         orientation = "vertical"
-        background = "#ffffff"
+        background = {window.__S.PRIMARY_LIGHT}
         alignParentBottom = "true, -1">
         <PageOption
             width="match_parent"
@@ -246,93 +224,83 @@ class AddressActivity extends View {
   }
 
   checkPincode = (data) =>{
-    if(data.length == 6 && /^\d+$/.test(data)){
-       return true;
+    if(data==undefined || data.length != 6 || !(/^\d+$/.test(data))){
+       return false;
       }
-    return false;
+    return true;
   }
+
   handleSaveClickBody = () => {
-    if(!JBridge.isNetworkAvailable()){
-      window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
-      return ;
-    }
-    if (this.singleClick && !this.canSave && !this.delete) {
+    if(!JBridge.isNetworkAvailable()){                //check for internet connection
+      window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);   
+      this.delete = false;     
+    }else if (this.singleClick && !this.canSave && !this.delete) {    //condition to check if the previous click response is handled and if user is allowed to save the data
       if (this.data){
        window.__Snackbar.show(window.__S.WARNING_PLEASE_MAKE_SOME_CHANGES);
       }
       else{
         window.__Snackbar.show(window.__S.WARNING_PLEASE_ADD_MANDATORY_DETAILS );
       }
-      return;
-    }
+    }else if(this.pincode!="" && (!this.checkPincode(this.pincode)) && !this.delete){     //Validating  pincode if it is entered
+      window.__Snackbar.show(window.__S.INVALID_PINCODE);
+    }else{
+      this.address = [];
+        var json;
+        this.addressType = this.ADDRESS_TYPE[window.__RadioButton.currentIndex];
 
-    if(!JBridge.isNetworkAvailable()) {
-      window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
-      this.delete = false;
-      return;
-    }
+        if (this.data == undefined || this.data=="") {
+          json = {
+            "addressLine1": this.addressLine1,
+            "addressLine2": this.addressLine2,
+            "city": this.city,
+            "state": this.state,
+            "country": this.country,
+            "zipcode" : this.pincode,
+            "addType": this.addressType
+          }
+        } else {
+          json = this.data;
+          json.addressLine1 = this.addressLine1;
+          json.addressLine2 = this.addressLine2;
+          json.city = this.city;
+          json.state = this.state;
+          json.country = this.country;
+          json.zipcode = this.pincode;
+          json.addType = this.addressType;
+          json.isDeleted = this.delete ? this.delete : null;
+          this.delete = false;
+        }
 
-    if(this.pincode!=null && this.pincode!="" && (!this.checkPincode(this.pincode)) && !this.delete){
-      window.__Snackbar.show("Invalid Pincode");
-      return;
-    }
+        this.address.push(json);
 
-    this.address = [];
-    var json;
-    this.addressType = this.ADDRESS_TYPE[window.__RadioButton.currentIndex];
+        var url = window.__apiUrl + "/api/user/v1/update";
+        var body = {
+          "id" : "unique API ID",
+          "ts" : "response timestamp YYYY-MM-DDThh:mm:ss+/-nn:nn (timezone defaulted to +5.30)",
+          "params" : {},
+          "request" : {
+            "userId" : window.__userToken,
+            "address" : this.address
+          }
+        }
 
-    if (this.data == undefined || this.data=="") {
-      json = {
-        "addressLine1": this.addressLine1,
-        "addressLine2": this.addressLine2,
-        "city": this.city,
-        "state": this.state,
-        "country": this.country,
-        "zipcode" : this.pincode,
-        "addType": this.addressType
+        console.log(JSON.stringify(body));
+      if(this.singleClick){
+        this.singleClick=false;
+        _this.responseCame=false;
+        JBridge.patchApi(url, JSON.stringify(body), window.__user_accessToken, window.__apiToken);
+        window.__LoaderDialog.show();
+        setTimeout(() => {
+            if(_this.responseCame){
+              console.log("Response Already Came")
+              return;
+            }
+            console.log("TIMEOUT")
+            window.__Snackbar.show(window.__S.ERROR_SERVER_CONNECTION);
+            window.__LoaderDialog.hide();
+            _this.responseCame=false;
+        },window.__API_TIMEOUT);
       }
-    } else {
-      json = this.data;
-      json.addressLine1 = this.addressLine1;
-      json.addressLine2 = this.addressLine2;
-      json.city = this.city;
-      json.state = this.state;
-      json.country = this.country;
-      json.zipcode = this.pincode;
-      json.addType = this.addressType;
-      json.isDeleted = this.delete ? this.delete : null;
-      this.delete = false;
-    }
-
-    this.address.push(json);
-
-    var url = window.__apiUrl + "/api/user/v1/update";
-    var body = {
-      "id" : "unique API ID",
-      "ts" : "response timestamp YYYY-MM-DDThh:mm:ss+/-nn:nn (timezone defaulted to +5.30)",
-      "params" : {},
-      "request" : {
-        "userId" : window.__userToken,
-        "address" : this.address
-      }
-    }
-
-    console.log(JSON.stringify(body));
-   if(this.singleClick){
-     this.singleClick=false;
-    _this.responseCame=false;
-    JBridge.patchApi(url, JSON.stringify(body), window.__user_accessToken, window.__apiToken);
-    window.__LoaderDialog.show();
-     setTimeout(() => {
-         if(_this.responseCame){
-           console.log("Response Already Came")
-           return;
-         }
-         console.log("TIMEOUT")
-         window.__Snackbar.show(window.__S.ERROR_SERVER_CONNECTION);
-         window.__LoaderDialog.hide();
-         _this.responseCame=false;
-     },window.__API_TIMEOUT);
     }
   }
 
@@ -357,9 +325,6 @@ class AddressActivity extends View {
           items={item}
           defaultIndex={index}
           onClick={this.handleRadioButtonClick}/>
-         <LinearLayout
-         height="34"
-         width="1"/>
       </LinearLayout>);
   }
 
@@ -394,111 +359,32 @@ class AddressActivity extends View {
    }
  }
 
-  getToolbar  = () =>{
-    return( <LinearLayout
-            height="56"
-            padding="0,0,0,2"
-            gravity="center_vertical"
-            background={window.__Colors.PRIMARY_BLACK_22}
-            width="match_parent" >
-                <LinearLayout
-                  height="56"
-                  padding="0,0,0,0"
-                  gravity="center_vertical"
-                  background={window.__Colors.WHITE}
-                  width="match_parent" >
-
-                    {this.getBack()}
-                    {this.getTitle()}
-
-                </LinearLayout>
-            </LinearLayout>);
-  }
-  handleBackPressed = () =>{
+  onBackPressed = () =>{
     var whatToSend = []
     var event = { tag: "BACK_AddressActivity", contents: whatToSend};
     window.__runDuiCallback(event);
-  }
-
-  getBack = () => {
-    return (
-      <ImageView
-      margin="0,0,10,0"
-      style={IconStyle}
-      height="48"
-      width="48"
-      onClick={this.handleBackPressed}
-      imageUrl = {"ic_action_arrow_left"}/>);
-  }
-
-  getTitle = () => {
-    return (<LinearLayout
-            height="match_parent"
-            width="wrap_content"
-            gravity="center_vertical">
-              <TextView
-                  height="match_parent"
-                  width="match_parent"
-                  gravity="center_vertical"
-                  background="#ffffff"
-                  text={window.__S.TITLE_ADDRESS}
-                  style={window.__TextStyle.textStyle.TOOLBAR.HEADING}/>
-          </LinearLayout>);
   }
 
   getLineSeperator = () => {
     return (<LinearLayout
             width="match_parent"
             height="2"
-            margin="0,0,0,0"
             background={window.__Colors.PRIMARY_BLACK_22}/>)
   }
 
-  getBody = () => {
-    return (
-      <LinearLayout
-        width = "match_parent"
-        height = "match_parent"
-        orientation = "vertical"
-        backgroundColor = "#ffffff"
-        margin = "0,0,0,24">
-
-        {this.getToolbar()}
-        <LinearLayout
-          width="match_parent"
-          height="match_parent"
-          orientation="vertical"
-          padding = "0,0,0,60">
-            <ScrollView
-            height="match_parent"
-            width="match_parent"
-            weight="1">
-                 {this.getScrollView()}
-            </ScrollView>
-          </LinearLayout>
-      </LinearLayout>);
-  }
   getScrollView(){
     return(
       <LinearLayout
       height = "match_parent"
       width = "match_parent"
       orientation="vertical"
-      background="#ffffff"
       id={this.idSet.scrollView}
       padding="15,15,15,15">
-        <LinearLayout
-        id={this.setIds.addressTypeRadioContainer}
-        height="wrap_content"
-        width="match_parent"
-        orientation="vertical"
-        padding = "4,0,0,0"
-        margin = "0,0,0,2">
           <LinearLayout
             height="wrap_content"
             width="match_parent"
             orientation="horizontal"
-            margin = "0,0,0,10">
+            padding = "4,0,0,10">
             <TextView
                height="wrap_content"
                width="wrap_content"
@@ -519,7 +405,6 @@ class AddressActivity extends View {
             items={this.addressTypeValue}
             defaultIndex={this.index}
             onClick={this.handleRadioButtonClick}/>
-        </LinearLayout>
         {this.getEditTextView(this.idSet.addressLine1Text,this.addressLine1, window.__S.ADDRESS_LINE1, false, this.setAddressLine1)}
         {this.getEditTextView(this.idSet.addressLine2Text,this.addressLine2, window.__S.ADDRESS_LINE2, true, this.setAddressLine2)}
         {this.getEditTextView(this.idSet.cityText,this.city, window.__S.CITY, false, this.setCity)}
@@ -547,18 +432,6 @@ class AddressActivity extends View {
     );
   }
 
-  getUi = () => {
-    return (
-      <RelativeLayout
-        width="match_parent"
-        height="match_parent"
-        id = {this.idSet.addressPopUpBody}
-        gravity="center">
-            {this.getBody()}
-            {this.getButtons()}
-      </RelativeLayout>);
-  }
-
   handleConfirmDialog = (type) => {
     if (type == "positive") {
       this.delete = true;
@@ -576,16 +449,27 @@ class AddressActivity extends View {
     }
     this.layout = (
       <RelativeLayout
+       width="match_parent"
+       height="match_parent">
+      <LinearLayout
         orientation="vertical"
         width="match_parent"
         height="match_parent"
-        root="true"
-        id={this.idSet.addressPopUpParent}
         gravity="center"
-        root="true"
-        background = "#ffffff">
-            {this.getUi()}
-
+        background = {window.__Colors.PRIMARY_LIGHT}>
+            <SimpleToolbar
+              title={window.__S.TITLE_ADDRESS}
+              onBackPress={this.onBackPressed}
+              invert="true"
+              width="match_parent"/>
+            <ScrollView
+            height="match_parent"
+            width="match_parent"
+            padding="0,0,0,60">
+                 {this.getScrollView()}
+            </ScrollView>
+            </LinearLayout>
+            {this.getButtons()}
         <LinearLayout
           width = "match_parent"
           height = "match_parent">
