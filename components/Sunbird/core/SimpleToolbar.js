@@ -92,7 +92,6 @@ getMenu = () =>{
       margin = "15,0,10,0"
       style = {
         {
-          width: '32',
           height: '32'
         }
       }
