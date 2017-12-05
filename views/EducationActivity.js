@@ -32,7 +32,7 @@ class EducationActivity extends View {
       "yearOfPassingText",
       "percentageText",
       "gradeText",
-      "inititutionText",
+      "institutionText",
       "boardOrUniversityText",
       "saveButton",
       "delButton",
@@ -57,7 +57,7 @@ class EducationActivity extends View {
     this.yearOfPassing = "";
     this.percentage = "";
     this.grade = "";
-    this.inititution = "";
+    this.institution = "";
     this.boardOrUniversity = "";
     this.prevData = {};
     this.delete = false;
@@ -101,7 +101,7 @@ class EducationActivity extends View {
       this.prevData.degree = this.data.degree;
       this.prevData.yearOfPassing = this.data.yearOfPassing ? this.data.yearOfPassing : "";
       this.prevData.percentage = this.data.percentage ? this.data.percentage : "";
-      this.prevData.inititution = this.data.name;
+      this.prevData.institution = this.data.name;
       this.prevData.boardOrUniversity = this.data.boardOrUniversity;
       this.prevData.grade = this.data.grade;
      }
@@ -109,7 +109,7 @@ class EducationActivity extends View {
        this.prevData.degree = "";
        this.prevData.yearOfPassing = "";
        this.prevData.percentage = "";
-       this.prevData.inititution = "";
+       this.prevData.institution = "";
        this.prevData.boardOrUniversity = "";
        this.prevData.grade = "";
      }
@@ -117,7 +117,7 @@ class EducationActivity extends View {
      this.degree = this.prevData.degree;
      this.yearOfPassing = this.prevData.yearOfPassing;
      this.percentage = this.prevData.percentage;
-     this.inititution = this.prevData.inititution;
+     this.institution = this.prevData.institution;
      this.boardOrUniversity = this.prevData.boardOrUniversity;
      this.grade = this.prevData.grade;
   }
@@ -144,7 +144,7 @@ class EducationActivity extends View {
   }
 
   setInitution = (data) => {
-    this.inititution = data;
+    this.institution = data;
     this.checkDataChanged();
   }
 
@@ -161,7 +161,7 @@ class EducationActivity extends View {
       && this.yearOfPassing == this.prevData.yearOfPassing
       && this.percentage == this.prevData.percentage
       && this.grade == this.prevData.grade
-      && this.inititution == this.prevData.inititution
+      && this.institution == this.prevData.institution
       && this.boardOrUniversity == this.prevData.boardOrUniversity) {
         console.log("isChanged is false");
          isChanged = false;
@@ -173,8 +173,8 @@ class EducationActivity extends View {
   isValid = () => {
     if (this.degree == undefined
         || this.degree.length == 0
-        ||this.inititution == undefined
-        || this.inititution.length == 0 ) {
+        ||this.institution == undefined
+        || this.institution.length == 0 ) {
       return false;
     }
     return true;
@@ -284,7 +284,7 @@ class EducationActivity extends View {
       json = {
         "degree": this.degree,
         "yearOfPassing": parseInt(this.yearOfPassing),
-        "name": this.inititution,
+        "name": this.institution,
         "percentage": parseFloat(this.percentage),
         "grade": this.grade,
         "boardOrUniversity" : this.boardOrUniversity
@@ -293,7 +293,7 @@ class EducationActivity extends View {
       json = this.data;
       json.degree = this.degree;
       json.yearOfPassing = parseInt(this.yearOfPassing);
-      json.name = this.inititution;
+      json.name = this.institution;
       json.percentage = parseFloat(this.percentage);
       json.grade = this.grade;
       json.boardOrUniversity = this.boardOrUniversity;
@@ -422,7 +422,7 @@ class EducationActivity extends View {
         padding="15,15,15,15">
 
         {this.getEditTextView(this.idSet.degreeText, this.degree, window.__S.DEGREE , false, this.setDegree)}
-        {this.getEditTextView(this.idSet.inititutionText,this.degree, window.__S.INSTITUTION_NAME, false, this.setInitution)}
+        {this.getEditTextView(this.idSet.institutionText,this.institution, window.__S.INSTITUTION_NAME, false, this.setInitution)}
         {this.getEditTextView(this.idSet.yearOfPassingText,this.yearOfPassing, window.__S.YEAR_OF_PASSING, true, this.setYearOfPassingText, "numeric")}
         {this.getEditTextView(this.idSet.percentageText,this.percentage, window.__S.PERCENTAGE, true, this.setPercentage, "numeric")}
         {this.getEditTextView(this.idSet.gradeText,this.grade, window.__S.GRADE, true, this.setGrade)}
