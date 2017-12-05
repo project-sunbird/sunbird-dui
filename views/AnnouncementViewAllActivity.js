@@ -24,7 +24,12 @@ class AnnouncementViewAllActivity extends View {
       this.setIds([
           "announcementListContainer",
       ]);
-      this.details=JSON.parse(utils.decodeBase64(JBridge.getSavedData("savedAnnouncements")));
+      try{
+        this.details = JSON.parse(utils.decodeBase64(JBridge.getSavedData("savedAnnouncements")));
+      }catch(e){
+        this.details="";
+        console.log("Failed to get announcement Data from shared preferences :",e);
+      }
       //this.details=this.details.announcements;
       console.log("AnnouncementViewAllActivity -->:",this.details);
       this.screenName = "AnnouncementViewAllActivity";
@@ -113,9 +118,9 @@ class AnnouncementViewAllActivity extends View {
 
       }
     afterRender(){
+      _this.showList();      
       JBridge.logAnnouncementListShow();
       console.log("AnnouncementViewAllActivity after render");
-      _this.showList();
     }
     render(){
         this.layout=(

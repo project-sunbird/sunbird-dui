@@ -5,11 +5,8 @@ var RelativeLayout = require("@juspay/mystique-backend/src/android_views/Relativ
 var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
 var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
 var HorizontalProgressBar = require('../../components/Sunbird/HorizontalProgressBar');
-var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget");
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
-
-
 
 class Attachments extends View {
   constructor(props, children) {
@@ -53,20 +50,10 @@ class Attachments extends View {
         JBridge.showToast(window.__S.ERROR_FAILED_TO_DOWNLOAD_ATTACHMENT,"short");
       }else if(data[0]=="finished"){
         JBridge.showToast(window.__S.ATTACHMENT_DOWNLOADED,"short");        
-        var progressBar= 
-        (
-        <HorizontalProgressBar
-        width="match_parent"
-        height="4"
-        cornerRadius={"12,12,0,0"}
-        currentProgress={1}
-        totalProgress={1}
-        visibility="gone"/>
-        );
+        var progressBar= (<LinearLayout/>);
         _this.replaceChild(_this.idSet.attachmentCard, progressBar.render(), 0);
         var cmd = _this.set({
           id: _this.idSet.viewButton,
-          text: window.__S.OPEN,
           visibility : "visible"
         });
         cmd += _this.set({
@@ -79,25 +66,11 @@ class Attachments extends View {
     JBridge.downloadAndOpen(url,path,callback,this.props.index);
   }
 
-    
-  checkIfDownloaded = () =>{
-    var path="/storage/emulated/0/announcements/"+this.props.id+"/"+this.props.data.name;
-    return JBridge.checkIfDownloaded(path);
-  }
-
   cancelDownload = () => {
     var _this= this;
     var callback1 = callbackMapper.map(function() {
       JBridge.showToast(window.__S.DOWNLOAD_CANCELED);
-      var progressBar =(
-      <HorizontalProgressBar
-      width="match_parent"
-      height="4"
-      cornerRadius={"12,12,0,0"}
-      currentProgress={0}
-      totalProgress={1}
-      visibility="gone"/>
-      );
+      var progressBar =(<LinearLayout/>);
       _this.replaceChild(_this.idSet.attachmentCard, progressBar.render(), 0);
       var cmd = _this.set({
         id: _this.idSet.viewButton,
@@ -143,6 +116,7 @@ render(){
           <LinearLayout
            width="match_parent"
            height="wrap_content"
+           root="true"
            id={this.idSet.attachmentCard}>
             <HorizontalProgressBar
             width="match_parent"
@@ -172,7 +146,8 @@ render(){
             <TextView
             height="wrap_content"
             width="wrap_content"
-            text={item.type}
+            padding="0,0,0,5"
+            text={item.name}
             style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>
             <TextView
             height="wrap_content"
@@ -180,7 +155,7 @@ render(){
             text={item.size}
             style={window.__TextStyle.textStyle.CARD.BODY.FADED}/>
             </LinearLayout>
-            <ViewWidget
+            <LinearLayout
             height="0"
             weight="1"/>
             <RelativeLayout
@@ -194,17 +169,15 @@ render(){
                 width="wrap_content"
                 height="wrap_content"
                 onClick={this.openAttachment}
-                gravity="center"
                 id={this.idSet.viewButton}
                 style={window.__TextStyle.textStyle.CARD.ACTION.DARK}
-                text={this.checkIfDownloaded()?window.__S.OPEN:window.__S.VIEW}/>
+                text={window.__S.VIEW}/>
             <TextView
                 width="wrap_content"
                 height="wrap_content"
                 visibility="gone"
                 id={this.idSet.cancelButton}
                 onClick={this.cancelDownload}
-                gravity="center"
                 style={window.__TextStyle.textStyle.CARD.ACTION.DARK}
                 text={window.__S.DISMISS}/>
             </RelativeLayout>
