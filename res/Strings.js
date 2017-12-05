@@ -282,7 +282,8 @@ const stringsRes = {
 		ERROR_FAILED_TO_DOWNLOAD_ATTACHMENT:"Failed to download attachment",
 		ATTACHMENT_DOWNLOADED : "Attachment downloaded",
 		DOWNLOAD_CANCELED : "Download canceled",
-
+		INVALID_PINCODE : "Inavlid pincode", 
+		AVATAR : "Avatar",
 	},
 	"hi_IN" : {
 		ALREADY_HAVE_ACC : "मौजूदा उपयोगकर्ता, साइन इन करें",
