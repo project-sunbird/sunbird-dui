@@ -174,7 +174,7 @@ class AdditionalInformationActivity extends View{
           _this.linkedin=data.url;
         }
         else if (data.type=="blog") {
-        _this.blog=data.url;
+          _this.blog=data.url;
         }
       })
     }
@@ -192,8 +192,8 @@ class AdditionalInformationActivity extends View{
     this.prevData.gender = this.data.gender;
     this.prevData.description=this.data.profileSummary;
     this.prevData.fb=this.fb;
-    this.prevData.linkedin=this.linkedin;
-    this.prevData.blog=this.blog;
+    this.prevData.linkedin=this.linkedin;    
+    this.prevData.blog=this.blog;    
     this.prevData.twitter=this.twitter;
     this.prevData.grade = this.data.grade!=null ? this.data.grade.slice():null;
     this.prevData.selectedSubjects = this.data.subject!=null ? this.data.subject.slice():null;
@@ -254,9 +254,9 @@ class AdditionalInformationActivity extends View{
     })
 
     cmd += this.set({
-    id: this.idSet.blogText,
-    text: this.blog
-  })
+      id: this.idSet.blogText,
+      text: this.blog
+    })
 
     Android.runInUI(cmd, 0);
 
@@ -284,12 +284,11 @@ class AdditionalInformationActivity extends View{
            textAllCaps="true"
            style={window.__TextStyle.textStyle.HINT.SEMI}
            text={window.__S.GRADE}
-           margin="0,0,0,8"
            padding="4,0,0,0"/>
           <MultiSelectSpinner
             width="match_parent"
             height="wrap_content"
-            addLayout={this.getLockIcon(this.idSet.gradeLI,true,"grade")}
+            addLayout={this.getLockIcon(this.idSet.gradeLI,true,"grade",window.__S.GRADE,"8,10,8,6")}
             data={this.GradeArray}
             selectedData={items}
             onItemChange={this.onMultiSelectGradeItemChange}/>
@@ -315,12 +314,11 @@ class AdditionalInformationActivity extends View{
            textAllCaps="true"
            style={window.__TextStyle.textStyle.HINT.SEMI}
            text={window.__S.SUBJECTS}
-           margin="0,0,0,8"
            padding="4,0,0,0"/>
           <MultiSelectSpinner
             width="match_parent"
             height="wrap_content"
-            addLayout={this.getLockIcon(this.idSet.subjectsLI,true,"subject")}
+            addLayout={this.getLockIcon(this.idSet.subjectsLI,true,"subject",window.__S.SUBJECTS,"8,10,8,6")}
             data={this.subjectDictionary}
             selectedData={items}
             onItemChange={this.onMultiSelectSubjectItemChange}/>
@@ -337,6 +335,7 @@ class AdditionalInformationActivity extends View{
   getLineSeperator = () => {
     return (<LinearLayout
             width="match_parent"
+            margin="4,0,0,0"
             height="1"
             background={window.__Colors.PRIMARY_BLACK}/>)
   }
@@ -364,32 +363,33 @@ class AdditionalInformationActivity extends View{
       width="match_parent"
       height="wrap_content"
       orientation="vertical"
-      margin="0,0,0,18">
+      margin="4,0,0,18">
          {this.getLabel(label,optional)}
          <LinearLayout
            width="match_parent"
            height="wrap_content"
-           margin="4,0,0,0"
            orientation="horizontal"
            id={id}>
            <LinearLayout
-           height="wrap_content"
+           height="match_parent"
+           padding="0,6,0,0"
            weight="1">
             {callSpinner()}
           </LinearLayout>
-            {this.getLockIcon(lockIconId,lockIconVisibility,lockName)}
+            {this.getLockIcon(lockIconId,lockIconVisibility,lockName,label,"8,10,8,6")}
          </LinearLayout>
          {this.getLineSeperator()}
        </LinearLayout>
     )
   }
-  getLockIcon =(id,visibility,lockName)=>{
+  getLockIcon =(id,visibility,lockName,label,padding)=>{
     return (<LinearLayout
     height="36"
     width="36"
     id={id}
     visibility={visibility?"visible":"gone"}
-    onClick={()=>this.privacyChange(id,lockName)}
+    padding={padding||"8,8,8,8"}
+    onClick={()=>this.privacyChange(id,lockName,label)}
     alignParentRight="true,-1"
     gravity="right">
       <ImageView
@@ -399,7 +399,7 @@ class AdditionalInformationActivity extends View{
   </LinearLayout>);
   }
 
-  getEditTextView = (id, label, hint , optional , onChange, inputType,lockIconVisibility,lockIconId,lockName) =>{
+  getEditTextView = (id, label, hint , optional , onChange, inputType,lockIconVisibility,lockIconId,lockName,padding) =>{
     console.log("getedittextview :",label,"   ",lockIconVisibility);
     return(
       <RelativeLayout
@@ -419,11 +419,17 @@ class AdditionalInformationActivity extends View{
         textStyle = {window.__TextStyle.textStyle.HINT.SEMI}
         editTextStyle = {window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
         inputType = {inputType ? inputType : "text"}/>
-        {this.getLockIcon(lockIconId,lockIconVisibility,lockName)}
+        <LinearLayout
+         width="wrap_content"
+         height="wrap_content"
+         alignParentRight="true,-1"
+         padding="0,8,0,0">
+        {this.getLockIcon(lockIconId,lockIconVisibility,lockName,label,padding)}
+        </LinearLayout>
         </RelativeLayout>)
   }
 
-  privacyChange = (id,lockName)=>{
+  privacyChange = (id,lockName,label)=>{
     this.currentData.lockStatus[lockName]=this.currentData.lockStatus[lockName]=="public"?"private":"public";
     this.updateSaveButtonStatus(this.checkCompleteStatus());
     console.log("curentlock: ",this.currentData.lockStatus);
@@ -433,8 +439,7 @@ class AdditionalInformationActivity extends View{
       height="36"
       width="36"
       id={id}
-      onClick={()=>this.privacyChange(id,lockName)}
-      alignParentRight="true,-1">
+      onClick={()=>this.privacyChange(id,lockName,label)}>
         <ImageView
         height="16"
         width="16"
@@ -443,9 +448,9 @@ class AdditionalInformationActivity extends View{
        );
     this.replaceChild(id,tempLayout.render(), 0);
     if(this.currentData.lockStatus[lockName]=="private"){
-      window.__Snackbar.show("Hiding "+lockName+" from all");
+      window.__Snackbar.show("Hiding "+label+" from all");
     }else{
-      window.__Snackbar.show("Showing "+lockName+" to all");
+      window.__Snackbar.show("Showing "+label+" to all");
     }
 
   }
@@ -457,24 +462,18 @@ class AdditionalInformationActivity extends View{
           width="match_parent"
           height="wrap_content"
           style={window.__TextStyle.textStyle.HINT.SEMI}
-          text={label}
-          textAllCaps="true"
-          margin="0,0,0,8"
-          padding="4,0,0,4"/>);
+          text={label.toUpperCase(label)}/>);
 
      return (
        <LinearLayout
        height="wrap_content"
        width="wrap_content"
-       orientation="horizontal"
-       margin ="0,0,0,8"
-       padding="4,0,0,4">
+       orientation="horizontal">
        <TextView
         width="match_parent"
         height="wrap_content"
-        textAllCaps="true"
         style={window.__TextStyle.textStyle.HINT.SEMI}
-        text={label}/>
+        text={label.toUpperCase(label)}/>
        <TextView
        height="wrap_content"
        width="wrap_content"
@@ -497,63 +496,70 @@ class AdditionalInformationActivity extends View{
         <LinearLayout
         width="match_parent"
         height="match_parent"
-        padding="15,15,15,15"
+        padding="11,15,15,15"
         orientation="vertical">
 
-                  {this.getEditTextView(this.idSet.nameText,window.__S.FIRST_NAME,window.__S.FIRST_NAME_HINT,false,this.setName,undefined,false,this.idSet.nameLI,"firstName")}
-                  {this.getEditTextView(this.idSet.lastNameText,window.__S.LAST_NAME,window.__S.LAST_NAME_HINT,true,this.setLastName,undefined,false,this.idSet.lastNameLI,"lastName")}
+                  {this.getEditTextView(this.idSet.nameText,window.__S.FIRST_NAME,window.__S.FIRST_NAME_HINT,false,this.setName,undefined,false,this.idSet.nameLI,"firstName","8,8,8,8")}
+                  {this.getEditTextView(this.idSet.lastNameText,window.__S.LAST_NAME,window.__S.LAST_NAME_HINT,true,this.setLastName,undefined,false,this.idSet.lastNameLI,"lastName","8,8,8,8")}
                   {this.getSingleSelectSpinner(this.idSet.languageSpinnerContainer,window.__S.LANGUAGES,false,this.loadLanguageSpinner,true,this.idSet.languageLI,"language")}
                    <LinearLayout
                    height="wrap_content"
                    width="match_parent"
                    orientation="vertical">
 
+                     <LinearLayout
+                      width="match_parent"
+                      height="wrap_content"
+                      padding="4,0,0,0"
+                      orientation="horizontal">
                        <LinearLayout
-                       width="match_parent"
+                       weight="1"
                        height="wrap_content"
-                       orientation="vertical"
-                       margin="4,0,0,17">
+                       orientation="vertical">
                          <TextView
                           width="match_parent"
                           height="wrap_content"
                           textAllCaps="true"
                           style={window.__TextStyle.textStyle.HINT.SEMI}
-                          text={window.__S.EMAIL_ID}/>
-                          <LinearLayout
-                            width="match_parent"
-                            height="wrap_content"
-                            padding="0,6,0,0">
+                          text={window.__S.EMAIL_ID}/>  
+                        <TextView
+                          width="wrap_content"
+                          weight="1"
+                          padding="0,4,0,4"
+                          id= {this.idSet.emailText}
+                          style={window.__TextStyle.textStyle.CARD.BODY.DARK.FADED}/>
+                       </LinearLayout>
+                       <LinearLayout
+                       width="wrap_content"
+                       height="wrap_content"
+                       padding="0,5,0,0">
+                       {this.getLockIcon(this.idSet.emailLI,true,"email",window.__S.EMAIL_ID,"8,16,8,0")}
+                       </LinearLayout>
+                       </LinearLayout>
+                         {this.getLineSeperator()}
+                      <LinearLayout
+                      width="match_parent"
+                      height="18"/>
 
-                              <TextView
-                                width="wrap_content"
-                                weight="1"
-                                id= {this.idSet.emailText}
-                                style={window.__TextStyle.textStyle.CARD.BODY.DARK.FADED}/>
-                                {this.getLockIcon(this.idSet.emailLI,true,"email")}
-                          </LinearLayout>
-                          {this.getLineSeperator()}
-                         </LinearLayout>
-
-                       {this.getEditTextView(this.idSet.phoneText,window.__S.PHONE,window.__S.HINT_MOBILE_NUMBER,false,this.setPhone,"numeric",true,this.idSet.phoneLI,"phone")}
-                       {this.getEditTextView(this.idSet.descriptionText,window.__S.DESCRIPTION,"",true,this.setDescription,undefined,true,this.idSet.descriptionLI,"profileSummary")}
+                       {this.getEditTextView(this.idSet.phoneText,window.__S.PHONE,window.__S.HINT_MOBILE_NUMBER,false,this.setPhone,"numeric",true,this.idSet.phoneLI,"phone","8,16,8,0")}
+                       {this.getEditTextView(this.idSet.descriptionText,window.__S.DESCRIPTION,"",true,this.setDescription,undefined,true,this.idSet.descriptionLI,"profileSummary","8,13,8,3")}
                        <LinearLayout
                          width="match_parent"
                          height="wrap_content"
                          orientation="vertical"
                          id={this.idSet.subjectSpinnerContainer}
-                         margin="0,0,0,17">
+                         margin="4,0,0,17">
                            <TextView
                             width="match_parent"
                             height="20"
                             style={window.__TextStyle.textStyle.HINT.SEMI}
                             textAllCaps="true"
                             text={window.__S.SUBJECTS}
-                            margin="0,0,0,8"
                             padding ="4,0,4,0"/>
                            <MultiSelectSpinner
                              width="match_parent"
                              height="wrap_content"
-                             addLayout={this.getLockIcon(this.idSet.subjectsLI,true,"subject")}
+                             addLayout={this.getLockIcon(this.idSet.subjectsLI,true,"subject",window.__S.SUBJECTS,"8,10,8,6")}
                              data={this.subjectDictionary}
                              selectedData={this.selectedSubjects}
                              onItemChange={this.onMultiSelectSubjectItemChange}/>
@@ -588,12 +594,13 @@ class AdditionalInformationActivity extends View{
                                 width="match_content"
                                 height="wrap_content"
                                 id= {this.idSet.dobText}
+                                textAllCaps="true"
                                 style={window.__TextStyle.textStyle.CARD.BODY.DARK.FADED}
                                 text={window.__S.SELECT_DATE}
                                 onClick={this.showCalendar}/>
                                 <LinearLayout
                                 weight="1"/>
-                                {this.getLockIcon(this.idSet.dobLI,true,"dob")}
+                                {this.getLockIcon(this.idSet.dobLI,true,"dob",window.__S.DATE_OF_BIRTH,"8,4,8,12")}
                           </LinearLayout>
                           {this.getLineSeperator()}
                          </LinearLayout>
@@ -602,25 +609,25 @@ class AdditionalInformationActivity extends View{
                           height="wrap_content"
                           orientation="vertical"
                           id={this.idSet.gradeSpinnerContainer}
-                          margin="0,0,0,17">
+                          margin="4,0,0,17">
                             <TextView
                              width="match_parent"
                              height="wrap_content"
+                             textAllCaps="true"
                              style={window.__TextStyle.textStyle.HINT.SEMI}
-                         text={window.__S.GRADE}
-                             margin="0,0,0,8"
+                              text={window.__S.GRADE}
                              padding="4,0,0,0"/>
                             <MultiSelectSpinner
                               width="match_parent"
                               height="wrap_content"
-                              addLayout={this.getLockIcon(this.idSet.gradeLI,true,"grade")}
+                              addLayout={this.getLockIcon(this.idSet.gradeLI,true,"grade",window.__S.GRADE,"8,10,8,6")}
                               data={this.GradeArray}
                               selectedData={this.grade}
                               onItemChange={this.onMultiSelectGradeItemChange}/>
                         </LinearLayout>
-                        {this.getEditTextView(this.idSet.locationText,window.__S.CURRENT_LOCATION,"",true,this.setLocation,undefined,true,this.idSet.locationLI,"location")}
+                        {this.getEditTextView(this.idSet.locationText,window.__S.CURRENT_LOCATION,"",true,this.setLocation,undefined,true,this.idSet.locationLI,"location","8,13,8,3")}
 
-                      <LinearLayout
+                        <LinearLayout
                         height="wrap_content"
                         width="match_parent"
                         margin="4,0,0,6"
@@ -636,12 +643,12 @@ class AdditionalInformationActivity extends View{
                             height="0"
                             weight="1"
                             />
-                            {this.getLockIcon(this.idSet.webLinksLI,true,"webPages",window.__S.WEBLINKS)}
-                      </LinearLayout>
-                      {this.getEditTextView(this.idSet.fbText,window.__S.FACEBOOK,"",true,this.setFb,undefined,false,this.idSet.fbLI)}
-                      {this.getEditTextView(this.idSet.twitterText,window.__S.TWITTER,"",true,this.setTwitter,undefined,false,this.idSet.twitterLI)}
-                      {this.getEditTextView(this.idSet.linkedinText,window.__S.LINKEDIN,"",true,this.setLinkedin,undefined,false,this.idSet.linkedinLI)}
-                      {this.getEditTextView(this.idSet.blogText,window.__S.BLOG,"",true,this.setBlog,undefined,false,this.idSet.blogLI)}
+                            {this.getLockIcon(this.idSet.webLinksLI,true,"webPages",window.__S.WEBLINKS,"8,0,8,16")}
+                        </LinearLayout>
+                        {this.getEditTextView(this.idSet.fbText,window.__S.FACEBOOK,"",true,this.setFb,undefined,false,this.idSet.fbLI,"8,8,8,8")}
+                        {this.getEditTextView(this.idSet.twitterText,window.__S.TWITTER,"",true,this.setTwitter,undefined,false,this.idSet.twitterLI,"8,8,8,8")}
+                        {this.getEditTextView(this.idSet.linkedinText,window.__S.LINKEDIN,"",true,this.setLinkedin,undefined,false,this.idSet.linkedinLI,"8,8,8,8")}
+                        {this.getEditTextView(this.idSet.blogText,window.__S.BLOG,"",true,this.setBlog,undefined,false,this.idSet.blogLI,"8,8,8,8")}
 
                     </LinearLayout>
         </LinearLayout>
@@ -670,6 +677,7 @@ class AdditionalInformationActivity extends View{
                   height="match_parent"
                   width="match_parent"
                   gravity="center_vertical"
+                  textAllCaps="true"
                   background={window.__Colors.WHITE}
                   text={window.__S.PERSONAL_DETAILS}
                   style={window.__TextStyle.textStyle.TOOLBAR.HEADING}/>
@@ -732,7 +740,6 @@ class AdditionalInformationActivity extends View{
              width="match_parent"
              height="24"
              style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
-             margin="0,0,5,6"
              id={this.idSet.languageSpinner}
              onItemClick = {this.handleLanguageSpinnerItemClick}
              values={this.languageArray}/>)
@@ -743,7 +750,12 @@ class AdditionalInformationActivity extends View{
 
         if(params[2]>0)
         {this.language=[this.LanguageArray[params[2]]]
-        this.updateSaveButtonStatus(this.checkCompleteStatus());}
+        }
+        else{
+          this.language=[];
+        }
+
+        this.updateSaveButtonStatus(this.checkCompleteStatus());
    }
 
   loadGenderSpinner = () => {
@@ -751,7 +763,6 @@ class AdditionalInformationActivity extends View{
             width="match_parent"
             height="24"
             style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
-            margin="0,0,5,6"
             onItemClick = {this.handleGenderSpinnerItemClick}
             id={this.idSet.genderSpinner}
             values={this.genderArray}/>)
@@ -759,8 +770,13 @@ class AdditionalInformationActivity extends View{
 
   handleGenderSpinnerItemClick = (...params) => {
        if(params[2]>0)
-       {this.gender=this.GenderArray[params[2]]
-       this.updateSaveButtonStatus(this.checkCompleteStatus());}
+       {
+         this.gender=this.GenderArray[params[2]]
+       }
+       else{
+         this.gender="";
+       }
+       this.updateSaveButtonStatus(this.checkCompleteStatus());
   }
 
   showCalendar = () =>{
@@ -773,7 +789,7 @@ class AdditionalInformationActivity extends View{
       function (data){
 
             data[0]=_this.formatDate(data[0]);
-             _this.dob=data[0];
+            _this.dob=data[0];
 
               var cmd = _this.set({
                 id: _this.idSet.dobText,
@@ -781,9 +797,9 @@ class AdditionalInformationActivity extends View{
                 style: window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK
               });
               Android.runInUI(cmd, 0);
+              _this.updateSaveButtonStatus(_this.checkCompleteStatus());});
 
-      _this.updateSaveButtonStatus(_this.checkCompleteStatus());});
-      console.log("current date ", selectedDate);
+      console.log("current date ",selectedDate);
       JBridge.showCalender(callback,minDate,maxDate,selectedDate);
   }
 
@@ -1212,6 +1228,7 @@ class AdditionalInformationActivity extends View{
   }
 
   handleSaveClickBody = () => {
+    var _this=this;
     var json=  {};
     if(!this.checkCompleteStatus())
       {
@@ -1313,32 +1330,32 @@ class AdditionalInformationActivity extends View{
       delete json.profileSummary;
 
 
-      json.webPages=[];
+     json.webPages=[];
 
-       if(this.fb!="")
-         {
-              var obj={
-               "type":"fb",
-               "url": this.fb}
-               json.webPages.push(obj);
-         }
+      if(this.fb!="")
+        {
+             var obj={
+              "type":"fb",
+              "url": this.fb}
+              json.webPages.push(obj);
+        }
 
 
-       if(this.twitter!="")
-         {
-              var obj={
-               "type":"twitter",
-               "url": this.twitter}
-               json.webPages.push(obj);
-         }
+      if(this.twitter!="")
+        {
+             var obj={
+              "type":"twitter",
+              "url": this.twitter}
+              json.webPages.push(obj);
+        }
 
-       if(this.linkedin!="")
-         {
-              var obj={
-               "type":"in",
-               "url": this.linkedin}
-               json.webPages.push(obj);
-         }
+      if(this.linkedin!="")
+        {
+             var obj={
+              "type":"in",
+              "url": this.linkedin}
+              json.webPages.push(obj);
+        }
 
 
         if(this.blog!="")
@@ -1492,11 +1509,11 @@ privacyStatusApiCall = () => {
        && this.description == this.prevData.description
        && this.dob == this.prevData.dob
        && this.location == this.prevData.location
-         && this.fb==this.prevData.fb
-         && this.linkedin==this.prevData.linkedin
-         && this.twitter==this.prevData.twitter
-         && this.blog == this.prevData.blog
-      && (this.gender == this.prevData.gender || (this.gender && this.prevData.gender && this.gender.toLowerCase() == this.prevData.gender.toLowerCase()))
+        && this.fb==this.prevData.fb
+        && this.linkedin==this.prevData.linkedin
+        && this.twitter==this.prevData.twitter
+        && this.blog == this.prevData.blog
+       && (this.gender == this.prevData.gender || (this.gender && this.prevData.gender && this.gender.toLowerCase() == this.prevData.gender.toLowerCase()))
        && this.arrayEquals(this.grade,this.prevData.grade)
        && this.arrayEquals(this.selectedSubjects,this.prevData.selectedSubjects) ){
                return true;
@@ -1588,7 +1605,7 @@ privacyStatusApiCall = () => {
     this.updateSaveButtonStatus(this.checkCompleteStatus());
   }
 
-
+  
   setBlog= (data)=>{
    this.blog=data;
    this.updateSaveButtonStatus(this.checkCompleteStatus());
