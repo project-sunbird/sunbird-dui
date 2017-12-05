@@ -446,8 +446,7 @@ class UserActivity extends View {
           break;
         case "DO_NOTHING":
         default:
-          var whatToSend = []
-          var event = { tag: "OPEN_MainActivity", contents: whatToSend };
+          var event = { tag: "OPEN_MainActivity", contents: [] };
           break;
       }
     } else {
