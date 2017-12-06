@@ -7,10 +7,9 @@ var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget"
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
 var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
-var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
+var ScrollView = require("@juspay/mystique-backend/src/android_views/ScrollView");
 var HorizontalScrollView = require("@juspay/mystique-backend/src/android_views/HorizontalScrollView");
 var RatingBar = require("@juspay/mystique-backend/src/android_views/RatingBar");;
-var objectAssign = require('object-assign');
 var SharePopup = require('../components/Sunbird/core/SharePopup');
 var FlagPopup = require('../components/Sunbird/FlagPopup');
 var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
@@ -380,31 +379,22 @@ class ResourceDetailActivity extends View {
 
 
   getHeader = () => {
-
     return (
-
       <LinearLayout
         width="match_parent"
         height="wrap_content"
         margin="0,16,0,0"
         orientation="vertical">
 
-
-          <LinearLayout
-          width="match_parent"
-          height="wrap_content">
-
             <LinearLayout
             width="80"
             height="50"
             cornerRadius="4"
             background={window.__Colors.PRIMARY_BLACK_66}>
-
                 <ImageView
                 width="80"
                 height="50"
                 circularImageUrl={"4,"+ (this.details.imageUrl?this.details.imageUrl:"ic_launcher")}/>
-
             </LinearLayout>
 
             <TextView
@@ -414,31 +404,28 @@ class ResourceDetailActivity extends View {
             style={window.__TextStyle.textStyle.CARD.TITLE.DARK}
             text={this.details.title}/>
 
-          </LinearLayout>
-
           <LinearLayout
           margin="0,12,0,0"
           width="match_parent"
-          height="wrap_content"
-          >
+          height="wrap_content">
 
-            <TextView
-            width="wrap_content"
-            height="wrap_content"
-            text={this.details.headFooterTitle}
-            style={window.__TextStyle.textStyle.HINT.REGULAR}/>
+              <TextView
+              width="wrap_content"
+              height="wrap_content"
+              text={this.details.headFooterTitle}
+              style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
-            <ViewWidget
-            width="0"
-            weight="1"
-            height="0"/>
+              <ViewWidget
+              width="0"
+              weight="1"
+              height="0"/>
 
-            <TextView
-            width="wrap_content"
-            height="wrap_content"
-            visibility = {this.details.hasOwnProperty("content")&& this.details.content.hasOwnProperty("me_totalDownloads") ? "visible" : "gone"}
-            text={this.details.hasOwnProperty("content")&& this.details.content.hasOwnProperty("me_totalDownloads") ? parseInt(this.details.content.me_totalDownloads) : "0"}
-            style={window.__TextStyle.textStyle.HINT.DULL}/>
+              <TextView
+              width="wrap_content"
+              height="wrap_content"
+              visibility = {this.details.hasOwnProperty("content")&& this.details.content.hasOwnProperty("me_totalDownloads") ? "visible" : "gone"}
+              text={this.details.hasOwnProperty("content")&& this.details.content.hasOwnProperty("me_totalDownloads") ? parseInt(this.details.content.me_totalDownloads) : "0"}
+              style={window.__TextStyle.textStyle.HINT.DULL}/>
 
           </LinearLayout>
 
@@ -446,10 +433,8 @@ class ResourceDetailActivity extends View {
           margin="0,2,0,0"
           width="match_parent"
           height="wrap_content">
-
             <LinearLayout
               id={this.idSet.ratingContainer}>
-
               <RatingBar
                id = {this.idSet.ratingBar}
                width="wrap_content"
@@ -459,7 +444,6 @@ class ResourceDetailActivity extends View {
               width="0"
               weight="1"
               height="0"/>
-
             <TextView
               width="wrap_content"
               height="wrap_content"
@@ -468,7 +452,7 @@ class ResourceDetailActivity extends View {
               style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
         </LinearLayout>
-        </LinearLayout>
+    </LinearLayout>
 
     )
 
@@ -604,18 +588,14 @@ class ResourceDetailActivity extends View {
       clickable="true"
       root="true">
       <LinearLayout
-        root = "true"
         background={window.__Colors.WHITE}
         orientation="vertical"
         width="match_parent"
         height="match_parent">
-        <LinearLayout
-          root = "true"
-          width="match_parent"
-          height="wrap_content"
-          id = {this.idSet.simpleToolBarOverFlow}>
-          <SimpleToolbar
+          <LinearLayout
+            root = "true"
             width="match_parent"
+<<<<<<< Updated upstream
             menuData={this.menuData}
             popupMenu={this.popupMenu}
             onMenuItemClick={this.handleMenuClick}
@@ -627,27 +607,35 @@ class ResourceDetailActivity extends View {
               <ScrollView
                 height="0"
                 weight="1"
+=======
+            height="wrap_content"
+            id = {this.idSet.simpleToolBarOverFlow}>
+              <SimpleToolbar
+>>>>>>> Stashed changes
                 width="match_parent"
-                fillViewport="true">
+                menuData={this.menuData}
+                popupMenu={this.popupMenu}
+                onMenuItemClick={this.handleMenuClick}
+                onBackPress={onBackPressed}
+                overFlowCallback = {this.overFlowCallback}
+                showMenu="true"
+                invert="true"/>
+          </LinearLayout>
 
-                <LinearLayout
-                  height="match_parent"
-                  width="match_parent"
-                  padding="16,0,16,0"
-                  orientation="vertical">
-
-
+          <ScrollView
+            weight="1"
+            width="match_parent"
+            fillViewport="true">
+              <LinearLayout
+                height="match_parent"
+                width="match_parent"
+                padding="16,0,16,0"
+                orientation="vertical">
                   {this.getHeader()}
-
                   {this.getLineSeperator()}
-
                   {this.getBody()}
-
-
-
-                </LinearLayout>
-
-                </ScrollView>
+              </LinearLayout>
+           </ScrollView>
 
                <LinearLayout
                 height="wrap_content"

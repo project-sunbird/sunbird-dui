@@ -4,16 +4,10 @@ var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLay
 var RelativeLayout = require("@juspay/mystique-backend/src/android_views/RelativeLayout");
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
-var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget");
 var ScrollView = require("@juspay/mystique-backend/src/android_views/ScrollView");
-
 var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
-
-var Space = require("@juspay/mystique-backend/src/android_views/Space");
-
 var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
 var FilterCard = require('../components/Sunbird/FilterCard');
-var DoubleRadioList = require('../components/Sunbird/DoubleRadioList');
 var FilterPopup = require('../components/Sunbird/FilterPopup');
 var PageOption = require('../components/Sunbird/core/PageOption');
 
@@ -42,15 +36,11 @@ class FilterActivity extends View {
         }
       }
     }
-
-
   }
-
 
   handleFilterChange = (newData) => {
     this.filterData = newData;
   }
-
 
   getSortCard = () => {
     return (<LinearLayout
@@ -161,56 +151,36 @@ class FilterActivity extends View {
       root="true"
       height="match_parent">
 
-      <LinearLayout
-      root="true"
-      width="match_parent"
-      height="match_parent">
-
-
-      <LinearLayout
+        <LinearLayout
         background={window.__Colors.WHITE}
         orientation="vertical"
         width="match_parent"
         height="match_parent">
 
+<<<<<<< Updated upstream
         <SimpleToolbar
           title={window.__S.FILTER}
           onBackPress={this.onBackPressed}
           width="match_parent"/>
+=======
+            <SimpleToolbar
+              title={window.__S.FILTER}
+              onBackPress={this.onBackPressed}
+              invert="true"
+              width="match_parent"/>
+>>>>>>> Stashed changes
 
             <ScrollView
               height="0"
               weight="1"
               width="match_parent"
               fillViewPort="true">
-
                 <LinearLayout
                   height="match_parent"
                   width="match_parent"
                   gravity="center_vertical"
                   orientation="vertical"
                   padding="0,0,0,80">
-
-                  <LinearLayout
-                  width="match_parent"
-                  height="wrap_content"
-                  visibility="gone"
-                  orientation="vertical">
-
-                      <TextView
-                      width="match_parent"
-                      height="28"
-                      padding="16,12,16,8"
-                      gravity="center_vertical"
-                      style={window.__TextStyle.textStyle.FILTER.REGULAR_BLACK}
-                      background={window.__Colors.WHITE_F7}
-                      text={window.__S.SORT_BY}/>
-
-                      {this.getSortCard()}
-
-                  </LinearLayout>
-
-
                       <TextView
                       width="match_parent"
                       gravity="center_vertical"
@@ -218,29 +188,21 @@ class FilterActivity extends View {
                       style={window.__TextStyle.textStyle.FILTER.REGULAR_BLACK}
                       background={window.__Colors.WHITE_F7}
                       text={window.__S.FILTER_BY}/>
-
                       <FilterCard
                       filterData={this.filterData}
                       onItemClick={this.showPopup}
                       onFilterUpdate={this.handleFilterChange}/>
-
-
-               </LinearLayout>
+                </LinearLayout>
             </ScrollView>
 
+            <PageOption
+               width="match_parent"
+               buttonItems={buttonList}/>
 
-          <PageOption
-             width="match_parent"
-             buttonItems={buttonList}/>
-
-      </LinearLayout>
-
-      </LinearLayout>
-
-      <FilterPopup
-        height="match_parent"
-        width="match_parent"/>
-
+        </LinearLayout>
+        <FilterPopup
+          height="match_parent"
+          width="match_parent"/>
 
       </RelativeLayout>
 

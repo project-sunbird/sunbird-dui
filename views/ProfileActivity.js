@@ -2,29 +2,18 @@ var dom = require("@juspay/mystique-backend/src/doms/android");
 var Connector = require("@juspay/mystique-backend/src/connectors/screen_connector");
 var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
 var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
-var ProfileFragment = require('./Fragments/ProfileFragment');
 var ScrollView = require("@juspay/mystique-backend/src/android_views/ScrollView");
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
-
 var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
 var ProfileHeader = require('../components/Sunbird/ProfileHeader');
-var ComingSoonComponent = require('../components/Sunbird/ComingSoonComponent');
-var PersonalDetails = require('../components/Sunbird/PersonalDetails');
 var ProfileExperiences = require('../components/Sunbird/ProfileExperiences');
 var ProfileSkillTags = require('../components/Sunbird/ProfileSkillTags');
-var ProfileAccomplishments = require('../components/Sunbird/ProfileAccomplishments');
 var ProfileCreations = require('../components/Sunbird/ProfileCreations');
-var ProfileBadges = require('../components/Sunbird/ProfileBadges');
-var ProfileProgress = require('../components/Sunbird/ProfileProgress');
 var ProfileAdditionalInfo = require('../components/Sunbird/ProfileAdditionalInfo');
-var ProfilAffiliations = require('../components/Sunbird/ProfileAffiliations');
 var CropParagraph = require('../components/Sunbird/CropParagraph');
-
 var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
 var utils = require('../utils/GenericFunctions');
-window.R = require("ramda");
-
 var _this;
 
 class ProfileActivity extends View {
@@ -49,11 +38,9 @@ class ProfileActivity extends View {
 
     _this = this;
     this.shouldCacheScreen = false;
-
     this.state = state;
     this.profile = JSON.parse(this.state.data.value0.profile);
     console.log("profileData in ProfileActivity::", this.profile);
-
     this.profileData = this.profile.data;
     this.jobProfile = this.profileData.jobProfile;
     this.education = this.profileData.education;
@@ -69,14 +56,14 @@ class ProfileActivity extends View {
     if ((this.profileData.profileSummary && this.profileData.profileSummary == "")
       || (this.education && this.education.length > 0)
       || (this.jobProfile && this.jobProfile.length > 0)
-      || (this.address && this.address.length>0)    
+      || (this.address && this.address.length>0)
       ||(this.profileData.skills &&this.profileData.skills.length>0)
       || (this.checkProfileAdditonalInfo()))
       return true;
     else
       return false;
   }
-  
+
   checkProfileAdditonalInfo = () =>{
     if(this.profileData && this.profileData.language && this.profileData.language.length > 0 ){
       return true;
@@ -199,8 +186,8 @@ class ProfileActivity extends View {
       });
       if (JBridge.isNetworkAvailable())
         JBridge.searchContent(callback, "userToken", this.profileData.id, "Combined", "true", 10);
-      else{   
-        this.getEmptyLayout(); 
+      else{
+        this.getEmptyLayout();
           }
     window.__LoaderDialog.hide();
   }
@@ -215,27 +202,23 @@ class ProfileActivity extends View {
           gravity="center_horizontal"
           alpha="0.33"
           orientation = "vertical">
-          {this.getLineSeperator()}
-
-          <ImageView
-          height="70"
-          width="70"
-          margin="0,150,0,0"
-          gravity="center_horizontal"
-          imageUrl="ic_blank_doc"/>
-
-
-          <TextView
-            height = "wrap_content"
-            width = "wrap_content"
-            margin="0,30,0,0"
-            style={window.__TextStyle.textStyle.HEADING.DARK}
-            text = {window.__S.MSG_NO_DETAILS_TO_SHOW}
-            gravity = "center_horizontal" />
-        </LinearLayout>
-      )
+             {this.getLineSeperator()}
+              <ImageView
+              height="70"
+              width="70"
+              margin="0,150,0,0"
+              gravity="center_horizontal"
+              imageUrl="ic_blank_doc"/>
+              <TextView
+                height = "wrap_content"
+                width = "wrap_content"
+                margin="0,30,0,0"
+                style={window.__TextStyle.textStyle.HEADING.DARK}
+                text = {window.__S.MSG_NO_DETAILS_TO_SHOW}
+                gravity = "center_horizontal" />
+         </LinearLayout>)
       this.replaceChild(this.idSet.mainHolder, layout.render(), 0);
-      }
+    }
   }
   getSkills=()=>{
      if(!JBridge.isNetworkAvailable()){
@@ -357,7 +340,6 @@ class ProfileActivity extends View {
 
 
           <ScrollView
-            height="0"
             weight="1"
             width="match_parent">
 
@@ -368,65 +350,59 @@ class ProfileActivity extends View {
                 margin = "0,0,0,64"
                 orientation="vertical">
 
-                <ProfileHeader
-                  editable = {this.isEditable}
-                  data={this.profileData}/>
+                    <ProfileHeader
+                      editable = {this.isEditable}
+                      data={this.profileData}/>
 
-                <LinearLayout
-                  width = "match_parent"
-                  height = "wrap_content"
-                  orientation = "vertical"
-                  id = {this.idSet.mainHolder}>
-
-                  {this.getDescription()}
-
-                  <ProfileExperiences
-                    editable = {this.isEditable}
-                    data = {this.education}
-                    popUpType = {window.__PROFILE_POP_UP_TYPE.EDUCATION}
-                    heading = {window.__S.TITLE_EDUCATION}/>
-
-                  <ProfileExperiences
-                    editable = {this.isEditable}
-                    data = {this.jobProfile}
-                    popUpType = {window.__PROFILE_POP_UP_TYPE.EXPERIENCE}
-                    heading = {window.__S.TITLE_EXPERIENCE}/>
-                  
-                  <ProfileExperiences
-                    editable = {this.isEditable}
-                    data = {this.address}
-                    popUpType={window.__PROFILE_POP_UP_TYPE.ADDRESS}
-                    heading = {window.__S.TITLE_ADDRESS}/>
-
-                  <LinearLayout
-                    height="wrap_content"
-                    width="wrap_content"
-                    id={this.idSet.skillTagComponent}>
-                    <ProfileSkillTags
-                      id = {this.profileData.id}
-                      data = {this.profileData.skills}
-                      editable = {this.isEditable}/>
-                  </LinearLayout>
                     <LinearLayout
                       width = "match_parent"
-                      id = {this.idSet.createdByHolder}>
+                      height = "wrap_content"
+                      orientation = "vertical"
+                      id = {this.idSet.mainHolder}>
 
-                        <ProfileCreations
-                          data = {_this.createdBy}
-                          editable = {_this.editable}
-                          onCardClick = {_this.handleCreatedCardClick}/>
+                        {this.getDescription()}
+                        <ProfileExperiences
+                          editable = {this.isEditable}
+                          data = {this.education}
+                          popUpType = {window.__PROFILE_POP_UP_TYPE.EDUCATION}
+                          heading = {window.__S.TITLE_EDUCATION}/>
+
+                        <ProfileExperiences
+                          editable = {this.isEditable}
+                          data = {this.jobProfile}
+                          popUpType = {window.__PROFILE_POP_UP_TYPE.EXPERIENCE}
+                          heading = {window.__S.TITLE_EXPERIENCE}/>
+
+                        <ProfileExperiences
+                          editable = {this.isEditable}
+                          data = {this.address}
+                          popUpType={window.__PROFILE_POP_UP_TYPE.ADDRESS}
+                          heading = {window.__S.TITLE_ADDRESS}/>
+
+                        <LinearLayout
+                          height="wrap_content"
+                          width="wrap_content"
+                          id={this.idSet.skillTagComponent}>
+                              <ProfileSkillTags
+                                id = {this.profileData.id}
+                                data = {this.profileData.skills}
+                                editable = {this.isEditable}/>
+                        </LinearLayout>
+                        <LinearLayout
+                            width = "match_parent"
+                            id = {this.idSet.createdByHolder}>
+                                <ProfileCreations
+                                  data = {_this.createdBy}
+                                  editable = {_this.editable}
+                                  onCardClick = {_this.handleCreatedCardClick}/>
+                        </LinearLayout>
+                        <ProfileAdditionalInfo
+                          data={this.profileData}
+                          editable = {this.isEditable}/>
                     </LinearLayout>
-
-                  <ProfileAdditionalInfo
-                    data={this.profileData}
-                    editable = {this.isEditable}/>
-                </LinearLayout>
-
               </LinearLayout>
-
          </ScrollView>
-
-        </LinearLayout>
+      </LinearLayout>
     )
     return this.layout.render();
   }

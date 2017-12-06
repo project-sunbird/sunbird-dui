@@ -3,14 +3,11 @@ var Connector = require("@juspay/mystique-backend/src/connectors/screen_connecto
 var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
 var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
 var RelativeLayout = require("@juspay/mystique-backend/src/android_views/RelativeLayout");
-var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget");
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
 var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
 var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var RatingBar = require("@juspay/mystique-backend/src/android_views/RatingBar");;
-var objectAssign = require('object-assign');
-window.R = require("ramda");
 var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
 var SimplePopup = require('../components/Sunbird/core/SimplePopup');
 var CropParagraph = require('../components/Sunbird/CropParagraph');
@@ -132,17 +129,7 @@ class ModuleDetailActivity extends View {
         var downloadedPercent = data.downloadProgress;
         downloadedPercent = downloadedPercent < 0 ? 0 : downloadedPercent;
         if (downloadedPercent == 100) {
-            // if(this.downloadList.indexOf(data.identifier) != -1){
-            //     console.log("download success",this.downloadList)
-            //     window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
-            //     this.onBackPressed();
-            //     return;
-            // }
-            // else{
-            //     console.log("second time download",this.downloadList)
-            //     this.downloadList.push(data.identifier)
-                this.checkContentLocalStatus(this.module);
-            // }
+              this.checkContentLocalStatus(this.module);
 
 
         } else {
@@ -153,7 +140,7 @@ class ModuleDetailActivity extends View {
             Android.runInUI(cmd, 0);
         }
     }
- 
+
     checkContentType = (mimeType) =>{
         if(mimeType.toLowerCase() != "application/vnd.ekstep.content-collection")
             return true;
@@ -219,10 +206,6 @@ class ModuleDetailActivity extends View {
     }
 
     handleModuleClick = (moduleName, module) => {
-        // var whatToSend = { "moduleName": moduleName, "moduleDetails": JSON.stringify(module) }
-        // var event = { "tag": "OPEN_ModuleActivity", contents: whatToSend };
-        // window.__runDuiCallback(event);
-        // this.renderModuleChildren(module);
         window.__ProgressButton.setButtonFor(module.identifier);
         this.stackPush(moduleName, module);
         this.reRender(moduleName, module);
@@ -273,7 +256,7 @@ class ModuleDetailActivity extends View {
                             text = {window.__S.ERROR_CONTENT_NOT_AVAILABLE}/>
                             );
             }
-            
+
             this.replaceChild(this.idSet.descriptionContainer, layout.render(), 0);
         } else {
             var cmd = this.set({
@@ -319,7 +302,8 @@ class ModuleDetailActivity extends View {
             margin = "0,12,0,12"
             width = "match_parent" >
 
-            <TextView height = "wrap_content"
+            <TextView
+              height = "wrap_content"
               width = "0"
               weight = "1"
               style = { window.__TextStyle.textStyle.CARD.TITLE.DARK }
