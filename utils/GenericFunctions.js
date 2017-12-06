@@ -144,6 +144,7 @@ exports.processResponse = (state) => {
 		response.data = decoded;
 	}
 	if (response.code == "401"){
+		console.log("401 response data ", response.data);
 		if (response.data.hasOwnProperty("message")){
 			//api token expired
 			window.__apiTokenExpireCount++;
@@ -164,22 +165,27 @@ exports.processResponse = (state) => {
 			return;
 		} else {
 			//refresh user access token
+			console.log("refresh user_access_token");
 			var callback = callbackMapper.map(function(params){
 				console.log("refreshed user_access_token, data: ", params);
 				console.log(arguments);
 				var status = arguments[0];
-				var response = exports.decodeBase64(arguments[1]);
+				var response = JSON.parse(exports.decodeBase64(arguments[1]));
 				var statusCode = arguments[2];
 				// console.log("statusCode: " + statusCode + "-- response: " + response);
 				if (status == "failure") window.__Logout();
 				else {
+					console.log("response ", response);
 					window.__refreshToken = response.refresh_token;
-					var whatToSend = {"user_token":window.__userToken,"api_token": window.__apiToken}
+					window.__user_accessToken = response.access_token;
+					JBridge.setInSharedPrefs("user_token",  response.access_token);
+					var whatToSend = {"user_token":window.__user_accessToken,"api_token": window.__apiToken}
 					var event = { "tag": state.responseFor, contents: whatToSend };
 					window.__runDuiCallback(event);
 				}
 			})
 			JBridge.refreshAccessToken(callback);
+			return;
 		}
 	} else if (response.code == 501 || response.status === "failure" || response.status=="f" || response.code == 504 || response.status == "failed"){
 		if (response.data.params && response.data.err)

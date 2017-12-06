@@ -149,7 +149,8 @@ class MainActivity extends View {
 
   handleStateChange = state => {
     var res = utils.processResponse(state);
-
+    console.log("res in MainActivity", res);
+    if (res == undefined) return;
     if (!state.local && !res.hasOwnProperty("err") && state.responseFor == "API_ProfileFragment") {
       console.log("Saving state");
       var data = utils.encodeBase64(JSON.stringify(state));
