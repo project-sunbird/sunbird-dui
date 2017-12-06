@@ -318,8 +318,7 @@ class ProfileFragment extends View {
             overFlowCallback = {this.overFlowCallback}
             onMenuItemClick={this.handleMenuClick}
             showMenu="true"
-            hideBack="true"
-            invert="true"/>
+            hideBack="true"/>
 
 
           <ScrollView

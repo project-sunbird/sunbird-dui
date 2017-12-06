@@ -304,7 +304,6 @@ networkCheck =()=>{
             title={window.__S.COURSES_LW}
             width="match_parent"
             showMenu="true"
-            invert="true"
             hideBack="true"
             menuData={this.menuData}
             onMenuItemClick={this.handleMenuClick}/>

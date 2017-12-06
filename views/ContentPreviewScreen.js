@@ -267,8 +267,7 @@ class ContentPreviewScreen extends View {
         popupMenu={this.popupMenu}
         overFlowCallback = {this.overFlowCallback}
         showMenu="true"
-        onBackPress={this.onBackPressed}
-        invert="true"/>);
+        onBackPress={this.onBackPressed}/>);
     this.replaceChild(this.idSet.simpleToolBarOverFlow, toolbar.render(), 0);
   }
   getHeader = () => {
@@ -444,8 +443,7 @@ class ContentPreviewScreen extends View {
               popupMenu={this.popupMenu}
               overFlowCallback = {this.overFlowCallback}
               showMenu="true"
-              onBackPress={this.onBackPressed}
-              invert="true"/>
+              onBackPress={this.onBackPressed}/>
         </LinearLayout>
 
           <HorizontalProgressBar

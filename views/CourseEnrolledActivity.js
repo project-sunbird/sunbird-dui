@@ -5,8 +5,8 @@ var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLay
 var RelativeLayout = require("@juspay/mystique-backend/src/android_views/RelativeLayout");
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
-var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
-var ProgressBar = require("@juspay/mystique-backend").androidViews.ProgressBar;
+var ScrollView = require("@juspay/mystique-backend/src/android_views/ScrollView");
+var ProgressBar = require("@juspay/mystique-backend/src/android_views/ProgressBar");
 var utils = require('../utils/GenericFunctions');
 var FeatureButton = require('../components/Sunbird/FeatureButton');
 
@@ -613,8 +613,7 @@ class CourseEnrolledActivity extends View {
         onMenuItemClick={this.handleMenuClick}
         overFlowCallback = {this.overFlowCallback}
         showMenu="true"
-        onBackPress={this.onBackPressed}
-        invert="true"/>)
+        onBackPress={this.onBackPressed}/>)
 
     this.replaceChild(this.idSet.simpleToolBarOverFlow, toolbar.render(), 0);
   }
@@ -649,8 +648,7 @@ class CourseEnrolledActivity extends View {
               onMenuItemClick={this.handleMenuClick}
               overFlowCallback = {this.overFlowCallback}
               showMenu="true"
-              onBackPress={this.onBackPressed}
-              invert="true"/>
+              onBackPress={this.onBackPressed}/>
         </LinearLayout>
 
           <HorizontalProgressBar

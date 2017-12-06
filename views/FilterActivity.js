@@ -176,7 +176,6 @@ class FilterActivity extends View {
         <SimpleToolbar
           title={window.__S.FILTER}
           onBackPress={this.onBackPressed}
-          invert="true"
           width="match_parent"/>
 
             <ScrollView

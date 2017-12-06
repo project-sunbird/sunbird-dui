@@ -237,7 +237,6 @@ handleResourceViewAllClick= (data,title,searchQuery,visibility) =>{
             title={window.__S.LIBRARY_LW}
             width="match_parent"
             showMenu="true"
-            invert="true"
             hideBack="true"
             menuData={this.menuData}
             onMenuItemClick={this.handleMenuClick}/>

@@ -286,7 +286,6 @@ class AnnouncementDetailActivity extends View{
           <SimpleToolbar
             title=""
             onBackPress={this.onBackPressed}
-            invert="true"
             width="match_parent"/>
           <ScrollView
             height="match_parent"
