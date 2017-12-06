@@ -304,7 +304,6 @@ class QRActivity extends View {
              title={window.__S.SCAN_QR_CODE}
              width="match_parent"
              showMenu="true"
-             invert="true"
              menuData={this.menuData}
              onBackPress={this.onBackPressed}/>
            <TextView

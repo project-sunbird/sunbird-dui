@@ -460,7 +460,6 @@ class AddressActivity extends View {
             <SimpleToolbar
               title={window.__S.TITLE_ADDRESS}
               onBackPress={this.onBackPressed}
-              invert="true"
               width="match_parent"/>
             <ScrollView
             height="match_parent"

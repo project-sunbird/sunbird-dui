@@ -301,7 +301,6 @@ showList = () =>{
           menuData={this.menuData}
           onBackPress={this.onBackPressed}
           showMenu="true"
-          invert="true"
           title= {this.appbarTitle}/>
              
              {this.getRows()}

@@ -387,8 +387,7 @@ class ModuleDetailActivity extends View {
         popupMenu={this.popupMenu}
         onBackPress={onBackPressed}
         overFlowCallback = {this.overFlowCallback}
-        showMenu="true"
-        invert="true"/>)
+        showMenu="true"/>)
 
       this.replaceChild(this.idSet.simpleToolBarOverFlow, toolbar.render(), 0);
     }
@@ -432,8 +431,7 @@ class ModuleDetailActivity extends View {
                       popupMenu={this.popupMenu}
                       onBackPress={onBackPressed}
                       overFlowCallback = {this.overFlowCallback}
-                      showMenu="true"
-                      invert="true"/>
+                      showMenu="true"/>
                 </LinearLayout>
 
                 <ScrollView

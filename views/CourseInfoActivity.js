@@ -432,8 +432,7 @@ class CourseInfoActivity extends View {
             menuData={this.menuData}
             onMenuItemClick={this.handleMenuClick}
             showMenu="true"
-            onBackPress={this.onBackPressed}
-            invert="true"/>
+            onBackPress={this.onBackPressed}/>
 
         <LinearLayout
           id={this.idSet.parentContainer}

@@ -18,6 +18,7 @@ class AnnouncementViewAllActivity extends View {
       this.setIds([
           "announcementListContainer",
       ]);
+      window.__LoaderDialog.show();         
       try{
         this.details = JSON.parse(utils.decodeBase64(JBridge.getSavedData("savedAnnouncements")));
       }catch(e){
@@ -99,7 +100,6 @@ class AnnouncementViewAllActivity extends View {
         <SimpleToolbar
           title={window.__S.ALL_ANNOUNCEMENTS}
           onBackPress={this.onBackPressed}
-          invert="true"
           width="match_parent"/>
         {this.getRows()}
       </LinearLayout>

@@ -353,8 +353,7 @@ class ProfileActivity extends View {
             overFlowCallback = {this.overFlowCallback}
             onMenuItemClick={this.handleMenuClick}
             onBackPress={this.onBackPressed}
-            showMenu="true"
-            invert="true"/>
+            showMenu="true"/>
 
 
           <ScrollView

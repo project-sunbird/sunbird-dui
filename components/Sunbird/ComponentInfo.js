@@ -68,7 +68,6 @@
             title=""
             width="match_parent"
             showMenu="true"
-            invert="true" //shows white background
             hideBack="true" //hides back button
             menuData={this.menuData}
             onMenuItemClick={this.handleMenuClick}/>

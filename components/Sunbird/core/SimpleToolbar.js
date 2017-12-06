@@ -133,7 +133,7 @@ getMenu = () =>{
           width="match_parent"
           height="match_parent"
           gravity="center_vertical"
-          background={this.props.invert?window.__Colors.WHITE:window.__Colors.LIGHT_VIOLET}>
+          background={window.__Colors.PRIMARY_LIGHT}>
 
           {back}
 

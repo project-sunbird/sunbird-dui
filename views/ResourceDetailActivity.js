@@ -554,8 +554,7 @@ class ResourceDetailActivity extends View {
           onBackPress={onBackPressed}
           onMenuItemClick={this.handleMenuClick}
           overFlowCallback = {this.overFlowCallback}
-          showMenu="true"
-          invert="true"/>)
+          showMenu="true"/>)
 
     this.replaceChild(this.idSet.simpleToolBarOverFlow, toolbar.render(), 0);
     this.localStatus=true;
@@ -622,8 +621,7 @@ class ResourceDetailActivity extends View {
             onMenuItemClick={this.handleMenuClick}
             onBackPress={onBackPressed}
             overFlowCallback = {this.overFlowCallback}
-            showMenu="true"
-            invert="true"/>
+            showMenu="true"/>
         </LinearLayout>
 
               <ScrollView

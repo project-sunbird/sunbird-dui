@@ -336,7 +336,6 @@ class HomeFragment extends View {
    }
    var whatToSend ={ "announcementDetails": JSON.stringify(data)}
    var event ={ tag: "OPEN_AnnouncementViewAllActivity", contents:  whatToSend}
-   window.__LoaderDialog.show();   
    window.__runDuiCallback(event);
 }
 
@@ -359,7 +358,6 @@ class HomeFragment extends View {
             width="match_parent"
             showMenu="true"
             logo={imgUrl}
-            invert="true"
             hideBack="true"
             menuData={this.menuData}
             onMenuItemClick={this.handleMenuClick}/>

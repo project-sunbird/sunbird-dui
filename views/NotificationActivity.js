@@ -180,8 +180,7 @@ class NotificationActivity extends View {
           title="Notifications"
           afterRender={this.afterRender}
           width="match_parent"
-          onBackPress={this.onBackPressed}
-          invert="true"/>
+          onBackPress={this.onBackPressed}/>
 
               <ScrollView
                 height="match_parent"
