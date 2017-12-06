@@ -82,7 +82,7 @@ class AnnouncementDetailActivity extends View{
   getFooter(){
     var d =  new Date(this.announcementData.createddate);
     var time = utils.prettifyDate(d);
-    var footerText = window.__S.SENT_ON+" "+time;    
+    var footerText = window.__S.SENT_ON+" "+time;
     return (
       <LinearLayout
       width="match_parent"
@@ -95,12 +95,17 @@ class AnnouncementDetailActivity extends View{
         text={footerText}
         style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>
         <ImageView
-        height="14"
-        width="14"
+        height="16"
+        width="16"
+        margin = "8,8,8,8"
         imageUrl="ic_action_share_black"
         onClick={this.shareAction}/>
       </LinearLayout>
     )
+  }
+
+  shareAction = () => {
+    JBridge.shareAnnouncement(this.announcementData.details.type, this.announcementData.details.title, this.announcementData.details.description);
   }
 
   getLineSeperator() {
@@ -126,7 +131,7 @@ class AnnouncementDetailActivity extends View{
     console.log(cards , "cardssss");
     return  (cards);
   }
-  
+
   openLink = (url) => {
     if(url==undefined)
       url="www.google.com/github";
@@ -136,7 +141,7 @@ class AnnouncementDetailActivity extends View{
 
     JBridge.openLink(url);
   }
-  
+
 
   getAttachment(){
      if(this.announcementData.hasOwnProperty("attachments") && this.announcementData.attachments.length>0){
@@ -175,7 +180,7 @@ class AnnouncementDetailActivity extends View{
       }
        return this.getSingleLink(item)
      });
-     return links 
+     return links
     }
 
   getWeblinks(){
