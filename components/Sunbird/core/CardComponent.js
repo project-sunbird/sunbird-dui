@@ -96,7 +96,7 @@ class CardComponent extends View {
       width="200"
       height="wrap_content">
       <LinearLayout
-        width="wrap_content"
+        weight="1"
         height="wrap_content"
         orientation="vertical">
         <TextView
@@ -105,21 +105,22 @@ class CardComponent extends View {
           text={this.props.data.footerTitle}
           visibility={this.props.data.stars?"gone":"visible"}
           style={window.__TextStyle.textStyle.CARD.SEMI_DARK}/>
-        <RatingBar
-          width="0"
-          height="0"
-          id={this.idSet.ratingBar}/>
+        <LinearLayout
+          visibility={this.props.data.stars?"visible":"gone"}
+          width="wrap_content"
+          height="wrap_content">
+          <RatingBar
+            width="0"
+            height="0"
+            id={this.idSet.ratingBar}/>
+        </LinearLayout>
         <TextView
           width="wrap_content"
           height="wrap_content"
-          visibility = {this.props.data.footerSubTitle && this.props.data.footerSubTitle
-          != "" ? "visible" : "gone"}
+          visibility = {this.props.data.footerSubTitle && this.props.data.footerSubTitle!= "" ? "visible" : "gone"}
           text={utils.cropText(this.props.data.footerSubTitle, 15)}
           style={window.__TextStyle.textStyle.HINT.TINY}/>
       </LinearLayout>
-      <LinearLayout
-        height="0"
-        weight="1"/>
       <Button
         type="SmallButton_Secondary_BT"
         width="wrap_content"
