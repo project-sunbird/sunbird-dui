@@ -156,20 +156,10 @@ class FilterActivity extends View {
         orientation="vertical"
         width="match_parent"
         height="match_parent">
-
-<<<<<<< Updated upstream
-        <SimpleToolbar
-          title={window.__S.FILTER}
-          onBackPress={this.onBackPressed}
-          width="match_parent"/>
-=======
             <SimpleToolbar
               title={window.__S.FILTER}
               onBackPress={this.onBackPressed}
-              invert="true"
               width="match_parent"/>
->>>>>>> Stashed changes
-
             <ScrollView
               height="0"
               weight="1"

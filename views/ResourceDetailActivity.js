@@ -595,23 +595,9 @@ class ResourceDetailActivity extends View {
           <LinearLayout
             root = "true"
             width="match_parent"
-<<<<<<< Updated upstream
-            menuData={this.menuData}
-            popupMenu={this.popupMenu}
-            onMenuItemClick={this.handleMenuClick}
-            onBackPress={onBackPressed}
-            overFlowCallback = {this.overFlowCallback}
-            showMenu="true"/>
-        </LinearLayout>
-
-              <ScrollView
-                height="0"
-                weight="1"
-=======
             height="wrap_content"
             id = {this.idSet.simpleToolBarOverFlow}>
               <SimpleToolbar
->>>>>>> Stashed changes
                 width="match_parent"
                 menuData={this.menuData}
                 popupMenu={this.popupMenu}
