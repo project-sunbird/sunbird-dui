@@ -3,25 +3,21 @@ var Connector = require("@juspay/mystique-backend/src/connectors/screen_connecto
 var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
 var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
 var RelativeLayout = require("@juspay/mystique-backend/src/android_views/RelativeLayout");
-var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget");
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
 var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var ProgressBar = require("@juspay/mystique-backend").androidViews.ProgressBar;
 var utils = require('../utils/GenericFunctions');
-var objectAssign = require('object-assign');
 var FeatureButton = require('../components/Sunbird/FeatureButton');
 
 window.R = require("ramda");
 
 var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
-var CropParagraph = require('../components/Sunbird/CropParagraph');
 var CourseCurriculum = require('../components/Sunbird/CourseCurriculum');
 var HorizontalProgressBar = require('../components/Sunbird/HorizontalProgressBar');
 var CourseProgress = require('../components/Sunbird/CourseProgress');
 var FlagPopup = require('../components/Sunbird/FlagPopup');
 var SharePopup = require('../components/Sunbird/core/SharePopup');
-var PageOption = require('../components/Sunbird/core/PageOption');
 
 
 var utils = require('../utils/GenericFunctions');
@@ -31,13 +27,9 @@ class CourseEnrolledActivity extends View {
     super(props, children, state);
 
     this.setIds([
-      "parentContainer",
-      "pageOption",
       "descriptionContainer",
-      "downloadProgressText",
       "courseNotStartedOverLay",
       "sharePopupContainer",
-      "contentLoaderContainer",
       "featureButton",
       "simpleToolBarOverFlow",
       "batchDetailsContainer"
@@ -426,8 +418,6 @@ class CourseEnrolledActivity extends View {
   }
 
 
-
-
   onBackPressed = () => {
     window.__ContentLoaderDialog.hide();
 
@@ -440,27 +430,21 @@ class CourseEnrolledActivity extends View {
      return;
     }
 
-   var whatToSend = []
-   var event = { tag: 'BACK_CourseEnrolledActivity', contents: whatToSend }
+   var event = { tag: 'BACK_CourseEnrolledActivity', contents: [] }
    window.__runDuiCallback(event);
   }
 
   afterRender=()=>{
     console.log("details",this.details)
 
-
-
     if((this.details.hasOwnProperty("mimeType")) && (this.details.mimeType.toLocaleLowerCase() == "application/vnd.ekstep.content-collection")){
       var cmd = this.set({
         id: this.idSet.featureButton,
         visibility: "gone"
-
       });
       Android.runInUI(cmd, 0);
     }
-    if(!this.enrolledCourses.hasOwnProperty("lastReadContentId") || (this.enrolledCourses.hasOwnProperty("lastReadContentId") && this.enrolledCourses.lastReadContentId==null)){
-
-
+    if(!this.enrolledCourses.hasOwnProperty("lastReadContentId") || (this.enrolledCourses.lastReadContentId==null)){
       var btn  = (<FeatureButton
                     clickable="true"
                     margin = "16,16,16,16"
@@ -470,13 +454,9 @@ class CourseEnrolledActivity extends View {
                     background = {window.__Colors.PRIMARY_ACCENT}
                     text = {window.__S.START_COURSE}
                     style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
-                    buttonClick = {this.handleResumeClick}
-                    />)
+                    buttonClick = {this.handleResumeClick}/>)
 
       this.replaceChild(this.idSet.featureButton,btn.render(),0)
-        // Android.runInUI(cmd, 0);
-
-
     }
 
 
@@ -569,12 +549,6 @@ class CourseEnrolledActivity extends View {
              setTimeout(function() {
               window.__SharePopup.show();
             }, 200);
-      //  }else{
-       //
-      //     JBridge.showToast(window.__S.ERROR_CANT_SHARE_TRY_AGAIN,"short");
-       //
-      //  }
-
     });
     JBridge.exportEcar(this.baseIdentifier, callback);
     window.__LoaderDialog.show();
@@ -582,10 +556,6 @@ class CourseEnrolledActivity extends View {
 
   }
 }
-
-  handlePageOptionClick = (data) =>{
-
-  }
 
   handleResumeClick = () =>{
     console.log(this.details,"handleResumeClick this.details")
@@ -694,7 +664,6 @@ class CourseEnrolledActivity extends View {
               width="match_parent">
 
               <LinearLayout
-                  id={this.idSet.parentContainer}
                   height="match_parent"
                   width="match_parent"
                   orientation="vertical">

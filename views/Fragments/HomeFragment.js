@@ -334,10 +334,9 @@ class HomeFragment extends View {
    var data = {
      "details" : ""
    }
-
-var whatToSend ={ "announcementDetails": JSON.stringify(data)}
+   var whatToSend ={ "announcementDetails": JSON.stringify(data)}
    var event ={ tag: "OPEN_AnnouncementViewAllActivity", contents:  whatToSend}
-
+   window.__LoaderDialog.show();   
    window.__runDuiCallback(event);
 }
 

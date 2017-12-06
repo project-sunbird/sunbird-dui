@@ -185,7 +185,7 @@ class ExperienceActivity extends View{
            </LinearLayout>
      );
  }
- handleBackPressed = () =>{
+ onBackPressed = () =>{
   var whatToSend = []
   var event = { tag: "BACK_ExperienceActivity", contents: whatToSend};
   window.__runDuiCallback(event);
@@ -198,7 +198,7 @@ class ExperienceActivity extends View{
      style={IconStyle}
      height="48"
      width="48"
-     onClick={this.handleBackPressed}
+     onClick={this.onBackPressed}
      imageUrl = {"ic_action_arrow_left"}/>);
  }
 

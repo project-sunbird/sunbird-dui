@@ -3,16 +3,14 @@ var Connector = require("@juspay/mystique-backend/src/connectors/screen_connecto
 var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
 var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
 var RelativeLayout = require("@juspay/mystique-backend/src/android_views/RelativeLayout");
-var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget");
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
 var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
-var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
+var ScrollView = require("@juspay/mystique-backend/src/android_views/ScrollView");
 var EditText = require("@juspay/mystique-backend/src/android_views/EditText");
 var Space = require("@juspay/mystique-backend/src/android_views/Space");
 var objectAssign = require('object-assign');
 window.R = require("ramda");
-var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
 var FilterDialog = require('../components/Sunbird/core/FilterDialog');
 var Spinner = require('../components/Sunbird/core/Spinner');
 var SearchResult = require('../components/Sunbird/SearchResult');
@@ -247,16 +245,10 @@ class CommProfSearchActivity extends View {
 
   renderResult = (data) => {
 
-    var layout = (<LinearLayout
-                   width="match_parent"
-                   height="wrap_content"
-                   root="true"
-                   background="#ffffff"
-                   orientation="vertical">
-                    <SearchResult
-                      data={data}
-                      type = "Profile" />
-                  </LinearLayout>)
+    var layout = (<SearchResult
+                    data={data}
+                    type = "Profile" />
+                    );
 
     this.replaceChild(this.idSet.searchListContainer, layout.render(), 0);
   }
@@ -271,9 +263,8 @@ class CommProfSearchActivity extends View {
 
   onBackPressed = () => {
      JBridge.hideKeyboard();
-     var whatToSend = [];
      window.searchProf="";
-     var event = { tag: "BACK_CommProfSearchActivity", contents: whatToSend }
+     var event = { tag: "BACK_CommProfSearchActivity", contents: [] }
      window.__runDuiCallback(event);
   }
 

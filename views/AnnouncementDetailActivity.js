@@ -117,7 +117,7 @@ class AnnouncementDetailActivity extends View{
     var cards = this.announcementData.attachments.map((item,index)=>{
       return (
         <Attachments
-         data={JSON.parse(item)}
+         data={item}
          id={this.data.announcementId}
          index={index}
          open={check&&(this.data.details==item)}/>
