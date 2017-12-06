@@ -146,9 +146,8 @@ class HomeFragment extends View {
       }
       this.profileUpdateCardVisibility="visible";
       if(data.hasOwnProperty("missingFields")&&(index<data.missingFields.length)&&data.missingFields[index]!=undefined){
-      var editButtonText=data.missingFields[index];
-      }
-      else{
+        var editButtonText=data.missingFields[index];
+      }else{
         var editButtonText="";
         this.profileUpdateCardVisibility="gone";
       }
@@ -173,6 +172,8 @@ class HomeFragment extends View {
         break;
         case "location" : editButtonText=window.__S.CURRENT_LOCATION;
         break;
+        case "language" : editButtonText=window.__S.LANGUAGE;
+        break;
         case "avatar" : editButtonText=window.__S.AVATAR;
         break;
         default : this.profileUpdateCardVisibility="gone";
@@ -180,80 +181,79 @@ class HomeFragment extends View {
       this.avatarImageUrl=data.avatar ? data.avatar : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR1X3cm5xzR4D1W9oPb2QWioKlrfLVd0DvXFUNqSjZfg-M0bpc";
     return(
       <LinearLayout
-      width="200"
-      height="match_parent"
-      margin="16,0,0,0"
-      orientation="vertical"
-      onClick={()=>this.handleEditProfileClick(data.missingFields[index])}>
-      <LinearLayout
-      widht="match_parent"
-      height="110"
-      cornerRadius="4"
-      stroke ={"2," + window.__Colors.PRIMARY_BLACK_66}
-      orientation="vertical">
-      <HorizontalProgressBar
+        width="200"
+        height="match_parent"
+        margin="16,0,0,0"
+        orientation="vertical"
+        onClick={()=>this.handleEditProfileClick(data.missingFields[index])}>
+        <LinearLayout
+          widht="match_parent"
+          height="110"
+          cornerRadius="4"
+          stroke ={"2," + window.__Colors.PRIMARY_BLACK_66}
+          orientation="vertical">
+          <HorizontalProgressBar
             width="match_parent"
             height="4"
             progressBarColor={window.__Colors.PRIMARY_ACCENT}
             cornerRadius={"12,12,0,0"}
             currentProgress={data.completeness}
             totalProgress={100}/>
-      <LinearLayout
-      width="match_parent"
-      height="match_parent"
-      orientation="horizontal">
-      <ImageView
-              width="74"
-              height="74"
-              margin="16,16,0,0"
-              circularImageUrl={"0,"+(this.avatarImageUrl)}
-              stroke ={"2," + "#d8d8d8"}
-              cornerRadius="37"/>
-            <LinearLayout
+          <LinearLayout
+            width="match_parent"
+            height="match_parent"
+            orientation="horizontal">
+          <ImageView
+            width="74"
+            height="74"
+            margin="16,16,0,0"
+            circularImageUrl={"0,"+(this.avatarImageUrl)}
+            stroke ={"2," + "#d8d8d8"}
+            cornerRadius="37"/>
+          <LinearLayout
             width="match_parent"
             height="match_parent"
             gravity="center"
             margin="8,20,16,20"
             orientation="vertical">
             <TextView
-            widht="'wrap_content"
-            height="wrap_content"
-            gravity="left"
-            text={window.__S.STRENGTHEN_YOUR_PROFILE}
-            style={window.__TextStyle.textStyle.CARD.HEADING}/>
+              widht="'wrap_content"
+              height="wrap_content"
+              gravity="left"
+              text={window.__S.STRENGTHEN_YOUR_PROFILE}
+              style={window.__TextStyle.textStyle.CARD.HEADING}/>
             <TextView
-            width="wrap_content"
-            height="wrap_content"
-            gravity="center"
-            margin="0,10,0,0"
-            text={utils.cropText(window.__S.ADD+" "+editButtonText,14)}
-            style={window.__TextStyle.textStyle.HINT.TINY}/>
+              width="wrap_content"
+              height="wrap_content"
+              gravity="center"
+              margin="0,10,0,0"
+              text={utils.cropText(window.__S.ADD+" "+editButtonText,14)}
+              style={window.__TextStyle.textStyle.HINT.TINY}/>
             </LinearLayout>
-              </LinearLayout>
-              </LinearLayout>
-              <LinearLayout
-              width="match_parent"
-              height="match_parent"
-              margin="0,8,0,0">
-              <LinearLayout
-              weight="1"
-              padding="0,0,8,0"
-              height="match_parent">
-              <TextView
+          </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+          width="match_parent"
+          height="match_parent"
+          margin="0,8,0,0">
+          <LinearLayout
+            weight="1"
+            padding="0,0,8,0"
+            height="match_parent">
+            <TextView
               width="match_parent"
               height="match_parent"
               text={window.__S.YOUR_PROFILE_IS.format(data.completeness)}
               style={window.__TextStyle.textStyle.HINT.TINY}/>
-              </LinearLayout>
-              <Button
-                type="SmallButton_Secondary_BT"
-                width="wrap_content"
-                height="wrap_content"
-                text={window.__S.UPDATE}
-                onClick={()=>this.handleEditProfileClick(data.missingFields[index])}/>
-
-            </LinearLayout>
-             </LinearLayout>
+        </LinearLayout>
+          <Button
+            type="SmallButton_Secondary_BT"
+            width="wrap_content"
+            height="wrap_content"
+            text={window.__S.UPDATE}
+            onClick={()=>this.handleEditProfileClick(data.missingFields[index])}/>
+      </LinearLayout>
+    </LinearLayout>
     )
   }
   getAnnouncementCard=()=>{
@@ -265,15 +265,15 @@ class HomeFragment extends View {
     if(announcementApiData=="__failed" || announcementApiData.count==0)
       {
         cards= (<LinearLayout
+                  width="match_parent"
+                  height="wrap_content"
+                  background={window.__Colors.PRIMARY_LIGHT}>
+                  <TextView
                     width="match_parent"
-                    height="wrap_content"
-                    background={window.__Colors.PRIMARY_LIGHT}>
-                    <TextView
-                      width="match_parent"
-                      height="70"
-                      gravity="center"
-                      text={window.__S.NO_ANNOUNCEMENTS}/>
-                  </LinearLayout>
+                    height="70"
+                    gravity="center"
+                    text={window.__S.NO_ANNOUNCEMENTS}/>
+                </LinearLayout>
           );
       }else{
         viewAllVisibility="visible";
@@ -302,35 +302,38 @@ class HomeFragment extends View {
           </LinearLayout>
         )
       }
-    return (<LinearLayout
-              height="wrap_content"
-              width="match_parent"
-              orientation="vertical"
-              background={window.__Colors.LIGHT_GRAY}>
-                <LinearLayout
-                 width="match_parent"
-                 height="wrap_content"
-                 orientation="horizontal">
-                  <TextView
-                    height="wrap_content"
-                    width="wrap_content"
-                    padding="25,5,25,5"
-                    text={window.__S.ANNOUNCEMENT}
-                    style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
-                  <TextView
-                    height="wrap_content"
-                    weight="1"
-                    gravity="right"
-                    padding="5,0,15,0"
-                    visibility={viewAllVisibility}
-                    onClick={()=>this.handleAnnouncementViewAllClick()}
-                    text={window.__S.VIEW_ALL}
-                    style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
-                </LinearLayout>
-                {cards}
-              </LinearLayout>);
- }
- handleAnnouncementViewAllClick= () =>{
+    return (
+    <LinearLayout
+      height="wrap_content"
+      width="match_parent"
+      orientation="vertical"
+      background={window.__Colors.LIGHT_GRAY}>
+        <LinearLayout
+          width="match_parent"
+          height="wrap_content"
+          orientation="horizontal">
+          <TextView
+            height="wrap_content"
+            width="wrap_content"
+            padding="25,5,25,5"
+            text={window.__S.ANNOUNCEMENT}
+            style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
+          <TextView
+            height="wrap_content"
+            weight="1"
+            gravity="right"
+            padding="5,0,15,0"
+            visibility={viewAllVisibility}
+            onClick={()=>this.handleAnnouncementViewAllClick()}
+            text={window.__S.VIEW_ALL}
+            style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
+        </LinearLayout>
+      {cards}
+    </LinearLayout>
+    );
+  }
+
+  handleAnnouncementViewAllClick= () =>{
    var data = {
      "details" : ""
    }
@@ -350,49 +353,37 @@ class HomeFragment extends View {
         orientation="vertical"
         width="match_parent"
         root="true"
+        background={window.__Colors.PRIMARY_LIGHT}
         height="match_parent">
-
-
-         <SimpleToolbar
-            title=""
+        <SimpleToolbar
+          title=""
+          width="match_parent"
+          showMenu="true"
+          logo={imgUrl}
+          hideBack="true"
+          menuData={this.menuData}
+          onMenuItemClick={this.handleMenuClick}/>
+        <ScrollView
+          weight="1"
+          width="match_parent">
+          <LinearLayout
+            height="match_parent"
             width="match_parent"
-            showMenu="true"
-            logo={imgUrl}
-            hideBack="true"
-            menuData={this.menuData}
-            onMenuItemClick={this.handleMenuClick}/>
-
-
-
-            <ScrollView
-              weight="1"
-              width="match_parent">
-
-                <LinearLayout
-                  height="match_parent"
-                  width="match_parent"
-                  orientation="vertical">
-
-                   <CourseInProgressContainer
-                    addCard={this.getTodoProfileCard(0)}
-                    addCardVisibility={this.profileUpdateCardVisibility}
-                    transparent="true"
-                    title={window.__S.TO_DO}
-                    onCourseClick={this.handleUserCoursesClick}/>
-
-
-                   {this.getSpaceSeparator()}
-
-                    <HomeRecommendedContainer
-                         title= {window.__S.RECOMMENDED}
-                         onCourseOpenClick = {this.handleCourseOpen}
-                         onResourceOpenClick = {this.handleResourceOpen}/>
-                    {this.getAnnouncementCard()}
-               </LinearLayout>
-
-            </ScrollView>
-
-
+            orientation="vertical">
+            <CourseInProgressContainer
+              addCard={this.getTodoProfileCard(0)}
+              addCardVisibility={this.profileUpdateCardVisibility}
+              transparent="true"
+              title={window.__S.TO_DO}
+              onCourseClick={this.handleUserCoursesClick}/>
+            {this.getSpaceSeparator()}
+            <HomeRecommendedContainer
+              title= {window.__S.RECOMMENDED}
+              onCourseOpenClick = {this.handleCourseOpen}
+              onResourceOpenClick = {this.handleResourceOpen}/>
+            {this.getAnnouncementCard()}
+          </LinearLayout>
+        </ScrollView>
       </LinearLayout>
       )
     return this.layout.render();

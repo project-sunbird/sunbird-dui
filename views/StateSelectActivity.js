@@ -1,20 +1,14 @@
 var dom = require("@juspay/mystique-backend/src/doms/android");
 var Connector = require("@juspay/mystique-backend/src/connectors/screen_connector");
-var debounce = require("debounce");
-var objectAssign = require('object-assign');
-
-
 var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
 var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
 var RelativeLayout = require("@juspay/mystique-backend/src/android_views/RelativeLayout");
-var EditText = require("@juspay/mystique-backend/src/android_views/EditText");
 var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var ListView = require("@juspay/mystique-backend/src/android_views/ListView");
-
+var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
 var Styles = require("../res/Styles");
 const Str = require("../res/Strings") ;
-
 
 class StateSelectActivity extends View {
   constructor(props, children, state) {
@@ -58,7 +52,6 @@ class StateSelectActivity extends View {
      window.setLanguage(lang);
      window.__S = Str.strings();
      window.__LanguagePopup.hide();
-    //  window.__renderBNavBar(4);
      window.__reRender();
   }
   handleBackClick=()=>{
@@ -66,29 +59,7 @@ class StateSelectActivity extends View {
     var event = { tag: "BACK_StateSelectActivity", contents: whatToSend}
     window.__runDuiCallback(event);
   }
-  getHeader=()=>{
-    return(
-      <LinearLayout
-       height="wrap_content"
-       width="match_parent"
-       padding="0,0,0,2"
-       background={window.__Colors.PRIMARY_BLACK_22}>
-        <LinearLayout
-          width="match_parent"
-          height="wrap_content"
-          alignParentTop="true,-1"
-          background={window.__Colors.WHITE}>
-          <ImageView
-            margin="0,0,10,0"
-            style={Styles.Params.IconStyle}
-            onClick={this.handleBackClick}
-            allowMultipleClicks="true"
-            imageUrl = {"ic_action_arrow_left"}/>
-       </LinearLayout>
-      </LinearLayout>
-    );
-  }
-
+  
   getStateList = () =>{
     this.jsonArray=[];
     var layout="";
@@ -137,17 +108,20 @@ class StateSelectActivity extends View {
   render(){
     this.layout=(
     <LinearLayout
-    root="true"
-    clickable="true"
-    width="match_parent"
-    height="match_parent"
-    background={window.__Colors.WHITE}
-    orientation="vertical">
-    {this.getHeader()}
-    <ListView
-    width="match_parent"
-    height="wrap_content"
-    id={this.idSet.listView}/>
+      root="true"
+      clickable="true"
+      width="match_parent"
+      height="match_parent"
+      background={window.__Colors.WHITE}
+      orientation="vertical">
+      <SimpleToolbar
+        title={""}
+        onBackPress={this.onBackPressed}
+        width="match_parent"/>
+      <ListView
+        width="match_parent"
+        height="wrap_content"
+        id={this.idSet.listView}/>
   </LinearLayout>
   );
   return this.layout.render();  

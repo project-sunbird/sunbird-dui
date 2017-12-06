@@ -4,29 +4,22 @@ var Connector = require("@juspay/mystique-backend/src/connectors/screen_connecto
 var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
 var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
-var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
 var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
-
 var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
-var objectAssign = require('object-assign');
-
 window.R = require("ramda");
 
 class SplashScreenActivity extends View {
-
-  icon;
-  textToDisplay;
-
+  
   constructor(props, children, state) {
-
     super(props, children, state);
     window.__Check = 0;
+    this.icon;
+    this.textToDisplay;
     this.getUserToken();
     this.getApiUrl();
     this.getIcon();
     this.getTextToDisplay();
     window.__pressedLoggedOut=false;
-
   }
 
   getTextToDisplay = () => {
@@ -86,11 +79,9 @@ class SplashScreenActivity extends View {
 
 
   handleStateChange = () => {
-    return true;
   }
 
   render() {
-
     this.layout = (
       <LinearLayout
         root="true"

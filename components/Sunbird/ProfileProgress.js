@@ -96,6 +96,8 @@ class ProfileCreations extends View {
       break;
       case "subject" : editButtonText=window.__S.SUBJECTS;
       break;
+      case "language" : editButtonText=window.__S.LANGUAGE;
+      break;
       case "location" : editButtonText=window.__S.CURRENT_LOCATION;
       break;
       case "avatar" : editButtonText=window.__S.AVATAR;
