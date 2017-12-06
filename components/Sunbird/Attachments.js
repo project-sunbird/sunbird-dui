@@ -7,6 +7,7 @@ var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
 var HorizontalProgressBar = require('../../components/Sunbird/HorizontalProgressBar');
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
+var utils = require('../../utils/GenericFunctions');
 
 class Attachments extends View {
   constructor(props, children) {
@@ -117,15 +118,7 @@ render(){
            width="match_parent"
            height="wrap_content"
            root="true"
-           id={this.idSet.attachmentCard}>
-            <HorizontalProgressBar
-            width="match_parent"
-            height="4"
-            cornerRadius={"12,12,0,0"}
-            currentProgress={0.0}
-            totalProgress={100.0}
-            visibility={"gone"}/>
-          </LinearLayout>
+           id={this.idSet.attachmentCard}/>
         <LinearLayout
         height="wrap_content"
         width="match_parent"
@@ -147,7 +140,7 @@ render(){
             height="wrap_content"
             width="wrap_content"
             padding="0,0,0,5"
-            text={item.name}
+            text={utils.cropText(item.name,10)}
             style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>
             <TextView
             height="wrap_content"

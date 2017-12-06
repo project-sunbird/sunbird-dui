@@ -199,7 +199,7 @@ const stringsRes = {
 		WARNING_PLEASE_ADD_MANDATORY_DETAILS : "Enter mandatory details",
 		WARNING_PLEASE_MAKE_SOME_CHANGES : "Make changes",
 		WARNING_INVALID_YEAR_OF_PASSING : "Invalid pass year. Enter four (yyyy) digits for year of passing",
-		WARNING_INVALID_PERCENTAGE : "Invalid percentage. Enter digits between zero - 100 ",
+		WARNING_INVALID_PERCENTAGE : "Invalid percentage. Enter digits between 0 - 100 ",
 		WARNING_INVALID_GRADE : "Invalid grade. Enter one letter between A - F",
 		DEGREE : "Degree",
 		INSTITUTION_NAME : "Institution name",

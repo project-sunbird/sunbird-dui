@@ -3,22 +3,14 @@ var Connector = require("@juspay/mystique-backend/src/connectors/screen_connecto
 var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
 var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
 var RelativeLayout = require("@juspay/mystique-backend/src/android_views/RelativeLayout");
-var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
 var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget");
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
-var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
 var ScrollView = require("@juspay/mystique-backend/src/android_views/ScrollView");
 var EditText = require("@juspay/mystique-backend/src/android_views/EditText");
 var TextInputView = require("../components/Sunbird/core/TextInputView");
-var Spinner = require("../components/Sunbird/core/Spinner");
-var RadioButton = require("../components/Sunbird/core/RadioButton");
-var CheckBox = require("@juspay/mystique-backend/src/android_views/CheckBox");
-var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
-var FeatureButton = require("../components/Sunbird/FeatureButton");
 var PageOption = require("../components/Sunbird/core/PageOption")
 var SimplePopup = require("../components/Sunbird/core/SimplePopup");
-var Styles = require("../res/Styles");
-let IconStyle = Styles.Params.IconStyle;
+var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
 
 var _this;
 
@@ -26,8 +18,6 @@ class EducationActivity extends View {
   constructor(props, children, state) {
     super(props, children, state);
       this.setIds([
-      "educationPopUpParent",
-      "educationPopUpBody",
       "degreeText",
       "yearOfPassingText",
       "percentageText",
@@ -82,21 +72,7 @@ class EducationActivity extends View {
     this.initializeData();
   }
 
-  getUi = () => {
-    return (
-      <RelativeLayout
-        width="match_parent"
-        height="match_parent"
-        gravity="center">
-            {this.getBody()}
-            {this.getButtons()}
-      </RelativeLayout>);
-  }
-
-
   initializeData = () => {
-
-
     if (this.data != undefined && this.data!="") {
       this.prevData.degree = this.data.degree;
       this.prevData.yearOfPassing = this.data.yearOfPassing ? this.data.yearOfPassing : "";
@@ -166,8 +142,7 @@ class EducationActivity extends View {
         console.log("isChanged is false");
          isChanged = false;
       }
-
-    this.updateSaveButtonStatus((this.isValid() && isChanged));
+    this.updateSaveButtonStatus(isChanged&&this.isValid());
   }
 
   isValid = () => {
@@ -211,21 +186,16 @@ class EducationActivity extends View {
       if(inputDate>1900&&inputDate<=currentYear)
       return true;
     }catch(e){
-    return false;}
+      console.log("Error in EducationActivity checkPassingYear: ",e);
+    }
     return false;
   }
 
   checkPercentage = (data) => {
-    var flag =true;
-    try {
       if( isNaN(data) || parseFloat(data) > 100.0 || parseFloat(data) < 0.0){
-       flag=false;
+       return false;
       }
-    } catch (e) {
-       flag=false;
-    } finally {
-      return flag;
-    }
+      return true;
   }
 
   checkGrade = (data) => {
@@ -238,7 +208,7 @@ class EducationActivity extends View {
   handleSaveClickBody = () => {
     if(!JBridge.isNetworkAvailable()){
       window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
-      return ;
+      return;
     }
     if (this.singleClick && !this.canSave && !this.delete){
       if (this.data){
@@ -249,37 +219,20 @@ class EducationActivity extends View {
       }
       return;
     }
-
-    if(!JBridge.isNetworkAvailable()) {
-      window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
-      return;
+    if(!this.delete){
+      if(this.yearOfPassing!="" &&!this.checkPassingYear(this.yearOfPassing)){
+        window.__Snackbar.show(window.__S.WARNING_INVALID_YEAR_OF_PASSING);
+        return;
+      }else if(!this.delete && this.percentage!="" && !this.checkPercentage(this.percentage)){
+        window.__Snackbar.show(window.__S.WARNING_INVALID_PERCENTAGE);
+        return;
+      }else if(!this.delete && this.grade!="" && !this.checkGrade(this.grade)){
+        window.__Snackbar.show(window.__S.WARNING_INVALID_GRADE);
+        return;
+      }
     }
-
     this.education = [];
     var json;
-
-    if(this.yearOfPassing!=null && this.yearOfPassing!="" && !this.delete)
-        if(!this.checkPassingYear(this.yearOfPassing))
-            {
-              window.__Snackbar.show(window.__S.WARNING_INVALID_YEAR_OF_PASSING);
-              return;
-            }
-
-    if(this.percentage!=null && this.percentage!="" && !this.delete){
-        if(!this.checkPercentage(this.percentage))
-            {
-              window.__Snackbar.show(window.__S.WARNING_INVALID_PERCENTAGE);
-              return;
-            }
-          }
-
-    if(this.grade!=null && this.grade!="" && !this.delete){
-          if(!this.checkGrade(this.grade))
-              {
-                window.__Snackbar.show(window.__S.WARNING_INVALID_GRADE);
-                return;
-              }
-            }
     if (this.data == undefined|| this.data=="") {
       json = {
         "degree": this.degree,
@@ -289,7 +242,7 @@ class EducationActivity extends View {
         "grade": this.grade,
         "boardOrUniversity" : this.boardOrUniversity
       }
-    } else {
+    }else {
       json = this.data;
       json.degree = this.degree;
       json.yearOfPassing = parseInt(this.yearOfPassing);
@@ -300,9 +253,7 @@ class EducationActivity extends View {
       json.isDeleted = this.delete ? this.delete : null;
       this.delete = false;
     }
-
     this.education.push(json);
-
     var url = window.__apiUrl + "/api/user/v1/update";
     var body = {
       "id" : "unique API ID",
@@ -313,21 +264,20 @@ class EducationActivity extends View {
         "education" : this.education
       }
     }
-
     if(this.singleClick){
-        this.singleClick = false;
+      this.singleClick = false;
+      _this.responseCame=false;
+      JBridge.patchApi(url, JSON.stringify(body), window.__user_accessToken, window.__apiToken);
+      setTimeout(() => {
+        if(_this.responseCame){
+          console.log("Response Already Came")
+          return;
+        }
+        console.log("TIMEOUT");
+        window.__LoaderDialog.hide();
+        window.__Snackbar.show(window.__S.ERROR_SERVER_CONNECTION);
         _this.responseCame=false;
-        JBridge.patchApi(url, JSON.stringify(body), window.__user_accessToken, window.__apiToken);
-         setTimeout(() => {
-             if(_this.responseCame){
-               console.log("Response Already Came")
-               return;
-             }
-             console.log("TIMEOUT");
-             window.__LoaderDialog.hide();
-             window.__Snackbar.show(window.__S.ERROR_SERVER_CONNECTION);
-             _this.responseCame=false;
-         },window.__API_TIMEOUT);
+      },window.__API_TIMEOUT);
     }
   }
 
@@ -337,77 +287,27 @@ class EducationActivity extends View {
       console.log("TIMEOUT")
       return;
     }
-
-   window.__LoaderDialog.hide();
-   this.responseCame=true;
-   console.log(data)
-   if(data.result.response=="SUCCESS"){
-     window.__LoaderDialog.show();
-    window.__BNavFlowRestart();
-  }else{
-     this.singleClick =true;
-     window.__Snackbar.show(data.params.errmsg);
-   }
- }
-
-  getToolbar  = () =>{
-    return( <LinearLayout
-            height="56"
-            padding="0,0,0,2"
-            gravity="center_vertical"
-            background={window.__Colors.PRIMARY_BLACK_22}
-            width="match_parent" >
-                <LinearLayout
-                  height="56"
-                  padding="0,0,0,0"
-                  gravity="center_vertical"
-                  background={window.__Colors.WHITE}
-                  width="match_parent" >
-
-                    {this.getBack()}
-                    {this.getTitle()}
-
-                </LinearLayout>
-            </LinearLayout>
-      );
+    window.__LoaderDialog.hide();
+    this.responseCame=true;
+    console.log(data)
+    if(data.result.response=="SUCCESS"){
+      window.__LoaderDialog.show();
+      window.__BNavFlowRestart();
+    }else{
+      this.singleClick =true;
+      window.__Snackbar.show(data.params.errmsg);
+    }
   }
+
   onBackPressed = () =>{
-    var whatToSend = []
-    var event = { tag: "BACK_EducationActivity", contents: whatToSend};
+    var event = { tag: "BACK_EducationActivity", contents: []};
     window.__runDuiCallback(event);
-  }
-
-  getBack = () => {
-    return (
-      <ImageView
-      margin="0,0,10,0"
-      style={IconStyle}
-      height="48"
-      width="48"
-      onClick={this.onBackPressed}
-      imageUrl = {"ic_action_arrow_left"}/>);
-  }
-
-  getTitle = () => {
-    return (<LinearLayout
-            height="match_parent"
-            width="wrap_content"
-            gravity="center_vertical">
-              <TextView
-                  height="match_parent"
-                  width="match_parent"
-                  gravity="center_vertical"
-                  background="#ffffff"
-                  text={window.__S.TITLE_EDUCATION}
-                  style={window.__TextStyle.textStyle.TOOLBAR.HEADING}/>
-          </LinearLayout>);
   }
 
   getLineSeperator = () => {
     return (<LinearLayout
             width="match_parent"
             height="2"
-            margin="0,0,0,0"
             background={window.__Colors.PRIMARY_BLACK_22}/>);
   }
 
@@ -417,7 +317,6 @@ class EducationActivity extends View {
         height = "match_parent"
         width = "match_parent"
         orientation="vertical"
-        background="#ffffff"
         id={this.idSet.scrollView}
         padding="15,15,15,15">
 
@@ -456,22 +355,16 @@ class EducationActivity extends View {
         width = "match_parent"
         height = "match_parent"
         orientation = "vertical"
-        backgroundColor = "#ffffff"
-        margin = "0,0,0,24">
-
-        {this.getToolbar()}
-        <LinearLayout
-          width="match_parent"
+        margin = "0,0,0,84">
+        <SimpleToolbar
+          title={window.__S.TITLE_EDUCATION}
+          onBackPress={this.onBackPressed}
+          width="match_parent"/>
+        <ScrollView
           height="match_parent"
-          orientation="vertical"
-          padding = "0,0,0,60">
-            <ScrollView
-            height="match_parent"
-            width="match_parent"
-            weight="1">
-                 {this.getScrollView()}
-            </ScrollView>
-          </LinearLayout>
+          width="match_parent">
+          {this.getScrollView()}
+        </ScrollView>
       </LinearLayout>
     );
   }
@@ -485,9 +378,9 @@ class EducationActivity extends View {
         orientation = "vertical"
         alignParentBottom = "true, -1">
         <PageOption
-            width="match_parent"
-            buttonItems={buttonList}
-            hideDivider={false}/>
+          width="match_parent"
+          buttonItems={buttonList}
+          hideDivider={false}/>
       </LinearLayout>
     );
   }
@@ -521,16 +414,9 @@ class EducationActivity extends View {
         width = "match_parent"
         height = "match_parent"
         root = "true"
-        id={this.idSet.educationPopUpParent}
-        background = "#ffffff">
-        <RelativeLayout
-          width="match_parent"
-          height="match_parent"
-          id={this.idSet.educationPopUpBody}
-          gravity="center">
-              {this.getBody()}
-              {this.getButtons()}
-        </RelativeLayout>
+        background = {window.__Colors.PRIMARY_LIGHT} >
+        {this.getBody()}
+        {this.getButtons()}
         <LinearLayout
           width = "match_parent"
           height = "match_parent">
@@ -541,7 +427,6 @@ class EducationActivity extends View {
         </LinearLayout>
       </RelativeLayout>
     );
-
     return this.layout.render();
   }
 }
