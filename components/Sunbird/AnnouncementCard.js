@@ -12,6 +12,7 @@ class AnnouncementCard extends View {
   constructor(props, children) {
     super(props, children);
     this.setIds([
+      "readBar"
     ]);
 
     this.props=this.props||"";
@@ -28,10 +29,7 @@ class AnnouncementCard extends View {
   }
 
   getLabel = () =>{
-    var type = "";
-    if(this.data.hasOwnProperty("details")&&this.data.details.hasOwnProperty("type")){
-      type = this.data.details.type||"";
-    }
+    var type = this.data.type||"";
     return(<TextView
             width="wrap_content"
             height="wrap_content"
@@ -46,10 +44,7 @@ class AnnouncementCard extends View {
   }
 
   getAnnouncementTitle(){
-    var title = "";
-    if(this.data.hasOwnProperty("details")&& this.data.details.hasOwnProperty("title")){
-      title = this.data.details.title;
-    }
+    var title = this.data.title||"";
     return (
       <TextView
        height="wrap_content"
@@ -62,10 +57,7 @@ class AnnouncementCard extends View {
   }
 
   getAnnouncementFrom(){
-    var from = ""
-    if(this.data.hasOwnProperty("details")&& this.data.details.hasOwnProperty("from")){
-      from = this.data.details.from
-    }
+    var from = this.data.from||""
       return(
         <TextView
        height="wrap_content"
@@ -164,7 +156,7 @@ class AnnouncementCard extends View {
       height="wrap_content"
       visibility={link!=""?"visible":"gone"}
       padding="0,0,0,3"
-      onClick={()=>this.props.onClick(this.props.params.id,"webLink",link,this.props.index)}
+      onClick={()=>this.handleAnnouncementClick(this.props.params.id,"webLink",link,this.props.index)}
       orientation="horizontal">
         <ImageView
           height="18"
@@ -181,6 +173,21 @@ class AnnouncementCard extends View {
       );
   }
 
+  handleAnnouncementClick = (item,whereFrom,details) => {
+    if(this.props.onClick!=undefined){
+      this.props.onClick();
+    }
+        var whatToSend = {
+                          "announcementData": JSON.stringify({
+                            "announcementId" : item,
+                            "whereFrom": whereFrom,
+                            "details" : details
+                          })
+                         }
+        var event ={ tag: this.props.tag, contents: whatToSend }
+        window.__runDuiCallback(event);
+      }
+
   getAttachment=()=>{
     var temp=this.data.attachments[0]||"";
     if(temp.hasOwnProperty("mimetype"))   
@@ -192,7 +199,7 @@ class AnnouncementCard extends View {
       width="wrap_content"
       height="wrap_content"
       padding="0,0,0,3"
-      onClick={()=>this.props.onClick(this.props.params.id,"attachments",this.data.attachments[0],this.props.index)}
+      onClick={()=>this.handleAnnouncementClick(this.props.params.id,"attachments",this.data.attachments[0],this.props.index)}
       visibility={this.hasAttachments?"visible":"gone"}
       orientation="horizontal">
         <ImageView
@@ -216,7 +223,7 @@ class AnnouncementCard extends View {
   }
 
   getFooter=()=>{
-    var d =  new Date(this.data.createddate);
+    var d =  new Date(this.data.createdDate);
     var time = utils.prettifyDate(d);
     return(
         <TextView
@@ -233,11 +240,12 @@ class AnnouncementCard extends View {
         width="match_parent"
         height="wrap_content"
         root="true"
-        onClick={()=>this.props.onClick(this.props.params.id,"cardClick","",this.props.index)}
+        onClick={()=>this.handleAnnouncementClick(this.props.params.id,"cardClick","",this.props.index)}
         orientation="horizontal">
       <LinearLayout
       width="4"
       height="match_parent"
+      id={this.idSet.readBar}
       background={this.data.read?window.__Colors.PRIMARY_LIGHT:window.__Colors.PRIMARY_DARK}/>
         {this.getBody()}
      </LinearLayout>

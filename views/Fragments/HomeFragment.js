@@ -52,21 +52,6 @@ class HomeFragment extends View {
     window.__UpdateUserCourses(this.enrolledCourses);
   }
 
-
-  handleAnnouncementClick = (item,whereFrom,details) => {
-
-    var whatToSend = {
-                      "announcementData": JSON.stringify({
-                        "announcementId" : item,
-                        "whereFrom": whereFrom,
-                        "details" : details
-                      })
-                     }
-    var event ={ tag: "OPEN_AnnouncementDetailActivity", contents: whatToSend }
-    window.__runDuiCallback(event);
-
-  }
-
   handleTodoClick = (index) => {
     console.log("Todo Clicked index is ", index);
   }
@@ -280,15 +265,14 @@ class HomeFragment extends View {
         if(announcementApiData.count>0){
           card1 = (
           <AnnouncementCard
-            params={announcementApiData.announcements[0]}
-            onClick={()=>this.handleAnnouncementClick((announcementApiData.announcements[0]).id)}/>
+            tag="OPEN_AnnouncementDetailActivity"
+            params={announcementApiData.announcements[0]}/>
           );
         }
         if(announcementApiData.count>1){
           card2 = (
             <AnnouncementCard
-            params={announcementApiData.announcements[1]}
-            onClick={()=>this.handleAnnouncementClick((announcementApiData.announcements[1]).id)}/>
+            params={announcementApiData.announcements[1]}/>
             );
         }
         cards = (

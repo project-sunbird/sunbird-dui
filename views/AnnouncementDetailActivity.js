@@ -74,13 +74,14 @@ class AnnouncementDetailActivity extends View{
   else{
      console.log("Announcement has already been read");
   }
+  console.log("where from hakuna matata:",this.data);
   if(this.data.whereFrom=="webLinks"){
     this.openLink(this.data.details);
   }
 }
 
   getFooter(){
-    var d =  new Date(this.announcementData.createddate);
+    var d =  new Date(this.announcementData.createdDate);
     var time = utils.prettifyDate(d);
     var footerText = window.__S.SENT_ON+" "+time;
     return (
@@ -120,6 +121,7 @@ class AnnouncementDetailActivity extends View{
     var _this= this;
     var check = (this.data.whereFrom=="attachments");
     var cards = this.announcementData.attachments.map((item,index)=>{
+      console.log("hakuna matata :",check,"---->",(this.data.details==item),"+++++>",item);      
       return (
         <Attachments
          data={item}
@@ -205,10 +207,7 @@ class AnnouncementDetailActivity extends View{
   }
 
   getDescription(){
-    var description=""
-    if(this.announcementData.hasOwnProperty("details")&& this.announcementData.details.hasOwnProperty("description")){
-      description=this.announcementData.details.description
-    }
+    var description=this.announcementData.description||""
       return(
         <TextView
          height="wrap_content"
@@ -221,10 +220,7 @@ class AnnouncementDetailActivity extends View{
   }
 
   getAnnouncementFrom(){
-    var from = ""
-    if(this.announcementData.hasOwnProperty("details")&& this.announcementData.details.hasOwnProperty("from")){
-      from = this.announcementData.details.from
-    }
+    var from = this.announcementData.from||""
       return(
         <TextView
        height="wrap_content"
@@ -237,10 +233,7 @@ class AnnouncementDetailActivity extends View{
   }
 
   getAnnouncementTitle(){
-    var title = "";
-    if(this.announcementData.hasOwnProperty("details")&& this.announcementData.details.hasOwnProperty("title")){
-      title = this.announcementData.details.title;
-    }
+    var title = this.announcementData.title||"";
     return (
       <TextView
        height="wrap_content"
@@ -253,10 +246,7 @@ class AnnouncementDetailActivity extends View{
   }
 
   getAnnouncementInfo(){
-    var type = "";
-    if(this.announcementData.hasOwnProperty("details")&&this.announcementData.details.hasOwnProperty("type")){
-      type = this.announcementData.details.type||"";
-    }
+    var type = this.announcementData.type||"";
     return(<TextView
             width="wrap_content"
             height="wrap_content"
