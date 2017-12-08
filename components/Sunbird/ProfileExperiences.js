@@ -17,6 +17,7 @@ class ProfileExperiences extends View {
     this.setIds([
 
     ]);
+    window.__currentJobSelected=false;   
     _this = this;
     this.isEditable = this.props.editable;
     this.popUpType = this.props.popUpType;

@@ -199,8 +199,7 @@ class ExperienceActivity extends View{
           this.endDate=null;
           this.isCurrentJob=true;
           this.changeSaveButtonState(this.checkCompleteStatus());          
-       }
-       else {
+       } else if(window.__currentJobSelected==true){
          window.__Snackbar.show(window.__S.ERROR_MULTIPLE_CURRENT_JOB);
          var jobTypeValue = [
             {name:window.__S.YES,select:"0",icon:"ic_action_radio"},
