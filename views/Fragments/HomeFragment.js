@@ -241,6 +241,11 @@ class HomeFragment extends View {
     </LinearLayout>
     )
   }
+
+  handleAnnouncementClick = (id,index) => {
+    JBridge.logAnnouncementClicked("HOME",id, index);
+  }
+
   getAnnouncementCard=()=>{
     var viewAllVisibility="gone";
     var cards = <LinearLayout/>
@@ -266,12 +271,15 @@ class HomeFragment extends View {
           card1 = (
           <AnnouncementCard
             tag="OPEN_AnnouncementDetailActivity"
+            onClick = {this.handleAnnouncementClick(0,announcementApiData.announcements[0].id)}
             params={announcementApiData.announcements[0]}/>
           );
         }
         if(announcementApiData.count>1){
           card2 = (
             <AnnouncementCard
+            tag="OPEN_AnnouncementDetailActivity"
+            onClick = {this.handleAnnouncementClick(1,announcementApiData.announcements[0].id)}
             params={announcementApiData.announcements[1]}/>
             );
         }

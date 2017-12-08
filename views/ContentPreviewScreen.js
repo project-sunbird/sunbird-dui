@@ -94,13 +94,13 @@ class ContentPreviewScreen extends View {
     data.downloadProgress= data.downloadProgress == undefined || isNaN(data.downloadProgress) ? 0 : data.downloadProgress;
     var downloadedPercent = data.downloadProgress;
     downloadedPercent =  downloadedPercent < 0 ? 0 : downloadedPercent;
-
-    if (downloadedPercent == 100) {
+    if(downloadedPercent<100&&!window.__ContentLoaderDialog.getVisible()){
+      window.__ContentLoaderDialog.show();
+    }else if (downloadedPercent == 100) {
       window.__ContentLoaderDialog.updateProgressBar(100);
       window.__ContentLoaderDialog.hide();
       this.checkContentLocalStatus(this.baseIdentifier);
     } else {
-      window.__ContentLoaderDialog.show();
       window.__ContentLoaderDialog.setClickCallback(this.handleContentLoaderCancelClick);
       window.__ContentLoaderDialog.updateProgressBar(downloadedPercent);
     }

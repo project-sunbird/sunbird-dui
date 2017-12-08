@@ -74,7 +74,6 @@ class AnnouncementDetailActivity extends View{
   else{
      console.log("Announcement has already been read");
   }
-  console.log("where from hakuna matata:",this.data);
   if(this.data.whereFrom=="webLinks"){
     this.openLink(this.data.details);
   }
@@ -106,7 +105,7 @@ class AnnouncementDetailActivity extends View{
   }
 
   shareAction = () => {
-    JBridge.shareAnnouncement(this.announcementData.details.type, this.announcementData.details.title, this.announcementData.details.description);
+    JBridge.shareAnnouncement(JSON.stringify(this.announcementData));
   }
 
   getLineSeperator() {
@@ -121,13 +120,12 @@ class AnnouncementDetailActivity extends View{
     var _this= this;
     var check = (this.data.whereFrom=="attachments");
     var cards = this.announcementData.attachments.map((item,index)=>{
-      console.log("hakuna matata :",check,"---->",(this.data.details==item),"+++++>",item);      
       return (
         <Attachments
          data={item}
          id={this.data.announcementId}
          index={index}
-         open={check&&(this.data.details==item)}/>
+         open={check&&(JSON.stringify(this.data.details)==JSON.stringify(item))}/>
       );
     })
     console.log(cards , "cardssss");

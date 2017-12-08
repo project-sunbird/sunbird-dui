@@ -284,7 +284,8 @@ const stringsRes = {
 		DOWNLOAD_CANCELED : "Download canceled",
 		INVALID_PINCODE : "Inavlid pincode", 
 		AVATAR : "Avatar",
-		ALL_ANNOUNCEMENTS : "All Announcements"
+		ALL_ANNOUNCEMENTS : "All Announcements",
+		NO_CHANGE : "No changes have been made"
 	},
 	"hi_IN" : {
 		ALREADY_HAVE_ACC : "मौजूदा उपयोगकर्ता, साइन इन करें",

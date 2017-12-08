@@ -72,7 +72,7 @@ class AnnouncementViewAllActivity extends View {
   }
 
   handleAnnouncementClick = (id,index) => {
-    JBridge.logAnnouncementClicked(id, index);
+    JBridge.logAnnouncementClicked("ANNOUNCEMENT_LIST",id, index);
   }
 
   afterRender(){

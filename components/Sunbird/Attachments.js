@@ -70,12 +70,10 @@ class Attachments extends View {
   cancelDownload = () => {
     var _this= this;
     var callback1 = callbackMapper.map(function() {
-      JBridge.showToast(window.__S.DOWNLOAD_CANCELED);
       var progressBar =(<LinearLayout/>);
       _this.replaceChild(_this.idSet.attachmentCard, progressBar.render(), 0);
       var cmd = _this.set({
         id: _this.idSet.viewButton,
-        text: window.__S.View,
         visibility : "visible"
       });
       cmd += _this.set({
@@ -83,7 +81,7 @@ class Attachments extends View {
         visibility:"gone"
       });
       Android.runInUI(cmd, 0);
-
+      JBridge.showToast(window.__S.DOWNLOAD_CANCELED,"short");
     });
     JBridge.cancelDownload(this.props.index,callback1);
   }

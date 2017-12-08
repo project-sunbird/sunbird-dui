@@ -3,13 +3,7 @@ var Connector = require("@juspay/mystique-backend/src/connectors/screen_connecto
 var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
 var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
 var RelativeLayout = require("@juspay/mystique-backend/src/android_views/RelativeLayout");
-var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget");
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
-var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
-var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
-var ProgressBar = require("@juspay/mystique-backend").androidViews.ProgressBar;
-var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget");
-
 
 class ContentLoaderDialog extends View {
   constructor(props, children, state) {
@@ -27,57 +21,51 @@ class ContentLoaderDialog extends View {
     this.isVisible=false;
     this.handleClickCallback = null;
     this.isButtonVisible = false;
-
 }
-
-  afterRender = () => {
-
-  }
 
   setClickCallback = (callback) => {
     this.handleClickCallback = callback;
   }
 
-    show = () => {
-      if(!this.isVisible){
-            Android.runInUI(
-                  this.set({
-                    id : this.idSet.parentContainer,
-                    visibility :"visible"}),
-                  null
-                );
-          }
-        this.updateProgressBar(0);
-        this.isVisible=true;
+  show = () => {
+    if(this.isVisible){
+      return;
     }
-
-    hide = () => {
-      if(!this.isVisible){
       Android.runInUI(
             this.set({
               id : this.idSet.parentContainer,
-              visibility :"gone"}),
+              visibility :"visible"}),
             null
           );
-    }
-        this.isVisible=false;
-        if (this.handleClickCallback)
-          this.handleClickCallback = null;
+      this.updateProgressBar(0);
+      this.isVisible=true;
+  }
 
+  hide = () => {
+    if(!this.isVisible){
+      return;
     }
+    Android.runInUI(
+      this.set({
+        id : this.idSet.parentContainer,
+        visibility :"gone"}),
+        null
+      );
+    this.isVisible=false;
+    if (this.handleClickCallback)
+      this.handleClickCallback = null;
+  }
 
-    getVisible = () => {
-      return this.isVisible;
-    }
+  getVisible = () => {
+    return this.isVisible;
+  }
 
   handleClick = () => {
     if (this.handleClickCallback)
       this.handleClickCallback();
-    else
-      return;
   }
 
-   updateProgressBar = (pStatus) => {
+  updateProgressBar = (pStatus) => {
     this.replaceChild(this.idSet.progressContainer, this.getProgressBar(pStatus).render(), 0);
     if (pStatus > 0 && pStatus < 100){
       if (!this.isButtonVisible){
@@ -99,51 +87,43 @@ class ContentLoaderDialog extends View {
   }
 
   getButton = () => {
-    return(
-        <LinearLayout
-          width = "match_parent"
-          height = "wrap_content"
-          gravity = "center"
-          margin = "0,24,0,24">
-          <TextView
-            height = "wrap_content"
-            width = "wrap_content"
-            onClick = {this.handleClick}
-            text = {window.__S.CANCEL}
-            style = {window.__TextStyle.textStyle.CARD.BODY.BLUE_R}
-            color={window.__Colors.PRIMARY_ACCENT}
-            padding = "16,10,16,10" />
-        </LinearLayout>
-      );
+    return( 
+    <LinearLayout
+      width = "match_parent"
+      height = "wrap_content"
+      gravity = "center"
+      margin = "0,24,0,24">
+      <TextView
+        height = "wrap_content"
+        width = "wrap_content"
+        onClick = {this.handleClick}
+        text = {window.__S.CANCEL}
+        style = {window.__TextStyle.textStyle.CARD.BODY.BLUE_R}
+        color={window.__Colors.PRIMARY_ACCENT}
+        padding = "16,10,16,10" />
+    </LinearLayout>
+);
   }
 
-
   getProgressBar = (pStatus) => {
-
     var completedProgress = pStatus;
     var remainingProgress = (100 - parseInt(pStatus))+"";
-
-
     return(<LinearLayout
              width="250"
              root="true"
              height="20">
-
-              <ViewWidget
+              <LinearLayout
                 width="0"
                 height="10"
                 background={window.__Colors.LIGHT_BLUE}
                 weight={completedProgress}/>
-
-               <ViewWidget
+              <LinearLayout
                  width="0"
                  background={window.__Colors.PRIMARY_BLACK_22}
                  height="10"
                  weight={remainingProgress}/>
-
              </LinearLayout>)
   }
-
 
   render() {
     this.layout = (
@@ -193,7 +173,7 @@ class ContentLoaderDialog extends View {
           {this.getButton()}
           </LinearLayout>
       </RelativeLayout>
-    );
+      );
 
     return this.layout.render();
   }
