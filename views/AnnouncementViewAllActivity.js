@@ -17,6 +17,7 @@ class AnnouncementViewAllActivity extends View {
       this.jsonArray=[];
       this.setIds([
           "announcementListContainer",
+          "viewMoreButton",
       ]);
       window.__LoaderDialog.show();         
       try{
@@ -29,6 +30,9 @@ class AnnouncementViewAllActivity extends View {
       console.log("AnnouncementViewAllActivity -->:",this.details);
       this.screenName = "AnnouncementViewAllActivity";
       this.shouldCacheScreen = false;
+      this.limitForNumberOfAnnouncements=10;
+      this.offset=0;
+      this.list=this.details.announcements;      
       _this = this;
   }
     
@@ -48,27 +52,92 @@ class AnnouncementViewAllActivity extends View {
   showList = () =>{
       console.log("showlist",this.details);
       this.jsonArray=[]
-      this.details.announcements.map((item, i) => {
+      this.list.map((item, i) => {
           var card = (
             <AnnouncementCard
               params={item}
               tag="OPEN_AnnouncementDetailActivityFromViewAll"
-              onClick={()=>this.handleAnnouncementClick(item.id,i)}/>
+              onClick={()=>this.handleAnnouncementClick(item.id,this.offset+i)}/>
           )
           this.jsonArray.push({ view: this.getView(card.render()),value:"",viewType:0});
         });
+        var callback = callbackMapper.map(function() {
+          console.log("view more button pressed");  
+          _this.handleViewMoreClick();
+        });
         console.log("in showlist");
-        JBridge.listViewAdapter(
+        if(this.offset<this.limitForNumberOfAnnouncements){
+          var buttonText = this.details.count>10?window.__S.VIEW_MORE:"";
+          var buttonCallback = this.details.count>10?callback:""; 
+          JBridge.listViewAdapter(
+            this.idSet.announcementListContainer,
+            JSON.stringify(this.jsonArray),
+            1000,
+            buttonText,
+            buttonCallback,
+            this.idSet.viewMoreButton,
+            10
+          );
+        }else{
+          JBridge.appendToListView(
           this.idSet.announcementListContainer,
           JSON.stringify(this.jsonArray),
-          1000,
-          null,
-          "",
-          "",
-          10
-        );
+          1000);
+        }
         console.log("end of showlist");
         window.__LoaderDialog.hide();
+  }
+
+  handleViewMoreClick=()=>{
+    if (!JBridge.isNetworkAvailable()){
+      window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE);
+      return;
+    } 
+    window.__LoaderDialog.show();  
+    this.offset +=this.limitForNumberOfAnnouncements;
+    var request = {
+      "offset": this.offset,
+      "limit" : this.limitForNumberOfAnnouncements
+    };
+    var whatToSend = {
+      user_token: window.__user_accessToken,
+      api_token: window.__apiToken,
+      requestBody: JSON.stringify(request)
+    };
+    var event = {tag: "API_GetMoreAnnouncementData", contents: whatToSend};
+    this.announcementResponseCame=false;
+    setTimeout(() => {
+      if (this.announcementResponseCame) return;
+      this.announcementResponseCame = true;
+      window.__LoaderDialog.hide();
+      window.__Snackbar.show("Unable to fetch more announcements");
+    }, window.__API_TIMEOUT);
+    window.__runDuiCallback(event);
+  }
+
+  changeViewMoreButtonStatus(){
+    JBridge.hideFooterView(
+      this.idSet.announcementListContainer,
+      this.idSet.viewMoreButton
+    );
+  }
+
+  handleStateChange = (state) =>{
+    if(this.announcementResponseCame)
+      return;
+    this.announcementResponseCame=true;
+    var res = utils.processResponse(state);
+    console.log("response",res);        
+    if(res.code=="200"&&res.data.responseCode=="OK"){
+    this.list=res.data.result.announcements||"";
+    if(this.list.length<this.limitForNumberOfAnnouncements){
+      this.changeViewMoreButtonStatus();
+    }
+    this.showList();
+    }else{
+      window.__Snackbar.show("Unable to fetch more announcements");      
+    }
+    window.__LoaderDialog.hide();       
   }
 
   handleAnnouncementClick = (id,index) => {

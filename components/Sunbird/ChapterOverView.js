@@ -5,6 +5,7 @@ var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLay
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
 var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget");
+var utils = require('../utils/GenericFunctions');
 
 class ChapterOverView extends View {
   constructor(props, children) {
@@ -23,17 +24,9 @@ class ChapterOverView extends View {
   }
 
 
-  getLineSeperator = () => {
-    return (<LinearLayout
-              width="match_parent"
-              height="1"
-              margin="0,16,0,16"
-              background={window.__Colors.PRIMARY_BLACK_22}/>)
-  }
-
   render() {
 
-    this.chapterName = this.index + " : " + this.props.item.contentData.name;
+    this.chapterName = utils.cropText(this.index + " : " + this.props.item.contentData.name,25);
 
 
     this.layout = (
@@ -46,12 +39,10 @@ class ChapterOverView extends View {
        gravity="center_vertical">
 
          <TextView
-           width="0"
            weight="1"
            height="wrap_content"
            gravity="center_vertical"
            text={this.chapterName}
-           enableEllipse = "true"
            style={window.__TextStyle.textStyle.CARD.HEADING}/>
 
 

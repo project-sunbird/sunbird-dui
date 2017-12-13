@@ -193,7 +193,7 @@ showList = () =>{
     }
   }
 
-  changeViewMoreButtonStatus(status){
+  changeViewMoreButtonStatus(){
     JBridge.hideFooterView(
       this.idSet.listContainer,
       this.idSet.viewMoreButton

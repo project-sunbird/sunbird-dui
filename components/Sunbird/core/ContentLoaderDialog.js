@@ -28,9 +28,6 @@ class ContentLoaderDialog extends View {
   }
 
   show = () => {
-    if(this.isVisible){
-      return;
-    }
       Android.runInUI(
             this.set({
               id : this.idSet.parentContainer,
@@ -42,9 +39,6 @@ class ContentLoaderDialog extends View {
   }
 
   hide = () => {
-    if(!this.isVisible){
-      return;
-    }
     Android.runInUI(
       this.set({
         id : this.idSet.parentContainer,

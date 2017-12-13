@@ -77,6 +77,10 @@ courseViewAllActivity input whereFrom whatToSendBack = do
 announcementViewAllActivity input whereFrom whatToSendBack = do
 	event <- ui $ AnnouncementViewAllActivity {announcementDetails : input}
 	case event of
+		API_GetMoreAnnouncementData {user_token: user_token,api_token: api_token,requestBody:request}-> do
+			responseData <- getAnnouncementData user_token api_token request
+			_ <- sendUpdatedState {response : responseData, responseFor : "API_GetMoreAnnouncementData", screen:"asas"}
+			pure $ "handled"
 		OPEN_AnnouncementDetailActivityFromViewAll {announcementData : output} -> announcementDetailActivity output "AnnouncementViewAllActivity" input
 		BACK_AnnouncementViewAllActivity -> homeFragment whatToSendBack "Terminate" input
 		_ -> announcementViewAllActivity input whereFrom whatToSendBack

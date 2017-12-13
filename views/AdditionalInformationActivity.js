@@ -202,7 +202,7 @@ class AdditionalInformationActivity extends View{
            width="match_parent"
            height="wrap_content"
            textAllCaps="true"
-           style={window.__TextStyle.textStyle.HINT.DULL}
+           style={window.__TextStyle.textStyle.HINT.SEMI}
            text={window.__S.GRADE}
            padding="4,0,0,0"/>
           <MultiSelectSpinner
@@ -232,7 +232,7 @@ class AdditionalInformationActivity extends View{
            width="match_parent"
            height="20"
            textAllCaps="true"
-           style={window.__TextStyle.textStyle.HINT.DULL}
+           style={window.__TextStyle.textStyle.HINT.SEMI}
            text={window.__S.SUBJECTS}
            padding="4,0,0,0"/>
           <MultiSelectSpinner
@@ -336,7 +336,7 @@ class AdditionalInformationActivity extends View{
         editTextPadding="4,4,41,10"
         _onChange={onChange}
         text = {text}
-        textStyle = {window.__TextStyle.textStyle.HINT.DULL}
+        textStyle = {window.__TextStyle.textStyle.HINT.SEMI}
         editTextStyle = {window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
         inputType = {inputType ? inputType : "text"}/>
         <LinearLayout
@@ -381,7 +381,7 @@ class AdditionalInformationActivity extends View{
            <TextView
           width="match_parent"
           height="wrap_content"
-          style={window.__TextStyle.textstyle.HINT.DULL}
+          style={window.__TextStyle.textStyle.HINT.SEMI}
           text={label.toUpperCase(label)}/>);
 
      return (
@@ -392,7 +392,7 @@ class AdditionalInformationActivity extends View{
        <TextView
         width="match_parent"
         height="wrap_content"
-        style={window.__TextStyle.textstyle.HINT.DULL}
+        style={window.__TextStyle.textStyle.HINT.SEMI}
         text={label.toUpperCase(label)}/>
        <TextView
        height="wrap_content"
@@ -440,7 +440,7 @@ class AdditionalInformationActivity extends View{
                               width="match_parent"
                               height="wrap_content"
                               textAllCaps="true"
-                              style={window.__TextStyle.textStyle.HINT.DULL}
+                              style={window.__TextStyle.textStyle.HINT.SEMI}
                               text={window.__S.EMAIL_ID}/>
                             <TextView
                               width="wrap_content"
@@ -473,7 +473,7 @@ class AdditionalInformationActivity extends View{
                          <TextView
                           width="match_parent"
                           height="20"
-                          style={window.__TextStyle.textStyle.HINT.DULL}
+                          style={window.__TextStyle.textStyle.HINT.SEMI}
                           textAllCaps="true"
                           text={window.__S.SUBJECTS}
                           padding ="4,0,4,0"/>
@@ -496,7 +496,7 @@ class AdditionalInformationActivity extends View{
                         width="match_parent"
                         height="wrap_content"
                         textAllCaps="true"
-                        style={window.__TextStyle.textStyle.HINT.DULL}
+                        style={window.__TextStyle.textStyle.HINT.SEMI}
                         text={window.__S.DATE_OF_BIRTH}/>
                         <LinearLayout
                           width="match_parent"
@@ -533,7 +533,7 @@ class AdditionalInformationActivity extends View{
                          width="match_parent"
                          height="wrap_content"
                          textAllCaps="true"
-                         style={window.__TextStyle.textStyle.HINT.DULL}
+                         style={window.__TextStyle.textStyle.HINT.SEMI}
                           text={window.__S.GRADE}
                          padding="4,0,0,0"/>
                         <MultiSelectSpinner
@@ -554,7 +554,7 @@ class AdditionalInformationActivity extends View{
                       <TextView
                       height="wrap_content"
                       width="wrap_content"
-                      style={window.__TextStyle.textStyle.HINT.DULL}
+                      style={window.__TextStyle.textStyle.HINT.SEMI}
                       text={window.__S.WEBLINKS}
                       textAllCaps = "true"
                       />

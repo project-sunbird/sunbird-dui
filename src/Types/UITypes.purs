@@ -262,6 +262,7 @@ instance encodeResourceViewAllActivityAction :: Encode ResourceViewAllActivityAc
 data AnnouncementViewAllActivity = AnnouncementViewAllActivity {announcementDetails::String}
 data AnnouncementViewAllActivityAction = DummyAnnouncementViewAllActivity |
   BACK_AnnouncementViewAllActivity |
+  API_GetMoreAnnouncementData {user_token::String,api_token::String,requestBody::String} |
   OPEN_AnnouncementDetailActivityFromViewAll {announcementData::String}
 
 
