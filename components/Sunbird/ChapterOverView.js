@@ -5,7 +5,7 @@ var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLay
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
 var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget");
-var utils = require('../utils/GenericFunctions');
+var utils = require('../../utils/GenericFunctions');
 
 class ChapterOverView extends View {
   constructor(props, children) {
