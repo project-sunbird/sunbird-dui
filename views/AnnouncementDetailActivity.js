@@ -103,9 +103,9 @@ class AnnouncementDetailActivity extends View{
         text={footerText}
         style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>
         <ImageView
-        height="16"
-        width="16"
-        margin = "8,8,8,8"
+        height="34"
+        width="34"
+        padding = "8,8,8,8"
         imageUrl="ic_action_share_black"
         onClick={this.shareAction}/>
       </LinearLayout>
