@@ -75,10 +75,10 @@ class AnnouncementCard extends View {
     var  linksCount=0;
     if(this.data.hasOwnProperty("links")&&this.data.links!=undefined&&this.data.links.length!=0){
       linksCount=this.data.links.length;
-      var tempWeblinksCount = (linksCount-1)+""; 
+      var tempWeblinksCount = (linksCount-1)+"";
     }
     return (
-   
+
         <LinearLayout
           width="match_parent"
           height="wrap_content"
@@ -114,7 +114,7 @@ class AnnouncementCard extends View {
   }
 
   getDescription=()=>{
-    
+
     var content = ""
     if(this.data.hasOwnProperty("details")&& this.data.details.hasOwnProperty("description")){
       content= utils.cropText(this.data.details.description,60);
@@ -149,14 +149,14 @@ class AnnouncementCard extends View {
     var link = "";
     if((this.data.hasOwnProperty("links")&&this.data.links[0]!=undefined)){
       link=this.data.links[0];
-    }      
+    }
     return(
       <LinearLayout
       width="match_parent"
       height="wrap_content"
       visibility={link!=""?"visible":"gone"}
       padding="0,0,0,3"
-      onClick={()=>this.handleAnnouncementClick(this.props.params.id,"webLink",link,this.props.index)}
+      onClick={()=>this.handleAnnouncementClick(this.props.params,"webLink",link,this.props.index)}
       orientation="horizontal">
         <ImageView
           height="18"
@@ -179,9 +179,10 @@ class AnnouncementCard extends View {
     }
         var whatToSend = {
                           "announcementData": JSON.stringify({
-                            "announcementId" : item,
+                            "announcementId" : item.id,
                             "whereFrom": whereFrom,
-                            "details" : details
+                            "details" : details,
+                            "announcementData" : item
                           })
                          }
         var event ={ tag: this.props.tag, contents: whatToSend }
@@ -190,8 +191,8 @@ class AnnouncementCard extends View {
 
   getAttachment=()=>{
     var temp=this.data.attachments[0]||"";
-    if(temp.hasOwnProperty("mimetype"))   
-    var attachmentsType = temp.mimetype.substring(temp.mimetype.lastIndexOf("/")+1); 
+    if(temp.hasOwnProperty("mimetype"))
+    var attachmentsType = temp.mimetype.substring(temp.mimetype.lastIndexOf("/")+1);
     if(this.hasAttachments==false||temp==""){
       return (<LinearLayout/>);
     }
@@ -199,7 +200,7 @@ class AnnouncementCard extends View {
       width="wrap_content"
       height="wrap_content"
       padding="0,0,0,3"
-      onClick={()=>this.handleAnnouncementClick(this.props.params.id,"attachments",this.data.attachments[0],this.props.index)}
+      onClick={()=>this.handleAnnouncementClick(this.props.params,"attachments",this.data.attachments[0],this.props.index)}
       visibility={this.hasAttachments?"visible":"gone"}
       orientation="horizontal">
         <ImageView
@@ -240,7 +241,7 @@ class AnnouncementCard extends View {
         width="match_parent"
         height="wrap_content"
         root="true"
-        onClick={()=>this.handleAnnouncementClick(this.props.params.id,"cardClick","",this.props.index)}
+        onClick={()=>this.handleAnnouncementClick(this.props.params,"cardClick","",this.props.index)}
         orientation="horizontal">
       <LinearLayout
       width="4"

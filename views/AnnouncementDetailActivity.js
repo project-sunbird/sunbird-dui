@@ -20,19 +20,10 @@ class AnnouncementDetailActivity extends View{
     this.data = JSON.parse(state.data.value0.announcementData); //data Recieved from intent
     console.log("Recieved data in AnnouncementDetailActivity ", this.data);
 
-    var announcementList = []; //list of announcementData in local storage
-    try{
-      announcementList = JSON.parse(utils.decodeBase64(JBridge.getSavedData("savedAnnouncements"))).announcements;
-    }catch(e){
-      console.log("Failed to get announcement Data from shared preferences :",e);
-    }
-
-    this.announcementData = {};
-    announcementList.map((item) => {
-      if (item.id == this.data.announcementId) {
-        this.announcementData = item; //setting current announcement details
-      }
-    });
+    if (this.data.announcementData)
+      this.announcementData = this.data.announcementData;
+    else
+      this.announcementData = this.fetchFromLocal(this.data.announcementId);
 
     //TODO handle no announcement data in this.announcementData
 
@@ -40,6 +31,23 @@ class AnnouncementDetailActivity extends View{
     console.log("Info State", this.data);
     this.screenName = "AnnouncementDetailActivity";
     this.shouldCacheScreen = false;
+  }
+
+  fetchFromLocal = (id) => {
+    var announcementList = []; //list of announcementData in local storage
+    try{
+      announcementList = JSON.parse(utils.decodeBase64(JBridge.getSavedData("savedAnnouncements"))).announcements;
+    }catch(e){
+      console.log("Failed to get announcement Data from shared preferences :",e);
+    }
+
+    var announcementData = {};
+    announcementList.map((item) => {
+      if (item.id == id) {
+        announcementData = item; //setting current announcement details
+      }
+    });
+    return announcementData;
   }
 
   handleStateChange = (state) => {
