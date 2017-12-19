@@ -243,6 +243,7 @@ class HomeFragment extends View {
   }
 
   handleAnnouncementClick = (id,index) => {
+    console.log("handleAnnouncementClick" , index);
     JBridge.logAnnouncementClicked("HOME",id, index);
   }
 
@@ -271,7 +272,7 @@ class HomeFragment extends View {
           card1 = (
           <AnnouncementCard
             tag="OPEN_AnnouncementDetailActivity"
-            onClick = {this.handleAnnouncementClick(0,announcementApiData.announcements[0].id)}
+            onClick = {() => this.handleAnnouncementClick(announcementApiData.announcements[0].id, 0)}
             params={announcementApiData.announcements[0]}/>
           );
         }
@@ -279,7 +280,7 @@ class HomeFragment extends View {
           card2 = (
             <AnnouncementCard
             tag="OPEN_AnnouncementDetailActivity"
-            onClick = {this.handleAnnouncementClick(1,announcementApiData.announcements[0].id)}
+            onClick = {() => this.handleAnnouncementClick(announcementApiData.announcements[1].id, 1)}
             params={announcementApiData.announcements[1]}/>
             );
         }
