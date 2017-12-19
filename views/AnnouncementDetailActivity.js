@@ -82,7 +82,7 @@ class AnnouncementDetailActivity extends View{
   else{
      console.log("Announcement has already been read");
   }
-  if(this.data.whereFrom=="webLinks"){
+  if(this.data.whereFrom=="webLink"){
     this.openLink(this.data.details);
   }
 }
@@ -141,12 +141,9 @@ class AnnouncementDetailActivity extends View{
   }
 
   openLink = (url) => {
+    console.log("openLink ", url);
     if(url==undefined)
       url="www.google.com/github";
-
-    if (!url.startsWith("http://") && !url.startsWith("https://"))
-     url = "http://" + url;
-
     JBridge.openLink(url);
   }
 
@@ -176,7 +173,7 @@ class AnnouncementDetailActivity extends View{
        height="wrap_content"
        width="match_parent"
        text={item}
-       onClick={this.openLink}
+       onClick={() => this.openLink(this.data.details)}
        style={window.__TextStyle.textStyle.CLICKABLE.BLUE_SEMI}/>
    );
   }
