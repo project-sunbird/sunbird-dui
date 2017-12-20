@@ -512,6 +512,7 @@ class MainActivity extends View {
         whatToSend = [];
         event = {tag: "OPEN_HomeFragment", contents: whatToSend};
         window.__Check = 1;
+        window.__LoaderDialog.hide();
         break;
       case 1:
         if (!JBridge.isNetworkAvailable()) {
