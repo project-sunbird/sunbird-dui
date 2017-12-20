@@ -107,15 +107,18 @@ class ProfileFragment extends View {
 
   afterRender() {
     var callback = callbackMapper.map((data) => {
-      console.log("createdBy data", JSON.parse(utils.decodeBase64(data[0])));
-      _this.createdBy = JSON.parse(utils.decodeBase64(data[0]));
-      var layout = (
-        <ProfileCreations
-          data = {_this.createdBy}
-          editable = {_this.editable}
-          onCardClick = {_this.handleCreatedCardClick}/>
-      );
-      _this.replaceChild(_this.idSet.createdByHolder, layout.render(), 0);
+      console.log("searchContent data ", data);
+      if (data[0] != "error") {
+        console.log("createdBy data", JSON.parse(utils.decodeBase64(data[0])));
+        _this.createdBy = JSON.parse(utils.decodeBase64(data[0]));
+        var layout = (
+          <ProfileCreations
+            data = {_this.createdBy}
+            editable = {_this.editable}
+            onCardClick = {_this.handleCreatedCardClick}/>
+        );
+        _this.replaceChild(_this.idSet.createdByHolder, layout.render(), 0);
+      }
     });
     if (JBridge.isNetworkAvailable())
       JBridge.searchContent(callback, "userToken", window.__userToken, "Combined", "true", 10);
