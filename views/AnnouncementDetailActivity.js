@@ -173,7 +173,7 @@ class AnnouncementDetailActivity extends View{
        height="wrap_content"
        width="match_parent"
        text={item}
-       onClick={() => this.openLink(this.data.details)}
+       onClick={() => this.openLink(item)}
        style={window.__TextStyle.textStyle.CLICKABLE.BLUE_SEMI}/>
    );
   }
