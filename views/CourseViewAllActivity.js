@@ -13,7 +13,7 @@ var _this;
 class CourseViewAllActivity extends View {
   constructor(props, children, state) {
     super(props, children, state);
-    window.__LoaderDialog.show();          
+    window.__LoaderDialog.show();
     this.jsonArray=[];
     this.setIds([
       "viewMoreButton",
@@ -54,11 +54,11 @@ class CourseViewAllActivity extends View {
     var list = this.totalDetails;
     this.jsonArray=[];
     list.map((item,i) => {
-      var progressCount = 0;      
-      if (item.leafNodesCount >= item.progress) {
-        var progressCount = item.leafNodesCount == null ? 0 : (item.progress/item.leafNodesCount)*100;
-        progressCount = parseInt(progressCount);
-      }
+      var progressCount = 0;
+      var pDone= (item.progress == undefined || !Number.isInteger(item.progress)) ? 0 : item.progress;
+      var pTotal = (item.leafNodesCount == undefined || !Number.isInteger(item.leafNodesCount)) ? 0 : item.leafNodesCount;
+      var progressCount = (pDone / pTotal)*100;
+      progressCount = isNaN(progressCount) ? 0 : parseInt(progressCount);
       var appIcon,name,isProgress,size,actionText,type;
       if(item.courseId){
         appIcon = item.courseLogoUrl ? item.courseLogoUrl : "ic_action_course";
@@ -87,7 +87,7 @@ class CourseViewAllActivity extends View {
       temp['actionText'] = actionText;
       temp["footerSubTitle"] = window.__S.ERROR_DURATION_NOT_AVAILABLE;
       temp["type"] = type;
-      
+
       var layout = (
       <LargeCardComponent
         data={temp}
@@ -107,7 +107,7 @@ class CourseViewAllActivity extends View {
       if(this.btnStatus=="visible"&&(this.jsonArray.length)>=10){
         buttonText = window.__S.VIEW_MORE;
         buttonCallback = callback1;
-      }    
+      }
       JBridge.listViewAdapter(
         this.idSet.listContainer,
         JSON.stringify(this.jsonArray),
@@ -182,7 +182,7 @@ class CourseViewAllActivity extends View {
             var callback = callbackMapper.map(function(data){
               data[0] = JSON.parse(utils.decodeBase64(data[0]));
               _this.displayContent=data[0];
-              _this.totalDetails=[];                  
+              _this.totalDetails=[];
               console.log("data from response",data[0]);
               for(var i = _this.start_index*10;i<_this.displayContent.length;i++){
                   _this.totalDetails.push(_this.displayContent[i]);
