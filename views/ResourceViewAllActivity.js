@@ -52,7 +52,7 @@ showList = () =>{
           this.name = item.contentData.name;
           if(item.contentData.hasOwnProperty("lastPublishedOn")){
             var d =  new Date(item.contentData.lastPublishedOn);
-            this.time = utils.prettifyDate(d);                     
+            this.time = utils.prettifyDate(d);
           }else if(item.contentData.hasOwnProperty("createdOn")){
             var d =  new Date(item.contentData.createdOn);
             this.time = utils.prettifyDate(d);
@@ -67,7 +67,7 @@ showList = () =>{
           this.name = item.name;
           if(item.hasOwnProperty("lastPublishedOn")){
             var d =  new Date(item.lastPublishedOn);
-            this.time = utils.prettifyDate(d);                     
+            this.time = utils.prettifyDate(d);
           }else if(item.hasOwnProperty("createdOn")){
             var d =  new Date(item.createdOn);
             this.time = utils.prettifyDate(d);
@@ -95,7 +95,7 @@ showList = () =>{
      }
     });
     var callback1 = callbackMapper.map(function() {
-      console.log("button pressed");  
+      console.log("button pressed");
       _this.handleViewMoreClick();
     });
     if(this.start_index==0){
@@ -104,7 +104,7 @@ showList = () =>{
       if(this.btnStatus=="visible"&&(this.jsonArray.length)>=10){
         buttonText = window.__S.VIEW_MORE;
         buttonCallback = callback1;
-      }    
+      }
       JBridge.listViewAdapter(
         this.idSet.listContainer,
         JSON.stringify(this.jsonArray),
@@ -121,18 +121,14 @@ showList = () =>{
         JSON.stringify(this.jsonArray),
         1000);
       }
-      window.__LoaderDialog.hide();      
+      window.__LoaderDialog.hide();
   }
 
   handleResourceClick = (item,index)=>{
     var index_click = this.start_index <1 ? index+1 : index+(this.start_index*10)+1;
     JBridge.logContentClickEvent("RESOURCES",index_click,"",item.identifier)
     console.log(item)
-      if(item.contentType.toLowerCase() == "course"){
-      var whatToSend = {resourceDetails:JSON.stringify(item)}
-      var event = {tag:"OPEN_ResourceViewAllDetail",contents:whatToSend}
-      window.__runDuiCallback(event);
-    }else if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook"){
+    if(item.mimeType.toLowerCase() == "application/vnd.ekstep.content-collection"){
       var whatToSend={course:JSON.stringify(item)};
       var event={tag:"OPEN_CourseEnrolled",contents:whatToSend}
       window.__runDuiCallback(event);
