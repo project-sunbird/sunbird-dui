@@ -30,7 +30,8 @@ class CourseEnrolledActivity extends View {
       "descriptionContainer",
       "courseNotStartedOverLay",
       "sharePopupContainer",
-      "featureButton",
+      "featureButton1",
+      "featureButton2",
       "simpleToolBarOverFlow",
       "batchDetailsContainer"
     ]);
@@ -436,26 +437,30 @@ class CourseEnrolledActivity extends View {
 
     if((this.details.hasOwnProperty("mimeType")) && (this.details.mimeType.toLocaleLowerCase() == "application/vnd.ekstep.content-collection")){
       var cmd = this.set({
-        id: this.idSet.featureButton,
+        id: this.idSet.featureButton1,
+        visibility: "gone"
+      });
+
+      cmd+=this.set({
+        id: this.idSet.featureButton2,
         visibility: "gone"
       });
       Android.runInUI(cmd, 0);
+
     }
-    if(this.enrolledCourses.hasOwnProperty("lastReadContentId") || (this.enrolledCourses.lastReadContentId1=null)){
-      var btn  = (<FeatureButton
-                          clickable="true"
-                          margin = "16,16,16,16"
-                          weight="1"
-                          height = "56"
-                          id = {this.idSet.featureButton}
-                          background = {window.__Colors.PRIMARY_ACCENT}
-                          text={window.__S.RESUME+" "+window.__S.COURSE}
-                          style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
-                          buttonClick = {this.handleResumeClick}/>
-                )
+    if(this.enrolledCourses.hasOwnProperty("lastReadContentId") && (this.enrolledCourses.lastReadContentId!=null)){
 
-     this.replaceChild(this.idSet.featureButton,btn.render(),0)
+      var cmd = this.set({
+        id: this.idSet.featureButton1,
+        visibility: "gone"
+      });
 
+      cmd+=this.set({
+        id: this.idSet.featureButton2,
+        visibility: "visible"
+      });
+
+      Android.runInUI(cmd, 0);
 
     }
 
@@ -727,16 +732,32 @@ class CourseEnrolledActivity extends View {
                           </LinearLayout>
                       </LinearLayout>
                   </ScrollView>
-                  <FeatureButton
-                    clickable="true"
-                    margin = "16,16,16,16"
-                    width = "match_parent"
-                    height = "56"
-                    id = {this.idSet.featureButton}
-                    background = {window.__Colors.PRIMARY_ACCENT}
-                    text = {window.__S.START_COURSE}
-                    style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
-                    buttonClick = {this.handleResumeClick}/>
+                  <RelativeLayout
+                    height="wrap_content"
+                    width="match_parent">
+                      <FeatureButton
+                        clickable="true"
+                        margin = "16,16,16,16"
+                        width = "match_parent"
+                        height = "56"
+                        id = {this.idSet.featureButton1}
+                        visibility="visible"
+                        background = {window.__Colors.PRIMARY_ACCENT}
+                        text = {window.__S.START_COURSE}
+                        style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
+                        buttonClick = {this.handleResumeClick}/>
+                        <FeatureButton
+                          clickable="true"
+                          margin = "16,16,16,16"
+                          width = "match_parent"
+                          height = "56"
+                          visibility="gone"
+                          id = {this.idSet.featureButton2}
+                          background = {window.__Colors.PRIMARY_ACCENT}
+                          text = {window.__S.RESUME+" "+window.__S.COURSE}
+                          style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
+                          buttonClick = {this.handleResumeClick}/>
+                  </RelativeLayout>
               </LinearLayout>
 
 
