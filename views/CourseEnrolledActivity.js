@@ -195,7 +195,7 @@ class CourseEnrolledActivity extends View {
       this.checkContentLocalStatus(this.baseIdentifier);
 
     } else if(downloadedPercent<100) {
-      window.__ContentLoaderDialog.show();      
+      window.__ContentLoaderDialog.show();
       window.__ContentLoaderDialog.setClickCallback(this.handleContentLoaderCancelClick)
       window.__ContentLoaderDialog.updateProgressBar(downloadedPercent);
     }
@@ -441,19 +441,22 @@ class CourseEnrolledActivity extends View {
       });
       Android.runInUI(cmd, 0);
     }
-    if(!this.enrolledCourses.hasOwnProperty("lastReadContentId") || (this.enrolledCourses.lastReadContentId==null)){
+    if(this.enrolledCourses.hasOwnProperty("lastReadContentId") || (this.enrolledCourses.lastReadContentId1=null)){
       var btn  = (<FeatureButton
-                    clickable="true"
-                    margin = "16,16,16,16"
-                    width = "match_parent"
-                    height = "56"
-                    id = {this.idSet.featureButton}
-                    background = {window.__Colors.PRIMARY_ACCENT}
-                    text = {window.__S.START_COURSE}
-                    style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
-                    buttonClick = {this.handleResumeClick}/>)
+                          clickable="true"
+                          margin = "16,16,16,16"
+                          weight="1"
+                          height = "56"
+                          id = {this.idSet.featureButton}
+                          background = {window.__Colors.PRIMARY_ACCENT}
+                          text={window.__S.RESUME+" "+window.__S.COURSE}
+                          style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
+                          buttonClick = {this.handleResumeClick}/>
+                )
 
-      this.replaceChild(this.idSet.featureButton,btn.render(),0)
+     this.replaceChild(this.idSet.featureButton,btn.render(),0)
+
+
     }
 
 
@@ -731,7 +734,7 @@ class CourseEnrolledActivity extends View {
                     height = "56"
                     id = {this.idSet.featureButton}
                     background = {window.__Colors.PRIMARY_ACCENT}
-                    text = {window.__S.RESUME+" "+window.__S.COURSE}
+                    text = {window.__S.START_COURSE}
                     style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
                     buttonClick = {this.handleResumeClick}/>
               </LinearLayout>
