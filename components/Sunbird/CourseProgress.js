@@ -42,24 +42,9 @@ class CourseProgress extends View {
                   style={window.__TextStyle.textStyle.HINT.REGULAR}
                   id ={this.idSet.completedTextView}
                   text={window.__S.YOUR_PROGRESS.format(this.progressBar)}/>
-                
+
           </LinearLayout>)
   }
-
-  updateProgress = (pStatus) => {
-    this.competedCount = pStatus
-    var cmd = this.set({
-      id: this.idSet.completedTextView,
-      text: window.__S.YOUR_PROGRESS.format(pStatus)
-    })
-    Android.runInUI(cmd, 0);
-
-  }
-
-  handleResumeClick = () => {
-    this.props.onResumeClick();
-  }
-
 
   getResumeButton = () => {
     return (<LinearLayout
@@ -74,7 +59,7 @@ class CourseProgress extends View {
               height="wrap_content"
               text={window.__S.RESUME}
               gravity="center"
-              onClick={this.handleResumeClick}
+              onClick={() => this.props.onResumeClick()}
               style={window.__TextStyle.textStyle.TABBAR.WHITE}/>
 
         </LinearLayout>)

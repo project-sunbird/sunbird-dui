@@ -39,6 +39,7 @@ class QRActivity extends View {
 
     window.BarcodeResult = this.barcodeResult;
     _this = this;
+    JBridge.logQRScanInitiated();
   }
 
   openFrame = () => {
@@ -61,6 +62,7 @@ class QRActivity extends View {
   }
 
   onBackPressed = () => {
+    JBridge.logQRScanCancelled();
     QRScanner.closeQRScanner();
     var whatToSend = [];
     var event = { tag: "BACK_QRActivity", contents: whatToSend }
@@ -68,11 +70,12 @@ class QRActivity extends View {
   }
 
   barcodeResult = (barcode) => {
-    window.__LoaderDialog.show()
+    window.__LoaderDialog.show();
     QRScanner.closeQRScanner();
     console.log("barcode data", atob(barcode));
     barcode = atob(barcode);
     if (!this.isValidBarcode(barcode)) {
+      JBridge.logQRScanSuccess(barcode, "Unknown");
       this.showErrorPopup("WRONGQR");
       return;
     }
@@ -80,10 +83,18 @@ class QRActivity extends View {
     var callback = callbackMapper.map(function(data){
       console.log("getContentDetails ", data);
       if (data[0]=="__failed"){
-        window.__LoaderDialog.hide()
-        _this.showErrorPopup("WRONGQR");
+        if (JBridge.isNetworkAvailable()){
+          JBridge.logQRScanSuccess(barcode, "Unknown");
+          window.__LoaderDialog.hide();
+          _this.showErrorPopup("WRONGQR");
+        } else {
+          JBridge.logQRScanSuccess(barcode, "Unknown");
+          window.__LoaderDialog.hide();
+          _this.showErrorPopup("NOINTERNET");
+        }
         return;
       }
+      JBridge.logQRScanSuccess(barcode, "ContentDetail");
       var item = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
       console.log("Callback data in QRActivity",item);
       window.__LoaderDialog.hide();
@@ -120,10 +131,8 @@ class QRActivity extends View {
             }
     });
 
-    if (JBridge.isNetworkAvailable())
-      JBridge.getContentDetails(identifier,callback);
-    else
-      this.showErrorPopup("NOINTERNET");
+    //TODO implement proper error callback
+    JBridge.getContentDetails(identifier,callback);
   }
 
   showErrorPopup = (type) => {
