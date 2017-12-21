@@ -40,7 +40,7 @@ class LanguagePopup extends View {
       // "Oriya" : "or_IN",
       // "ગુજરાતી" : "gu_IN",
       // "Assamese" : "as_IN",
-      // "मराठी" : "mr_IN",
+      "मराठी" : "mr_IN",
       // "ਪੰਜਾਬੀ" : "pa_IN"
     };
     console.log("this.languageMap", this.languageMap);
