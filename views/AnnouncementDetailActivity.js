@@ -19,34 +19,48 @@ class AnnouncementDetailActivity extends View{
      _this = this;
     this.data = JSON.parse(state.data.value0.announcementData); //data Recieved from intent
     console.log("Recieved data in AnnouncementDetailActivity ", this.data);
-
-    if (this.data.announcementData)
+    this.makeReadApiCall = false;
+    this.announcementData = this.fetchFromLocal(this.data.announcementId);
+    if (this.announcementData == "{}")
       this.announcementData = this.data.announcementData;
-    else
-      this.announcementData = this.fetchFromLocal(this.data.announcementId);
 
+    if (!this.announcementData.read) this.makeReadApiCall = true; //this check is made for announcement that was not saved locally
     //TODO handle no announcement data in this.announcementData
 
     console.log("current announcement details: ", this.announcementData);
-    console.log("Info State", this.data);
+    console.log("Info State 123", this.data);
     this.screenName = "AnnouncementDetailActivity";
     this.shouldCacheScreen = false;
   }
 
   fetchFromLocal = (id) => {
+    console.log("fetching from local");
+    var announcementJSON = {};
     var announcementList = []; //list of announcementData in local storage
     try{
-      announcementList = JSON.parse(utils.decodeBase64(JBridge.getSavedData("savedAnnouncements"))).announcements;
+      announcementJSON = JSON.parse(utils.decodeBase64(JBridge.getSavedData("savedAnnouncements")));
+      announcementList = announcementJSON.announcements;
     }catch(e){
       console.log("Failed to get announcement Data from shared preferences :",e);
     }
 
-    var announcementData = {};
-    announcementList.map((item) => {
+    var announcementData = "{}";
+    announcementList.map((item, i) => {
       if (item.id == id) {
+        console.log("item in array " + i, item);
         announcementData = item; //setting current announcement details
+        if (!item.read) {
+          this.makeReadApiCall = true;
+          announcementList[i].read = true;
+          setTimeout(() => {    //using setTimeout to execute the code asynchronouly
+            announcementJSON.announcements = announcementList;
+            console.log("updating saved data ", announcementJSON);
+            JBridge.saveData("savedAnnouncements", utils.encodeBase64(JSON.stringify(announcementJSON)));
+          }, 100);
+        }
       }
     });
+    console.log("fetchFromLocal data", announcementData);
     return announcementData;
   }
 
@@ -62,30 +76,29 @@ class AnnouncementDetailActivity extends View{
 
   afterRender = () => {
     JBridge.logAnnouncementDeatilScreen(this.data.announcementId);
-    if(!(this.announcementData.hasOwnProperty("read") && this.announcementData.read)){
-          if (JBridge.isNetworkAvailable()) {
-            var request = {
-            announcementId: this.data.announcementId ,
-              channel: "mobile"
-            };
-            var whatToSend = {
-              user_token: window.__user_accessToken,
-              api_token: window.__apiToken,
-              requestBody: JSON.stringify(request)
-            };
-            var event = {tag: "API_ReadAnnouncement", contents: whatToSend};
-            window.__runDuiCallback(event);
-          } else {
-            console.log("__failed to make Read Announcement API no network");
-          }
-     }
-  else{
+    if(this.makeReadApiCall){
+      if (JBridge.isNetworkAvailable()) {
+        var request = {
+          announcementId: this.data.announcementId ,
+          channel: "mobile"
+        };
+        var whatToSend = {
+          user_token: window.__user_accessToken,
+          api_token: window.__apiToken,
+          requestBody: JSON.stringify(request)
+        };
+        var event = {tag: "API_ReadAnnouncement", contents: whatToSend};
+        window.__runDuiCallback(event);
+      } else {
+        console.log("__failed to make Read Announcement API no network");
+      }
+    } else {
      console.log("Announcement has already been read");
+    }
+    if(this.data.whereFrom=="webLink"){
+      this.openLink(this.data.details);
+    }
   }
-  if(this.data.whereFrom=="webLink"){
-    this.openLink(this.data.details);
-  }
-}
 
   getFooter(){
     var d =  new Date(this.announcementData.createdDate);
