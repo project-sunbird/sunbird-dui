@@ -27,7 +27,8 @@ class ModuleDetailActivity extends View {
             "descriptionContainer",
             "playButtonContainer",
             "simpleToolBarOverFlow",
-            "renderPage"
+            "renderPage",
+            "progressButtonContainer"
         ]);
         this.state = state;
         this.screenName = "ModuleDetailActivity"
@@ -228,6 +229,7 @@ class ModuleDetailActivity extends View {
         </LinearLayout>
       )
       this.replaceChild(this.idSet.renderPage, layout.render(), 0);
+      this.replaceChild(this.idSet.progressButtonContainer, this.getProgressButton().render(), 0);
       this.checkContentLocalStatus(module);
     }
 
@@ -389,6 +391,22 @@ class ModuleDetailActivity extends View {
         console.log("overflow")
     }
 
+    getProgressButton = () => {
+        return (
+            <ProgressButton
+                id={this.idSet.playButtonContainer}
+                width="match_parent"
+                visibility="gone"
+                isCourse="true"
+                playContent={this.props.localContent}
+                contentDetails={this.module}
+                changeOverFlowMenu={this.handleOverFlowClick}
+                buttonText={window.__S.DOWNLOAD}
+                localStatus={this.localStatus}
+                identifier={this.module.identifier} />
+        );
+    }
+
     render() {
 
         this.layout = (
@@ -437,18 +455,11 @@ class ModuleDetailActivity extends View {
 
                 </ScrollView>
 
-                <ProgressButton
-                    id = { this.idSet.playButtonContainer }
-                    width = "match_parent"
-                    visibility = "gone"
-                    isCourse = "true"
-                    playContent = {this.props.localContent}
-                    contentDetails = { this.module }
-                    changeOverFlowMenu = {this.handleOverFlowClick}
-                    buttonText = {window.__S.DOWNLOAD}
-                    localStatus = {this.localStatus}
-                    identifier = { this.module.identifier }/>
-
+                <LinearLayout 
+                    id = { this.idSet.progressButtonContainer }
+                    width = "match_parent">
+                    {this.getProgressButton()}
+                </LinearLayout>
             </LinearLayout>
             <SimplePopup
                buttonClick={this.onSimplePopClick}

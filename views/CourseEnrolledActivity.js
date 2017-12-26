@@ -72,7 +72,7 @@ class CourseEnrolledActivity extends View {
     //to get geneie callback for download of spine
     window.__getDownloadStatus = this.getSpineStatus;
     console.log("details in CEA",this.details)
-    this.showProgress = this.details.hasOwnProperty("contentType") && this.details.contentType == "Collection" || this.details.contentType == "collection" || this.details.contentType == "textbook" || this.details.contentType == "TextBook" ? "gone" : "visible";
+    this.showProgress = this.details.hasOwnProperty("mimeType") && this.details.contentType == "application/vnd.ekstep.content-collection" ? "gone" : "visible";
 
 
 
