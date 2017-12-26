@@ -343,7 +343,7 @@ class AdditionalInformationActivity extends View{
          width="wrap_content"
          height="wrap_content"
          alignParentRight="true,-1"
-         padding="0,8,0,0">
+         padding="0,0,0,0">
         {this.getLockIcon(lockIconId,lockIconVisibility,lockName,label,padding)}
         </LinearLayout>
         </RelativeLayout>)
@@ -453,7 +453,7 @@ class AdditionalInformationActivity extends View{
                          <LinearLayout
                           width="wrap_content"
                           height="wrap_content"
-                          padding="0,5,0,0">
+                          padding="0,0,0,0">
                                {this.getLockIcon(this.idSet.emailLI,true,"email",window.__S.EMAIL_ID,"8,16,8,0")}
                          </LinearLayout>
                      </LinearLayout>
