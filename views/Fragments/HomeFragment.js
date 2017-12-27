@@ -369,12 +369,12 @@ class HomeFragment extends View {
               transparent="true"
               title={window.__S.TO_DO}
               onCourseClick={this.handleUserCoursesClick}/>
+            {this.getAnnouncementCard()}
             {this.getSpaceSeparator()}
             <HomeRecommendedContainer
-              title= {window.__S.RECOMMENDED}
-              onCourseOpenClick = {this.handleCourseOpen}
-              onResourceOpenClick = {this.handleResourceOpen}/>
-            {this.getAnnouncementCard()}
+              title={window.__S.RECOMMENDED}
+              onCourseOpenClick={this.handleCourseOpen}
+              onResourceOpenClick={this.handleResourceOpen} />
           </LinearLayout>
         </ScrollView>
       </LinearLayout>
