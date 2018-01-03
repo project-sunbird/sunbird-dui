@@ -244,7 +244,7 @@ class HomeFragment extends View {
 
   handleAnnouncementClick = (id,index) => {
     console.log("handleAnnouncementClick" , index);
-    JBridge.logAnnouncementClicked("HOME",id, index);
+    JBridge.logAnnouncementClicked("HOME",id, index + 1);
   }
 
   getAnnouncementCard=()=>{
@@ -327,12 +327,13 @@ class HomeFragment extends View {
   }
 
   handleAnnouncementViewAllClick= () =>{
-   var data = {
-     "details" : ""
-   }
-   var whatToSend ={ "announcementDetails": JSON.stringify(data)}
-   var event ={ tag: "OPEN_AnnouncementViewAllActivity", contents:  whatToSend}
-   window.__runDuiCallback(event);
+    JBridge.logViewAllClickEvent("HOME", "Announcement");
+    var data = {
+      "details" : ""
+    }
+    var whatToSend ={ "announcementDetails": JSON.stringify(data)}
+    var event ={ tag: "OPEN_AnnouncementViewAllActivity", contents:  whatToSend}
+    window.__runDuiCallback(event);
 }
 
   render() {
@@ -364,6 +365,7 @@ class HomeFragment extends View {
             width="match_parent"
             orientation="vertical">
             <CourseInProgressContainer
+              parentContainer = "Home"
               addCard={this.getTodoProfileCard(0)}
               addCardVisibility={this.profileUpdateCardVisibility}
               transparent="true"

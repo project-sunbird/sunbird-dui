@@ -67,9 +67,19 @@ class CourseInfoActivity extends View {
       competedCount: this.details && this.details.footerTitle ? this.details.footerTitle.split('%')[0] : "10",
     };
 
-    JBridge.logCourseDetailScreenEvent(this.details.identifier)
+    this.logTelelmetry(this.details.identifier);
   }
 
+  logTelelmetry = (id) => {
+    var callback = callbackMapper.map(function (data) {
+      if (data != "__failed") {
+        data = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
+        console.log("telemetry data CIA", data);
+        JBridge.logCourseDetailScreenEvent(id, data.contentData.pkgVersion);
+      }
+    });
+    JBridge.getContentDetails(id, callback);
+  }
 
   getSpineStatus = (pValue) => {
     var cmd;
@@ -298,12 +308,21 @@ class CourseInfoActivity extends View {
 
   }
 
-
+  logShareContent = (id) => {
+    var callback = callbackMapper.map(function (data) {
+      if (data != "__failed") {
+        data = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
+        console.log("telemetry data SharePopUp", data);
+        JBridge.logShareContentInitiateEvent("COURSES", "course", id, data.contentData.pkgVersion);
+      }
+    });
+    JBridge.getContentDetails(id, callback);
+  }
 
   shareContent = () =>{
 
     console.log("SHARE POP UP CALLED")
-    JBridge.logShareContentInitiateEvent("COURSES",this.details.identifier)
+    this.logShareContent(this.details.identifier);
 
     var shareCallback = callbackMapper.map(function(data) {
 

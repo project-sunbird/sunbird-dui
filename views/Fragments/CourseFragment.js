@@ -323,6 +323,7 @@ networkCheck =()=>{
 
 
                   <CourseInProgressContainer
+                    parentContainer = "Course"
                     transparent="true"
                     title={window.__S.COURSES_IN_PROGRESS}
                     showViewMore = "gone"

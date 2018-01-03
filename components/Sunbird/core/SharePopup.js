@@ -12,6 +12,7 @@ var HorizontalScrollView = require("@juspay/mystique-backend/src/android_views/H
 var Space = require("@juspay/mystique-backend/src/android_views/Space");
 var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
+var utils = require('../../../utils/GenericFunctions');
 var Styles = require("../../../res/Styles");
 let IconStyle = Styles.Params.IconStyle;
 var _this;
@@ -40,7 +41,18 @@ class SharePopup extends View {
   show = () => {
     this.setVisibility("visible");
     this.isVisible=true;
-    JBridge.logshareScreenEvent();
+    this.logTelelmetry(this.props.identifier);
+  }
+
+  logTelelmetry = (id) => {
+    var callback = callbackMapper.map(function (data) {
+      if (data != "__failed") {
+        data = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
+        console.log("telemetry data SharePopUp", data);
+        JBridge.logshareScreenEvent(id, data.contentData.pkgVersion);
+      }
+    });
+    JBridge.getContentDetails(id, callback);
   }
 
   hide = () => {

@@ -278,10 +278,20 @@ class ModuleDetailActivity extends View {
     afterRender = () => {
         window.__SimplePopup.hide();
         window.__ProgressButton.setButtonFor(this.module.identifier);
-        JBridge.logContentDetailScreenEvent(this.module.identifier);
+        this.logTelelmetry(this.module.identifier);
         this.checkContentLocalStatus(this.module);
     }
 
+    logTelelmetry = (id) => {
+        var callback = callbackMapper.map(function (data) {
+            if (data != "__failed") {
+                data = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
+                console.log("telemetry data MDA", data);
+                JBridge.logContentDetailScreenEvent(id, data.contentData.pkgVersion);
+            }
+        });
+        JBridge.getContentDetails(id, callback);
+    }
 
     getLineSeperator = () => {
         return ( <LinearLayout width = "match_parent"

@@ -395,7 +395,7 @@ class MainActivity extends View {
 
         break;
       case 2:
-        JBridge.logTabClickEvent("RESOURCES");
+        JBridge.logTabClickEvent("LIBRARY");
         contentLayout = (
           <ResourceFragment
             root="true"

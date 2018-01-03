@@ -129,7 +129,7 @@ class ResourceContainer extends View {
   }
 
   handleViewAllClick =()=> {
-    JBridge.logViewAllClickEvent("RESOURCES",this.props.title);
+    JBridge.logViewAllClickEvent("LIBRARY",this.props.title);
     this.props.onViewAllClick(this.data,this.props.title,this.props.searchQuery,"visible");
   }
 

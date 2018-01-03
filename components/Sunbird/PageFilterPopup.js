@@ -67,7 +67,7 @@ class PageFilterPopup extends View {
     this.visible=false;
     this.setVisibility("gone");
     if(this.isForResouce){
-      JBridge.logPageFilterClickEvent("RESOURCES");
+      JBridge.logPageFilterClickEvent("LIBRARY");
     }else{
       JBridge.logPageFilterClickEvent("COURSES");
     }
@@ -99,7 +99,7 @@ class PageFilterPopup extends View {
 
     if(this.isForResouce){
       listToUse = this.filterListResource
-      JBridge.logPageFilterScreenEvent("RESOURCES");
+      JBridge.logPageFilterScreenEvent("LIBRARY");
     }else{
       listToUse = this.filterListCource
       JBridge.logPageFilterScreenEvent("COURSES");

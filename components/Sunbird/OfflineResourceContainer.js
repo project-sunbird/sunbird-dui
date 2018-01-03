@@ -176,7 +176,7 @@ class OfflineResourceContainer extends View {
   }
 
   handleViewAllClick() {
-    JBridge.logViewAllClickEvent("RESOURCES",_this.props.title);
+    JBridge.logViewAllClickEvent("LIBRARY",_this.props.title);
     _this.props.onViewAllClick(_this.props.data,_this.props.title,"","gone");
   }
 

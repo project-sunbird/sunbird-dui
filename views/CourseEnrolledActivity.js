@@ -86,14 +86,6 @@ class CourseEnrolledActivity extends View {
       this.baseIdentifier = this.details.identifier
     }
 
-    if(this.showProgress == "gone"){
-        JBridge.logResourceDetailScreenEvent(this.baseIdentifier);
-    }
-    else
-    {
-      JBridge.logCourseDetailScreenEvent(this.baseIdentifier)
-    }
-
     this.name = this.details.name;
 
     if(window.__enrolledCourses != undefined){
@@ -164,11 +156,21 @@ class CourseEnrolledActivity extends View {
       "identifier" : this.baseIdentifier
     }
     var event= { "tag": "API_FlagCourse", contents: whatToSend };
-    JBridge.logFlagClickInitiateEvent("COURSES",selectedList[0],comment,this.baseIdentifier);
-    window.__runDuiCallback(event);
+    this.logFlagContent(this.baseIdentifier);
+    window.__runDuiCallback(event, selectedList[0], comment);
 
   }
 
+  logFlagContent = (id,reason, comment) => {
+    var callback = callbackMapper.map(function (data) {
+      if (data != "__failed") {
+        data = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
+        console.log("telemetry data CEA", data);
+        JBridge.logFlagClickInitiateEvent("COURSES", reason, comment, id, "course", data.contentData.pkgVersion);
+      }
+    });
+    JBridge.getContentDetails(id, callback);
+  }
 
   getSpineStatus = (pValue) => {
     var cmd;
@@ -221,7 +223,7 @@ class CourseEnrolledActivity extends View {
 
       data = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])))
       _this.courseDetails = data;
-      console.log("data",data)
+      console.log("data",data);
       if (data.isAvailableLocally == true) {
         window.__ContentLoaderDialog.hide()
         var callback1 = callbackMapper.map(function(data) {
@@ -248,7 +250,22 @@ class CourseEnrolledActivity extends View {
 
   }
 
-
+  logTelelmetry = (id) => {
+    var callback = callbackMapper.map(function (data) {
+      if (data != "__failed") {
+        data = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
+        console.log("telemetry data CEA", data);
+        if (_this.showProgress == "gone") {
+          JBridge.logResourceDetailScreenEvent(id, data.contentData.pkgVersion);
+        }
+        else {
+          JBridge.logCourseDetailScreenEvent(id, data.contentData.pkgVersion);
+        }
+      }
+    });
+    JBridge.getContentDetails(id, callback);
+  }
+  
   handleModuleClick = (moduleName, module) => {
 
     var whatToSend = {
@@ -354,7 +371,7 @@ class CourseEnrolledActivity extends View {
         }else if(state.responseFor == "API_FlagCourse"){
           if(responseCode == 200){
             if(response[0] == "successful"){
-              JBridge.logFlagClickEvent(this.baseIdentifier,"COURSES");
+              this.logFlagStatus(this.baseIdentifier, true);
               setTimeout(function(){
                 window.__Snackbar.show(window.__S.CONTENT_FLAGGED_MSG)
                 window.__BNavFlowRestart();
@@ -363,6 +380,7 @@ class CourseEnrolledActivity extends View {
               }, 2000)
             }
           }else{
+            this.logFlagStatus(this.baseIdentifier, true);
             window.__LoaderDialog.hide();
             window.__Snackbar.show(window.__S.CONTENT_FLAG_FAIL);
             _this.onBackPressed();
@@ -383,9 +401,20 @@ class CourseEnrolledActivity extends View {
     }
   }
 
+  logFlagStatus = (id, status) => {
+    var callback = callbackMapper.map(function (data) {
+      if (data != "__failed") {
+        data = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
+        console.log("telemetry data CEA", data);
+        JBridge.logFlagStatusEvent(id, "COURSES", status, data.contentData.pkgVersion);
+      }
+    });
+    JBridge.getContentDetails(id, callback);
+  }
 
   renderCourseChildren = () => {
     var layout;
+  
     if(this.courseContent.children==undefined){
       layout = <TextView
                   height="300"
@@ -466,7 +495,7 @@ class CourseEnrolledActivity extends View {
 
 
     this.checkContentLocalStatus(this.baseIdentifier);
-    console.log("this.enrolledCourses",this.enrolledCourses)
+    this.logTelelmetry(this.baseIdentifier);
     if(this.details.batchId || this.enrolledCourses.batchId){
      var batchId = this.details.batchId ? this.details.batchId : this.enrolledCourses.batchId;
       var whatToSend = {
@@ -497,30 +526,49 @@ class CourseEnrolledActivity extends View {
     }
     else if(params == 1){
       console.log("in flag rda")
-      JBridge.logFlagScreenEvent("COURSES");
+      this.logFlagScreenEvent(this.baseIdentifier);
       window.__LoaderDialog.hide();
       window.__FlagPopup.show();
     }
   }
 
+  logFlagScreenEvent = (id) => {
+    var callback = callbackMapper.map(function (data) {
+      if (data != "__failed") {
+        data = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
+        console.log("telemetry data SharePopUp", data);
+        JBridge.logFlagScreenEvent("COURSES", id, data.contentData.pkgVersion);
+      }
+    });
+    JBridge.getContentDetails(id, callback);
+  }
+
+  logShareContent = (id) => {
+    var callback = callbackMapper.map(function (data) {
+      if (data != "__failed") {
+        data = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
+        console.log("telemetry data SharePopUp", data);
+        if (_this.showProgress == "gone")
+          JBridge.logShareContentInitiateEvent("RESOURCES", contentType, id, data.contentData.pkgVersion);
+        else
+          JBridge.logShareContentInitiateEvent("COURSES", contentType, id, data.contentData.pkgVersion);
+      }
+    });
+    JBridge.getContentDetails(id, callback);
+  }
+
   handleMenuClick = (url) =>{
     console.log("menu item clicked",url);
-
+    this.logShareContent(this.baseIdentifier);
 
     if(url=="ic_action_share_black"){
-
-        if(this.showProgress == "gone")
-          JBridge.logShareContentInitiateEvent("RESOURCES",this.baseIdentifier)
-        else
-          JBridge.logShareContentInitiateEvent("COURSES",this.baseIdentifier)
-
-
+      
+      var contentType = _this.showProgress == "gone" ? "content" : "course";  
         var callback = callbackMapper.map(function(data) {
 
         window.__LoaderDialog.hide();
 
         var input;
-        var contentType = _this.showProgress == "gone" ? "content" : "course";
           if(data[0]!="failure"){
                 input = [{
                             type : "text",

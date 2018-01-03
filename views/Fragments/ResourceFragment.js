@@ -67,7 +67,7 @@ class ResourceComponent extends View {
           ]
         }
     }
-    JBridge.logTabScreenEvent("RESOURCES");
+    JBridge.logTabScreenEvent("LIBRARY");
     window.__UpdateOfflineContent =this.renderOfflineCard;
     this.handleResponse();
 

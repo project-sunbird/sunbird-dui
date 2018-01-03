@@ -51,9 +51,20 @@ class ResourceDetailActivity extends View {
     console.log("RDA",this.details)
 
     this.localStatus = false;
-    JBridge.logResourceDetailScreenEvent(this.details.identifier)
+    this.logTelelmetry(this.details.identifier)
 
     _this = this;
+  }
+
+  logTelelmetry = (id) => {
+    var callback = callbackMapper.map(function (data) {
+      if (data != "__failed") {
+        data = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
+        console.log("telemetry data RDA", data);
+        JBridge.logResourceDetailScreenEvent(id, data.contentData.pkgVersion);
+      }
+    });
+    JBridge.getContentDetails(id, callback);
   }
 
   checkLocalStatus = (data) => {
@@ -148,6 +159,17 @@ class ResourceDetailActivity extends View {
     }
   }
 
+  logFlagContent = (id, reason, comment) => {
+    var callback = callbackMapper.map(function (data) {
+      if (data != "__failed") {
+        data = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
+        console.log("telemetry data CEA", data);
+        JBridge.logFlagClickInitiateEvent("LIBRARY", reason, comment, id, "content", data.contentData.pkgVersion);
+      }
+    });
+    JBridge.getContentDetails(id, callback);
+  }
+
   flagContent = (comment,selectedList) =>{
     window.__LoaderDialog.show();
     console.log("flag request",this.details)
@@ -159,7 +181,7 @@ class ResourceDetailActivity extends View {
     else if(this.details.content.hasOwnProperty("contentData") && this.details.content.contentData.hasOwnProperty("versionKey")){
       versionKey = this.details.content.contentData.versionKey
     }
-    JBridge.logFlagClickInitiateEvent("RESOURCES",selectedList[0],comment,this.details.content.identifier);
+    this.logFlagContent(this.details.content.identifier, selectedList[0], comment);
 
     var request = {
       "flagReasons":selectedList,
@@ -309,7 +331,7 @@ class ResourceDetailActivity extends View {
 
           var callback = callbackMapper.map(function(response){
             if(state.responseFor == "API_FlagContent" && response[0] == "successful"){
-              JBridge.logFlagClickEvent(_this.details.identifier,"RESOURCES");
+              this.logFlagStatus(_this.details.identifier, true);
               setTimeout(function(){
                 window.__Snackbar.show(window.__S.CONTENT_FLAGGED_MSG)
                 window.__BNavFlowRestart();
@@ -321,6 +343,7 @@ class ResourceDetailActivity extends View {
           JBridge.deleteContent(this.details.identifier,callback);
 
         } else {
+          this.logFlagStatus(_this.details.identifier, false);          
           window.__LoaderDialog.hide();
           window.__Snackbar.show(window.__S.CONTENT_FLAG_FAIL);
           _this.onBackPressed();
@@ -331,6 +354,17 @@ class ResourceDetailActivity extends View {
       window.__Snackbar.show(window.__S.TIME_OUT)
       _this.onBackPressed();
     }
+  }
+
+  logFlagStatus = (id, status) => {
+    var callback = callbackMapper.map(function (data) {
+      if (data != "__failed") {
+        data = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
+        console.log("telemetry data CEA", data);
+        JBridge.logFlagStatusEvent(id, "RESOURCES", status, data.contentData.pkgVersion);
+      }
+    });
+    JBridge.getContentDetails(id, callback);
   }
 
   overFlowCallback = (params) => {
@@ -346,10 +380,21 @@ class ResourceDetailActivity extends View {
       JBridge.deleteContent(this.details.identifier,callback);                
     }
     else if(params == 1){
-      JBridge.logFlagScreenEvent("RESOURCES");
+      this.logFlagScreenEvent(this.details.identifier);
       window.__LoaderDialog.hide();
       window.__FlagPopup.show();
     }
+  }
+
+  logFlagScreenEvent = (id) => {
+    var callback = callbackMapper.map(function (data) {
+      if (data != "__failed") {
+        data = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
+        console.log("telemetry data SharePopUp", data);
+        JBridge.logFlagScreenEvent("LIBRARY", id, data.contentData.pkgVersion);
+      }
+    });
+    JBridge.getContentDetails(id, callback);
   }
 
   onBackPressed = () => {
@@ -377,11 +422,22 @@ class ResourceDetailActivity extends View {
     this.localStatus=true;
   }
 
+  logShareContent = (id) => {
+    var callback = callbackMapper.map(function (data) {
+      if (data != "__failed") {
+        data = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
+        console.log("telemetry data SharePopUp", data);
+        JBridge.logShareContentInitiateEvent("RESOURCES", "content", id, data.contentData.pkgVersion);
+      }
+    });
+    JBridge.getContentDetails(id, callback);
+  }
+
   handleMenuClick = (url) =>{
     if(url == "ic_action_share_black"){
      if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
        this.shareContent(this.localStatus);
-       JBridge.logShareContentInitiateEvent("RESOURCES",this.details.identifier)
+       this.logShareContent(this.details.identifier);
      }else{
         this.setPermissions();
       }
