@@ -156,8 +156,8 @@ class CourseEnrolledActivity extends View {
       "identifier" : this.baseIdentifier
     }
     var event= { "tag": "API_FlagCourse", contents: whatToSend };
-    this.logFlagContent(this.baseIdentifier);
-    window.__runDuiCallback(event, selectedList[0], comment);
+    this.logFlagContent(this.baseIdentifier, selectedList.toString(), comment);
+    window.__runDuiCallback(event);
 
   }
 
@@ -256,10 +256,10 @@ class CourseEnrolledActivity extends View {
         data = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
         console.log("telemetry data CEA", data);
         if (_this.showProgress == "gone") {
-          JBridge.logResourceDetailScreenEvent(id, data.contentData.pkgVersion);
+          JBridge.logResourceDetailScreenEvent(id, data.contentData.pkgVersion, data.isAvailableLocally);
         }
         else {
-          JBridge.logCourseDetailScreenEvent(id, data.contentData.pkgVersion);
+          JBridge.logCourseDetailScreenEvent(id, data.contentData.pkgVersion, data.isAvailableLocally);
         }
       }
     });
@@ -549,7 +549,7 @@ class CourseEnrolledActivity extends View {
         data = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
         console.log("telemetry data SharePopUp", data);
         if (_this.showProgress == "gone")
-          JBridge.logShareContentInitiateEvent("RESOURCES", contentType, id, data.contentData.pkgVersion);
+          JBridge.logShareContentInitiateEvent("LIBRARY", contentType, id, data.contentData.pkgVersion);
         else
           JBridge.logShareContentInitiateEvent("COURSES", contentType, id, data.contentData.pkgVersion);
       }
@@ -587,7 +587,7 @@ class CourseEnrolledActivity extends View {
 
                         }];
             }
-                var type = _this.showProgress == "gone" ? "RESOURCES" : "COURSES";
+                var type = _this.showProgress == "gone" ? "LIBRARY" : "COURSES";
               var sharePopUp = (
                 <SharePopup
                 data = {input}

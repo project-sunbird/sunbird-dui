@@ -61,7 +61,7 @@ class ResourceDetailActivity extends View {
       if (data != "__failed") {
         data = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
         console.log("telemetry data RDA", data);
-        JBridge.logResourceDetailScreenEvent(id, data.contentData.pkgVersion);
+        JBridge.logResourceDetailScreenEvent(id, data.contentData.pkgVersion, data.isAvailableLocally);
       }
     });
     JBridge.getContentDetails(id, callback);
@@ -140,7 +140,7 @@ class ResourceDetailActivity extends View {
       <SharePopup
         data = {input}
         identifier = {_this.details.identifier}
-        type = "RESOURCES"/>
+        type = "LIBRARY"/>
       );
       _this.replaceChild(_this.idSet.sharePopupContainer,sharePopUp.render(),0);
       window.__SharePopup.show();
@@ -181,7 +181,7 @@ class ResourceDetailActivity extends View {
     else if(this.details.content.hasOwnProperty("contentData") && this.details.content.contentData.hasOwnProperty("versionKey")){
       versionKey = this.details.content.contentData.versionKey
     }
-    this.logFlagContent(this.details.content.identifier, selectedList[0], comment);
+    this.logFlagContent(this.details.content.identifier, selectedList.toString(), comment);
 
     var request = {
       "flagReasons":selectedList,
@@ -390,7 +390,7 @@ class ResourceDetailActivity extends View {
     var callback = callbackMapper.map(function (data) {
       if (data != "__failed") {
         data = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
-        console.log("telemetry data SharePopUp", data);
+        console.log("telemetry data SharePopUp " + id, data);
         JBridge.logFlagScreenEvent("LIBRARY", id, data.contentData.pkgVersion);
       }
     });
@@ -426,8 +426,8 @@ class ResourceDetailActivity extends View {
     var callback = callbackMapper.map(function (data) {
       if (data != "__failed") {
         data = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
-        console.log("telemetry data SharePopUp", data);
-        JBridge.logShareContentInitiateEvent("RESOURCES", "content", id, data.contentData.pkgVersion);
+        console.log("telemetry data SharePopUp click", data);
+        JBridge.logShareContentInitiateEvent("LIBRARY", "content", id, data.contentData.pkgVersion);
       }
     });
     JBridge.getContentDetails(id, callback);
