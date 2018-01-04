@@ -261,7 +261,7 @@ class UserActivity extends View {
     JBridge.patchApi(window.__loginUrl + "/api/user/v1/update/logintime", JSON.stringify(body), window.__user_accessToken, window.__apiToken);
     var whatToSend = []
     var event = { tag: "OPEN_MainActivity", contents: whatToSend };
-    // window.__runDuiCallback(event);
+    window.__runDuiCallback(event);
   }
 
   onBackPressed = () => {
