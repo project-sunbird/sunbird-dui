@@ -100,6 +100,7 @@ class SplashScreenActivity extends View {
             text={this.textToDisplay}
             margin="20,120,20,20"
             layout_gravity="center"
+            textSize = "18"
             height="wrap_content"/>
       </LinearLayout>
     );
