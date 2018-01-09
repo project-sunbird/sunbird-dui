@@ -168,8 +168,10 @@ class ProgressButton extends View {
           // }
           // else{
             var callback = callbackMapper.map(function(data){
-              console.log("data from progress",JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0]))))
-              JBridge.playContent(utils.decodeBase64(data[0]));
+              data = utils.decodeBase64(data[0]);
+              parsedData = JSON.parse(utils.jsonifyData(data));
+              console.log("data from progress", parsedData)
+              JBridge.playContent(data, data.identifier, parsedData.contentData.pkgVersion);
             });
             JBridge.getContentDetails(_this.props.identifier,callback);
           // }
