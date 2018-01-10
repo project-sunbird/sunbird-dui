@@ -121,7 +121,7 @@ class ProfileFragment extends View {
       }
     });
     if (JBridge.isNetworkAvailable())
-      JBridge.searchContent(callback, "userToken", window.__userToken, "Combined", "true", 10);
+      JBridge.searchContent(callback, "userToken", window.__userToken, "Combined", 10);
     else
       console.log("JBridge.searchContent failed, no internet");
     window.__ContentLoadingComponent.hideLoader();

@@ -282,7 +282,7 @@ handleResourceViewAllClick= (data,title,searchQuery,visibility) =>{
       window.__runDuiCallback(event);
     }else if (url == "ic_action_search") {
 
-      var searchDetails = { filterDetails: "", searchType: "Resource" }
+      var searchDetails = { filterDetails: "", searchType: "Library" }
       var whatToSend = { filterDetails: JSON.stringify(searchDetails) }
       var event = { tag: "OPEN_SearchActivity", contents: whatToSend }
       window.__runDuiCallback(event);

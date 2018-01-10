@@ -47,7 +47,7 @@ class CourseEnrolledActivity extends View {
     this.menuData1 = {
       url: [
         { imageUrl: "ic_action_share_black" },
-        { imageUrl: 'ic_action_overflow'}
+        { imageUrl: 'ic_action_overflow' }
       ]
     }
 
@@ -62,7 +62,7 @@ class CourseEnrolledActivity extends View {
 
     this.details = JSON.parse(state.data.value0.courseDetails);
 
-    this.courseDetails  = "";
+    this.courseDetails = {}
     this.batchName = "";
     this.batchDescription = "";
 
@@ -71,37 +71,37 @@ class CourseEnrolledActivity extends View {
     this.popupMenu = window.__S.DELETE + "," + window.__S.FLAG;
     //to get geneie callback for download of spine
     window.__getDownloadStatus = this.getSpineStatus;
-    console.log("details in CEA",this.details)
+    console.log("details in CEA", this.details)
     this.showProgress = this.details.hasOwnProperty("mimeType") && this.details.contentType == "application/vnd.ekstep.content-collection" ? "gone" : "visible";
 
 
 
-    if(this.details.hasOwnProperty("courseId")){
+    if (this.details.hasOwnProperty("courseId")) {
       this.baseIdentifier = this.details.courseId
     }
-    else if(this.details.hasOwnProperty("contentId")){
+    else if (this.details.hasOwnProperty("contentId")) {
       this.baseIdentifier = this.details.contentId
     }
-    else if(this.details.hasOwnProperty("identifier")){
+    else if (this.details.hasOwnProperty("identifier")) {
       this.baseIdentifier = this.details.identifier
     }
 
     this.name = this.details.name;
 
-    if(window.__enrolledCourses != undefined){
-      window.__enrolledCourses.map((item)=>{
-        if(this.baseIdentifier == item.courseId){
+    if (window.__enrolledCourses != undefined) {
+      window.__enrolledCourses.map((item) => {
+        if (this.baseIdentifier == item.courseId) {
           this.enrolledCourses = item;
         }
       })
       if (this.enrolledCourses.leafNodesCount != null && this.enrolledCourses.progress <= this.enrolledCourses.leafNodesCount) {
-        this.downloadProgress = this.details.leafNodesCount == null? 0 : (this.enrolledCourses.progress/this.enrolledCourses.leafNodesCount)*100;
-        this.downloadProgress = parseInt(isNaN(this.downloadProgress)?0:this.downloadProgress);
+        this.downloadProgress = this.details.leafNodesCount == null ? 0 : (this.enrolledCourses.progress / this.enrolledCourses.leafNodesCount) * 100;
+        this.downloadProgress = parseInt(isNaN(this.downloadProgress) ? 0 : this.downloadProgress);
       } else {
         this.downloadProgress = 0;
       }
     }
-    else{
+    else {
 
       this.downloadProgress = 0;
     }
@@ -123,53 +123,42 @@ class CourseEnrolledActivity extends View {
     );
   }
 
-  onStop = () =>{
-    if( window.__SharePopup){
+  onStop = () => {
+    if (window.__SharePopup) {
       window.__SharePopup.hide();
     }
     console.log("ON STOP IN ResourceDetailActivity")
   }
 
-  flagContent = (comment,selectedList) =>{
+  flagContent = (comment, selectedList) => {
     window.__LoaderDialog.show();
-    console.log("flag request",this.details)
-    console.log(comment,selectedList)
+    console.log("flag request", this.details)
+    console.log(comment, selectedList)
     var versionKey;
-    if(this.courseDetails.hasOwnProperty("contentData") && this.courseDetails.contentData.hasOwnProperty("versionKey")){
+    if (this.courseDetails.hasOwnProperty("contentData") && this.courseDetails.contentData.hasOwnProperty("versionKey")) {
       versionKey = this.courseDetails.contentData.versionKey
     }
-    else{
+    else {
       versionKey = "0";
     }
 
     var request = {
-                          "flagReasons":selectedList,
-                          "flaggedBy": window.__userName,
-                          "versionKey": versionKey,
-                          "flags": [comment]
-                     }
+      "flagReasons": selectedList,
+      "flaggedBy": window.__userName,
+      "versionKey": versionKey,
+      "flags": [comment]
+    }
 
     var whatToSend = {
-      "user_token" : window.__user_accessToken,
-      "api_token" : window.__apiToken,
-      "requestBody" : JSON.stringify(request),
-      "identifier" : this.baseIdentifier
+      "user_token": window.__user_accessToken,
+      "api_token": window.__apiToken,
+      "requestBody": JSON.stringify(request),
+      "identifier": this.baseIdentifier
     }
-    var event= { "tag": "API_FlagCourse", contents: whatToSend };
-    this.logFlagContent(this.baseIdentifier, selectedList.toString(), comment);
+    var event = { "tag": "API_FlagCourse", contents: whatToSend };
+    JBridge.logFlagClickInitiateEvent("COURSES", selectedList.toString(), comment, this.baseIdentifier, "course", this.courseDetails.contentData.pkgVersion);
     window.__runDuiCallback(event);
 
-  }
-
-  logFlagContent = (id,reason, comment) => {
-    var callback = callbackMapper.map(function (data) {
-      if (data != "__failed") {
-        data = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
-        console.log("telemetry data CEA", data);
-        JBridge.logFlagClickInitiateEvent("COURSES", reason, comment, id, "course", data.contentData.pkgVersion);
-      }
-    });
-    JBridge.getContentDetails(id, callback);
   }
 
   getSpineStatus = (pValue) => {
@@ -182,22 +171,22 @@ class CourseEnrolledActivity extends View {
 
     var textToShow = ""
     console.log(data)
-    if(data.status == "NOT_FOUND"){
+    if (data.status == "NOT_FOUND") {
       window.__ContentLoaderDialog.hide();
       window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
       this.onBackPressed();
       return;
     }
 
-    data.downloadProgress= data.downloadProgress == undefined || isNaN(data.downloadProgress) ? 0 : data.downloadProgress;
+    data.downloadProgress = data.downloadProgress == undefined || isNaN(data.downloadProgress) ? 0 : data.downloadProgress;
     var downloadedPercent = data.downloadProgress;
-    downloadedPercent =  downloadedPercent < 0 ? 0 : downloadedPercent;
-     if (downloadedPercent == 100) {
+    downloadedPercent = downloadedPercent < 0 ? 0 : downloadedPercent;
+    if (downloadedPercent == 100) {
       window.__ContentLoaderDialog.updateProgressBar(100);
       window.__ContentLoaderDialog.hide();
       this.checkContentLocalStatus(this.baseIdentifier);
 
-    } else if(downloadedPercent<100) {
+    } else if (downloadedPercent < 100) {
       window.__ContentLoaderDialog.show();
       window.__ContentLoaderDialog.setClickCallback(this.handleContentLoaderCancelClick)
       window.__ContentLoaderDialog.updateProgressBar(downloadedPercent);
@@ -206,241 +195,224 @@ class CourseEnrolledActivity extends View {
 
   handleContentLoaderCancelClick = () => {
     JBridge.cancelDownload(this.baseIdentifier);
-    setTimeout(function(){
+    setTimeout(function () {
       window.__ContentLoaderDialog.hide();
       this.onBackPressed();
     }, 500);
   }
 
+  renderChildren = (identifier) => {
+    window.__ContentLoaderDialog.hide()
+    var callback1 = callbackMapper.map(function (data) {
+      data[0] = utils.jsonifyData(utils.decodeBase64(data[0]))
+      _this.courseContent = JSON.parse(data[0]);
+      window.__ContentLoaderDialog.hide();
+      _this.renderCourseChildren()
+      _this.changeOverFlow();
+    });
+    JBridge.getChildContent(identifier, callback1);
+  }
+
   checkContentLocalStatus = (identifier) => {
-    console.log("local status")
-    var callback = callbackMapper.map(function(data) {
-      if(data=="__failed")
-         {
-           window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
-           this.onBackPressed();
-         }
-
-      data = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])))
-      _this.courseDetails = data;
-      console.log("data",data);
-      if (data.isAvailableLocally == true) {
-        window.__ContentLoaderDialog.hide()
-        var callback1 = callbackMapper.map(function(data) {
-          data[0] = utils.jsonifyData(utils.decodeBase64(data[0]))
-          _this.courseContent = JSON.parse(data[0]);
-          window.__ContentLoaderDialog.hide();
-          _this.renderCourseChildren()
-          _this.changeOverFlow();
-        });
-        JBridge.getChildContent(identifier, callback1)
-      } else {
-        if(JBridge.isNetworkAvailable()){
-          JBridge.importCourse(identifier,"true");
-          _this.changeOverFlow();
-        }
-        else
-          window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE)
+    var callback = callbackMapper.map(function (data) {
+      if (data == "__failed") {
+        window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
+        _this.logTelelmetry(identifier, null, false);
+        this.onBackPressed();
+        return;
       }
+      data = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
+      console.log("this.courseDetails ", data);
 
+      _this.courseDetails = data;
+      console.log("data", data);
+      if (data.isAvailableLocally == true) {
+        _this.logTelelmetry(identifier, data.contentData.pkgVersion, data.isAvailableLocally);
+        _this.renderChildren(identifier);
+      } else {
+        _this.logTelelmetry(identifier, data.contentData.pkgVersion, data.isAvailableLocally);
+        if (JBridge.isNetworkAvailable()) {
+          JBridge.importCourse(identifier, "true");
+          _this.changeOverFlow();
+        } else {
+          window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE)
+        }
+      }
     });
     window.__getDownloadStatus = this.getSpineStatus;
     JBridge.getContentDetails(identifier, callback);
-
-
   }
 
-  logTelelmetry = (id) => {
-    var callback = callbackMapper.map(function (data) {
-      if (data != "__failed") {
-        data = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
-        console.log("telemetry data CEA", data);
-        if (_this.showProgress == "gone") {
-          JBridge.logResourceDetailScreenEvent(id, data.contentData.pkgVersion, data.isAvailableLocally);
-        }
-        else {
-          JBridge.logCourseDetailScreenEvent(id, data.contentData.pkgVersion, data.isAvailableLocally);
-        }
-      }
-    });
-    JBridge.getContentDetails(id, callback);
+  logTelelmetry = (id, pkgVersion, isAvailableLocally) => {
+    if (_this.showProgress == "gone") {
+      JBridge.logResourceDetailScreenEvent(id, pkgVersion, isAvailableLocally);
+    } else {
+      JBridge.logCourseDetailScreenEvent(id, pkgVersion, isAvailableLocally);
+    }
+    JBridge.startEventLog(this.courseDetails.contentType, id, pkgVersion);
   }
-  
+
   handleModuleClick = (moduleName, module) => {
-
     var whatToSend = {
       "moduleName": moduleName,
       "moduleDetails": JSON.stringify(module)
-     }
-    var event = { "tag": "OPEN_ModuleDetailsActivity", contents: whatToSend};
+    }
+    var event = { "tag": "OPEN_ModuleDetailsActivity", contents: whatToSend };
     window.__runDuiCallback(event);
-
   }
 
-  getBatchDetailSection = (name,description,createdBy) => {
-
+  getBatchDetailSection = (name, description, createdBy) => {
     return (<LinearLayout
-              width="match_parent"
-              height="wrap_content"
-              root="true"
-              padding="0,8,0,8"
-              orientation="vertical">
+      width="match_parent"
+      height="wrap_content"
+      root="true"
+      padding="0,8,0,8"
+      orientation="vertical">
 
-              <TextView
-                width="match_parent"
-                height="wrap_content"
-                text={utils.firstLeterCapital(name)}
-                style={window.__TextStyle.textStyle.CARD.TITLE.DARK_16}/>
+      <TextView
+        width="match_parent"
+        height="wrap_content"
+        text={utils.firstLeterCapital(name)}
+        style={window.__TextStyle.textStyle.CARD.TITLE.DARK_16} />
 
-              <TextView
-                width="match_parent"
-                height="wrap_content"
-                text={description}
-                style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULA_10}/>
+      <TextView
+        width="match_parent"
+        height="wrap_content"
+        text={description}
+        style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULA_10} />
 
-                <LinearLayout
-                  width="match_parent"
-                  height = "wrap_content"
-                  orientation = "horizontal">
-                    <TextView
-                        width="wrap_content"
-                        height="wrap_content"
-                        text={window.__S.CREATED_BY_SMALL+"  "}
-                        style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULA_10}/>
-                     <TextView
-                      width="wrap_content"
-                      height="wrap_content"
-                      text={createdBy}
-                      style={window.__TextStyle.textStyle.CARD.TITLE.DARK_14}/>
-                </LinearLayout>
-            </LinearLayout>)
+      <LinearLayout
+        width="match_parent"
+        height="wrap_content"
+        orientation="horizontal">
+        <TextView
+          width="wrap_content"
+          height="wrap_content"
+          text={window.__S.CREATED_BY_SMALL + "  "}
+          style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULA_10} />
+        <TextView
+          width="wrap_content"
+          height="wrap_content"
+          text={createdBy}
+          style={window.__TextStyle.textStyle.CARD.TITLE.DARK_14} />
+      </LinearLayout>
+    </LinearLayout>)
   }
 
-  handleStateChange = (state) =>{
+  handleStateChange = (state) => {
     var res = utils.processResponse(state);
-    if(res.code != 504){
-        var response = res.data;//JSON.parse(utils.decodeBase64(state.response.status[1]))
-        var responseCode = res.code;
-        //
-        // console.log("response \n\n",response)
+    if (res.code != 504) {
+      var response = res.data;//JSON.parse(utils.decodeBase64(state.response.status[1]))
+      var responseCode = res.code;
+      //
+      // console.log("response \n\n",response)
 
-        if(res.hasOwnProperty("err")) {
+      if (res.hasOwnProperty("err")) {
         //   window.__LoaderDialog.hide();
         //   window.__Snackbar.show(window.__S.ERROR_SERVER_CONNECTION)
         //   responseData=tmp;
         // }else  if (response.params && response.params.err) {
+        window.__LoaderDialog.hide();
+        if (state.responseFor == "API_FlagCourse") {
+          window.__Snackbar.show(window.__S.CONTENT_FLAG_FAIL);
+          _this.onBackPressed();
+        }
+        else
+          console.log(window.__S.ERROR_SERVER_MESSAGE + res.err)
+        return;
+      }
+
+      if (state.responseFor == "API_Get_Batch_Details") {
+        console.log("batch details", response);
+        var batch = response.result.response;
+        var curr_Date = new Date();
+        var start_date = new Date(batch.startDate);
+        if (start_date > curr_Date) {
+          Android.runInUI(this.set({
+            id: this.idSet.courseNotStartedOverLay,
+            visibility: "visible"
+          }), 0);
+
+        }
+        var description = "";
+        description += utils.prettifyDate(batch.startDate);
+
+        if (batch.endDate && batch.endDate != null && batch.endDate != undefined) {
+          description += " - ";
+          description += utils.prettifyDate(batch.endDate);
+        }
+        this.batchDescription = description;
+        var name = batch.name;
+        this.batchName = batch.name;
+        var whatToSend = {
+          "user_token": batch.createdBy,
+          "api_token": window.__apiToken
+        }
+        var event = { "tag": "API_Get_Batch_Creator_name", contents: whatToSend };
+        window.__runDuiCallback(event);
+        console.log("batch created token", batch.createdBy)
+      } else if (state.responseFor == "API_FlagCourse") {
+        if (responseCode == 200) {
+          if (response[0] == "successful") {
+            JBridge.logFlagStatusEvent(this.baseIdentifier, "COURSES", true, this.courseDetails.contentData.pkgVersion);
+            setTimeout(function () {
+              window.__Snackbar.show(window.__S.CONTENT_FLAGGED_MSG)
+              window.__BNavFlowRestart();
+              _this.onBackPressed();
+              window.__LoaderDialog.hide();
+            }, 2000)
+          }
+        } else {
+          JBridge.logFlagStatusEvent(this.baseIdentifier, "COURSES", false, this.courseDetails.contentData.pkgVersion);
           window.__LoaderDialog.hide();
-            if(state.responseFor == "API_FlagCourse"){
-                window.__Snackbar.show(window.__S.CONTENT_FLAG_FAIL);
-                _this.onBackPressed();
-              }
-            else
-              console.log(window.__S.ERROR_SERVER_MESSAGE + res.err)
-          return;
+          window.__Snackbar.show(window.__S.CONTENT_FLAG_FAIL);
+          _this.onBackPressed();
+
         }
-
-        if (state.responseFor == "API_Get_Batch_Details") {
-          console.log("batch details",response);
-          var batch =response.result.response;
-          var curr_Date = new Date();
-          var start_date = new Date(batch.startDate);
-          if(start_date>curr_Date){
-            Android.runInUI(this.set({
-              id: this.idSet.courseNotStartedOverLay,
-              visibility : "visible"
-            }),0);
-
-          }
-          var description="";
-          description+= utils.prettifyDate(batch.startDate);
-
-          if(batch.endDate && batch.endDate!=null && batch.endDate!=undefined){
-            description+= " - ";
-            description+= utils.prettifyDate(batch.endDate);
-          }
-          this.batchDescription = description;
-          var name = batch.name;
-          this.batchName = batch.name;
-          var whatToSend = {
-            "user_token" : batch.createdBy,
-            "api_token" : window.__apiToken
-          }
-          var event= { "tag": "API_Get_Batch_Creator_name", contents: whatToSend };
-          window.__runDuiCallback(event);
-          console.log("batch created token",batch.createdBy)
-        }else if(state.responseFor == "API_FlagCourse"){
-          if(responseCode == 200){
-            if(response[0] == "successful"){
-              this.logFlagStatus(this.baseIdentifier, true);
-              setTimeout(function(){
-                window.__Snackbar.show(window.__S.CONTENT_FLAGGED_MSG)
-                window.__BNavFlowRestart();
-                _this.onBackPressed();
-                window.__LoaderDialog.hide();
-              }, 2000)
-            }
-          }else{
-            this.logFlagStatus(this.baseIdentifier, true);
-            window.__LoaderDialog.hide();
-            window.__Snackbar.show(window.__S.CONTENT_FLAG_FAIL);
-            _this.onBackPressed();
-
-          }
-        }
-        else if(state.responseFor == "API_Get_Batch_Creator_name"){
-          var user_details = response.result.response;
-          console.log("user details",user_details)
-          console.log(this.batchName,this.batchDescription)
-          var userName = user_details.firstName + " " + (user_details.lastName || " ")
-          this.replaceChild(_this.idSet.batchDetailsContainer,_this.getBatchDetailSection(this.batchName,this.batchDescription,userName).render(),0);
-        }
+      }
+      else if (state.responseFor == "API_Get_Batch_Creator_name") {
+        var user_details = response.result.response;
+        console.log("user details", user_details)
+        console.log(this.batchName, this.batchDescription)
+        var userName = user_details.firstName + " " + (user_details.lastName || " ")
+        this.replaceChild(_this.idSet.batchDetailsContainer, _this.getBatchDetailSection(this.batchName, this.batchDescription, userName).render(), 0);
+      }
     }
-    else{
+    else {
       window.__LoaderDialog.hide();
       window.__Snackbar.show(window.__S.TIME_OUT)
     }
   }
 
-  logFlagStatus = (id, status) => {
-    var callback = callbackMapper.map(function (data) {
-      if (data != "__failed") {
-        data = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
-        console.log("telemetry data CEA", data);
-        JBridge.logFlagStatusEvent(id, "COURSES", status, data.contentData.pkgVersion);
-      }
-    });
-    JBridge.getContentDetails(id, callback);
-  }
-
   renderCourseChildren = () => {
     var layout;
-  
-    if(this.courseContent.children==undefined){
+
+    if (this.courseContent.children == undefined) {
       layout = <TextView
-                  height="300"
-                  width="match_parent"
-                  gravity="center"
-                  root="true"
-                  text={window.__S.ERROR_CONTENT_NOT_FOUND} />
+        height="300"
+        width="match_parent"
+        gravity="center"
+        root="true"
+        text={window.__S.ERROR_CONTENT_NOT_FOUND} />
       var cmd = this.set({
         id: this.idSet.featureButton,
         visibility: "gone"
 
       });
       Android.runInUI(cmd, 0);
-    }else{
-     layout = (
-                <CourseCurriculum
-                  height="match_parent"
-                  width="match_parent"
-                  root="true"
-                  margin="0,0,0,12"
-                  brief={true}
-                  title=""
-                  onClick={this.handleModuleClick}
-                  content= {this.courseContent.children}/>
-                  )
-   }
+    } else {
+      layout = (
+        <CourseCurriculum
+          height="match_parent"
+          width="match_parent"
+          root="true"
+          margin="0,0,0,12"
+          brief={true}
+          title=""
+          onClick={this.handleModuleClick}
+          content={this.courseContent.children} />
+      )
+    }
     this.replaceChild(this.idSet.descriptionContainer, layout.render(), 0)
   }
 
@@ -448,43 +420,43 @@ class CourseEnrolledActivity extends View {
   onBackPressed = () => {
     window.__ContentLoaderDialog.hide();
 
-    if(window.__SharePopup != undefined && window.__SharePopup.getVisible()){
-     window.__SharePopup.hide();
-     return;
+    if (window.__SharePopup != undefined && window.__SharePopup.getVisible()) {
+      window.__SharePopup.hide();
+      return;
     }
-    if(window.__ContentLoaderDialog.getVisible()){
-     window.__ContentLoaderDialog.hide();
-     return;
+    if (window.__ContentLoaderDialog.getVisible()) {
+      window.__ContentLoaderDialog.hide();
+      return;
     }
-
-   var event = { tag: 'BACK_CourseEnrolledActivity', contents: [] }
-   window.__runDuiCallback(event);
+    JBridge.endEventLog(this.courseDetails.contentType, this.courseDetails.identifier, this.courseDetails.contentData.pkgVersion);
+    var event = { tag: 'BACK_CourseEnrolledActivity', contents: [] }
+    window.__runDuiCallback(event);
   }
 
-  afterRender=()=>{
-    console.log("details",this.details)
+  afterRender = () => {
+    console.log("details", this.details)
 
-    if((this.details.hasOwnProperty("mimeType")) && (this.details.mimeType.toLocaleLowerCase() == "application/vnd.ekstep.content-collection")){
+    if ((this.details.hasOwnProperty("mimeType")) && (this.details.mimeType.toLocaleLowerCase() == "application/vnd.ekstep.content-collection")) {
       var cmd = this.set({
         id: this.idSet.featureButton1,
         visibility: "gone"
       });
 
-      cmd+=this.set({
+      cmd += this.set({
         id: this.idSet.featureButton2,
         visibility: "gone"
       });
       Android.runInUI(cmd, 0);
 
     }
-    if(this.enrolledCourses.hasOwnProperty("lastReadContentId") && (this.enrolledCourses.lastReadContentId!=null)){
+    if (this.enrolledCourses.hasOwnProperty("lastReadContentId") && (this.enrolledCourses.lastReadContentId != null)) {
 
       var cmd = this.set({
         id: this.idSet.featureButton1,
         visibility: "gone"
       });
 
-      cmd+=this.set({
+      cmd += this.set({
         id: this.idSet.featureButton2,
         visibility: "visible"
       });
@@ -495,16 +467,15 @@ class CourseEnrolledActivity extends View {
 
 
     this.checkContentLocalStatus(this.baseIdentifier);
-    this.logTelelmetry(this.baseIdentifier);
-    if(this.details.batchId || this.enrolledCourses.batchId){
-     var batchId = this.details.batchId ? this.details.batchId : this.enrolledCourses.batchId;
+    if (this.details.batchId || this.enrolledCourses.batchId) {
+      var batchId = this.details.batchId ? this.details.batchId : this.enrolledCourses.batchId;
       var whatToSend = {
-        "user_token" : window.__user_accessToken,
-        "api_token" : window.__apiToken,
-        "batch_id" : batchId
+        "user_token": window.__user_accessToken,
+        "api_token": window.__apiToken,
+        "batch_id": batchId
       }
-      var event= { "tag": "API_Get_Batch_Details", contents: whatToSend };
-      if(JBridge.isNetworkAvailable())
+      var event = { "tag": "API_Get_Batch_Details", contents: whatToSend };
+      if (JBridge.isNetworkAvailable())
         window.__runDuiCallback(event);
       else
         window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
@@ -513,160 +484,134 @@ class CourseEnrolledActivity extends View {
 
   overFlowCallback = (params) => {
     window.__LoaderDialog.show();
-     if(params == 0){
-      var callback = callbackMapper.map(function(response){
+    if (params == 0) {
+      var callback = callbackMapper.map(function (response) {
         window.__LoaderDialog.hide();
 
-        if(response[0] == "successful"){
+        if (response[0] == "successful") {
 
           _this.onBackPressed();
         }
       });
-      JBridge.deleteContent(this.baseIdentifier,callback);
+      JBridge.deleteContent(this.baseIdentifier, callback);
     }
-    else if(params == 1){
-      console.log("in flag rda")
-      this.logFlagScreenEvent(this.baseIdentifier);
+    else if (params == 1) {
+      console.log("in flag rda");
+      JBridge.logFlagScreenEvent("COURSES", this.baseIdentifier, this.courseDetails.contentData.pkgVersion);
       window.__LoaderDialog.hide();
       window.__FlagPopup.show();
     }
   }
 
-  logFlagScreenEvent = (id) => {
-    var callback = callbackMapper.map(function (data) {
-      if (data != "__failed") {
-        data = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
-        console.log("telemetry data SharePopUp", data);
-        JBridge.logFlagScreenEvent("COURSES", id, data.contentData.pkgVersion);
-      }
-    });
-    JBridge.getContentDetails(id, callback);
-  }
+  handleMenuClick = (url) => {
+    console.log("menu item clicked", url);
+    JBridge.logShareContentInitiateEvent("LIBRARY", _this.showProgress == "gone" ? "content" : "course", this.baseIdentifier, this.courseDetails.contentData.pkgVersion);
 
-  logShareContent = (id) => {
-    var callback = callbackMapper.map(function (data) {
-      if (data != "__failed") {
-        data = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
-        console.log("telemetry data SharePopUp", data);
-        if (_this.showProgress == "gone")
-          JBridge.logShareContentInitiateEvent("LIBRARY", contentType, id, data.contentData.pkgVersion);
-        else
-          JBridge.logShareContentInitiateEvent("COURSES", contentType, id, data.contentData.pkgVersion);
-      }
-    });
-    JBridge.getContentDetails(id, callback);
-  }
+    if (url == "ic_action_share_black") {
 
-  handleMenuClick = (url) =>{
-    console.log("menu item clicked",url);
-    this.logShareContent(this.baseIdentifier);
-
-    if(url=="ic_action_share_black"){
-      
-      var contentType = _this.showProgress == "gone" ? "content" : "course";  
-        var callback = callbackMapper.map(function(data) {
+      var contentType = _this.showProgress == "gone" ? "content" : "course";
+      var callback = callbackMapper.map(function (data) {
 
         window.__LoaderDialog.hide();
 
         var input;
-          if(data[0]!="failure"){
-                input = [{
-                            type : "text",
-                            data : window.__deepLinkUrl+"/public/#!/"+ contentType +"/"+_this.baseIdentifier
+        if (data[0] != "failure") {
+          input = [{
+            type: "text",
+            data: window.__deepLinkUrl + "/public/#!/" + contentType + "/" + _this.baseIdentifier
 
-                          },{
-                            type : "file",
-                            data : "file://"+data[0]
+          }, {
+            type: "file",
+            data: "file://" + data[0]
 
-                          }];
-            }
-            else{
-              input = [{
-                          type : "text",
-                          data : window.__deepLinkUrl+"/public/#!/"+ contentType +"/"+_this.baseIdentifier
+          }];
+        }
+        else {
+          input = [{
+            type: "text",
+            data: window.__deepLinkUrl + "/public/#!/" + contentType + "/" + _this.baseIdentifier
 
-                        }];
-            }
-                var type = _this.showProgress == "gone" ? "LIBRARY" : "COURSES";
-              var sharePopUp = (
-                <SharePopup
-                data = {input}
-                identifier = {_this.baseIdentifier}
-                type = {type}
-                />
-                )
-
-
-            _this.replaceChild(_this.idSet.sharePopupContainer,sharePopUp.render(),0);
-
-             setTimeout(function() {
-              window.__SharePopup.show();
-            }, 200);
-    });
-    JBridge.exportEcar(this.baseIdentifier, callback);
-    window.__LoaderDialog.show();
+          }];
+        }
+        var type = _this.showProgress == "gone" ? "LIBRARY" : "COURSES";
+        var sharePopUp = (
+          <SharePopup
+            data={input}
+            identifier={_this.baseIdentifier}
+            type={type}
+          />
+        )
 
 
+        _this.replaceChild(_this.idSet.sharePopupContainer, sharePopUp.render(), 0);
+
+        setTimeout(function () {
+          window.__SharePopup.show();
+        }, 200);
+      });
+      JBridge.exportEcar(this.baseIdentifier, callback);
+      window.__LoaderDialog.show();
+
+
+    }
   }
-}
 
-  handleResumeClick = () =>{
-    console.log(this.details,"handleResumeClick this.details")
+  handleResumeClick = () => {
+    console.log(this.details, "handleResumeClick this.details")
     var id;
-    if(this.enrolledCourses.hasOwnProperty('lastReadContentId') && this.enrolledCourses.lastReadContentId !=null){
+    if (this.enrolledCourses.hasOwnProperty('lastReadContentId') && this.enrolledCourses.lastReadContentId != null) {
       console.log("this.enrolledCourses.lastReadContentId", this.enrolledCourses.lastReadContentId);
       id = this.enrolledCourses.lastReadContentId;
     }
-    else if(this.details.hasOwnProperty("lastReadContentId") && this.details.lastReadContentId != null){
-      console.log("this.details.lastReadContentId",this.details.lastReadContentId);
+    else if (this.details.hasOwnProperty("lastReadContentId") && this.details.lastReadContentId != null) {
+      console.log("this.details.lastReadContentId", this.details.lastReadContentId);
       id = this.details.lastReadContentId
     }
-    else if(!(this.courseContent.children == undefined)){
-      console.log("children details",this.courseContent.children)
+    else if (!(this.courseContent.children == undefined)) {
+      console.log("children details", this.courseContent.children)
       id = this.courseContent.children[0].identifier;
     }
-    else{
+    else {
       window.__Snackbar.show(window.__S.ERROR_NO_RESUME_CONTENT_AVAILABLE)
     }
     console.log("id before JBridge.getChildContent ", id);
-    console.log("courseContent children",this.courseContent.children);
+    console.log("courseContent children", this.courseContent.children);
     if (id) {
 
-        var item = this.getContentById(id,this.courseContent.children);
-        console.log("get content by id", item);
-        if(item=="failed")
-          window.__Snackbar.show(window.__S.ERROR_NO_RESUME_CONTENT_AVAILABLE)
-        else
-          this.handleModuleClick(item.contentData.name,item)
+      var item = this.getContentById(id, this.courseContent.children);
+      console.log("get content by id", item);
+      if (item == "failed")
+        window.__Snackbar.show(window.__S.ERROR_NO_RESUME_CONTENT_AVAILABLE)
+      else
+        this.handleModuleClick(item.contentData.name, item)
 
     } else window.__Snackbar.show(window.__S.ERROR_NO_RESUME_CONTENT_AVAILABLE)
   }
 
-  getContentById = (id,content) => {
-    var ret="failed"
-    content.map((item,i) =>{
-      if(item.identifier==id) ret=item;
-      else if(item.children!=undefined)
-         {
-           var temp=_this.getContentById(id,item.children)
-           if(temp!="failed")
-              ret=temp;
-         }
+  getContentById = (id, content) => {
+    var ret = "failed"
+    content.map((item, i) => {
+      if (item.identifier == id) ret = item;
+      else if (item.children != undefined) {
+        var temp = _this.getContentById(id, item.children)
+        if (temp != "failed")
+          ret = temp;
+      }
     })
     return ret
   }
 
-  changeOverFlow = () =>{
-    var toolbar =  (<SimpleToolbar
-        title=""
-        height="wrap_content"
-        width="match_parent"
-        menuData={this.menuData1}
-        popupMenu={this.popupMenu}
-        onMenuItemClick={this.handleMenuClick}
-        overFlowCallback = {this.overFlowCallback}
-        showMenu="true"
-        onBackPress={this.onBackPressed}/>)
+  changeOverFlow = () => {
+    var toolbar = (<SimpleToolbar
+      title=""
+      height="wrap_content"
+      width="match_parent"
+      menuData={this.menuData1}
+      popupMenu={this.popupMenu}
+      onMenuItemClick={this.handleMenuClick}
+      overFlowCallback={this.overFlowCallback}
+      showMenu="true"
+      onBackPress={this.onBackPressed} />)
 
     this.replaceChild(this.idSet.simpleToolBarOverFlow, toolbar.render(), 0);
   }
@@ -675,172 +620,172 @@ class CourseEnrolledActivity extends View {
     this.layout = (
 
       <RelativeLayout
-      height="match_parent"
-      width="match_parent"
-      clickable="true"
-      root="true">
-
-      <LinearLayout
-        root="true"
-        width="match_parent"
         height="match_parent"
-        background={window.__Colors.WHITE}
-        orientation="vertical"
-        >
+        width="match_parent"
+        clickable="true"
+        root="true">
+
         <LinearLayout
-          root = "true"
+          root="true"
           width="match_parent"
-          height="wrap_content"
-          id = {this.idSet.simpleToolBarOverFlow}>
-          <SimpleToolbar
+          height="match_parent"
+          background={window.__Colors.WHITE}
+          orientation="vertical"
+        >
+          <LinearLayout
+            root="true"
+            width="match_parent"
+            height="wrap_content"
+            id={this.idSet.simpleToolBarOverFlow}>
+            <SimpleToolbar
               title=""
               height="wrap_content"
               width="match_parent"
               menuData={this.menuData}
               popupMenu={this.popupMenu}
               onMenuItemClick={this.handleMenuClick}
-              overFlowCallback = {this.overFlowCallback}
+              overFlowCallback={this.overFlowCallback}
               showMenu="true"
-              onBackPress={this.onBackPressed}/>
-        </LinearLayout>
+              onBackPress={this.onBackPressed} />
+          </LinearLayout>
 
           <HorizontalProgressBar
             width="match_parent"
             currentProgress={this.data.completedProgress}
             totalProgress={this.data.totalProgress}
-            visibility = {this.showProgress}/>
+            visibility={this.showProgress} />
 
           <RelativeLayout
-              height="match_parent"
-              width="match_parent">
+            height="match_parent"
+            width="match_parent">
 
-              <LinearLayout
+            <LinearLayout
+              height="match_parent"
+              width="match_parent"
+              orientation="vertical">
+
+              <ScrollView
+                height="0"
+                weight="1"
+                width="match_parent"
+                fillViewPort="true">
+                <LinearLayout
                   height="match_parent"
                   width="match_parent"
+                  root="true"
+                  padding="16,24,16,16"
                   orientation="vertical">
 
-                  <ScrollView
-                      height="0"
-                      weight="1"
-                      width="match_parent"
-                      fillViewPort="true">
-                      <LinearLayout
-                        height="match_parent"
-                        width="match_parent"
-                        root="true"
-                        padding="16,24,16,16"
-                        orientation="vertical">
-
-                          <CourseProgress
-                            height="wrap_content"
-                            width="wrap_content"
-                            content={this.data}
-                            title={this.data.courseName || this.details.name || this.details.contentData.name}
-                            onResumeClick={this.handleCourseResume}
-                            visibility = {this.showProgress}/>
-
-                          <LinearLayout
-                            id={this.idSet.batchDetailsContainer}
-                            height="match_parent"
-                            width="match_parent"
-                            orientation="vertical"/>
-
-
-
-                           <TextView
-                            width="wrap_content"
-                            height="wrap_content"
-                            margin="0,16,0,0"
-                            style={window.__TextStyle.textStyle.CARD.TITLE.DARK}
-                            text={window.__S.STRUCTURE}/>
-
-
-
-                          <LinearLayout
-                            id={this.idSet.descriptionContainer}
-                            height="match_parent"
-                            width="match_parent"
-                            gravity="center"
-                            root="true"
-                            orientation="vertical">
-
-                                <TextView
-                                  margin="0,50,0,0"
-                                  width="wrap_content"
-                                  height="wrap_content"
-                                  gravity="center"
-                                  text={window.__S.LOADING_CONTENT}/>
-
-                                <ProgressBar
-                                  margin="0,10,0,0"
-                                  gravity="center"
-                                  width="20"
-                                  height="20"/>
-
-                          </LinearLayout>
-                      </LinearLayout>
-                  </ScrollView>
-                  <RelativeLayout
+                  <CourseProgress
                     height="wrap_content"
-                    width="match_parent">
-                      <FeatureButton
-                        clickable="true"
-                        margin = "16,16,16,16"
-                        width = "match_parent"
-                        height = "56"
-                        id = {this.idSet.featureButton1}
-                        visibility="visible"
-                        background = {window.__Colors.PRIMARY_ACCENT}
-                        text = {window.__S.START_COURSE}
-                        style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
-                        buttonClick = {this.handleResumeClick}/>
-                        <FeatureButton
-                          clickable="true"
-                          margin = "16,16,16,16"
-                          width = "match_parent"
-                          height = "56"
-                          visibility="gone"
-                          id = {this.idSet.featureButton2}
-                          background = {window.__Colors.PRIMARY_ACCENT}
-                          text = {window.__S.RESUME+" "+window.__S.COURSE}
-                          style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
-                          buttonClick = {this.handleResumeClick}/>
-                  </RelativeLayout>
-              </LinearLayout>
+                    width="wrap_content"
+                    content={this.data}
+                    title={this.data.courseName || this.details.name || this.details.contentData.name}
+                    onResumeClick={this.handleCourseResume}
+                    visibility={this.showProgress} />
+
+                  <LinearLayout
+                    id={this.idSet.batchDetailsContainer}
+                    height="match_parent"
+                    width="match_parent"
+                    orientation="vertical" />
 
 
-               <LinearLayout
-                id={this.idSet.courseNotStartedOverLay}
-                height="match_parent"
-                width="match_parent"
-                visibility="gone"
-                clickable="true"
-                background={window.__Colors.WHITE_90}
-                gravity="center">
 
                   <TextView
-                    gravity="center"
-                    width="match_parent"
-                    height="match_parent"
-                    style ={window.__TextStyle.textStyle.NOTHING}
-                    text={window.__S.ERROR_BATCH_NOT_STARTED }/>
+                    width="wrap_content"
+                    height="wrap_content"
+                    margin="0,16,0,0"
+                    style={window.__TextStyle.textStyle.CARD.TITLE.DARK}
+                    text={window.__S.STRUCTURE} />
 
+
+
+                  <LinearLayout
+                    id={this.idSet.descriptionContainer}
+                    height="match_parent"
+                    width="match_parent"
+                    gravity="center"
+                    root="true"
+                    orientation="vertical">
+
+                    <TextView
+                      margin="0,50,0,0"
+                      width="wrap_content"
+                      height="wrap_content"
+                      gravity="center"
+                      text={window.__S.LOADING_CONTENT} />
+
+                    <ProgressBar
+                      margin="0,10,0,0"
+                      gravity="center"
+                      width="20"
+                      height="20" />
+
+                  </LinearLayout>
                 </LinearLayout>
+              </ScrollView>
+              <RelativeLayout
+                height="wrap_content"
+                width="match_parent">
+                <FeatureButton
+                  clickable="true"
+                  margin="16,16,16,16"
+                  width="match_parent"
+                  height="56"
+                  id={this.idSet.featureButton1}
+                  visibility="visible"
+                  background={window.__Colors.PRIMARY_ACCENT}
+                  text={window.__S.START_COURSE}
+                  style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
+                  buttonClick={this.handleResumeClick} />
+                <FeatureButton
+                  clickable="true"
+                  margin="16,16,16,16"
+                  width="match_parent"
+                  height="56"
+                  visibility="gone"
+                  id={this.idSet.featureButton2}
+                  background={window.__Colors.PRIMARY_ACCENT}
+                  text={window.__S.RESUME + " " + window.__S.COURSE}
+                  style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
+                  buttonClick={this.handleResumeClick} />
+              </RelativeLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+              id={this.idSet.courseNotStartedOverLay}
+              height="match_parent"
+              width="match_parent"
+              visibility="gone"
+              clickable="true"
+              background={window.__Colors.WHITE_90}
+              gravity="center">
+
+              <TextView
+                gravity="center"
+                width="match_parent"
+                height="match_parent"
+                style={window.__TextStyle.textStyle.NOTHING}
+                text={window.__S.ERROR_BATCH_NOT_STARTED} />
+
+            </LinearLayout>
 
 
           </RelativeLayout>
 
 
-      </LinearLayout>
+        </LinearLayout>
 
-       <FlagPopup
-      onConfirm  = {this.flagContent}
-      />
+        <FlagPopup
+          onConfirm={this.flagContent}
+        />
 
-       <LinearLayout
-       id={this.idSet.sharePopupContainer}
-        height="match_parent"
-       width="match_parent"/>
+        <LinearLayout
+          id={this.idSet.sharePopupContainer}
+          height="match_parent"
+          width="match_parent" />
 
       </RelativeLayout>
     );

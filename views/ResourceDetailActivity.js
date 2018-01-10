@@ -41,46 +41,41 @@ class ResourceDetailActivity extends View {
         {imageUrl:'ic_action_overflow'}
       ]
     }
-    this.popupMenu = window.__S.DELETE + "," + window.__S.FLAG
+    this.popupMenu = window.__S.DELETE + "," + window.__S.FLAG;
+    _this = this;
 
     this.shouldCacheScreen = false;
 
     this.details = state.data.value0.resourceDetails;
     this.details = JSON.parse(this.details);
-    this.playContent = "";
-    console.log("RDA",this.details)
+    console.log("RDA",this.details);
+    JBridge.logResourceDetailScreenEvent(_this.details.content.identifier, _this.details.content.pkgVersion, _this.details.isAvailableLocally);
+    JBridge.startEventLog(_this.details.content.contentType, _this.details.content.identifier, _this.details.content.pkgVersion);
 
     this.localStatus = false;
-    this.logTelelmetry(this.details.identifier)
 
-    _this = this;
-  }
-
-  logTelelmetry = (id) => {
-    var callback = callbackMapper.map(function (data) {
-      if (data != "__failed") {
-        data = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
-        console.log("telemetry data RDA", data);
-        JBridge.logResourceDetailScreenEvent(id, data.contentData.pkgVersion, data.isAvailableLocally);
-      }
-    });
-    JBridge.getContentDetails(id, callback);
+    
   }
 
   checkLocalStatus = (data) => {
     var callback = callbackMapper.map(function(data) {
-      _this.playContent = JSON.parse(utils.decodeBase64(data[0]))
-      if (_this.playContent.isAvailableLocally == true) {
+      if (data == "__failed") {
+        _this.onBackPressed();
+        return;
+      }
+      _this.contentData = JSON.parse(utils.decodeBase64(data[0]));
+      console.log("this.contentData: ", _this.contentData);
+      if (_this.contentData.isAvailableLocally == true) {
         _this.localStatus = true;
         var pButonLayout = (
         <ProgressButton
           width="match_parent"
           isCourse = "false"
-          playContent = {_this.playContent}
-          contentDetail = {_this.details.content}
+          playContent = {_this.contentData}
+          contentDetail = {_this.contentData.content}
           buttonText={window.__S.PLAY}
           localStatus = {_this.localStatus}
-          identifier = {_this.details.identifier}
+          identifier = {_this.contentData.identifier}
           changeOverFlowMenu = {_this.changeOverFlow}/>)
         _this.replaceChild(_this.idSet.progressButtonContainer, pButonLayout.render(), 0);
         _this.changeOverFlow();
@@ -89,11 +84,11 @@ class ResourceDetailActivity extends View {
         <ProgressButton
           width="match_parent"
           isCourse = "false"
-          contentDetail = {_this.details.content}
+          contentDetail = {_this.contentData.content}
           buttonText={window.__S.DOWNLOAD}
           playContent = {null}
           localStatus = {_this.localStatus}
-          identifier = {_this.details.identifier}
+          identifier = {_this.contentData.identifier}
           changeOverFlowMenu = {_this.changeOverFlow} />);
         _this.replaceChild(_this.idSet.progressButtonContainer, pButonLayout.render(), 0);
       }
@@ -159,17 +154,6 @@ class ResourceDetailActivity extends View {
     }
   }
 
-  logFlagContent = (id, reason, comment) => {
-    var callback = callbackMapper.map(function (data) {
-      if (data != "__failed") {
-        data = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
-        console.log("telemetry data CEA", data);
-        JBridge.logFlagClickInitiateEvent("LIBRARY", reason, comment, id, "content", data.contentData.pkgVersion);
-      }
-    });
-    JBridge.getContentDetails(id, callback);
-  }
-
   flagContent = (comment,selectedList) =>{
     window.__LoaderDialog.show();
     console.log("flag request",this.details)
@@ -181,7 +165,7 @@ class ResourceDetailActivity extends View {
     else if(this.details.content.hasOwnProperty("contentData") && this.details.content.contentData.hasOwnProperty("versionKey")){
       versionKey = this.details.content.contentData.versionKey
     }
-    this.logFlagContent(this.details.content.identifier, selectedList.toString(), comment);
+    JBridge.logFlagClickInitiateEvent("LIBRARY", selectedList.toString(), comment, this.details.content.identifier, "content", this.details.content.pkgVersion);
 
     var request = {
       "flagReasons":selectedList,
@@ -331,7 +315,7 @@ class ResourceDetailActivity extends View {
 
           var callback = callbackMapper.map(function(response){
             if(state.responseFor == "API_FlagContent" && response[0] == "successful"){
-              this.logFlagStatus(_this.details.identifier, true);
+              JBridge.logFlagStatusEvent(_this.details.identifier, "LIBRARY", true, _this.details.content.pkgVersion);
               setTimeout(function(){
                 window.__Snackbar.show(window.__S.CONTENT_FLAGGED_MSG)
                 window.__BNavFlowRestart();
@@ -343,7 +327,7 @@ class ResourceDetailActivity extends View {
           JBridge.deleteContent(this.details.identifier,callback);
 
         } else {
-          this.logFlagStatus(_this.details.identifier, false);          
+          JBridge.logFlagStatusEvent(_this.details.content.identifier, "LIBRARY", false, _this.details.content.pkgVersion);
           window.__LoaderDialog.hide();
           window.__Snackbar.show(window.__S.CONTENT_FLAG_FAIL);
           _this.onBackPressed();
@@ -354,17 +338,6 @@ class ResourceDetailActivity extends View {
       window.__Snackbar.show(window.__S.TIME_OUT)
       _this.onBackPressed();
     }
-  }
-
-  logFlagStatus = (id, status) => {
-    var callback = callbackMapper.map(function (data) {
-      if (data != "__failed") {
-        data = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
-        console.log("telemetry data CEA", data);
-        JBridge.logFlagStatusEvent(id, "RESOURCES", status, data.contentData.pkgVersion);
-      }
-    });
-    JBridge.getContentDetails(id, callback);
   }
 
   overFlowCallback = (params) => {
@@ -380,21 +353,10 @@ class ResourceDetailActivity extends View {
       JBridge.deleteContent(this.details.identifier,callback);                
     }
     else if(params == 1){
-      this.logFlagScreenEvent(this.details.identifier);
+      JBridge.logFlagScreenEvent("LIBRARY", this.details.content.identifier, this.details.content.pkgVersion);
       window.__LoaderDialog.hide();
       window.__FlagPopup.show();
     }
-  }
-
-  logFlagScreenEvent = (id) => {
-    var callback = callbackMapper.map(function (data) {
-      if (data != "__failed") {
-        data = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
-        console.log("telemetry data SharePopUp " + id, data);
-        JBridge.logFlagScreenEvent("LIBRARY", id, data.contentData.pkgVersion);
-      }
-    });
-    JBridge.getContentDetails(id, callback);
   }
 
   onBackPressed = () => {
@@ -403,6 +365,7 @@ class ResourceDetailActivity extends View {
     }else if(window.__PreviewImagePopup.getVisibility()){
       window.__PreviewImagePopup.hide();
     }else{
+      JBridge.endEventLog(_this.details.content.contentType, _this.details.content.identifier, _this.details.content.pkgVersion);
       var event= { "tag": "BACK_ResourceDetailActivity", contents: [] };
       window.__runDuiCallback(event);
     }
@@ -422,22 +385,11 @@ class ResourceDetailActivity extends View {
     this.localStatus=true;
   }
 
-  logShareContent = (id) => {
-    var callback = callbackMapper.map(function (data) {
-      if (data != "__failed") {
-        data = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
-        console.log("telemetry data SharePopUp click", data);
-        JBridge.logShareContentInitiateEvent("LIBRARY", "content", id, data.contentData.pkgVersion);
-      }
-    });
-    JBridge.getContentDetails(id, callback);
-  }
-
   handleMenuClick = (url) =>{
     if(url == "ic_action_share_black"){
      if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
        this.shareContent(this.localStatus);
-       this.logShareContent(this.details.identifier);
+       JBridge.logShareContentInitiateEvent("LIBRARY", "content", this.details.content.identifier, this.details.content.pkgVersion);
      }else{
         this.setPermissions();
       }

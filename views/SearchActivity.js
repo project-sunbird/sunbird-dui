@@ -100,7 +100,7 @@ class SearchActivity extends View {
       }else{
         searchData=JSON.parse(this.filter)
       }
-      this.getSearchList(this.searchText,"true");
+      this.getSearchList(this.searchText);
       window.__LoaderDialog.show();
     }
     else if(window.search && window.search.type == this.searchType && window.search.res!=undefined && window.search.res!="" && window.search.text!=undefined && window.search.text!=""){
@@ -250,7 +250,7 @@ class SearchActivity extends View {
     console.log("data from search",data)
   }
 
-  getSearchList=(searchText,flag)=> {
+  getSearchList=(searchText)=> {
 
     if(searchText == ""){
       console.log("empty text"+window.__LoaderDialog.visibility);
@@ -306,7 +306,7 @@ class SearchActivity extends View {
           var s = "";
           if(JBridge.isNetworkAvailable()){
               console.log(this.filterData," filterData ");
-              JBridge.searchContent(callback, JSON.stringify(this.filterData), searchText, this.searchType, flag, 100);
+              JBridge.searchContent(callback, JSON.stringify(this.filterData), searchText, this.searchType, 100);
           }
           else{
             window.__LoaderDialog.hide();
@@ -346,7 +346,7 @@ class SearchActivity extends View {
 
     if(JBridge.isNetworkAvailable()){
       window.__LoaderDialog.show();
-      this.getSearchList(searchText[0],"false");
+      this.getSearchList(searchText[0]);
     }
     else
       window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE)

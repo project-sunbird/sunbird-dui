@@ -60,25 +60,11 @@ class CourseInfoActivity extends View {
     console.log("data in CIA",this.details);
 
     this.localContent = null;
-    this.checkContentLocalStatus(this.details.identifier);
     this.data = {
       courseName: this.details ? this.details.name : "",
       courseDesc: this.details ? this.details.description : "",
       competedCount: this.details && this.details.footerTitle ? this.details.footerTitle.split('%')[0] : "10",
     };
-
-    this.logTelelmetry(this.details.identifier);
-  }
-
-  logTelelmetry = (id) => {
-    var callback = callbackMapper.map(function (data) {
-      if (data != "__failed") {
-        data = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
-        console.log("telemetry data CIA", data);
-        JBridge.logCourseDetailScreenEvent(id, data.contentData.pkgVersion);
-      }
-    });
-    JBridge.getContentDetails(id, callback);
   }
 
   getSpineStatus = (pValue) => {
@@ -100,7 +86,7 @@ class CourseInfoActivity extends View {
     downloadedPercent = downloadedPercent < 0 ? 0 : downloadedPercent;
 
     if (downloadedPercent == 100) {
-      this.checkContentLocalStatus(this.details.identifier);
+      this.renderChildren(this.details.identifier);
 
     } else {
       var cmd = this.set({
@@ -111,22 +97,29 @@ class CourseInfoActivity extends View {
     }
   }
 
+  renderChildren = (identifier) => {
+    var callback1 = callbackMapper.map(function (data) {
+      if (data == "__failed") {
+        window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
+        _this.onBackPressed();
+      }
+      data[0] = utils.jsonifyData(utils.decodeBase64(data[0]))
+      _this.courseContent = JSON.parse(data[0]);
+      _this.renderCourseChildren(identifier)
+    });
+    JBridge.getChildContent(identifier, callback1);
+  }
+
   checkContentLocalStatus = (identifier) => {
+    console.log("contentType: ", this.details.contentType);
+    JBridge.startEventLog(this.details.contentType, identifier, this.details.pkgVersion);
     var callback = callbackMapper.map(function(data) {
       _this.localContent  = JSON.parse(utils.decodeBase64(data[0]));
       if (_this.localContent.isAvailableLocally == true) {
-        var callback1 = callbackMapper.map(function(data) {
-          if(data=="__failed")
-             {
-               window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
-               this.onBackPressed();
-             }
-          data[0] = utils.jsonifyData(utils.decodeBase64(data[0]))
-          _this.courseContent = JSON.parse(data[0]);
-          _this.renderCourseChildren()
-        });
-        JBridge.getChildContent(identifier, callback1)
+        JBridge.logCourseDetailScreenEvent(_this.details.identifier, _this.details.pkgVersion, true);
+        _this.renderChildren();
       } else {
+        JBridge.logCourseDetailScreenEvent(_this.details.identifier, _this.details.pkgVersion, false);
          var callback22= callbackMapper.map(function(data){
           data = JSON.parse(data)
           if(data.status==="NOT_FOUND"){
@@ -151,7 +144,23 @@ class CourseInfoActivity extends View {
     console.log("ON STOP IN ResourceDetailActivity")
   }
 
-
+  checkWhetherEnrolledCourse = () => {
+    var enrolledIds = window.__enrolledCourses;
+    var courseEnrollCheckCount = 0;
+    enrolledIds.map((item) => {
+      if (item.courseId == this.details.identifier) {
+        var whatToSend = { "course": this.details }
+        var event = { tag: 'OPEN_EnrolledActivity', contents: whatToSend }
+        window.__runDuiCallback(event);
+        courseEnrollCheckCount = courseEnrollCheckCount + 1;
+        return;
+      }
+    });
+    if (courseEnrollCheckCount == 0) {
+      this.replaceChild(this.idSet.totalContainer, this.getBody().render(), 0);
+      this.checkContentLocalStatus(this.details.identifier);
+    }
+  }
 
 
   renderCourseChildren = () => {
@@ -205,33 +214,18 @@ class CourseInfoActivity extends View {
     );
   }
 
-
-
   afterRender = () => {
-
 
     if(window.__enrolledCourses == undefined){
       window.__LoaderDialog.show();
       var whatToSend = {"user_token":window.__user_accessToken,"api_token": window.__apiToken}
       var event ={ "tag": "API_EnrolledCoursesList", contents: whatToSend};
       window.__runDuiCallback(event);
-
     }else{
-
-      this.replaceChild(this.idSet.totalContainer,this.getBody().render(),0);
-      var enrolledIds = window.__enrolledCourses;
-      enrolledIds.map((item)=>{
-      if(item.courseId == this.details.identifier && !this.details.isCreator){
-          var whatToSend = { "course": this.state.data.value0.courseDetails }
-          var event = { tag: 'OPEN_EnrolledActivity', contents: whatToSend }
-          window.__runDuiCallback(event);
-
-        }
-      })
+      this.checkWhetherEnrolledCourse();
     }
 
-
-     if(this.details.isCreator){
+    if(this.details.isCreator){
       console.log("from creation",this.details.isCreator)
       Android.runInUI(this.set({
         id : this.idSet.enrollButtonId,
@@ -274,28 +268,10 @@ class CourseInfoActivity extends View {
 
     switch (state.responseFor + "") {
       case "API_EnrolledCoursesList":
-
         window.__enrolledCourses = response.result.courses;
-
         console.log("ENROLLED COURSES",window.__enrolledCourses);
         window.__LoaderDialog.hide();
-
-        var enrolledIds = window.__enrolledCourses;
-        var courseEnrollCheckCount = 0;
-        enrolledIds.map((item)=>{
-        if(item.courseId == this.details.identifier){
-            var whatToSend = { "course": this.state.data.value0.courseDetails }
-            var event = { tag: 'OPEN_EnrolledActivity', contents: whatToSend }
-            window.__runDuiCallback(event);
-            courseEnrollCheckCount = courseEnrollCheckCount+1;
-
-        }
-        })
-        if(courseEnrollCheckCount == 0){
-          this.replaceChild(this.idSet.totalContainer,this.getBody().render(),0);
-          this.checkContentLocalStatus(this.details.identifier);
-        }
-
+        this.checkWhetherEnrolledCourse();
         break;
 
       default:
@@ -308,21 +284,10 @@ class CourseInfoActivity extends View {
 
   }
 
-  logShareContent = (id) => {
-    var callback = callbackMapper.map(function (data) {
-      if (data != "__failed") {
-        data = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
-        console.log("telemetry data SharePopUp", data);
-        JBridge.logShareContentInitiateEvent("COURSES", "course", id, data.contentData.pkgVersion);
-      }
-    });
-    JBridge.getContentDetails(id, callback);
-  }
-
   shareContent = () =>{
 
-    console.log("SHARE POP UP CALLED")
-    this.logShareContent(this.details.identifier);
+    console.log("SHARE POP UP CALLED");
+    JBridge.logShareContentInitiateEvent("COURSES", "course", this.details.identifier, this.details.contentData.pkgVersion);
 
     var shareCallback = callbackMapper.map(function(data) {
 
@@ -374,10 +339,10 @@ class CourseInfoActivity extends View {
 
 
   onBackPressed = () => {
-   var whatToSend = []
-   var event = { tag: 'BACK_CourseInfoActivity', contents: whatToSend }
-
-   window.__runDuiCallback(event);
+    JBridge.endEventLog(this.details.contentType, this.details.identifier, this.details.pkgVersion);
+    var whatToSend = []
+    var event = { tag: 'BACK_CourseInfoActivity', contents: whatToSend }
+    window.__runDuiCallback(event);
   }
 
   getCurriculumnBrief = () => {

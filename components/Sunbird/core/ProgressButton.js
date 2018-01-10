@@ -169,7 +169,7 @@ class ProgressButton extends View {
           // else{
             var callback = callbackMapper.map(function(data){
               data = utils.decodeBase64(data[0]);
-              parsedData = JSON.parse(utils.jsonifyData(data));
+              var parsedData = JSON.parse(utils.jsonifyData(data));
               console.log("data from progress", parsedData)
               JBridge.playContent(data, data.identifier, parsedData.contentData.pkgVersion);
             });
