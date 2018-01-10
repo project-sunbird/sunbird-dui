@@ -142,6 +142,7 @@ exports.processResponse = (state) => {
 	} catch (e) {
 		console.log("processing response, error parsing:", e);
 		response.data = decoded;
+		response.err = "Parsing error";
 	}
 	if (response.code == "401"){
 		console.log("401 response data ", response.data);

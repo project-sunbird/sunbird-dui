@@ -61,7 +61,7 @@ class MainActivity extends View {
 
     window.__API_Profile_Called = false;
     this.apiToken = window.__apiToken;
-    window.__PopulateSkillsList=[];
+    window.__PopulateSkillsList = [];
     window.__BNavFlowRestart = this.setupDuiCallback;
     this.profAPIerrCount = 0;
 
@@ -93,7 +93,7 @@ class MainActivity extends View {
         user_token: window.__user_accessToken,
         api_token: window.__apiToken
       };
-      var event = {tag: "API_ProfileFragment", contents: whatToSend};
+      var event = { tag: "API_ProfileFragment", contents: whatToSend };
       window.__runDuiCallback(event);
     } else if (JBridge.getSavedData(this.profileDataTag) != "__failed") {
       var data = JSON.parse(
@@ -118,7 +118,7 @@ class MainActivity extends View {
         api_token: window.__apiToken,
         requestBody: JSON.stringify(request)
       };
-      var event = {tag: "API_GetAnnouncementData", contents: whatToSend};
+      var event = { tag: "API_GetAnnouncementData", contents: whatToSend };
       window.__runDuiCallback(event);
     } else {
       console.log("__failed to getAnnouncementData");
@@ -193,10 +193,10 @@ class MainActivity extends View {
           //check for rootOrg details
           console.log("JBridge.getFromSharedPrefs('logo_url')", JBridge.getFromSharedPrefs("logo_url"));
           if (responseData.result.response && responseData.result.response.rootOrg && !window.__API_Profile_Called
-              && (JBridge.getFromSharedPrefs("logo_url") == "__failed"
-                  || JBridge.getFromSharedPrefs("orgName") == "__failed"
-                  || JBridge.getFromSharedPrefs("channelId") == "__failed")
-              ) {
+            && (JBridge.getFromSharedPrefs("logo_url") == "__failed"
+              || JBridge.getFromSharedPrefs("orgName") == "__failed"
+              || JBridge.getFromSharedPrefs("channelId") == "__failed")
+          ) {
             console.log("slug", responseData.result.response.rootOrg.slug);
             window.__orgName = responseData.result.response.rootOrg.orgName;
             if (responseData.result.response.rootOrg.hashTagId) {
@@ -220,7 +220,7 @@ class MainActivity extends View {
               api_token: window.__apiToken,
               slug: responseData.result.response.rootOrg.slug
             };
-            var event = {tag: "API_Tenant", contents: whatToSend};
+            var event = { tag: "API_Tenant", contents: whatToSend };
             window.__runDuiCallback(event);
           }
         }
@@ -253,14 +253,19 @@ class MainActivity extends View {
         if (isErr) {
           if (JBridge.getSavedData(this.announcementsDataTag) != "__failed") {
             var data = JSON.parse(utils.decodeBase64(JBridge.getSavedData(this.announcementsDataTag)));
-            // data = JSON.parse(utils.decodeBase64(state.response.status[1]));
-          //  window.__AnnouncementApiData = data.result.announcements;
+          } else {
+            responseData = {};
           }
         } else {
           console.log("API_GetAnnouncementData :", responseData);
-          var dataToBeSaved = utils.encodeBase64(JSON.stringify(responseData.result));
-          console.log("dataToBeSaved ", responseData.result);
-          JBridge.saveData(this.announcementsDataTag, dataToBeSaved);
+          try {
+            var dataToBeSaved = utils.encodeBase64(JSON.stringify(responseData.result));
+            console.log("dataToBeSaved ", responseData.result);
+            JBridge.saveData(this.announcementsDataTag, dataToBeSaved);
+          } catch (err) {
+            console.log("err: var dataToBeSaved = utils.encodeBase64(JSON.stringify(responseData.result));");
+            responseData = {};
+          }
         }
         break;
       case "API_EndorseSkill":
@@ -306,27 +311,27 @@ class MainActivity extends View {
         shouldBeModified = true;
         // JBridge.logCorrelationPageEvent("HOME",responseData.params.msgid,responseData.id)
         this.logCorrelationPageEvent("HOME");
-        window.__runDuiCallback({tag: "OPEN_HomeFragment", contents: []});
+        window.__runDuiCallback({ tag: "OPEN_HomeFragment", contents: [] });
         break;
       case 1:
         shouldBeModified = true;
         this.logCorrelationPageEvent("COURSES");
         // JBridge.logCorrelationPageEvent("COURSES",responseData.params.msgid,responseData.id)
-        window.__runDuiCallback({tag: "OPEN_CourseFragment", contents: []});
+        window.__runDuiCallback({ tag: "OPEN_CourseFragment", contents: [] });
         break;
       case 2:
         shouldBeModified = true;
         this.logCorrelationPageEvent("RESOURCES");
         // JBridge.logCorrelationPageEvent("RESOURCES",responseData.params.msgid,responseData.id)
-        window.__runDuiCallback({tag: "OPEN_ResourceFragment", contents: []});
+        window.__runDuiCallback({ tag: "OPEN_ResourceFragment", contents: [] });
         break;
       case 3:
         //shouldBeModified = true;
-        window.__runDuiCallback({tag: "OPEN_CommunityFragment", contents: []});
+        window.__runDuiCallback({ tag: "OPEN_CommunityFragment", contents: [] });
         break;
       case 4:
         shouldBeModified = true;
-        window.__runDuiCallback({tag: "OPEN_ProfileFragment", contents: []});
+        window.__runDuiCallback({ tag: "OPEN_ProfileFragment", contents: [] });
         break;
       default:
         break;
@@ -346,7 +351,7 @@ class MainActivity extends View {
   handleProfileFragAPIResErr = () => {
     this.profAPIerrCount++;
     console.log("handleProfileFragAPIResErr this.profAPIerrCount", this.profAPIerrCount);
-    if (JBridge.getSavedData(this.profileDataTag) != "__failed"){
+    if (JBridge.getSavedData(this.profileDataTag) != "__failed") {
       var data = JSON.parse(utils.decodeBase64(JBridge.getSavedData(this.profileDataTag)));
       data.local = true;
       this.handleStateChange(data)
@@ -499,55 +504,55 @@ class MainActivity extends View {
     }
     switch (this.currentPageIndex) {
       case 0:
-        if((!window.__AnnouncementApiCalled) && JBridge.isNetworkAvailable()){
+        if ((!window.__AnnouncementApiCalled) && JBridge.isNetworkAvailable()) {
           this.getAnnouncemetData();
         }
-      if (window.__Check == 0) {
-        if(!JBridge.isNetworkAvailable()){
-          window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
-        }else{
-          this.getUserProfileData();
+        if (window.__Check == 0) {
+          if (!JBridge.isNetworkAvailable()) {
+            window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
+          } else {
+            this.getUserProfileData();
+          }
         }
-      }
         whatToSend = [];
-        event = {tag: "OPEN_HomeFragment", contents: whatToSend};
+        event = { tag: "OPEN_HomeFragment", contents: whatToSend };
         window.__Check = 1;
         window.__LoaderDialog.hide();
         break;
       case 1:
         if (!JBridge.isNetworkAvailable()) {
-          window.__runDuiCallback({tag: "OPEN_CourseFragment", contents: []});
+          window.__runDuiCallback({ tag: "OPEN_CourseFragment", contents: [] });
           this.switchContent(this.currentPageIndex);
         } else {
           whatToSend = {
             user_token: window.__user_accessToken,
             api_token: window.__apiToken
           };
-          event = {tag: "API_CourseFragment", contents: whatToSend};
+          event = { tag: "API_CourseFragment", contents: whatToSend };
         }
         break;
       case 2:
         if (!JBridge.isNetworkAvailable()) {
-          window.__runDuiCallback({tag: "OPEN_ResourceFragment", contents: []});
+          window.__runDuiCallback({ tag: "OPEN_ResourceFragment", contents: [] });
           this.switchContent(this.currentPageIndex);
         } else {
           whatToSend = {
             user_token: window.__user_accessToken,
             api_token: window.__apiToken
           };
-          event = {tag: "API_ResourceFragment", contents: whatToSend};
+          event = { tag: "API_ResourceFragment", contents: whatToSend };
         }
         break;
       case 3:
         whatToSend = [];
-        event = {tag: "OPEN_CommunityFragment", contents: whatToSend};
+        event = { tag: "OPEN_CommunityFragment", contents: whatToSend };
         break;
       case 4:
         this.getUserProfileData();
         break;
       default:
         whatToSend = [];
-        event = {tag: "OPEN_HomeFragment", contents: whatToSend};
+        event = { tag: "OPEN_HomeFragment", contents: whatToSend };
         break;
     }
     if (event) window.__runDuiCallback(event);

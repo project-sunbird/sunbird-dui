@@ -30,7 +30,12 @@ class ProfileHeader extends View {
       this.orgName = "";
     if(this.props.data.rootOrg!=null && this.props.data.rootOrg.contactDetail!=null && this.props.data.rootOrg.contactDetail.length>0)
       {
-        var temp=JSON.parse(this.props.data.rootOrg.contactDetail);
+        try {
+          var temp = JSON.parse(this.props.data.rootOrg.contactDetail);
+        } catch (err) {
+          console.log("JSON.parse(this.props.data.rootOrg.contactDetail) failed, using fallback");
+          var temp = this.props.data.rootOrg.contactDetail;
+        }
         this.orgEmail = temp[0].email ? temp[0].email : "";
       }
     else{
