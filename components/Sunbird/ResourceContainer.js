@@ -102,8 +102,8 @@ class ResourceContainer extends View {
   }
 
   handleCardClick = (item, type , index) => {
-      console.log("index clicked" , index)
-      JBridge.logCardClickEvent("RESOURCES",index+1,"RESOURCES",item.identifier)
+      console.log("index clicked" , item)
+      JBridge.logCardClickEvent("LIBRARY",index+1,"RESOURCES",item.identifier,item.pkgVersion)
        if(item.contentType.toLowerCase() == "course" || item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook"){
         var whatToSend={course:JSON.stringify(item)}
         var event ={tag:"OPEN_EnrolledCourseActivity",contents:whatToSend}

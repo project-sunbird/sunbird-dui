@@ -258,7 +258,9 @@ networkCheck =()=>{
 
 
   handleCourseClick = (content, type, index) => {
-    JBridge.logCardClickEvent("COURSES",index+1,"COURSES",content.identifier)
+    console.log("handleCourseClick ", content);
+    
+    JBridge.logCardClickEvent("COURSES", index + 1, "COURSES", content.identifier, content.pkgVersion)
     var tmp = JSON.stringify(content)
     var whatToSend = []
     var event = {};
@@ -276,7 +278,8 @@ networkCheck =()=>{
   }
 
   handleUserCoursesClick = (content, type, index) => {
-     JBridge.logCardClickEvent("COURSES",index+1,"COURSES_IN_PROGRESS",content.identifier)
+    console.log("handleUserCourseClick ", content);
+     JBridge.logCardClickEvent("COURSES",index+1,"COURSES_IN_PROGRESS",content.identifier, null);
     var whatToSend = { "course": JSON.stringify(content) }
     var event = { tag: 'OPEN_EnrolledCourseActivity', contents: whatToSend }
     window.__runDuiCallback(event);

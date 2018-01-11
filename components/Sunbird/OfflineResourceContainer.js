@@ -147,8 +147,8 @@ class OfflineResourceContainer extends View {
   }
 
   handleCardClick = (item, type, index) => {
-    console.log(index)
-     JBridge.logCardClickEvent("RESOURCES",index+1,"SAVED_RESOURCES",item.identifier)
+    console.log("handleCardClick : ", item)
+    JBridge.logCardClickEvent("LIBRARY", index + 1, "SAVED_RESOURCES", item.identifier, item.contentData.pkgVerison)
      if(item.contentType.toLowerCase() == "course" || item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook"){
       var whatToSend= {course:JSON.stringify(item)};
       var event ={tag:"OPEN_CourseInfoActivity",contents:whatToSend}

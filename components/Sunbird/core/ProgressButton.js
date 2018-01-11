@@ -11,6 +11,11 @@ var Button = require('../../Sunbird/Button');
 
 var _this;
 
+/*
+# This component handles downloading and playing of content.
+# If the content is not available locally, it shows the DOWNLOAD option, handles download.
+# After the content is dowloaded or available locally, PLAY option is displayed and plays the content.
+*/
 class ProgressButton extends View {
   constructor(props, children) {
     super(props, children);
@@ -59,74 +64,62 @@ class ProgressButton extends View {
 
 
   checkContentLocalStatus = (status) => {
-
-    var callback = callbackMapper.map(function(data){
+    var callback = callbackMapper.map(function (data) {
       var data = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
-      console.log("data in progress local",data)
-      if(data.isAvailableLocally == true){
+      console.log("data in progress local", data)
+      if (data.isAvailableLocally == true) {
         _this.isDownloaded = true;
-      console.log("status local", status)
+        console.log("status local", status)
         _this.props.playContent = JSON.stringify(data)
-      // this.props.playContent = JSON.stringify(data)
-      _this.replaceChild(_this.idSet.downloadBarContainer, _this.getButtons("100", window.__S.PLAY).render(), 0);
-      }
-      else{
+        _this.replaceChild(_this.idSet.downloadBarContainer, _this.getButtons("100", window.__S.PLAY).render(), 0);
+      } else {
         _this.isDownloaded = false;
-      console.log("status not local", status)
-      _this.replaceChild(_this.idSet.downloadBarContainer, _this.getButtons("0", window.__S.DOWNLOAD).render(), 0);
+        console.log("status not local", status)
+        _this.replaceChild(_this.idSet.downloadBarContainer, _this.getButtons("0", window.__S.DOWNLOAD).render(), 0);
       }
-
-
-    })
-    JBridge.getContentDetails(this.props.identifier,callback)
-
-
+    });//end of callback
+    JBridge.getContentDetails(this.props.identifier, callback);
   }
 
   updateProgress = (pValue) => {
     var cmd;
-
-
     var data = JSON.parse(pValue);
 
-    if (data.identifier != _this.props.identifier){
+    if (data.identifier != _this.props.identifier) {
       console.log("NOT mine")
       return;
     }
 
     var textToShow = ""
 
-    data.downloadProgress = ( data.downloadProgress == undefined || data.downloadProgress < 0 )? 0 : data.downloadProgress;
-    console.log("--->\t\t\t\n\n\n", data);
-     console.log(data.downloadProgress)
-     if(data.status == "NOT_FOUND"){
-          this.setCancelButtonVisibility("gone");
-        _this.replaceChild(_this.idSet.downloadBarContainer, _this.getButtons(0, window.__S.DOWNLOAD).render(), 0);
-        window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
-        return;
-     }
+    data.downloadProgress = (data.downloadProgress == undefined || data.downloadProgress < 0) ? 0 : data.downloadProgress;
+    console.log("--->\t\t\t\n", data);
+    console.log(data.downloadProgress)
+    if (data.status == "NOT_FOUND") {
+      this.setCancelButtonVisibility("gone");
+      _this.replaceChild(_this.idSet.downloadBarContainer, _this.getButtons(0, window.__S.DOWNLOAD).render(), 0);
+      window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
+      return;
+    }
     if (parseInt(data.downloadProgress) == 100) {
-    console.log(data.downloadProgress ,"DONE")
+      console.log(data.downloadProgress, "DONE")
       _this.props.changeOverFlowMenu();
       _this.isDownloaded = true;
       textToShow = window.__S.PLAY;
-      _this.isCancelVisible=true;
+      _this.isCancelVisible = true;
       _this.setCancelButtonVisibility("gone");
 
     } else {
-      console.log(data.downloadProgress , "UPDATING")
+      console.log(data.downloadProgress, "UPDATING")
       _this.isDownloaded = false;
       textToShow = window.__S.DOWNLOADING.format(data.downloadProgress)
 
     }
-    if(!this.isCancelVisible && data.downloadProgress>0){
-        this.setCancelButtonVisibility("visible");
-        this.isCancelVisible=true;
-
+    if (!this.isCancelVisible && data.downloadProgress > 0) {
+      this.setCancelButtonVisibility("visible");
+      this.isCancelVisible = true;
     }
-
     _this.replaceChild(_this.idSet.downloadBarContainer, _this.getButtons(data.downloadProgress, textToShow).render(), 0);
-
   }
 
   setVisibility = (value) => {
@@ -162,19 +155,13 @@ class ProgressButton extends View {
         console.log(this.isDownloaded,this.props)
         if (this.isDownloaded) {
           window.__getGenieEvents = this.checkTelemetry;
-          // if(this.props.playContent!=null && this.props.playContent!=undefined){
-          //   console.log("play local content")
-          //   JBridge.playContent(btoa(JSON.stringify(this.props.playContent)));
-          // }
-          // else{
-            var callback = callbackMapper.map(function(data){
-              data = utils.decodeBase64(data[0]);
-              var parsedData = JSON.parse(utils.jsonifyData(data));
-              console.log("data from progress", parsedData)
-              JBridge.playContent(data, data.identifier, parsedData.contentData.pkgVersion);
-            });
-            JBridge.getContentDetails(_this.props.identifier,callback);
-          // }
+          var callback = callbackMapper.map(function (data) {
+            data = utils.decodeBase64(data[0]);
+            var parsedData = JSON.parse(utils.jsonifyData(data));
+            console.log("data from progress", parsedData)
+            JBridge.playContent(data, data.identifier, parsedData.contentData.pkgVersion);
+          });
+          JBridge.getContentDetails(_this.props.identifier, callback);
 
         } else if(JBridge.isNetworkAvailable()){
 
@@ -197,73 +184,70 @@ class ProgressButton extends View {
 
   checkTelemetry = (telemetryData) => {
     telemetryData = JSON.parse(utils.decodeBase64(telemetryData));
-    console.log("telemetry Data",telemetryData);
-    console.log("props",this.props)
+    console.log("telemetry Data", telemetryData);
+    console.log("props", this.props)
     if (telemetryData.eid == "OE_END") {
-        JBridge.stopEventBus();
-        var time = new Date();
-        var date = utils.formatDate(time);
-        var contentProgress = {};
-        var courseIdentifer = "";
+      JBridge.stopEventBus();
+      var time = new Date();
+      var date = utils.formatDate(time);
+      var contentProgress = {};
+      var courseIdentifer = "";
 
 
 
-        contentProgress['contentId'] = this.props.identifier;
-        contentProgress['courseId'] = this.props.contentDetails.hierarchyInfo[0].identifier;
-        contentProgress['status'] = telemetryData.edata.eks.progress == 100 ? 2 : 1;
-        contentProgress['progress'] = telemetryData.edata.eks.progress;
-        contentProgress['lastAccessTime'] = date;
-        if(telemetryData.edata.eks.progress == 100){
-          contentProgress['lastCompletedTime'] = date;
-        }
-        contentProgress['result'] = "pass";
-        contentProgress['grade'] = "B";
-        contentProgress['score'] = "10";
-        var enrolledCourse;
-        console.log("contentProgress",contentProgress)
+      contentProgress['contentId'] = this.props.identifier;
+      contentProgress['courseId'] = this.props.contentDetails.hierarchyInfo[0].identifier;
+      contentProgress['status'] = telemetryData.edata.eks.progress == 100 ? 2 : 1;
+      contentProgress['progress'] = telemetryData.edata.eks.progress;
+      contentProgress['lastAccessTime'] = date;
+      if (telemetryData.edata.eks.progress == 100) {
+        contentProgress['lastCompletedTime'] = date;
+      }
+      contentProgress['result'] = "pass";
+      contentProgress['grade'] = "B";
+      contentProgress['score'] = "10";
+      var enrolledCourse;
+      console.log("contentProgress", contentProgress)
 
-        window.__enrolledCourses.map(function(item){
-          if(item.courseId == _this.props.contentDetails.hierarchyInfo[0].identifier)
-            enrolledCourse = item;
-        })
-        console.log("enrolled",enrolledCourse)
-        contentProgress['batchId'] = enrolledCourse.hasOwnProperty("batchId")? enrolledCourse.batchId : 0 ;
-        console.log("batch ID",enrolledCourse)
-
-        var url = window.__apiUrl + "/api/course/v1/content/state/update"
-
-        console.log("date",date)
-
-        var requestObject = {};
-
-        var body = {
-                  "id":"unique API ID",
-                  "ts":"response timestamp YYYY-MM-DDThh:mm:ss+/-nn:nn (timezone defaulted to +5.30)",
-                    "params": {
-
-                      },
-                  "request":{
-                      "userId": window.__userToken,
-                    "contents":[
-                            contentProgress
-                     ]
-                    }
-                  }
-
-
-    var callback = callbackMapper.map(function(data){
-        console.log(data)
-        if(data[0] == "true"){
-            console.log("in patch",body)
-
-            JBridge.patchApi(url,JSON.stringify(body),window.__user_accessToken,window.__apiToken);
-          }
+      window.__enrolledCourses.map(function (item) {
+        if (item.courseId == _this.props.contentDetails.hierarchyInfo[0].identifier)
+          enrolledCourse = item;
       })
-      JBridge.getContentType(this.props.contentDetails.hierarchyInfo[0].identifier,callback)
+      console.log("enrolled", enrolledCourse)
+      contentProgress['batchId'] = enrolledCourse.hasOwnProperty("batchId") ? enrolledCourse.batchId : 0;
+      console.log("batch ID", enrolledCourse)
 
+      var url = window.__apiUrl + "/api/course/v1/content/state/update"
+
+      console.log("date", date)
+
+      var requestObject = {};
+
+      var body = {
+        "id": "unique API ID",
+        "ts": "response timestamp YYYY-MM-DDThh:mm:ss+/-nn:nn (timezone defaulted to +5.30)",
+        "params": {
+
+        },
+        "request": {
+          "userId": window.__userToken,
+          "contents": [
+            contentProgress
+          ]
+        }
+      };
+
+
+      var callback = callbackMapper.map(function (data) {
+        console.log(data)
+        if (data[0] == "true") {
+          console.log("in patch", body)
+
+          JBridge.patchApi(url, JSON.stringify(body), window.__user_accessToken, window.__apiToken);
+        }
+      })
+      JBridge.getContentType(this.props.contentDetails.hierarchyInfo[0].identifier, callback)
     }
-
-
   }
 
 

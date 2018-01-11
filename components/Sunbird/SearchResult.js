@@ -135,14 +135,15 @@ class SearchResult extends View {
   }
 
   handleItemClick = (item,index) =>{
-
+    console.log("itemClicked ", item);
+    
     var itemDetails = JSON.stringify(item);
     if(this.props.type.toLowerCase() == "combined")
-      JBridge.logContentClickEvent("HOME",index+1,this.props.searchText,item.identifier)
+      JBridge.logContentClickEvent("HOME", index + 1, this.props.searchText, item.identifier, item.pkgVersion)
     else if(this.props.type.toLowerCase() == "course")
-      JBridge.logContentClickEvent("COURSES",index+1,this.props.searchText,item.identifier)
+      JBridge.logContentClickEvent("COURSES", index + 1, this.props.searchText, item.identifier, item.pkgVersion)
     else if(this.props.type.toLowerCase() == "resource")
-      JBridge.logContentClickEvent("RESOURCES",index+1,this.props.searchText,item.identifier)
+      JBridge.logContentClickEvent("RESOURCES", index + 1, this.props.searchText, item.identifier, item.pkgVersion)
 
 
     if (item.hasOwnProperty("data") && item.data.hasOwnProperty("education")){

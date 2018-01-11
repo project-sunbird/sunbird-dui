@@ -36,7 +36,7 @@ class CourseViewAllActivity extends View {
     this.menuData = {
     url: []
     }
-    JBridge.logListViewScreenEvent("COURSES",this.totalDetails.length,this.searchQuery)
+    // JBridge.logListViewScreenEvent("COURSES",this.totalDetails.length,this.searchQuery)
     }
 
   checkEnrolledCourse = (identifier) =>{
@@ -147,10 +147,12 @@ class CourseViewAllActivity extends View {
   }
 
   performCourseAction = (content,index) =>{
-       var tmp = JSON.stringify(content)
+       var tmp = JSON.stringify(content);
+       console.log("content: ", content);
+       
        var index_click = this.start_index <1 ? index+1 : index+(this.start_index*10)+1;
        var contentId = content.courseId ? content.courseId : content.identifier;
-        JBridge.logContentClickEvent("COURSES",index_click,"",contentId)
+    JBridge.logContentClickEvent("COURSES", index_click, "", contentId, content.pkgVersion);
         var whatToSend = {
           "course": tmp
           };
