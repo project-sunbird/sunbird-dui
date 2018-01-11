@@ -13,6 +13,7 @@ var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var ScrollView = require("@juspay/mystique-backend/src/android_views/ScrollView");
 var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget");
 var TextInputView = require('../components/Sunbird/core/TextInputView');
+var ProgressBar = require("@juspay/mystique-backend/src/android_views/ProgressBar");
 var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
 var utils = require('../utils/GenericFunctions');
 
@@ -41,8 +42,9 @@ class UserActivity extends View {
       "signUpHolder",
       "mobileNumberHolder",
       "emailHolder",
-      "parentContainer"
-
+      "parentContainer",
+      "importEcarLayout",
+      "importEcarText"
     ]);
     this.backPressCount = 0;
     this.shouldCacheScreen=false;
@@ -64,6 +66,7 @@ class UserActivity extends View {
 
 
     window.__onContentImportResponse = this.getImportStatus;
+    window.__onContentImportProgress = this.setImportProgress;
     window.__LoaderDialog.hide();
   }
 
@@ -94,6 +97,20 @@ class UserActivity extends View {
 
   }
 
+  setImportProgress = (progress) => {
+    console.log("import ecar progress", progress);
+    var cmd  = this.set({
+      id: this.idSet.importEcarLayout,
+      visibility: "visible"
+    });
+
+    cmd += this.set({
+      id: this.idSet.importEcarText,
+      text : progress
+    });
+
+    Android.runInUI(cmd,0);
+  }
 
   handleDeepLinkAction = (identifier) =>{
       console.log("IDENTIFIER IN HANDLE DEEPLINK ACTION",identifier);
@@ -262,6 +279,12 @@ class UserActivity extends View {
     var whatToSend = []
     var event = { tag: "OPEN_MainActivity", contents: whatToSend };
     window.__runDuiCallback(event);
+
+    // setTimeout(() => {
+    //   var whatToSend = [];
+    //   var event = { tag: "OPEN_MainActivity", contents: whatToSend };
+    //   window.__runDuiCallback(event);
+    // }, 4000);
   }
 
   onBackPressed = () => {
@@ -884,7 +907,6 @@ class UserActivity extends View {
 
         console.log("SHARED PREFERENCES ARE THERE STILL");
         if(whereFrom == "SplashScreenActivity"){
-
           console.log("FROM SPLASH SCREEN ACTIVITY");
 
           if(("YES"==JBridge.getFromSharedPrefs("logged_in"))){
@@ -922,6 +944,7 @@ class UserActivity extends View {
       }else{
 
           if(("YES"==JBridge.getFromSharedPrefs("logged_in"))){
+
               this.performLogin();
           }else{
               this.replaceChild(this.idSet.parentContainer,this.getBody().render(),0);
@@ -946,12 +969,14 @@ class UserActivity extends View {
         background={window.__Colors.WHITE}
         id={this.idSet.parentContainer}
         width="match_parent"
-        height="match_parent">
+        height="match_parent"
+        orientation="vertical">
           <LinearLayout
             height="match_parent"
             width="match_parent"
+            orientation="vertical"
             gravity="center"
-            orientation="vertical">
+            weight="1">
               <ImageView
                 height="250"
                 width="250"
@@ -965,6 +990,28 @@ class UserActivity extends View {
                 textSize = "18"/>
 
            </LinearLayout>
+           <LinearLayout
+             height="match_parent"
+             width="match_parent"
+             weight="5"
+             orientation="horizontal"
+             gravity="center"
+             id={this.idSet.importEcarLayout}
+             visibility="gone">
+               <ProgressBar
+               height="40"
+               width="40"
+               margin="0,0,15,0"
+               layout_gravity="center"
+               />
+               <TextView
+               id={this.idSet.importEcarText}
+               height="wrap_content"
+               width="wrap_content"
+               text="(1/2)"
+               layout_gravity="center"
+               />
+            </LinearLayout>
       </LinearLayout>
 
     );
