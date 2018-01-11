@@ -149,7 +149,7 @@ class CourseInfoActivity extends View {
     var courseEnrollCheckCount = 0;
     enrolledIds.map((item) => {
       if (item.courseId == this.details.identifier) {
-        var whatToSend = { "course": this.details }
+        var whatToSend = { "course": JSON.stringify(this.details) }
         var event = { tag: 'OPEN_EnrolledActivity', contents: whatToSend }
         window.__runDuiCallback(event);
         courseEnrollCheckCount = courseEnrollCheckCount + 1;

@@ -251,69 +251,67 @@ class SearchActivity extends View {
   }
 
   getSearchList=(searchText)=> {
-
-    if(searchText == ""){
-      console.log("empty text"+window.__LoaderDialog.visibility);
+    JBridge.hideKeyboard();
+    if (searchText == "") {
+      console.log("empty text" + window.__LoaderDialog.visibility);
       this.renderNoResult();
       window.__LoaderDialog.hide();
     }
-    else
-    {
-
-        var callback = callbackMapper.map(function(data) {
-          console.log("callback data", data);
-          if (data[0] == "error"){
-            console.log("Error at callback", data[1]);
-            window.__Snackbar.show("" + data[1])
+    else {
+      var callback = callbackMapper.map(function (data) {
+        console.log("callback data", data);
+        if (data[0] == "error") {
+          console.log("Error at callback", data[1]);
+          window.__Snackbar.show("" + data[1])
+          _this.renderNoResult();
+          window.__LoaderDialog.hide();
+        } else {
+          data[0] = utils.decodeBase64(data[0])
+          _this.filterData = data[1];
+          if (searchText == "" || data[0] == "[]") {
             _this.renderNoResult();
             window.__LoaderDialog.hide();
+
           } else {
-            data[0] = utils.decodeBase64(data[0])
-            _this.filterData = data[1];
-                  if (searchText == "" || data[0] == "[]") {
-                    _this.renderNoResult();
-                    window.__LoaderDialog.hide();
-
-                  } else {
-                    var s = data[0];
-                    s = s.replace(/\\n/g, "\\n")
-                      .replace(/\\'/g, "\\'")
-                      .replace(/\\"/g, '\\"')
-                      .replace(/\\&/g, "\\&")
-                      .replace(/\\r/g, "\\r")
-                      .replace(/\\t/g, "\\t")
-                      .replace(/\\b/g, "\\b")
-                      .replace(/\\f/g, "\\f");
-                    s = s.replace(/[\u0000-\u0019]+/g, "");
-                    window.search = {};
-                    window.search.res = s;
-                    window.search.text = searchText;
-                    window.search.type = _this.searchType;
-                    _this.renderResult(JSON.parse(s),searchText);
-                    window.__LoaderDialog.hide();
-
-                  }
-          }
-        });
-
-          if (this.filterData!=undefined && this.filterData.length == 0) {
-            status = "false";
-          } else {
-            status = "true";
-          }
-
-
-          var s = "";
-          if(JBridge.isNetworkAvailable()){
-              console.log(this.filterData," filterData ");
-              JBridge.searchContent(callback, JSON.stringify(this.filterData), searchText, this.searchType, 100);
-          }
-          else{
+            var s = data[0];
+            s = s.replace(/\\n/g, "\\n")
+              .replace(/\\'/g, "\\'")
+              .replace(/\\"/g, '\\"')
+              .replace(/\\&/g, "\\&")
+              .replace(/\\r/g, "\\r")
+              .replace(/\\t/g, "\\t")
+              .replace(/\\b/g, "\\b")
+              .replace(/\\f/g, "\\f");
+            s = s.replace(/[\u0000-\u0019]+/g, "");
+            window.search = {};
+            window.search.res = s;
+            window.search.text = searchText;
+            window.search.type = _this.searchType;
+            _this.renderResult(JSON.parse(s), searchText);
             window.__LoaderDialog.hide();
-            window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
-          }
 
-        this.showFilter();
+          }
+        }
+      });
+
+      if (this.filterData != undefined && this.filterData.length == 0) {
+        status = "false";
+      } else {
+        status = "true";
+      }
+
+
+      var s = "";
+      if (JBridge.isNetworkAvailable()) {
+        console.log(this.filterData, " filterData ");
+        JBridge.searchContent(callback, JSON.stringify(this.filterData), searchText, this.searchType, 100);
+      }
+      else {
+        window.__LoaderDialog.hide();
+        window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
+      }
+
+      this.showFilter();
     }
   }
 
