@@ -54,15 +54,15 @@ class CourseEnrolledActivity extends View {
 
 
     _this = this;
-    this.shouldCacheScreen = false;
+    this.shouldCacheScreen = true; //set to true so that the screen does not reinitialize and send startEventLog telemetry
     this.courseContent = "";
 
     this.enrolledCourses = window.__enrolledCourses;
 
 
-    this.details = JSON.parse(state.data.value0.courseDetails);
+    this.details = JSON.parse(state.data.value0.courseDetails); //Content details fetched from API
 
-    this.courseDetails = {}
+    this.courseDetails = {} //Content details fetched from Genie SDK
     this.batchName = "";
     this.batchDescription = "";
 
@@ -184,7 +184,7 @@ class CourseEnrolledActivity extends View {
     if (downloadedPercent == 100) {
       window.__ContentLoaderDialog.updateProgressBar(100);
       window.__ContentLoaderDialog.hide();
-      this.checkContentLocalStatus(this.baseIdentifier);
+      this.renderChildren(this.baseIdentifier);
 
     } else if (downloadedPercent < 100) {
       window.__ContentLoaderDialog.show();
@@ -206,6 +206,8 @@ class CourseEnrolledActivity extends View {
     var callback1 = callbackMapper.map(function (data) {
       data[0] = utils.jsonifyData(utils.decodeBase64(data[0]))
       _this.courseContent = JSON.parse(data[0]);
+      console.log("childrenContent: ", _this.courseContent);
+      
       window.__ContentLoaderDialog.hide();
       _this.renderCourseChildren()
       _this.changeOverFlow();
@@ -252,7 +254,7 @@ class CourseEnrolledActivity extends View {
     JBridge.startEventLog(this.courseDetails.contentType, id, pkgVersion);
   }
 
-  handleModuleClick = (moduleName, module) => {
+  handleModuleClick = (moduleName, module) => {    
     var whatToSend = {
       "moduleName": moduleName,
       "moduleDetails": JSON.stringify(module)

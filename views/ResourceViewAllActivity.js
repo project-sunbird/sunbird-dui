@@ -34,7 +34,7 @@ class ResourceViewAllActivity extends View {
     console.log("data in view all",this.totalDetails)
     this.appbarTitle = this.totalDetails.title;
     this.displayContent = [];
-    JBridge.logListViewScreenEvent("RESOURCES",this.details.length,this.totalDetails.searchQuery)
+    JBridge.logListViewScreenEvent("LIBRARY",this.details.length,this.totalDetails.searchQuery)
   }
 
 showList = () =>{

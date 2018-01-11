@@ -53,25 +53,28 @@ class ModuleDetailActivity extends View {
 
         this.moduleName = state.data.value0.moduleName;
         this.module = state.data.value0.moduleDetails;
-        this.module = JSON.parse(this.module)
+        this.module = JSON.parse(this.module); //global content details for the current module being shown
         this.localStatus = this.module.isAvailableLocally;
         this.localContent = null;
         _this = this;
         this.downloadList=[];
 
         //stack to maintain child traversal
+        this.isPoped = false;
         this.stack = [];
-        this.stackPush(this.moduleName,this.module);
+        this.stackPush(this.moduleName,this.module); //the current content is always on the top of the stack
     }
 
     stackPush = (moduleName, module) => {
-      this.stack.push({
-        moduleName: moduleName,
-        module: module
-      });
+        this.isPoped = false;
+        this.stack.push({
+            moduleName: moduleName,
+            module: module
+        });
     }
 
     stackPop = () => {
+        this.isPoped = true;
       if (this.stack.length > 0){
         var top = this.stack[0];
         if (this.stack.length == 1)
@@ -130,9 +133,7 @@ class ModuleDetailActivity extends View {
         var downloadedPercent = data.downloadProgress;
         downloadedPercent = downloadedPercent < 0 ? 0 : downloadedPercent;
         if (downloadedPercent == 100) {
-              this.checkContentLocalStatus(this.module);
-
-
+            this.renderChildren(this.module.identifier);
         } else {
             var cmd = this.set({
                 id: this.idSet.downloadProgressText,
@@ -142,8 +143,9 @@ class ModuleDetailActivity extends View {
         }
     }
 
-    checkContentType = (mimeType) =>{
-        if(mimeType.toLowerCase() != "application/vnd.ekstep.content-collection")
+    //check whether the current content has any children
+    hasChildren = (mimeType) =>{
+        if(mimeType.toLowerCase() == "application/vnd.ekstep.content-collection")
             return true;
         else
             return false;
@@ -152,62 +154,65 @@ class ModuleDetailActivity extends View {
     checkContentLocalStatus = (module) => {
         _this = this;
         console.log('module',module);
-        if(this.checkContentType(module.mimeType)){
+        if (!this.hasChildren(module.mimeType)){
+            //if the current content is the leaf node content, display the button which checks whether the content is locally available,
+            //display 'PLAY' or 'DOWNLOAD', and handle download or play.
+            var _ = this.isPoped ? "" : JBridge.startEventLog(module.contentType, module.identifier, module.contentData.pkgVersion);
             this.localStatus = false;
             window.__ProgressButton.setLocalStatus(false);
-            console.log("content",module)
             window.__ProgressButton.setVisibility("visible");
             window.__ProgressButton.setContentDetails(module);
             window.__ProgressButton.checkContentLocalStatus(this.localStatus);
-        }
-        else{
-                var callback = callbackMapper.map(function(data) {
-                   if(data=="__failed")
-                     {
-                       window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
-                       this.onBackPressed();
-                     }
-                    _this.localContent = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])))
-                    if (_this.localContent.isAvailableLocally == true) {
-                        var callback1 = callbackMapper.map(function(data) {
-                            _this.module = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
-                            _this.renderModuleChildren(_this.module)
-                        });
-                        JBridge.getChildContent(module.identifier, callback1)
-                    }
-                     else {
-                      if (JBridge.isNetworkAvailable()){
-                                if(_this.downloadList.indexOf(module.identifier)== -1){
-                                    _this.downloadList.push(module.identifier)
-                                    console.log("module",module)
-                                    // this.simpleData.content = module.contentData.size ? "Size : " + utils.formatBytes(module.contentData.size) : "";
-                                    JBridge.importCourse(module.identifier, "true")
-                                    // _this.simpleData.content =
-                                }
-                                else{
-                                        window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
-                                        _this.onBackPressed();
-                                        return;
-                                }
-
-
-
-                      }
-                      else
-                        window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE)
-                    }
-                });
-                if (!module.isAvailableLocally || module.isUpdateAvailable) {
-                    window.__getDownloadStatus = this.getSpineStatus;
-                    JBridge.getContentDetails(module.identifier, callback);
-                } else {
-                    this.renderModuleChildren(module);
+        } else {
+            //if the current content had children, get the children data and render the children
+            var _ = this.isPoped ? "" : JBridge.startEventLog(module.contentType, module.identifier, module.contentData.pkgVersion);
+            var callback = callbackMapper.map(function (data) {
+                if (data == "__failed") {
+                    window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
+                    this.onBackPressed();
+                    return;
                 }
-            }
+                _this.localContent = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])))
+                if (_this.localContent.isAvailableLocally == true) {
+                    this.renderChildren(module.identifier);
+                } else {
+                    if (JBridge.isNetworkAvailable()) {
+                        if (_this.downloadList.indexOf(module.identifier) == -1) {
+                            _this.downloadList.push(module.identifier)
+                            console.log("module", module);
+                            JBridge.importCourse(module.identifier, "true");
+                        } else {
+                            window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
+                            _this.onBackPressed();
+                            return;
+                        }
+                    } else {
+                        window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
+                    }
+                }
+            });// end of callback
+
+            if (!module.isAvailableLocally || module.isUpdateAvailable) {
+                window.__getDownloadStatus = this.getSpineStatus;
+                JBridge.getContentDetails(module.identifier, callback);
+            } else {
+                this.renderModuleChildren(module);
+            }        
+        }
+    }
+
+    renderChildren = (identifier) => {
+        var callback1 = callbackMapper.map(function (data) {
+            _this.module = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
+            _this.renderModuleChildren(_this.module);
+        });
+        JBridge.getChildContent(identifier, callback1);
     }
 
     handleModuleClick = (moduleName, module) => {
-        window.__ProgressButton.setButtonFor(module.identifier);
+        console.log("handleModuleClick -> moduleName: " + moduleName + ", module: ", module);
+        console.log("this.details", this.details);
+        console.log("this.courseDetails", this.courseDetails);
         this.stackPush(moduleName, module);
         this.reRender(moduleName, module);
     }
@@ -237,26 +242,26 @@ class ModuleDetailActivity extends View {
         var layout;
 
         if (module.mimeType.toLowerCase() == "application/vnd.ekstep.content-collection") {
-            if (module.children){
-                layout = ( <CourseCurriculum
-                    height = "match_parent"
-                    width = "match_parent"
-                    root = "true"
-                    margin = "0,0,0,12"
-                    brief = { true } title = ""
-                    currIndex = {module.index}
-                    onClick = { this.handleModuleClick }
-                    content = { module.children }  />
+            if (module.children) {
+                layout = (<CourseCurriculum
+                    height="match_parent"
+                    width="match_parent"
+                    root="true"
+                    margin="0,0,0,12"
+                    brief={true} title=""
+                    currIndex={module.index}
+                    onClick={this.handleModuleClick}
+                    content={module.children} />
                 )
             } else {
                 layout = (
-                        <TextView
-                            width = "match_parent"
-                            height = "match_parent"
-                            padding="0,20,0,0"
-                            gravity = "center"
-                            text = {window.__S.ERROR_CONTENT_NOT_AVAILABLE}/>
-                            );
+                    <TextView
+                        width="match_parent"
+                        height="match_parent"
+                        padding="0,20,0,0"
+                        gravity="center"
+                        text={window.__S.ERROR_CONTENT_NOT_AVAILABLE} />
+                );
             }
 
             this.replaceChild(this.idSet.descriptionContainer, layout.render(), 0);
@@ -266,8 +271,8 @@ class ModuleDetailActivity extends View {
                 visibility: "gone"
             });
             cmd = this.set({
-              id: this.idSet.descriptionContainer,
-              visibility: "gone"
+                id: this.idSet.descriptionContainer,
+                visibility: "gone"
             });
             Android.runInUI(cmd, 0);
             window.__ProgressButton.setButtonFor(module.identifier);
@@ -278,19 +283,8 @@ class ModuleDetailActivity extends View {
     afterRender = () => {
         window.__SimplePopup.hide();
         window.__ProgressButton.setButtonFor(this.module.identifier);
-        this.logTelelmetry(this.module.identifier);
+        JBridge.logContentDetailScreenEvent(this.module.identifier, this.module.contentData.pkgVersion);
         this.checkContentLocalStatus(this.module);
-    }
-
-    logTelelmetry = (id) => {
-        var callback = callbackMapper.map(function (data) {
-            if (data != "__failed") {
-                data = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
-                console.log("telemetry data MDA", data);
-                JBridge.logContentDetailScreenEvent(id, data.contentData.pkgVersion);
-            }
-        });
-        JBridge.getContentDetails(id, callback);
     }
 
     getLineSeperator = () => {
@@ -364,6 +358,7 @@ class ModuleDetailActivity extends View {
         }
 
     onBackPressed = () => {
+        JBridge.endEventLog(this.module.contentType, this.module.identifier, this.module.contentData.pkgVersion);
         this.stackPop();
         var top = this.stackTop();
         if (!this.stack.length < 1 || top){

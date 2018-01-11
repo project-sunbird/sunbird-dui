@@ -321,7 +321,7 @@ class MainActivity extends View {
         break;
       case 2:
         shouldBeModified = true;
-        this.logCorrelationPageEvent("RESOURCES");
+        this.logCorrelationPageEvent("LIBRARY");
         // JBridge.logCorrelationPageEvent("RESOURCES",responseData.params.msgid,responseData.id)
         window.__runDuiCallback({ tag: "OPEN_ResourceFragment", contents: [] });
         break;
