@@ -6,10 +6,11 @@ var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLay
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
 var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
+var utils = require('../utils/GenericFunctions');
 window.R = require("ramda");
 
 class SplashScreenActivity extends View {
-  
+
   constructor(props, children, state) {
     super(props, children, state);
     window.__Check = 0;
@@ -20,6 +21,11 @@ class SplashScreenActivity extends View {
     this.getIcon();
     this.getTextToDisplay();
     window.__pressedLoggedOut=false;
+  //  window.__getGenieEvents = this.dummyFunction;
+  }
+
+  dummyFunction = (response) => {
+    console.log("response genie events",JSON.parse(utils.decodeBase64(response)));
   }
 
   getTextToDisplay = () => {
@@ -66,7 +72,14 @@ class SplashScreenActivity extends View {
   }
 
   afterRender = () => {
-    JBridge.syncTelemetry();
+
+    var epoch = JBridge.epochTime();
+      var connectionType = JBridge.checkConnectionType();
+      if(epoch < 26979 || connectionType == "wifi")
+        JBridge.syncTelemetry(15000); // 15 seconds delay if its first day of installation or device is connected to wifi
+      else
+        JBridge.syncTelemetry(30000); // 30 seconds delay otherwise
+
     JBridge.logsplashScreenEvent();
     JBridge.logCorrelationPageEvent("SPLASHSCREEN","","");
 
