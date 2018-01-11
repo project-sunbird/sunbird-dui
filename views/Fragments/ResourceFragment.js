@@ -274,6 +274,7 @@ handleResourceViewAllClick= (data,title,searchQuery,visibility) =>{
   handleMenuClick = (url) => {
     console.log("url clicked", url);
     if (url == "ic_action_filter" ||  url == "ic_action_filter_applied") {
+      JBridge.explicitSearch("LIBRARY", "FILTER");
       window.__PageFilterPopup.resetPopup("Resource",this.props.response);
       window.__PageFilterPopup.show();
     }else if (url == "ic_notification_red") {

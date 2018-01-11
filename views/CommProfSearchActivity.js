@@ -36,15 +36,7 @@ class CommProfSearchActivity extends View {
     this.screenName = "CommProfSearchActivity"
 
     this.tempData = JSON.parse(state.data.value0.filterDetails);
-
-    // this.filter=[]
-    // this.filterData = this.tempData.filterDetails;
-    // this.searchText = this.tempData.filterDetails.query
-    // this.searchType = this.tempData.filterType
-    // this.temp = state.data;
-    // this.searchType = this.tempData.searchType;
     window.searchData = this.logSearch;
-    // window.searchProf = "";
     _this = this;
   }
 
@@ -306,6 +298,7 @@ class CommProfSearchActivity extends View {
 
   handleSearchClick = (searchText) => {
     JBridge.hideKeyboard();
+    JBridge.explicitSearch("PROFILE", "SEARCH");
     if(JBridge.isNetworkAvailable()){
       window.__LoaderDialog.show();
       this.getSearchList(searchText[0],"false");

@@ -354,8 +354,8 @@ networkCheck =()=>{
       var event = { tag: "OPEN_SearchActivity", contents: whatToSend}
       window.__runDuiCallback(event);
 
-    }
-     else if (url == "ic_action_filter" || url == "ic_action_filter_applied") {
+    } else if (url == "ic_action_filter" || url == "ic_action_filter_applied") {
+      JBridge.explicitSearch("COURSE", "FILTER");
       window.__PageFilterPopup.resetPopup("Cource",this.props.response);
       window.__PageFilterPopup.show();
     }

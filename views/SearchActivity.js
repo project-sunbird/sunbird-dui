@@ -39,14 +39,14 @@ class SearchActivity extends View {
     this.screenName = "SearchActivity"
 
     this.tempData = JSON.parse(state.data.value0.filterDetails);
+    console.log("SA filterDetails: ", this.tempData);
+    
     this.filterIcon="ic_action_filter";
 
 
     this.filter=[]
     this.filterData = this.tempData.filterDetails;
     this.searchText = this.tempData.filterDetails.query
-    this.searchType = this.tempData.filterType
-    this.temp = state.data;
     this.searchType = this.tempData.searchType;
     window.searchData = this.logSearch;
 
@@ -65,73 +65,49 @@ class SearchActivity extends View {
       var facetFilters = this.filterData.facetFilters
       var i=0;
       var j=0;
-      for (i=0;i<facetFilters.length;i++)
-      {
-        for (j=0; j<facetFilters[i].values.length;j++)
-        {
-            if(facetFilters[i].values[j].apply==true)
-                {
-                  flag=true;
-                  break;
-                }
-
+      for (i=0;i<facetFilters.length;i++) {
+        for (j=0; j<facetFilters[i].values.length;j++) {
+            if(facetFilters[i].values[j].apply==true) {
+              flag=true;
+              break;
+            }
         }
-         if(flag)
-         {break;}
+        if(flag) { break; }
       }
 
-      if(flag)
-      {this.filterIcon="ic_action_filter_applied";}
-      else {
+      if(flag) {
+        this.filterIcon="ic_action_filter_applied";
+      } else {
         this.filterIcon="ic_action_filter";
       }
 
-       var cmd = "";
-        cmd += _this.set({
-          id: _this.idSet.filterHolder,
-          visibility: "visible",
-          imageUrl : this.filterIcon
-        })
-        Android.runInUI(cmd, 0);
-
-      var searchData
-      if (typeof this.filterData == 'object'){
-        searchData=this.filterData
-      }else{
-        searchData=JSON.parse(this.filter)
-      }
+      var cmd = _this.set({
+      id: _this.idSet.filterHolder,
+      visibility: "visible",
+      imageUrl : this.filterIcon
+      });
+      Android.runInUI(cmd, 0);
       this.getSearchList(this.searchText);
       window.__LoaderDialog.show();
-    }
-    else if(window.search && window.search.type == this.searchType && window.search.res!=undefined && window.search.res!="" && window.search.text!=undefined && window.search.text!=""){
+
+    } else if(window.search && window.search.type == this.searchType && window.search.res!=undefined && window.search.res!="" && window.search.text!=undefined && window.search.text!=""){
         _this.renderResult(JSON.parse(window.search.res),window.search.text);
-        // window.__LoaderDialog.show();
     }
 
     var callback = callbackMapper.map(function(data) {
       window.searchText=data[0];
       _this.handleSearchClick(data);
-
     });
-
-    console.log("VISIBILITY IN AFTERRENDER",window.__LoaderDialog.visibility);
-
     JBridge.handleImeAction(this.idSet.searchHolder, callback);
     JBridge.getFocus(this.idSet.searchHolder);
-
   }
 
   onPop = () => {
-
-
     Android.runInUI(
       _this.animateView(),
       null
     );
-
   }
-
-
 
   getBack = () => {
     return (
@@ -226,15 +202,15 @@ class SearchActivity extends View {
   renderResult = (data,searchText) => {
     console.log("data from server",data)
     var layout = (<LinearLayout
-                   width="match_parent"
-                   height="wrap_content"
-                   root="true"
-                   background="#ffffff"
-                   orientation="vertical">
+                    width="match_parent"
+                    height="wrap_content"
+                    root="true"
+                    background="#ffffff"
+                    orientation="vertical">
                     <SearchResult
-                      filterData = {_this.filterData}
-                      type = {this.searchType}
-                      searchText = {searchText}
+                      filterData={_this.filterData}
+                      type={this.searchType}
+                      searchText={searchText}
                       data={data} />
                   </LinearLayout>)
 
@@ -253,11 +229,9 @@ class SearchActivity extends View {
   getSearchList=(searchText)=> {
     JBridge.hideKeyboard();
     if (searchText == "") {
-      console.log("empty text" + window.__LoaderDialog.visibility);
       this.renderNoResult();
       window.__LoaderDialog.hide();
-    }
-    else {
+    } else {
       var callback = callbackMapper.map(function (data) {
         console.log("callback data", data);
         if (data[0] == "error") {
@@ -271,7 +245,6 @@ class SearchActivity extends View {
           if (searchText == "" || data[0] == "[]") {
             _this.renderNoResult();
             window.__LoaderDialog.hide();
-
           } else {
             var s = data[0];
             s = s.replace(/\\n/g, "\\n")
@@ -289,10 +262,9 @@ class SearchActivity extends View {
             window.search.type = _this.searchType;
             _this.renderResult(JSON.parse(s), searchText);
             window.__LoaderDialog.hide();
-
           }
         }
-      });
+      }); //end of callback
 
       if (this.filterData != undefined && this.filterData.length == 0) {
         status = "false";
@@ -300,15 +272,12 @@ class SearchActivity extends View {
         status = "true";
       }
 
-
-      var s = "";
       if (JBridge.isNetworkAvailable()) {
         console.log(this.filterData, " filterData ");
         var filterParams = null;
         if (this.filterData != "") { filterParams = JSON.stringify(this.filterData) }
         JBridge.searchContent(callback, filterParams, searchText, this.searchType, 100);
-      }
-      else {
+      } else {
         window.__LoaderDialog.hide();
         window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
       }
@@ -343,14 +312,15 @@ class SearchActivity extends View {
   handleSearchClick = (searchText) => {
     JBridge.hideKeyboard();
     this.filterData = "";
+    console.log("handlesearchClick: ", this.searchType.toUpperCase());
+    JBridge.explicitSearch(this.searchType.toUpperCase(), "SEARCH");
 
     if(JBridge.isNetworkAvailable()){
       window.__LoaderDialog.show();
       this.getSearchList(searchText[0]);
-    }
-    else
+    } else {
       window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE)
-
+    }
   }
 
   handleClearClick = () => {
@@ -373,7 +343,7 @@ class SearchActivity extends View {
 
   handleFilterClick = () => {
     JBridge.hideKeyboard();
-
+    JBridge.explicitSearch(this.searchType.toUpperCase(), "FILTER");
     var filteredData = { filterDetails: this.filterData,
        filterType: this.searchType ,
        filterFor : this.searchTextValue}
@@ -386,43 +356,35 @@ class SearchActivity extends View {
     console.log("parmas are", params);
   }
 
-
-
-
   getToolbar = () => {
     return (<LinearLayout
-            height="56"
-            padding="0,0,0,2"
-            gravity="center_vertical"
-            background={window.__Colors.PRIMARY_BLACK_22}
-            width="match_parent" >
-                <LinearLayout
-                  height="56"
-                  padding="0,0,0,0"
-                  gravity="center_vertical"
-                  root="true"
-                  background={window.__Colors.WHITE}
-                  width="match_parent" >
+      height="56"
+      padding="0,0,0,2"
+      gravity="center_vertical"
+      background={window.__Colors.PRIMARY_BLACK_22}
+      width="match_parent" >
+      <LinearLayout
+        height="56"
+        padding="0,0,0,0"
+        gravity="center_vertical"
+        root="true"
+        background={window.__Colors.WHITE}
+        width="match_parent" >
 
-                    {this.getBack()}
-                    {this.getTitle()}
+        {this.getBack()}
+        {this.getTitle()}
+        {this.getMenu()}
 
+      </LinearLayout>
 
-                    {this.getMenu()}
-
-                 </LinearLayout>
-
-             </LinearLayout>)
+    </LinearLayout>)
   }
 
   render() {
-
     let spinnerData = "tty,hbhb"
-
     this.layout = (
-
       <RelativeLayout
-        root = "true"
+        root="true"
         clickable="true"
         width="match_parent"
         height="match_parent">
@@ -433,21 +395,18 @@ class SearchActivity extends View {
           width="match_parent"
           height="match_parent">
 
+          {this.getToolbar()}
 
-              {this.getToolbar()}
-                  <LinearLayout
-                     width="match_parent"
-                     height="wrap_content"
-                     background="#ffffff"
-                     id = {this.idSet.searchListContainer}
-                     orientation="vertical"/>
+          <LinearLayout
+            width="match_parent"
+            height="wrap_content"
+            background="#ffffff"
+            id={this.idSet.searchListContainer}
+            orientation="vertical" />
         </LinearLayout>
 
       </RelativeLayout>
-
-
     );
-
     return this.layout.render();
   }
 }
