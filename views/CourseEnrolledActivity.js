@@ -9,6 +9,7 @@ var ScrollView = require("@juspay/mystique-backend/src/android_views/ScrollView"
 var ProgressBar = require("@juspay/mystique-backend/src/android_views/ProgressBar");
 var utils = require('../utils/GenericFunctions');
 var FeatureButton = require('../components/Sunbird/FeatureButton');
+var DownloadAllProgressButton = require('../components/Sunbird/DownloadAllProgressButton');
 
 window.R = require("ramda");
 
@@ -33,7 +34,8 @@ class CourseEnrolledActivity extends View {
       "featureButton1",
       "featureButton2",
       "simpleToolBarOverFlow",
-      "batchDetailsContainer"
+      "batchDetailsContainer",
+      "downloadAllProgressButton"
     ]);
     this.state = state;
     this.screenName = "CourseEnrolledActivity"
@@ -54,7 +56,7 @@ class CourseEnrolledActivity extends View {
 
 
     _this = this;
-    this.shouldCacheScreen = true; //set to true so that the screen does not reinitialize and send startEventLog telemetry
+    this.shouldCacheScreen = false; //set to true so that the screen does not reinitialize and send startEventLog telemetry
     this.courseContent = "";
 
     this.enrolledCourses = window.__enrolledCourses;
@@ -68,9 +70,14 @@ class CourseEnrolledActivity extends View {
 
     this.popupMenu = window.__S.DELETE;
 
-    this.popupMenu = window.__S.DELETE + "," + window.__S.FLAG;
-    //to get geneie callback for download of spine
-    window.__getDownloadStatus = this.getSpineStatus;
+
+  this.popupMenu = window.__S.DELETE ;
+  //to get geneie callback for download of spine
+  window.__getDownloadStatus = this.getSpineStatus;
+
+  // array of all the children content ids
+  this.subContentArray = [];
+
     console.log("details in CEA", this.details)
     this.showProgress = this.details.hasOwnProperty("mimeType") && this.details.contentType == "application/vnd.ekstep.content-collection" ? "gone" : "visible";
 
@@ -178,7 +185,7 @@ class CourseEnrolledActivity extends View {
       return;
     }
 
-    data.downloadProgress = data.downloadProgress == undefined || isNaN(data.downloadProgress) ? 0 : data.downloadProgress;
+    data.Progress = data.downloadProgress == undefined || isNaN(data.downloadProgress) ? 0 : data.downloadProgress;
     var downloadedPercent = data.downloadProgress;
     downloadedPercent = downloadedPercent < 0 ? 0 : downloadedPercent;
     if (downloadedPercent == 100) {
@@ -191,6 +198,7 @@ class CourseEnrolledActivity extends View {
       window.__ContentLoaderDialog.setClickCallback(this.handleContentLoaderCancelClick)
       window.__ContentLoaderDialog.updateProgressBar(downloadedPercent);
     }
+
   }
 
   handleContentLoaderCancelClick = () => {
@@ -207,7 +215,7 @@ class CourseEnrolledActivity extends View {
       data[0] = utils.jsonifyData(utils.decodeBase64(data[0]))
       _this.courseContent = JSON.parse(data[0]);
       console.log("childrenContent: ", _this.courseContent);
-      
+
       window.__ContentLoaderDialog.hide();
       _this.renderCourseChildren()
       _this.changeOverFlow();
@@ -254,7 +262,7 @@ class CourseEnrolledActivity extends View {
     JBridge.startEventLog(this.courseDetails.contentType, id, pkgVersion);
   }
 
-  handleModuleClick = (moduleName, module) => {    
+  handleModuleClick = (moduleName, module) => {
     var whatToSend = {
       "moduleName": moduleName,
       "moduleDetails": JSON.stringify(module)
@@ -603,6 +611,15 @@ class CourseEnrolledActivity extends View {
     return ret
   }
 
+  getSubcontentIds = (content) => {
+    content.map((item, i) => {
+      if (item.children == undefined) _this.subContentArray.push(item.identifier);
+      else if (item.children != undefined) {
+        _this.getSubcontentIds(item.children)
+
+      }
+    })
+  }
   changeOverFlow = () => {
     var toolbar = (<SimpleToolbar
       title=""
@@ -617,6 +634,32 @@ class CourseEnrolledActivity extends View {
 
     this.replaceChild(this.idSet.simpleToolBarOverFlow, toolbar.render(), 0);
   }
+  getLineSeperator = () => {
+      return (<LinearLayout
+              width="match_parent"
+              height="2"
+              background={window.__Colors.PRIMARY_BLACK_22}/>)
+    }
+
+
+    handleDownloadAllClick = () => {
+      this.getSubcontentIds(this.courseContent.children);
+      console.log("children", this.subContentArray);
+      this.downloadContentCount=0;
+      this.childrenCount=this.subContentArray.length;
+      window.__DownloadAllProgressButton.childrenCount=this.childrenCount;
+      window.__DownloadAllProgressButton.childrenArray=this.subContentArray;
+      JBridge.downloadAllContent(this.subContentArray);
+      this.subContentArray=[];
+      window.__DownloadAllPopup.hide();
+    }
+
+    showDownloadAllPopUp = () =>{
+      window.__DownloadAllPopup.props.totalSize=0;
+      window.__DownloadAllPopup.props.buttonClick=this.handleDownloadAllClick;
+      window.__DownloadAllPopup.show();
+    }
+
 
   render() {
     this.layout = (
@@ -753,6 +796,14 @@ class CourseEnrolledActivity extends View {
                   style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
                   buttonClick={this.handleResumeClick} />
               </RelativeLayout>
+              <DownloadAllProgressButton
+                width="match_parent"
+                identifier = {_this.idSet.downloadAllProgressButton}
+                buttonText="Download All"
+                visibility="visible"
+                hideDivider="gone"
+                handleButtonClick={this.showDownloadAllPopUp}
+                />
             </LinearLayout>
 
 

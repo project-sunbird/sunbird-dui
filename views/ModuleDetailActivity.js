@@ -28,7 +28,8 @@ class ModuleDetailActivity extends View {
             "playButtonContainer",
             "simpleToolBarOverFlow",
             "renderPage",
-            "progressButtonContainer"
+            "progressButtonContainer",
+            "downloadAllButtonContainer"
         ]);
         this.state = state;
         this.screenName = "ModuleDetailActivity"
@@ -58,7 +59,8 @@ class ModuleDetailActivity extends View {
         this.localContent = null;
         _this = this;
         this.downloadList=[];
-
+        // array of all the children content ids
+        this.subContentArray = [];
         //stack to maintain child traversal
         this.isPoped = false;
         this.stack = [];
@@ -151,6 +153,34 @@ class ModuleDetailActivity extends View {
             return false;
     }
 
+    getSubcontentIds = (content) => {
+      content.map((item, i) => {
+        if (item.children == undefined) _this.subContentArray.push(item.identifier);
+        else if (item.children != undefined) {
+          _this.getSubcontentIds(item.children)
+
+        }
+      })
+    }
+
+    handleDownloadAllClick = () => {
+      this.getSubcontentIds(this.courseContent.children);
+      console.log("children", this.subContentArray);
+      this.downloadContentCount=0;
+      this.childrenCount=this.subContentArray.length;
+      window.__DownloadAllProgressButton.childrenCount=this.childrenCount;
+      window.__DownloadAllProgressButton.childrenArray=this.subContentArray;
+      JBridge.downloadAllContent(this.subContentArray);
+      this.subContentArray=[];
+      window.__DownloadAllPopup.hide();
+    }
+
+    showDownloadAllPopUp = () =>{
+      window.__DownloadAllPopup.props.totalSize=0;
+      window.__DownloadAllPopup.props.buttonClick=this.handleDownloadAllClick;
+      window.__DownloadAllPopup.show();
+    }
+
     checkContentLocalStatus = (module) => {
         _this = this;
         console.log('module',module);
@@ -197,7 +227,7 @@ class ModuleDetailActivity extends View {
                 JBridge.getContentDetails(module.identifier, callback);
             } else {
                 this.renderModuleChildren(module);
-            }        
+            }
         }
     }
 
@@ -235,6 +265,8 @@ class ModuleDetailActivity extends View {
       )
       this.replaceChild(this.idSet.renderPage, layout.render(), 0);
       this.replaceChild(this.idSet.progressButtonContainer, this.getProgressButton().render(), 0);
+      if(this.module.hasOwnProperty("children"))
+        this.replaceChild(this.idSet.downloadAllButtonContainer, this.getDownloadAllButton().render(), 0);
       this.checkContentLocalStatus(module);
     }
 
@@ -285,6 +317,9 @@ class ModuleDetailActivity extends View {
         window.__ProgressButton.setButtonFor(this.module.identifier);
         JBridge.logContentDetailScreenEvent(this.module.identifier, this.module.contentData.pkgVersion);
         this.checkContentLocalStatus(this.module);
+        if(this.module.hasOwnProperty("children"))
+          this.replaceChild(this.idSet.downloadAllButtonContainer, this.getDownloadAllButton().render(), 0);
+
     }
 
     getLineSeperator = () => {
@@ -412,6 +447,17 @@ class ModuleDetailActivity extends View {
         );
     }
 
+    getDownloadAllButton =() => {
+      return (
+        <DownloadAllProgressButton
+          width="match_parent"
+          buttonText="Download All"
+          visibility="visible"
+          hideDivider="gone"
+          handleButtonClick={this.showDownloadAllPopUp}/>
+      )
+    }
+
     render() {
 
         this.layout = (
@@ -460,11 +506,15 @@ class ModuleDetailActivity extends View {
 
                 </ScrollView>
 
-                <LinearLayout 
+                <LinearLayout
                     id = { this.idSet.progressButtonContainer }
                     width = "match_parent">
                     {this.getProgressButton()}
                 </LinearLayout>
+
+                <LinearLayout
+                    id = { this.idSet.downloadAllButtonContainer}
+                    width = "match_parent"/>
             </LinearLayout>
             <SimplePopup
                buttonClick={this.onSimplePopClick}
