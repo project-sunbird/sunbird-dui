@@ -1,6 +1,6 @@
 /bower_components/
 /.pulp-cache/
-/node_modules/
+node_modules/
 /output/
 /.psc*
 /.psa*
