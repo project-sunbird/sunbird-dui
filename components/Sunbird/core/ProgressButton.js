@@ -159,7 +159,7 @@ class ProgressButton extends View {
             data = utils.decodeBase64(data[0]);
             var parsedData = JSON.parse(utils.jsonifyData(data));
             console.log("data from progress", parsedData)
-            JBridge.playContent(data, data.identifier, parsedData.contentData.pkgVersion);
+            JBridge.playContent(data, parsedData.identifier, parsedData.contentData.pkgVersion);
           });
           JBridge.getContentDetails(_this.props.identifier, callback);
 

@@ -13,10 +13,13 @@ module.exports = function(action, payload, state) {
       localState.isInit = true;
       localState.currScreen = "SplashScreenActivity";
       break;
-
     case "SplashScreenActivity":
       localState.isInit = false
       localState.currScreen = "SplashScreenActivity";
+      break;
+    case "LanguageSelectActivity":
+      localState.isInit = false
+      localState.currScreen = "LanguageSelectActivity";
       break;
     case "WelcomeScreenActivity":
       localState.isInit = false

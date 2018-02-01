@@ -21,6 +21,7 @@ class SplashScreenActivity extends View {
     this.getIcon();
     this.getTextToDisplay();
     window.__pressedLoggedOut=false;
+    this.isUserOnboarded = JBridge.getFromSharedPrefs("isUserOnboarded");
   //  window.__getGenieEvents = this.dummyFunction;
   }
 
@@ -84,8 +85,11 @@ class SplashScreenActivity extends View {
     JBridge.logCorrelationPageEvent("SPLASHSCREEN","","");
 
     setTimeout(() => {
-      var whatToSend = [];
-      var event = { tag: "OPEN_UserActivity", contents: whatToSend}
+      if (this.isUserOnboarded != "__failed" && this.isUserOnboarded != "false") {
+        var event = { tag: "OPEN_UserActivity", contents: [] }
+      } else {
+        var event = { tag: "OPEN_LanguageSelectActivity", contents: [] }
+      }
       window.__runDuiCallback(event);
     }, 2000);
   }

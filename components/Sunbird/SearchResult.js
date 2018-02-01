@@ -143,7 +143,7 @@ class SearchResult extends View {
     else if(this.props.type.toLowerCase() == "course")
       JBridge.logContentClickEvent("COURSES", index + 1, this.props.searchText, item.identifier, item.pkgVersion)
     else if(this.props.type.toLowerCase() == "resource")
-      JBridge.logContentClickEvent("RESOURCES", index + 1, this.props.searchText, item.identifier, item.pkgVersion)
+      JBridge.logContentClickEvent("LIBRARY", index + 1, this.props.searchText, item.identifier, item.pkgVersion)
 
 
     if (item.hasOwnProperty("data") && item.data.hasOwnProperty("education")){

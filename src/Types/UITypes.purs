@@ -19,7 +19,7 @@ import Prelude (bind, discard, pure, ($), (<>), (||))
 --A.JSON import argonaut for json and try
 
 data InitScreen = InitScreen
-data InitScreenAction = ShowInit | OPEN_UserActivity | OPEN_WelcomeScreenActivity
+data InitScreenAction = ShowInit | OPEN_UserActivity | OPEN_WelcomeScreenActivity | OPEN_LanguageSelectActivity
 
 instance initScreen :: UIScreen InitScreen InitScreenAction where
   generateMockEvents _ = [ShowInit ,OPEN_UserActivity,OPEN_WelcomeScreenActivity]
@@ -41,6 +41,19 @@ instance splashScreenActivity :: UIScreen SplashScreenActivity SplashScreenActiv
 derive instance genericSplashScreenActivityAction  :: Generic SplashScreenActivityAction _
 instance decodeSplashScreenActivityAction :: Decode SplashScreenActivityAction where decode = defaultDecode
 instance encodeSplashScreenActivityAction :: Encode SplashScreenActivityAction where encode = defaultEncode
+
+data LanguageSelectActivity = LanguageSelectActivity
+data LanguageSelectActivityAction = LanguageSelectActivityAction  |
+  OPEN_UserActivity_1 |
+  BACK_LanguageSelectActivity
+
+instance languageSelectActivity :: UIScreen LanguageSelectActivity LanguageSelectActivityAction where
+  generateMockEvents _ = [LanguageSelectActivityAction , BACK_LanguageSelectActivity ]
+  ui x = genericUI x (generateMockEvents x :: Array LanguageSelectActivityAction)
+
+derive instance genericLanguageSelectionActivityAction  :: Generic LanguageSelectActivityAction _
+instance decodeLanguageSelectionActivityAction :: Decode LanguageSelectActivityAction where decode = defaultDecode
+instance encodeLanguageSelectionActivityAction :: Encode LanguageSelectActivityAction where encode = defaultEncode
 
 
 data WelcomeScreenActivity = WelcomeScreenActivity

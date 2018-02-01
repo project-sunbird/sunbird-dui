@@ -616,13 +616,8 @@ class MainActivity extends View {
   handleChangeLang = lang => {
     console.log("handleChangeLang ", lang);
     console.log("handleChangeLang converted string ", lang + "_IN");
-    window.__LoaderDialog.show();
-    window.setLanguage(lang + "_IN");
-    window.__S = Str.strings();
-    window.__renderBNavBar(0); //rerendering navbar along with fragment
+    window.__RootScreen.handleChangeLang(lang + "_IN");
     window.__LanguagePopup.hide();
-    window.__reRender(); //rerendering 'Please wait' loader
-    // window.__BNavFlowRestart();
   };
 
   render() {

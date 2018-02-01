@@ -61,8 +61,32 @@ class RootScreen extends View {
     this.setStatusBarColor(window.__Colors.BLACK);
 
     window.__reRender = this.reRenderRoot;
+    this.languageMap = {
+      "English": "en_US",
+      "हिंदी": "hi_IN",
+      // "ಕನ್ನಡ" : "kn_IN",
+      "తెలుగు": "te_IN",
+      "தமிழ்": "ta_IN",
+      // "বাঙালি" : "bn_IN",
+      // "മലയാളം" : "ml_IN",
+      // "Oriya" : "or_IN",
+      // "ગુજરાતી" : "gu_IN",
+      // "Assamese" : "as_IN",
+      "मराठी": "mr_IN",
+      // "ਪੰਜਾਬੀ" : "pa_IN"
+    };
 
   }
+
+  handleChangeLang = lang => {
+    window.__LoaderDialog.show();
+    window.setLanguage(lang);
+    window.__S = Str.strings();
+    window.__renderBNavBar ? window.__renderBNavBar(0) : ""; //rerendering navbar along with fragment
+    // window.__LanguagePopup.hide();
+    window.__reRender(); //rerendering 'Please wait' loader
+    // window.__BNavFlowRestart();
+  };
 
   handleStateChange = () => {
     return true;

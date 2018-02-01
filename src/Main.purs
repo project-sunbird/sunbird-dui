@@ -31,7 +31,15 @@ splashScreenActivity = do
     case event of
         OPEN_WelcomeScreenActivity -> welcomeScreenActivity
         OPEN_UserActivity -> userActivity "SplashScreenActivity"
+        OPEN_LanguageSelectActivity -> languageSelectActivity
         _ -> pure $ "SplashScreenActivity"
+
+languageSelectActivity = do
+    event <- ui $ LanguageSelectActivity
+    case event of
+        OPEN_UserActivity_1 -> userActivity "LanguageSelectActivity"
+        BACK_LanguageSelectActivity -> splashScreenActivity
+        _ -> languageSelectActivity
 
 welcomeScreenActivity = do
     event <- ui $ WelcomeScreenActivity

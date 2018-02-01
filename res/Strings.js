@@ -287,7 +287,10 @@ const stringsRes = {
 		INVALID_PINCODE : "Inavlid pincode", 
 		AVATAR : "Avatar",
 		ALL_ANNOUNCEMENTS : "All Announcements",
-		NO_CHANGE : "No changes have been made"
+		NO_CHANGE : "No changes have been made",
+		CHOOSE_LANGUAGE : "Choose Your Preffered Language",
+		DETECTED : "Detected",
+		CONTINUE : "Continue",
 	},
 	"hi_IN" : {
 		ALREADY_HAVE_ACC : "मौजूदा उपयोगकर्ता, साइन इन करें",

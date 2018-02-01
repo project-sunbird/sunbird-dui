@@ -126,7 +126,7 @@ showList = () =>{
 
   handleResourceClick = (item,index)=>{
     var index_click = this.start_index <1 ? index+1 : index+(this.start_index*10)+1;
-    JBridge.logContentClickEvent("RESOURCES",index_click,"",item.identifier, item.pkgVersion);
+    JBridge.logContentClickEvent("LIBRARY",index_click,"",item.identifier, item.pkgVersion);
     console.log(item)
     if(item.mimeType.toLowerCase() == "application/vnd.ekstep.content-collection"){
       var whatToSend={course:JSON.stringify(item)};

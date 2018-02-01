@@ -29,20 +29,7 @@ class LanguagePopup extends View {
     window.__LanguagePopup = this;
     this.isVisible=false;
     // "اردو Urdu" : "ur_IN",
-    this.languageMap = {
-      "English" : "en_US",
-      "हिंदी" : "hi_IN",
-      // "ಕನ್ನಡ" : "kn_IN",
-      "తెలుగు": "te_IN",
-      "தமிழ்" : "ta_IN",
-      // "বাঙালি" : "bn_IN",
-      // "മലയാളം" : "ml_IN",
-      // "Oriya" : "or_IN",
-      // "ગુજરાતી" : "gu_IN",
-      // "Assamese" : "as_IN",
-      "मराठी" : "mr_IN",
-      // "ਪੰਜਾਬੀ" : "pa_IN"
-    };
+    this.languageMap = window.__RootScreen.languageMap;
     console.log("this.languageMap", this.languageMap);
     this.selectedLang = window.__CurrentLanguage;
   }
