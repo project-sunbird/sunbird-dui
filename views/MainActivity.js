@@ -378,10 +378,17 @@ class MainActivity extends View {
   };
 
   afterRender = () => {
-    this.currentPageIndex = 0;
-    this.renderBNavBar(this.currentPageIndex);
+    this.openFragment();
     this.getUserProfileData();
   };
+
+  openFragment = () => {
+    this.currentPageIndex = 0;
+    if (window.__loggedInState == "GUEST") {
+      this.currentPageIndex = 2;
+    }
+    this.renderBNavBar(this.currentPageIndex);
+  }
 
   renderBNavBar = index => {
     console.log("IN RENDER BNAV BAR", window.__S.FILTER_BY);
@@ -392,12 +399,12 @@ class MainActivity extends View {
         width="match_parent"
         orientation="vertical"
         height="56">
+
         <ViewWidget
           height="2"
           alpha="0.2"
           width="match_parent"
-          background={window.__Colors.DARK_GRAY}
-        />
+          background={window.__Colors.DARK_GRAY}/>
 
         {this.getBottomNavBar()}
       </LinearLayout>
@@ -446,7 +453,7 @@ class MainActivity extends View {
     var tabValues = [
       {
         name: window.__S.HOME_BNAV,
-        select: "1",
+        select: "0",
         icon: "ic_home"
       },
       {
@@ -473,7 +480,7 @@ class MainActivity extends View {
     this.bNavBar = (
       <BottomNavBar
         tabItems={tabValues}
-        defaultIndex="3"
+        defaultIndex={this.currentPageIndex}
         _onClick={this.handleBottomNavBarAction}
       />
     );

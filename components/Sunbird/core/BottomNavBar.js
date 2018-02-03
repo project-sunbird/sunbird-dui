@@ -74,44 +74,44 @@ class BottomNavBarItem extends View {
 
   render() {
     this.layout = (
-      <LinearLayout 
-        weight='1' 
+      <LinearLayout
+        weight='1'
         id={this.idSet.tab}
-        afterRender = {this.afterRender}
+        afterRender={this.afterRender}
         onClick={this.handleClick}
         gravity="center"
-        height = "49"
+        height="49"
         orientation="vertical"
         width="match_parent">
 
         <ImageView
           height="18"
           width="18"
-          id = {this.idSet.imageSelected} 
+          id={this.idSet.imageSelected}
           margin="0,0,0,4"
-          imageUrl={this.props.item.icon +"_blue"}
-          visibility={this.props.item.select=="1"?"visible":"gone"} />
+          imageUrl={this.props.item.icon + "_blue"}
+          visibility={this.props.item.select == "1" ? "visible" : "gone"} />
 
         <ImageView
           height="18"
           width="18"
-          id = {this.idSet.imageUnSelected} 
+          id={this.idSet.imageUnSelected}
           imageUrl={this.props.item.icon}
-          visibility={this.props.item.select=="0"?"visible":"gone"} />  
-          
-        <TextView 
+          visibility={this.props.item.select == "0" ? "visible" : "gone"} />
+
+        <TextView
           margin="0,2,0,0"
           id={this.idSet.title}
           text={this.props.item.name}
-          color={this.props.item.select=="1"?window.__Colors.PRIMARY_ACCENT:window.__Colors.DARK_GRAY} 
+          color={this.props.item.select == "1" ? window.__Colors.PRIMARY_ACCENT : window.__Colors.DARK_GRAY}
           width="match_parent"
-          typeface = "bold"
+          typeface="bold"
           letterSpacing="0.05"
-          height = "wrap_content"
-          fontstyle ="SourceSansPro/Bold"
+          height="wrap_content"
+          fontstyle="SourceSansPro/Bold"
           gravity="center"
-          textSize={window.__Font.fontSize.FONT_10}/>
-        
+          textSize={window.__Font.fontSize.FONT_10} />
+
       </LinearLayout>
     )
 
@@ -132,15 +132,17 @@ class BottomNavBar extends View {
       "title",
 
     ]);
-
-
-
     this.bottomNavItemList = this.props.tabItems
-    this.currentIndex = (this.props.defaultIndex === undefined ? 0 : this.props.defaultIndex)
+    this.currentIndex = (this.props.defaultIndex === undefined ? 0 : this.props.defaultIndex);
     window.__BottomNavBar = this;
+    this.selectTab(this.currentIndex);
   }
 
-
+  selectTab = (index) => {
+    if (this.bottomNavItemList && this.bottomNavItemList[index].hasOwnProperty("select")) {
+      this.bottomNavItemList[index].select = "1";
+    }
+  }
 
   handleNavigationChange = (index) => {
     console.log("\t\t\tB NAV TO INDEX -> ", index)
@@ -161,36 +163,34 @@ class BottomNavBar extends View {
     this.props._onClick(index);
   }
 
-
-
   renderBottonNavBarItems = () => {
     var cards = this.bottomNavItemList.map((item, i) => {
       return (
-        <BottomNavBarItem 
-          _onClick={this.handleNavigationChange} 
-          index = {i} 
-          item = {item}/>
+        <BottomNavBarItem
+          _onClick={this.handleNavigationChange}
+          index={i}
+          item={item} />
       )
     });
 
     if (cards.length == 1) {
       this.cardList = (
-        <LinearLayout 
-          layout_gravity="center_horizontal" 
-          orientation="vertical" 
-          width="match_parent"  
+        <LinearLayout
+          layout_gravity="center_horizontal"
+          orientation="vertical"
+          width="match_parent"
           root="true">
-          
+
           {cards}
 
         </LinearLayout>
       )
     } else {
       this.cardList = (
-        <LinearLayout 
-          width="match_parent" 
+        <LinearLayout
+          width="match_parent"
           root="true">
-          
+
           {cards}
 
         </LinearLayout>
@@ -199,24 +199,21 @@ class BottomNavBar extends View {
     this.appendChild(this.idSet.TabContainer, this.cardList.render(), 0);
   }
 
-
-
   render() {
     this.layout = (
-      <LinearLayout 
-        orientation="vertical" 
+      <LinearLayout
+        orientation="vertical"
         width="match_parent"
-        height = "56"
+        height="56"
         afterRender={this.renderBottonNavBarItems}
         background={window.__Colors.WHITE}>
+
         <LinearLayout
           id={this.idSet.TabContainer}
           width="match_parent"
-          orientation="horizontal"/>
-        
+          orientation="horizontal" />
       </LinearLayout>
-    )
-
+    );
     return this.layout.render();
   }
 }
