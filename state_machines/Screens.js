@@ -9,6 +9,10 @@ module.exports = function(action, payload, state) {
   localState = payload;
 
   switch (action) {
+    case "GuestInformationActivity":
+      localState.isInit = false;
+      localState.currScreen = "GuestInformationActivity";
+      break;
     case "InitScreen":
       localState.isInit = true;
       localState.currScreen = "SplashScreenActivity";

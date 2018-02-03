@@ -20,6 +20,8 @@ var SimpleToolbar = require('../../components/Sunbird/core/SimpleToolbar');
 
 var CourseInProgressContainer = require('../../components/Sunbird/CourseInProgressContainer');
 var CourseContainer = require('../../components/Sunbird/CourseContainer');
+var HomeQuestionCardStyle = require('../../components/Sunbird/HomeQuestionCardStyle');
+
 var _this;
 class CourseFragment extends View {
   constructor(props, children) {
@@ -131,12 +133,32 @@ class CourseFragment extends View {
           orientation="vertical"
           root="true">
           {rows}
+          {this.getSignInOverlay()}
         </LinearLayout>)
 
         this.replaceChild(this.idSet.courseContentContainer, layout.render(), 0);
       }
     }
     utils.addSwipeFunction(this.idSet.scrollViewContainerCourse);
+  }
+
+  getSignInOverlay = () => {
+    if (window.__loggedInState && window.__loggedInState=="GUEST"){
+      return (
+        <LinearLayout
+          background={window.__Colors.WHITE_F2}
+          clickable="true"
+          width="match_parent"
+          padding="16,16,16,16">
+          <HomeQuestionCardStyle
+            headerText={window.__S.OVERLAY_LABEL_COMMON}
+            infoText={window.__S.OVERLAY_INFO_TEXT_COMMON}
+            textSize="16"
+            gravity="left" />
+        </LinearLayout>)
+    } else {
+      return (<LinearLayout />)
+    }
   }
 
   handleStateChange = (state) => {

@@ -41,11 +41,13 @@ class CourseViewAllActivity extends View {
 
   checkEnrolledCourse = (identifier) =>{
     var enrolled = false;
-    window.__enrolledCourses.map(function(item){
-      if(item.courseId == identifier){
-        enrolled = true;
-      }
-    })
+    if (window.__enrolledCourses) {
+      window.__enrolledCourses.map(function (item) {
+        if (item.courseId == identifier) {
+          enrolled = true;
+        }
+      });
+    }
      return enrolled;
   }
 

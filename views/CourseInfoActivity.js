@@ -70,7 +70,7 @@ class CourseInfoActivity extends View {
   getSpineStatus = (pValue) => {
     var cmd;
     var data = JSON.parse(pValue);
-
+    
     if (data.identifier != this.details.identifier)
       return;
 
@@ -99,6 +99,8 @@ class CourseInfoActivity extends View {
 
   renderChildren = (identifier) => {
     var callback1 = callbackMapper.map(function (data) {
+      console.log("JBridge.getChildContent data -> ", data);
+      
       if (data == "__failed") {
         window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
         _this.onBackPressed();
@@ -217,10 +219,15 @@ class CourseInfoActivity extends View {
   afterRender = () => {
 
     if(window.__enrolledCourses == undefined){
-      window.__LoaderDialog.show();
-      var whatToSend = {"user_token":window.__user_accessToken,"api_token": window.__apiToken}
-      var event ={ "tag": "API_EnrolledCoursesList", contents: whatToSend};
-      window.__runDuiCallback(event);
+      if (window.__loggedInState == "GUEST"){
+        window.__enrolledCourses = [];
+        this.checkWhetherEnrolledCourse();
+      } else {
+        window.__LoaderDialog.show();
+        var whatToSend = { "user_token": window.__user_accessToken, "api_token": window.__apiToken }
+        var event = { "tag": "API_EnrolledCoursesList", contents: whatToSend };
+        window.__runDuiCallback(event);
+      }
     }else{
       this.checkWhetherEnrolledCourse();
     }
@@ -286,8 +293,8 @@ class CourseInfoActivity extends View {
 
   shareContent = () =>{
 
-    console.log("SHARE POP UP CALLED");
-    JBridge.logShareContentInitiateEvent("COURSES", "course", this.details.identifier, this.details.contentData.pkgVersion);
+    console.log("SHARE POP UP CALLED", this.details);
+    JBridge.logShareContentInitiateEvent("COURSES", "course", this.details.identifier, this.details.contentData.pkgVersion || this.details.pkgVersion);
 
     var shareCallback = callbackMapper.map(function(data) {
 
@@ -494,23 +501,6 @@ class CourseInfoActivity extends View {
             </LinearLayout>
             </LinearLayout>);
 
-  }
-
-
-
-
-  logout = () =>{
-    window.__Snackbar.show("Logged out")
-    JBridge.setInSharedPrefs("logged_in","NO");
-    JBridge.setInSharedPrefs("user_id", "__failed");
-    JBridge.setInSharedPrefs("user_name",  "__failed");
-    JBridge.setInSharedPrefs("user_token",  "__failed");
-
-    window.__pressedLoggedOut=true;
-
-    JBridge.keyCloakLogout(window.__loginUrl  + "/auth/realms/sunbird/protocol/openid-connect/logout");
-
-    window.__Logout();
   }
 
 

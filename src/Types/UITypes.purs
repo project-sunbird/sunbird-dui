@@ -132,6 +132,7 @@ data MainActivityAction = OPEN_HomeFragment |
   OPEN_CommunityViewAllActivity |
   OPEN_NotificationActivity |
   OPEN_EditProfileActivity {profile::String} |
+  OPEN_EditGuestProfileActivity {profile::String} |
   OPEN_AddressActivity {profile::String} |
   OPEN_EducationActivity {profile::String} |
   OPEN_ExperienceActivity {profile::String} |
@@ -398,6 +399,19 @@ instance addtionalInsormationActivity :: UIScreen AdditionalInformationActivity 
 derive instance genericAdditionalInformationActivityAction  :: Generic AdditionalInformationActivityAction _
 instance decodeAdditionalInformationActivityAction :: Decode AdditionalInformationActivityAction where decode = defaultDecode
 instance encodeAdditionalInformationActivityAction :: Encode AdditionalInformationActivityAction where encode = defaultEncode
+
+
+data GuestInformationActivity = GuestInformationActivity {profile :: String}
+data GuestInformationActivityAction = BACK_GuestInformationActivity
+
+instance guestInformationActivity :: UIScreen GuestInformationActivity GuestInformationActivityAction where
+  generateMockEvents _ = [BACK_GuestInformationActivity]
+  ui x = genericUI x (generateMockEvents x :: Array GuestInformationActivityAction)
+
+derive instance genericGuestInformationActivityAction  :: Generic GuestInformationActivityAction _
+instance decodeGuestInformationActivityAction :: Decode GuestInformationActivityAction where decode = defaultDecode
+instance encodeGuestInformationActivityAction :: Encode GuestInformationActivityAction where encode = defaultEncode
+
 
 data AnnouncementDetailActivity = AnnouncementDetailActivity {announcementData :: String}
 data AnnouncementDetailActivityAction = DummyAnnouncementDetailActivityAction  |

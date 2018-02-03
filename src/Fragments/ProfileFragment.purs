@@ -16,6 +16,7 @@ profileFragment input whereFrom whatToSendBack = do
 		OPEN_NotificationActivity -> notificationActivity "{}" "ProfileFragment"  input
 		OPEN_CommProfSearchActivity {filterDetails : output} -> searchProfileActivity output "ProfileFragment" input
 		OPEN_EditProfileActivity {profile: output} -> additionalInformationActivity output "ProfileFragment"  input
+		OPEN_EditGuestProfileActivity {profile: output} -> guestInformationActivity output "ProfileFragment"  input
 		OPEN_AddressActivity {profile: output} -> addressActivity output "ProfileFragment"  input
 		OPEN_EducationActivity {profile: output} -> educationActivity output "ProfileFragment"  input
 		OPEN_ExperienceActivity {profile: output} -> experienceActivity output "ProfileFragment"  input
@@ -98,6 +99,14 @@ additionalInformationActivity input whereFrom whatToSendBack = do
 			"ProfileFragment" -> profileFragment input "Terminate" input
 			_ -> profileFragment input "Terminate" input
 		_ -> additionalInformationActivity input whereFrom whatToSendBack
+
+guestInformationActivity input whereFrom whatToSendBack = do
+	event <- ui $ GuestInformationActivity {profile : input}
+	case event of
+		BACK_GuestInformationActivity -> case whereFrom of
+			"ProfileFragment" -> profileFragment input "Terminate" input
+			_ -> profileFragment input "Terminate" input
+		_ -> guestInformationActivity input whereFrom whatToSendBack
 
 --------------------------------------------------------------------------------
 

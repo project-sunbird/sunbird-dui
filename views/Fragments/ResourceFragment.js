@@ -11,6 +11,7 @@ var ScrollView = require("@juspay/mystique-backend/src/android_views/ScrollView"
 var Space = require("@juspay/mystique-backend/src/android_views/Space");
 var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
 window.R = require("ramda");
+var HomeQuestionCardStyle = require('../../components/Sunbird/HomeQuestionCardStyle');
 var CircularLoader = require('../../components/Sunbird/core/CircularLoader');
 var SearchToolbar = require('../../components/Sunbird/core/SearchToolbar');
 var LineSpacer = require('../../components/Sunbird/core/LineSpacer');
@@ -102,10 +103,17 @@ class ResourceComponent extends View {
           root="true">
           <LineSpacer />
           {cardsContent}
-
+          {this.getSignInOverlay()}
         </LinearLayout>)
       } else {
-        this.cards = this.getErrorLayout();
+        this.cards = (<LinearLayout
+        height="wrap_content"
+        width="match_parent"
+        orientation="vertical"
+        root="true">
+        {this.getErrorLayout()}
+        {this.getSignInOverlay()}
+      </LinearLayout>);
       }
     } else {
       this.cards = (<LinearLayout
@@ -113,7 +121,7 @@ class ResourceComponent extends View {
         width="match_parent"
         orientation="vertical"
         root="true">
-
+        {this.getSignInOverlay()}
       </LinearLayout>)
     }
     this.replaceChild(this.idSet.resourceContentContainer, this.cards.render(), 0);
@@ -321,6 +329,23 @@ class ResourceComponent extends View {
     window.__LoaderDialog.hide();
   }
 
+  getSignInOverlay = () =>{
+    if(window.__loggedInState && window.__loggedInState=="GUEST"){
+      return (
+        <LinearLayout
+          background={window.__Colors.WHITE_F2}
+          clickable="true"
+          padding = "16,16,16,16">
+          <HomeQuestionCardStyle
+           headerText = {window.__S.OVERLAY_LABEL_COMMON}
+           infoText = {window.__S.OVERLAY_INFO_TEXT_COMMON}
+           textSize = "16"
+           gravity = "left"/>
+        </LinearLayout>)
+      }else {
+        return (<LinearLayout/>)
+      }
+  }
 
   render() {
     this.layout = (

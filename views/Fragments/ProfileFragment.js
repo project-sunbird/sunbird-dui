@@ -22,6 +22,8 @@ var ProfileBadges = require('../../components/Sunbird/ProfileBadges');
 var ProfileProgress = require('../../components/Sunbird/ProfileProgress');
 var ProfileAdditionalInfo = require('../../components/Sunbird/ProfileAdditionalInfo');
 var ProfilAffiliations = require('../../components/Sunbird/ProfileAffiliations');
+var GuestAdditionalInfo = require('../../components/Sunbird/GuestAdditionalInfo');
+var HomeQuestionCardStyle = require('../../components/Sunbird/HomeQuestionCardStyle');
 var CropParagraph = require('../../components/Sunbird/CropParagraph');
 var CircularLoader = require('../../components/Sunbird/core/CircularLoader');
 var utils = require('../../utils/GenericFunctions');
@@ -213,7 +215,11 @@ class ProfileFragment extends View {
   }
 
   afterRender = () => {
-    this.getUserProfileData();
+    if (window.__loggedInState && window.__loggedInState == "GUEST") {
+      this.populateGuestProfile();
+    } else {
+      this.getUserProfileData();
+    }
   }
 
   getDescription = () => {
@@ -369,6 +375,31 @@ class ProfileFragment extends View {
     }
   }
 
+  populateGuestProfile = () => {
+    this.details = {};
+    var layout = (
+      <ScrollView
+        height="0"
+        weight="1"
+        id={this.idSet.scrollViewContainer}
+        width="match_parent">
+        <LinearLayout
+          height="match_parent"
+          width="match_parent"
+          padding="16,8,16,24"
+          orientation="vertical"
+          layoutTransition="true">
+          <ProfileHeader
+            editable={this.isEditable}
+            data={this.details}
+            textStyle={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK} />
+          <GuestAdditionalInfo />
+          {this.getSignInOverlay()}
+        </LinearLayout>
+      </ScrollView>);
+    this.replaceChild(this.idSet.profileContainer, layout.render(), 0);      
+  }
+
   populateProfileData = () => {
     console.log("populate Profile data");
     
@@ -450,6 +481,23 @@ class ProfileFragment extends View {
     );
     this.replaceChild(this.idSet.profileContainer, layout.render(), 0);
     // utils.addSwipeFunction(this.idSet.scrollViewContainer);
+  }
+
+  getSignInOverlay = () => {
+    return(
+    <LinearLayout
+      height="match_parent"
+      width="match_parent"
+      orientation="vertical"
+      background={window.__Colors.WHITE_F2}
+      clickable="true"
+      padding="16,16,16,16">
+      <HomeQuestionCardStyle
+        headerText={window.__S.OVERLAY_LABEL_COMMON}
+        infoText={window.__S.OVERLAY_INFO_TEXT_COMMON}
+        textSize="16"
+        gravity="left" />
+    </LinearLayout>);   
   }
 
   render() {

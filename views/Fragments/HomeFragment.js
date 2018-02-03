@@ -13,6 +13,7 @@ var CourseInProgressContainer = require('../../components/Sunbird/CourseInProgre
 var HorizontalProgressBar = require('../../components/Sunbird/HorizontalProgressBar');
 var utils = require('../../utils/GenericFunctions');
 var Button = require('../../components/Sunbird/Button');
+var HomeQuestionCardStyle = require('../../components/Sunbird/HomeQuestionCardStyle');
 var AnnouncementCard = require('../../components/Sunbird/AnnouncementCard');
 const CommunityParams = require('../../CommunityParams');
 
@@ -393,6 +394,33 @@ class HomeFragment extends View {
     return this.courseInProgressContainer;
   }
 
+  getSignInOverlay = () => {
+    if (window.__loggedInState && window.__loggedInState == "GUEST") {
+      return (
+        <LinearLayout
+          height="match_parent"
+          gravity="center_vertical"
+          transparent="true"
+          background={"#FFFFFF"}
+          alpha="0.9"
+          weight="1"
+          clickable="true">
+          <LinearLayout
+            width="match_parent"
+            weight="1"/>
+          <HomeQuestionCardStyle
+            headerText={window.__S.OVERLAY_LABEL_HOME}
+            infoText={window.__S.OVERLAY_INFO_TEXT_HOME} />
+          <LinearLayout
+            width="match_parent"
+            weight="1" />
+        </LinearLayout>
+      )
+    } else {
+      return (<LinearLayout />)
+    }
+  }
+
   afterRender = () => {
     this.getAnnouncemetData();
   }
@@ -419,9 +447,13 @@ class HomeFragment extends View {
           hideBack="true"
           menuData={this.menuData}
           onMenuItemClick={this.handleMenuClick}/>
+        
         <ScrollView
           weight="1"
           width="match_parent">
+          <RelativeLayout
+            height="match_parent"
+            width="match_parent">
           <LinearLayout
             height="match_parent"
             width="match_parent"
@@ -441,6 +473,8 @@ class HomeFragment extends View {
               onCourseOpenClick={this.handleCourseOpen}
               onResourceOpenClick={this.handleResourceOpen} />
           </LinearLayout>
+          {this.getSignInOverlay()}
+        </RelativeLayout>
         </ScrollView>
       </LinearLayout>
       )

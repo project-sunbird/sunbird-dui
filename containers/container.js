@@ -40,6 +40,7 @@ const AnnouncementViewAllActivity = require("../views/AnnouncementViewAllActivit
 const SearchActivity = require("../views/SearchActivity");
 const FilterActivity = require("../views/FilterActivity");
 const AdditionalInformationActivity = require("../views/AdditionalInformationActivity");
+const GuestInformationActivity = require("../views/GuestInformationActivity");
 const AddressActivity = require("../views/AddressActivity");
 const EducationActivity = require("../views/EducationActivity");
 const ExperienceActivity = require("../views/ExperienceActivity");
@@ -85,6 +86,9 @@ var determineScreen = (screenName, state) => {
       break;
     case "AdditionalInformationActivity":
       screen = new(AdditionalInformationActivity(dispatcher, RootScreenActions))(null,null,state);
+      break;
+    case "GuestInformationActivity":
+      screen = new(GuestInformationActivity(dispatcher, RootScreenActions))(null,null,state);
       break;
     case "ModuleDetailActivity":
       screen = new(ModuleDetailActivity(dispatcher, RootScreenActions))(null, null, state);

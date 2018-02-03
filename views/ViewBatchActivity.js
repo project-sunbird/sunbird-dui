@@ -6,6 +6,7 @@ window.R = require("ramda");
 var debounce = require("debounce")
 
 var LinearLayout  = require("@juspay/mystique-backend").androidViews.LinearLayout ;
+var RelativeLayout = require("@juspay/mystique-backend/src/android_views/RelativeLayout");
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var ScrollView = require("@juspay/mystique-backend/src/android_views/ScrollView");
 var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
@@ -13,6 +14,8 @@ var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
 //Components
 var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
 var BatchCard = require('../components/Sunbird/BatchCard');
+var HomeQuestionCardStyle = require('../components/Sunbird/HomeQuestionCardStyle');
+
 
 //Utils
 var utils = require('../utils/GenericFunctions');
@@ -448,6 +451,26 @@ class ViewBatchActivity extends View {
                   </LinearLayout>)
     }
 
+    getSignInOverlay = () =>{
+      if(window.__loggedInState && window.__loggedInState=="GUEST"){
+       return (
+         <LinearLayout
+          height = "match_parent"
+          gravity = "center_vertical"
+          transparent = "true"
+          background={"#FFFFFF"}
+          alpha = "0.9"
+          clickable="true">
+         <HomeQuestionCardStyle
+          headerText = {window.__S.OVERLAY_LABEL_TAKE_COURSE}
+          infoText = {window.__S.OVERLAY_INFO_TEXT_TAKE_COURSE}/>
+         </LinearLayout>
+       )
+     }else {
+       return (<LinearLayout/>)
+     }
+    }
+
     render() {
       this.layout = (
           <LinearLayout
@@ -463,12 +486,10 @@ class ViewBatchActivity extends View {
                 title={window.__S.BATCHES_FOR_THIS_COURSE}
                 onBackPress={this.onBackPressed}
                 width="match_parent"/>
-
-
+              <RelativeLayout>
               {this.getBatchTypeHead()}
 
               {this.getBatchTypeChoser()}
-
               <ScrollView
                 height="match_parent"
                 width="match_parent"
@@ -482,8 +503,8 @@ class ViewBatchActivity extends View {
                   gravity="center"/>
 
               </ScrollView>
-
-
+              {this.getSignInOverlay()}
+              </RelativeLayout>
           </LinearLayout>
     );
     return this.layout.render();
