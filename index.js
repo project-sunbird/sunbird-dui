@@ -220,7 +220,7 @@ const runDuiCallback = (state) => {
 const logoutUser = () => {
   if (JBridge.isNetworkAvailable()){
     JBridge.logLogoutSuccess(window.__userToken);
-    window.__Snackbar.show("Logged out");
+    window.__Snackbar.show(window.__S.LOGGED_OUT);
     if (JBridge.getFromSharedPrefs("topics") != "__failed"){
       console.log("unsetting topics", JBridge.getFromSharedPrefs("topics"));
       JBridge.unregisterFCM(JSON.parse(JBridge.getFromSharedPrefs("topics")));
@@ -229,7 +229,8 @@ const logoutUser = () => {
     JBridge.setInSharedPrefs("logged_in","__failed");
     JBridge.setInSharedPrefs("user_id", "__failed");
     JBridge.setInSharedPrefs("user_name",  "__failed");
-    JBridge.setInSharedPrefs("user_token",  "__failed");
+    JBridge.setInSharedPrefs("user_token", "__failed");
+    JBridge.setInSharedPrefs("user_access_token",  "__failed");
     JBridge.setInSharedPrefs("refresh_token",  "__failed");
     JBridge.setInSharedPrefs("logo_url", "__failed");
     JBridge.setInSharedPrefs("logo_file_path", "__failed");

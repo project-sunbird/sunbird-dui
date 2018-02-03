@@ -85,10 +85,8 @@ exports.setPermissions = (permission) => {
 
 
 exports.clearDeeplinkPreferences = () =>{
-    JBridge.setInSharedPrefs("intentLinkPath", "__failed");
-    JBridge.setInSharedPrefs("intentFilePath", "__failed");
-    JBridge.setInSharedPrefs("deeplinkMode","__failed");
-    JBridge.setInSharedPrefs("whereFromInUserActivity","__failed");
+	JBridge.setInSharedPrefs("intentLinkPath", "__failed");
+	JBridge.setInSharedPrefs("intentFilePath", "__failed");
 }
 
 
