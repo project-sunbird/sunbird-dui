@@ -69,6 +69,8 @@ class MainActivity extends View {
   }
 
   onPop = () => {
+    console.log("onPop called in MainActivity");
+    
     Android.runInUI(this.animateView(), null);
 
     if (window.__pressedLoggedOut) {
@@ -323,19 +325,19 @@ class MainActivity extends View {
         );
 
         break;
-      case 3:
-        JBridge.logTabClickEvent("GROUPS");
-        this.contentLayout = (
-          <CommunityFragment
-            height="match_parent"
-            root="true"
-            width="match_parent"
-            response={data}
-          />
-        );
+      // case 3:
+      //   JBridge.logTabClickEvent("GROUPS");
+      //   this.contentLayout = (
+      //     <CommunityFragment
+      //       height="match_parent"
+      //       root="true"
+      //       width="match_parent"
+      //       response={data}
+      //     />
+      //   );
 
-        break;
-      case 4:
+      //   break;
+      case 3:
         // if (!data.sendBack) JBridge.logTabClickEvent("PROFILE");
         this.contentLayout = (
           <ProfileFragment
@@ -409,11 +411,6 @@ class MainActivity extends View {
     window.__changePureScriptFlow();
     // window.__LoaderDialog.show();
     var event;
-    var whatToSend;
-    if (this.currentPageIndex != 0) {
-      window.__Check = 0;
-      window.__AnnouncementApiCalled = false;
-    }
     switch (this.currentPageIndex) {
       case 0:
         event = { tag: "OPEN_HomeFragment", contents: [] };
@@ -424,10 +421,10 @@ class MainActivity extends View {
       case 2:
         event = { tag: "OPEN_ResourceFragment", contents: [] };
         break;
+      // case 3:
+      //   event = { tag: "OPEN_CommunityFragment", contents: [] };
+      //   break;
       case 3:
-        event = { tag: "OPEN_CommunityFragment", contents: [] };
-        break;
-      case 4:
         event = { tag: "OPEN_ProfileFragment", contents: [] };
         break;
       default:
@@ -462,11 +459,11 @@ class MainActivity extends View {
         select: "0",
         icon: "ic_notebook"
       },
-      {
-        name: window.__S.GROUPS_BNAV,
-        select: "0",
-        icon: "ic_chat"
-      },
+      // {
+      //   name: window.__S.GROUPS_BNAV,
+      //   select: "0",
+      //   icon: "ic_chat"
+      // },
       {
         name: window.__S.PROFILE_BNAV,
         select: "0",
