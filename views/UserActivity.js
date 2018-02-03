@@ -380,15 +380,16 @@ class UserActivity extends View {
 
 
   setLoginPreferences = () =>{
-    if (window.__loggedInState == "GUEST") {
-      JBridge.setInSharedPrefs("logged_in", "GUEST");
-    } else {
-      JBridge.setInSharedPrefs("logged_in", "YES");
-    }
     window.__userToken = JBridge.getFromSharedPrefs("user_token");
     window.__refreshToken = JBridge.getFromSharedPrefs("refresh_token");
     window.__user_accessToken = JBridge.getFromSharedPrefs("user_access_token");
-    JBridge.setProfile(window.__userToken);
+    if (window.__loggedInState == "GUEST") {
+      JBridge.setInSharedPrefs("logged_in", "GUEST");
+      JBridge.setProfile("", true);
+    } else {
+      JBridge.setInSharedPrefs("logged_in", "YES");
+      JBridge.setProfile(window.__userToken, false);
+    }
   }
 
   clearIntentLinkPath = () => {
