@@ -290,7 +290,8 @@ const stringsRes = {
 		NO_CHANGE : "No changes have been made",
 		CHOOSE_LANGUAGE : "Choose Your Preffered Language",
 		DETECTED : "Detected",
-		CONTINUE : "Continue",
+		CONTINUE: "Continue",
+		BROWSE_AS_GUEST: "Browse as guest",
 	},
 	"hi_IN" : {
 		ALREADY_HAVE_ACC : "मौजूदा उपयोगकर्ता, साइन इन करें",

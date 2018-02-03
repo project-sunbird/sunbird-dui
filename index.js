@@ -226,7 +226,7 @@ const logoutUser = () => {
       JBridge.unregisterFCM(JSON.parse(JBridge.getFromSharedPrefs("topics")));
     }
     JBridge.setInSharedPrefs("intentNotification", "__failed");
-    JBridge.setInSharedPrefs("logged_in","NO");
+    JBridge.setInSharedPrefs("logged_in","__failed");
     JBridge.setInSharedPrefs("user_id", "__failed");
     JBridge.setInSharedPrefs("user_name",  "__failed");
     JBridge.setInSharedPrefs("user_token",  "__failed");
@@ -238,6 +238,9 @@ const logoutUser = () => {
     JBridge.setInSharedPrefs("api_token", "__failed");
     JBridge.setParams();
     JBridge.setAnonymousProfile();
+    JBridge.saveData("savedCourse", "__failed");
+    JBridge.saveData("savedAnnouncements", "__failed");
+    JBridge.saveData("savedProfile", "__failed");
     window.__pressedLoggedOut=true;
     JBridge.keyCloakLogout(window.__apiUrl + "/auth/realms/sunbird/protocol/openid-connect/logout");
     purescriptUserActivityFlow();

@@ -22,21 +22,21 @@ profileFragment input whereFrom whatToSendBack = do
 		OPEN_EnrolledCourseActivity {course:output} -> enrolledCourseActivity output "ProfileFragment" input
 		OPEN_CourseInfoActivity {course:output} -> courseInfoActivity output "ProfileFragment" input
 		OPEN_ResourceDetailActivity {resourceDetails:output} -> resourceDetailActivity output "ProfileFragment" input
-		API_CreatedBy { user_token:x, api_token:y, sendBack:z , filters:w} -> do
-			responseData <- compositeSearch x y w
-			_ <- sendUpdatedState {response : responseData, responseFor : "API_CreatedBy", screen:"asas", sendBack:z}
+		API_ProfileFragment {user_token:x,api_token:y}-> do
+			responseData <- getProfileDetail x y
+			_ <- sendUpdatedState {response : responseData, responseFor : "API_ProfileFragment", screen:"ProfileFragment"}
 			pure $ "handled"
 		API_SetProfileVisibility {user_token:x, api_token:y , request:z } -> do
 			resData <- setProfileVisibility x y z
-			_ <- sendUpdatedState{response : resData, responseFor : "API_SetProfileVisibility", screen:"asas"}
+			_ <- sendUpdatedState{response : resData, responseFor : "API_SetProfileVisibility", screen:"ProfileFragment"}
 			pure $ "apiCalled"
 		API_EndorseSkill {user_token: user_token,api_token: api_token,requestBody:request} -> do
 			responseData <- endorseSkill user_token api_token request
-			_ <- sendUpdatedState {response : responseData, responseFor : "API_EndorseSkill", screen:"asas"}
+			_ <- sendUpdatedState {response : responseData, responseFor : "API_EndorseSkill", screen:"ProfileFragment"}
 			pure $ "handled"
 		API_GetSkillsList {user_token : user_token,api_token : api_token} -> do
 			responseData <- getSkillsList user_token api_token
-			_ <- sendUpdatedState {response : responseData, responseFor : "API_GetSkillsList", screen:"asas"}
+			_ <- sendUpdatedState {response : responseData, responseFor : "API_GetSkillsList", screen:"ProfileFragment"}
 			pure $ "handled"
 		_ -> profileFragment input whereFrom whatToSendBack
 

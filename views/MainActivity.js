@@ -87,7 +87,7 @@ class MainActivity extends View {
   }
 
   getUserProfileData = () => {
-    if (JBridge.isNetworkAvailable() && this.profAPIerrCount <= 3) {
+    if (JBridge.isNetworkAvailable() && this.profAPIerrCount <= 3 && window.__loggedInState != "GUEST") {
       console.log("this.profAPIerrCount", this.profAPIerrCount);
       var whatToSend = {
         user_token: window.__user_accessToken,
@@ -110,7 +110,7 @@ class MainActivity extends View {
 
   getAnnouncemetData = () => {
     window.__AnnouncementApiCalled = true;
-    if (JBridge.isNetworkAvailable()) {
+    if (JBridge.isNetworkAvailable() && window.__loggedInState != "GUEST") {
       var request = {
       };
       var whatToSend = {
@@ -148,6 +148,15 @@ class MainActivity extends View {
   }
 
   handleStateChange = state => {
+    if (this.contentLayout && state.screen == this.contentLayout.screenName) {
+      console.log("contentLayout.handleStateChange -> ", this.contentLayout.screenName);      
+      this.contentLayout.handleStateChange(state);
+      return;
+    } else if (state.screen != "MainActivity") {
+      console.log("contentLayout.handleStateChange -> unmatched");
+      return;
+    }
+    console.log("contentLayout.handleStateChange -> MainActivity");
     var res = utils.processResponse(state);
     console.log("res in MainActivity", res);
     if (res == undefined) return;
@@ -191,7 +200,10 @@ class MainActivity extends View {
           window.__userName = responseData.result.response.userName;
 
           //check for rootOrg details
+          console.log("window.__API_Profile_Called", window.__API_Profile_Called);
           console.log("JBridge.getFromSharedPrefs('logo_url')", JBridge.getFromSharedPrefs("logo_url"));
+          console.log("JBridge.getFromSharedPrefs('orgName')", JBridge.getFromSharedPrefs("orgName"));
+          console.log("JBridge.getFromSharedPrefs('channelId')", JBridge.getFromSharedPrefs("channelId"));
           if (responseData.result.response && responseData.result.response.rootOrg && !window.__API_Profile_Called
             && (JBridge.getFromSharedPrefs("logo_url") == "__failed"
               || JBridge.getFromSharedPrefs("orgName") == "__failed"
@@ -233,119 +245,19 @@ class MainActivity extends View {
           JBridge.setInSharedPrefs("orgName", window.__orgName);
         }
         break;
-      case "API_UserEnrolledCourse":
-        if (isErr) {
-          var tmpData = JBridge.getSavedData("savedCourse");
-          if (tmpData && tmpData != "__failed") {
-            console.log("fetched enrolledCourses");
-            window.__enrolledCourses = JSON.parse(utils.decodeBase64(tmpData));
-            window.setEnrolledCourses(JSON.parse(utils.decodeBase64(tmpData)));
-            return;
-          }
-        } else {
-          JBridge.saveData("savedCourse", utils.encodeBase64(JSON.stringify(responseData.result.courses)));
-          window.__enrolledCourses = responseData.result.courses;
-          window.setEnrolledCourses(responseData.result.courses);
-          return;
-        }
-        break;
-      case "API_GetAnnouncementData":
-        if (isErr) {
-          if (JBridge.getSavedData(this.announcementsDataTag) != "__failed") {
-            var data = JSON.parse(utils.decodeBase64(JBridge.getSavedData(this.announcementsDataTag)));
-          } else {
-            responseData = {};
-          }
-        } else {
-          console.log("API_GetAnnouncementData :", responseData);
-          try {
-            var dataToBeSaved = utils.encodeBase64(JSON.stringify(responseData.result));
-            console.log("dataToBeSaved ", responseData.result);
-            JBridge.saveData(this.announcementsDataTag, dataToBeSaved);
-          } catch (err) {
-            console.log("err: var dataToBeSaved = utils.encodeBase64(JSON.stringify(responseData.result));");
-            responseData = {};
-          }
-        }
-        break;
-      case "API_EndorseSkill":
-        if (isErr) {
-          window.__Snackbar.show(window.__S.SKILL_NOT_ADDED);
-        } else {
-          window.__Snackbar.show(window.__S.SKILLS_ADDED_SUCCESSFULLY);
-        }
-        window.__BNavFlowRestart();
-        return;
-      case "API_GetSkillsList":
-        window.__PopulateSkillsList = [];
-        if (isErr) {
-        } else {
-          try {
-            console.log("skills ", responseData.data.result.skills);
-            window.__PopulateSkillsList = responseData.data.result.skills;
-          } catch (e) {
-            console.log("Exception : ", e);
-          }
-        }
-        window.__CustomPopUp.show();
-        return;
-      case "API_SetProfileVisibility":
-        if (isErr) {
-          if (responseCode == 504) {
-            window.__LoaderDialog.hide();
-            window.__Snackbar.show(window.__S.TIME_OUT);
-          } else {
-            window.__LoaderDialog.hide();
-            window.__Snackbar.show("failed");
-          }
-        } else {
-          window.__BNavFlowRestart();
-        }
-      default:
-        break;
-    }
-    //////////////////////////////////////////////////////////////////////////////
-
-    switch (this.currentPageIndex) {
-      case 0:
-        shouldBeModified = true;
-        // JBridge.logCorrelationPageEvent("HOME",responseData.params.msgid,responseData.id)
-        this.logCorrelationPageEvent("HOME");
-        window.__runDuiCallback({ tag: "OPEN_HomeFragment", contents: [] });
-        break;
-      case 1:
-        shouldBeModified = true;
-        this.logCorrelationPageEvent("COURSES");
-        // JBridge.logCorrelationPageEvent("COURSES",responseData.params.msgid,responseData.id)
-        window.__runDuiCallback({ tag: "OPEN_CourseFragment", contents: [] });
-        break;
-      case 2:
-        shouldBeModified = true;
-        this.logCorrelationPageEvent("LIBRARY");
-        // JBridge.logCorrelationPageEvent("RESOURCES",responseData.params.msgid,responseData.id)
-        window.__runDuiCallback({ tag: "OPEN_ResourceFragment", contents: [] });
-        break;
-      case 3:
-        //shouldBeModified = true;
-        window.__runDuiCallback({ tag: "OPEN_CommunityFragment", contents: [] });
-        break;
-      case 4:
-        shouldBeModified = true;
-        window.__runDuiCallback({ tag: "OPEN_ProfileFragment", contents: [] });
-        break;
       default:
         break;
     }
 
-    if (shouldBeModified) {
-      if (state.hasOwnProperty("filter_to_send"))
-        responseData.filter_to_send = state.filter_to_send;
-      else responseData.filter_to_send = null;
+    // if (shouldBeModified) {
+    //   if (state.hasOwnProperty("filter_to_send"))
+    //     responseData.filter_to_send = state.filter_to_send;
+    //   else responseData.filter_to_send = null;
 
-      this.switchContent(this.currentPageIndex, responseData);
-    } else {
-      console.log("GOT SAME DATA, not modifying");
-    }
+    //   // this.switchContent(this.currentPageIndex, responseData);
+    // } else {
+    //   console.log("GOT SAME DATA, not modifying");
+    // }
   };
 
   handleProfileFragAPIResErr = () => {
@@ -367,12 +279,12 @@ class MainActivity extends View {
 
   switchContent = (index, data) => {
     var tmp;
-    var contentLayout;
+    this.contentLayout;
     this.color = "#123123";
     switch (index) {
       case 0:
         JBridge.logTabClickEvent("HOME");
-        contentLayout = (
+        this.contentLayout = (
           <HomeFragment
             response={data}
             recommendedData={this.recommendedData}
@@ -389,7 +301,7 @@ class MainActivity extends View {
         break;
       case 1:
         JBridge.logTabClickEvent("COURSES");
-        contentLayout = (
+        this.contentLayout = (
           <CourseFragment
             height="match_parent"
             root="true"
@@ -401,7 +313,7 @@ class MainActivity extends View {
         break;
       case 2:
         JBridge.logTabClickEvent("LIBRARY");
-        contentLayout = (
+        this.contentLayout = (
           <ResourceFragment
             root="true"
             response={data}
@@ -413,7 +325,7 @@ class MainActivity extends View {
         break;
       case 3:
         JBridge.logTabClickEvent("GROUPS");
-        contentLayout = (
+        this.contentLayout = (
           <CommunityFragment
             height="match_parent"
             root="true"
@@ -424,8 +336,8 @@ class MainActivity extends View {
 
         break;
       case 4:
-        if (!data.sendBack) JBridge.logTabClickEvent("PROFILE");
-        contentLayout = (
+        // if (!data.sendBack) JBridge.logTabClickEvent("PROFILE");
+        this.contentLayout = (
           <ProfileFragment
             height="match_parent"
             root="true"
@@ -437,7 +349,7 @@ class MainActivity extends View {
         break;
 
       default:
-        contentLayout = (
+        this.contentLayout = (
           <LinearLayout height="match_parent" root="true" width="match_parent">
             <TextView
               text=""
@@ -456,11 +368,11 @@ class MainActivity extends View {
         height="match_parent"
         width="match_parent"
         root="true"
-        contentLayout={contentLayout}
+        contentLayout={this.contentLayout}
       />
     );
 
-    this.replaceChild(this.idSet.viewPagerContainer, tmp.render(), 0);
+    this.replaceChild(this.idSet.viewPagerContainer, this.contentLayout.render(), 0);
   };
 
   afterRender = () => {
@@ -495,7 +407,7 @@ class MainActivity extends View {
 
   setupDuiCallback = () => {
     window.__changePureScriptFlow();
-    window.__LoaderDialog.show();
+    // window.__LoaderDialog.show();
     var event;
     var whatToSend;
     if (this.currentPageIndex != 0) {
@@ -504,68 +416,31 @@ class MainActivity extends View {
     }
     switch (this.currentPageIndex) {
       case 0:
-        if ((!window.__AnnouncementApiCalled) && JBridge.isNetworkAvailable()) {
-          this.getAnnouncemetData();
-        }
-        if (window.__Check == 0) {
-          if (!JBridge.isNetworkAvailable()) {
-            window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
-          } else {
-            this.getUserProfileData();
-          }
-        }
-        whatToSend = [];
-        event = { tag: "OPEN_HomeFragment", contents: whatToSend };
-        window.__Check = 1;
-        window.__LoaderDialog.hide();
+        event = { tag: "OPEN_HomeFragment", contents: [] };
         break;
       case 1:
-        if (!JBridge.isNetworkAvailable()) {
-          window.__runDuiCallback({ tag: "OPEN_CourseFragment", contents: [] });
-          this.switchContent(this.currentPageIndex);
-        } else {
-          whatToSend = {
-            user_token: window.__user_accessToken,
-            api_token: window.__apiToken
-          };
-          event = { tag: "API_CourseFragment", contents: whatToSend };
-        }
+        event = { tag: "OPEN_CourseFragment", contents: [] };
         break;
       case 2:
-        if (!JBridge.isNetworkAvailable()) {
-          window.__runDuiCallback({ tag: "OPEN_ResourceFragment", contents: [] });
-          this.switchContent(this.currentPageIndex);
-        } else {
-          whatToSend = {
-            user_token: window.__user_accessToken,
-            api_token: window.__apiToken
-          };
-          event = { tag: "API_ResourceFragment", contents: whatToSend };
-        }
+        event = { tag: "OPEN_ResourceFragment", contents: [] };
         break;
       case 3:
-        whatToSend = [];
-        event = { tag: "OPEN_CommunityFragment", contents: whatToSend };
+        event = { tag: "OPEN_CommunityFragment", contents: [] };
         break;
       case 4:
-        this.getUserProfileData();
+        event = { tag: "OPEN_ProfileFragment", contents: [] };
         break;
       default:
-        whatToSend = [];
-        event = { tag: "OPEN_HomeFragment", contents: whatToSend };
+        event = { tag: "OPEN_HomeFragment", contents: [] };
         break;
     }
+    this.switchContent(this.currentPageIndex);
     if (event) window.__runDuiCallback(event);
   };
 
   handleBottomNavBarAction = index => {
     if (index == undefined) index = 0;
-
     this.currentPageIndex = index;
-
-    if (index != 1 && index != 2 && index != 4) {
-      this.switchContent(index);
-    }
     window.__BottomNavBar.handleNavigationChange(this.currentPageIndex);
     this.setupDuiCallback();
   };

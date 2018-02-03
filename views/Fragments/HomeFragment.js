@@ -5,7 +5,7 @@ var RelativeLayout = require("@juspay/mystique-backend/src/android_views/Relativ
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
 var ScrollView = require("@juspay/mystique-backend/src/android_views/ScrollView");
-
+var LineSpacer = require('../../components/Sunbird/core/LineSpacer');
 var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
 var objectAssign = require('object-assign');
 var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
@@ -32,7 +32,7 @@ var HomeTodoContainer = require('../../components/Sunbird/HomeTodoContainer');
 class HomeFragment extends View {
   constructor(props, children) {
     super(props, children);
-
+    this.screenName = "HomeFragment";
     this.menuData = {
       url: [
        // { imageUrl: "ic_scanqr"}, // hide qr scanner feature
@@ -40,16 +40,26 @@ class HomeFragment extends View {
       ]
     }
     JBridge.logTabScreenEvent("HOME");
-    window.setEnrolledCourses = this.setEnrolledCourses;
     this.profileData="";
     this.profileUpdateCardVisibility="gone";
     this.announcementsDataTag = "savedAnnouncements";
-
+    this.setIds(["announcementContainer"]);
   }
 
-  setEnrolledCourses = (list) => {
-    this.enrolledCourses = list;
-    window.__UpdateUserCourses(this.enrolledCourses);
+  getAnnouncemetData = () => {
+    if (JBridge.isNetworkAvailable() && window.__loggedInState != "GUEST") {
+      var request = {
+      };
+      var whatToSend = {
+        user_token: window.__user_accessToken,
+        api_token: window.__apiToken,
+        requestBody: JSON.stringify(request)
+      };
+      var event = { tag: "API_GetAnnouncementData", contents: whatToSend };
+      window.__runDuiCallback(event);
+    } else {
+      console.log("__failed to getAnnouncementData");
+    }
   }
 
   handleTodoClick = (index) => {
@@ -65,8 +75,49 @@ class HomeFragment extends View {
     window.__runDuiCallback(event);
   }
 
-
-
+  handleStateChange = (state) => {
+    var res = utils.processResponse(state);
+    var status = res.status;
+    var responseData = res.data;
+    this.responseData = responseData;
+    var responseCode = res.code;
+    var responseUrl = res.url;
+    var isErr = res.hasOwnProperty("err");
+    switch(state.responseFor) {
+      case "API_UserEnrolledCourse":
+        if (isErr) {
+          var tmpData = JBridge.getSavedData("savedCourse");
+          if (tmpData && tmpData != "__failed") {
+            console.log("fetched enrolledCourses");
+            window.__enrolledCourses = JSON.parse(utils.decodeBase64(tmpData));
+            // window.setEnrolledCourses(JSON.parse(utils.decodeBase64(tmpData)));
+            this.courseInProgressContainer.renderContent(JSON.parse(utils.decodeBase64(tmpData)));
+            return;
+          }
+        } else {
+          JBridge.saveData("savedCourse", utils.encodeBase64(JSON.stringify(responseData.result.courses)));
+          window.__enrolledCourses = responseData.result.courses;
+          // window.setEnrolledCourses(responseData.result.courses);
+          this.courseInProgressContainer.renderContent(responseData.result.courses);
+          return;
+        }
+        break;
+      case "API_GetAnnouncementData":
+        if (isErr) {
+          console.log("Error fetching announcement data");
+        } else {
+          console.log("API_GetAnnouncementData :", responseData);
+          try {
+            var dataToBeSaved = utils.encodeBase64(JSON.stringify(responseData.result));
+            console.log("dataToBeSaved ", responseData.result);
+            JBridge.saveData(this.announcementsDataTag, dataToBeSaved);
+            this.reRenderAnnoucements();
+          } catch (err) {
+            console.log("err: var dataToBeSaved = utils.encodeBase64(JSON.stringify(responseData.result));");
+          }
+        }
+    }
+  }
 
   handleMenuClick = (url) => {
     console.log("url clicked", url);
@@ -108,13 +159,6 @@ class HomeFragment extends View {
     console.log("data from android ", JSON.parse(data));
   }
 
-  getSpaceSeparator = () => {
-    return (<LinearLayout
-             height="4"
-             orientation="vertical"
-             width="match_parent"
-             background={window.__Colors.WHITE_F2}/>)
-  }
   getTodoProfileCard=(index)=>{
     try {
       this.profileData = JSON.parse(utils.decodeBase64(JBridge.getSavedData("savedProfile")));
@@ -290,7 +334,7 @@ class HomeFragment extends View {
           width="match_parent"
           orientation="vertical">
           {card1}
-          {this.getSpaceSeparator()}
+          <LineSpacer />
           {card2}
           </LinearLayout>
         )
@@ -336,6 +380,23 @@ class HomeFragment extends View {
     window.__runDuiCallback(event);
 }
 
+  getCourseInProgressContainer = () => {
+    this.courseInProgressContainer = (
+      <CourseInProgressContainer
+        parentContainer="Home"
+        addCard={this.getTodoProfileCard(0)}
+        addCardVisibility={this.profileUpdateCardVisibility}
+        transparent="true"
+        title={window.__S.TO_DO}
+        onCourseClick={this.handleUserCoursesClick} />
+    );
+    return this.courseInProgressContainer;
+  }
+
+  afterRender = () => {
+    this.getAnnouncemetData();
+  }
+
   render() {
     var imgUrl = "ic_launcher";
     if (JBridge.getFromSharedPrefs("logo_url") != "__failed" && JBridge.getFromSharedPrefs("logo_url") != "undefined"){
@@ -348,7 +409,8 @@ class HomeFragment extends View {
         width="match_parent"
         root="true"
         background={window.__Colors.PRIMARY_LIGHT}
-        height="match_parent">
+        height="match_parent"
+        afterRender = {this.afterRender}>
         <SimpleToolbar
           title=""
           width="match_parent"
@@ -364,15 +426,16 @@ class HomeFragment extends View {
             height="match_parent"
             width="match_parent"
             orientation="vertical">
-            <CourseInProgressContainer
-              parentContainer = "Home"
-              addCard={this.getTodoProfileCard(0)}
-              addCardVisibility={this.profileUpdateCardVisibility}
-              transparent="true"
-              title={window.__S.TO_DO}
-              onCourseClick={this.handleUserCoursesClick}/>
-            {this.getAnnouncementCard()}
-            {this.getSpaceSeparator()}
+            {this.getCourseInProgressContainer()}
+            <LineSpacer />
+            <LinearLayout
+              height="match_parent"
+              width="match_parent"
+              orientation="vertical"
+              id={this.idSet.announcementContainer}>
+              {this.getAnnouncementCard()}
+              <LineSpacer />
+            </LinearLayout>
             <HomeRecommendedContainer
               title={window.__S.RECOMMENDED}
               onCourseOpenClick={this.handleCourseOpen}
@@ -382,6 +445,19 @@ class HomeFragment extends View {
       </LinearLayout>
       )
     return this.layout.render();
+  }
+
+  reRenderAnnoucements = () => {
+    var layout = (
+      <LinearLayout
+          height="match_parent"
+          width="match_parent"
+          orientation="vertical">
+          {this.getAnnouncementCard()}
+          <LineSpacer />
+        </LinearLayout>
+    );
+    this.replaceChild(this.idSet.announcementContainer, layout.render(), 0);
   }
 
   handleEditProfileClick = (editButtonText) => {

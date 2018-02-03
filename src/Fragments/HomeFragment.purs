@@ -24,14 +24,14 @@ homeFragment input whereFrom whatToSendBack = do
   		OPEN_EducationActivity {profile: output} -> educationActivity output "HomeFragment"  input
   		OPEN_ExperienceActivity {profile : output} -> experienceActivity output "HomeFragment"  input
 		OPEN_QRActivity -> qrActivity "HomeFragment" input
+		API_GetAnnouncementData {user_token: user_token,api_token: api_token,requestBody:request}-> do
+			responseData <- getAnnouncementData user_token api_token request
+			_ <- sendUpdatedState {response : responseData, responseFor : "API_GetAnnouncementData", screen:"HomeFragment"}
+			pure $ "handled"
 		API_UserEnrolledCourse {user_token:x,api_token:y}-> do
 			responseData <- getUserEnrolledCourses x y
-	 		_ <- sendUpdatedState {response : responseData, responseFor : "API_UserEnrolledCourse", screen:"asas"}
+	 		_ <- sendUpdatedState {response : responseData, responseFor : "API_UserEnrolledCourse", screen:"HomeFragment"}
 	  		pure $ "apiDefault"
-		API_Tenant {user_token:x, api_token:y, slug:z} -> do
-			responseData <- getTenantDetail x y z
-			_ <- sendUpdatedState {response : responseData, responseFor : "API_Tenant", screen:"asas"}
-			pure $ "apiDefault"
 		_ -> homeFragment input whereFrom whatToSendBack
 
 homeSearchActivity input whereFrom whatToSendBack = do

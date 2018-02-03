@@ -1,19 +1,15 @@
 var dom = require("@juspay/mystique-backend/src/doms/android");
 var Connector = require("@juspay/mystique-backend/src/connectors/screen_connector");
 var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
-var RelativeLayout = require("@juspay/mystique-backend/src/android_views/RelativeLayout");
-var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
 var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
 var HorizontalScrollView = require("@juspay/mystique-backend/src/android_views/HorizontalScrollView");
-var ProgressBar = require("@juspay/mystique-backend/src/android_views/ProgressBar");
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
-var Button = require('../Sunbird/Button');
 var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget");
-var Space = require("@juspay/mystique-backend/src/android_views/Space");
 var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
 var utils = require("../../utils/GenericFunctions")
 var _this;
 var CardComponent = require('../Sunbird/core/CardComponent');
+var CircularLoader = require('../../components/Sunbird/core/CircularLoader');
 
 
 class CourseInProgressContainer extends View {
@@ -27,8 +23,6 @@ class CourseInProgressContainer extends View {
       "viewAllContainer",
     ]);
     this.displayName = "course_in_progress_container";
-    window.__UpdateUserCourses = this.renderContent;
-    window.__fetchCourse = this.fetchFromServer;
 
     this.appendAtPosition=0;
     this.savedCourseTag = "savedCourse";
@@ -39,7 +33,7 @@ class CourseInProgressContainer extends View {
   fetchFromServer = () => {
     console.log("fetchFromServer");
     var res = null;
-    if (JBridge.isNetworkAvailable()) {
+    if (JBridge.isNetworkAvailable() && window.__loggedInState != "GUEST") {
       var whatToSend = {"user_token":window.__user_accessToken,"api_token": window.__apiToken}
       var event ={ "tag": "API_UserEnrolledCourse", contents: whatToSend};
       window.__runDuiCallback(event);
@@ -50,6 +44,8 @@ class CourseInProgressContainer extends View {
         var parsed = JSON.parse(utils.decodeBase64(res));
         this.renderContent(parsed, true);
         window.__enrolledCourses = parsed;
+      } else {
+        this.renderContent();
       }
     }
   }
@@ -98,7 +94,8 @@ class CourseInProgressContainer extends View {
       <LinearLayout
         root="true"
         height="wrap_content"
-        width="match_parent">
+        width="match_parent"
+        padding="0,0,16,0">
         {layout1}
       </LinearLayout>);
     }
@@ -110,7 +107,8 @@ class CourseInProgressContainer extends View {
         <LinearLayout
           root="true"
           height="wrap_content"
-          width="match_parent">
+          width="match_parent"
+          padding="0,0,16,0">
           {this.getExtraLayout()}
           {rows}
         </LinearLayout>);
@@ -247,8 +245,9 @@ class CourseInProgressContainer extends View {
   render() {
     this.layout = (
       <LinearLayout
-          height="match_parent"
+          height="wrap_content"
           width="match_parent"
+          visibility={window.__loggedInState != "GUEST" ? "visible" : "gone"}
           afterRender={this.fetchFromServer}
           background={this.props.transparent?window.__Colors.WHITE_F2:window.__Colors.WHITE}
           orientation="vertical">
@@ -262,11 +261,13 @@ class CourseInProgressContainer extends View {
            fillViewport="true">
 
            <LinearLayout
-                    padding="0,0,20,0"
-                    id={this.idSet.parentContainer}
-                    width="match_parent"
-                    height="match_parent">
-
+              id={this.idSet.parentContainer}
+              width="match_parent"
+              height="match_parent"
+              orientation="horizontal"
+              layoutTransition="true">
+              <CircularLoader
+                margin="0,16,0,16"/>
          </LinearLayout>
           </HorizontalScrollView>
 

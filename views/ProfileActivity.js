@@ -78,17 +78,7 @@ class ProfileActivity extends View {
   }
 
   logout = () =>{
-    window.__Snackbar.show(window.__S.LOGGED_OUT)
-    JBridge.setInSharedPrefs("logged_in","NO");
-    JBridge.setInSharedPrefs("user_id", "__failed");
-    JBridge.setInSharedPrefs("user_name",  "__failed");
-    JBridge.setInSharedPrefs("user_token",  "__failed");
-
-
     window.__pressedLoggedOut=true;
-
-    JBridge.keyCloakLogout(window.__loginUrl + "/auth/realms/sunbird/protocol/openid-connect/logout");
-
     window.__Logout();
   }
 

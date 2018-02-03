@@ -49,7 +49,6 @@ class UserActivity extends View {
     this.backPressCount = 0;
     this.shouldCacheScreen=false;
 
-    this.isLoginMode = true;
     this.language = "English";
     this.userName = this.userPass = this.firstName = "";
     _this = this;
@@ -68,6 +67,7 @@ class UserActivity extends View {
     window.__onContentImportResponse = this.getImportStatus;
     window.__onContentImportProgress = this.setImportProgress;
     window.__LoaderDialog.hide();
+    window.__loggedInState = JBridge.getFromSharedPrefs("logged_in")
   }
 
   getImportStatus = (response) => {
@@ -224,8 +224,6 @@ class UserActivity extends View {
 
   }
 
-
-
   getLoginCallback = (response) => {
     console.log("GOT LOGIN RESPONSE ",response)
 
@@ -279,12 +277,6 @@ class UserActivity extends View {
     var whatToSend = []
     var event = { tag: "OPEN_MainActivity", contents: whatToSend };
     window.__runDuiCallback(event);
-
-    // setTimeout(() => {
-    //   var whatToSend = [];
-    //   var event = { tag: "OPEN_MainActivity", contents: whatToSend };
-    //   window.__runDuiCallback(event);
-    // }, 4000);
   }
 
   onBackPressed = () => {
@@ -302,27 +294,15 @@ class UserActivity extends View {
 
 
   handleStateChange = (state) => {
+    console.log("handleStateChange in UserActivity -> ", state);
+    
     window.__LoaderDialog.hide();
     var res = utils.processResponse(state);
     var status = res.status;
     var response = res.data;
     var responseCode = res.code;
     var responseUrl = res.url;
-
-    //
-    // if(responseCode == 401){
-    //   var callback  = callbackMapper.map(function(token){
-    //     window.__apiToken = token;
-    //     if(state.responseFor == "API_SignUp"){
-    //       _this.handleSignUpClick();
-    //     }
-    //
-    //   });
-    //   JBridge.getApiToken(callback);
-    //   return;
-    //     }
-
-
+    
     if (responseCode == 501) {
       window.__Snackbar.show(window.__S.ERROR_SERVER_CONNECTION)
       return;
@@ -339,34 +319,9 @@ class UserActivity extends View {
       return;
     }
 
-
-
     var result = response.result;
 
-
-
     switch (state.responseFor + "") {
-      case "API_SignUp":
-        if (result.response == "SUCCESS") {
-          console.log(window.__S.WELCOME_ON_BOARD.format(JBridge.getAppName(), this.userName))
-          window.__Snackbar.show(window.__S.WELCOME_ON_BOARD.format(JBridge.getAppName(), this.userName))
-          JBridge.setInSharedPrefs("user_name", this.firstName);
-          JBridge.setInSharedPrefs("user_token", result.userId);
-          JBridge.logSignUpSuccess();
-          window.__pressedLoggedOut=true;
-          this.userToken=result.userId;
-          this.setDataInStorage();
-          JBridge.setProfile(this.userToken);
-          this.performLogin()
-
-
-
-        } else {
-          window.__Snackbar.show(window.__S.RETRY_ACTION)
-        }
-
-
-        break;
       case "API_EnrolledCourses":
         console.log("API_EnrolledCourses in userActivity")
         window.__enrolledCourses = response.result.courses;
@@ -378,82 +333,21 @@ class UserActivity extends View {
           var event={tag:"OPEN_Deeplink_CourseEnrolled",contents:whatToSend}
           window.__runDuiCallback(event);
         }
-
         break;
       default:
         console.log("default SWITCH")
         break;
-
-
     }
-
-
-  }
-
-
-  updateFirstName = (data) => {
-    this.firstName = data;
-  }
-
-  updateLanguage = (data) => {
-    this.language = data;
-  }
-
-  updateMobileNumber = (data) => {
-    this.mobileNumber = data;
-  }
-
-  updateEmail = (data) => {
-    this.email = data;
-  }
-
-  updateUserPassword = (data) => {
-    this.userPass = data;
-  }
-  updateUserName = (data) => {
-    this.userName = data;
-  }
-
-  updateLanguage = (data) => {
-    this.language = data;
-  }
-
-  toggleSignUpForm = () => {
-    this.isLoginMode = !this.isLoginMode;
-    var visibilityVal= this.isLoginMode?"gone":"visible"
-    var oppVisibilityValue = !this.isLoginMode?"gone":"visible"
-    var cmd = this.set({
-      id: this.idSet.userForumContainer,
-      visibility: visibilityVal
-    });
-
-    cmd += this.set({
-      id: this.idSet.signUpHolder,
-      visibility: visibilityVal
-    });
-    cmd += this.set({
-      id: this.idSet.signInHolder,
-      visibility: oppVisibilityValue
-    });
-    cmd += this.set({
-      id: this.idSet.needAccHolder,
-      visibility: oppVisibilityValue
-    });
-    cmd += this.set({
-      id: this.idSet.alreadyHaveAccHolder,
-      visibility: visibilityVal
-    });
-    Android.runInUI(cmd, 0);
-
   }
 
   handleNotificationAction = () => {
-    this.setLoginPreferences();
     var notifData = JBridge.getFromSharedPrefs("intentNotification");
-    if (notifData != "__failed") {
+
+    //Handle notification redirection only if the user is logged in, else just open HomeFragment
+    if (notifData != "__failed" && window.__loggedInState == "YES") {
+      this.setLoginPreferences();
       notifData = JSON.parse(utils.decodeBase64(notifData));
       console.log("notifData ", notifData);
-      JBridge.setInSharedPrefs("intentNotification", "__failed");
       switch (JBridge.getFromSharedPrefs("screenToOpen")) {
         case "ANNOUNCEMENT_DETAIL":
           var data = {
@@ -475,95 +369,23 @@ class UserActivity extends View {
     } else {
       var event = { tag: "OPEN_MainActivity", contents: [] };
     }
+    JBridge.setInSharedPrefs("intentNotification", "__failed");
     window.__runDuiCallback(event);
   }
 
-  handleSignUpClick = () => {
-     if (!JBridge.isNetworkAvailable()) {
-        window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE)
-        return;
-      }
-    JBridge.logSignUpInitiation();
-    this.firstName=this.firstName.trim();
-    this.userName=this.userName.trim();
-    this.email=this.email.trim();
-    this.userPass=this.userPass.trim();
-    this.userPass=this.userPass.trim();
-    this.mobileNumber=this.mobileNumber.trim();
-
-
-    if (this.firstName.length <= 0 && this.userName.length <= 0 && this.email.length <= 0 && this.userPass.length <= 0 && this.mobileNumber.length <= 0){
-      window.__Snackbar.show(window.__S.ERROR_EMPTY_FIELDS);
-      return;
-    } else if (this.firstName.length <= 0) {
-      window.__Snackbar.show(window.__S.ERROR_EMPTY_FIRSTNAME);
-      return;
-    }  else if (this.userName.length <= 0) {
-      window.__Snackbar.show(window.__S.ERROR_EMPTY_USERNAME);
-      return;
-    } else if (this.email.length <= 0) {
-      window.__Snackbar.show(window.__S.ERROR_EMPTY_EMAIL);
-      return;
-    } else if (!(this.email.indexOf("@") !== -1) || !(this.email.indexOf(".") !== -1)) {
-      window.__Snackbar.show(window.__S.ERROR_EMAIL_FORMAT);
-      return;
-    }else if (this.userPass.length <= 0) {
-      window.__Snackbar.show(window.__S.ERROR_EMPTY_PASSWORD);
-      return;
-    } else if (this.userPass.length < 8) {
-      window.__Snackbar.show(window.__S.ERROR_SHORT_PASSWORD);
-      return;
-    } else if (this.mobileNumber.length <= 0) {
-      window.__Snackbar.show(window.__S.ERROR_EMPTY_MOBILE);
-      return;
-    } else if (this.mobileNumber.length < 10 || this.mobileNumber.length > 10) {
-      window.__Snackbar.show(window.__S.ERROR_SHORT_MOBILE);
-      return;
-    } else if (this.language.length <= 0) {
-      window.__Snackbar.show(window.__S.ERROR_EMPTY_LANGUAGE);
-      return;
-    }
-
-    if (this.userName.length > 0 && this.userPass.length > 0 && this.firstName.length > 0 && this.language.length > 0 && this.email.length > 0 && this.mobileNumber.length > 0) {
-      window.__LoaderDialog.show()
-      var requestBody = {
-        "userName": this.userName,
-        "firstName": this.firstName,
-        "password": this.userPass,
-        "language": ["English"],
-        "phone": this.mobileNumber,
-        "email": this.email
-
-      };
-      requestBody=JSON.stringify(requestBody);
-      var whatToSend = {
-        "request" : requestBody,
-        "api_token": window.__apiToken
-      }
-      var event = { "tag": "API_SignUp", "contents": whatToSend };
-      window.__runDuiCallback(event);
-
-    } else {
-      window.__Snackbar.show(window.__S.ERROR_INPUT_FORM);
-    }
-
-  }
-
   handleLoginClick = () => {
-
     console.log(window.__loginUrl , "/auth/realms/sunbird/protocol/openid-connect/auth","\nandroid");
-
     JBridge.keyCloakLogin(window.__loginUrl + "/auth/realms/sunbird/protocol/openid-connect/auth","android");
-   }
-
-  handleForgotPasscode = ()=>{
-      window.__Snackbar.show(window.__S.COMING_SOON);
   }
 
-
-
-
-
+  handleBrowseAsGuest = () => {
+    console.log("handleBrowseAsGuest");
+    window.__loggedInState = "GUEST";
+    window.__enrolledCourses = [];
+    JBridge.setInSharedPrefs("logged_in", "GUEST");
+    this.setLoginPreferences();
+    this.performRedirection();
+  }
 
   getTopLayout = () => {
     return (<LinearLayout
@@ -597,208 +419,47 @@ class UserActivity extends View {
   getOptions = () => {
     return (
       <LinearLayout
-            height="wrap_content"
-            width="match_parent"
-            gravity="center"
-            margin="24,0,24,0"
-            >
-
-
-              <LinearLayout
-                height="wrap_content"
-                width="wrap_content"
-                background={window.__Colors.THICK_BLUE}
-                stroke={"5,"+window.__Colors.THICK_BLUE}
-                cornerRadius="5">
-                  <LinearLayout
-                  height="match_parent"
-                  width="match_parent"
-                  padding="15,8,15,8"
-                  gravity="center"
-                  id={this.idSet.signInHolder}
-                  visibility={this.isLoginMode?"visible":"gone"}
-                  onClick={this.handleLoginClick}>
-
-                    <TextView
-                      style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
-                      text={window.__S.SIGN_IN}/>
-                  </LinearLayout>
-                  <LinearLayout
-                      height="match_parent"
-                      width="match_parent"
-                      padding="15,8,15,8"
-                      gravity="center"
-                      id={this.idSet.signUpHolder}
-                      visibility={this.isLoginMode?"gone":"visible"}
-                      onClick={this.handleSignUpClick}>
-
-                    <TextView
-                      text={window.__S.SIGN_UP}
-                      style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}/>
-                  </LinearLayout>
-
-               </LinearLayout>
-
-
-
-           </LinearLayout>)
-  }
-
-
-  getForum = () => {
-    //TextInputView be carefull with the margin, internal EditText position might break
-
-    return (
-      <LinearLayout
-          height="match_parent"
-          width="match_parent"
-          orientation="vertical"
-          id={this.idSet.userForumContainer}
-          gravity="center"
-          visibility={this.isLoginMode?"gone":"visible"}
-          root="true">
-      <ScrollView
-        height="match_parent"
-        width="match_parent"
-        fillViewPort="true"
-
-        gravity="center"
-        >
-        <LinearLayout
-          height="match_parent"
-          width="match_parent"
-          orientation="vertical"
-          padding="0,40,0,50"
-          gravity="center"
-          root="true">
-
-            <LinearLayout
-              height="wrap_content"
-              width="match_parent"
-              id={this.idSet.firstNameHolder}>
-
-                <TextInputView
-                  height="wrap_content"
-                  width="match_parent"
-                  hintText={window.__S.FIRST_NAME_HINT}
-                  labelText={window.__S.FIRST_NAME}
-                  margin="20,0,24,12"
-                  _onChange={this.updateFirstName}/>
-
-            </LinearLayout>
-
-            <LinearLayout
-              height="wrap_content"
-              width="match_parent"
-              id={this.idSet.userNameHolder}>
-
-              <TextInputView
-                height="wrap_content"
-                width="match_parent"
-                hintText={window.__S.HINT_USER_NAME}
-                labelText={window.__S.USER_NAME}
-                margin="20,0,24,12"
-                _onChange={this.updateUserName}/>
-
-            </LinearLayout>
-
-             <LinearLayout
-              height="wrap_content"
-              width="match_parent"
-              id={this.idSet.emailHolder}
-              >
-
-
-                <TextInputView
-                  height="wrap_content"
-                  width="match_parent"
-                  hintText={window.__S.HINT_EMAIL_ID}
-                  labelText={window.__S.EMAIL_ID}
-                  margin="20,0,24,12"
-                  _onChange={this.updateEmail}/>
-
-            </LinearLayout>
-
-             <LinearLayout
-              height="wrap_content"
-              width="match_parent"
-              id={this.idSet.passwordHolder}>
-
-
-                <TextInputView
-                    height="wrap_content"
-                    width="match_parent"
-                    hintText={window.__S.HINT_PASSWORD}
-                    labelText={window.__S.PASSWORD}
-                    inputType="password"
-                    margin="20,0,24,12"
-                    _onChange={this.updateUserPassword}/>
-
-              </LinearLayout>
-
-            <LinearLayout
-              height="wrap_content"
-              width="match_parent"
-              id={this.idSet.mobileNumberHolder}>
-
-              <TextInputView
-                hintText={window.__S.HINT_MOBILE_NUMBER}
-                labelText={window.__S.MOBILE_NUMBER}
-                margin="20,0,24,12"
-                inputType="numeric"
-                _onChange={this.updateMobileNumber}/>
-
-            </LinearLayout>
-
-            <LinearLayout
-              height="wrap_content"
-              width="match_parent"
-              id={this.idSet.languageHolder}>
-
-            </LinearLayout>
-
-
-
-         </LinearLayout>
-
-       </ScrollView>
-       </LinearLayout>)
-  }
-
-
-  getSignUpSection = () => {
-    return (<LinearLayout
         height="wrap_content"
         width="match_parent"
+        gravity="center"
         orientation="vertical"
-        clickable="true"
-        gravity="center_horizontal"
-        root="true">
-           <TextView
-            height="wrap_content"
-            width="match_parent"
-            padding="0,10,0,10"
-            gravity="center"
-            id={this.idSet.alreadyHaveAccHolder}
-            onClick={this.toggleSignUpForm}
-            visibility={this.isLoginMode?"gone":"visible"}
-            textFromHtml= {"<font color='#007AFF'><a href=''>"+window.__S.ALREADY_HAVE_ACC+"</a></font>"}
-            style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
+        margin="24,0,24,0">
+        <LinearLayout
+          height="38"
+          width="match_parent"
+          onClick={this.handleLoginClick}>
 
           <TextView
-            height="wrap_content"
+            background={window.__Colors.THICK_BLUE}
+            stroke={"5," + window.__Colors.THICK_BLUE}
+            cornerRadius="5"
+            height="match_parent"
             width="match_parent"
-            padding="0,10,0,10"
             gravity="center"
-            id={this.idSet.needAccHolder}
-            onClick={this.toggleSignUpForm}
-            visibility={JBridge.getApplicationId() == "org.sunbird.app" ? "visible" : "gone"}
-            textFromHtml= {"<font color='#007AFF'><a href=''>"+window.__S.NO_ACC_YET+"</a></font>"}
-            style={window.__TextStyle.textStyle.TABBAR.SELECTED}/>
+            textAllCaps="true"
+            style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
+            text={window.__S.SIGN_IN} />
+        </LinearLayout>
+        <LinearLayout
+          width="match_parent"
+          height="38"
+          margin="0,16,0,16"
+          layoutTransition="true"
+          onClick={this.handleBrowseAsGuest}>
 
-        </LinearLayout>)
+          <TextView
+            width="match_parent"
+            height="match_parent"
+            gravity="center"
+            style={window.__TextStyle.textStyle.CARD.ACTION.BLUE}
+            text={window.__S.BROWSE_AS_GUEST}
+            textAllCaps="true"
+            cornerRadius="5"
+            background={window.__Colors.WHITE}
+            stroke={"2," + window.__Colors.THICK_BLUE} />
+        </LinearLayout>
+      </LinearLayout>)
   }
-
 
   getBody = () =>{
     return (
@@ -811,7 +472,7 @@ class UserActivity extends View {
         background={window.__Colors.WHITE}
         height="match_parent">
 
-         <LinearLayout
+        <LinearLayout
           height="0"
           weight="1"
           root="true"
@@ -820,36 +481,20 @@ class UserActivity extends View {
           gravity="center"
           orientation="vertical">
 
-         {this.getTopLayout()}
-
-
-
-         {this.getForum()}
-
-
+          {this.getTopLayout()}
         </LinearLayout>
 
         {this.getOptions()}
-
-        <LinearLayout
-          height="wrap_content"
-          width="match_parent"
-          gravity="center_horizontal"
-          padding="12,12,12,12"
-          orientation="vertical">
-
-
-          {/*this.getSignUpSection()*/}
-         </LinearLayout>
-
-
-
       </LinearLayout>);
   }
 
 
   setLoginPreferences = () =>{
-    JBridge.setInSharedPrefs("logged_in","YES");
+    if (window.__loggedInState == "GUEST") {
+      JBridge.setInSharedPrefs("logged_in", "GUEST");
+    } else {
+      JBridge.setInSharedPrefs("logged_in", "YES");      
+    }
     window.__userToken=JBridge.getFromSharedPrefs("user_token");
     window.__refreshToken = JBridge.getFromSharedPrefs("refresh_token");
     window.__user_accessToken = JBridge.getFromSharedPrefs("user_access_token");
@@ -857,100 +502,113 @@ class UserActivity extends View {
   }
 
   clearDeeplinkPreferences = () =>{
-    JBridge.setInSharedPrefs("intentLinkPath", "__failed");
-    JBridge.setInSharedPrefs("intentFilePath", "__failed");
+    this.clearIntentFilePath();
+    this.clearIntentLinkPath();
     JBridge.setInSharedPrefs("deeplinkMode","__failed");
     JBridge.setInSharedPrefs("whereFromInUserActivity","__failed");
   }
 
+  clearIntentLinkPath = () => {
+    JBridge.setInSharedPrefs("intentLinkPath", "__failed");
+  }
+
+  clearIntentFilePath = () => {
+    JBridge.setInSharedPrefs("intentFilePath", "__failed");
+  }
+
   performDeeplinkAction = () =>{
     if("__failed" != JBridge.getFromSharedPrefs("intentFilePath")){
-
-                var filePath = JBridge.getFromSharedPrefs("intentFilePath");
-                JBridge.setInSharedPrefs("intentFilePath", "__failed");
-                JBridge.importEcar(filePath);
-
+      var filePath = JBridge.getFromSharedPrefs("intentFilePath");
+      JBridge.setInSharedPrefs("intentFilePath", "__failed");
+      JBridge.importEcar(filePath);
     }else if("__failed" != JBridge.getFromSharedPrefs("intentLinkPath")){
-
-                console.log("INSIDE LINK INTENT");
-
-                var output = JBridge.getFromSharedPrefs("intentLinkPath");
-
-                console.log("FILE PATH GOT",output);
-
-                var identifier = output.substr(output.lastIndexOf("/")+1,output.length);
-                console.log("IDENTIFIER GOT",identifier);
-                _this.handleDeepLinkAction(identifier);
-
+      console.log("INSIDE LINK INTENT");
+      var output = JBridge.getFromSharedPrefs("intentLinkPath");
+      console.log("FILE PATH GOT", output);
+      var identifier = output.substr(output.lastIndexOf("/") + 1, output.length);
+      console.log("IDENTIFIER GOT", identifier);
+      _this.handleDeepLinkAction(identifier);
     }
   }
 
+  performRedirection = () => {
+    console.log("performRedirection");
+    
+    // //if there is Notification intent
+    // if ("__failed" != JBridge.getFromSharedPrefs("intentNotification")) {
+      
+    // } else if () {
+    //   //File path or Link intents
+    //   console.log("SHARED PREFERENCES ARE THERE STILL");
+    //   if (whereFrom == "SplashScreenActivity") {
+    //     console.log("FROM SPLASH SCREEN ACTIVITY");
 
+    //     if (("YES" == window.__loggedInState)) {
+    //       console.log("LOGGED IN");
+    //       JBridge.setInSharedPrefs("deeplinkMode", "actual");
+    //       this.performDeeplinkAction();
+    //       this.setLoginPreferences();
+    //     } else {
+    //       console.log("NOT LOGGED IN")
+    //       JBridge.setInSharedPrefs("deeplinkMode", "preview");
+    //       this.performDeeplinkAction();
+    //     }
 
+    //   } else if (whereFrom == "Deeplink") {
+    //     console.log("FROM DEEPLINK ");
+
+    //     if (("YES" == window.__loggedInState)) {
+    //       console.log("LOGGED IN AND FROM DEEPLINK", "ACTUAL");
+    //       JBridge.setInSharedPrefs("deeplinkMode", "actual");
+    //       this.performDeeplinkAction();
+    //       this.setLoginPreferences();
+    //     } else {
+    //       console.log("NOT LOGGED IN");
+    //       this.showLoginOptions();
+    //     }
+    //   }
+    // } else {
+    //   //from normal app start
+    //   if (("YES" == window.__loggedInState)) {
+    //     this.performLogin();
+    //   } else {
+    //     this.showLoginOptions();
+    //   }
+    // }
+
+    if (window.__loggedInState == "YES" || window.__loggedInState == "GUEST") {
+      if ("__failed" != JBridge.getFromSharedPrefs("intentNotification")) {
+        console.log("Assuming user has logged in, notification data: ", JBridge.getFromSharedPrefs("intentNotification"));
+        this.handleNotificationAction();
+      } else if (("__failed" != JBridge.getFromSharedPrefs("intentFilePath")) || ("__failed" != JBridge.getFromSharedPrefs("intentLinkPath"))) {
+        this.performDeeplinkAction();
+        if (window.__loggedInState == "YES") {
+          this.setLoginPreferences();
+        }
+      } else {
+        this.setLoginPreferences();
+        var event = { tag: "OPEN_MainActivity", contents: [] };
+        window.__runDuiCallback(event);
+      }
+    } else {
+      this.showLoginOptions();
+    }
+  }
 
   afterRender = () =>{
-
-    console.log("AFTER RENDER IN USER ACTIVITY");
-
     var whereFrom = JBridge.getFromSharedPrefs("whereFromInUserActivity");
+    console.log("AFTER RENDER IN USER ACTIVITY");
     console.log("WHERE FROM IN AFTER RENDER",whereFrom)
+    console.log("SHARED PREFERENCES FOR logged_in", JBridge.getFromSharedPrefs("logged_in"));
+    console.log("SHARED PREFERENCES FOR link", JBridge.getFromSharedPrefs("intentLinkPath"));
+    console.log("SHARED PREFERENCES FOR file", JBridge.getFromSharedPrefs("intentFilePath"));
 
-    console.log("SHARED PREFERENCES FOR link",JBridge.getFromSharedPrefs("intentLinkPath"));
-    console.log("SHARED PREFERENCES FOR file",JBridge.getFromSharedPrefs("intentFilePath"));
+    this.performRedirection();
+  }
 
-    if ("__failed" != JBridge.getFromSharedPrefs("intentNotification")){
-      console.log("Assuming user has logged in, notification data: ", JBridge.getFromSharedPrefs("intentNotification"));
-      this.handleNotificationAction();
-    } else
-//from link
-      if(("__failed" != JBridge.getFromSharedPrefs("intentFilePath"))||("__failed" != JBridge.getFromSharedPrefs("intentLinkPath"))){
-
-        console.log("SHARED PREFERENCES ARE THERE STILL");
-        if(whereFrom == "SplashScreenActivity"){
-          console.log("FROM SPLASH SCREEN ACTIVITY");
-
-          if(("YES"==JBridge.getFromSharedPrefs("logged_in"))){
-
-            console.log("LOGGED IN");
-            JBridge.setInSharedPrefs("deeplinkMode", "actual");
-            this.performDeeplinkAction();
-            this.setLoginPreferences();
-
-          }else{
-
-            console.log("NOT LOGGED IN")
-            JBridge.setInSharedPrefs("deeplinkMode", "preview");
-            this.performDeeplinkAction();
-          }
-
-        }else if(whereFrom == "Deeplink") {
-
-          console.log("FROM DEEPLINK ");
-
-          if(("YES"==JBridge.getFromSharedPrefs("logged_in"))){
-            console.log("LOGGED IN AND FROM DEEPLINK","ACTUAL");
-
-            JBridge.setInSharedPrefs("deeplinkMode", "actual");
-            this.performDeeplinkAction();
-            this.setLoginPreferences();
-          }else{
-
-            console.log("NOT LOGGED IN");
-            this.replaceChild(this.idSet.parentContainer,this.getBody().render(),0);
-          }
-        }
-
-  //from app
-      }else{
-
-          if(("YES"==JBridge.getFromSharedPrefs("logged_in"))){
-
-              this.performLogin();
-          }else{
-              this.replaceChild(this.idSet.parentContainer,this.getBody().render(),0);
-          }
-
-      }
+  showLoginOptions = () => {
+    console.log("showLoginOptions");
+    this.replaceChild(this.idSet.parentContainer, this.getBody().render(), 0);
   }
 
   render() {
@@ -1019,13 +677,6 @@ class UserActivity extends View {
     return this.layout.render();
   }
 }
-
-              // <TextInputView
-              //   hintText={window.__S.HINT_LANGUAGE}
-              //   labelText={window.__S.LANGUAGE}
-              //   margin="20,0,24,12"
-              //   text="English"
-              //   _onChange={this.updateLanguage}/>
 
 
 module.exports = Connector(UserActivity);

@@ -20,9 +20,13 @@ resourceFragment input whereFrom whatToSendBack = do
 		OPEN_EnrolledCourseActivity {course:output} -> courseDetailActivity output "ResourceFragmnet" input
 		OPEN_SearchActivity {filterDetails: output} -> resourceSearchActivity output "ResourceFragmnet" input
 		OPEN_CourseInfoActivity {course : output} -> courseDetailActivity output "ResourceFragmnet" input
+		API_ResourceFragment {user_token:x,api_token:y}-> do
+			responseData <- getResourcePageApi x y
+			_ <- sendUpdatedState {response : responseData, responseFor : "API_ResourceFragment", screen:"ResourceFragment"}
+			pure $ "handled"
 		API_FilterPage{user_token:user_token, api_token:api_key,filter_to_send:delta}  ->	do
 			responseData <- getResourcePageFilterApi user_token api_key delta
-			_ <- sendUpdatedState {response : responseData, responseFor : "API_FilterPage", screen:"asas", filter_to_send:delta}
+			_ <- sendUpdatedState {response : responseData, responseFor : "API_FilterPage", screen:"ResourceFragment", filter_to_send:delta}
 			pure $ "handled"
 		_ -> resourceFragment input whereFrom whatToSendBack
 

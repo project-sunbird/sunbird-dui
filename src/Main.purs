@@ -168,26 +168,13 @@ mainActivity input whereFrom whatToSendBack = do
         OPEN_ResourceFragment -> resourceFragment input "MainActivity" input
         OPEN_CommunityFragment -> communityFragment input "MainActivity" input
         OPEN_ProfileFragment -> profileFragment input "MainActivity" input
-
-        API_CourseFragment {user_token:x,api_token:y}-> do
-            responseData <- getCoursesPageApi x y
-            _ <- sendUpdatedState {response : responseData, responseFor : "API_CourseFragment", screen:"asas"}
-            pure $ "handled"
-        API_ResourceFragment {user_token:x,api_token:y}-> do
-            responseData <- getResourcePageApi x y
-            _ <- sendUpdatedState {response : responseData, responseFor : "API_ResourceFragment", screen:"asas"}
-            pure $ "handled"
         API_ProfileFragment {user_token:x,api_token:y}-> do
             responseData <- getProfileDetail x y
-            _ <- sendUpdatedState {response : responseData, responseFor : "API_ProfileFragment", screen:"asas"}
+            _ <- sendUpdatedState {response : responseData, responseFor : "API_ProfileFragment", screen:"MainActivity"}
             pure $ "handled"
-        API_GetAnnouncementData {user_token: user_token,api_token: api_token,requestBody:request}-> do
-			responseData <- getAnnouncementData user_token api_token request
-			_ <- sendUpdatedState {response : responseData, responseFor : "API_GetAnnouncementData", screen:"asas"}
-			pure $ "handled"
         API_Tenant {user_token:x, api_token:y, slug:z} -> do
           responseData <- getTenantDetail x y z
-          _ <- sendUpdatedState {response : responseData, responseFor : "API_Tenant", screen:"asas"}
+          _ <- sendUpdatedState {response : responseData, responseFor : "API_Tenant", screen:"MainActivity"}
           pure $ "apiDefault"
         _ -> mainActivity input whereFrom whatToSendBack
 

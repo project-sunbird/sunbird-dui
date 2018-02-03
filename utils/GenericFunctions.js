@@ -121,6 +121,14 @@ exports.cropText = (text, limit) => {
 	return text;
 }
 
+exports.addSwipeFunction = (id) => {
+	console.log("addSwipeFunction");
+	var callbackRefresh = callbackMapper.map(function (params) {
+		window.__BNavFlowRestart();
+	});
+	JBridge.addSwipeRefreshScrollView(id, callbackRefresh);
+}
+
 exports.processResponse = (state) => {
 	console.log("processing response, state:", state);
 	var response = {};
@@ -144,7 +152,7 @@ exports.processResponse = (state) => {
 		response.data = decoded;
 		response.err = "Parsing error";
 	}
-	if (response.code == "401"){
+	if (response.code == "401" && window.__loggedInState != "GUEST"){
 		console.log("401 response data ", response.data);
 		if (response.data.hasOwnProperty("message")){
 			//api token expired
@@ -179,7 +187,8 @@ exports.processResponse = (state) => {
 					console.log("response ", response);
 					window.__refreshToken = response.refresh_token;
 					window.__user_accessToken = response.access_token;
-					JBridge.setInSharedPrefs("user_token",  response.access_token);
+					JBridge.setInSharedPrefs("user_token", response.access_token);
+					JBridge.setInSharedPrefs("refresh_token", response.refresh_token);
 					var whatToSend = {"user_token":window.__user_accessToken,"api_token": window.__apiToken}
 					var event = { "tag": state.responseFor, contents: whatToSend };
 					window.__runDuiCallback(event);

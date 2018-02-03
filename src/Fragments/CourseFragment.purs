@@ -18,13 +18,17 @@ courseFragment input whereFrom whatToSendBack = do
 		OPEN_EnrolledCourseActivity {course:output} -> enrolledCourseActivity output "CourseFragment" input
 		OPEN_SearchActivity {filterDetails : output} -> searchCourseActivity output "CourseFragment" input
 		OPEN_CourseViewAllActivity {courseListDetails : output} -> courseViewAllActivity output "CourseFragment" input
+		API_CourseFragment {user_token:x,api_token:y}-> do
+			responseData <- getCoursesPageApi x y
+			_ <- sendUpdatedState {response : responseData, responseFor : "API_CourseFragment", screen:"CourseFragment"}
+			pure $ "handled"
 		API_UserEnrolledCourse {user_token:x,api_token:y}-> do
 			responseData <- getUserEnrolledCourses x y
-	 		_ <- sendUpdatedState {response : responseData, responseFor : "API_UserEnrolledCourse", screen:"asas"}
+	 		_ <- sendUpdatedState {response : responseData, responseFor : "API_UserEnrolledCourse", screen:"CourseFragment"}
 	  		pure $ "apiDefault"
 		API_FilterPage{user_token:user_token, api_token:api_key,filter_to_send:delta}  ->	do
 			responseData <- getCourcePageFilterApi user_token api_key delta
-			_ <- sendUpdatedState {response : responseData, responseFor : "API_FilterPage", screen:"asas" , filter_to_send:delta }
+			_ <- sendUpdatedState {response : responseData, responseFor : "API_FilterPage", screen:"CourseFragment" , filter_to_send:delta }
 			pure $ "handled"
 		_ -> courseFragment input whereFrom whatToSendBack
 
