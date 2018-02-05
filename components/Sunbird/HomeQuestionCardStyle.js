@@ -49,15 +49,20 @@ class HomeQuestionCardStyle extends View {
 
 	onPop = () => {}
 
+	handleLoginClick = () => {
+		console.log(window.__loginUrl, "/auth/realms/sunbird/protocol/openid-connect/auth ", "android");
+		JBridge.keyCloakLogin(window.__loginUrl + "/auth/realms/sunbird/protocol/openid-connect/auth", "android");
+	}
+
 	render = () => {
 		this.layout = (
 			<LinearLayout
 				height={this.props.height ? this.props.height : "wrap_content"}
 				width="match_parent"
-				id = {this.idSet.parentId}
+				id={this.idSet.parentId}
 				orientation="vertical"
 				background={"#FFFFFF"}
-				padding = "16,16,16,16"
+				padding="16,16,16,16"
 				cornerRadius="5"
 				clickable="true"
 				root={true}>
@@ -68,7 +73,7 @@ class HomeQuestionCardStyle extends View {
 					textSize={this.props.textSize ? this.props.textSize : "20"}
 					color={"#000000"}
 					gravity={this.props.gravity ? this.props.gravity : "center"}
-					 />
+				/>
 				<TextView
 					id={this.setIds.LOCK_INFO_TEXT}
 					height="match_parent"
@@ -78,22 +83,22 @@ class HomeQuestionCardStyle extends View {
 					textSize={"15"}
 					color={"#000000"}
 					gravity={this.props.gravity ? this.props.gravity : "center"}
-					 />
-					 <LinearLayout
-	           height="38"
-	           width="match_parent"
-	           onClick={this.handleLoginClick}>
-	           <TextView
-	             background={window.__Colors.THICK_BLUE}
-	             stroke={"5," + window.__Colors.THICK_BLUE}
-	             cornerRadius="5"
-	             height="match_parent"
-	             width="match_parent"
-	             gravity="center"
-	             textAllCaps="true"
-	             style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
-	             text={window.__S.SIGN_IN} />
-	         </LinearLayout>
+				/>
+				<LinearLayout
+					height="38"
+					width="match_parent"
+					onClick={this.handleLoginClick}>
+					<TextView
+						background={window.__Colors.THICK_BLUE}
+						stroke={"5," + window.__Colors.THICK_BLUE}
+						cornerRadius="5"
+						height="match_parent"
+						width="match_parent"
+						gravity="center"
+						textAllCaps="true"
+						style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
+						text={window.__S.SIGN_IN} />
+				</LinearLayout>
 			</LinearLayout>
 		);
 		//this.containerId = this.layout.idSet.id;

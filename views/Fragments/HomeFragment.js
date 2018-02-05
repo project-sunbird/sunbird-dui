@@ -447,35 +447,34 @@ class HomeFragment extends View {
           hideBack="true"
           menuData={this.menuData}
           onMenuItemClick={this.handleMenuClick}/>
-        
-        <ScrollView
-          weight="1"
+        <RelativeLayout
+          height="match_parent"
           width="match_parent">
-          <RelativeLayout
-            height="match_parent"
+          <ScrollView
+            weight="1"
             width="match_parent">
-          <LinearLayout
-            height="match_parent"
-            width="match_parent"
-            orientation="vertical">
-            {this.getCourseInProgressContainer()}
-            <LineSpacer />
             <LinearLayout
               height="match_parent"
               width="match_parent"
-              orientation="vertical"
-              id={this.idSet.announcementContainer}>
-              {this.getAnnouncementCard()}
+              orientation="vertical">
+              {this.getCourseInProgressContainer()}
               <LineSpacer />
+              <LinearLayout
+                height="match_parent"
+                width="match_parent"
+                orientation="vertical"
+                id={this.idSet.announcementContainer}>
+                {this.getAnnouncementCard()}
+                <LineSpacer />
+              </LinearLayout>
+              <HomeRecommendedContainer
+                title={window.__S.RECOMMENDED}
+                onCourseOpenClick={this.handleCourseOpen}
+                onResourceOpenClick={this.handleResourceOpen} />
             </LinearLayout>
-            <HomeRecommendedContainer
-              title={window.__S.RECOMMENDED}
-              onCourseOpenClick={this.handleCourseOpen}
-              onResourceOpenClick={this.handleResourceOpen} />
-          </LinearLayout>
+          </ScrollView>
           {this.getSignInOverlay()}
         </RelativeLayout>
-        </ScrollView>
       </LinearLayout>
       )
     return this.layout.render();
