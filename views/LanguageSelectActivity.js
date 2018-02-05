@@ -140,12 +140,11 @@ class LanguageSelectActivity extends View {
     getContinueBtn = () => {
         return (
             <LinearLayout
-                height={"38"}
+                height={"48"}
                 width={"match_parent"}
                 orientation="horizontal"
                 gravity="center_vertical"
                 background={"#FF0076FE"}
-                stroke="1,#0076fe"
                 cornerRadius="4"
                 margin={"0,0,0,0"}
                 clickable="true">
@@ -156,8 +155,9 @@ class LanguageSelectActivity extends View {
                     onClick={this.changeLang}>
                     <TextView
                         width="match_parent"
+                        textAllCaps="true"
                         text={ window.__S.CONTINUE }
-                        textSize={"12"}
+                        textSize={"14"}
                         color={"#FFFFFFFF"}
                         gravity="center" />
                     <LinearLayout

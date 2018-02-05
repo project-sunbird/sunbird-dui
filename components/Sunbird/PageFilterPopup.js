@@ -7,17 +7,14 @@ var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
 var ScrollView = require("@juspay/mystique-backend/src/android_views/ScrollView");
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var EditText = require("@juspay/mystique-backend/src/android_views/EditText");
-
 var Space = require("@juspay/mystique-backend/src/android_views/Space");
 var ViewWidget = require("@juspay/mystique-backend").androidViews.ViewWidget;
 var FeatureButton = require("../../components/Sunbird/FeatureButton");
 var PageFilterChooser = require('../Sunbird/PageFilterChooser');
 var PageOption = require("../../components/Sunbird/core/PageOption")
-
 var FilterItem = require('../Sunbird/FilterItem')
-
 var Styles = require("../../res/Styles");
-var FilterParamsCource = require("../../FilterParamsCource")
+var FilterParamsCourse = require("../../FilterParamsCourse")
 var FilterParamsResource = require("../../FilterParamsResource")
 var utils = require("../../src/Utils")
 
@@ -35,9 +32,8 @@ class PageFilterPopup extends View {
       "applyBtn"
     ]);
 
-
     window.__PageFilterPopup = this;
-    this.filterListCource=FilterParamsCource.filterParamsCource;
+    this.filterListCourse=FilterParamsCourse.filterParamsCourse;
     this.filterListResource=FilterParamsResource.filterParamsResource;
     this.isForResouce=false;
     this.cancelBtnState = {
@@ -54,9 +50,7 @@ class PageFilterPopup extends View {
       onClick : this.onConfirm,
       visibility : "visible",
     };
-
   }
-
 
   show = () => {
     this.visible=true;
@@ -86,142 +80,128 @@ class PageFilterPopup extends View {
     Android.runInUI(cmd, 0)
   }
 
-
   setValues = (item,values) => {
     this.filter[item]=values;
   }
 
-
-
-
   getFilterList = () => {
+    console.log("inside getFilterList");
+    
     var listToUse;
 
-    if(this.isForResouce){
+    if (this.isForResouce) {
       listToUse = this.filterListResource
       JBridge.logPageFilterScreenEvent("LIBRARY");
-    }else{
-      listToUse = this.filterListCource
+    } else {
+      listToUse = this.filterListCourse
       JBridge.logPageFilterScreenEvent("COURSES");
     }
-
-    listToUse.map((item)=>{
-
-      item.selected=this.filter[item.name];
+    console.log("listToUse -> ", listToUse);
+    console.log("this.filter -> ", this.filter);
+    
+    listToUse.map((item) => {
+      item.selected = this.filter[item.name];
     });
 
-    console.log(listToUse,"listToUse" );
+    console.log(listToUse, "listToUse");
 
-    var listItem=listToUse.map((item,index)=>{
+    var listItem = listToUse.map((item, index) => {
       return (
-                  <FilterItem
-                    height="match_parent"
-                    width="match_parent"
-                    gravity="center_vertical"
-                    background="#000000"
-                    data={item}
-                    onUpdate={this.setValues}
-                    forPage={true}/>
+        <FilterItem
+          height="match_parent"
+          width="match_parent"
+          gravity="center_vertical"
+          background="#000000"
+          data={item}
+          onUpdate={this.setValues}
+          forPage={true} />
 
-              )
+      )
     });
-
-
-
-     return (
+    return (
       <ScrollView
         height="0"
         weight="1"
         width="match_parent"
         fillViewPort="true">
-            <LinearLayout
-              height="wrap_content"
-              width="match_parent"
-              orientation="vertical"
-              padding="0,10,0,60">
+        <LinearLayout
+          height="wrap_content"
+          width="match_parent"
+          orientation="vertical"
+          padding="0,10,0,60">
 
-                {listItem}
+          {listItem}
 
-              </LinearLayout>
-        </ScrollView>)
-
+        </LinearLayout>
+      </ScrollView>);
   }
-
-
-
 
   getHeader = () => {
     return (
       <LinearLayout
-      width="match_parent"
-      height="wrap_content"
-      margin="16,0,16,0">
+        width="match_parent"
+        height="wrap_content"
+        margin="16,0,16,0">
 
-          <TextView
-           width = "match_parent"
-           height = "wrap_content"
-           text = {window.__S.AVAILABLE_FILTERS}
-           style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
-
+        <TextView
+          width="match_parent"
+          height="wrap_content"
+          text={window.__S.AVAILABLE_FILTERS}
+          style={window.__TextStyle.textStyle.CARD.TITLE.DARK} />
       </LinearLayout>
-    )
+    );
   }
 
   getOptions = () => {
     var buttonList = [this.cancelBtnState, this.applyBtnState];
     return (<LinearLayout
-          height="wrap_content"
-          width="match_parent"
-          alignParentBottom = "true, -1">
-          <PageOption
-            width="match_parent"
-            buttonItems={buttonList}
-            hideDivider={false}
-            onButtonClick={this.handlePageOption}/>
-          </LinearLayout>)
+      height="wrap_content"
+      width="match_parent"
+      alignParentBottom="true, -1">
+
+      <PageOption
+        width="match_parent"
+        buttonItems={buttonList}
+        hideDivider={false}
+        onButtonClick={this.handlePageOption} />
+    </LinearLayout>);
   }
 
 
   getBody = () => {
     return (<LinearLayout
-              cornerRadius = "2"
-              width = "match_parent"
-              height = "450"
-              root="true"
-              orientation= "vertical"
-              clickable = "true"
-              padding="0,18,0,6"
-              background="#ffffff">
+      cornerRadius="2"
+      width="match_parent"
+      height="450"
+      root="true"
+      orientation="vertical"
+      clickable="true"
+      padding="0,18,0,6"
+      background="#ffffff">
 
-             {this.getHeader()}
+      {this.getHeader()}
 
-             {this.getFilterList()}
+      {this.getFilterList()}
 
-             {this.getOptions()}
+      {this.getOptions()}
 
-            </LinearLayout>)
+    </LinearLayout>);
   }
 
   resetPopup = (isFor,response) => {
-    if(isFor=="Cource"){
+    if(isFor=="Course"){
       this.isForResouce=false;
     }else{
       this.isForResouce=true;
     }
 
     this.filter={};
-    if(response!=undefined && response.hasOwnProperty("filter_to_send") && response.filter_to_send!=null)
-      {
+    if(response!=undefined && response.hasOwnProperty("filter_to_send") && response.filter_to_send!=null) {
         this.filter=JSON.parse(response.filter_to_send);
         console.log("fiter to send reached",this.filter);
 
       }
-
-    //     window.__PageFilterChooser.handleItemClick(item,false);
-
-    this.replaceChild(this.idSet.contentContainer, this.getBody().render(), 0)
-
-
+    this.replaceChild(this.idSet.contentContainer, this.getBody().render(), 0);
   }
 
   isEmpty = (obj) => {
@@ -252,10 +232,12 @@ class PageFilterPopup extends View {
     var whatToSend = {"user_token":window.__user_accessToken,"api_token": window.__apiToken,"filter_to_send":sendFilter}
     var event = { "tag": "API_FilterPage", contents: whatToSend};
 
-    if(JBridge.isNetworkAvailable())
+    if(JBridge.isNetworkAvailable()) {
+      window.__LoaderDialog.show();
       window.__runDuiCallback(event);
-    else
-      window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE)
+    } else {
+      window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
+    }
 
   }
 
@@ -266,37 +248,37 @@ class PageFilterPopup extends View {
 
 
   render() {
-
     this.layout = (
       <RelativeLayout
-        height = "match_parent"
-        width = "match_parent"
+        height="match_parent"
+        width="match_parent"
         id={this.idSet.parentContainer}
         visibility="gone"
         root="true"
-        background = { window.__Colors.PRIMARY_BLACK_44}>
+        background={window.__Colors.PRIMARY_BLACK_44}>
+
+        <LinearLayout
+          height="match_parent"
+          width="match_parent"
+          background={window.__Colors.PRIMARY_BLACK_44}
+          orientation="vertical">
+
           <LinearLayout
-            height = "match_parent"
-            width = "match_parent"
-            background = { window.__Colors.PRIMARY_BLACK_44}
-            orientation="vertical">
-              <LinearLayout
-                width="match_parent"
-                onClick={this.handleDismissClick}
-                weight="1"/>
+            width="match_parent"
+            onClick={this.handleDismissClick}
+            weight="1" />
 
-              <LinearLayout
-                height="wrap_content"
-                width="match_parent"
-                orientation="vertical"
-                root="true"
-                id={this.idSet.contentContainer}/>
-          </LinearLayout>
-          <PageFilterChooser/>
+          <LinearLayout
+            height="wrap_content"
+            width="match_parent"
+            orientation="vertical"
+            root="true"
+            id={this.idSet.contentContainer} />
+        </LinearLayout>
+
+        <PageFilterChooser />
       </RelativeLayout>
-
-    )
-
+    );
     return this.layout.render();
   }
 }

@@ -27,7 +27,6 @@ class CourseFragment extends View {
   constructor(props, children) {
     super(props, children);
     this.screenName = "CourseFragment";
-    this.props.appendText = this.props.appendText || "";
     this.setIds([
       "parentContainer",
       "infoContainer",
@@ -38,38 +37,15 @@ class CourseFragment extends View {
     ]);
     _this = this;
 
-    this.props = props;
-    this.myCommunitySelected = "";
-    this.popularCommunitySelected = "";
-    this.recommendedCommunitySelected = "";
-
-    console.log("course constructor", props);
-    if (this.props.response != undefined && this.props.response.hasOwnProperty("filter_to_send") && this.props.response.filter_to_send != null) {
-      console.log(props.response.filter_to_send, "fiter applied");
-      console.log([].concat.apply([], Object.values(JSON.parse(props.response.filter_to_send))).length, "lenth");
-
-      if (([].concat.apply([], Object.values(JSON.parse(props.response.filter_to_send)))).length > 0) {
-        this.menuData = {
+    if (window.__CourseFilter) {
+      this.menuData = {
           url: [
             { imageUrl: "ic_action_search" },
             { imageUrl: "ic_action_filter_applied" }
           ]
         }
-      }
-      else {
-
+    } else {
         this.menuData = {
-          url: [
-            { imageUrl: "ic_action_search" },
-            { imageUrl: "ic_action_filter" }
-          ]
-        }
-      }
-
-    }
-    else {
-      console.log("no filter applied");
-      this.menuData = {
         url: [
           { imageUrl: "ic_action_search" },
           { imageUrl: "ic_action_filter" }
@@ -77,52 +53,39 @@ class CourseFragment extends View {
       }
     }
     JBridge.logTabScreenEvent("COURSES");
-    this.enrolledCourses = []
-    window.setEnrolledCourses = this.setEnrolledCourses;
-  }
-
-  setEnrolledCourses = (list) => {
-    this.enrolledCourses = list;
-
-    window.__UpdateUserCourses(this.enrolledCourses);
   }
 
   checkIfEnrolled = (identifier) => {
     var enrolled = false;
-
-    this.enrolledCourses.map((item) => {
-
-      if (item.identifier === identifier || item.contentId === identifier || item.courseId === identifier) {
-        enrolled = true;
-      }
-    })
+    if (window.__enrolledCourses) {
+      window.__enrolledCourses.map((item) => {
+        if (item.identifier === identifier || item.contentId === identifier || item.courseId === identifier) {
+          enrolled = true;
+        }
+      });
+    }
     return enrolled;
   }
 
-  networkCheck = () => {
-    if (JBridge.isNetworkAvailable()) {
-      window.__BNavFlowRestart();
-      return;
-    }
-    window.__timer = setTimeout(this.dumyfunction, 5000);
-  }
-
-  handlePageApi = (isErr) => {
+  handlePageApi = (isErr, data) => {
+    console.log("data in handlePageApi -> ", data);
+    
     if (isErr) {
       //Error in response
       window.__Snackbar.show(window.__S.ERROR_EMPTY_RESULT)
       this.replaceChild(this.idSet.courseContentContainer, this.getErrorLayout().render(), 0);
     } else {
       //successful response
-      this.details = this.responseData.result.response;
+      this.details = data.result.response;
+      window.__PageFilterPopup.resetPopup("Course", data);
       if ((!this.details.hasOwnProperty("name"))
         || (this.details.sections == undefined || this.details.sections.length == 0)) {
         //error in fetched data
-        window.__ContentLoadingComponent.hideLoader();
-        window.__LoaderDialog.hide();
         window.__Snackbar.show(window.__S.ERROR_FETCHING_DATA);
         this.replaceChild(this.idSet.courseContentContainer, this.getErrorLayout().render(), 0);
       } else {
+        console.log("this.details in handlePageApi -> ", this.details);
+        
         var rows = this.details.sections.map((item, index) => {
           return this.getCourseCardLayout(item);
         })
@@ -139,6 +102,7 @@ class CourseFragment extends View {
         this.replaceChild(this.idSet.courseContentContainer, layout.render(), 0);
       }
     }
+    window.__LoaderDialog.hide();
     utils.addSwipeFunction(this.idSet.scrollViewContainerCourse);
   }
 
@@ -165,15 +129,16 @@ class CourseFragment extends View {
     var res = utils.processResponse(state);
     var status = res.status;
     var responseData = res.data;
-    this.responseData = responseData;
     var responseCode = res.code;
     var responseUrl = res.url;
+    if (state.hasOwnProperty(filter_to_send)) {
+      responseData.filter_to_send = state.filter_to_send;
     var isErr = res.hasOwnProperty("err");
 
-    console.log("responseData -> ", this.responseData);
+    console.log("responseData -> ", responseData);
     switch(state.responseFor) {
       case "API_CourseFragment":
-        this.handlePageApi(isErr);
+        this.handlePageApi(isErr, responseData);
         break; 
       case "API_UserEnrolledCourse":
         if (isErr) {
@@ -181,17 +146,19 @@ class CourseFragment extends View {
           if (tmpData && tmpData != "__failed") {
             console.log("fetched enrolledCourses");
             window.__enrolledCourses = JSON.parse(utils.decodeBase64(tmpData));
-            // window.setEnrolledCourses(JSON.parse(utils.decodeBase64(tmpData)));
             this.courseInProgressContainer.renderContent(JSON.parse(utils.decodeBase64(tmpData)));
             return;
           }
         } else {
           JBridge.saveData("savedCourse", utils.encodeBase64(JSON.stringify(responseData.result.courses)));       
           window.__enrolledCourses = responseData.result.courses;
-          // window.setEnrolledCourses(responseData.result.courses);
           this.courseInProgressContainer.renderContent(responseData.result.courses);
           return;
         }
+        break;
+      case "API_FilterPage":
+        window.__CourseFilter = responseData;
+        window.__BNavFlowRestart();
         break;
     }
   }
@@ -291,7 +258,6 @@ class CourseFragment extends View {
     if (!JBridge.isNetworkAvailable()) {
       window.__ContentLoadingComponent.hideLoader();
       window.__LoaderDialog.hide();
-      window.timer = setTimeout(this.networkCheck, 5000);
       this.replaceChild(this.idSet.courseContentContainer, (<NoInternetCard/>).render(), 0);
     } else {
       var whatToSend = {
@@ -316,7 +282,17 @@ class CourseFragment extends View {
   }
 
   afterRender = () => {
-    this.getCourseData();
+    if (!window.__CourseFilter) {
+      console.log("CF afterRender -> no window.__CourseFilter");
+      
+      this.getCourseData();
+    } else {
+      console.log("CF afterRender -> window.__CourseFilter");
+      var responseData = window.__CourseFilter;
+      var isErr = responseData.hasOwnProperty("err");
+      this.handlePageApi(isErr, responseData);
+      window.__CourseFilter = undefined;
+    }
     utils.addSwipeFunction(this.idSet.scrollViewContainerCourse);
   }
 
@@ -366,12 +342,7 @@ class CourseFragment extends View {
   }
 
   handleMenuClick = (url) => {
-
-    if (url == "ic_notification_red") {
-      window.__Snackbar.show(window.__S.COMING_SOON)
-    }
-    else if (url == "ic_action_search") {
-
+    if (url == "ic_action_search") {
       var searchDetails = { filterDetails: "", searchType: "Course" }
       var whatToSend = { filterDetails: JSON.stringify(searchDetails) }
       var event = { tag: "OPEN_SearchActivity", contents: whatToSend }
@@ -379,7 +350,6 @@ class CourseFragment extends View {
 
     } else if (url == "ic_action_filter" || url == "ic_action_filter_applied") {
       JBridge.explicitSearch("COURSE", "FILTER");
-      window.__PageFilterPopup.resetPopup("Cource", this.props.response);
       window.__PageFilterPopup.show();
     }
   }

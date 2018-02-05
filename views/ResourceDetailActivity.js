@@ -41,7 +41,7 @@ class ResourceDetailActivity extends View {
         {imageUrl:'ic_action_overflow'}
       ]
     }
-    this.popupMenu = window.__S.DELETE + "," + window.__S.FLAG;
+    this.popupMenu = window.__loggedInState == "GUEST" ? window.__S.DELETE : (window.__S.DELETE + "," + window.__S.FLAG);
     _this = this;
 
     this.shouldCacheScreen = false;
@@ -51,10 +51,7 @@ class ResourceDetailActivity extends View {
     console.log("RDA",this.details);
     JBridge.logResourceDetailScreenEvent(_this.details.content.identifier, _this.details.content.pkgVersion, _this.details.isAvailableLocally);
     JBridge.startEventLog(_this.details.content.contentType, _this.details.content.identifier, _this.details.content.pkgVersion);
-
     this.localStatus = false;
-
-    
   }
 
   checkLocalStatus = (data) => {

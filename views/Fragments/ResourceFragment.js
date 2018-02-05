@@ -42,28 +42,14 @@ class ResourceComponent extends View {
 
     this.data = [];
 
-    if (this.props.response != undefined && this.props.response.hasOwnProperty("filter_to_send") && this.props.response.filter_to_send != null) {
-      console.log(props.response.filter_to_send, "fiter applied");
-      if (([].concat.apply([], Object.values(JSON.parse(props.response.filter_to_send)))).length > 0) {
-        this.menuData = {
-          url: [
-            { imageUrl: "ic_action_search" },
-            { imageUrl: "ic_action_filter_applied" }
-          ]
-        }
+    if (window.__ResourceFilter) {
+      this.menuData = {
+        url: [
+          { imageUrl: "ic_action_search" },
+          { imageUrl: "ic_action_filter_applied" }
+        ]
       }
-      else {
-
-        this.menuData = {
-          url: [
-            { imageUrl: "ic_action_search" },
-            { imageUrl: "ic_action_filter" }
-          ]
-        }
-      }
-    }
-    else {
-      console.log("no filter applied");
+    } else {
       this.menuData = {
         url: [
           { imageUrl: "ic_action_search" },
@@ -72,25 +58,22 @@ class ResourceComponent extends View {
       }
     }
     JBridge.logTabScreenEvent("LIBRARY");
-    window.__UpdateOfflineContent = this.renderOfflineCard;
-    // this.handleResponse();
-
   }
 
+  handlePageApi = (isErr, data) => {
+    console.log("data in handlePageApi -> ", data);
 
-  handleStateChange = (state) => {
-    var res = utils.processResponse(state);
-    var status = res.status;
-    var responseData = res.data;
-    this.responseData = responseData;
-    var responseCode = res.code;
-    var responseUrl = res.url;
-    var isErr = res.hasOwnProperty("err");
-
-    console.log("responseData -> ", this.responseData);
-
-    if (!isErr) {
-      this.details = this.responseData.result.response;
+    if (isErr) {
+      this.cards = (<LinearLayout
+        height="wrap_content"
+        width="match_parent"
+        orientation="vertical"
+        root="true">
+        {this.getSignInOverlay()}
+      </LinearLayout>);
+    } else {
+      window.__PageFilterPopup.resetPopup("Resource", data);
+      this.details = data.result.response;
       if (this.details.hasOwnProperty("name")) {
 
         var cardsContent = this.details.sections.map((item) => {
@@ -107,24 +90,41 @@ class ResourceComponent extends View {
         </LinearLayout>)
       } else {
         this.cards = (<LinearLayout
-        height="wrap_content"
-        width="match_parent"
-        orientation="vertical"
-        root="true">
-        {this.getErrorLayout()}
-        {this.getSignInOverlay()}
-      </LinearLayout>);
+          height="wrap_content"
+          width="match_parent"
+          orientation="vertical"
+          root="true">
+          {this.getErrorLayout()}
+          {this.getSignInOverlay()}
+        </LinearLayout>);
       }
-    } else {
-      this.cards = (<LinearLayout
-        height="wrap_content"
-        width="match_parent"
-        orientation="vertical"
-        root="true">
-        {this.getSignInOverlay()}
-      </LinearLayout>)
     }
+    window.__LoaderDialog.hide();
     this.replaceChild(this.idSet.resourceContentContainer, this.cards.render(), 0);
+  }
+
+  handleStateChange = (state) => {
+    var res = utils.processResponse(state);
+    var status = res.status;
+    var responseData = res.data;
+    var responseCode = res.code;
+    var responseUrl = res.url;
+    if (state.hasOwnProperty(filter_to_send)) {
+      responseData.filter_to_send = state.filter_to_send;
+    }
+    var isErr = res.hasOwnProperty("err");
+
+    console.log("responseData -> ", responseData);
+
+    switch(state.responseFor) {
+      case "API_ResourceFragment":
+        this.handlePageApi(isErr, responseData);
+        break;
+      case "API_FilterPage":
+        window.__ResourceFilter = responseData;
+        window.__BNavFlowRestart();
+        break;
+    }
   }
 
 
@@ -249,17 +249,11 @@ class ResourceComponent extends View {
   }
 
   handleMenuClick = (url) => {
-    console.log("url clicked", url);
     if (url == "ic_action_filter" || url == "ic_action_filter_applied") {
       JBridge.explicitSearch("LIBRARY", "FILTER");
-      window.__PageFilterPopup.resetPopup("Resource", this.props.response);
       window.__PageFilterPopup.show();
-    } else if (url == "ic_notification_red") {
-      var whatToSend = []
-      var event = { tag: "OPEN_NotificationActivity", contents: [] }
-      window.__runDuiCallback(event);
-    } else if (url == "ic_action_search") {
 
+    } else if (url == "ic_action_search") {
       var searchDetails = { filterDetails: "", searchType: "Library" }
       var whatToSend = { filterDetails: JSON.stringify(searchDetails) }
       var event = { tag: "OPEN_SearchActivity", contents: whatToSend }
@@ -274,9 +268,16 @@ class ResourceComponent extends View {
   }
 
   afterRender = () => {
-    utils.addSwipeFunction(this.idSet.scrollViewContainer);
     this.renderOfflineCard();
-    this.getResourceData();
+    if (!window.__ResourceFilter) {
+      this.getResourceData();
+    } else {
+      var responseData = window.__ResourceFilter;
+      var isErr = responseData.hasOwnProperty("err");
+      this.handlePageApi(isErr, responseData);
+      window.__ResourceFilter = undefined;
+    }
+    utils.addSwipeFunction(this.idSet.scrollViewContainer);
   }
 
   getResourceData = () => {
@@ -317,11 +318,9 @@ class ResourceComponent extends View {
 
           <LineSpacer />
         </LinearLayout>
-      )
+      );
 
       _this.replaceChild(_this.idSet.offlineContainer, layout.render(), 0);
-
-
     });
 
     JBridge.getAllLocalContent(callback);

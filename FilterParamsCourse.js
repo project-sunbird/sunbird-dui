@@ -1,4 +1,4 @@
-exports.filterParamsCource =[
+exports.filterParamsCourse =[
 {
   name : "language",
   displayName : "Language",

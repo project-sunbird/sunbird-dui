@@ -91,14 +91,12 @@ class HomeFragment extends View {
           if (tmpData && tmpData != "__failed") {
             console.log("fetched enrolledCourses");
             window.__enrolledCourses = JSON.parse(utils.decodeBase64(tmpData));
-            // window.setEnrolledCourses(JSON.parse(utils.decodeBase64(tmpData)));
             this.courseInProgressContainer.renderContent(JSON.parse(utils.decodeBase64(tmpData)));
             return;
           }
         } else {
           JBridge.saveData("savedCourse", utils.encodeBase64(JSON.stringify(responseData.result.courses)));
           window.__enrolledCourses = responseData.result.courses;
-          // window.setEnrolledCourses(responseData.result.courses);
           this.courseInProgressContainer.renderContent(responseData.result.courses);
           return;
         }
