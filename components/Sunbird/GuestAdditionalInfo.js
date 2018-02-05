@@ -17,76 +17,68 @@ class GuestAdditionalInfo extends View {
     ]);
     _this = this;
 
-    //this.data = this.props.data;
-    console.log("this.data", this.data);
+    console.log("profileData in GuestAdditionalInfo", this.props.profileData);
 
     //initialise data
+    this.profileData = this.props.profileData;
     this.maxLen = 30;
-    this.languages = "";
-    this.state = "Karnataka";
-    this.grade = "Grade 1";
-    this.medium = "English";
-    this.syllabus = ""
-
-
-    if( this.data && this.data.hasOwnProperty("grade")&&this.data.grade.length>0){
-    this.data.grade.map((item, i) => {
-      var append = ",";
-      if (i == this.data.grade.length - 1) append = "";
-      this.grade += item + append;
-    });
-  }
-    this.grade = utils.cropText(this.grade, this.maxLen);
+    this.handle = this.profileData.handle;
+    this.medium = this.profileData.medium;
+    this.grade = this.initGrade();
+    this.board = this.profileData.board;
+    this.subjects = "";
 
     this.info = [{
-      name: window.__S.STATE,
-      value : this.state
-    },
-    {
       name: window.__S.MEDIUM_GUEST,
-      value : this.medium
+      value: this.medium
     },
     {
       name: window.__S.GRADE,
-      value : this.grade
+      value: this.grade
     },
     {
-      name: window.__S.SYLLABUS,
-      value : this.syllabus
-    }]
+      name: window.__S.BOARD,
+      value: this.board
+    }];
+  }
 
-    this.visibility = "gone"
-    if (this.props.editable == "true"){
-      this.visibility = "visible";
-    }
+  initGrade = () => {
+    var gradeList = JSON.parse(utils.decodeBase64(JBridge.getGrades()));
+    var grade = this.profileData.grade;
+    gradeList.map((item, i) => {
+      if (item.value == grade) {
+        this.profileData.grade = item.label;
+      }
+    });
+    this.profileData.grade == -1 ? "" : this.profileData.grade + "";
+    return this.profileData.grade;
   }
 
   getRows = (input)=> {
     var rows = this.info.map((item, i) => {
       return (<LinearLayout
-              width="wrap_content"
-              height="wrap_content"
-              margin="0,16,0,0"
-              visibility = {(item.value && item.value != "") ? "visible" : "gone"}>
+        width="wrap_content"
+        height="wrap_content"
+        margin="0,16,0,0"
+        visibility={(item.value && item.value != "") ? "visible" : "gone"}>
 
-              <TextView
-              width="wrap_content"
-              height="wrap_content"
-              textAllCaps = "true"
-              text={item.name}
-              style={window.__TextStyle.textStyle.HINT.SEMI}/>
+        <TextView
+          width="wrap_content"
+          height="wrap_content"
+          textAllCaps="true"
+          text={item.name}
+          style={window.__TextStyle.textStyle.HINT.SEMI} />
 
-              <ViewWidget
-              height="0"
-              weight="1"/>
+        <ViewWidget
+          height="0"
+          weight="1" />
 
-              <TextView
-              width="wrap_content"
-              height="wrap_content"
-              text={item.value}
-              style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
-
-              </LinearLayout>)
+        <TextView
+          width="wrap_content"
+          height="wrap_content"
+          text={item.value}
+          style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK} />
+      </LinearLayout>);
     });
 
     return rows;
@@ -94,43 +86,44 @@ class GuestAdditionalInfo extends View {
 
   getBody = () => {
     return (<LinearLayout
-            width="wrap_content"
-            height="wrap_content"
-            margin="0,0,0,16"
-            orientation="vertical">
+      width="wrap_content"
+      height="wrap_content"
+      margin="0,0,0,16"
+      orientation="vertical">
 
-            {this.getRows()}
-
-            </LinearLayout>)
+      {this.getRows()}
+    </LinearLayout>);
   }
 
   getHeader = () =>{
     return (<LinearLayout
-              width="wrap_content"
-              height="wrap_content"
-              padding="0,16,0,0">
+      width="wrap_content"
+      height="wrap_content"
+      padding="0,16,0,0">
 
-              <TextView
-                width="wrap_content"
-                height="wrap_content"
-                text={window.__S.PROFILE_DETAILS_TITLE}
-                style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
+      <TextView
+        width="wrap_content"
+        height="wrap_content"
+        text={window.__S.PROFILE_DETAILS_TITLE}
+        style={window.__TextStyle.textStyle.CARD.TITLE.DARK} />
 
-              <ViewWidget
-              height="0"
-              weight="1"/>
-              <LinearLayout
-          width = "wrap_content"
-          height = "wrap_content"
-          padding = "10,5,0,10"
-          visibility = {"true"}
-          onClick={this.handleEditProfileClick}>
-          <ImageView
+      <ViewWidget
+        height="0"
+        weight="1" />
+
+      <LinearLayout
+        width="wrap_content"
+        height="wrap_content"
+        padding="10,5,0,10"
+        visibility={"true"}
+        onClick={this.handleEditProfileClick}>
+
+        <ImageView
           width="18"
           height="18"
-          imageUrl="ic_action_edit_blue"/>
-        </LinearLayout>
-              </LinearLayout>)
+          imageUrl="ic_action_edit_blue" />
+      </LinearLayout>
+    </LinearLayout>);
   }
 
   getLineSeperator = () => {
@@ -144,33 +137,31 @@ class GuestAdditionalInfo extends View {
   render() {
     this.layout = (
       <LinearLayout
-                width="match_parent"
-                height="wrap_content"
-                margin="0,0,0,0"
-                orientation="vertical"
-                id = {this.idSet.holder}
-                gravity = "center">
+        width="match_parent"
+        height="wrap_content"
+        margin="0,0,0,0"
+        orientation="vertical"
+        id={this.idSet.holder}
+        gravity="center">
 
-                {this.getLineSeperator()}
-
-                {this.getHeader()}
-                {this.getBody()}
-              </LinearLayout>
+        {this.getLineSeperator()}
+        {this.getHeader()}
+        {this.getBody()}
+      </LinearLayout>
     )
     return this.layout.render();
   }
+
   handleEditProfileClick = () => {
     if(!JBridge.isNetworkAvailable()){
       window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
       return ;
     }
-    // var whatToSend = { "profile" : JSON.stringify(this.data)}
-    var whatToSend = { "profile" : JSON.stringify({})}
+    var whatToSend = { "profile" : JSON.stringify(this.profileData)}
     var event ={ tag: "OPEN_EditGuestProfileActivity", contents: whatToSend }
     window.__runDuiCallback(event);
 
   }
-
 }
 
 

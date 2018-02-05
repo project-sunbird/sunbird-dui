@@ -57,6 +57,18 @@ class ProfileFragment extends View {
     window.__LanguagePopup.props.buttonClick = this.handleChangeLang;
     window.__refreshProfile = false; //Used to control when the profile fragment needs to be refreshed when the user updates any profile data from the app.
     JBridge.logTabScreenEvent("PROFILE");
+
+    //Profile data for loggedin user
+    this.details = {};
+    this.description = "";
+    this.createdBy = {}
+    this.jobProfile;
+    this.education;
+    this.address;
+
+    //Profile data for guest user
+    this.details = {};
+    this.profileData;
   }
 
 
@@ -376,7 +388,9 @@ class ProfileFragment extends View {
   }
 
   populateGuestProfile = () => {
+    this.profileData = JSON.parse(utils.decodeBase64(JBridge.getCurrentProfileData()));
     this.details = {};
+    this.details.userName = this.profileData.handle;
     var layout = (
       <ScrollView
         height="0"
@@ -393,7 +407,8 @@ class ProfileFragment extends View {
             editable={this.isEditable}
             data={this.details}
             textStyle={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK} />
-          <GuestAdditionalInfo />
+          <GuestAdditionalInfo
+            profileData = {this.profileData} />
           {this.getSignInOverlay()}
         </LinearLayout>
       </ScrollView>);

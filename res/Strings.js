@@ -304,7 +304,7 @@ const stringsRes = {
 		MEDIUM_OF_INSTRUCTION: "MEDIUM OF INSTRUCTION",
 		MEDIUM_GUEST: "Medium",
 		GRADE: "GRADE",
-		SYLLABUS: "SYLLABUS"
+		BOARD: "Board"
 	},
 	"hi_IN" : {
 		ALREADY_HAVE_ACC : "मौजूदा उपयोगकर्ता, साइन इन करें",
