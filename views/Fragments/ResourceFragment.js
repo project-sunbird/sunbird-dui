@@ -109,7 +109,7 @@ class ResourceComponent extends View {
     var responseData = res.data;
     var responseCode = res.code;
     var responseUrl = res.url;
-    if (state.hasOwnProperty(filter_to_send)) {
+    if (state.hasOwnProperty("filter_to_send")) {
       responseData.filter_to_send = state.filter_to_send;
     }
     var isErr = res.hasOwnProperty("err");
