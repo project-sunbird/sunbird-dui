@@ -133,6 +133,7 @@ class CourseFragment extends View {
     var responseUrl = res.url;
     if (state.hasOwnProperty(filter_to_send)) {
       responseData.filter_to_send = state.filter_to_send;
+    }
     var isErr = res.hasOwnProperty("err");
 
     console.log("responseData -> ", responseData);
