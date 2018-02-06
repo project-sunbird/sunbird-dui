@@ -276,7 +276,7 @@ class SearchActivity extends View {
         console.log(this.filterData, " filterData ");
         var filterParams = null;
         if (this.filterData != "") { filterParams = JSON.stringify(this.filterData) }
-        JBridge.searchContent(callback, filterParams, searchText, this.searchType, 100);
+        JBridge.searchContent(callback, filterParams, searchText, this.searchType, 100, false);
       } else {
         window.__LoaderDialog.hide();
         window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
