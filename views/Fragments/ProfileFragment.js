@@ -508,6 +508,7 @@ class ProfileFragment extends View {
       clickable="true"
       padding="16,16,16,16">
       <HomeQuestionCardStyle
+          currComponentLocation={"PROFILE"}
         headerText={window.__S.OVERLAY_LABEL_COMMON}
         infoText={window.__S.OVERLAY_INFO_TEXT_COMMON}
         textSize="16"

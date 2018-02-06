@@ -115,6 +115,7 @@ class CourseFragment extends View {
           width="match_parent"
           padding="16,16,16,16">
           <HomeQuestionCardStyle
+            currComponentLocation={"COURSE"}
             headerText={window.__S.OVERLAY_LABEL_COMMON}
             infoText={window.__S.OVERLAY_INFO_TEXT_COMMON}
             textSize="16"

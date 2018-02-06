@@ -50,6 +50,7 @@ class HomeQuestionCardStyle extends View {
 	onPop = () => {}
 
 	handleLoginClick = () => {
+		JBridge.setInSharedPrefs("goToOnLogin", this.props.currComponentLocation);
 		console.log(window.__loginUrl, "/auth/realms/sunbird/protocol/openid-connect/auth ", "android");
 		JBridge.keyCloakLogin(window.__loginUrl + "/auth/realms/sunbird/protocol/openid-connect/auth", "android");
 	}

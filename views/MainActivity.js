@@ -250,16 +250,6 @@ class MainActivity extends View {
       default:
         break;
     }
-
-    // if (shouldBeModified) {
-    //   if (state.hasOwnProperty("filter_to_send"))
-    //     responseData.filter_to_send = state.filter_to_send;
-    //   else responseData.filter_to_send = null;
-
-    //   // this.switchContent(this.currentPageIndex, responseData);
-    // } else {
-    //   console.log("GOT SAME DATA, not modifying");
-    // }
   };
 
   handleProfileFragAPIResErr = () => {
@@ -384,7 +374,24 @@ class MainActivity extends View {
 
   openFragment = () => {
     this.currentPageIndex = 0;
-    if (window.__loggedInState == "GUEST") {
+    var postLogin = JBridge.getFromSharedPrefs("goToOnLogin");
+    if (postLogin != "__failed") {
+      switch (postLogin){
+        case "HOME":
+          this.currentPageIndex = 0;
+          break;
+        case "COURSE":
+          this.currentPageIndex = 1;
+          break;
+        case "LIBRARY":
+          this.currentPageIndex = 2;
+          break;
+        case "PROFILE":
+          this.currentPageIndex = 3;
+          break;
+      }
+      JBridge.setInSharedPrefs("goToOnLogin", "__failed");
+    } else if (window.__loggedInState == "GUEST") {
       this.currentPageIndex = 2;
     }
     this.renderBNavBar(this.currentPageIndex);

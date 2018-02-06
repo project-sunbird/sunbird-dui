@@ -468,6 +468,7 @@ class HomeFragment extends View {
               <HomeRecommendedContainer
                 title={window.__S.RECOMMENDED}
                 onCourseOpenClick={this.handleCourseOpen}
+                currComponentLocation={"HOME"}
                 onResourceOpenClick={this.handleResourceOpen} />
             </LinearLayout>
           </ScrollView>

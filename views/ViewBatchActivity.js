@@ -462,6 +462,7 @@ class ViewBatchActivity extends View {
           alpha = "0.9"
           clickable="true">
          <HomeQuestionCardStyle
+             currComponentLocation={"COURSE"}
           headerText = {window.__S.OVERLAY_LABEL_TAKE_COURSE}
           infoText = {window.__S.OVERLAY_INFO_TEXT_TAKE_COURSE}/>
          </LinearLayout>
