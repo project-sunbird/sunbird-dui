@@ -46,14 +46,24 @@ class ProfileFragment extends View {
     this.profileDataTag = "savedProfile";
     _this = this;
     this.isEditable = this.props.editable;
-    this.menuData = {
-      url: [
-        { imageUrl: "ic_action_search" },
-        { imageUrl: "ic_action_notification"},
-        { imageUrl: "ic_action_overflow" }
-      ]
+    if (window.__loggedInState == "GUEST") {
+      this.menuData = {
+        url: [
+          { imageUrl: "ic_action_notification" },
+          { imageUrl: "ic_action_overflow" }
+        ]
+      }
+      this.popupMenu = window.__S.CHANGE_LANGUAGE;
+    } else {
+      this.menuData = {
+        url: [
+          { imageUrl: "ic_action_search" },
+          { imageUrl: "ic_action_notification" },
+          { imageUrl: "ic_action_overflow" }
+        ]
+      }
+      this.popupMenu = window.__S.CHANGE_LANGUAGE + "," + window.__S.LOGOUT;
     }
-    this.popupMenu=window.__S.CHANGE_LANGUAGE + "," + window.__S.LOGOUT;
     window.__LanguagePopup.props.buttonClick = this.handleChangeLang;
     window.__refreshProfile = false; //Used to control when the profile fragment needs to be refreshed when the user updates any profile data from the app.
     JBridge.logTabScreenEvent("PROFILE");
