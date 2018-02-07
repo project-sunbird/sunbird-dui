@@ -26,16 +26,16 @@ var _this;
 class CourseEnrolledActivity extends View {
   constructor(props, children, state) {
     super(props, children, state);
-
     this.setIds([
       "descriptionContainer",
       "courseNotStartedOverLay",
       "sharePopupContainer",
-      "featureButton1",
-      "featureButton2",
+      "startCourseBtn",
+      "resumeCourseBtn",
       "simpleToolBarOverFlow",
       "batchDetailsContainer",
-      "downloadAllProgressButton"
+      "downloadAllProgressButton",
+      "startOrResumeBtnContainer"
     ]);
     this.state = state;
     this.screenName = "CourseEnrolledActivity"
@@ -52,48 +52,34 @@ class CourseEnrolledActivity extends View {
         { imageUrl: 'ic_action_overflow' }
       ]
     }
-
-
-
     _this = this;
     this.shouldCacheScreen = false; //set to true so that the screen does not reinitialize and send startEventLog telemetry
-    this.courseContent = "";
-
     this.enrolledCourses = window.__enrolledCourses;
-
-
-    this.details = JSON.parse(state.data.value0.courseDetails); //Content details fetched from API
-
+    this.apiDetails = JSON.parse(state.data.value0.courseDetails); //Content details fetched from API
     this.courseDetails = {} //Content details fetched from Genie SDK
+    this.courseContent = {}; //Children contents if any
     this.batchName = "";
     this.batchDescription = "";
+    this.popupMenu = window.__loggedInState == "GUEST" ? window.__S.DELETE : (window.__S.DELETE + "," + window.__S.FLAG);
 
-    this.popupMenu = window.__S.DELETE;
+    //to get geneie callback for download of spine
+    window.__getDownloadStatus = this.getSpineStatus;
 
+    // array of all the children content ids
+    this.subContentArray = [];
+    console.log("details in CEA", this.apiDetails)
+    this.showProgress = this.apiDetails.hasOwnProperty("mimeType") && this.apiDetails.contentType == "application/vnd.ekstep.content-collection" ? "gone" : "visible";
 
-  this.popupMenu = window.__S.DELETE ;
-  //to get geneie callback for download of spine
-  window.__getDownloadStatus = this.getSpineStatus;
-
-  // array of all the children content ids
-  this.subContentArray = [];
-
-    console.log("details in CEA", this.details)
-    this.showProgress = this.details.hasOwnProperty("mimeType") && this.details.contentType == "application/vnd.ekstep.content-collection" ? "gone" : "visible";
-
-
-
-    if (this.details.hasOwnProperty("courseId")) {
-      this.baseIdentifier = this.details.courseId
-    }
-    else if (this.details.hasOwnProperty("contentId")) {
-      this.baseIdentifier = this.details.contentId
-    }
-    else if (this.details.hasOwnProperty("identifier")) {
-      this.baseIdentifier = this.details.identifier
+    if (this.apiDetails.hasOwnProperty("courseId")) {
+      this.baseIdentifier = this.apiDetails.courseId
+    } else if (this.apiDetails.hasOwnProperty("contentId")) {
+      this.baseIdentifier = this.apiDetails.contentId
+    } else if (this.apiDetails.hasOwnProperty("identifier")) {
+      this.baseIdentifier = this.apiDetails.identifier
     }
 
-    this.name = this.details.name;
+    this.name = this.apiDetails.name;
+    this.downloadProgress = 0;
 
     if (window.__enrolledCourses != undefined) {
       window.__enrolledCourses.map((item) => {
@@ -102,24 +88,16 @@ class CourseEnrolledActivity extends View {
         }
       })
       if (this.enrolledCourses.leafNodesCount != null && this.enrolledCourses.progress <= this.enrolledCourses.leafNodesCount) {
-        this.downloadProgress = this.details.leafNodesCount == null ? 0 : (this.enrolledCourses.progress / this.enrolledCourses.leafNodesCount) * 100;
+        this.downloadProgress = this.apiDetails.leafNodesCount == null ? 0 : (this.enrolledCourses.progress / this.enrolledCourses.leafNodesCount) * 100;
         this.downloadProgress = parseInt(isNaN(this.downloadProgress) ? 0 : this.downloadProgress);
-      } else {
-        this.downloadProgress = 0;
       }
-    }
-    else {
-
-      this.downloadProgress = 0;
     }
 
     this.data = {
-      courseName: (this.name && this.name != "") ? this.name : (this.details ? this.details.courseName : ""),
-      courseDesc: this.details ? this.details.courseDesc : "",
+      courseName: (this.name && this.name != "") ? this.name : (this.apiDetails ? this.apiDetails.courseName : ""),
+      courseDesc: this.apiDetails ? this.apiDetails.courseDesc : "",
       completedProgress: this.downloadProgress
     };
-
-
   }
 
   onPop = () => {
@@ -139,7 +117,7 @@ class CourseEnrolledActivity extends View {
 
   flagContent = (comment, selectedList) => {
     window.__LoaderDialog.show();
-    console.log("flag request", this.details)
+    console.log("flag request", this.apiDetails)
     console.log(comment, selectedList)
     var versionKey;
     if (this.courseDetails.hasOwnProperty("contentData") && this.courseDetails.contentData.hasOwnProperty("versionKey")) {
@@ -170,11 +148,8 @@ class CourseEnrolledActivity extends View {
 
   getSpineStatus = (pValue) => {
     var cmd;
-
     var data = JSON.parse(pValue);
-
-    if (data.identifier != this.baseIdentifier)
-      return;
+    if (data.identifier != this.baseIdentifier) return;
 
     var textToShow = ""
     console.log(data)
@@ -198,7 +173,6 @@ class CourseEnrolledActivity extends View {
       window.__ContentLoaderDialog.setClickCallback(this.handleContentLoaderCancelClick)
       window.__ContentLoaderDialog.updateProgressBar(downloadedPercent);
     }
-
   }
 
   handleContentLoaderCancelClick = () => {
@@ -214,6 +188,7 @@ class CourseEnrolledActivity extends View {
     var callback1 = callbackMapper.map(function (data) {
       data[0] = utils.jsonifyData(utils.decodeBase64(data[0]))
       _this.courseContent = JSON.parse(data[0]);
+      _this.checkAllDownloadedStatus();
       console.log("childrenContent: ", _this.courseContent);
 
       window.__ContentLoaderDialog.hide();
@@ -223,9 +198,24 @@ class CourseEnrolledActivity extends View {
     JBridge.getChildContent(identifier, callback1);
   }
 
+  checkAllDownloadedStatus = () => {
+    console.log("checkAllDownloadedStatus called");
+    if (this.courseContent.hasOwnProperty("children") && this.courseContent.children != "") {
+      _this.getSubcontentIds(_this.courseContent.children);
+      if (_this.subContentArray.length > 0) {
+        Android.runInUI(_this.set({
+          id: _this.idSet.downloadAllProgressButton,
+          visibility: "visible"
+        }), 0);
+      }
+      console.log("to be downloaded -> ", _this.subContentArray);
+    }
+  }
+
   checkContentLocalStatus = (identifier) => {
     var callback = callbackMapper.map(function (data) {
       if (data == "__failed") {
+        console.log("JBridge.getContentDetails failed");
         window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
         _this.logTelelmetry(identifier, null, false);
         this.onBackPressed();
@@ -444,41 +434,38 @@ class CourseEnrolledActivity extends View {
   }
 
   afterRender = () => {
-    console.log("details", this.details)
+    console.log("details", this.apiDetails)
 
-    if ((this.details.hasOwnProperty("mimeType")) && (this.details.mimeType.toLocaleLowerCase() == "application/vnd.ekstep.content-collection")) {
+    if ((this.apiDetails.hasOwnProperty("mimeType")) && (this.apiDetails.mimeType.toLocaleLowerCase() == "application/vnd.ekstep.content-collection")) {
       var cmd = this.set({
-        id: this.idSet.featureButton1,
+        id: this.idSet.startCourseBtn,
         visibility: "gone"
       });
 
       cmd += this.set({
-        id: this.idSet.featureButton2,
+        id: this.idSet.resumeCourseBtn,
         visibility: "gone"
       });
       Android.runInUI(cmd, 0);
 
     }
     if (this.enrolledCourses.hasOwnProperty("lastReadContentId") && (this.enrolledCourses.lastReadContentId != null)) {
-
       var cmd = this.set({
-        id: this.idSet.featureButton1,
+        id: this.idSet.startCourseBtn,
         visibility: "gone"
       });
-
       cmd += this.set({
-        id: this.idSet.featureButton2,
+        id: this.idSet.resumeCourseBtn,
         visibility: "visible"
       });
 
       Android.runInUI(cmd, 0);
-
     }
 
-
     this.checkContentLocalStatus(this.baseIdentifier);
-    if (this.details.batchId || this.enrolledCourses.batchId) {
-      var batchId = this.details.batchId ? this.details.batchId : this.enrolledCourses.batchId;
+    
+    if (this.apiDetails.batchId || this.enrolledCourses.batchId) {
+      var batchId = this.apiDetails.batchId ? this.apiDetails.batchId : this.enrolledCourses.batchId;
       var whatToSend = {
         "user_token": window.__user_accessToken,
         "api_token": window.__apiToken,
@@ -504,8 +491,7 @@ class CourseEnrolledActivity extends View {
         }
       });
       JBridge.deleteContent(this.baseIdentifier, callback);
-    }
-    else if (params == 1) {
+    } else if (params == 1) {
       console.log("in flag rda");
       JBridge.logFlagScreenEvent("COURSES", this.baseIdentifier, this.courseDetails.contentData.pkgVersion);
       window.__LoaderDialog.hide();
@@ -567,15 +553,15 @@ class CourseEnrolledActivity extends View {
   }
 
   handleResumeClick = () => {
-    console.log(this.details, "handleResumeClick this.details")
+    console.log(this.apiDetails, "handleResumeClick this.apiDetails")
     var id;
     if (this.enrolledCourses.hasOwnProperty('lastReadContentId') && this.enrolledCourses.lastReadContentId != null) {
       console.log("this.enrolledCourses.lastReadContentId", this.enrolledCourses.lastReadContentId);
       id = this.enrolledCourses.lastReadContentId;
     }
-    else if (this.details.hasOwnProperty("lastReadContentId") && this.details.lastReadContentId != null) {
-      console.log("this.details.lastReadContentId", this.details.lastReadContentId);
-      id = this.details.lastReadContentId
+    else if (this.apiDetails.hasOwnProperty("lastReadContentId") && this.apiDetails.lastReadContentId != null) {
+      console.log("this.apiDetails.lastReadContentId", this.apiDetails.lastReadContentId);
+      id = this.apiDetails.lastReadContentId
     }
     else if (!(this.courseContent.children == undefined)) {
       console.log("children details", this.courseContent.children)
@@ -613,13 +599,14 @@ class CourseEnrolledActivity extends View {
 
   getSubcontentIds = (content) => {
     content.map((item, i) => {
-      if (item.children == undefined) _this.subContentArray.push(item.identifier);
-      else if (item.children != undefined) {
+      if (item.children == undefined && item.isAvailableLocally != undefined && !item.isAvailableLocally) {
+        _this.subContentArray.push(item.identifier);
+      } else if (item.children != undefined) {
         _this.getSubcontentIds(item.children)
-
       }
     })
   }
+
   changeOverFlow = () => {
     var toolbar = (<SimpleToolbar
       title=""
@@ -635,31 +622,37 @@ class CourseEnrolledActivity extends View {
     this.replaceChild(this.idSet.simpleToolBarOverFlow, toolbar.render(), 0);
   }
   getLineSeperator = () => {
-      return (<LinearLayout
-              width="match_parent"
-              height="2"
-              background={window.__Colors.PRIMARY_BLACK_22}/>)
-    }
+    return (<LinearLayout
+      width="match_parent"
+      height="2"
+      background={window.__Colors.PRIMARY_BLACK_22} />)
+  }
 
 
-    handleDownloadAllClick = () => {
-      this.getSubcontentIds(this.courseContent.children);
-      console.log("children", this.subContentArray);
-      this.downloadContentCount=0;
-      this.childrenCount=this.subContentArray.length;
-      window.__DownloadAllProgressButton.childrenCount=this.childrenCount;
-      window.__DownloadAllProgressButton.childrenArray=this.subContentArray;
-      JBridge.downloadAllContent(this.subContentArray);
-      this.subContentArray=[];
-      window.__DownloadAllPopup.hide();
-    }
+  handleDownloadAllClick = () => {
+    console.log("children", this.subContentArray);
+    this.__DownloadAllProgressButton.update(this.subContentArray);
+    window.__DownloadAllPopup.hide();
+  }
 
-    showDownloadAllPopUp = () =>{
-      window.__DownloadAllPopup.props.totalSize=0;
-      window.__DownloadAllPopup.props.buttonClick=this.handleDownloadAllClick;
-      window.__DownloadAllPopup.show();
-    }
+  showDownloadAllPopUp = () => {
+    window.__DownloadAllPopup.props.totalSize = 0;
+    window.__DownloadAllPopup.props.buttonClick = this.handleDownloadAllClick;
+    window.__DownloadAllPopup.show();
+  }
 
+  getDownloadAll = () => {
+    this.__DownloadAllProgressButton = (
+      <DownloadAllProgressButton
+        width="match_parent"
+        id={_this.idSet.downloadAllProgressButton}
+        buttonText="Download All"
+        visibility="gone"
+        hideDivider="gone"
+        handleButtonClick={this.showDownloadAllPopUp} />
+    );
+    return this.__DownloadAllProgressButton;
+  }
 
   render() {
     this.layout = (
@@ -675,13 +668,13 @@ class CourseEnrolledActivity extends View {
           width="match_parent"
           height="match_parent"
           background={window.__Colors.WHITE}
-          orientation="vertical"
-        >
+          orientation="vertical">
           <LinearLayout
             root="true"
             width="match_parent"
             height="wrap_content"
             id={this.idSet.simpleToolBarOverFlow}>
+
             <SimpleToolbar
               title=""
               height="wrap_content"
@@ -714,6 +707,7 @@ class CourseEnrolledActivity extends View {
                 weight="1"
                 width="match_parent"
                 fillViewPort="true">
+
                 <LinearLayout
                   height="match_parent"
                   width="match_parent"
@@ -725,7 +719,7 @@ class CourseEnrolledActivity extends View {
                     height="wrap_content"
                     width="wrap_content"
                     content={this.data}
-                    title={this.data.courseName || this.details.name || this.details.contentData.name}
+                    title={this.data.courseName || this.apiDetails.name || this.apiDetails.contentData.name}
                     onResumeClick={this.handleCourseResume}
                     visibility={this.showProgress} />
 
@@ -735,16 +729,12 @@ class CourseEnrolledActivity extends View {
                     width="match_parent"
                     orientation="vertical" />
 
-
-
                   <TextView
                     width="wrap_content"
                     height="wrap_content"
                     margin="0,16,0,0"
                     style={window.__TextStyle.textStyle.CARD.TITLE.DARK}
                     text={window.__S.STRUCTURE} />
-
-
 
                   <LinearLayout
                     id={this.idSet.descriptionContainer}
@@ -766,46 +756,48 @@ class CourseEnrolledActivity extends View {
                       gravity="center"
                       width="20"
                       height="20" />
-
                   </LinearLayout>
                 </LinearLayout>
               </ScrollView>
+
+              <LinearLayout
+                height="2"
+                width="match_parent"
+                margin="0,0,0,16"
+                background={window.__Colors.PRIMARY_BLACK_22} />
+
               <RelativeLayout
                 height="wrap_content"
-                width="match_parent">
+                width="match_parent"
+                id={this.idSet.startOrResumeBtnContainer}>
+
                 <FeatureButton
                   clickable="true"
-                  margin="16,16,16,16"
+                  margin="16,0,16,16"
                   width="match_parent"
-                  height="56"
-                  id={this.idSet.featureButton1}
+                  height="48"
+                  id={this.idSet.startCourseBtn}
                   visibility="visible"
                   background={window.__Colors.PRIMARY_ACCENT}
                   text={window.__S.START_COURSE}
                   style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
                   buttonClick={this.handleResumeClick} />
+
                 <FeatureButton
                   clickable="true"
                   margin="16,16,16,16"
                   width="match_parent"
-                  height="56"
+                  height="48"
                   visibility="gone"
-                  id={this.idSet.featureButton2}
+                  id={this.idSet.resumeCourseBtn}
                   background={window.__Colors.PRIMARY_ACCENT}
                   text={window.__S.RESUME + " " + window.__S.COURSE}
                   style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
                   buttonClick={this.handleResumeClick} />
               </RelativeLayout>
-              <DownloadAllProgressButton
-                width="match_parent"
-                identifier = {_this.idSet.downloadAllProgressButton}
-                buttonText="Download All"
-                visibility="visible"
-                hideDivider="gone"
-                handleButtonClick={this.showDownloadAllPopUp}
-                />
-            </LinearLayout>
 
+              {this.getDownloadAll()}
+            </LinearLayout>
 
             <LinearLayout
               id={this.idSet.courseNotStartedOverLay}
@@ -822,30 +814,292 @@ class CourseEnrolledActivity extends View {
                 height="match_parent"
                 style={window.__TextStyle.textStyle.NOTHING}
                 text={window.__S.ERROR_BATCH_NOT_STARTED} />
-
             </LinearLayout>
-
-
           </RelativeLayout>
-
-
         </LinearLayout>
 
         <FlagPopup
-          onConfirm={this.flagContent}
-        />
+          onConfirm={this.flagContent} />
 
         <LinearLayout
           id={this.idSet.sharePopupContainer}
           height="match_parent"
           width="match_parent" />
-
       </RelativeLayout>
     );
-
     return this.layout.render();
-
   }
 }
 
 module.exports = Connector(CourseEnrolledActivity);
+
+
+/*
+** Format of data from API call
+** stored in this.apiDetails
+
+{
+  "dateTime": "2017-11-09 06:08:37:401+0000",
+  "identifier": "c075b917e376bf1e7c4c860adc50b9ddae882fa2a3c0dc4dde6484301c85da55",
+  "enrolledDate": "2017-11-09 06:08:37:401+0000",
+  "contentId": "do_212371599518752768174",
+  "active": true,
+  "description": "zz",
+  "courseLogoUrl": "https://ekstep-public-qa.s3-ap-south-1.amazonaws.com/content/do_212371599518752768174/artifact/maths-33_1504506840920.thumb.png",
+  "batchId": "01237162672371302450",
+  "userId": "efac9d25-9cdf-4222-8153-930466aa0cef",
+  "courseName": "y8",
+  "leafNodesCount": 1,
+  "progress": 0,
+  "id": "c075b917e376bf1e7c4c860adc50b9ddae882fa2a3c0dc4dde6484301c85da55",
+  "tocUrl": "https://ekstep-public-qa.s3-ap-south-1.amazonaws.com/content/do_212371599518752768174/artifact/do_212371599518752768174toc.json",
+  "courseId": "do_212371599518752768174",
+  "status": 0
+}
+
+** Format of content data from Genie SDK (getContentDetails)
+** stored in this.courseDetails
+
+{
+  "basePath": "/storage/emulated/0/.Sunbird/content/do_212371599518752768174",
+  "contentData": {
+    "appIcon": "do_212371599518752768174/maths-33_1504506840920.png",
+    "contentDisposition": "inline",
+    "contentEncoding": "gzip",
+    "contentType": "Course",
+    "createdOn": "2017-11-09T05:23:39.379+0000",
+    "description": "zz",
+    "gradeLevel": [
+      "Kindergarten"
+    ],
+    "identifier": "do_212371599518752768174",
+    "language": [
+      "English"
+    ],
+    "lastPublishedOn": "2017-11-09T05:36:18.516+0000",
+    "mimeType": "application/vnd.ekstep.content-collection",
+    "name": "y8",
+    "osId": "org.ekstep.quiz.app",
+    "pkgVersion": "1.0",
+    "resourceType": "Story",
+    "status": "Live",
+    "subject": "domain",
+    "versionKey": "1510205775633"
+  },
+  "contentType": "course",
+  "identifier": "do_212371599518752768174",
+  "isAvailableLocally": true,
+  "isUpdateAvailable": false,
+  "lastUpdatedTime": 1517987212000,
+  "mimeType": "application/vnd.ekstep.content-collection",
+  "referenceCount": 1,
+  "sizeOnDevice": 1157715
+}
+
+** Format of child data for a content from Genie SDK (getChildContent)
+** stored in this.courseContent
+
+{
+  "basePath": "/storage/emulated/0/.Sunbird/content/do_212371599518752768174",
+  "children": [
+    {
+      "basePath": "/storage/emulated/0/.Sunbird/content/do_2123695414072033281534",
+      "children": [
+        {
+          "basePath": "/storage/emulated/0/.Sunbird/content/do_2123695430246481921535",
+          "children": [
+            {
+              "basePath": "/storage/emulated/0/.Sunbird/content/do_2123695406756003841533",
+              "contentData": {
+                "artifactUrl": "do_2123695406756003841533/uploadcontent_1509953724635.zip",
+                "contentDisposition": "inline",
+                "contentEncoding": "gzip",
+                "contentType": "Story",
+                "createdOn": "2017-11-06T07:34:55.752+0000",
+                "downloadUrl": "do_2123695406756003841533/uploadcontent_1509953724635.zip",
+                "identifier": "do_2123695406756003841533",
+                "language": [
+                  "English"
+                ],
+                "lastPublishedOn": "2017-11-06T14:49:13.877+0000",
+                "mimeType": "application/vnd.ekstep.ecml-archive",
+                "name": "Amit_Story_Content_nov_06_101",
+                "osId": "org.ekstep.quiz.app",
+                "pkgVersion": "4.0",
+                "publisher": "EkStep",
+                "resourceType": "Story",
+                "size": "717947.0",
+                "status": "Live",
+                "subject": "domain",
+                "variants": {
+                  "spine": {
+                    "ecarUrl": "https://ekstep-public-qa.s3-ap-south-1.amazonaws.com/ecar_files/do_2123695406756003841533/amit_story_content_nov_06_101_1509979754106_do_2123695406756003841533_4.0_spine.ecar",
+                    "size": 952
+                  }
+                },
+                "versionKey": "1509979754365"
+              },
+              "contentType": "story",
+              "hierarchyInfo": [
+                {
+                  "contentType": "course",
+                  "identifier": "do_212371599518752768174"
+                },
+                {
+                  "contentType": "collection",
+                  "identifier": "do_2123695414072033281534"
+                },
+                {
+                  "contentType": "courseunit",
+                  "identifier": "do_2123695430246481921535"
+                }
+              ],
+              "identifier": "do_2123695406756003841533",
+              "isAvailableLocally": false,
+              "isUpdateAvailable": false,
+              "lastUpdatedTime": 1517985074000,
+              "mimeType": "application/vnd.ekstep.ecml-archive",
+              "referenceCount": 1,
+              "sizeOnDevice": 756051
+            }
+          ],
+          "contentData": {
+            "contentDisposition": "inline",
+            "contentEncoding": "gzip",
+            "contentType": "CourseUnit",
+            "createdOn": "2017-11-06T07:39:42.501+0000",
+            "description": "Amit_Collection_Content_Course_Unit_nov_06_101",
+            "identifier": "do_2123695430246481921535",
+            "language": [
+              "English"
+            ],
+            "lastPublishedOn": "2017-11-09T05:36:17.202+0000",
+            "mimeType": "application/vnd.ekstep.content-collection",
+            "name": "Amit_Collection_Content_Course_Unit_nov_06_101",
+            "osId": "org.ekstep.launcher",
+            "pkgVersion": "5.0",
+            "resourceType": "Story",
+            "size": "718321.0",
+            "status": "Live",
+            "subject": "domain",
+            "variants": {
+              "spine": {
+                "ecarUrl": "https://ekstep-public-qa.s3-ap-south-1.amazonaws.com/ecar_files/do_2123695430246481921535/amit_collection_content_course_unit_nov_06_101_1510205778187_do_2123695430246481921535_5.0_spine.ecar",
+                "size": 1324
+              }
+            },
+            "versionKey": "1510205778352"
+          },
+          "contentType": "courseunit",
+          "hierarchyInfo": [
+            {
+              "contentType": "course",
+              "identifier": "do_212371599518752768174"
+            },
+            {
+              "contentType": "collection",
+              "identifier": "do_2123695414072033281534"
+            },
+            {
+              "contentType": "courseunit",
+              "identifier": "do_2123695430246481921535"
+            }
+          ],
+          "identifier": "do_2123695430246481921535",
+          "isAvailableLocally": true,
+          "isUpdateAvailable": false,
+          "lastUpdatedTime": 1517987212000,
+          "mimeType": "application/vnd.ekstep.content-collection",
+          "referenceCount": 1,
+          "sizeOnDevice": 759431
+        }
+      ],
+      "contentData": {
+        "contentDisposition": "inline",
+        "contentEncoding": "gzip",
+        "contentType": "Collection",
+        "contentTypesCount": "{\"CourseUnit\":1,\"Story\":1}",
+        "createdOn": "2017-11-06T07:36:25.059+0000",
+        "identifier": "do_2123695414072033281534",
+        "language": [
+          "English"
+        ],
+        "lastPublishedOn": "2017-11-06T14:49:15.436+0000",
+        "mimeType": "application/vnd.ekstep.content-collection",
+        "name": "Amit_Collection_Content_nov_06_101",
+        "osId": "org.ekstep.quiz.app",
+        "pkgVersion": "4.0",
+        "publisher": "EkStep",
+        "resourceType": "Story",
+        "size": "718552.0",
+        "status": "Live",
+        "subject": "domain",
+        "variants": {
+          "spine": {
+            "ecarUrl": "https://ekstep-public-qa.s3-ap-south-1.amazonaws.com/ecar_files/do_2123695414072033281534/amit_collection_content_nov_06_101_1509979757030_do_2123695414072033281534_4.0_spine.ecar",
+            "size": 1556
+          }
+        },
+        "versionKey": "1509979757203"
+      },
+      "contentType": "collection",
+      "hierarchyInfo": [
+        {
+          "contentType": "course",
+          "identifier": "do_212371599518752768174"
+        },
+        {
+          "contentType": "collection",
+          "identifier": "do_2123695414072033281534"
+        }
+      ],
+      "identifier": "do_2123695414072033281534",
+      "isAvailableLocally": true,
+      "isUpdateAvailable": false,
+      "lastUpdatedTime": 1517987212000,
+      "mimeType": "application/vnd.ekstep.content-collection",
+      "referenceCount": 1,
+      "sizeOnDevice": 764808
+    }
+  ],
+  "contentData": {
+    "appIcon": "do_212371599518752768174/maths-33_1504506840920.png",
+    "contentDisposition": "inline",
+    "contentEncoding": "gzip",
+    "contentType": "Course",
+    "createdOn": "2017-11-09T05:23:39.379+0000",
+    "description": "zz",
+    "gradeLevel": [
+      "Kindergarten"
+    ],
+    "identifier": "do_212371599518752768174",
+    "language": [
+      "English"
+    ],
+    "lastPublishedOn": "2017-11-09T05:36:18.516+0000",
+    "mimeType": "application/vnd.ekstep.content-collection",
+    "name": "y8",
+    "osId": "org.ekstep.quiz.app",
+    "pkgVersion": "1.0",
+    "resourceType": "Story",
+    "status": "Live",
+    "subject": "domain",
+    "versionKey": "1510205775633"
+  },
+  "contentType": "course",
+  "hierarchyInfo": [
+    {
+      "contentType": "course",
+      "identifier": "do_212371599518752768174"
+    }
+  ],
+  "identifier": "do_212371599518752768174",
+  "isAvailableLocally": true,
+  "isUpdateAvailable": false,
+  "lastUpdatedTime": 1517987212000,
+  "mimeType": "application/vnd.ekstep.content-collection",
+  "referenceCount": 1,
+  "sizeOnDevice": 1157715
+}
+
+*/

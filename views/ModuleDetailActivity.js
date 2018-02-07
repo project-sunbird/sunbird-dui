@@ -265,8 +265,6 @@ class ModuleDetailActivity extends View {
       )
       this.replaceChild(this.idSet.renderPage, layout.render(), 0);
       this.replaceChild(this.idSet.progressButtonContainer, this.getProgressButton().render(), 0);
-      if(this.module.hasOwnProperty("children"))
-        this.replaceChild(this.idSet.downloadAllButtonContainer, this.getDownloadAllButton().render(), 0);
       this.checkContentLocalStatus(module);
     }
 
@@ -317,9 +315,6 @@ class ModuleDetailActivity extends View {
         window.__ProgressButton.setButtonFor(this.module.identifier);
         JBridge.logContentDetailScreenEvent(this.module.identifier, this.module.contentData.pkgVersion);
         this.checkContentLocalStatus(this.module);
-        if(this.module.hasOwnProperty("children"))
-          this.replaceChild(this.idSet.downloadAllButtonContainer, this.getDownloadAllButton().render(), 0);
-
     }
 
     getLineSeperator = () => {
@@ -445,17 +440,6 @@ class ModuleDetailActivity extends View {
                 localStatus={this.localStatus}
                 identifier={this.module.identifier} />
         );
-    }
-
-    getDownloadAllButton =() => {
-      return (
-        <DownloadAllProgressButton
-          width="match_parent"
-          buttonText="Download All"
-          visibility="visible"
-          hideDivider="gone"
-          handleButtonClick={this.showDownloadAllPopUp}/>
-      )
     }
 
     render() {
