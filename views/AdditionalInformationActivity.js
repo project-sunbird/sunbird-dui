@@ -908,8 +908,9 @@ class AdditionalInformationActivity extends View{
        this.privacyStatusApiCall();
      }
      else{
-        window.__BNavFlowRestart();
-        this.onBackPressed();
+        // window.__BNavFlowRestart();
+      window.__changePureScriptFlow();
+        // this.onBackPressed();
      }
    }else{
      window.__Snackbar.show(data.params.errmsg);
@@ -959,8 +960,9 @@ privacyStatusApiCall = () => {
         var responseCode = res.code;
 
         if(responseCode == "200"){
-          window.__BNavFlowRestart();
-          this.onBackPressed();
+          // window.__BNavFlowRestart();
+          window.__changePureScriptFlow();
+          // this.onBackPressed();
         } else {
           window.__LoaderDialog.hide();
           window.__Snackbar.show("failed");

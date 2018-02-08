@@ -292,7 +292,8 @@ class EducationActivity extends View {
     console.log(data)
     if(data.result.response=="SUCCESS"){
       window.__LoaderDialog.show();
-      window.__BNavFlowRestart();
+      // window.__BNavFlowRestart();
+      window.__changePureScriptFlow();
     }else{
       this.singleClick =true;
       window.__Snackbar.show(data.params.errmsg);
