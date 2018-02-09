@@ -26,7 +26,11 @@ class GuestAdditionalInfo extends View {
     this.medium = this.profileData.medium;
     this.grade = this.initGrade();
     this.board = this.profileData.board;
-    this.subjects = "";
+    this.subjects = JBridge.getFromSharedPrefs(window.__S.SUBJECTS);
+
+    if (this.subjects == "__failed") {
+      this.subjects = "";
+    }
 
     this.info = [{
       name: window.__S.MEDIUM_GUEST,
@@ -39,6 +43,9 @@ class GuestAdditionalInfo extends View {
     {
       name: window.__S.BOARD,
       value: this.board
+    }, {
+      name: window.__S.SUBJECTS,
+      value: this.subjects
     }];
   }
 

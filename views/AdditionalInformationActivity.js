@@ -180,6 +180,9 @@ class AdditionalInformationActivity extends View{
     this.prevData.grade = this.data.grade!=null ? this.data.grade.slice():null;
     this.prevData.selectedSubjects = this.data.subject!=null ? this.data.subject.slice():null;
 
+    if (this.prevData.dob == "") {
+      this.prevData.dob = window.__S.SELECT_DATE;
+    }
   }
 
   initData = () => {
@@ -515,7 +518,7 @@ class AdditionalInformationActivity extends View{
                                 id= {this.idSet.dobText}
                                 textAllCaps="true"
                                 style={window.__TextStyle.textStyle.CARD.BODY.DARK.FADED}
-                                text={window.__S.SELECT_DATE}
+                                text={this.prevData.dob}
                                 onClick={this.showCalendar}/>
                                 <LinearLayout
                                 weight="1"/>
@@ -784,9 +787,11 @@ class AdditionalInformationActivity extends View{
     else
       delete json.lastName;
 
-    if(this.currentData.dob!=this.prevData.dob)
-       json.dob= this.currentData.dob;
-    else
+    if(this.currentData.dob!=this.prevData.dob){
+      if (!(this.prevData.dob == window.__S.SELECT_DATE && this.currentData.dob == "")) {
+        json.dob = this.currentData.dob;
+      }
+    } else
       delete json.dob;
 
     if(!this.arrayEquals(this.currentData.grade,this.prevData.grade) )

@@ -63,7 +63,6 @@ class GuestInformationActivity extends View {
   
   initData = () => {
     this.profileData = JSON.parse(utils.decodeBase64(JBridge.getCurrentProfileData()));
-    this.profileData.grade = this.profileData.grade == -1 ? this.profileData.grade = "" : this.profileData.grade;
     this.mediumListData = JSON.parse(utils.decodeBase64(JBridge.getMediums()));
     this.gradeListData = JSON.parse(utils.decodeBase64(JBridge.getGrades()));
     this.boardListData = JSON.parse(utils.decodeBase64(JBridge.getBoards()));
@@ -73,7 +72,7 @@ class GuestInformationActivity extends View {
     this.gradeList = this.extractLabels(this.gradeListData);
     this.boardList = this.extractLabels(this.boardListData);
     this.subjectList = this.extractLabels(this.subjectListData);
-    
+    this.profileData.grade = this.profileData.grade == -1 ? "" : this.gradeList[this.profileData.grade];
   }
 
   extractLabels = (list) => {
@@ -106,7 +105,7 @@ class GuestInformationActivity extends View {
             {this.getSingleSelectSpinner(this.idSet.mediumOfInstructionSpinner, window.__S.MEDIUM_OF_INSTRUCTION, this.mediumList, this.handleMediumChange)}
             {this.getSingleSelectSpinner(this.idSet.gradeSpinner, window.__S.GRADE, this.gradeList, this.handleGradeChange)}
             {this.getSingleSelectSpinner(this.idSet.boardSpinner, window.__S.BOARD, this.boardList, this.handleBoardChange)}
-            {this.getSingleSelectSpinner(this.idSet.subjectSpinner, window.__S.SUBJECTS, this.subjectList, this.handleSubChange)}       
+            {this.getSingleSelectSpinner(this.idSet.subjectSpinner, window.__S.SUBJECTS, this.subjectList, this.handleSubjectChange)}       
         </LinearLayout>
       </ScrollView>
   </LinearLayout>)
@@ -129,7 +128,7 @@ class GuestInformationActivity extends View {
   }
 
   handleSubjectChange = (...params) => {
-      // this.profileData = this.mediumList[params[2]];
+      this.profileData.subjects = this.subjectList[params[2]];
   }
 
  getEditTextView = (id, label, text, onChange) =>{
@@ -242,12 +241,16 @@ class GuestInformationActivity extends View {
  }
 
  handleSaveClick =()=>{
-   console.log("values -> " + this.profileData.medium + " " + this.profileData.grade + " " + this.profileData.board);
+   console.log("values -> " + this.profileData.medium + " " + this.profileData.grade + " " + this.profileData.board + " " + this.profileData.subjects);
    
    var selectedMedium = this.extractValue(this.mediumListData, this.profileData.medium);
    var selectedGrade = this.extractValue(this.gradeListData, this.profileData.grade);
    var selectedBoard = this.extractValue(this.boardListData, this.profileData.board);
-   console.log("values -> " + selectedMedium + " " + selectedGrade + " " + selectedBoard);
+   var selectedSyllabus = this.extractValue(this.subjectListData, this.profileData.subjects);
+
+   console.log("values -> " + selectedMedium + " " + selectedGrade + " " + selectedBoard + " " + selectedSyllabus);
+
+   JBridge.setInSharedPrefs(window.__S.SUBJECTS, selectedSyllabus);
    JBridge.updateProfile(this.profileData.handle, selectedMedium, selectedGrade, selectedBoard);
    this.onBackPressed();
  }
@@ -267,11 +270,15 @@ class GuestInformationActivity extends View {
    this.profileData = this.setDefault(this.profileData, "medium", this.mediumList);
    this.profileData = this.setDefault(this.profileData, "grade", this.gradeList);
    this.profileData = this.setDefault(this.profileData, "board", this.boardList);
+   this.profileData.subjects = JBridge.getFromSharedPrefs(window.__S.SUBJECTS);
+
+   if (this.profileData.subjects == "__failed" || this.profileData.subjects == "undefined")
+     this.profileData.subjects = "";
    
    JBridge.selectSpinnerItem(this.idSet.mediumOfInstructionSpinner, this.profileData.medium != "" ? this.mediumList.indexOf(this.profileData.medium) : 0);
    JBridge.selectSpinnerItem(this.idSet.gradeSpinner, this.profileData.grade != "" ? this.gradeList.indexOf(this.profileData.grade) : 0);
    JBridge.selectSpinnerItem(this.idSet.boardSpinner, this.profileData.board != "" ? this.boardList.indexOf(this.profileData.board) : 0);
-   JBridge.selectSpinnerItem(this.idSet.subjectSpinner, this.subject != "" ? this.subjectList.indexOf(this.subject) : 0);
+   JBridge.selectSpinnerItem(this.idSet.subjectSpinner, this.profileData.subjects != "" ? this.subjectList.indexOf(this.profileData.subjects) : 0);
  }
 
   render() {
