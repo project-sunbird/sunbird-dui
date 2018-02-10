@@ -67,33 +67,34 @@ class CourseInfoActivity extends View {
     };
   }
 
-  getSpineStatus = (pValue) => {
-    var cmd;
-    var data = JSON.parse(pValue);
-    
-    if (data.identifier != this.details.identifier)
-      return;
+  getSpineStatus = (res) => {
+    console.log("inside getSpineStatus", res);
 
-    var textToShow = ""
-    if(data.status == "NOT_FOUND"){
-      window.__ContentLoaderDialog.hide();
-      window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
-      this.onBackPressed();
-      return;
-    }
-    data.downloadProgress = data.downloadProgress == undefined ? 0 : data.downloadProgress;
-    var downloadedPercent = parseInt(data.downloadProgress);
-    downloadedPercent = downloadedPercent < 0 ? 0 : downloadedPercent;
+    var cb = res[0];
+    var id = res[1];
+    var data = JSON.parse(res[2]);
+    if (id != this.details.identifier) return;
 
-    if (downloadedPercent == 100) {
-      this.renderChildren(this.details.identifier);
-
-    } else {
+    if (cb == "onDownloadProgress") {
+      var textToShow = ""
+      
+      data.downloadProgress = data.downloadProgress == undefined ? 0 : data.downloadProgress;
+      var downloadedPercent = parseInt(data.downloadProgress);
+      downloadedPercent = downloadedPercent < 0 ? 0 : downloadedPercent;
       var cmd = this.set({
         id: this.idSet.downloadProgressText,
         text: window.__S.FETCHING_CONTENTS.format(downloadedPercent)
       })
       Android.runInUI(cmd, 0);
+    } else if (cb == "onContentImportResponse" && data.status == "IMPORT_COMPLETED") {
+      if (data.status == "NOT_FOUND") {
+        window.__ContentLoaderDialog.hide();
+        window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
+        this.onBackPressed();
+        return;
+      } else if (data.status == "IMPORT_COMPLETED") {
+        this.renderChildren(this.details.identifier);
+      }
     }
   }
 
@@ -126,7 +127,7 @@ class CourseInfoActivity extends View {
           data = JSON.parse(data)
           if(data.status==="NOT_FOUND"){
               if(JBridge.isNetworkAvailable())
-                JBridge.importCourse(identifier,"false")
+                JBridge.importCourse(identifier,"false", utils.getCallbacks(_this.getSpineStatus, "", _this.getSpineStatus));
               else
                 window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE)
           }

@@ -62,9 +62,6 @@ class CourseEnrolledActivity extends View {
     this.batchDescription = "";
     this.popupMenu = window.__loggedInState == "GUEST" ? window.__S.DELETE : (window.__S.DELETE + "," + window.__S.FLAG);
 
-    //to get geneie callback for download of spine
-    window.__getDownloadStatus = this.getSpineStatus;
-
     // array of all the children content ids
     this.subContentArray = [];
     console.log("details in CEA", this.apiDetails)
@@ -98,10 +95,11 @@ class CourseEnrolledActivity extends View {
       courseDesc: this.apiDetails ? this.apiDetails.courseDesc : "",
       completedProgress: this.downloadProgress
     };
+
+    this.downloadedPercent = 0;
   }
 
   onPop = () => {
-    window.__getDownloadStatus = this.getSpineStatus;
     Android.runInUI(
       this.animateView(),
       null
@@ -146,32 +144,36 @@ class CourseEnrolledActivity extends View {
 
   }
 
-  getSpineStatus = (pValue) => {
-    var cmd;
-    var data = JSON.parse(pValue);
-    if (data.identifier != this.baseIdentifier) return;
+  getSpineStatus = (res) => {
+    console.log("inside getSpineStatus", res);
+    
+    var cb = res[0];
+    var id = res[1];
+    var data = JSON.parse(res[2]);
+    if (id != this.baseIdentifier) return;
 
-    var textToShow = ""
-    console.log(data)
-    if (data.status == "NOT_FOUND") {
-      window.__ContentLoaderDialog.hide();
-      window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
-      this.onBackPressed();
-      return;
-    }
+    if (cb == "onDownloadProgress") {
+      var textToShow = ""
+      if (data.status == "NOT_FOUND") {
+        window.__ContentLoaderDialog.hide();
+        window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
+        this.onBackPressed();
+        return;
+      }
 
-    data.Progress = data.downloadProgress == undefined || isNaN(data.downloadProgress) ? 0 : data.downloadProgress;
-    var downloadedPercent = data.downloadProgress;
-    downloadedPercent = downloadedPercent < 0 ? 0 : downloadedPercent;
-    if (downloadedPercent == 100) {
+      data.Progress = data.downloadProgress == undefined || isNaN(data.downloadProgress) ? 0 : data.downloadProgress;
+      this.downloadedPercent = data.downloadProgress;
+      this.downloadedPercent = downloadedPercent < 0 ? 0 : downloadedPercent;
+      console.log("downloadedPercent -> ", this.downloadedPercent);
+      if (this.downloadedPercent < 100) {
+        window.__ContentLoaderDialog.show();
+        window.__ContentLoaderDialog.setClickCallback(this.handleContentLoaderCancelClick)
+        window.__ContentLoaderDialog.updateProgressBar(downloadedPercent);
+      }
+    } else if (cb == "onContentImportResponse" && data.status == "IMPORT_COMPLETED") {
       window.__ContentLoaderDialog.updateProgressBar(100);
       window.__ContentLoaderDialog.hide();
       this.renderChildren(this.baseIdentifier);
-
-    } else if (downloadedPercent < 100) {
-      window.__ContentLoaderDialog.show();
-      window.__ContentLoaderDialog.setClickCallback(this.handleContentLoaderCancelClick)
-      window.__ContentLoaderDialog.updateProgressBar(downloadedPercent);
     }
   }
 
@@ -232,14 +234,13 @@ class CourseEnrolledActivity extends View {
       } else {
         _this.logTelelmetry(identifier, data.contentData.pkgVersion, data.isAvailableLocally);
         if (JBridge.isNetworkAvailable()) {
-          JBridge.importCourse(identifier, "true");
+          JBridge.importCourse(identifier, "true", utils.getCallbacks(_this.getSpineStatus, "", _this.getSpineStatus));
           _this.changeOverFlow();
         } else {
           window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE)
         }
       }
     });
-    window.__getDownloadStatus = this.getSpineStatus;
     JBridge.getContentDetails(identifier, callback);
   }
 

@@ -54,32 +54,36 @@ class UserActivity extends View {
 
     this.deepLinkCollectionDetails="";
 
-    window.__onContentImportResponse = this.getImportStatus;
-    window.__onContentImportProgress = this.setImportProgress;
     window.__LoaderDialog.hide();
     window.__loggedInState = JBridge.getFromSharedPrefs("logged_in")
   }
 
   getImportStatus = (response) => {
-    window.__onContentImportResponse = undefined;
-    //Callback of JBridge.importEcar(file) asyc call
-    console.log("response for import", response);
+    var cb = response[0];
+    var id = response[1];
+    var data = JSON.parse(response[2]);
+    
+    console.log("response for import", data);
 
-    if (response != "ALREADY_EXIST") {
+    if (data.status != "ALREADY_EXIST" && data.status == "IMPORT_COMPLETED") {
       console.log("content doesnot ALREADY_EXIST");
-      var jsonResponse = JSON.parse(response);
       var identifier;
-      if (jsonResponse.identifier != undefined && jsonResponse.identifier != "") {
-        console.log("identifier fetched >>" + jsonResponse.identifier + "<<");
-        identifier = jsonResponse.identifier;
+      if (data.identifier != undefined && data.identifier != "") {
+        console.log("identifier fetched >>" + data.identifier + "<<");
+        identifier = data.identifier;
         _this.handleDeepLinkAction(identifier);
       } else {
-        console.log("no identifier fetched ", jsonResponse.identifier);
+        console.log("no identifier fetched ", data.identifier);
         JBridge.showToast(window.__S.MSG_IMPORTED_SUCCESSFULLY, "short");
-        var event = { tag: "OPEN_MainActivity", contents: [] };
-        window.__runDuiCallback(event);
+        if (window.__loggedInState != "GUEST" || window.__loggedInState != "YES") {
+          this.showLoginOptions();
+        } else {
+          this.setLoginPreferences();
+          var event = { tag: "OPEN_MainActivity", contents: [] };
+          window.__runDuiCallback(event);
+        }
       }
-    } else {
+    } else if (response.status == "ALREADY_EXIST") {
       console.log("content ALREADY_EXIST");
       JBridge.showToast(window.__S.MSG_ALREADY_IMPORTED, "short");
       var event = { tag: "OPEN_MainActivity", contents: [] };
@@ -87,8 +91,13 @@ class UserActivity extends View {
     }
   }
 
-  setImportProgress = (progress) => {
-    console.log("import ecar progress", progress);
+  setImportProgress = (res) => {
+    console.log("import ecar progress", res);
+    var cb = res[0];
+    var id = res[1];
+    var data = JSON.parse(res[2]);
+
+    var progress = "(" + data.currentCount + "/" + data.totalCount + ")";
     var cmd  = this.set({
       id: this.idSet.importEcarLayout,
       visibility: "visible"
@@ -404,7 +413,7 @@ class UserActivity extends View {
     if("__failed" != JBridge.getFromSharedPrefs("intentFilePath")){
       var filePath = JBridge.getFromSharedPrefs("intentFilePath");
       JBridge.setInSharedPrefs("intentFilePath", "__failed");
-      JBridge.importEcar(filePath);
+      JBridge.importEcar(filePath, utils.getCallbacks("", this.setImportProgress, this.getImportStatus));
     }else if("__failed" != JBridge.getFromSharedPrefs("intentLinkPath")){
       console.log("INSIDE LINK INTENT");
       var output = JBridge.getFromSharedPrefs("intentLinkPath");

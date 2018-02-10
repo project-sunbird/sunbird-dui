@@ -91,16 +91,17 @@ exports.clearDeeplinkPreferences = () =>{
 
 
 exports.checkEnrolledCourse = (identifier) =>{
+	var enrolled = false;
+	if (window.__enrolledCourses && window.__enrolledCourses != "") {
+		window.__enrolledCourses.map(function (item) {
+			if (item.courseId == identifier) {
+				enrolled = true;
+			}
+		});
+	}
+	return enrolled;
+}
 
-    var enrolled = false;
-    window.__enrolledCourses.map(function(item){
-      if(item.courseId == identifier){
-        enrolled = true;
-      }
-    })
-
-     return enrolled;
-  }
 exports.getEnrolledCourse = (identifier) =>{
 
     var enrolled = null;
@@ -208,4 +209,49 @@ exports.processResponse = (state) => {
 	console.log("processing response, response:", response);
 
 	return response;
+}
+
+exports.getCallbacks = (downloadProgressCb, contentImportProgressCb, contentImportResponseCb) => {
+	var cb1 = callbackMapper.map((data)=>{
+		console.log("downloadProgressCb -> ", data);
+		downloadProgressCb(data);
+	});
+	/* downloadProgressCb data format:
+	[
+		"onDownloadProgress",
+		"do_212371599518752768174",
+		"{\"downloadId\":7010,\"downloadProgress\":-1,\"identifier\":\"do_212371599518752768174\",\"status\":1}"
+	]
+	*/
+
+	var cb2 = callbackMapper.map((data) => {
+		console.log("contentImportProgressCb -> ", data);
+		contentImportProgressCb(data);
+	});
+	/* contentImportProgressCb data format:
+	[
+		"onContentImportProgress",
+		"do_212371599518752768174",
+		"{\"currentCount\":0,\"totalCount\":5}"
+	]
+	*/
+
+	var cb3 = callbackMapper.map((data) => {
+		console.log("contentImportResponseCb -> ", data);
+		contentImportResponseCb(data);
+	});
+	return [cb1, cb2, cb3];
+	/* contentImportResponseCb data format:
+	[
+		"onContentImportResponse",
+		"do_212371599518752768174",
+		"{\"identifier\":\"do_212371599518752768174\",\"status\":\"DOWNLOAD_COMPLETED\"}"
+	]
+	*/
+}
+
+exports.getFuncMapped = (func) => {
+	return callbackMapper.map((data) => {
+		func(data);
+	});
 }

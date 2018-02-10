@@ -9,7 +9,6 @@ var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callb
 var ScrollView = require("@juspay/mystique-backend").androidViews.ScrollView;
 var RatingBar = require("@juspay/mystique-backend/src/android_views/RatingBar");;
 var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
-var SimplePopup = require('../components/Sunbird/core/SimplePopup');
 var CropParagraph = require('../components/Sunbird/CropParagraph');
 var ProgressButton = require('../components/Sunbird/core/ProgressButton');
 var CourseCurriculum = require('../components/Sunbird/CourseCurriculum');
@@ -210,7 +209,7 @@ class ModuleDetailActivity extends View {
                         if (_this.downloadList.indexOf(module.identifier) == -1) {
                             _this.downloadList.push(module.identifier)
                             console.log("module", module);
-                            JBridge.importCourse(module.identifier, "true");
+                            JBridge.importCourse(module.identifier, "true", this.downloadProgressCb());
                         } else {
                             window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
                             _this.onBackPressed();
@@ -229,6 +228,13 @@ class ModuleDetailActivity extends View {
                 this.renderModuleChildren(module);
             }
         }
+    }
+
+    downloadProgressCb = () => {
+        return callbackMapper.map((data) => {
+            console.log("downloadProgressCb in MDA -> ", data);
+            
+        });
     }
 
     renderChildren = (identifier) => {
@@ -311,7 +317,6 @@ class ModuleDetailActivity extends View {
     }
 
     afterRender = () => {
-        window.__SimplePopup.hide();
         window.__ProgressButton.setButtonFor(this.module.identifier);
         JBridge.logContentDetailScreenEvent(this.module.identifier, this.module.contentData.pkgVersion);
         this.checkContentLocalStatus(this.module);
@@ -412,16 +417,7 @@ class ModuleDetailActivity extends View {
 
       this.replaceChild(this.idSet.simpleToolBarOverFlow, toolbar.render(), 0);
     }
-    onSimplePopClick=(type)=>{
 
-      if(type=="negative"){
-        //do something
-      }else if(type =="positive"){
-        //do something
-
-        JBridge.importCourse(module.identifier, "true")
-      }
-    }
     handleOverFlowClick = () =>{
         console.log("overflow")
     }
@@ -500,10 +496,6 @@ class ModuleDetailActivity extends View {
                     id = { this.idSet.downloadAllButtonContainer}
                     width = "match_parent"/>
             </LinearLayout>
-            <SimplePopup
-               buttonClick={this.onSimplePopClick}
-               data={this.simpleData}
-               />
         </RelativeLayout>
             );
 

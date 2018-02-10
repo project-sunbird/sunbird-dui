@@ -81,45 +81,43 @@ class ProgressButton extends View {
     JBridge.getContentDetails(this.props.identifier, callback);
   }
 
-  updateProgress = (pValue) => {
-    var cmd;
-    var data = JSON.parse(pValue);
+  updateProgress = (res) => {
+    console.log("inside updateProgress in ProgressButton -> ", res);
 
-    if (data.identifier != _this.props.identifier) {
-      console.log("NOT mine")
-      return;
-    }
+    var cb = res[0];
+    var id = res[1];
+    var data = JSON.parse(res[2]);
+    if (id != _this.props.identifier) return;
 
-    var textToShow = ""
+    var textToShow = "";
+    if (cb == "onDownloadProgress") {
 
-    data.downloadProgress = (data.downloadProgress == undefined || data.downloadProgress < 0) ? 0 : data.downloadProgress;
-    console.log("--->\t\t\t\n", data);
-    console.log(data.downloadProgress)
-    if (data.status == "NOT_FOUND") {
-      this.setCancelButtonVisibility("gone");
-      _this.replaceChild(_this.idSet.downloadBarContainer, _this.getButtons(0, window.__S.DOWNLOAD).render(), 0);
-      window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
-      return;
-    }
-    if (parseInt(data.downloadProgress) == 100) {
-      console.log(data.downloadProgress, "DONE")
-      _this.props.changeOverFlowMenu();
-      _this.isDownloaded = true;
-      textToShow = window.__S.PLAY;
-      _this.isCancelVisible = true;
-      _this.setCancelButtonVisibility("gone");
-
-    } else {
-      console.log(data.downloadProgress, "UPDATING")
+      data.downloadProgress = (data.downloadProgress == undefined || data.downloadProgress < 0) ? 0 : data.downloadProgress;
       _this.isDownloaded = false;
-      textToShow = window.__S.DOWNLOADING.format(data.downloadProgress)
-
-    }
-    if (!this.isCancelVisible && data.downloadProgress > 0) {
-      this.setCancelButtonVisibility("visible");
       this.isCancelVisible = true;
+      this.setCancelButtonVisibility("visible");
+      textToShow = window.__S.DOWNLOADING.format(data.downloadProgress);
+      _this.replaceChild(_this.idSet.downloadBarContainer, _this.getButtons(data.downloadProgress, textToShow).render(), 0);
+    } else if (cb == "onContentImportResponse") {
+
+      if (data.status == "NOT_FOUND") {
+
+        this.isCancelVisible = false;
+        this.setCancelButtonVisibility("gone");
+        _this.replaceChild(_this.idSet.downloadBarContainer, _this.getButtons(0, window.__S.DOWNLOAD).render(), 0);
+        window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
+        return;
+      } else if (data.status == "IMPORT_COMPLETED") {
+
+        console.log(data.downloadProgress, "DONE");
+        _this.props.changeOverFlowMenu();
+        _this.isDownloaded = true;
+        textToShow = window.__S.PLAY;
+        _this.isCancelVisible = false;
+        _this.setCancelButtonVisibility("gone");
+        _this.replaceChild(_this.idSet.downloadBarContainer, _this.getButtons(100, textToShow).render(), 0);
+      }
     }
-    _this.replaceChild(_this.idSet.downloadBarContainer, _this.getButtons(data.downloadProgress, textToShow).render(), 0);
   }
 
   setVisibility = (value) => {
@@ -146,20 +144,15 @@ class ProgressButton extends View {
     this.props.contentDetails = data;
   }
 
-
   handleButtonClick = () => {
-
-      window.__getDownloadStatus = this.updateProgress;
-
       if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
         console.log(this.isDownloaded,this.props)
         if (this.isDownloaded) {
-          window.__getGenieEvents = this.checkTelemetry;
           var callback = callbackMapper.map(function (data) {
             data = utils.decodeBase64(data[0]);
             var parsedData = JSON.parse(utils.jsonifyData(data));
             console.log("data from progress", parsedData)
-            JBridge.playContent(data, parsedData.identifier, parsedData.contentData.pkgVersion);
+            JBridge.playContent(data, parsedData.identifier, parsedData.contentData.pkgVersion, utils.getFuncMapped(_this.checkTelemetry));
           });
           JBridge.getContentDetails(_this.props.identifier, callback);
 
@@ -168,7 +161,7 @@ class ProgressButton extends View {
           if (!this.startedDownloading) {
             this.startedDownloading = true;
             console.log("\n\n\n\n\n\n\n\n\n isCourse",this.props.isCourse)
-            JBridge.importCourse(this.props.identifier, this.props.isCourse);
+            JBridge.importCourse(this.props.identifier, this.props.isCourse, utils.getCallbacks(_this.updateProgress, "", _this.updateProgress));
           }
         }
         else{
@@ -183,10 +176,17 @@ class ProgressButton extends View {
 
 
   checkTelemetry = (telemetryData) => {
-    telemetryData = JSON.parse(utils.decodeBase64(telemetryData));
+    console.log("telemetry data in ProgressButton -> ", telemetryData);
+    
+    var cb = telemetryData[0];
+    var id = telemetryData[1];
+    var data = JSON.parse(utils.decodeBase64(telemetryData[2]));
+
+    telemetryData = data;
     console.log("telemetry Data", telemetryData);
-    console.log("props", this.props)
-    if (telemetryData.eid == "OE_END") {
+    console.log("props", this.props);
+    console.log("telemetryData.eid", telemetryData.eid);
+    if (telemetryData.eid == "END") {
       JBridge.stopEventBus();
       var time = new Date();
       var date = utils.formatDate(time);

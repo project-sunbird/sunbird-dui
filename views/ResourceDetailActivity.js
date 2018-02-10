@@ -69,7 +69,7 @@ class ResourceDetailActivity extends View {
           width="match_parent"
           isCourse = "false"
           playContent = {_this.contentData}
-          contentDetail = {_this.contentData.content}
+          contentDetail = {_this.contentData.contentData}
           buttonText={window.__S.PLAY}
           localStatus = {_this.localStatus}
           identifier = {_this.contentData.identifier}
@@ -81,7 +81,7 @@ class ResourceDetailActivity extends View {
         <ProgressButton
           width="match_parent"
           isCourse = "false"
-          contentDetail = {_this.contentData.content}
+          contentDetail = {_this.contentData.contentData}
           buttonText={window.__S.DOWNLOAD}
           playContent = {null}
           localStatus = {_this.localStatus}
