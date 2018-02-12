@@ -90,7 +90,7 @@ class ProgressButton extends View {
     if (id != _this.props.identifier) return;
 
     var textToShow = "";
-    if (cb == "onDownloadProgress") {
+    if (cb == "onDownloadProgress" && !this.isDownloaded) {
 
       data.downloadProgress = (data.downloadProgress == undefined || data.downloadProgress < 0) ? 0 : data.downloadProgress;
       _this.isDownloaded = false;

@@ -23,22 +23,22 @@ class ProfileHeader extends View {
     this.lastName = this.props.data.lastName ? this.props.data.lastName : ""
     this.address = (this.props.data.address && this.props.data.address.length > 0) ? this.props.data.address : ""
     // this.orgName=this.props.data.rootOrg.orgName?this.props.data.rootOrg.orgName:"";
-    if(this.props.data.rootOrg!=null && this.props.data.rootOrg.hasOwnProperty("orgName")){
+
+    if (this.props.data.rootOrg != null && this.props.data.rootOrg.hasOwnProperty("orgName")) {
       this.orgName = this.props.data.rootOrg.orgName
     }
     else
       this.orgName = "";
-    if(this.props.data.rootOrg!=null && this.props.data.rootOrg.contactDetail!=null && this.props.data.rootOrg.contactDetail.length>0)
-      {
-        try {
-          var temp = JSON.parse(this.props.data.rootOrg.contactDetail);
-        } catch (err) {
-          console.log("JSON.parse(this.props.data.rootOrg.contactDetail) failed, using fallback");
-          var temp = this.props.data.rootOrg.contactDetail;
-        }
-        this.orgEmail = temp[0].email ? temp[0].email : "";
+    if (this.props.data.rootOrg != null && this.props.data.rootOrg.contactDetail != null && this.props.data.rootOrg.contactDetail.length > 0) {
+      try {
+        var temp = JSON.parse(this.props.data.rootOrg.contactDetail);
+      } catch (err) {
+        console.log("JSON.parse(this.props.data.rootOrg.contactDetail) failed, using fallback");
+        var temp = this.props.data.rootOrg.contactDetail;
       }
-    else{
+      this.orgEmail = temp[0].email ? temp[0].email : "";
+    }
+    else {
       this.orgEmail = ""
     }
     this.lastLoginTime = this.formatTime(this.props.data.lastLoginTime);
@@ -53,38 +53,43 @@ class ProfileHeader extends View {
     return date;
   }
 
-  sendEmail=()=>{
-    if(this.orgEmail!="")
-      {
-        JBridge.sendEmail(this.orgEmail);
-      }
-    else{
+  sendEmail = () => {
+    if (this.orgEmail != "") {
+      JBridge.sendEmail(this.orgEmail);
+    }
+    else {
       window.__Snackbar.show(window.__S.NO_EMAIL_FOUND)
     }
   }
 
-  getUserName = () =>{
-    console.log("username",this.userName)
-    return(<LinearLayout
-      width="wrap_content"
-      height="wrap_content"
-      gravity="center"
-      background="#e8e8e8"
-      cornerRadius="5"
-      padding="5,5,5,5"
-      margin="0,0,0,5"
-      visibility = {this.userName==null || this.userName == undefined || this.userName == "" ? "gone" : "visible"}
-      alpha="0.7">
-      <TextView
+
+  getUserName = () => {
+    console.log("username", this.userName)
+    if (window.__loggedInState != "GUEST") {
+      return (<LinearLayout
         width="wrap_content"
         height="wrap_content"
-        enableEllipse="true"
-        text={window.__S.USER_NAME_PROFILE+"-"+this.userName}
-        style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
-    </LinearLayout>);
+        gravity="center"
+        background="#e8e8e8"
+        cornerRadius="5"
+        padding="5,5,5,5"
+        margin="0,0,0,5"
+        visibility={this.userName == null || this.userName == undefined || this.userName == "" ? "gone" : "visible"}
+        alpha="0.7">
+        <TextView
+          width="wrap_content"
+          height="wrap_content"
+          enableEllipse="true"
+          text={window.__S.USER_NAME_PROFILE + "-" + this.userName}
+          style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK} />
+      </LinearLayout>);
+    }
+    else {
+      return (<LinearLayout />)
+    }
   }
-  getEmailPart=()=>{
-    return(
+  getEmailPart = () => {
+    return (
       <LinearLayout
         width="wrap_content"
         height="wrap_content"
@@ -92,7 +97,7 @@ class ProfileHeader extends View {
         background="#e8e8e8"
         cornerRadius="5"
         padding="5,5,5,5"
-        visibility = {this.orgName==null || this.orgName == undefined || this.orgName == "" || this.orgEmail=="" ? "gone" : "visible"}
+        visibility={this.orgName == null || this.orgName == undefined || this.orgName == "" || this.orgEmail == "" ? "gone" : "visible"}
         margin="0,5,0,0">
         <LinearLayout
           width="match_parent"
@@ -101,71 +106,70 @@ class ProfileHeader extends View {
           orientation="horizontal"
           alpha="0.7"
           onClick={this.sendEmail}>
-        <TextView
-          width="wrap_content"
-          height="wrap_content"
-          enableEllipse="true"
-          text={this.orgName}
-          style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}/>
+          <TextView
+            width="wrap_content"
+            height="wrap_content"
+            enableEllipse="true"
+            text={this.orgName}
+            style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK} />
           <ImageView
-              width="30"
-              height="18"
-              imageUrl="ic_mail_outline"/>
+            width="30"
+            height="18"
+            imageUrl="ic_mail_outline" />
         </LinearLayout>
       </LinearLayout>);
   }
 
-  capitalizeFirstLetter = (string) =>
-  {
-    if(string!=undefined) return string.charAt(0).toUpperCase() + string.slice(1);
+  capitalizeFirstLetter = (string) => {
+    if (string != undefined) return string.charAt(0).toUpperCase() + string.slice(1);
     else return string;
   }
 
   showProfileImagePopup = () => {
-    if(this.isEditable == "true"){
+    if (this.isEditable == "true" && window.__loggedInState != "GUEST") {
       window.__ProfileImagePopUp.show(this.imageUrl);
     }
   }
 
   render() {
     this.layout = (
-            <LinearLayout
-              width="match_parent"
-              height="wrap_content"
-              gravity="center_horizontal"
-              orientation="vertical">
-              <TextView
-                visibility = {this.lastLoginTime == "" ? "gone" : "visible"}
-                width = "wrap_content"
-                height = "wrap_content"
-                text = {window.__S.LAST_LOGIN_TIME.format(this.lastLoginTime)}
-                margin = "0,0,0,16"
-                style={window.__TextStyle.textStyle.HINT.REGULAR} />
-             <ImageView
-              width="80"
-              height="80"
-              circularImageUrl={"0,"+this.imageUrl}
-              stroke ={"2," + "#d8d8d8"}
-              cornerRadius="40"
-              onClick = {this.showProfileImagePopup}/>
-              <TextView
-              width="wrap_content"
-              height="wrap_content"
-              text={this.capitalizeFirstLetter(this.firstName) + " " + this.capitalizeFirstLetter(this.lastName)}
-              padding="0,10,0,2"
-              style={window.__TextStyle.textStyle.HEADING.DARK}/>
+      <LinearLayout
+        width="match_parent"
+        height="wrap_content"
+        gravity="center_horizontal"
+        orientation="vertical">
+        <TextView
+          visibility={this.lastLoginTime == "" ? "gone" : "visible"}
+          width="wrap_content"
+          height="wrap_content"
+          text={window.__S.LAST_LOGIN_TIME.format(this.lastLoginTime)}
+          margin="0,0,0,16"
+          style={window.__TextStyle.textStyle.HINT.REGULAR} />
+        <ImageView
+          width="80"
+          height="80"
+          circularImageUrl={"0," + this.imageUrl}
+          stroke={"2," + "#d8d8d8"}
+          cornerRadius="40"
+          onClick={this.showProfileImagePopup} />
+        <TextView
+          width="wrap_content"
+          height="wrap_content"
+          text={this.capitalizeFirstLetter(this.firstName) + " " + this.capitalizeFirstLetter(this.lastName)}
+          padding="0,10,0,2"
+          style={window.__TextStyle.textStyle.HEADING.DARK} />
 
-              {this.getUserName()}
-              {this.getEmailPart()}
+        {this.getUserName()}
+        {this.getEmailPart()}
 
-              <TextView
-              width="wrap_content"
-              height="wrap_content"
-              visibility = {(this.address && this.address != "") ? "visible" : "gone"}
-              text={this.address}
-              padding="0,0,0,8"
-              style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>
-              </LinearLayout>)
+        <TextView
+          width="wrap_content"
+          height="wrap_content"
+          visibility={(this.address && this.address != "") ? "visible" : "gone"}
+          text={this.address}
+          padding="0,0,0,8"
+          style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR} />
+      </LinearLayout>)
     return this.layout.render();
   }
 }

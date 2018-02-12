@@ -85,9 +85,10 @@ class SplashScreenActivity extends View {
     JBridge.logCorrelationPageEvent("SPLASHSCREEN","","");
 
     setTimeout(() => {
-      if (this.isUserOnboarded != "__failed" && this.isUserOnboarded != "false") {
+      if (window.__loggedInState == "YES" || window.__loggedInState == "GUEST") {
         var event = { tag: "OPEN_UserActivity", contents: [] }
-      } else {
+      }
+      else if (this.isUserOnboarded == "__failed" || this.isUserOnboarded == "false") {
         var event = { tag: "OPEN_LanguageSelectActivity", contents: [] }
       }
       window.__runDuiCallback(event);
