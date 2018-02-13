@@ -29,24 +29,18 @@ class DownloadAllProgressButton extends View {
     this.btnState = this.BTN_STATES.IDLE;
     this.childrenArray = [];
     this.isDownloaded = false;
-    this.startedDownloading = false;
     this.id = this.props.id ? this.props.id : this.idSet.downloadBtn;
+    this.enqueuedForDownload = [];
     _this = this;
     this.isCancelVisible=false;
     console.log("DownloadAllProgressButton props",this.props);
-    window.__getDownloadStatus = (data) => { console.log("__getDownloadStatus -> ", data) };
-    window.__onContentImportResponse = (data) => { console.log("__onContentImportResponse -> ", data) };
-    window.__onContentImportProgress = (data) => { console.log("__onContentImportProgress -> ", data) };
   }
 
   update = (listOfIds) => {
-    window.__getDownloadStatus = (data) => { console.log("__getDownloadStatus -> ", data) };
-    window.__onContentImportResponse = this.afterDownload;
-    window.__onContentImportProgress = this.updateProgress;
     this.childrenArray = listOfIds;
     this.setCancelButtonVisibility("visible");
-    JBridge.downloadAllContent(this.childrenArray);
-    this.updateProgress(0);
+    JBridge.downloadAllContent(this.childrenArray, utils.getCallbacks(this.updateProgress, "", this.updateProgress));
+    // this.updateProgress(0);
   } 
 
   setCancelButtonVisibility = (visibility) => {
@@ -66,36 +60,68 @@ class DownloadAllProgressButton extends View {
     })
     this.isCancelVisible = false;
     this.setCancelButtonVisibility("gone");
-    this.startedDownloading = false;
     this.isDownloaded = false;
     this.replaceChild(this.idSet.downloadBarContainer, this.getButtons(0, this.props.buttonText).render(), 0);
   }
 
-  updateProgress = (progress) => {
-    console.log("window.__onContentImportProgress -> ", progress);
-    // var jsonResponse = JSON.parse(response);
-    // console.log("response for download all", jsonResponse.status);
+  checkCompleted = () => {
+    var completed = 0;
+    this.enqueuedForDownload.map((item) => {
+      if (item.status == 1) completed += 1;
+    });
+    return completed;
+  }
 
-    // if (jsonResponse.status == "IMPORT_COMPLETED") {
-    //   this.downloadContentCount++;
-    // }
+  updateProgress = (res) => {
+    console.log("downloadAll res -> ", res);
+    var cb = res[0];
+    var id = res[1];
+    var data = JSON.parse(res[2]);
+    
+    if (cb == "importContentSuccessResponse") {
+      data.result.map((item, i) => {
+        if (item.status == "ENQUEUED_FOR_DOWNLOAD") {
+          this.enqueuedForDownload[i] = {
+            id: item.identifier,
+            status: 0
+          } 
+        }
+      });
+      if (this.enqueuedForDownload.length == 0) {
+        this.btnState = this.BTN_STATES.IDLE;
+        JBridge.showToast("Error", "short");
+        this.isDownloaded = false;
+        this.setCancelButtonVisibility("gone");
+        _this.replaceChild(_this.idSet.downloadBarContainer, _this.getButtons(0, this.props.buttonText).render(), 0);
+      } else {
+        this.btnState = this.BTN_STATES.DOWNLOADING;
+        var text = "0/" + this.enqueuedForDownload.length;
+        _this.replaceChild(_this.idSet.downloadBarContainer, _this.getButtons(progress, window.__S.DOWNLOADING_1.format(text)).render(), 0);
+      }
+    }
 
-    // var textToShow = ""
-    // var progress = 0
-    // if (this.downloadContentCount == this.childrenCount) {
-    //   textToShow = "All Contents Downloaded"
-    //   this.setCancelButtonVisibility("gone");
-    //   this.isCancelVisible = false;
-    // } else {
-    //   _this.isDownloaded = false;
-    //   textToShow = "DOWNLOADING " + this.downloadContentCount + "/" + this.childrenCount
-    //   progress = (this.downloadContentCount / this.childrenCount) * 100;
-    // }
-    // if (!this.isCancelVisible) {
-    //   this.setCancelButtonVisibility("visible");
-    //   this.isCancelVisible = true;
-    // }
-    _this.replaceChild(_this.idSet.downloadBarContainer, _this.getButtons(0, window.__S.DOWNLOADING.format(progress)).render(), 0);
+    if (cb == "onDownloadProgress" && this.enqueuedForDownload.length != 0) {
+      var completed = this.checkCompleted();
+      var progress = (completed / this.enqueuedForDownload.length) * 100;
+      var text = completed + "/" + this.enqueuedForDownload.length;
+      _this.replaceChild(_this.idSet.downloadBarContainer, _this.getButtons(progress, window.__S.DOWNLOADING_1.format(text)).render(), 0);
+    } else if (cb == "onContentImportResponse" && this.enqueuedForDownload.length != 0) {
+      if(data.status == "IMPORT_COMPLETED") {
+        var newArr = this.enqueuedForDownload.map((item, i) => {
+          if (item.id == data.identifier) return {id: item.id, status: 1};
+          else return item;
+        });
+        this.enqueuedForDownload = newArr;
+      }
+      var noDownloaded = this.checkCompleted();
+      if (noDownloaded == this.enqueuedForDownload.length) {
+        var cmd = this.set({
+          id: this.id,
+          visibility: "gone"
+        })
+        Android.runInUI(cmd, 0);
+      }
+    }
   }
 
   afterDownload = (response) => {

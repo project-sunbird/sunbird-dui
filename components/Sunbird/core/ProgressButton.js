@@ -197,10 +197,10 @@ class ProgressButton extends View {
 
       contentProgress['contentId'] = this.props.identifier;
       contentProgress['courseId'] = this.props.contentDetails.hierarchyInfo[0].identifier;
-      contentProgress['status'] = telemetryData.edata.eks.progress == 100 ? 2 : 1;
-      contentProgress['progress'] = telemetryData.edata.eks.progress;
+      contentProgress['status'] = telemetryData.edata.summary[0].progress == 100 ? 2 : 1;
+      contentProgress['progress'] = telemetryData.edata.summary[0].progress;
       contentProgress['lastAccessTime'] = date;
-      if (telemetryData.edata.eks.progress == 100) {
+      if (telemetryData.edata.summary[0].progress == 100) {
         contentProgress['lastCompletedTime'] = date;
       }
       contentProgress['result'] = "pass";
@@ -209,10 +209,12 @@ class ProgressButton extends View {
       var enrolledCourse;
       console.log("contentProgress", contentProgress)
 
-      window.__enrolledCourses.map(function (item) {
-        if (item.courseId == _this.props.contentDetails.hierarchyInfo[0].identifier)
-          enrolledCourse = item;
-      })
+      if (window.__enrolledCourses && window.__enrolledCourses != "") {
+        window.__enrolledCourses.map(function (item) {
+          if (item.courseId == _this.props.contentDetails.hierarchyInfo[0].identifier)
+            enrolledCourse = item;
+        })
+      }
       console.log("enrolled", enrolledCourse)
       contentProgress['batchId'] = enrolledCourse.hasOwnProperty("batchId") ? enrolledCourse.batchId : 0;
       console.log("batch ID", enrolledCourse)

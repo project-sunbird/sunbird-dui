@@ -84,7 +84,7 @@ class CourseEnrolledActivity extends View {
           this.enrolledCourses = item;
         }
       })
-      if (this.enrolledCourses.leafNodesCount != null && this.enrolledCourses.progress <= this.enrolledCourses.leafNodesCount) {
+      if (this.enrolledCourses && this.enrolledCourses.leafNodesCount != null && this.enrolledCourses.progress <= this.enrolledCourses.leafNodesCount) {
         this.downloadProgress = this.apiDetails.leafNodesCount == null ? 0 : (this.enrolledCourses.progress / this.enrolledCourses.leafNodesCount) * 100;
         this.downloadProgress = parseInt(isNaN(this.downloadProgress) ? 0 : this.downloadProgress);
       }
@@ -95,8 +95,7 @@ class CourseEnrolledActivity extends View {
       courseDesc: this.apiDetails ? this.apiDetails.courseDesc : "",
       completedProgress: this.downloadProgress
     };
-
-    this.downloadedPercent = 0;
+    this.gotSpine = false;
   }
 
   onPop = () => {
@@ -150,9 +149,9 @@ class CourseEnrolledActivity extends View {
     var cb = res[0];
     var id = res[1];
     var data = JSON.parse(res[2]);
-    if (id != this.baseIdentifier) return;
+    if (id != this.baseIdentifier || this.gotSpine) return;
 
-    if (cb == "onDownloadProgress") {
+    if (cb == "onDownloadProgress" ) {
       var textToShow = ""
       if (data.status == "NOT_FOUND") {
         window.__ContentLoaderDialog.hide();
@@ -161,11 +160,10 @@ class CourseEnrolledActivity extends View {
         return;
       }
 
-      data.Progress = data.downloadProgress == undefined || isNaN(data.downloadProgress) ? 0 : data.downloadProgress;
-      this.downloadedPercent = data.downloadProgress;
-      this.downloadedPercent = downloadedPercent < 0 ? 0 : downloadedPercent;
-      console.log("downloadedPercent -> ", this.downloadedPercent);
-      if (this.downloadedPercent < 100) {
+      var downloadedPercent = data.downloadProgress == undefined || isNaN(data.downloadProgress) ? 0 : data.downloadProgress;
+      downloadedPercent = downloadedPercent < 0 ? 0 : downloadedPercent;
+      console.log("downloadedPercent -> ", downloadedPercent);
+      if (downloadedPercent < 100) {
         window.__ContentLoaderDialog.show();
         window.__ContentLoaderDialog.setClickCallback(this.handleContentLoaderCancelClick)
         window.__ContentLoaderDialog.updateProgressBar(downloadedPercent);
@@ -174,6 +172,7 @@ class CourseEnrolledActivity extends View {
       window.__ContentLoaderDialog.updateProgressBar(100);
       window.__ContentLoaderDialog.hide();
       this.renderChildren(this.baseIdentifier);
+      this.gotSpine = true;
     }
   }
 
@@ -450,7 +449,7 @@ class CourseEnrolledActivity extends View {
       Android.runInUI(cmd, 0);
 
     }
-    if (this.enrolledCourses.hasOwnProperty("lastReadContentId") && (this.enrolledCourses.lastReadContentId != null)) {
+    if (this.enrolledCourses && this.enrolledCourses.hasOwnProperty("lastReadContentId") && (this.enrolledCourses.lastReadContentId != null)) {
       var cmd = this.set({
         id: this.idSet.startCourseBtn,
         visibility: "gone"
@@ -556,7 +555,7 @@ class CourseEnrolledActivity extends View {
   handleResumeClick = () => {
     console.log(this.apiDetails, "handleResumeClick this.apiDetails")
     var id;
-    if (this.enrolledCourses.hasOwnProperty('lastReadContentId') && this.enrolledCourses.lastReadContentId != null) {
+    if (this.enrolledCourses && this.enrolledCourses.hasOwnProperty('lastReadContentId') && this.enrolledCourses.lastReadContentId != null) {
       console.log("this.enrolledCourses.lastReadContentId", this.enrolledCourses.lastReadContentId);
       id = this.enrolledCourses.lastReadContentId;
     }
@@ -797,7 +796,7 @@ class CourseEnrolledActivity extends View {
                   buttonClick={this.handleResumeClick} />
               </RelativeLayout>
 
-              {/*this.getDownloadAll()*/}
+              {this.getDownloadAll()}
             </LinearLayout>
 
             <LinearLayout

@@ -303,7 +303,8 @@ const stringsRes = {
 		MEDIUM_OF_INSTRUCTION: "MEDIUM OF INSTRUCTION",
 		MEDIUM_GUEST: "Medium",
 		GRADE: "GRADE",
-		BOARD: "Board"
+		BOARD: "Board",
+		DOWNLOADING_1: "Downloading %s"
 	},
 	"hi_IN" : {
 		ALREADY_HAVE_ACC : "मौजूदा उपयोगकर्ता, साइन इन करें",

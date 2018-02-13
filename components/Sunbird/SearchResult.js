@@ -10,7 +10,7 @@ var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget"
 var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
 var utils = require('../../utils/GenericFunctions');
 var ListView = require("@juspay/mystique-backend/src/android_views/ListView");
-
+var debounce = require("debounce");
 
 
 class SearchResult extends View {
@@ -22,6 +22,7 @@ class SearchResult extends View {
     this.setIds([
       'listContainer'
     ]);
+    this.handleItemClick = debounce(this.handleItemClick, 50);
   }
   getData = () => {
     return (<ListView
