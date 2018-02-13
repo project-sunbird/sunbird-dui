@@ -226,6 +226,8 @@ const logoutUser = () => {
       JBridge.unregisterFCM(JSON.parse(JBridge.getFromSharedPrefs("topics")));
     }
     JBridge.setInSharedPrefs("intentNotification", "__failed");
+    JBridge.setInSharedPrefs("intentFilePath", "__failed");
+    JBridge.setInSharedPrefs("intentLinkPath", "__failed");
     JBridge.setInSharedPrefs("logged_in","__failed");
     JBridge.setInSharedPrefs("user_id", "__failed");
     JBridge.setInSharedPrefs("user_name",  "__failed");

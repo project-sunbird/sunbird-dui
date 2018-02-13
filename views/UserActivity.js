@@ -395,7 +395,7 @@ class UserActivity extends View {
     if (window.__loggedInState == "GUEST") {
       JBridge.setInSharedPrefs("logged_in", "GUEST");
       JBridge.setProfile("", true);
-    } else {
+    } else if (window.__loggedInState == "YES"){
       JBridge.setInSharedPrefs("logged_in", "YES");
       JBridge.setProfile(window.__userToken, false);
     }

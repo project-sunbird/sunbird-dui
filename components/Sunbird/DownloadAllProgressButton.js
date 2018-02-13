@@ -37,6 +37,10 @@ class DownloadAllProgressButton extends View {
   }
 
   update = (listOfIds) => {
+    if (this.btnState == this.BTN_STATES.IDLE) {
+      this.btnState = this.BTN_STATES.DOWNLOADING;
+      this.downloadContentCount = 0;
+    }
     this.childrenArray = listOfIds;
     this.setCancelButtonVisibility("visible");
     JBridge.downloadAllContent(this.childrenArray, utils.getCallbacks(this.updateProgress, "", this.updateProgress));
@@ -78,7 +82,7 @@ class DownloadAllProgressButton extends View {
     var id = res[1];
     var data = JSON.parse(res[2]);
     
-    if (cb == "importContentSuccessResponse") {
+    if (cb == "importContentSuccessResponse" && this.btnState == this.BTN_STATES.DOWNLOADING) {
       data.result.map((item, i) => {
         if (item.status == "ENQUEUED_FOR_DOWNLOAD") {
           this.enqueuedForDownload[i] = {
@@ -140,9 +144,6 @@ class DownloadAllProgressButton extends View {
 
   handleButtonClick = () => {
     if (this.btnState == this.BTN_STATES.IDLE) {
-      this.btnState = this.BTN_STATES.DOWNLOADING;
-      this.downloadContentCount = 0;
-      // window.__onContentImportResponse = this.updateProgress;
       this.props.handleButtonClick();
     }
   }
