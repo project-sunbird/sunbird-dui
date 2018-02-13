@@ -133,6 +133,7 @@ class ContentLoaderDialog extends View {
         height="match_parent"
         orientation="vertical"
         margin="0,0,0,0"
+        clickable="true"
         background={window.__Colors.WHITE}
         gravity="center">
 

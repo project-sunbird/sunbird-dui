@@ -65,7 +65,7 @@ class CourseEnrolledActivity extends View {
     // array of all the children content ids
     this.subContentArray = [];
     console.log("details in CEA", this.apiDetails)
-    this.showProgress = this.apiDetails.hasOwnProperty("mimeType") && this.apiDetails.contentType == "application/vnd.ekstep.content-collection" ? "gone" : "visible";
+    this.showProgress = this.apiDetails.hasOwnProperty("courseName") ? "visible" : "gone";
 
     if (this.apiDetails.hasOwnProperty("courseId")) {
       this.baseIdentifier = this.apiDetails.courseId
@@ -95,7 +95,8 @@ class CourseEnrolledActivity extends View {
       courseDesc: this.apiDetails ? this.apiDetails.courseDesc : "",
       completedProgress: this.downloadProgress
     };
-    this.gotSpine = false;
+    this.gotSpine = false; //called when fetching spine is complete
+    this.cancelled = false; //called when fetching spine is cancelled
   }
 
   onPop = () => {
@@ -149,7 +150,7 @@ class CourseEnrolledActivity extends View {
     var cb = res[0];
     var id = res[1];
     var data = JSON.parse(res[2]);
-    if (id != this.baseIdentifier || this.gotSpine) return;
+    if (id != this.baseIdentifier || this.gotSpine || this.cancelled) return;
 
     if (cb == "onDownloadProgress" ) {
       var textToShow = ""
@@ -178,6 +179,7 @@ class CourseEnrolledActivity extends View {
 
   handleContentLoaderCancelClick = () => {
     JBridge.cancelDownload(this.baseIdentifier);
+    this.cancelled = true;
     setTimeout(function () {
       window.__ContentLoaderDialog.hide();
       this.onBackPressed();

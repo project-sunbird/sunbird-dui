@@ -96,7 +96,6 @@ class CourseFragment extends View {
           orientation="vertical"
           root="true">
           {rows}
-          {this.getSignInOverlay()}
         </LinearLayout>)
 
         this.replaceChild(this.idSet.courseContentContainer, layout.render(), 0);
@@ -337,6 +336,7 @@ class CourseFragment extends View {
               <CircularLoader
                 margin="0,16,0,0" />
             </LinearLayout>
+            {this.getSignInOverlay()}
           </LinearLayout>
         </ScrollView>
       </LinearLayout>

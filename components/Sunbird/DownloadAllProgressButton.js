@@ -100,12 +100,12 @@ class DownloadAllProgressButton extends View {
       }
     }
 
-    if (cb == "onDownloadProgress" && this.enqueuedForDownload.length != 0) {
+    if (cb == "onDownloadProgress" && this.enqueuedForDownload.length != 0 && this.btnState == this.BTN_STATES.DOWNLOADING) {
       var completed = this.checkCompleted();
       var progress = (completed / this.enqueuedForDownload.length) * 100;
       var text = completed + "/" + this.enqueuedForDownload.length;
       _this.replaceChild(_this.idSet.downloadBarContainer, _this.getButtons(progress, window.__S.DOWNLOADING_1.format(text)).render(), 0);
-    } else if (cb == "onContentImportResponse" && this.enqueuedForDownload.length != 0) {
+    } else if (cb == "onContentImportResponse" && this.enqueuedForDownload.length != 0 && this.btnState == this.BTN_STATES.DOWNLOADING) {
       if(data.status == "IMPORT_COMPLETED") {
         var newArr = this.enqueuedForDownload.map((item, i) => {
           if (item.id == data.identifier) return {id: item.id, status: 1};
@@ -115,6 +115,7 @@ class DownloadAllProgressButton extends View {
       }
       var noDownloaded = this.checkCompleted();
       if (noDownloaded == this.enqueuedForDownload.length) {
+        JBridge.showToast("Download Completed", "short");
         var cmd = this.set({
           id: this.id,
           visibility: "gone"

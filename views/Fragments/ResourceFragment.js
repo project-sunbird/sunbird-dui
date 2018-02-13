@@ -69,7 +69,7 @@ class ResourceComponent extends View {
         width="match_parent"
         orientation="vertical"
         root="true">
-        {this.getSignInOverlay()}
+        {this.getErrorLayout()}
       </LinearLayout>);
     } else {
       window.__PageFilterPopup.resetPopup("Resource", data);
@@ -86,7 +86,6 @@ class ResourceComponent extends View {
           root="true">
           <LineSpacer />
           {cardsContent}
-          {this.getSignInOverlay()}
         </LinearLayout>)
       } else {
         this.cards = (<LinearLayout
@@ -95,7 +94,6 @@ class ResourceComponent extends View {
           orientation="vertical"
           root="true">
           {this.getErrorLayout()}
-          {this.getSignInOverlay()}
         </LinearLayout>);
       }
     }
@@ -125,6 +123,7 @@ class ResourceComponent extends View {
         window.__BNavFlowRestart();
         break;
     }
+    utils.addSwipeFunction(this.idSet.scrollViewContainer);
   }
 
 
@@ -242,6 +241,7 @@ class ResourceComponent extends View {
               <CircularLoader 
                 margin="0,16,0,0"/>
             </LinearLayout>
+            {this.getSignInOverlay()}
           </LinearLayout>
         </ScrollView>
       </LinearLayout>
