@@ -221,6 +221,9 @@ const logoutUser = () => {
   if (JBridge.isNetworkAvailable()){
     JBridge.logLogoutSuccess(window.__userToken);
     window.__Snackbar.show(window.__S.LOGGED_OUT);
+    if (JBridge.getFromSharedPrefs("logged_in") != "__failed") {
+      JBridge.keyCloakLogout(window.__apiUrl + "/auth/realms/sunbird/protocol/openid-connect/logout");
+    }
     if (JBridge.getFromSharedPrefs("topics") != "__failed"){
       console.log("unsetting topics", JBridge.getFromSharedPrefs("topics"));
       JBridge.unregisterFCM(JSON.parse(JBridge.getFromSharedPrefs("topics")));
@@ -245,7 +248,6 @@ const logoutUser = () => {
     JBridge.saveData("savedAnnouncements", "__failed");
     JBridge.saveData("savedProfile", "__failed");
     window.__pressedLoggedOut=true;
-    JBridge.keyCloakLogout(window.__apiUrl + "/auth/realms/sunbird/protocol/openid-connect/logout");
     purescriptUserActivityFlow();
   } else {
     window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE)
