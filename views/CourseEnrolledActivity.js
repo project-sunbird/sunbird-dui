@@ -798,7 +798,7 @@ class CourseEnrolledActivity extends View {
                   buttonClick={this.handleResumeClick} />
               </RelativeLayout>
 
-              {this.getDownloadAll()}
+              {/*this.getDownloadAll()*/}
             </LinearLayout>
 
             <LinearLayout
