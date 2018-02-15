@@ -304,7 +304,8 @@ const stringsRes = {
 		MEDIUM_GUEST: "Medium",
 		GRADE: "GRADE",
 		BOARD: "Board",
-		DOWNLOADING_1: "Downloading %s"
+		DOWNLOADING_1: "Downloading %s",
+		DOWNLOAD_COMPLETED: "Download completed"
 	},
 	"hi_IN" : {
 		ALREADY_HAVE_ACC : "मौजूदा उपयोगकर्ता, साइन इन करें",

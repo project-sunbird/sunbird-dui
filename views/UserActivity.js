@@ -513,7 +513,6 @@ class UserActivity extends View {
             id={this.idSet.importEcarText}
             height="wrap_content"
             width="wrap_content"
-            text="(1/2)"
             layout_gravity="center"/>
         </LinearLayout>
       </LinearLayout>

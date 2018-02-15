@@ -187,7 +187,7 @@ class ProgressButton extends View {
     console.log("props", this.props);
     console.log("telemetryData.eid", telemetryData.eid);
     if (telemetryData.eid == "END") {
-      JBridge.stopEventBus();
+      JBridge.stopTelemetryEvent();
       var time = new Date();
       var date = utils.formatDate(time);
       var contentProgress = {};

@@ -34,6 +34,9 @@ class DownloadAllProgressButton extends View {
     _this = this;
     this.isCancelVisible=false;
     console.log("DownloadAllProgressButton props",this.props);
+    this.cb_id = Math.floor(Math.random() * 1000); //Random number to for callback id
+    console.log("cb_id", this.cb_id);
+    
   }
 
   update = (listOfIds) => {
@@ -43,7 +46,7 @@ class DownloadAllProgressButton extends View {
     }
     this.childrenArray = listOfIds;
     this.setCancelButtonVisibility("visible");
-    JBridge.downloadAllContent(this.childrenArray, utils.getCallbacks(this.updateProgress, "", this.updateProgress));
+    JBridge.downloadAllContent(this.cb_id, this.childrenArray, utils.getCallbacks(this.updateProgress, "", this.updateProgress));
     // this.updateProgress(0);
   } 
 
@@ -82,6 +85,7 @@ class DownloadAllProgressButton extends View {
     var id = res[1];
     var data = JSON.parse(res[2]);
     
+    // if (id != this.cb_id) return;
     if (cb == "importContentSuccessResponse" && this.btnState == this.BTN_STATES.DOWNLOADING) {
       data.result.map((item, i) => {
         if (item.status == "ENQUEUED_FOR_DOWNLOAD") {
@@ -93,7 +97,7 @@ class DownloadAllProgressButton extends View {
       });
       if (this.enqueuedForDownload.length == 0) {
         this.btnState = this.BTN_STATES.IDLE;
-        JBridge.showToast("Error", "short");
+        JBridge.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_FOUND);
         this.isDownloaded = false;
         this.setCancelButtonVisibility("gone");
         _this.replaceChild(_this.idSet.downloadBarContainer, _this.getButtons(0, this.props.buttonText).render(), 0);
@@ -109,7 +113,9 @@ class DownloadAllProgressButton extends View {
       var progress = (completed / this.enqueuedForDownload.length) * 100;
       var text = completed + "/" + this.enqueuedForDownload.length;
       _this.replaceChild(_this.idSet.downloadBarContainer, _this.getButtons(progress, window.__S.DOWNLOADING_1.format(text)).render(), 0);
-    } else if (cb == "onContentImportResponse" && this.enqueuedForDownload.length != 0 && this.btnState == this.BTN_STATES.DOWNLOADING) {
+    }
+    
+    if (cb == "onContentImportResponse" && this.enqueuedForDownload.length != 0 && this.btnState == this.BTN_STATES.DOWNLOADING) {
       if(data.status == "IMPORT_COMPLETED") {
         var newArr = this.enqueuedForDownload.map((item, i) => {
           if (item.id == data.identifier) return {id: item.id, status: 1};
@@ -119,26 +125,15 @@ class DownloadAllProgressButton extends View {
       }
       var noDownloaded = this.checkCompleted();
       if (noDownloaded == this.enqueuedForDownload.length) {
-        JBridge.showToast("Download Completed", "short");
+        this.btnState = this.BTN_STATES.DONE;
+        JBridge.stopEventbus(this.cb_id + "");
+        JBridge.__Snackbar.show(window.__S.DOWNLOAD_COMPLETED);
         var cmd = this.set({
           id: this.id,
           visibility: "gone"
         })
         Android.runInUI(cmd, 0);
       }
-    }
-  }
-
-  afterDownload = (response) => {
-    console.log("window.__onContentImportResponse -> ", response);
-    var jsonResponse = JSON.parse(response);
-    if (jsonResponse.status == "IMPORT_COMPLETED") {
-      var cmd = this.set({
-        id: this.id,
-        visibility: "gone"
-      })
-      Android.runInUI(cmd, 0);
-      window.__Snackbar.show("Downloaded all contents");
     }
   }
 
