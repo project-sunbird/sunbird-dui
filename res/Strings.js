@@ -287,7 +287,7 @@ const stringsRes = {
 		AVATAR : "Avatar",
 		ALL_ANNOUNCEMENTS : "All Announcements",
 		NO_CHANGE : "No changes have been made",
-		CHOOSE_LANGUAGE : "Choose Your Preffered Language",
+		CHOOSE_LANGUAGE : "Choose Your Preferred Language",
 		DETECTED : "Detected",
 		CONTINUE: "Continue",
 		BROWSE_AS_GUEST: "Browse as guest",
