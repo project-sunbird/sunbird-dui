@@ -133,9 +133,20 @@ class UserActivity extends View {
 
         if (window.__loggedInState == "YES") {
           console.log("Content type is collecion or TextBook", _this.deepLinkCollectionDetails);
-          var whatToSend = { "user_token": window.__userToken, "api_token": window.__apiToken }
-          var event = { "tag": "API_EnrolledCourses", contents: whatToSend };
-          window.__runDuiCallback(event);
+          if (JBridge.isNetworkAvailable()) {
+            var whatToSend = { "user_token": window.__userToken, "api_token": window.__apiToken }
+            var event = { "tag": "API_EnrolledCourses", contents: whatToSend };
+            window.__runDuiCallback(event);
+          } else {
+            var res = JBridge.getSavedData("savedCourse");
+            if (res && res != "__failed") {
+              var parsed = JSON.parse(utils.decodeBase64(res));
+              window.__enrolledCourses = parsed;
+            }
+            var whatToSend = { course: _this.deepLinkCollectionDetails };
+            var event = { tag: "OPEN_Deeplink_CourseEnrolled", contents: whatToSend }
+            window.__runDuiCallback(event);
+          }
         } else if (window.__loggedInState == "GUEST") {
           var whatToSend = { course: _this.deepLinkCollectionDetails };
           var event = { tag: "OPEN_Deeplink_CourseEnrolled", contents: whatToSend }

@@ -238,7 +238,8 @@ class CourseEnrolledActivity extends View {
           JBridge.importCourse(identifier, "true", utils.getCallbacks(_this.getSpineStatus, "", _this.getSpineStatus));
           _this.changeOverFlow();
         } else {
-          window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE)
+          window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
+          _this.onBackPressed();
         }
       }
     });
