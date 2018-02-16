@@ -48,7 +48,6 @@ class SearchActivity extends View {
     this.filterData = this.tempData.filterDetails;
     this.searchText = this.tempData.filterDetails.query
     this.searchType = this.tempData.searchType;
-    window.searchData = this.logSearch;
 
 
     _this = this;
@@ -99,7 +98,9 @@ class SearchActivity extends View {
       _this.handleSearchClick(data);
     });
     JBridge.handleImeAction(this.idSet.searchHolder, callback);
-    JBridge.getFocus(this.idSet.searchHolder);
+    if (window.searchText == undefined || window.searchText == "" || (window.search.type != this.searchType && window.searchText != "")) {
+      JBridge.getFocus(this.idSet.searchHolder);
+    }
   }
 
   onPop = () => {
@@ -220,10 +221,6 @@ class SearchActivity extends View {
 
   updateSearchText = (data) => {
     this.searchTextValue = data;
-  }
-
-  logSearch = (data) =>{
-    console.log("data from search",data)
   }
 
   getSearchList=(searchText)=> {

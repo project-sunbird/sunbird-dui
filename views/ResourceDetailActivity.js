@@ -57,6 +57,7 @@ class ResourceDetailActivity extends View {
   checkLocalStatus = (data) => {
     var callback = callbackMapper.map(function(data) {
       if (data == "__failed") {
+        window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
         _this.onBackPressed();
         return;
       }

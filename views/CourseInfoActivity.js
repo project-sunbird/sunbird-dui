@@ -117,6 +117,10 @@ class CourseInfoActivity extends View {
     console.log("contentType: ", this.details.contentType);
     JBridge.startEventLog(this.details.contentType, identifier, this.details.pkgVersion);
     var callback = callbackMapper.map(function(data) {
+      if (data == "__failed") {
+        window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
+        _this.onBackPressed();
+      }
       _this.localContent  = JSON.parse(utils.decodeBase64(data[0]));
       if (_this.localContent.isAvailableLocally == true) {
         JBridge.logCourseDetailScreenEvent(_this.details.identifier, _this.details.pkgVersion, true);
