@@ -125,7 +125,7 @@ class CourseInfoActivity extends View {
       _this.localContent  = JSON.parse(utils.decodeBase64(data[0]));
       if (_this.localContent.isAvailableLocally == true) {
         JBridge.logCourseDetailScreenEvent(_this.details.identifier, _this.details.pkgVersion, true);
-        _this.renderChildren();
+        _this.renderChildren(identifier);
       } else {
         JBridge.logCourseDetailScreenEvent(_this.details.identifier, _this.details.pkgVersion, false);
          var callback22= callbackMapper.map(function(data){
