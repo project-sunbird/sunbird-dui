@@ -62,20 +62,21 @@ class UserActivity extends View {
     var cb = response[0];
     var id = response[1];
     var data = JSON.parse(response[2]);
-    
+
     console.log("response for import", data);
 
-    if (data.status != "ALREADY_EXIST" && data.status == "IMPORT_COMPLETED") {
+    if (data.status == "IMPORT_COMPLETED") {
       console.log("content doesnot ALREADY_EXIST");
       var identifier;
       if (data.identifier != undefined && data.identifier != "") {
         console.log("identifier fetched >>" + data.identifier + "<<");
         identifier = data.identifier;
         _this.handleDeepLinkAction(identifier);
+        return;
       } else {
         console.log("no identifier fetched ", data.identifier);
         JBridge.showToast(window.__S.MSG_IMPORTED_SUCCESSFULLY, "short");
-        if (window.__loggedInState != "GUEST" || window.__loggedInState != "YES") {
+        if (window.__loggedInState != "GUEST" && window.__loggedInState != "YES") {
           this.showLoginOptions();
         } else {
           this.setLoginPreferences();
@@ -86,8 +87,13 @@ class UserActivity extends View {
     } else if (response.status == "ALREADY_EXIST") {
       console.log("content ALREADY_EXIST");
       JBridge.showToast(window.__S.MSG_ALREADY_IMPORTED, "short");
-      var event = { tag: "OPEN_MainActivity", contents: [] };
-      window.__runDuiCallback(event);
+      if (window.__loggedInState != "GUEST" && window.__loggedInState != "YES") {
+        this.showLoginOptions();
+      } else {
+        this.setLoginPreferences();
+        var event = { tag: "OPEN_MainActivity", contents: [] };
+        window.__runDuiCallback(event);
+      }
     }
   }
 
