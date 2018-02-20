@@ -84,7 +84,7 @@ class UserActivity extends View {
           window.__runDuiCallback(event);
         }
       }
-    } else if (response.status == "ALREADY_EXIST") {
+    } else if (data.status == "ALREADY_EXIST") {
       console.log("content ALREADY_EXIST");
       JBridge.showToast(window.__S.MSG_ALREADY_IMPORTED, "short");
       if (window.__loggedInState != "GUEST" && window.__loggedInState != "YES") {

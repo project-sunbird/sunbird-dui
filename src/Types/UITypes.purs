@@ -133,6 +133,7 @@ data MainActivityAction = OPEN_HomeFragment |
   OPEN_NotificationActivity |
   OPEN_EditProfileActivity {profile::String} |
   OPEN_EditGuestProfileActivity {profile::String} |
+  OPEN_SettingsScreenActivity {profile::String} |
   OPEN_AddressActivity {profile::String} |
   OPEN_EducationActivity {profile::String} |
   OPEN_ExperienceActivity {profile::String} |
@@ -412,6 +413,50 @@ derive instance genericGuestInformationActivityAction  :: Generic GuestInformati
 instance decodeGuestInformationActivityAction :: Decode GuestInformationActivityAction where decode = defaultDecode
 instance encodeGuestInformationActivityAction :: Encode GuestInformationActivityAction where encode = defaultEncode
 
+data SettingsScreenActivity = SettingsScreenActivity {profile :: String}
+data SettingsScreenActivityAction = BACK_SettingsScreenActivity | OPEN_LanguageSelectActivitySt {profile::String} | OPEN_AboutUsActivity {profile::String}
+
+instance settingsScreenActivity :: UIScreen SettingsScreenActivity SettingsScreenActivityAction where
+  generateMockEvents _ = [BACK_SettingsScreenActivity]
+  ui x = genericUI x (generateMockEvents x :: Array SettingsScreenActivityAction)
+
+derive instance genericSettingsScreenActivityAction  :: Generic SettingsScreenActivityAction _
+instance decodeSettingsScreenActivityAction :: Decode SettingsScreenActivityAction where decode = defaultDecode
+instance encodeSettingsScreenActivityAction :: Encode SettingsScreenActivityAction where encode = defaultEncode
+
+data LanguageSelectActivitySt = LanguageSelectActivitySt {profile :: String}
+data LanguageSelectActivityStAction = BACK_LanguageSelectActivitySt
+
+instance languageSelectActivitySt :: UIScreen LanguageSelectActivitySt LanguageSelectActivityStAction where
+  generateMockEvents _ = [BACK_LanguageSelectActivitySt]
+  ui x = genericUI x (generateMockEvents x :: Array LanguageSelectActivityStAction)
+
+derive instance genericLanguageSelectActivityStAction  :: Generic LanguageSelectActivityStAction _
+instance decodeLanguageSelectActivityStAction :: Decode LanguageSelectActivityStAction where decode = defaultDecode
+instance encodeLanguageSelectActivityStAction :: Encode LanguageSelectActivityStAction where encode = defaultEncode
+
+data AboutUsActivity = AboutUsActivity {profile :: String}
+data AboutUsActivityAction = BACK_AboutUsActivity | OPEN_AboutUsScreen {profile::String}
+
+instance aboutUsActivity :: UIScreen AboutUsActivity AboutUsActivityAction where
+  generateMockEvents _ = [BACK_AboutUsActivity]
+  ui x = genericUI x (generateMockEvents x :: Array AboutUsActivityAction)
+
+derive instance genericAboutUsActivityAction  :: Generic AboutUsActivityAction _
+instance decodeAboutUsActivityAction :: Decode AboutUsActivityAction where decode = defaultDecode
+instance encodeAboutUsActivityAction :: Encode AboutUsActivityAction where encode = defaultEncode
+
+data AboutUsScreen = AboutUsScreen {profile :: String}
+data AboutUsScreenAction = BACK_AboutUsScreen
+
+instance aboutUsScreen :: UIScreen AboutUsScreen AboutUsScreenAction where
+  generateMockEvents _ = [BACK_AboutUsScreen]
+  ui x = genericUI x (generateMockEvents x :: Array AboutUsScreenAction)
+
+derive instance genericAboutUsScreenAction  :: Generic AboutUsScreenAction _
+instance decodeAboutUsScreenAction :: Decode AboutUsScreenAction where decode = defaultDecode
+instance encodeAboutUsScreenAction :: Encode AboutUsScreenAction where encode = defaultEncode
+
 
 data AnnouncementDetailActivity = AnnouncementDetailActivity {announcementData :: String}
 data AnnouncementDetailActivityAction = DummyAnnouncementDetailActivityAction  |
@@ -471,7 +516,8 @@ data QRActivityAction = DummyQRActivity |
   BACK_QRActivity |
   OPEN_CourseEnrolledActivity_QR {course::String} |
   OPEN_ResourceDetailActivity_QR {resourceDetails::String} |
-  OPEN_CourseInfoActivity_QR {course::String}
+  OPEN_CourseInfoActivity_QR {course::String} |
+  OPEN_SearchActivity_QR {filterDetails::String}
 
 instance qrActivity :: UIScreen QRActivity QRActivityAction where
   generateMockEvents _ = [ DummyQRActivity , BACK_QRActivity ]

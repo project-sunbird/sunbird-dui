@@ -306,7 +306,22 @@ const stringsRes = {
 		BOARD: "Board",
 		DOWNLOADING_1: "Downloading %s",
 		DOWNLOAD_ALL: "Download all contents?",
-		DOWNLOAD_COMPLETED: "Download completed"
+		DOWNLOAD_COMPLETED: "Download completed",
+		SETTINGS: "Settings",
+		LANGUAGE_SETTINGS: "Language Settings",
+		CURRENT_LANGUAGE: "Current Language : ",
+		SUPPORT: "Support",
+		SUPPORT_MESSAGE: "Facing A problem? Send us a message",
+		SHARE_APP: "Share the %s app",
+		ABOUT_APP: "About the app",
+		DEVICE_ID: "Device ID",
+		APP_VERSION: "App Version",
+		CHECK_FOR_UPDATES: "Check for Updates",
+		PRIVACY_POLICY: "Privacy Policy",
+		TERMS_OF_SERVICE: "Terms of Service",
+		ABOUT_APPLICATION: "About the Application",
+		ABOUT_US: "About us",
+		ABOUT_US_DATA: "This is the about us data."
 	},
 	"hi_IN" : {
 		ALREADY_HAVE_ACC : "मौजूदा उपयोगकर्ता, साइन इन करें",

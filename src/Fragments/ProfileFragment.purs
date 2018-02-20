@@ -17,6 +17,7 @@ profileFragment input whereFrom whatToSendBack = do
 		OPEN_CommProfSearchActivity {filterDetails : output} -> searchProfileActivity output "ProfileFragment" input
 		OPEN_EditProfileActivity {profile: output} -> additionalInformationActivity output "ProfileFragment"  input
 		OPEN_EditGuestProfileActivity {profile: output} -> guestInformationActivity output "ProfileFragment"  input
+		OPEN_SettingsScreenActivity {profile: output} -> settingsScreenActivity output "ProfileActivity" input
 		OPEN_AddressActivity {profile: output} -> addressActivity output "ProfileFragment"  input
 		OPEN_EducationActivity {profile: output} -> educationActivity output "ProfileFragment"  input
 		OPEN_ExperienceActivity {profile: output} -> experienceActivity output "ProfileFragment"  input
@@ -109,6 +110,45 @@ guestInformationActivity input whereFrom whatToSendBack = do
 		_ -> guestInformationActivity input whereFrom whatToSendBack
 
 --------------------------------------------------------------------------------
+
+settingsScreenActivity input whereFrom whatToSendBack = do
+  event <- ui $ SettingsScreenActivity {profile : input}
+  case event of
+    BACK_SettingsScreenActivity -> case whereFrom of
+	    "ProfileFragment" -> profileFragment input "Terminate" input
+	    _ -> profileFragment input "Terminate" input
+    OPEN_LanguageSelectActivitySt {profile:output} -> languageSelectActivitySt output "SettingsScreenActivity" input
+    OPEN_AboutUsActivity {profile:output} -> aboutUsActivity output "SettingsScreenActivity" input
+    _ -> settingsScreenActivity input whereFrom whatToSendBack
+
+--------------------------------------------------------------------------------
+languageSelectActivitySt input whereFrom whatToSendBack = do
+ event <- ui $ LanguageSelectActivitySt {profile : input}
+ case event of
+	 BACK_LanguageSelectActivitySt -> case whereFrom of
+		 "SettingsScreenActivity" -> settingsScreenActivity input "Terminate" input
+		 _ -> settingsScreenActivity input "Terminate" input
+	 _ -> languageSelectActivitySt input whereFrom whatToSendBack
+--------------------------------------------------------------------------------
+aboutUsActivity input whereFrom whatToSendBack = do
+ event <- ui $ AboutUsActivity {profile : input}
+ case event of
+	 BACK_AboutUsActivity -> case whereFrom of
+		 "SettingsScreenActivity" -> settingsScreenActivity input "Terminate" input
+		 _ -> settingsScreenActivity input "Terminate" input
+	 OPEN_AboutUsScreen {profile:output} -> aboutUsScreen output "AboutUsActivity" input
+	 _ -> aboutUsActivity input whereFrom whatToSendBack
+--------------------------------------------------------------------------------
+aboutUsScreen input whereFrom whatToSendBack = do
+ event <- ui $ AboutUsScreen {profile : input}
+ case event of
+	 BACK_AboutUsScreen -> case whereFrom of
+		 "AboutUsActivity" -> aboutUsActivity input "Terminate" input
+		 _ -> aboutUsActivity input "Terminate" input
+	 _ -> aboutUsScreen input whereFrom whatToSendBack
+--------------------------------------------------------------------------------
+
+
 
 addressActivity input whereFrom whatToSendBack = do
 	event <- ui $ AddressActivity {profile : input}
