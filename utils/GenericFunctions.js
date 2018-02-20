@@ -1,10 +1,10 @@
 var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
 
 exports.formatBytes = (bytes)=> {
-	    if(bytes < 1024) return (bytes/1).toFixed(0) + " Bytes";
-	    else if(bytes < 1048576) return(bytes / 1024).toFixed(0) + " KB";
-	    else if(bytes < 1073741824) return(bytes / 1048576).toFixed(0) + " MB";
-	    else return(bytes / 1073741824).toFixed(3) + " GB";
+	if(bytes < 1024) return (bytes/1).toFixed(0) + " Bytes";
+	else if(bytes < 1048576) return(bytes / 1024).toFixed(0) + " KB";
+	else if(bytes < 1073741824) return(bytes / 1048576).toFixed(0) + " MB";
+	else return(bytes / 1073741824).toFixed(3) + " GB";
 };
 
 

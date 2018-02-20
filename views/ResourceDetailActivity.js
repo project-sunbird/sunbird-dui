@@ -56,8 +56,14 @@ class ResourceDetailActivity extends View {
 
   checkLocalStatus = (data) => {
     var callback = callbackMapper.map(function(data) {
+      console.log("cb data -> ", data);
       if (data == "__failed") {
-        window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
+        //TODO implemented hack, actual implementation - get error from SDK
+        if (JBridge.isNetworkAvailable()) {
+          window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
+        } else {
+          window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE);
+        }
         _this.onBackPressed();
         return;
       }

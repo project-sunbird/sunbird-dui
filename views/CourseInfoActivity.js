@@ -119,7 +119,12 @@ class CourseInfoActivity extends View {
     JBridge.startEventLog(this.details.contentType, identifier, this.details.pkgVersion);
     var callback = callbackMapper.map(function(data) {
       if (data == "__failed") {
-        window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
+        //TODO implemented hack, actual implementation - get error from SDK
+        if (JBridge.isNetworkAvailable()) {
+          window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
+        } else {
+          window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE);
+        }
         _this.onBackPressed();
       }
       _this.localContent  = JSON.parse(utils.decodeBase64(data[0]));

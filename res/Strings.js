@@ -305,7 +305,7 @@ const stringsRes = {
 		GRADE: "GRADE",
 		BOARD: "Board",
 		DOWNLOADING_1: "Downloading %s",
-		DOWNLOAD_ALL: "Download all contents?",
+		DOWNLOAD_ALL: "Download all contents? %s",
 		DOWNLOAD_COMPLETED: "Download completed",
 		SETTINGS: "Settings",
 		LANGUAGE_SETTINGS: "Language Settings",
@@ -321,7 +321,8 @@ const stringsRes = {
 		TERMS_OF_SERVICE: "Terms of Service",
 		ABOUT_APPLICATION: "About the Application",
 		ABOUT_US: "About us",
-		ABOUT_US_DATA: "This is the about us data."
+		ABOUT_US_DATA: "This is the about us data.",
+		DOWNLOAD_ALL_wSIZE: "Download all %s?"
 	},
 	"hi_IN" : {
 		ALREADY_HAVE_ACC : "मौजूदा उपयोगकर्ता, साइन इन करें",

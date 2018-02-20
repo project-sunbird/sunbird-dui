@@ -64,6 +64,7 @@ class CourseEnrolledActivity extends View {
 
     // array of all the children content ids
     this.subContentArray = [];
+    this.downloadSize = 0; //size of all the contents to download
     console.log("details in CEA", this.apiDetails)
     this.showProgress = this.apiDetails.hasOwnProperty("courseName") ? "visible" : "gone";
 
@@ -206,10 +207,7 @@ class CourseEnrolledActivity extends View {
     if (this.courseContent.hasOwnProperty("children") && this.courseContent.children != "") {
       _this.getSubcontentIds(_this.courseContent.children);
       if (_this.subContentArray.length > 0) {
-        Android.runInUI(_this.set({
-          id: _this.idSet.downloadAllProgressButton,
-          visibility: "visible"
-        }), 0);
+        _this.replaceChild(_this.idSet.downloadAllProgressButton, _this.getDownloadAll(_this.downloadSize).render(), 0);
       }
       console.log("to be downloaded -> ", _this.subContentArray);
     }
@@ -219,7 +217,12 @@ class CourseEnrolledActivity extends View {
     var callback = callbackMapper.map(function (data) {
       if (data == "__failed") {
         console.log("JBridge.getContentDetails failed");
-        window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
+        //TODO implemented hack, actual implementation - get error from SDK
+        if (JBridge.isNetworkAvailable()) {
+          window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
+        } else {
+          window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE);
+        }
         _this.logTelelmetry(identifier, null, false);
         this.onBackPressed();
         return;
@@ -603,6 +606,9 @@ class CourseEnrolledActivity extends View {
   getSubcontentIds = (content) => {
     content.map((item, i) => {
       if (item.children == undefined && item.isAvailableLocally != undefined && !item.isAvailableLocally) {
+        if (item.contentData.hasOwnProperty("size") && (item.contentData.size != "" || item.contentData.size != null || item.contentData.size != undefined)) {
+          _this.downloadSize += isNaN(Number(item.contentData.size)) ? 0 : Number(item.contentData.size);
+        }
         _this.subContentArray.push(item.identifier);
       } else if (item.children != undefined) {
         _this.getSubcontentIds(item.children)
@@ -639,22 +645,31 @@ class CourseEnrolledActivity extends View {
   }
 
   showDownloadAllPopUp = () => {
-    window.__DownloadAllPopup.props.totalSize = 0;
+    window.__DownloadAllPopup.props.totalSize = this.downloadSize;
     window.__DownloadAllPopup.props.buttonClick = this.handleDownloadAllClick;
     window.__DownloadAllPopup.show();
   }
 
-  getDownloadAll = () => {
+  getDownloadAll = (size) => {
+    var sizeText = "";
+    if (size != undefined) {
+      sizeText = "(" + utils.formatBytes(size) + ")";
+    }
     this.__DownloadAllProgressButton = (
       <DownloadAllProgressButton
-        width="match_parent"
-        id={_this.idSet.downloadAllProgressButton}
-        buttonText="Download All"
-        visibility="gone"
+        width="wrap_content"
+        buttonText={window.__S.DOWNLOAD_ALL_wSIZE.format(sizeText)}
         hideDivider="gone"
         handleButtonClick={this.showDownloadAllPopUp} />
     );
-    return this.__DownloadAllProgressButton;
+    return (
+      <LinearLayout
+        width = "match_parent"
+        height = "wrap_content"
+        margin="16,0,16,16">
+        {this.__DownloadAllProgressButton}
+      </LinearLayout>
+    );
   }
 
   render() {
@@ -799,7 +814,9 @@ class CourseEnrolledActivity extends View {
                   buttonClick={this.handleResumeClick} />
               </RelativeLayout>
 
-              {/*this.getDownloadAll()*/}
+              <LinearLayout
+                width="match_parent"
+                id={_this.idSet.downloadAllProgressButton}/>
             </LinearLayout>
 
             <LinearLayout
