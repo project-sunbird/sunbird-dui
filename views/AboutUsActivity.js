@@ -149,7 +149,8 @@ class AboutUsActivity extends View {
                     textSize={"12"}
                     padding="0,4,0,0"
                     color={"#FF0079FF"}
-                    gravity="left" />
+                    gravity="left"
+                    onClick = {() => { JBridge.openPlayStoreLink() }} />
             </LinearLayout>
         </LinearLayout>)
     }
