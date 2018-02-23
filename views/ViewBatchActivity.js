@@ -488,22 +488,26 @@ class ViewBatchActivity extends View {
                 onBackPress={this.onBackPressed}
                 width="match_parent"/>
               <RelativeLayout>
-              {this.getBatchTypeHead()}
-
-              {this.getBatchTypeChoser()}
-              <ScrollView
-                height="match_parent"
-                width="match_parent"
-                fillViewPort="true">
-
                 <LinearLayout
-                  id={this.idSet.batchListContainer}
-                  height="match_parent"
-                  width="match_parent"
-                  orientation="vertical"
-                  gravity="center"/>
+                  orientation = "vertical"
+                  width = "match_parent">
+                  {this.getBatchTypeHead()}
 
-              </ScrollView>
+                  {this.getBatchTypeChoser()}
+                  <ScrollView
+                    height="match_parent"
+                    width="match_parent"
+                    fillViewPort="true">
+
+                    <LinearLayout
+                      id={this.idSet.batchListContainer}
+                      height="match_parent"
+                      width="match_parent"
+                      orientation="vertical"
+                      gravity="center"/>
+
+                  </ScrollView>
+                </LinearLayout>
               {this.getSignInOverlay()}
               </RelativeLayout>
           </LinearLayout>
