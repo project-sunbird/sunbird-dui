@@ -38,18 +38,18 @@ exports.jsonifyData = (data) =>{
      return data;
 }
 exports.formatDate = (d) =>{
-  var temp = d.toString();
-  var month = d.getMonth();
-  if(month<10){
-    month = "0" + d.getMonth();
-  }
-  var day = d.getDate();
-  if(day<10){
-    day = "0" + d.getDate();
-  }
-  var res = d.getFullYear() + "-" + month + "-" + day + " " + d.getHours () + ":" + d.getMinutes() + ":" + d.getSeconds() + ":" + d.getMilliseconds() + "+" + temp.substring(29,33);
-  console.log("result",res)
-  return res;
+	var temp = d.toString();
+	var month = d.getMonth();
+	if(month<10){
+		month = "0" + d.getMonth();
+	}
+	var day = d.getDate();
+	if(day<10){
+		day = "0" + d.getDate();
+	}
+	var res = d.getFullYear() + "-" + month + "-" + day + " " + d.getHours () + ":" + d.getMinutes() + ":" + d.getSeconds() + ":" + d.getMilliseconds() + "+" + temp.substring(29,33);
+	console.log("formateDate output -> ", res);
+	return res;
 }
 
 exports.decodeBase64 = (data) =>{

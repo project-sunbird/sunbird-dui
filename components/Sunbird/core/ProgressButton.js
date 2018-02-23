@@ -200,9 +200,9 @@ class ProgressButton extends View {
       contentProgress['status'] = telemetryData.edata.summary[0].progress == 100 ? 2 : 1;
       contentProgress['progress'] = telemetryData.edata.summary[0].progress;
       contentProgress['lastAccessTime'] = date;
-      if (telemetryData.edata.summary[0].progress == 100) {
-        contentProgress['lastCompletedTime'] = date;
-      }
+      // if (telemetryData.edata.summary[0].progress == 100) {
+      //   contentProgress['lastCompletedTime'] = date;
+      // }
       contentProgress['result'] = "pass";
       contentProgress['grade'] = "B";
       contentProgress['score'] = "10";
@@ -226,11 +226,6 @@ class ProgressButton extends View {
       var requestObject = {};
 
       var body = {
-        "id": "unique API ID",
-        "ts": "response timestamp YYYY-MM-DDThh:mm:ss+/-nn:nn (timezone defaulted to +5.30)",
-        "params": {
-
-        },
         "request": {
           "userId": window.__userToken,
           "contents": [
@@ -239,13 +234,25 @@ class ProgressButton extends View {
         }
       };
 
-
       var callback = callbackMapper.map(function (data) {
         console.log(data)
         if (data[0] == "true") {
           console.log("in patch", body)
-
-          JBridge.patchApi(url, JSON.stringify(body), window.__user_accessToken, window.__apiToken);
+          window.__patchCallback = (data) => {
+            console.log("patchApiCb -> ", data); 
+          }
+          if (window.__currCourseDetails && window.__currCourseDetails != {} && window.__currCourseDetails.endDate) {
+            var eEndTime = (new Date(window.__currCourseDetails.endDate)).getTime();
+            var eCurrTime = (new Date()).getTime();
+            console.log("epochs -> "+ eEndTime + ", " + eCurrTime);
+            
+            if (eCurrTime < eEndTime){
+              window.__currCourseDetails.reload = true;
+              JBridge.patchApi(url, JSON.stringify(body), window.__user_accessToken, window.__apiToken);
+            } else {
+              JBridge.showToast("Unable to update progress as batch has ended.", "short");
+            }
+          }
         }
       })
       JBridge.getContentType(this.props.contentDetails.hierarchyInfo[0].identifier, callback)

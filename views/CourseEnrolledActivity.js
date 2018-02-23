@@ -35,7 +35,9 @@ class CourseEnrolledActivity extends View {
       "simpleToolBarOverFlow",
       "batchDetailsContainer",
       "downloadAllProgressButton",
-      "startOrResumeBtnContainer"
+      "startOrResumeBtnContainer",
+      "horizontalProgressBarContainer",
+      "headerContainer"
     ]);
     this.state = state;
     this.screenName = "CourseEnrolledActivity"
@@ -94,10 +96,14 @@ class CourseEnrolledActivity extends View {
     this.data = {
       courseName: (this.name && this.name != "") ? this.name : (this.apiDetails ? this.apiDetails.courseName : ""),
       courseDesc: this.apiDetails ? this.apiDetails.courseDesc : "",
-      completedProgress: this.downloadProgress
+      completedProgress: (window.__currCourseDetails && window.__currCourseDetails.progress) ? window.__currCourseDetails.progress : this.downloadProgress
     };
     this.gotSpine = false; //called when fetching spine is complete
     this.cancelled = false; //called when fetching spine is cancelled
+    if (window.__currCourseDetails == undefined) {
+      window.__currCourseDetails = {};
+      window.__currCourseDetails.courseId = this.baseIdentifier;
+    }
   }
 
   onPop = () => {
@@ -342,7 +348,7 @@ class CourseEnrolledActivity extends View {
         }
         var description = "";
         description += utils.prettifyDate(batch.startDate);
-
+        window.__currCourseDetails.endDate = batch.endDate;
         if (batch.endDate && batch.endDate != null && batch.endDate != undefined) {
           description += " - ";
           description += utils.prettifyDate(batch.endDate);
@@ -375,19 +381,57 @@ class CourseEnrolledActivity extends View {
           _this.onBackPressed();
 
         }
-      }
-      else if (state.responseFor == "API_Get_Batch_Creator_name") {
+      } else if (state.responseFor == "API_Get_Batch_Creator_name") {
         var user_details = response.result.response;
         console.log("user details", user_details)
         console.log(this.batchName, this.batchDescription)
         var userName = user_details.firstName + " " + (user_details.lastName || " ")
         this.replaceChild(_this.idSet.batchDetailsContainer, _this.getBatchDetailSection(this.batchName, this.batchDescription, userName).render(), 0);
+        if (window.__currCourseDetails && window.__currCourseDetails.hasOwnProperty("reload") && window.__currCourseDetails.reload) {
+          this.refeshCourseProgressApi();
+        }
+      } else if (state.responseFor == "API_Reload_Course") {
+        var course_details = response.result;
+        console.log("reloaded course data -> ", course_details);
+        var progress = 0;
+        course_details.courses.map((item, i) => {
+          if (item.courseId == this.baseIdentifier) {
+            if (item.leafNodesCount != null && item.progress <= item.leafNodesCount) {
+              progress = item.leafNodesCount == null ? 0 : (item.progress / item.leafNodesCount) * 100;
+              progress = parseInt(isNaN(progress) ? 0 : progress);
+              this.data.completedProgress = progress;
+              window.__currCourseDetails.progress = progress;
+            }
+          }
+        });
+        window.__currCourseDetails.reload = false;
+        this.replaceChild(this.idSet.headerContainer, this.getHeader().render(), 0);
+        var layout = (
+          <HorizontalProgressBar
+            width="match_parent"
+            currentProgress={progress+""}
+            totalProgress={this.data.totalProgress}
+            visibility={this.showProgress} />
+        );
+        this.replaceChild(this.idSet.horizontalProgressBarContainer, layout.render(), 0);
       }
     }
     else {
       window.__LoaderDialog.hide();
       window.__Snackbar.show(window.__S.TIME_OUT)
     }
+  }
+
+  getHeader = () => {
+    return (
+      <CourseProgress
+        height="wrap_content"
+        width="wrap_content"
+        content={this.data}
+        title={this.data.courseName || this.apiDetails.name || this.apiDetails.contentData.name}
+        onResumeClick={this.handleCourseResume}
+        visibility={this.showProgress} />
+    );
   }
 
   renderCourseChildren = () => {
@@ -424,6 +468,7 @@ class CourseEnrolledActivity extends View {
 
 
   onBackPressed = () => {
+    window.__currCourseDetails = undefined;
     window.__ContentLoaderDialog.hide();
 
     if (window.__SharePopup != undefined && window.__SharePopup.getVisible()) {
@@ -439,8 +484,17 @@ class CourseEnrolledActivity extends View {
     window.__runDuiCallback(event);
   }
 
+  refeshCourseProgressApi = () => {
+    var whatToSend = {
+      "user_token": window.__user_accessToken,
+      "api_token": window.__apiToken
+    }
+    var event = { "tag": "API_Reload_Course", contents: whatToSend };
+    window.__runDuiCallback(event);
+  }
+
   afterRender = () => {
-    console.log("details", this.apiDetails)
+    console.log("details", this.apiDetails);
 
     if ((this.apiDetails.hasOwnProperty("mimeType")) && (this.apiDetails.mimeType.toLocaleLowerCase() == "application/vnd.ekstep.content-collection")) {
       var cmd = this.set({
@@ -705,11 +759,16 @@ class CourseEnrolledActivity extends View {
               onBackPress={this.onBackPressed} />
           </LinearLayout>
 
-          <HorizontalProgressBar
-            width="match_parent"
-            currentProgress={this.data.completedProgress}
-            totalProgress={this.data.totalProgress}
-            visibility={this.showProgress} />
+          <LinearLayout
+            width = "match_parent"
+            id = {this.idSet.horizontalProgressBarContainer}>
+
+            <HorizontalProgressBar
+              width="match_parent"
+              currentProgress={this.data.completedProgress}
+              totalProgress={this.data.totalProgress}
+              visibility={this.showProgress} />
+          </LinearLayout>
 
           <RelativeLayout
             height="match_parent"
@@ -733,13 +792,12 @@ class CourseEnrolledActivity extends View {
                   padding="16,24,16,16"
                   orientation="vertical">
 
-                  <CourseProgress
-                    height="wrap_content"
-                    width="wrap_content"
-                    content={this.data}
-                    title={this.data.courseName || this.apiDetails.name || this.apiDetails.contentData.name}
-                    onResumeClick={this.handleCourseResume}
-                    visibility={this.showProgress} />
+                  <LinearLayout
+                    width = "match_parent"
+                    id = {this.idSet.headerContainer}>
+
+                    {this.getHeader()}
+                  </LinearLayout>
 
                   <LinearLayout
                     id={this.idSet.batchDetailsContainer}

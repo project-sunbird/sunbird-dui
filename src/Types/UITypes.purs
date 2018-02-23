@@ -195,7 +195,8 @@ data CourseEnrolledActivityAction = DummyCourseEnrolledActivityAction |
   API_GetContentState {courseId::String,user_token::String,api_token::String} |
   API_FlagCourse {user_token::String,api_token::String,requestBody::String,identifier::String} |
   API_Get_Batch_Details{user_token::String,api_token::String,batch_id::String} |
-  API_Get_Batch_Creator_name {user_token::String,api_token::String}
+  API_Get_Batch_Creator_name {user_token::String,api_token::String} | 
+  API_Reload_Course {user_token::String,api_token::String}
 
 instance courseEnrolledActivity :: UIScreen CourseEnrolledActivity CourseEnrolledActivityAction where
   generateMockEvents _ = [DummyCourseEnrolledActivityAction , BACK_CourseEnrolledActivity]
@@ -436,7 +437,7 @@ instance decodeLanguageSelectActivityStAction :: Decode LanguageSelectActivitySt
 instance encodeLanguageSelectActivityStAction :: Encode LanguageSelectActivityStAction where encode = defaultEncode
 
 data AboutUsActivity = AboutUsActivity {profile :: String}
-data AboutUsActivityAction = BACK_AboutUsActivity | OPEN_AboutUsScreen {profile::String}
+data AboutUsActivityAction = BACK_AboutUsActivity | OPEN_AboutUsScreen {sectionData::String}
 
 instance aboutUsActivity :: UIScreen AboutUsActivity AboutUsActivityAction where
   generateMockEvents _ = [BACK_AboutUsActivity]
@@ -446,7 +447,7 @@ derive instance genericAboutUsActivityAction  :: Generic AboutUsActivityAction _
 instance decodeAboutUsActivityAction :: Decode AboutUsActivityAction where decode = defaultDecode
 instance encodeAboutUsActivityAction :: Encode AboutUsActivityAction where encode = defaultEncode
 
-data AboutUsScreen = AboutUsScreen {profile :: String}
+data AboutUsScreen = AboutUsScreen {sectionData :: String}
 data AboutUsScreenAction = BACK_AboutUsScreen
 
 instance aboutUsScreen :: UIScreen AboutUsScreen AboutUsScreenAction where

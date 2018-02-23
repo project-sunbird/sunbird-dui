@@ -136,11 +136,11 @@ aboutUsActivity input whereFrom whatToSendBack = do
 	 BACK_AboutUsActivity -> case whereFrom of
 		 "SettingsScreenActivity" -> settingsScreenActivity input "Terminate" input
 		 _ -> settingsScreenActivity input "Terminate" input
-	 OPEN_AboutUsScreen {profile:output} -> aboutUsScreen output "AboutUsActivity" input
+	 OPEN_AboutUsScreen {sectionData:output} -> aboutUsScreen output "AboutUsActivity" input
 	 _ -> aboutUsActivity input whereFrom whatToSendBack
 --------------------------------------------------------------------------------
 aboutUsScreen input whereFrom whatToSendBack = do
- event <- ui $ AboutUsScreen {profile : input}
+ event <- ui $ AboutUsScreen {sectionData : input}
  case event of
 	 BACK_AboutUsScreen -> case whereFrom of
 		 "AboutUsActivity" -> aboutUsActivity input "Terminate" input
@@ -216,6 +216,10 @@ enrolledCourseActivity input whereFrom whatToSendBack = do
 		API_Get_Batch_Creator_name {user_token:user_token,api_token:api_token} -> do
 			responseData <- getUserDetail user_token api_token
 			_ <- sendUpdatedState {response : responseData, responseFor : "API_Get_Batch_Creator_name", screen:"asas"}
+			pure $ "handled"
+		API_Reload_Course {user_token : user_token,api_token : api_token} -> do
+			responseData <- getUserEnrolledCourses user_token api_token
+			_ <- sendUpdatedState {response : responseData, responseFor : "API_Reload_Course", screen:"asas"}
 			pure $ "handled"
   		OPEN_ModuleDetailsActivity {moduleName:output1,moduleDetails:output2} -> subModuleDetailActivity output1 output2 "EnrolledCourseActivity" input
   		BACK_CourseEnrolledActivity -> case whereFrom of

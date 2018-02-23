@@ -305,7 +305,7 @@ class CourseInfoActivity extends View {
   shareContent = () =>{
 
     console.log("SHARE POP UP CALLED", this.details);
-    JBridge.logShareContentInitiateEvent("COURSES", "course", this.details.identifier, this.details.contentData.pkgVersion || this.details.pkgVersion);
+    JBridge.logShareContentInitiateEvent("COURSES", "course", this.details.identifier, this.details.pkgVersion ? this.details.pkgVersion : this.details.contentData.pkgVersion);
 
     var shareCallback = callbackMapper.map(function(data) {
 
