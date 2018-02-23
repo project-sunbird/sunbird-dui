@@ -9,6 +9,7 @@ var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var EditText = require("@juspay/mystique-backend/src/android_views/EditText");
 var TextInputView = require("../components/Sunbird/core/TextInputView");
 var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
+var ScrollView = require("@juspay/mystique-backend/src/android_views/ScrollView");
 var TextStyle = require("../res/TextStyle.js");
 
 window.R = require("ramda");
@@ -18,37 +19,42 @@ class AboutUsScreen extends View {
     constructor(props, children, state) {
         super(props, children, state);
         this.setIds([
-            "parentId"
+            "parentId",
+            "webViewContainer"
         ]);
-        //this.title = window.__aboutTheApp ? window.__aboutTheApp : ""
+        this.section = JSON.parse(state.data.value0.sectionData).name;
+        console.log("AboutUsScreen -> ", this.section);
         this.shouldCacheScreen = false;
         window.__AboutUsScreen = this;
         this.visible = true;
         this.screenName = "AboutUsScreen";
         _this = this;
+        this.initData();
+    }
+
+    initData = () => {
+        this.title = "";
+        switch(this.section) {
+            case "PRIVACY_POLICY":
+                this.title = window.__S.PRIVACY_POLICY;
+                break;
+            case "TERMS_OF_SERVICE":
+                this.title = window.__S.TERMS_OF_SERVICE;
+                break;
+            case "ABOUT":
+                this.title = window.__S.ABOUT_APPLICATION;
+                break;
+        }
+    }
+
+    afterRender = () => {
+        JBridge.displayHTML(this.idSet.webViewContainer, this.section);
     }
 
     onBackPressed = () => {
         var whatToSend = [];
         var event = { tag: "BACK_AboutUsScreen", contents: whatToSend };
         window.__runDuiCallback(event);
-    }
-
-    getBody = () => {
-        return (<LinearLayout
-            background="#ffffff"
-            width="match_parent"
-            height="wrap_content"
-            padding="16,16,16,16">
-            <TextView
-                height="match_parent"
-                width="wrap_content"
-                text={window.__S.ABOUT_US_DATA}
-                textSize={"14"}
-                color={"#FF000000"}
-                lineHeight="20px"
-                gravity="left" />
-        </LinearLayout>);
     }
 
     render = () => {
@@ -60,16 +66,19 @@ class AboutUsScreen extends View {
                 root="true"
                 orientation="vertical"
                 width="match_parent"
-                height="match_parent">
+                height="match_parent"
+                afterRender = {this.afterRender}>
                 <SimpleToolbar
-                    title={window.__S.ABOUT_APPLICATION}
+                    title={this.title}
                     afterRender={this.afterRender}
                     width="match_parent"
                     onBackPress={this.onBackPressed} />
                 <LinearLayout
                     width="match_parent"
                     height="4"></LinearLayout>
-                {this.getBody()}
+                <LinearLayout
+                    width="match_parent"
+                    id = {this.idSet.webViewContainer} />
             </LinearLayout>
         );
         return this.layout.render();

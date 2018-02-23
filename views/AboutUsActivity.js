@@ -38,8 +38,10 @@ class AboutUsActivity extends View {
         window.__runDuiCallback(event);
     }
 
-    nextScreen = () => {
-        var whatToSend = { "profile": JSON.stringify("{}") }
+    nextScreen = (section) => {
+        var whatToSend = { "sectionData": JSON.stringify({
+            "name": section,
+        }) }
         var event = { tag: "OPEN_AboutUsScreen", contents: whatToSend };
         window.__runDuiCallback(event);
     }
@@ -176,11 +178,11 @@ class AboutUsActivity extends View {
                 <LinearLayout
                     width="match_parent"
                     height="8"></LinearLayout>
-                {this.getBody2(window.__S.PRIVACY_POLICY, this.nextScreen)}
+                {this.getBody2(window.__S.PRIVACY_POLICY, () => this.nextScreen("PRIVACY_POLICY"))}
                 {this.getLineSeperator()}
-                {this.getBody2(window.__S.TERMS_OF_SERVICE, this.nextScreen)}
+                {this.getBody2(window.__S.TERMS_OF_SERVICE, () => this.nextScreen("TERMS_OF_SERVICE"))}
                 {this.getLineSeperator()}
-                {this.getBody2(window.__S.ABOUT_APPLICATION, this.nextScreen)}
+                {this.getBody2(window.__S.ABOUT_APPLICATION, () => this.nextScreen("ABOUT"))}
             </LinearLayout>
         );
         return this.layout.render();
