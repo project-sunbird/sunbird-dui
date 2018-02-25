@@ -142,7 +142,7 @@ class ContentPreviewScreen extends View {
       }
     });
     window.__getDownloadStatus = this.getSpineStatus;
-    JBridge.getContentDetails(identifier, callback);
+    JBridge.getContentDetails(identifier, callback, true);
   }
 
   handleModuleClick = (moduleName, module) => {

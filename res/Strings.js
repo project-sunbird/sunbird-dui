@@ -322,7 +322,10 @@ const stringsRes = {
 		ABOUT_APPLICATION: "About the Application",
 		ABOUT_US: "About us",
 		ABOUT_US_DATA: "This is the about us data.",
-		DOWNLOAD_ALL_wSIZE: "Download all %s?"
+		DOWNLOAD_ALL_wSIZE: "Download all %s?",
+		ENJOYED_THIS_CONTENT: "Enjoyed this content?",
+		HELP_US_BY_RATING: "Help us by rating this content",
+		FEEDBACK_HINT: "Feedback (optional)"
 	},
 	"hi_IN" : {
 		ALREADY_HAVE_ACC : "मौजूदा उपयोगकर्ता, साइन इन करें",

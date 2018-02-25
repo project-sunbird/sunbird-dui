@@ -252,7 +252,7 @@ class CourseEnrolledActivity extends View {
         }
       }
     });
-    JBridge.getContentDetails(identifier, callback);
+    JBridge.getContentDetails(identifier, callback, true);
   }
 
   logTelelmetry = (id, pkgVersion, isAvailableLocally) => {

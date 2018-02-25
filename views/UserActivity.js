@@ -180,7 +180,7 @@ class UserActivity extends View {
     //end of callback
 
     if (identifier != "") {
-      JBridge.getContentDetails(identifier, callback)
+      JBridge.getContentDetails(identifier, callback, false)
     } else {
       this.performLogin();
     }

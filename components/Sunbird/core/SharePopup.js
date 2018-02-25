@@ -52,7 +52,7 @@ class SharePopup extends View {
         JBridge.logshareScreenEvent(id, data.contentData.pkgVersion);
       }
     });
-    JBridge.getContentDetails(id, callback);
+    JBridge.getContentDetails(id, callback, false);
   }
 
   hide = () => {

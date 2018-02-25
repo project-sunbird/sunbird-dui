@@ -147,7 +147,7 @@ class CourseInfoActivity extends View {
       }
 
     });
-    JBridge.getContentDetails(identifier, callback);
+    JBridge.getContentDetails(identifier, callback, true);
   }
 
 

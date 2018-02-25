@@ -14,6 +14,7 @@ var FlagPopup = require('../components/Sunbird/FlagPopup');
 var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
 var ProgressButton = require('../components/Sunbird/core/ProgressButton');
 var utils = require('../utils/GenericFunctions');
+var RatingsPopup = require('../components/Sunbird/RatingsPopup');
 
 window.R = require("ramda");
 
@@ -69,6 +70,11 @@ class ResourceDetailActivity extends View {
       }
       _this.contentData = JSON.parse(utils.decodeBase64(data[0]));
       console.log("this.contentData: ", _this.contentData);
+      if (_this.contentData.hasOwnProperty("contentFeedback") && _this.contentData.contentFeedback.length !=0) {
+        _this.RatingsPopup.initData(_this.contentData.identifier, "content-detail", _this.contentData.contentData.pkgVersion, _this.contentData.contentFeedback[0].rating, _this.contentData.contentFeedback[0].comments);
+      } else {
+        _this.RatingsPopup.initData(_this.contentData.identifier, "content-detail", _this.contentData.contentData.pkgVersion);        
+      }
       if (_this.contentData.isAvailableLocally == true) {
         _this.localStatus = true;
         var pButonLayout = (
@@ -97,7 +103,7 @@ class ResourceDetailActivity extends View {
         _this.replaceChild(_this.idSet.progressButtonContainer, pButonLayout.render(), 0);
       }
     });
-    JBridge.getContentDetails(data.content.identifier, callback);
+    JBridge.getContentDetails(data.content.identifier, callback, true);
   }
 
   onStop = () =>{
@@ -293,10 +299,15 @@ class ResourceDetailActivity extends View {
           margin="0,2,0,0"
           width="match_parent"
           height="wrap_content">
-          <RatingBar
-            id = {this.idSet.ratingBar}
+          <LinearLayout
             width="wrap_content"
-            height="wrap_content"/>
+            height="wrap_content"
+            onClick={() => { this.RatingsPopup.show() }}>
+            <RatingBar
+              id = {this.idSet.ratingBar}
+              width="wrap_content"
+              height="wrap_content"/>
+          </LinearLayout>
           <LinearLayout
             weight="1"/>
           <TextView
@@ -414,6 +425,13 @@ class ResourceDetailActivity extends View {
     JBridge.setPermissions(callback,"android.permission.WRITE_EXTERNAL_STORAGE");
   }
 
+  getRatingsPopup = () => {
+    this.RatingsPopup = (
+      <RatingsPopup />
+    );
+    return this.RatingsPopup;
+  }
+
   render() {
     this.layout = (
       <RelativeLayout
@@ -466,6 +484,7 @@ class ResourceDetailActivity extends View {
        width="match_parent"
        height="match_parent"
        id={this.idSet.sharePopupContainer}/>
+      {this.getRatingsPopup()}
     </RelativeLayout>
     );
     return this.layout.render();

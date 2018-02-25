@@ -78,7 +78,7 @@ class ProgressButton extends View {
         _this.replaceChild(_this.idSet.downloadBarContainer, _this.getButtons("0", window.__S.DOWNLOAD).render(), 0);
       }
     });//end of callback
-    JBridge.getContentDetails(this.props.identifier, callback);
+    JBridge.getContentDetails(this.props.identifier, callback, false);
   }
 
   updateProgress = (res) => {
@@ -154,7 +154,7 @@ class ProgressButton extends View {
             console.log("data from progress", parsedData)
             JBridge.playContent(data, parsedData.identifier, parsedData.contentData.pkgVersion, utils.getFuncMapped(_this.checkTelemetry));
           });
-          JBridge.getContentDetails(_this.props.identifier, callback);
+          JBridge.getContentDetails(_this.props.identifier, callback, false);
 
         } else if(JBridge.isNetworkAvailable()){
 

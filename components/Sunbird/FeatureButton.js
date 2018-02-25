@@ -42,6 +42,7 @@ class FeatureButton extends View {
       background={this.props.background||"#FFFFFF"}
       cornerRadius={this.props.cornerRadius || "2"}
       visibility={this.props.visibility||"visible"}
+      alpha={this.props.alpha || "1"}
       gravity="center">
       <LinearLayout
         height={this.props.height || "wrap_content"}

@@ -223,7 +223,7 @@ class ModuleDetailActivity extends View {
 
             if (!module.isAvailableLocally || module.isUpdateAvailable) {
                 window.__getDownloadStatus = this.getSpineStatus;
-                JBridge.getContentDetails(module.identifier, callback);
+                JBridge.getContentDetails(module.identifier, callback, true);
             } else {
                 this.renderModuleChildren(module);
             }

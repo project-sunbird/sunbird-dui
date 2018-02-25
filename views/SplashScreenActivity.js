@@ -74,7 +74,7 @@ class SplashScreenActivity extends View {
   }
 
   afterRender = () => {
-
+    JBridge.makeEntryInSunbirdSupportFile();
     var epoch = JBridge.epochTime();
     var connectionType = JBridge.checkConnectionType();
     if (epoch < 26979 || connectionType == "wifi")

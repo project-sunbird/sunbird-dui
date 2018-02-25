@@ -132,7 +132,7 @@ class QRActivity extends View {
     });
 
     //TODO implement proper error callback
-    JBridge.getContentDetails(identifier,callback);
+    JBridge.getContentDetails(identifier,callback, false);
   }
 
   showErrorPopup = (type) => {
