@@ -28,7 +28,9 @@ class ModuleDetailActivity extends View {
             "simpleToolBarOverFlow",
             "renderPage",
             "progressButtonContainer",
-            "downloadAllButtonContainer"
+            "downloadAllButtonContainer",
+            "ratingBar",
+            "ratingContainer"
         ]);
         this.state = state;
         this.screenName = "ModuleDetailActivity"
@@ -186,6 +188,22 @@ class ModuleDetailActivity extends View {
         if (!this.hasChildren(module.mimeType)){
             //if the current content is the leaf node content, display the button which checks whether the content is locally available,
             //display 'PLAY' or 'DOWNLOAD', and handle download or play.
+            var cb = callbackMapper.map((data) => {
+                if (data[0] != "__failed") {
+                    _this.localContent = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
+                    if (_this.localContent.hasOwnProperty("contentData") && _this.localContent.contentData.hasOwnProperty("me_averageRating")) {
+                        _this.updateRatings(_this.localContent.contentData.me_averageRating);
+                    } else {
+                        _this.updateRatings(0);
+                    }
+                    if (_this.localContent.hasOwnProperty("contentFeedback") && _this.localContent.contentFeedback.length != 0) {
+                        window.__RatingsPopup.initData(_this.localContent.identifier, "content-detail", _this.localContent.contentData.pkgVersion, _this.localContent.contentFeedback[0].rating, _this.localContent.contentFeedback[0].comments);
+                    } else {
+                        window.__RatingsPopup.initData(_this.localContent.identifier, "content-detail", _this.localContent.contentData.pkgVersion);
+                    }
+                }
+            });
+            JBridge.getContentDetails(module.identifier, cb, true);
             var _ = this.isPoped ? "" : JBridge.startEventLog(module.contentType, module.identifier, module.contentData.pkgVersion);
             this.localStatus = false;
             window.__ProgressButton.setLocalStatus(false);
@@ -201,15 +219,26 @@ class ModuleDetailActivity extends View {
                     this.onBackPressed();
                     return;
                 }
-                _this.localContent = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])))
+                _this.localContent = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
+                console.log("renderModuleChildren -> ", _this.localContent);
+                if (_this.localContent.hasOwnProperty("contentData") && _this.localContent.contentData.hasOwnProperty("me_averageRating")) {
+                    _this.updateRatings(_this.localContent.contentData.me_averageRating);
+                } else {
+                    _this.updateRatings(0);
+                }
+                if (_this.localContent.hasOwnProperty("contentFeedback") && _this.localContent.contentFeedback.length != 0) {
+                    window.__RatingsPopup.initData(_this.localContent.identifier, "content-detail", _this.localContent.contentData.pkgVersion, _this.localContent.contentFeedback[0].rating, _this.localContent.contentFeedback[0].comments);
+                } else {
+                    window.__RatingsPopup.initData(_this.localContent.identifier, "content-detail", _this.localContent.contentData.pkgVersion);
+                }
                 if (_this.localContent.isAvailableLocally == true) {
-                    this.renderChildren(module.identifier);
+                    _this.renderModuleChildren(module);
                 } else {
                     if (JBridge.isNetworkAvailable()) {
                         if (_this.downloadList.indexOf(module.identifier) == -1) {
                             _this.downloadList.push(module.identifier)
                             console.log("module", module);
-                            JBridge.importCourse(module.identifier, "true", this.downloadProgressCb());
+                            JBridge.importCourse(module.identifier, "true", _this.downloadProgressCb());
                         } else {
                             window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
                             _this.onBackPressed();
@@ -221,12 +250,8 @@ class ModuleDetailActivity extends View {
                 }
             });// end of callback
 
-            if (!module.isAvailableLocally || module.isUpdateAvailable) {
-                window.__getDownloadStatus = this.getSpineStatus;
-                JBridge.getContentDetails(module.identifier, callback, true);
-            } else {
-                this.renderModuleChildren(module);
-            }
+            window.__getDownloadStatus = this.getSpineStatus;
+            JBridge.getContentDetails(module.identifier, callback, true);
         }
     }
 
@@ -317,6 +342,7 @@ class ModuleDetailActivity extends View {
     }
 
     afterRender = () => {
+        JBridge.setRating(this.idSet.ratingBar, 0);//this.details.content.me_averageRating);
         window.__ProgressButton.setButtonFor(this.module.identifier);
         JBridge.logContentDetailScreenEvent(this.module.identifier, this.module.contentData.pkgVersion);
         this.checkContentLocalStatus(this.module);
@@ -330,42 +356,65 @@ class ModuleDetailActivity extends View {
         )
     }
 
+    updateRatings = (rating) => {
+        var r = rating ? rating : 0;
+        var layout = (
+            <LinearLayout
+                width="wrap_content"
+                height="wrap_content"
+                onClick={() => { window.__RatingsPopup.show() }}>
+                <RatingBar
+                    id={this.idSet.ratingBar}
+                    width="wrap_content"
+                    height="wrap_content" />
+            </LinearLayout>
+        );
+        _this.replaceChild(_this.idSet.ratingContainer, layout.render(), 0);
+        JBridge.setRating(this.idSet.ratingBar, r);
+    }
+
     getHeader = () => {
       var headerLayout = (
-        <LinearLayout
-          height = "wrap_content"
-          width = "match_parent"
-          orientation = "vertical">
-
           <LinearLayout
-            height = "wrap_content"
-            gravity = "center_vertical"
-            margin = "0,12,0,12"
-            width = "match_parent" >
+              height="wrap_content"
+              width="match_parent"
+              orientation="vertical">
 
-            <TextView
-              height = "wrap_content"
-              width = "0"
-              weight = "1"
-              style = { window.__TextStyle.textStyle.CARD.TITLE.DARK }
-              text = { this.moduleName }/>
+              <LinearLayout
+                  height="wrap_content"
+                  gravity="center_vertical"
+                  margin="0,12,0,12"
+                  width="match_parent" >
+
+                  <TextView
+                      height="wrap_content"
+                      width="0"
+                      weight="1"
+                      style={window.__TextStyle.textStyle.CARD.TITLE.DARK}
+                      text={this.moduleName} />
+
+              </LinearLayout>
+
+              <TextView
+                  height="wrap_content"
+                  margin="0,0,0,12"
+                  width="match_parent"
+                  text={this.module.contentData.hasOwnProperty("size") ? window.__S.MODULE_SIZE.format(this.formatBytes(this.module.contentData.size)) : window.__S.MODULE_SIZE_UNAVAILABLE} />
+
+              <LinearLayout
+                  width="wrap_content"
+                  height="wrap_content"
+                  id={this.idSet.ratingContainer}/>
+
+              <CropParagraph
+                  height="wrap_content"
+                  margin="0,0,0,12"
+                  width="match_parent"
+                  headText={this.module.contentData.description ? window.__S.DESCRIPTION : undefined}
+                  contentText={this.module.contentData.description} />
 
           </LinearLayout>
-
-          <TextView
-            height = "wrap_content"
-            margin = "0,0,0,12"
-            width = "match_parent"
-            text={this.module.contentData.hasOwnProperty("size")? window.__S.MODULE_SIZE.format(this.formatBytes(this.module.contentData.size)) : window.__S.MODULE_SIZE_UNAVAILABLE }/>
-
-          <CropParagraph
-            height = "wrap_content"
-            margin = "0,0,0,12"
-            width = "match_parent"
-            headText = { this.module.contentData.description ? window.__S.DESCRIPTION : undefined }
-            contentText = { this.module.contentData.description }/>
-
-        </LinearLayout>)
+      )
 
       return headerLayout;
     }

@@ -21,6 +21,7 @@ class RatingsPopup extends View {
         this.parentId = this.props.id || this.idSet.parentContainer;
         _this = this;
         this.starArr = [0,0,0,0,0];
+        window.__RatingsPopup = this;
 
         //data to send for the feedback
         this.contentId = "";

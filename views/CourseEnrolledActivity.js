@@ -10,7 +10,7 @@ var ProgressBar = require("@juspay/mystique-backend/src/android_views/ProgressBa
 var utils = require('../utils/GenericFunctions');
 var FeatureButton = require('../components/Sunbird/FeatureButton');
 var DownloadAllProgressButton = require('../components/Sunbird/DownloadAllProgressButton');
-
+var RatingBar = require("@juspay/mystique-backend/src/android_views/RatingBar");
 window.R = require("ramda");
 
 var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
@@ -37,7 +37,9 @@ class CourseEnrolledActivity extends View {
       "downloadAllProgressButton",
       "startOrResumeBtnContainer",
       "horizontalProgressBarContainer",
-      "headerContainer"
+      "headerContainer",
+      "ratingBar",
+      "ratingContainer"
     ]);
     this.state = state;
     this.screenName = "CourseEnrolledActivity"
@@ -238,6 +240,18 @@ class CourseEnrolledActivity extends View {
 
       _this.courseDetails = data;
       console.log("data", data);
+      
+      if (_this.courseDetails.hasOwnProperty("contentData") && _this.courseDetails.contentData.hasOwnProperty("me_averageRating")) {
+        _this.updateRatings(_this.courseDetails.contentData.me_averageRating);
+      } else {
+        _this.updateRatings(0);
+      }
+
+      if (_this.courseDetails.hasOwnProperty("contentFeedback") && _this.courseDetails.contentFeedback.length != 0) {
+        window.__RatingsPopup.initData(_this.courseDetails.identifier, "content-detail", _this.courseDetails.contentData.pkgVersion, _this.courseDetails.contentFeedback[0].rating, _this.courseDetails.contentFeedback[0].comments);
+      } else {
+        window.__RatingsPopup.initData(_this.courseDetails.identifier, "content-detail", _this.courseDetails.contentData.pkgVersion);
+      }
       if (data.isAvailableLocally == true) {
         _this.logTelelmetry(identifier, data.contentData.pkgVersion, data.isAvailableLocally);
         _this.renderChildren(identifier);
@@ -495,7 +509,9 @@ class CourseEnrolledActivity extends View {
 
   afterRender = () => {
     console.log("details", this.apiDetails);
-
+    console.log("ratings idSet -> ", this.idSet.ratingBar);
+    
+    JBridge.setRating(this.idSet.ratingBar, 0);
     if ((this.apiDetails.hasOwnProperty("mimeType")) && (this.apiDetails.mimeType.toLocaleLowerCase() == "application/vnd.ekstep.content-collection")) {
       var cmd = this.set({
         id: this.idSet.startCourseBtn,
@@ -704,6 +720,23 @@ class CourseEnrolledActivity extends View {
     window.__DownloadAllPopup.show();
   }
 
+  updateRatings = (rating) => {
+    var r = rating ? rating : 0;
+    var layout = (
+      <LinearLayout
+        width="wrap_content"
+        height="wrap_content"
+        onClick={() => { window.__RatingsPopup.show() }}>
+        <RatingBar
+          id={this.idSet.ratingBar}
+          width="wrap_content"
+          height="wrap_content" />
+      </LinearLayout>
+    );
+    _this.replaceChild(_this.idSet.ratingContainer, layout.render(), 0);
+    JBridge.setRating(this.idSet.ratingBar, r);
+  }
+
   getDownloadAll = (size) => {
     var sizeText = "";
     if (size != undefined) {
@@ -804,6 +837,11 @@ class CourseEnrolledActivity extends View {
                     height="match_parent"
                     width="match_parent"
                     orientation="vertical" />
+
+                  <LinearLayout
+                    width="wrap_content"
+                    height="wrap_content"
+                    id = {this.idSet.ratingContainer}/>
 
                   <TextView
                     width="wrap_content"

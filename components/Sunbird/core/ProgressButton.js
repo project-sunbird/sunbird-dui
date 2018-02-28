@@ -151,7 +151,7 @@ class ProgressButton extends View {
           var callback = callbackMapper.map(function (data) {
             data = utils.decodeBase64(data[0]);
             var parsedData = JSON.parse(utils.jsonifyData(data));
-            console.log("data from progress", parsedData)
+            console.log("data from progress", parsedData);
             JBridge.playContent(data, parsedData.identifier, parsedData.contentData.pkgVersion, utils.getFuncMapped(_this.checkTelemetry));
           });
           JBridge.getContentDetails(_this.props.identifier, callback, false);
@@ -188,6 +188,7 @@ class ProgressButton extends View {
     console.log("telemetryData.eid", telemetryData.eid);
     if (telemetryData.eid == "END") {
       JBridge.stopTelemetryEvent();
+      window.__RatingsPopup.show();
       var time = new Date();
       var date = utils.formatDate(time);
       var contentProgress = {};
@@ -200,9 +201,6 @@ class ProgressButton extends View {
       contentProgress['status'] = telemetryData.edata.summary[0].progress == 100 ? 2 : 1;
       contentProgress['progress'] = telemetryData.edata.summary[0].progress;
       contentProgress['lastAccessTime'] = date;
-      // if (telemetryData.edata.summary[0].progress == 100) {
-      //   contentProgress['lastCompletedTime'] = date;
-      // }
       contentProgress['result'] = "pass";
       contentProgress['grade'] = "B";
       contentProgress['score'] = "10";

@@ -8,7 +8,7 @@ var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
 var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
 var ScrollView = require("@juspay/mystique-backend/src/android_views/ScrollView");
 var HorizontalScrollView = require("@juspay/mystique-backend/src/android_views/HorizontalScrollView");
-var RatingBar = require("@juspay/mystique-backend/src/android_views/RatingBar");;
+var RatingBar = require("@juspay/mystique-backend/src/android_views/RatingBar");
 var SharePopup = require('../components/Sunbird/core/SharePopup');
 var FlagPopup = require('../components/Sunbird/FlagPopup');
 var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
@@ -71,9 +71,9 @@ class ResourceDetailActivity extends View {
       _this.contentData = JSON.parse(utils.decodeBase64(data[0]));
       console.log("this.contentData: ", _this.contentData);
       if (_this.contentData.hasOwnProperty("contentFeedback") && _this.contentData.contentFeedback.length !=0) {
-        _this.RatingsPopup.initData(_this.contentData.identifier, "content-detail", _this.contentData.contentData.pkgVersion, _this.contentData.contentFeedback[0].rating, _this.contentData.contentFeedback[0].comments);
+        window.__RatingsPopup.initData(_this.contentData.identifier, "content-detail", _this.contentData.contentData.pkgVersion, _this.contentData.contentFeedback[0].rating, _this.contentData.contentFeedback[0].comments);
       } else {
-        _this.RatingsPopup.initData(_this.contentData.identifier, "content-detail", _this.contentData.contentData.pkgVersion);        
+        window.__RatingsPopup.initData(_this.contentData.identifier, "content-detail", _this.contentData.contentData.pkgVersion);        
       }
       if (_this.contentData.isAvailableLocally == true) {
         _this.localStatus = true;
@@ -302,7 +302,7 @@ class ResourceDetailActivity extends View {
           <LinearLayout
             width="wrap_content"
             height="wrap_content"
-            onClick={() => { this.RatingsPopup.show() }}>
+            onClick={() => { window.__RatingsPopup.show() }}>
             <RatingBar
               id = {this.idSet.ratingBar}
               width="wrap_content"
@@ -425,12 +425,12 @@ class ResourceDetailActivity extends View {
     JBridge.setPermissions(callback,"android.permission.WRITE_EXTERNAL_STORAGE");
   }
 
-  getRatingsPopup = () => {
-    this.RatingsPopup = (
-      <RatingsPopup />
-    );
-    return this.RatingsPopup;
-  }
+  // getRatingsPopup = () => {
+  //   this.RatingsPopup = (
+  //     <RatingsPopup />
+  //   );
+  //   return this.RatingsPopup;
+  // }
 
   render() {
     this.layout = (
@@ -484,7 +484,6 @@ class ResourceDetailActivity extends View {
        width="match_parent"
        height="match_parent"
        id={this.idSet.sharePopupContainer}/>
-      {this.getRatingsPopup()}
     </RelativeLayout>
     );
     return this.layout.render();

@@ -23,6 +23,7 @@ var LanguagePopup = require('../components/Sunbird/core/LanguagePopup');
 var ForceUpgradePopup = require('../components/Sunbird/ForceUpgradePopup');
 var ProfileImagePopUp = require('../components/Sunbird/ProfileImagePopUp');
 var DownloadAllPopUp = require('../components/Sunbird/DownloadAllPopUp');
+var RatingsPopup = require('../components/Sunbird/RatingsPopup');
 
 
 const Str = require("../res/Strings") ;
@@ -125,8 +126,9 @@ class RootScreen extends View {
           width="match_parent"/>
         <Snackbar/>
         <DownloadAllPopUp
-        height="wrap_content"
-        width="match_parent"/>
+          height="wrap_content"
+          width="match_parent"/>
+        <RatingsPopup />
       </RelativeLayout>
     );
   }
