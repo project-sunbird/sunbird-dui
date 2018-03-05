@@ -76,38 +76,38 @@ class RadioItem extends View {
         width="match_parent">
 
         <RelativeLayout>
-              <ImageView
-                height="14"
-                width="14"
-                margin="0,2,6,0"
-                gravity="center"
-                id = {this.idSet.imageSelected}
-                imageUrl={this.props.item.icon+"_blue"}
-                visibility={this.props.item.select=="1"?"visible":"gone"} />
+          <ImageView
+            height="14"
+            width="14"
+            margin="0,2,6,0"
+            gravity="center"
+            id={this.idSet.imageSelected}
+            imageUrl={this.props.item.icon + "_blue"}
+            visibility={this.props.item.select == "1" ? "visible" : "gone"} />
 
-              <ImageView
-                height="14"
-                width="14"
-                margin="0,2,6,0"
-                gravity="center"
-                id = {this.idSet.imageUnSelected}
-                imageUrl={this.props.item.icon}
-                visibility={this.props.item.select=="0"?"visible":"gone"} />
+          <ImageView
+            height="14"
+            width="14"
+            margin="0,2,6,0"
+            gravity="center"
+            id={this.idSet.imageUnSelected}
+            imageUrl={this.props.item.icon}
+            visibility={this.props.item.select == "0" ? "visible" : "gone"} />
         </RelativeLayout>
 
         <TextView
           id={this.idSet.title}
           text={this.props.item.name}
-          color={this.props.item.select=="1"?window.__Colors.PRIMARY_ACCENT:window.__Colors.DARK_GRAY}
+          color={this.props.item.select == "1" ? window.__Colors.PRIMARY_ACCENT : window.__Colors.DARK_GRAY}
           width="wrap_content"
-          typeface = "bold"
+          typeface="bold"
           letterSpacing="0.05"
-          height = "wrap_content"
-          fontstyle ="SourceSansPro/Bold"
+          height="wrap_content"
+          fontstyle="SourceSansPro/Bold"
           gravity="center"
           margin="0,0,12,0"
           padding="0,0,0,8"
-          textSize={window.__Font.fontSize.FONT_12}/>
+          textSize={this.props.textSize ? this.props.textSize : window.__Font.fontSize.FONT_12} />
 
 
 
@@ -134,11 +134,11 @@ class RadioButton extends View {
     this.onClickCallback = props.onClick;
 
     _this = this;
-    window.__RadioButton=this;
+    window.__RadioButton = this;
 
   }
 
-  handleItemClick =  (index) =>{
+  handleItemClick = (index) => {
     if (_this.currentIndex == index) {
       return;
     }
@@ -156,29 +156,31 @@ class RadioButton extends View {
     _this.onClickCallback();
   }
 
-  renderItems = () =>{
-    var items = _this.itemList.map((data,i)=>{
-      return(
+  renderItems = () => {
+    var items = _this.itemList.map((data, i) => {
+      return (
 
         <RadioItem
-        item={data}
-        _onClick={this.handleItemClick}
-        index = {i} />
+          textSize={this.props.textSize ? this.props.textSize : window.__Font.fontSize.FONT_12}
+          item={data}
+          _onClick={this.handleItemClick}
+          index={i} />
       )
     });
 
-    this.cardList =(
+    this.cardList = (
       <LinearLayout
-      width="wrap_content"
-      height="wrap_content">
-      {items}
+        width="wrap_content"
+        height="wrap_content"
+        orientation={this.props.orientation ? this.props.orientation : "horizontal"}>
+        {items}
       </LinearLayout>
     );
 
     this.appendChild(this.idSet.itemContainer, this.cardList.render(), 0);
   }
 
-  render(){
+  render() {
     this.layout = (<LinearLayout
       orientation="horizontal"
       width="match_parent"
@@ -186,8 +188,8 @@ class RadioButton extends View {
       id={this.idSet.itemContainer}
       afterRender={this.renderItems}
       background={window.__Colors.WHITE}
-      onClick = {_this.props.onClick}>
-      </LinearLayout>);
+      onClick={_this.props.onClick}>
+    </LinearLayout>);
     return this.layout.render();
 
   }

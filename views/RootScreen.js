@@ -24,6 +24,7 @@ var ForceUpgradePopup = require('../components/Sunbird/ForceUpgradePopup');
 var ProfileImagePopUp = require('../components/Sunbird/ProfileImagePopUp');
 var DownloadAllPopUp = require('../components/Sunbird/DownloadAllPopUp');
 var RatingsPopup = require('../components/Sunbird/RatingsPopup');
+var GenericSelectorPopup = require('../components/Sunbird/GenericSelectorPopup');
 
 
 const Str = require("../res/Strings") ;
@@ -129,6 +130,7 @@ class RootScreen extends View {
           height="wrap_content"
           width="match_parent"/>
         <RatingsPopup />
+        <GenericSelectorPopup />
       </RelativeLayout>
     );
   }

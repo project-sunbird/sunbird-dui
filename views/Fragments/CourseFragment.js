@@ -8,6 +8,7 @@ var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget"
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
 var ScrollView = require("@juspay/mystique-backend/src/android_views/ScrollView");
+var QuestionsComponent = require('../../components/Sunbird/QuestionsComponent');
 var Space = require("@juspay/mystique-backend/src/android_views/Space");
 var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
 var LineSpacer = require('../../components/Sunbird/core/LineSpacer');
@@ -323,6 +324,9 @@ class CourseFragment extends View {
             width="match_parent"
             background={window.__Colors.WHITE}
             orientation="vertical">
+
+            <QuestionsComponent
+              visibility={window.__loggedInState == "GUEST" ? "visible" : "gone"} />
 
             {this.getCourseInProgressContainer()}
 
