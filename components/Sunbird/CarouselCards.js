@@ -28,6 +28,7 @@ class CarouselCards extends View {
         this.cardWidth = this.props.cardWidth ? this.props.cardWidth : this.screenWidth < 300 ? (this.screenWidth - 32) : 300;
         this.cardPadding = this.props.cardPadding ? this.props.cardPadding : Math.floor((this.screenWidth - this.cardWidth) / 2);
         this.cards = this.props.cards ? this.props.cards : [(<LinearLayout />)];
+        this.currCardIndex = 0;
 
         console.log("cardPadding -> ", this.cardPadding);
         
@@ -44,6 +45,7 @@ class CarouselCards extends View {
             <TextView
                 width="wrap_content"
                 height="wrap_content"
+                textSize="14"
                 text={"Help us get you content thats relevant to you."}/>
         </LinearLayout>)
     }
@@ -114,52 +116,55 @@ class CarouselCards extends View {
         );
     }
 
-    updateCards = (nextId, cards) => {
-        console.log("updateCards -> ", nextId);
-        
+    updateCards = (nextIndex, cards) => {
+        console.log("updateCards -> ", nextIndex);
         this.cards = cards ? cards : this.cards;
         this.replaceChild(this.idSet.cardsContainer, this.getCards().render(), null);
-        var cardIds = this.cards.map((item) => {
-            return item.id;
-        });
-        var onStopCb = callbackMapper.map((data) => {
-            console.log("onstop -> ", data);
-            _this.snapToCard(data[0]);
-
-        });
-        JBridge.addScrollListener(this.idSet.scrollViewContainer, cardIds, onStopCb);
+        JBridge.addScrollListener(this.idSet.scrollViewContainer, this.getOnScrollStopCb());
         setTimeout(()=>{
-            this.snapToCard(nextId);
+            this.snapToCard(nextIndex);
         }, 100); 
     }
 
-    afterRender = () => {
-        var cardIds = this.cards.map((item) => {
-            return item.id;
-        });
-        var onStopCb = callbackMapper.map((data) => {
+    getOnScrollStopCb = () => {
+        return callbackMapper.map((data) => {
             console.log("onstop -> ", data);
-            _this.snapToCard(data[0]);
-            
+            var delta = parseInt(data[0]);
+            if (delta > 0) {
+                var nextCardIndex = (this.currCardIndex + 1) % this.cards.length;
+                _this.snapToCard(nextCardIndex);
+            } else if (delta < 0) {
+                var prevCardIndex = (this.currCardIndex - 1) % this.cards.length;
+                _this.snapToCard(prevCardIndex);
+            }
         });
-        JBridge.addScrollListener(this.idSet.scrollViewContainer, cardIds, onStopCb);
+    }
+
+    afterRender = () => {
+        JBridge.addScrollListener(this.idSet.scrollViewContainer, this.getOnScrollStopCb());
         this.replaceChild(this.idSet.footerContainer, this.getFooter().render(), null);
     }
 
-    snapToCard = (cardId) => {
-        if (cardId == "") {
-            this.replaceChild(this.idSet.footerContainer, this.getFooter().render(), null);
-        } else {
-            this.cards.map((item, i) => {
-                if (cardId == (item.id + "")) {
-                    console.log("cardId - " + cardId + ", item.id - " + item.id);
-                    JBridge.scrollTo(this.idSet.scrollViewContainer, (i * (this.cardWidth + 8)));
-                    console.log("true pixel -> ", i * (this.cardWidth + 8));
-                    this.replaceChild(this.idSet.footerContainer, this.getFooter(i).render(), null);
-                    return;
-                }
-            });
-        }
+    snapToCard = (cardIndex) => {
+        var index = (cardIndex && cardIndex < this.cards.length && cardIndex >= 0) ? cardIndex : 0;
+        index = parseInt(index);
+        JBridge.scrollTo(this.idSet.scrollViewContainer, (index * (this.cardWidth + 8)));
+        this.currCardIndex = index;
+        console.log("scrollTo pixel -> ", index * (this.cardWidth + 8));
+        this.replaceChild(this.idSet.footerContainer, this.getFooter(index).render(), null);
+        // if (cardId == "") {
+        //     this.replaceChild(this.idSet.footerContainer, this.getFooter().render(), null);
+        // } else {
+        //     this.cards.map((item, i) => {
+        //         if (cardId == (item.id + "")) {
+        //             console.log("cardId - " + cardId + ", item.id - " + item.id);
+        //             JBridge.scrollTo(this.idSet.scrollViewContainer, (i * (this.cardWidth + 8)));
+        //             console.log("true pixel -> ", i * (this.cardWidth + 8));
+        //             this.replaceChild(this.idSet.footerContainer, this.getFooter(i).render(), null);
+        //             return;
+        //         }
+        //     });
+        // }
     }
 
     render() {

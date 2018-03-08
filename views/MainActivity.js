@@ -67,35 +67,16 @@ class MainActivity extends View {
 
     // window.handleChangeLang = this.handleChangeLang; //added for testing
 
-    window.__questions = [{
-      question: "What grade do you teach?",
-      option: "SELECT GRADES",
-      values: ["K.G.", "Grade1", "Grade2", "Grade3", "Grade4", "Grade5"],
-      selected: [],
-      isCurr: true,
-      selectorType: "checkbox"
-    }, {
-      question: "Which subject do you teach?",
-      option: "SELECT SUBJECT",
-      values: ["Mathematics", "Physics", "Chemistry", "English", "Hindi", "Computer Science"],
-      selected: [],
-      isCurr: false,
-      selectorType: "checkbox"
-    }, {
-      question: "Which state do you belong to?",
-      option: "SELECT STATE",
-      values: ["Karnataka", "Maharastra", "Kerala", "Tamil Nadu"],
-      selected: [],
-      isCurr: false,
-      selectorType: "radio"
-    }, {
-      question: "Are you a teacher?",
-      option: "SELECT",
-      values: ["Yes", "No"],
-      selected: [],
-      isCurr: false,
-      selectorType: "radio"
-    }];
+    window.__questions = [
+      {
+        question: "What grade do you teach?",
+        option: "SELECT GRADES",
+        values: ["K.G.", "Grade1", "Grade2", "Grade3", "Grade4", "Grade5", "Grade6", "Grade7", "Grade8", "Grade9", "Grade10", "Grade11", "Grade12"],
+        selected: [],
+        isCurr: true,
+        selectorType: "checkbox"
+      }
+    ];
   }
 
   onPop = () => {

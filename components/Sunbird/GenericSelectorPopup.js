@@ -8,6 +8,7 @@ var ScrollView = require("@juspay/mystique-backend/src/android_views/ScrollView"
 var RadioButton = require("./core/RadioButton");
 var CheckBox = require("@juspay/mystique-backend/src/android_views/CheckBox");
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
+var PageOption = require("./core/PageOption");
 var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
 var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget");
 var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
@@ -81,7 +82,7 @@ class GenericSelectorPopup extends View {
     }
 
     handleRadioButtonClick = () => {
-        if (window.__RadioButton != undefined && window.__RadioButton.currentIndex) {
+        if (window.__RadioButton != undefined && window.__RadioButton.hasOwnProperty("currentIndex")) {
             console.log("radio -> ", window.__RadioButton.currentIndex);
             this.data.selected = [this.data.values[window.__RadioButton.currentIndex]];
         }
@@ -97,7 +98,7 @@ class GenericSelectorPopup extends View {
                 width="match_parent"
                 height="wrap_content"
                 gravity="center_vertical"
-                margin="0,0,0,16">
+                margin="16,0,16,16">
 
                 <TextView
                     width="wrap_content"
@@ -126,12 +127,12 @@ class GenericSelectorPopup extends View {
         return (<LinearLayout
             cornerRadius="2"
             width="match_parent"
-            height="350"
+            height={Math.floor(JBridge.getScreenHeight() * 0.6) + ""}
             root="true"
             visibility="visible"
             orientation="vertical"
             clickable="true"
-            padding="16,18,16,0"
+            padding="0,18,0,0"
             background="#ffffff">
 
             {this.getHeader()}
@@ -141,80 +142,49 @@ class GenericSelectorPopup extends View {
     }
 
     getFeatureButton = () => {
+        var cancelBtnState = {
+            text: window.__S.CANCEL.toUpperCase(),
+            isClickable: "true",
+            onClick: this.hide,
+            visibility: "visible",
+        };
+        var applyBtnState = {
+            text: window.__S.SAVE.toUpperCase(),
+            isClickable: "true",
+            onClick: this.onConfirm,
+            visibility: "visible",
+        };
+        var buttonList = [cancelBtnState, applyBtnState];
         return (<LinearLayout
-            width="match_parent"
-            orientation="vertical"
             height="wrap_content"
-            alignParentBottom="true,-1"
-            padding="3,3,3,3"
-            cornerRadius="5"
-            gravity="center">
-            <FeatureButton
-                typeface="bold"
-                clickable="true"
+            width="match_parent"
+            alignParentBottom="true, -1">
+
+            <PageOption
                 width="match_parent"
-                height="56"
-                stroke={"3," + window.__Colors.WHITE}
-                background={window.__Colors.PRIMARY_ACCENT}
-                text={window.__S.CONFIRM}
-                buttonClick={this.onConfirm}
-                textColor={window.__Colors.WHITE}
-                textSize="18" />
-        </LinearLayout>);
+                buttonItems={buttonList}
+                hideDivider={false}
+                onButtonClick={this.handlePageOption} />
+        </LinearLayout>
+        );
     }
 
     getCheckboxes = () => {
-        var lengthOfMenu = this.data.values.length;
-
-        var leftItems = [];
-        var rightItems = [];
-
-        this.data.values.map((item, i) => {
-            if (i % 2 == 0) {
-                leftItems.push(item);
-            } else {
-                rightItems.push(item);
-            }
-        })
-
-
-        var leftBar = "";
-        var rightBar = "";
-        leftBar = leftItems.map((item, index) => {
+        var checkBoxes = this.data.values.map((item, index) => {
             return (<CheckBox
                 onCheckChange={(value) => { this.handleCheckBoxValueChange(item, value) }}
                 checked={this.checkSelected(item, this.data.selected)}
                 text={item}
-                index={index} />)
-        });
-        rightBar = rightItems.map((item, index) => {
-            return (<CheckBox
-                onCheckChange={(value) => { this.handleCheckBoxValueChange(item, value) }}
-                text={item}
-                checked={this.checkSelected(item, this.data.selected)}
                 index={index} />)
         });
         this.totalBar = (
             <LinearLayout
-                orientation="horizontal"
+                orientation="vertical"
                 width="match_parent"
                 root="true"
+                margin="16,0,16,0"
                 height="match_parent">
-                <LinearLayout
-                    orientation="vertical"
-                    width="0"
-                    weight="1"
-                    height="match_parent">
-                    {leftBar}
-                </LinearLayout>
-                <LinearLayout
-                    orientation="vertical"
-                    width="0"
-                    weight="1"
-                    height="match_parent"
-                    margin="0,0,0,0">
-                    {rightBar}
-                </LinearLayout>
+                    {checkBoxes}
             </LinearLayout>
         )
 
@@ -233,7 +203,8 @@ class GenericSelectorPopup extends View {
             <LinearLayout
                 orientation="horizontal"
                 width="match_parent"
-                height="wrap_content">
+                height="wrap_content"
+                margin="16,0,16,0">
                 <RadioButton
                     orientation="vertical"
                     height="wrap_content"
@@ -263,13 +234,12 @@ class GenericSelectorPopup extends View {
         return (<RelativeLayout
             width="match_parent"
             height="wrap_content"
-            margin="0,0,0,10"
             orientation="vertical">
 
             <ScrollView
                 height="match_parent"
                 width="match_parent"
-                margin = "0,0,0,62">
+                margin = "0,0,0,90">
 
                 {layouts}
             </ScrollView>
