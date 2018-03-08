@@ -29,6 +29,7 @@ class CarouselCards extends View {
         this.cardPadding = this.props.cardPadding ? this.props.cardPadding : Math.floor((this.screenWidth - this.cardWidth) / 2);
         this.cards = this.props.cards ? this.props.cards : [(<LinearLayout />)];
         this.currCardIndex = 0;
+        this.totalCards = Array.from('0'.repeat(this.props.totalCards)); //always this.cards.length >= this.totalCards.length
 
         console.log("cardPadding -> ", this.cardPadding);
         
@@ -77,9 +78,9 @@ class CarouselCards extends View {
     getFooter = (pos) => {
         var position = pos ? pos : 0;
         var width = Math.floor(JBridge.getScreenWidth()/2);
-        var dots = this.cards.map((item, i) => {
+        var dots = this.totalCards.map((item, i) => {
             if (i == position){
-                item.isCurr = true;
+                this.cards[i] ? this.cards[i].isCurr = true : "";
                 return (
                     <LinearLayout
                         height="10"
@@ -89,7 +90,7 @@ class CarouselCards extends View {
                         background={"#9B9B9B"} />
                 )
             } else {
-                item.isCurr = false;
+                this.cards[i] ? this.cards[i].isCurr = false : "";
                 return (
                     <LinearLayout
                         height="10"

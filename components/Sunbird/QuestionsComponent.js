@@ -100,7 +100,7 @@ class QuestionsComponent extends View {
         this.screenWidth = JBridge.getScreenWidth()
         this.cardWidth = this.screenWidth < 300 ? (this.screenWidth - 32) : 300;
         this.cardPadding = Math.floor((this.screenWidth - this.cardWidth) / 2);
-        this.allQs = [
+        window.__allQs = window.__allQs ? window.__allQs : [
             {
                 question: "Which subject do you teach?",
                 option: "SELECT SUBJECT",
@@ -156,7 +156,7 @@ class QuestionsComponent extends View {
     }
     
     getNextQuestion = () => {
-        var ele = this.allQs.pop();
+        var ele = window.__allQs.pop();
         if (ele) {
             window.__questions.push(ele);
             this.cardsArr = window.__questions;
@@ -169,7 +169,7 @@ class QuestionsComponent extends View {
                     onClick={() => { this.handleCardOptionClick(i, item) }} />
             );
         });
-        console.log("this.allQs -> ", this.allQs);
+        console.log("window.__allQs -> ", window.__allQs);
         console.log("this.cardsArr -> ", this.cardsArr);        
     }
 
@@ -219,11 +219,19 @@ class QuestionsComponent extends View {
     }
 
     render() {
+        var flag = 0;
+        window.__questions.map((item) => {
+            if(item.selected.length == 0) flag = 1;
+        });
+        // var visibility = flag == 0 ? "gone" : "visible";
+        //TODO remove when integrating with content framework
+        var visibility = "visible;"
         this.Carousel = (
             <CarouselCards
                 visibility = {this.props.visibility}
                 cardPadding={this.cardPadding + ",0," + this.cardPadding + ",0"}
-                cards={this.renderCards} />
+                cards={this.renderCards}
+                totalCards = {4} />
         );
 
         var layout = (
@@ -231,6 +239,7 @@ class QuestionsComponent extends View {
                 width = "match_parent"
                 height = "wrap_content"
                 orientation = "vertical"
+                visibility={this.props.visibility == "visible" ? visibility : "gone"}
                 afterRender = {this.afterRender}>
 
                 <LinearLayout
