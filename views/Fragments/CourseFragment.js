@@ -29,6 +29,7 @@ class CourseFragment extends View {
     super(props, children);
     this.screenName = "CourseFragment";
     this.setIds([
+      "parentId",
       "parentContainer",
       "infoContainer",
       "viewallContainer",
@@ -40,13 +41,13 @@ class CourseFragment extends View {
 
     if (window.__CourseFilter) {
       this.menuData = {
-          url: [
-            { imageUrl: "ic_action_search" },
-            { imageUrl: "ic_action_filter_applied" }
-          ]
-        }
+        url: [
+          { imageUrl: "ic_action_search" },
+          { imageUrl: "ic_action_filter_applied" }
+        ]
+      }
     } else {
-        this.menuData = {
+      this.menuData = {
         url: [
           { imageUrl: "ic_action_search" },
           { imageUrl: "ic_action_filter" }
@@ -54,6 +55,7 @@ class CourseFragment extends View {
       }
     }
     JBridge.logTabScreenEvent("COURSES");
+    JBridge.clearMapId();
   }
 
   checkIfEnrolled = (identifier) => {
@@ -70,7 +72,7 @@ class CourseFragment extends View {
 
   handlePageApi = (isErr, data) => {
     console.log("data in handlePageApi -> ", data);
-    
+
     if (isErr) {
       //Error in response
       window.__Snackbar.show(window.__S.ERROR_EMPTY_RESULT)
@@ -86,9 +88,9 @@ class CourseFragment extends View {
         this.replaceChild(this.idSet.courseContentContainer, this.getErrorLayout().render(), 0);
       } else {
         console.log("this.details in handlePageApi -> ", this.details);
-        
+
         var rows = this.details.sections.map((item, index) => {
-          return this.getCourseCardLayout(item);
+          return this.getCourseCardLayout(item, index);
         })
 
         var layout = (<LinearLayout
@@ -107,7 +109,7 @@ class CourseFragment extends View {
   }
 
   getSignInOverlay = () => {
-    if (window.__loggedInState && window.__loggedInState=="GUEST"){
+    if (window.__loggedInState && window.__loggedInState == "GUEST") {
       return (
         <LinearLayout
           background={window.__Colors.WHITE_F2}
@@ -116,6 +118,7 @@ class CourseFragment extends View {
           padding="16,16,16,16">
           <HomeQuestionCardStyle
             currComponentLocation={"COURSE"}
+            fromWhere ={"COURSE"}
             headerText={window.__S.OVERLAY_LABEL_COMMON}
             infoText={window.__S.OVERLAY_INFO_TEXT_COMMON}
             textSize="16"
@@ -138,10 +141,10 @@ class CourseFragment extends View {
     var isErr = res.hasOwnProperty("err");
 
     console.log("responseData -> ", responseData);
-    switch(state.responseFor) {
+    switch (state.responseFor) {
       case "API_CourseFragment":
         this.handlePageApi(isErr, responseData);
-        break; 
+        break;
       case "API_UserEnrolledCourse":
         if (isErr) {
           var tmpData = JBridge.getSavedData("savedCourse");
@@ -152,7 +155,7 @@ class CourseFragment extends View {
             return;
           }
         } else {
-          JBridge.saveData("savedCourse", utils.encodeBase64(JSON.stringify(responseData.result.courses)));       
+          JBridge.saveData("savedCourse", utils.encodeBase64(JSON.stringify(responseData.result.courses)));
           window.__enrolledCourses = responseData.result.courses;
           this.courseInProgressContainer.renderContent(responseData.result.courses);
           return;
@@ -182,6 +185,7 @@ class CourseFragment extends View {
         <ImageView
           width="100"
           height="100"
+          alpha="0.55"
           margin="0,58,0,0"
           gravity="center_horizontal"
           imageUrl="ic_no_internet" />
@@ -190,6 +194,7 @@ class CourseFragment extends View {
           width="wrap_content"
           height="wrap_content"
           gravity="center_horizontal"
+          alpha="0.55"
           padding="0,16,0,0"
           style={window.__TextStyle.textStyle.CARD.HEADING}
           text={window.__S.ERROR_FETCHING_DATA} />
@@ -200,7 +205,7 @@ class CourseFragment extends View {
     return layout;
   }
 
-  getCourseCardLayout = (item) => {
+  getCourseCardLayout = (item, index) => {
 
     var langCode = window.__CurrentLanguage.substr(0, 2);
     if (langCode != "hi")
@@ -216,6 +221,8 @@ class CourseFragment extends View {
       <LineSpacer />
 
       <CourseContainer
+        sectionId={item.id}
+        sectionIndex={index + 1}
         title={item.name}
         languageTitle={LanguageTitle}
         data={item.contents}
@@ -242,9 +249,8 @@ class CourseFragment extends View {
       whatToSend = { "course": tmp }
       event = { tag: 'OPEN_CourseInfoActivity', contents: whatToSend }
     }
+    JBridge.logVisitEvent("COURSES");
     window.__runDuiCallback(event);
-
-
   }
 
   handleUserCoursesClick = (content, type, index) => {
@@ -252,6 +258,7 @@ class CourseFragment extends View {
     JBridge.logCardClickEvent("COURSES", index + 1, "COURSES_IN_PROGRESS", content.identifier, null);
     var whatToSend = { "course": JSON.stringify(content) }
     var event = { tag: 'OPEN_EnrolledCourseActivity', contents: whatToSend }
+    JBridge.logVisitEvent("COURSES");
     window.__runDuiCallback(event);
   }
 
@@ -260,7 +267,7 @@ class CourseFragment extends View {
     if (!JBridge.isNetworkAvailable()) {
       window.__ContentLoadingComponent.hideLoader();
       window.__LoaderDialog.hide();
-      this.replaceChild(this.idSet.courseContentContainer, (<NoInternetCard/>).render(), 0);
+      this.replaceChild(this.idSet.courseContentContainer, (<NoInternetCard />).render(), 0);
     } else {
       var whatToSend = {
         user_token: window.__user_accessToken,
@@ -284,9 +291,10 @@ class CourseFragment extends View {
   }
 
   afterRender = () => {
+    JBridge.getViews(this.idSet.scrollViewContainerCourse+"");
     if (!window.__CourseFilter) {
       console.log("CF afterRender -> no window.__CourseFilter");
-      
+
       this.getCourseData();
     } else {
       console.log("CF afterRender -> window.__CourseFilter");
@@ -352,6 +360,7 @@ class CourseFragment extends View {
       var searchDetails = { filterDetails: "", searchType: "Course" }
       var whatToSend = { filterDetails: JSON.stringify(searchDetails) }
       var event = { tag: "OPEN_SearchActivity", contents: whatToSend }
+      JBridge.logVisitEvent("COURSES");
       window.__runDuiCallback(event);
 
     } else if (url == "ic_action_filter" || url == "ic_action_filter_applied") {
@@ -363,6 +372,7 @@ class CourseFragment extends View {
   render() {
     this.layout = (
       <LinearLayout
+        id={this.idSet.parentId}
         root="true"
         orientation="vertical"
         width="match_parent"

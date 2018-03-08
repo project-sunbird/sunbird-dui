@@ -43,22 +43,28 @@ class GuestAdditionalInfo extends View {
     {
       name: window.__S.BOARD,
       value: this.board
-    }, {
+    },
+    {
       name: window.__S.SUBJECTS,
       value: this.subjects
-    }];
+       }];
   }
 
   initGrade = () => {
     var gradeList = JSON.parse(utils.decodeBase64(JBridge.getGrades()));
     var grade = this.profileData.grade;
+    if(grade == -1){
+      this.profileData.grade = "";
+      return this.profileData.grade;
+    }else{
     gradeList.map((item, i) => {
       if (item.value == grade) {
         this.profileData.grade = item.label;
       }
     });
-    this.profileData.grade == -1 ? "" : this.profileData.grade + "";
+    //this.profileData.grade = "Others" ? "" : this.profileData.grade + "";
     return this.profileData.grade;
+  }
   }
 
   getRows = (input)=> {

@@ -20,7 +20,7 @@ class ResourceContainer extends View {
   constructor(props, children) {
     super(props, children);
 
-    this.setIds([]);
+    this.setIds(["parentContainer"]);
     console.log(this.props.data, "data");
     this.count = (this.props.data != undefined) ? this.props.data.length : 0;
   }
@@ -133,12 +133,18 @@ class ResourceContainer extends View {
     this.props.onViewAllClick(this.data,this.props.title,this.props.searchQuery,"visible");
   }
 
+  afterRender = () => {
+      JBridge.setMapId(this.idSet.parentContainer + "",this.props.title, this.props.sectionId + "", this.props.sectionIndex + "");
+  }
+
   render() {
     this.layout = (
       <LinearLayout
           height="match_parent"
           width="match_parent"
           orientation="vertical"
+          id={this.idSet.parentContainer}
+          afterRender={this.afterRender}
           visibility = {this.props.data ? "visible" : "gone"}
           >
 
@@ -165,7 +171,6 @@ class ResourceContainer extends View {
 
          </LinearLayout>
     )
-
     return this.layout.render();
   }
 }

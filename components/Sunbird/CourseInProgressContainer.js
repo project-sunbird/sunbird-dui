@@ -18,6 +18,7 @@ class CourseInProgressContainer extends View {
     _this = this;
     console.log("CourseInProgressContainer", this.props);
     this.setIds([
+      "parentId",
       "parentContainer",
       "progressContainer",
       "viewAllContainer",
@@ -29,6 +30,10 @@ class CourseInProgressContainer extends View {
 
   }
 
+
+afterRender = () => {
+  this.fetchFromServer();
+}
 
   fetchFromServer = () => {
     console.log("fetchFromServer");
@@ -117,6 +122,7 @@ class CourseInProgressContainer extends View {
     this.replaceChild(this.idSet.parentContainer,layout.render(),0);
     window.__ContentLoadingComponent.hideLoader();
     window.__LoaderDialog.hide();
+    JBridge.setMapId(this.idSet.parentId+"",this.props.title || window.__S.COURSES_IN_PROGRESS, window.__S.COURSES_IN_PROGRESS_2, "0");
   }
 
   formatBytes = (bytes) => {
@@ -217,7 +223,7 @@ class CourseInProgressContainer extends View {
       JBridge.logViewAllClickEvent("HOME", "To Do");
     else
       JBridge.logViewAllClickEvent("COURSES", "Course In Progress");
-      
+
       var courseListDetails = {
                                "title" : this.props.title || window.__S.COURSES_IN_PROGRESS,
                                "courseListDetails" : this.data,
@@ -245,10 +251,11 @@ class CourseInProgressContainer extends View {
   render() {
     this.layout = (
       <LinearLayout
+          id={this.idSet.parentId}
           height="wrap_content"
           width="match_parent"
           visibility={window.__loggedInState != "GUEST" ? "visible" : "gone"}
-          afterRender={this.fetchFromServer}
+          afterRender={this.afterRender}
           background={this.props.transparent?window.__Colors.WHITE_F2:window.__Colors.WHITE}
           orientation="vertical">
 

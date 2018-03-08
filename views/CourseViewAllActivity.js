@@ -89,14 +89,22 @@ class CourseViewAllActivity extends View {
       temp['actionText'] = actionText;
       temp["footerSubTitle"] = window.__S.ERROR_DURATION_NOT_AVAILABLE;
       temp["type"] = type;
-
+      var contentName = "";
+      var contentId = "";
+      if(item.courseId){
+        contentName = item.courseName;
+        contentId = item.courseId;
+      } else if(item.identifier){
+        contentName = item.name;
+        contentId = item.identifier;
+      }
       var layout = (
       <LargeCardComponent
         data={temp}
         content={item}
         index = {i}
         onResourceClick = {this.handleCourseClick}/>)
-        this.jsonArray.push({ view: this.getView(layout.render()),value:"",viewType:0}
+        this.jsonArray.push({ view: this.getView(layout.render()),value:"",viewType:0,name:contentName, id:contentId}
       );
     });
     var callback1 = callbackMapper.map(function() {
@@ -151,7 +159,7 @@ class CourseViewAllActivity extends View {
   performCourseAction = (content,index) =>{
        var tmp = JSON.stringify(content);
        console.log("content: ", content);
-       
+
        var index_click = this.start_index <1 ? index+1 : index+(this.start_index*10)+1;
        var contentId = content.courseId ? content.courseId : content.identifier;
     JBridge.logContentClickEvent("COURSES", index_click, "", contentId, content.pkgVersion);
@@ -163,6 +171,7 @@ class CourseViewAllActivity extends View {
           }else{
            var event = { tag: 'OPEN_CourseInfoFlowFromCourseViewAll', contents: whatToSend };
           }
+          JBridge.logListViewEvent("COURSES");
         window.__runDuiCallback(event);
   }
 
@@ -171,6 +180,7 @@ class CourseViewAllActivity extends View {
   }
 
   onBackPressed = () => {
+    JBridge.logListViewEvent("COURSES");
     if(window.__PermissionDeniedDialog.getVisibility() == "visible"){
       window.__PermissionDeniedDialog.hide();
     }else{

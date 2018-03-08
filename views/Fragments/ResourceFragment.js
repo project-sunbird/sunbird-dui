@@ -58,6 +58,7 @@ class ResourceComponent extends View {
         ]
       }
     }
+    JBridge.clearMapId();
     JBridge.logTabScreenEvent("LIBRARY");
   }
 
@@ -77,8 +78,8 @@ class ResourceComponent extends View {
       this.details = data.result.response;
       if (this.details.hasOwnProperty("name")) {
 
-        var cardsContent = this.details.sections.map((item) => {
-          return (this.getResourceCardLayout(item))
+        var cardsContent = this.details.sections.map((item, index) => {
+          return (this.getResourceCardLayout(item, index))
         })
         this.cards = (<LinearLayout
           height="wrap_content"
@@ -115,7 +116,7 @@ class ResourceComponent extends View {
 
     console.log("responseData -> ", responseData);
 
-    switch(state.responseFor) {
+    switch (state.responseFor) {
       case "API_ResourceFragment":
         this.handlePageApi(isErr, responseData);
         break;
@@ -128,9 +129,8 @@ class ResourceComponent extends View {
   }
 
 
-  getResourceCardLayout = (content) => {
+  getResourceCardLayout = (content, index) => {
     console.log("resource contents", content)
-
     return (
       <LinearLayout
         height="wrap_content"
@@ -142,7 +142,9 @@ class ResourceComponent extends View {
           data={content.contents}
           title={content.name}
           searchQuery={content.searchQuery}
-          onViewAllClick={this.handleResourceViewAllClick} />
+          onViewAllClick={this.handleResourceViewAllClick}
+          sectionId={content.id}
+          sectionIndex={index + 1} />
       </LinearLayout>)
   }
 
@@ -157,13 +159,13 @@ class ResourceComponent extends View {
     }
     var whatToSend = { "resourceDetails": JSON.stringify(resourceDetails) }
     var event = { tag: "OPEN_ResourceViewAllActivity", contents: whatToSend }
-
+    JBridge.logVisitEvent("LIBRARY");
     window.__runDuiCallback(event);
   }
 
   getErrorLayout = () => {
     console.log("getErrorLayout render");
-    
+
     var layout = (
 
       <LinearLayout
@@ -242,8 +244,8 @@ class ResourceComponent extends View {
               weight="1"
               layoutTransition="true">
 
-              <CircularLoader 
-                margin="0,16,0,0"/>
+              <CircularLoader
+                margin="0,16,0,0" />
             </LinearLayout>
             {this.getSignInOverlay()}
           </LinearLayout>
@@ -261,6 +263,7 @@ class ResourceComponent extends View {
       var searchDetails = { filterDetails: "", searchType: "Library" }
       var whatToSend = { filterDetails: JSON.stringify(searchDetails) }
       var event = { tag: "OPEN_SearchActivity", contents: whatToSend }
+      JBridge.logVisitEvent("LIBRARY");
       window.__runDuiCallback(event);
     }
   }
@@ -272,6 +275,7 @@ class ResourceComponent extends View {
   }
 
   afterRender = () => {
+    JBridge.getViews(this.idSet.scrollViewContainer+"");
     this.renderOfflineCard();
     if (!window.__ResourceFilter) {
       this.getResourceData();
@@ -289,7 +293,7 @@ class ResourceComponent extends View {
       window.__ContentLoadingComponent.hideLoader();
       window.__LoaderDialog.hide();
       window.timer = setTimeout(this.networkCheck, 5000);
-      this.replaceChild(this.idSet.resourceContentContainer, (<NoInternetCard/>).render(), 0);
+      this.replaceChild(this.idSet.resourceContentContainer, (<NoInternetCard />).render(), 0);
     } else {
       var whatToSend = {
         user_token: window.__user_accessToken,
@@ -332,23 +336,24 @@ class ResourceComponent extends View {
     window.__LoaderDialog.hide();
   }
 
-  getSignInOverlay = () =>{
-    if(window.__loggedInState && window.__loggedInState=="GUEST"){
+  getSignInOverlay = () => {
+    if (window.__loggedInState && window.__loggedInState == "GUEST") {
       return (
         <LinearLayout
           background={window.__Colors.WHITE_F2}
           clickable="true"
-          padding = "16,16,16,16">
+          padding="16,16,16,16">
           <HomeQuestionCardStyle
             currComponentLocation={"LIBRARY"}
-           headerText = {window.__S.OVERLAY_LABEL_COMMON}
-           infoText = {window.__S.OVERLAY_INFO_TEXT_COMMON}
-           textSize = "16"
-           gravity = "left"/>
+            fromWhere={"LIBRARY"}
+            headerText={window.__S.OVERLAY_LABEL_COMMON}
+            infoText={window.__S.OVERLAY_INFO_TEXT_COMMON}
+            textSize="16"
+            gravity="left" />
         </LinearLayout>)
-      }else {
-        return (<LinearLayout/>)
-      }
+    } else {
+      return (<LinearLayout />)
+    }
   }
 
   render() {

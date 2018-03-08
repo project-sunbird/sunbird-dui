@@ -50,9 +50,17 @@ class HomeQuestionCardStyle extends View {
 	onPop = () => {}
 
 	handleLoginClick = () => {
+		if(this.props.fromWhere && this.props.fromWhere!="")
+			JBridge.logGuestEvent(this.props.fromWhere);
+			
 		JBridge.setInSharedPrefs("goToOnLogin", this.props.currComponentLocation);
 		console.log(window.__loginUrl, "/auth/realms/sunbird/protocol/openid-connect/auth ", "android");
 		JBridge.keyCloakLogin(window.__loginUrl + "/auth/realms/sunbird/protocol/openid-connect/auth", "android");
+	}
+
+	afterRender = () => {
+		JBridge.logSettingsScreenEvent("SIGNIN_OVERLAY");
+
 	}
 
 	render = () => {
@@ -66,6 +74,7 @@ class HomeQuestionCardStyle extends View {
 				padding="16,16,16,16"
 				cornerRadius="5"
 				clickable="true"
+				afterRender={this.afterRender}
 				root={true}>
 				<TextView
 					height="27"

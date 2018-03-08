@@ -21,7 +21,10 @@ class OfflineResourceContainer extends View {
     super(props, children);
     _this = this;
 
-    this.setIds(["viewAllContainer"]);
+    this.setIds([
+      "viewAllContainer",
+      "parentId"
+    ]);
     this.offlineCount=0;
   }
 
@@ -31,9 +34,9 @@ class OfflineResourceContainer extends View {
         id: this.idSet.viewAllContainer,
         visibility : (this.offlineCount==0?"gone":"visible")
       })
-
     Android.runInUI(cmd, 0);
-
+    JBridge.setMapId(this.idSet.parentId + "", window.__S.SAVED_RESOURCES, window.__S.SAVED_RESOURCES_2, "0");
+    
   }
 
 
@@ -50,8 +53,6 @@ class OfflineResourceContainer extends View {
 
 
     var rows = this.jsData.map((item, i) => {
-
-
       if (item.contentType != "course") {
 
         console.log("item in offline container",item)
@@ -185,6 +186,7 @@ class OfflineResourceContainer extends View {
       <LinearLayout
           height="match_parent"
           width="match_parent"
+          id={this.idSet.parentId}
           afterRender={this.afterRender}
           orientation="vertical">
 

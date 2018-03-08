@@ -5,10 +5,14 @@ var localState = {
   currScreen: null
 };
 
-module.exports = function (action, payload, state) {
+module.exports = function(action, payload, state) {
   localState = payload;
 
   switch (action) {
+    case "DataSyncScreenActivity":
+      localState.isInit = false;
+      localState.currScreen = "DataSyncScreenActivity";
+      break;
     case "SettingsScreenActivity":
       localState.isInit = false;
       localState.currScreen = "SettingsScreenActivity";
@@ -54,7 +58,7 @@ module.exports = function (action, payload, state) {
       localState.currScreen = "ViewBatchActivity";
       break;
 
-    case "CommunityInfoActivity":
+     case "CommunityInfoActivity":
       localState.isInit = false;
       localState.currScreen = "CommunityInfoActivity";
       break;
@@ -95,7 +99,7 @@ module.exports = function (action, payload, state) {
       localState.currScreen = "CourseViewAllActivity";
       break;
 
-    case "FilterActivity":
+      case "FilterActivity":
       localState.isInit = false;
       localState.currScreen = "FilterActivity";
       break;
@@ -111,7 +115,7 @@ module.exports = function (action, payload, state) {
       break;
 
 
-    case "NotificationActivity":
+     case "NotificationActivity":
       localState.isInit = false;
       localState.currScreen = "NotificationActivity";
       break;
@@ -131,9 +135,9 @@ module.exports = function (action, payload, state) {
       break;
 
     case "CommProfSearchActivity":
-      localState.isInit = false;
-      localState.currScreen = "CommProfSearchActivity";
-      break;
+    localState.isInit = false;
+    localState.currScreen = "CommProfSearchActivity";
+    break;
 
     case "UserActivity":
       localState.isInit = false
@@ -147,11 +151,11 @@ module.exports = function (action, payload, state) {
 
     case "AdditionalInformationActivity":
       localState.isInit = false
-      localState.currScreen = "AdditionalInformationActivity"
+      localState.currScreen ="AdditionalInformationActivity"
       break;
     case "AnnouncementDetailActivity":
       localState.isInit = false
-      localState.currScreen = "AnnouncementDetailActivity"
+      localState.currScreen ="AnnouncementDetailActivity"
       break;
     case "AddressActivity":
       localState.isInit = false

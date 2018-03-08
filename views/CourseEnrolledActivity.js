@@ -11,6 +11,8 @@ var utils = require('../utils/GenericFunctions');
 var FeatureButton = require('../components/Sunbird/FeatureButton');
 var DownloadAllProgressButton = require('../components/Sunbird/DownloadAllProgressButton');
 var RatingBar = require("@juspay/mystique-backend/src/android_views/RatingBar");
+var CropParagraph = require('../components/Sunbird/CropParagraph');
+
 window.R = require("ramda");
 
 var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
@@ -38,6 +40,7 @@ class CourseEnrolledActivity extends View {
       "startOrResumeBtnContainer",
       "horizontalProgressBarContainer",
       "headerContainer",
+      "readMore",
       "ratingBar",
       "ratingContainer"
     ]);
@@ -64,11 +67,12 @@ class CourseEnrolledActivity extends View {
     this.courseContent = {}; //Children contents if any
     this.batchName = "";
     this.batchDescription = "";
+    this.batchCreatedBy = "";
     this.popupMenu = window.__loggedInState == "GUEST" ? window.__S.DELETE : (window.__S.DELETE + "," + window.__S.FLAG);
-
     // array of all the children content ids
     this.subContentArray = [];
     this.downloadSize = 0; //size of all the contents to download
+    this.asyncCounter = 0;
     console.log("details in CEA", this.apiDetails)
     this.showProgress = this.apiDetails.hasOwnProperty("courseName") ? "visible" : "gone";
 
@@ -105,6 +109,7 @@ class CourseEnrolledActivity extends View {
     if (window.__currCourseDetails == undefined) {
       window.__currCourseDetails = {};
       window.__currCourseDetails.courseId = this.baseIdentifier;
+      window.__currCourseDetails.moduleName = this.apiDetails.courseName;
     }
   }
 
@@ -155,13 +160,13 @@ class CourseEnrolledActivity extends View {
 
   getSpineStatus = (res) => {
     console.log("inside getSpineStatus", res);
-    
+
     var cb = res[0];
     var id = res[1];
     var data = JSON.parse(res[2]);
     if (id != this.baseIdentifier || this.gotSpine || this.cancelled) return;
 
-    if (cb == "onDownloadProgress" ) {
+    if (cb == "onDownloadProgress") {
       var textToShow = ""
       if (data.status == "NOT_FOUND") {
         window.__ContentLoaderDialog.hide();
@@ -204,7 +209,7 @@ class CourseEnrolledActivity extends View {
       console.log("childrenContent: ", _this.courseContent);
 
       window.__ContentLoaderDialog.hide();
-      _this.renderCourseChildren()
+      _this.renderCourseChildren();
       _this.changeOverFlow();
     });
     JBridge.getChildContent(identifier, callback1);
@@ -236,11 +241,11 @@ class CourseEnrolledActivity extends View {
         return;
       }
       data = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
-      console.log("this.courseDetails ", data);
+      console.log("this.courseDetails", data);
 
       _this.courseDetails = data;
       console.log("data", data);
-      
+
       if (_this.courseDetails.hasOwnProperty("contentData") && _this.courseDetails.contentData.hasOwnProperty("me_averageRating")) {
         _this.updateRatings(_this.courseDetails.contentData.me_averageRating);
       } else {
@@ -252,6 +257,12 @@ class CourseEnrolledActivity extends View {
       } else {
         window.__RatingsPopup.initData(_this.courseDetails.identifier, "content-detail", _this.courseDetails.contentData.pkgVersion);
       }
+
+      _this.testCounter++;
+      if(_this.testCounter > 1)
+        _this.contentDetails(data);
+
+      
       if (data.isAvailableLocally == true) {
         _this.logTelelmetry(identifier, data.contentData.pkgVersion, data.isAvailableLocally);
         _this.renderChildren(identifier);
@@ -326,6 +337,7 @@ class CourseEnrolledActivity extends View {
   }
 
   handleStateChange = (state) => {
+    this.asyncCounter++;
     var res = utils.processResponse(state);
     if (res.code != 504) {
       var response = res.data;//JSON.parse(utils.decodeBase64(state.response.status[1]))
@@ -400,7 +412,13 @@ class CourseEnrolledActivity extends View {
         console.log("user details", user_details)
         console.log(this.batchName, this.batchDescription)
         var userName = user_details.firstName + " " + (user_details.lastName || " ")
-        this.replaceChild(_this.idSet.batchDetailsContainer, _this.getBatchDetailSection(this.batchName, this.batchDescription, userName).render(), 0);
+        this.batchCreatedBy = userName;
+
+        if(this.asyncCounter>1){
+          this.contentDetails(this.courseDetails);
+        }
+
+        //this.replaceChild(_this.idSet.batchDetailsContainer, _this.getBatchDetailSection(this.batchName, this.batchDescription, userName).render(), 0);
         if (window.__currCourseDetails && window.__currCourseDetails.hasOwnProperty("reload") && window.__currCourseDetails.reload) {
           this.refeshCourseProgressApi();
         }
@@ -423,7 +441,7 @@ class CourseEnrolledActivity extends View {
         var layout = (
           <HorizontalProgressBar
             width="match_parent"
-            currentProgress={progress+""}
+            currentProgress={progress + ""}
             totalProgress={this.data.totalProgress}
             visibility={this.showProgress} />
         );
@@ -450,6 +468,7 @@ class CourseEnrolledActivity extends View {
 
   renderCourseChildren = () => {
     var layout;
+    JBridge.logRollupEvent("COURSE",this.apiDetails.courseName ,null,null,null);
 
     if (this.courseContent.children == undefined) {
       layout = <TextView
@@ -510,7 +529,7 @@ class CourseEnrolledActivity extends View {
   afterRender = () => {
     console.log("details", this.apiDetails);
     console.log("ratings idSet -> ", this.idSet.ratingBar);
-    
+
     JBridge.setRating(this.idSet.ratingBar, 0);
     if ((this.apiDetails.hasOwnProperty("mimeType")) && (this.apiDetails.mimeType.toLocaleLowerCase() == "application/vnd.ekstep.content-collection")) {
       var cmd = this.set({
@@ -539,7 +558,7 @@ class CourseEnrolledActivity extends View {
     }
 
     this.checkContentLocalStatus(this.baseIdentifier);
-    
+
     if (this.apiDetails.batchId || this.enrolledCourses.batchId) {
       var batchId = this.apiDetails.batchId ? this.apiDetails.batchId : this.enrolledCourses.batchId;
       var whatToSend = {
@@ -751,12 +770,64 @@ class CourseEnrolledActivity extends View {
     );
     return (
       <LinearLayout
-        width = "match_parent"
-        height = "wrap_content"
+        width="match_parent"
+        height="wrap_content"
         margin="16,0,16,16">
         {this.__DownloadAllProgressButton}
       </LinearLayout>
     );
+  }
+
+  contentDetails = (data) => {
+    var contentText = "";
+    if(data.contentData && data.contentData.description){
+      contentText+="<br>"+data.contentData.description + "<br><br>";
+    }
+    if(data.contentData && data.contentData.gradeLevel){
+      contentText+="GRADE:<br>"+data.contentData.gradeLevel + "<br><br>";
+    }
+    if(data.contentData && data.contentData.subject){
+      contentText+="SUBJECT:<br>"+data.contentData.subject + "<br><br>";
+    }
+    if(data.contentData && data.contentData.board){
+      contentText+="BOARD:<br>"+data.contentData.board + "<br><br>";
+    }
+    if(data.contentData && data.contentData.language){
+      contentText+="MEDIUM:<br>"+data.contentData.language;
+    }
+    if(this.batchName != "" && this.batchDescription != "" && this.batchCreatedBy != ""){
+      contentText+="<br><br><b>Batch Details</b><br>"+this.batchName+"<br>"+this.batchDescription+"<br>"+window.__S.CREATED_BY_SMALL+" "+this.batchCreatedBy;
+    }
+    var layout = (
+      <LinearLayout
+       id={this.idSet.readMore}
+       width="match_parent"
+       height="wrap_content"
+       orientation="vertical">
+      <LinearLayout
+       width="match_parent"
+       height="wrap_content"
+       orientation="vertical"
+       background={window.__Colors.WHITE_F2}>
+       <TextView
+         text={window.__S.ABOUT}
+         margin="16,12,0,12"
+         style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
+        </LinearLayout>
+       <CropParagraph
+         height="wrap_content"
+         width="match_parent"
+         margin="16,0,0,16"
+         background={window.__Colors.WHITE_F2}
+         charToShow="20"
+         privacyStatus={"false"}
+         contentText={contentText}
+         editable={"false"} />
+      </LinearLayout>
+      )
+      this.replaceChild(this.idSet.readMore,layout.render(),0);
+
+
   }
 
   render() {
@@ -793,8 +864,8 @@ class CourseEnrolledActivity extends View {
           </LinearLayout>
 
           <LinearLayout
-            width = "match_parent"
-            id = {this.idSet.horizontalProgressBarContainer}>
+            width="match_parent"
+            id={this.idSet.horizontalProgressBarContainer}>
 
             <HorizontalProgressBar
               width="match_parent"
@@ -822,33 +893,45 @@ class CourseEnrolledActivity extends View {
                   height="match_parent"
                   width="match_parent"
                   root="true"
-                  padding="16,24,16,16"
                   orientation="vertical">
-
                   <LinearLayout
-                    width = "match_parent"
-                    id = {this.idSet.headerContainer}>
+                    height="match_parent"
+                    width="match_parent"
+                    padding="16,24,16,16"
+                    orientation="vertical">
+                  <LinearLayout
+                    width="match_parent"
+                    id={this.idSet.headerContainer}>
 
                     {this.getHeader()}
                   </LinearLayout>
-
+                    <LinearLayout
+                      width="wrap_content"
+                      height="wrap_content"
+                      id={this.idSet.ratingContainer} />
+                 
+                    </LinearLayout>
                   <LinearLayout
-                    id={this.idSet.batchDetailsContainer}
-                    height="match_parent"
+                   id={this.idSet.readMore}/>
+
+                   <LinearLayout
                     width="match_parent"
-                    orientation="vertical" />
-
-                  <LinearLayout
-                    width="wrap_content"
                     height="wrap_content"
-                    id = {this.idSet.ratingContainer}/>
+                    orientation="vertical"
+                    background={window.__Colors.WHITE_F2}>
+                    <TextView
+                      width="wrap_content"
+                      height="wrap_content"
+                      margin="16,16,0,16"
+                      style={window.__TextStyle.textStyle.CARD.TITLE.DARK}
+                      text={window.__S.STRUCTURE} />
+                      </LinearLayout>
+                   <LinearLayout
+                     height="match_parent"
+                     width="match_parent"
+                     padding="16,24,16,16"
+                     orientation="vertical">
 
-                  <TextView
-                    width="wrap_content"
-                    height="wrap_content"
-                    margin="0,16,0,0"
-                    style={window.__TextStyle.textStyle.CARD.TITLE.DARK}
-                    text={window.__S.STRUCTURE} />
 
                   <LinearLayout
                     id={this.idSet.descriptionContainer}
@@ -870,6 +953,7 @@ class CourseEnrolledActivity extends View {
                       gravity="center"
                       width="20"
                       height="20" />
+                  </LinearLayout>
                   </LinearLayout>
                 </LinearLayout>
               </ScrollView>
@@ -912,7 +996,7 @@ class CourseEnrolledActivity extends View {
 
               <LinearLayout
                 width="match_parent"
-                id={_this.idSet.downloadAllProgressButton}/>
+                id={_this.idSet.downloadAllProgressButton} />
             </LinearLayout>
 
             <LinearLayout

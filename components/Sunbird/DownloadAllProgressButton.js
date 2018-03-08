@@ -32,11 +32,11 @@ class DownloadAllProgressButton extends View {
     this.id = this.props.id ? this.props.id : this.idSet.downloadBtn;
     this.enqueuedForDownload = [];
     _this = this;
-    this.isCancelVisible=false;
-    console.log("DownloadAllProgressButton props",this.props);
+    this.isCancelVisible = false;
+    console.log("DownloadAllProgressButton props", this.props);
     this.cb_id = Math.floor(Math.random() * 1000); //Random number to for callback id
     console.log("cb_id", this.cb_id);
-    
+
   }
 
   update = (listOfIds) => {
@@ -47,7 +47,7 @@ class DownloadAllProgressButton extends View {
     this.childrenArray = listOfIds;
     this.setCancelButtonVisibility("visible");
     JBridge.downloadAllContent(this.cb_id, this.childrenArray, utils.getCallbacks(this.updateProgress, "", this.updateProgress));
-  } 
+  }
 
   setCancelButtonVisibility = (visibility) => {
     //TODO Hiding cancel for now, sdk side issue 
@@ -84,7 +84,7 @@ class DownloadAllProgressButton extends View {
     var cb = res[0];
     var id = res[1];
     var data = JSON.parse(res[2]);
-    
+
     // if (id != this.cb_id) return;
     if (cb == "importContentSuccessResponse" && this.btnState == this.BTN_STATES.DOWNLOADING) {
       data.result.map((item, i) => {
@@ -92,7 +92,7 @@ class DownloadAllProgressButton extends View {
           this.enqueuedForDownload[i] = {
             id: item.identifier,
             status: 0
-          } 
+          }
         }
       });
       if (this.enqueuedForDownload.length == 0) {
@@ -114,11 +114,11 @@ class DownloadAllProgressButton extends View {
       var text = completed + "/" + this.enqueuedForDownload.length;
       _this.replaceChild(_this.idSet.downloadBarContainer, _this.getButtons(progress, window.__S.DOWNLOADING_1.format(text)).render(), 0);
     }
-    
+
     if (cb == "onContentImportResponse" && this.enqueuedForDownload.length != 0 && this.btnState == this.BTN_STATES.DOWNLOADING) {
-      if(data.status == "IMPORT_COMPLETED") {
+      if (data.status == "IMPORT_COMPLETED") {
         var newArr = this.enqueuedForDownload.map((item, i) => {
-          if (item.id == data.identifier) return {id: item.id, status: 1};
+          if (item.id == data.identifier) return { id: item.id, status: 1 };
           else return item;
         });
         this.enqueuedForDownload = newArr;
@@ -185,7 +185,7 @@ class DownloadAllProgressButton extends View {
         root="true"
         onClick={this.handleButtonClick}>
 
-        { this.getDownloadBackground(value)}
+        {this.getDownloadBackground(value)}
 
         <TextView
           width="wrap_content"
@@ -193,8 +193,8 @@ class DownloadAllProgressButton extends View {
           centerInParent="true,-1"
           id={this.idSet.downloadingText}
           style={window.__TextStyle.textStyle.CARD.ACTION.LIGHT}
-          text={text}/>
-        </RelativeLayout>);
+          text={text} />
+      </RelativeLayout>);
     return layout;
   }
 
@@ -220,8 +220,8 @@ class DownloadAllProgressButton extends View {
         </LinearLayout>
 
         <LinearLayout
-          height = "48"
-          width = "48"
+          height="48"
+          width="48"
           visibility="gone"
           id={this.idSet.cancelDownloadHolder}
           onClick={this.handleCancelDownload}>
@@ -229,7 +229,7 @@ class DownloadAllProgressButton extends View {
           <ImageView
             height="48"
             width="48"
-            imageUrl="ic_action_close"/>
+            imageUrl="ic_action_close" />
         </LinearLayout>
       </LinearLayout>
     )

@@ -119,6 +119,7 @@ settingsScreenActivity input whereFrom whatToSendBack = do
 	    _ -> profileFragment input "Terminate" input
     OPEN_LanguageSelectActivitySt {profile:output} -> languageSelectActivitySt output "SettingsScreenActivity" input
     OPEN_AboutUsActivity {profile:output} -> aboutUsActivity output "SettingsScreenActivity" input
+    OPEN_DataSyncScreenActivity -> dataSyncScreenActivity input "SettingsScreenActivity" whatToSendBack
     _ -> settingsScreenActivity input whereFrom whatToSendBack
 
 --------------------------------------------------------------------------------
@@ -147,6 +148,13 @@ aboutUsScreen input whereFrom whatToSendBack = do
 		 _ -> aboutUsActivity input "Terminate" input
 	 _ -> aboutUsScreen input whereFrom whatToSendBack
 --------------------------------------------------------------------------------
+dataSyncScreenActivity input whereFrom whatToSendBack = do
+ event <- ui $ DataSyncScreenActivity
+ case event of
+	 BACK_DataSyncScreenActivity -> case whereFrom of
+		 "SettingsScreenActivity" -> settingsScreenActivity input "Terminate" whatToSendBack
+		 _ -> settingsScreenActivity input "Terminate" whatToSendBack
+	 _ -> settingsScreenActivity input whereFrom whatToSendBack
 
 
 

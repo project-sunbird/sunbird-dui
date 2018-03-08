@@ -36,7 +36,6 @@ class HomeFragment extends View {
     this.screenName = "HomeFragment";
     this.menuData = {
       url: [
-       // { imageUrl: "ic_scanqr"}, // hide qr scanner feature
         { imageUrl: "ic_action_search" }
       ]
     }
@@ -44,7 +43,12 @@ class HomeFragment extends View {
     this.profileData="";
     this.profileUpdateCardVisibility="gone";
     this.announcementsDataTag = "savedAnnouncements";
-    this.setIds(["announcementContainer"]);
+    this.setIds([
+      "announcementContainer",
+      "scrollViewContainerHome",
+      "parentId"
+    ]);
+    JBridge.clearMapId();
   }
 
   getAnnouncemetData = () => {
@@ -73,6 +77,7 @@ class HomeFragment extends View {
   handleUserCoursesClick = (content, type) => {
     var whatToSend = { "course": JSON.stringify(content) }
     var event = { tag: 'OPEN_EnrolledCourseActivity', contents: whatToSend }
+    JBridge.logVisitEvent("HOME");
     window.__runDuiCallback(event);
   }
 
@@ -128,10 +133,7 @@ class HomeFragment extends View {
       var searchDetails = { filterDetails: "", searchType: "Combined" }
       var whatToSend = { filterDetails: JSON.stringify(searchDetails) }
       var event = { tag: "OPEN_SearchActivity", contents: whatToSend }
-      window.__runDuiCallback(event);
-    } else if (url == "ic_scanqr") {
-      var whatToSend = []
-      var event = { tag: "OPEN_QRActivity", contents: whatToSend }
+      JBridge.logVisitEvent("HOME");
       window.__runDuiCallback(event);
     }
   }
@@ -141,12 +143,14 @@ class HomeFragment extends View {
     console.log("resourceDetails");
     var whatToSend={ "resourceDetails": "nothing" }
     var event ={ tag: "OPEN_ResourceDetailActivity", contents: whatToSend }
+    JBridge.logVisitEvent("HOME");
     window.__runDuiCallback(event);
   }
 
   handleCourseOpen = (data) => {
     var whatToSend = { "course": "something" }
     var event = { tag: "OPEN_CourseInfoActivity", contents: whatToSend }
+    JBridge.logVisitEvent("HOME");
     window.__runDuiCallback(event);
   }
 
@@ -376,6 +380,7 @@ class HomeFragment extends View {
     }
     var whatToSend ={ "announcementDetails": JSON.stringify(data)}
     var event ={ tag: "OPEN_AnnouncementViewAllActivity", contents:  whatToSend}
+    JBridge.logVisitEvent("HOME");
     window.__runDuiCallback(event);
 }
 
@@ -407,6 +412,7 @@ class HomeFragment extends View {
             width="match_parent"
             weight="1"/>
           <HomeQuestionCardStyle
+            fromWhere={"HOME"}
             headerText={window.__S.OVERLAY_LABEL_HOME}
             infoText={window.__S.OVERLAY_INFO_TEXT_HOME} />
           <LinearLayout
@@ -420,6 +426,8 @@ class HomeFragment extends View {
   }
 
   afterRender = () => {
+    JBridge.getViews(this.idSet.scrollViewContainerHome + "");
+
     this.getAnnouncemetData();
   }
 
@@ -431,6 +439,7 @@ class HomeFragment extends View {
     this.layout = (
 
       <LinearLayout
+        id={this.idSet.parentId}
         orientation="vertical"
         width="match_parent"
         root="true"
@@ -449,6 +458,7 @@ class HomeFragment extends View {
           height="match_parent"
           width="match_parent">
           <ScrollView
+            id={this.idSet.scrollViewContainerHome}
             weight="1"
             width="match_parent">
             <LinearLayout
@@ -518,6 +528,7 @@ class HomeFragment extends View {
       whatToSend = { "profile" : JSON.stringify(this.profileData.result.response)}
       event ={ tag: "OPEN_EditProfileActivity", contents: whatToSend }
       }
+    JBridge.logVisitEvent("HOME");
       window.__runDuiCallback(event);
     }
 }

@@ -47,12 +47,12 @@ class UserActivity extends View {
       "importEcarText"
     ]);
     this.backPressCount = 0;
-    this.shouldCacheScreen=false;
+    this.shouldCacheScreen = false;
 
     this.userName = this.userPass = this.firstName = "";
     _this = this;
 
-    this.deepLinkCollectionDetails="";
+    this.deepLinkCollectionDetails = "";
 
     window.__LoaderDialog.hide();
     window.__loggedInState = JBridge.getFromSharedPrefs("logged_in")
@@ -84,7 +84,7 @@ class UserActivity extends View {
           window.__runDuiCallback(event);
         }
       }
-    } else if (data.status == "ALREADY_EXIST") {
+    } else if (response.status == "ALREADY_EXIST") {
       console.log("content ALREADY_EXIST");
       JBridge.showToast(window.__S.MSG_ALREADY_IMPORTED, "short");
       if (window.__loggedInState != "GUEST" && window.__loggedInState != "YES") {
@@ -104,20 +104,20 @@ class UserActivity extends View {
     var data = JSON.parse(res[2]);
 
     var progress = "(" + data.currentCount + "/" + data.totalCount + ")";
-    var cmd  = this.set({
+    var cmd = this.set({
       id: this.idSet.importEcarLayout,
       visibility: "visible"
     });
 
     cmd += this.set({
       id: this.idSet.importEcarText,
-      text : progress
+      text: progress
     });
 
-    Android.runInUI(cmd,0);
+    Android.runInUI(cmd, 0);
   }
 
-  handleDeepLinkAction = (identifier) =>{
+  handleDeepLinkAction = (identifier) => {
     console.log("IDENTIFIER IN HANDLE DEEPLINK ACTION", identifier);
 
     var callback = callbackMapper.map(function (data) {
@@ -188,8 +188,8 @@ class UserActivity extends View {
 
   performLogin = () => {
     var body = {
-     "params": {},
-     "request":{}
+      "params": {},
+      "request": {}
     }
     window.__patchCallback = (data) => {
       console.log("login patch call", data);
@@ -217,21 +217,21 @@ class UserActivity extends View {
 
   handleStateChange = (state) => {
     console.log("handleStateChange in UserActivity -> ", state);
-    
+
     window.__LoaderDialog.hide();
     var res = utils.processResponse(state);
     var status = res.status;
     var response = res.data;
     var responseCode = res.code;
     var responseUrl = res.url;
-    
+
     if (responseCode == 501) {
       window.__Snackbar.show(window.__S.ERROR_SERVER_CONNECTION)
       return;
     }
 
 
-    if (status === "failure" || status=="f") {
+    if (status === "failure" || status == "f") {
       if (res.err) {
         console.log("\n\nEROR  :", res.err)
         window.__Snackbar.show(res.err)
@@ -248,11 +248,11 @@ class UserActivity extends View {
         console.log("API_EnrolledCourses in userActivity")
         window.__enrolledCourses = response.result.courses;
 
-        console.log("DEEPLINK COURSE DETAILS",this.deepLinkCollectionDetails);
+        console.log("DEEPLINK COURSE DETAILS", this.deepLinkCollectionDetails);
 
-        if(this.deepLinkCollectionDetails != undefined){
-          var whatToSend={course:this.deepLinkCollectionDetails};
-          var event={tag:"OPEN_Deeplink_CourseEnrolled",contents:whatToSend}
+        if (this.deepLinkCollectionDetails != undefined) {
+          var whatToSend = { course: this.deepLinkCollectionDetails };
+          var event = { tag: "OPEN_Deeplink_CourseEnrolled", contents: whatToSend }
           window.__runDuiCallback(event);
         }
         break;
@@ -295,8 +295,8 @@ class UserActivity extends View {
   }
 
   handleLoginClick = () => {
-    console.log(window.__loginUrl , "/auth/realms/sunbird/protocol/openid-connect/auth ","android");
-    JBridge.keyCloakLogin(window.__loginUrl + "/auth/realms/sunbird/protocol/openid-connect/auth","android");
+    console.log(window.__loginUrl, "/auth/realms/sunbird/protocol/openid-connect/auth ", "android");
+    JBridge.keyCloakLogin(window.__loginUrl + "/auth/realms/sunbird/protocol/openid-connect/auth", "android");
   }
 
   handleBrowseAsGuest = () => {
@@ -306,6 +306,7 @@ class UserActivity extends View {
     JBridge.setInSharedPrefs("logged_in", "GUEST");
     this.setLoginPreferences();
     this.performRedirection();
+    JBridge.logGuestEvent("LOGIN");
   }
 
   getTopLayout = () => {
@@ -317,24 +318,24 @@ class UserActivity extends View {
       gravity="center"
       orientation="vertical">
 
-        <ImageView
+      <ImageView
         height="60"
         width="60"
-        imageUrl={"ic_launcher"}/>
+        imageUrl={"ic_launcher"} />
 
-        <TextView
-          width="match_parent"
-          text={window.__S.WELCOME_M1.format(JBridge.getAppName())}
-          gravity="center"
-          margin="0,12,0,6"
-          style={window.__TextStyle.textStyle.HEADING.DARK}/>
+      <TextView
+        width="match_parent"
+        text={window.__S.WELCOME_M1.format(JBridge.getAppName())}
+        gravity="center"
+        margin="0,12,0,6"
+        style={window.__TextStyle.textStyle.HEADING.DARK} />
 
-        <TextView
-          width="match_parent"
-          gravity="center"
-          text={window.__S.WELCOME_M2}
-          style={window.__TextStyle.textStyle.HINT.REGULAR}/>
-      </LinearLayout>)
+      <TextView
+        width="match_parent"
+        gravity="center"
+        text={window.__S.WELCOME_M2}
+        style={window.__TextStyle.textStyle.HINT.REGULAR} />
+    </LinearLayout>)
   }
 
   getOptions = () => {
@@ -385,7 +386,7 @@ class UserActivity extends View {
       </LinearLayout>)
   }
 
-  getBody = () =>{
+  getBody = () => {
     return (
       <LinearLayout
         root="true"
@@ -413,14 +414,18 @@ class UserActivity extends View {
   }
 
 
-  setLoginPreferences = () =>{
+  setLoginPreferences = () => {
     window.__userToken = JBridge.getFromSharedPrefs("user_token");
     window.__refreshToken = JBridge.getFromSharedPrefs("refresh_token");
     window.__user_accessToken = JBridge.getFromSharedPrefs("user_access_token");
     if (window.__loggedInState == "GUEST") {
       JBridge.setInSharedPrefs("logged_in", "GUEST");
-      JBridge.setProfile("", true);
-    } else if (window.__loggedInState == "YES"){
+      if(window.__userToken == "__failed") {
+        JBridge.setProfile("", true);
+        var guestData = JSON.parse(utils.decodeBase64(JBridge.getCurrentProfileData()));
+        JBridge.setInSharedPrefs("user_token", guestData.uid);
+      }
+    } else if (window.__loggedInState == "YES") {
       JBridge.setInSharedPrefs("logged_in", "YES");
       JBridge.setProfile(window.__userToken, false);
     }
@@ -434,12 +439,12 @@ class UserActivity extends View {
     JBridge.setInSharedPrefs("intentFilePath", "__failed");
   }
 
-  performDeeplinkAction = () =>{
-    if("__failed" != JBridge.getFromSharedPrefs("intentFilePath")){
+  performDeeplinkAction = () => {
+    if ("__failed" != JBridge.getFromSharedPrefs("intentFilePath")) {
       var filePath = JBridge.getFromSharedPrefs("intentFilePath");
       JBridge.setInSharedPrefs("intentFilePath", "__failed");
       JBridge.importEcar(filePath, utils.getCallbacks("", this.setImportProgress, this.getImportStatus));
-    }else if("__failed" != JBridge.getFromSharedPrefs("intentLinkPath")){
+    } else if ("__failed" != JBridge.getFromSharedPrefs("intentLinkPath")) {
       console.log("INSIDE LINK INTENT");
       var output = JBridge.getFromSharedPrefs("intentLinkPath");
       console.log("FILE PATH GOT", output);
@@ -467,7 +472,7 @@ class UserActivity extends View {
     }
   }
 
-  afterRender = () =>{
+  afterRender = () => {
     console.log("AFTER RENDER IN USER ACTIVITY");
     console.log("SHARED PREFERENCES FOR logged_in", JBridge.getFromSharedPrefs("logged_in"));
     console.log("SHARED PREFERENCES FOR link", JBridge.getFromSharedPrefs("intentLinkPath"));
@@ -532,13 +537,13 @@ class UserActivity extends View {
             height="40"
             width="40"
             margin="0,0,15,0"
-            layout_gravity="center"/>
+            layout_gravity="center" />
 
           <TextView
             id={this.idSet.importEcarText}
             height="wrap_content"
             width="wrap_content"
-            layout_gravity="center"/>
+            layout_gravity="center" />
         </LinearLayout>
       </LinearLayout>
     );

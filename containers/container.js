@@ -20,6 +20,7 @@ const SettingsScreenActivity = require("../views/SettingsScreenActivity");
 const AboutUsActivity = require("../views/AboutUsActivity");
 const AboutUsScreen = require("../views/AboutUsScreen");
 const LanguageSelectActivitySt = require("../views/LanguageSelectActivitySt");
+const DataSyncScreenActivity = require("../views/DataSyncScreenActivity");
 
 
 //Home
@@ -66,10 +67,10 @@ var determineScreen = (screenName, state) => {
   // add accordingly
   switch (state.currScreen) {
     case "CourseEnrolledActivity":
-      screen = new (CourseEnrolledActivity(dispatcher, RootScreenActions))(null, null, state);
+      screen = new(CourseEnrolledActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
     case "SplashScreenActivity":
-      screen = new (SplashScreenActivity(dispatcher, RootScreenActions))(null, null, state);
+      screen = new(SplashScreenActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
     case "LanguageSelectActivity":
       screen = new (LanguageSelectActivity(dispatcher, RootScreenActions))(null, null, state);
@@ -77,127 +78,130 @@ var determineScreen = (screenName, state) => {
     case "LanguageSelectActivitySt":
       screen = new (LanguageSelectActivitySt(dispatcher, RootScreenActions))(null, null, state);
       break;
+    case "DataSyncScreenActivity":
+      screen = new(DataSyncScreenActivity(dispatcher, RootScreenActions))(null, null, state);
+      break;
     case "SettingsScreenActivity":
-      screen = new (SettingsScreenActivity(dispatcher, RootScreenActions))(null, null, state);
+      screen = new(SettingsScreenActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
     case "AboutUsActivity":
-      screen = new (AboutUsActivity(dispatcher, RootScreenActions))(null, null, state);
+      screen = new(AboutUsActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
     case "AboutUsScreen":
-      screen = new (AboutUsScreen(dispatcher, RootScreenActions))(null, null, state);
+      screen = new(AboutUsScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
     case "WelcomeScreenActivity":
-      screen = new (WelcomeScreenActivity(dispatcher, RootScreenActions))(null, null, state);
+      screen = new(WelcomeScreenActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
     case "StateSelectActivity":
-      screen = new (StateSelectActivity(dispatcher, RootScreenActions))(null, null, state);
+      screen = new(StateSelectActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
     case "MainActivity":
-      screen = new (MainActivity(dispatcher, RootScreenActions))(null, null, state);
+      screen = new(MainActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
     case "ViewBatchActivity":
-      screen = new (ViewBatchActivity(dispatcher, RootScreenActions))(null, null, state);
+      screen = new(ViewBatchActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
     case "UserActivity":
-      screen = new (UserActivity(dispatcher, RootScreenActions))(null, null, state);
+      screen = new(UserActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
     case "AdditionalInformationActivity":
-      screen = new (AdditionalInformationActivity(dispatcher, RootScreenActions))(null, null, state);
+      screen = new(AdditionalInformationActivity(dispatcher, RootScreenActions))(null,null,state);
       break;
     case "GuestInformationActivity":
-      screen = new (GuestInformationActivity(dispatcher, RootScreenActions))(null, null, state);
+      screen = new(GuestInformationActivity(dispatcher, RootScreenActions))(null,null,state);
       break;
     case "ModuleDetailActivity":
-      screen = new (ModuleDetailActivity(dispatcher, RootScreenActions))(null, null, state);
+      screen = new(ModuleDetailActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
     case "ContentPreviewScreen":
-      screen = new (ContentPreviewScreen(dispatcher, RootScreenActions))(null, null, state);
+      screen = new(ContentPreviewScreen(dispatcher, RootScreenActions))(null, null, state);
       break;
 
     case "AnnouncementDetailActivity":
-      screen = new (AnnouncementDetailActivity(dispatcher, RootScreenActions))(null, null, state);
-      break;
+       screen = new(AnnouncementDetailActivity(dispatcher,RootScreenActions))(null,null, state);
+       break;
     case "CourseInfoActivity":
-      screen = new (CourseInfoActivity(dispatcher, RootScreenActions))(null, null, state);
+      screen = new(CourseInfoActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
     case "AnnouncementViewAllActivity":
-      screen = new (AnnouncementViewAllActivity(dispatcher, RootScreenActions))(null, null, state);
+      screen = new(AnnouncementViewAllActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
     case "NotificationActivity":
-      screen = new (NotificationActivity(dispatcher, RootScreenActions))(null, null, state);
+      screen = new(NotificationActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
 
     case "ResourceDetailActivity":
-      screen = new (ResourceDetailActivity(dispatcher, RootScreenActions))(null, null, state);
+      screen = new(ResourceDetailActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
     case "ResourceViewAllActivity":
-      screen = new (ResourceViewAllActivity(dispatcher, RootScreenActions))(null, null, state);
+      screen = new(ResourceViewAllActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
 
     case "CourseViewAllActivity":
-      screen = new (CourseViewAllActivity(dispatcher, RootScreenActions))(null, null, state);
+      screen = new(CourseViewAllActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
 
     case "SearchActivity":
-      screen = new (SearchActivity(dispatcher, RootScreenActions))(null, null, state);
+      screen = new(SearchActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
     case "FilterActivity":
-      screen = new (FilterActivity(dispatcher, RootScreenActions))(null, null, state);
+      screen = new(FilterActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
 
     case "CommProfSearchActivity":
-      screen = new (CommProfSearchActivity(dispatcher, RootScreenActions))(null, null, state);
+      screen = new(CommProfSearchActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
 
     case "ProfileActivity":
-      screen = new (ProfileActivity(dispatcher, RootScreenActions))(null, null, state);
+      screen = new(ProfileActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
 
     case "AddressActivity":
-      screen = new (AddressActivity(dispatcher, RootScreenActions))(null, null, state);
+      screen = new(AddressActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
 
     case "EducationActivity":
-      screen = new (EducationActivity(dispatcher, RootScreenActions))(null, null, state);
+      screen = new(EducationActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
 
     case "ExperienceActivity":
-      screen = new (ExperienceActivity(dispatcher, RootScreenActions))(null, null, state);
+      screen = new(ExperienceActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
 
     case "RootScreen":
-      screen = new (RootScreen(dispatcher, RootScreenActions))(null, null, state);
+      screen = new(RootScreen(dispatcher,RootScreenActions))(null, null,state) ;
       break;
 
     case "QRActivity":
-      screen = new (QRActivity(dispatcher, RootScreenActions))(null, null, state);
+      screen = new(QRActivity(dispatcher,RootScreenActions))(null, null,state) ;
       break;
   }
 
   return screen;
 }
 
-var returnIfCached = function (screenName) {
+var returnIfCached = function(screenName) {
   return window.__CACHED_SCREENS[screenName];
 }
 
 var renderRootScreen = (state, dispatcher) => {
-  window.__ROOTSCREEN = new (RootScreen(dispatcher, RootScreenActions))({}, null, state);
+  window.__ROOTSCREEN = new(RootScreen(dispatcher, RootScreenActions))({}, null, state);
   return window.__ROOTSCREEN;
 }
 
-var updateNode = function (data) {
+var updateNode = function(data) {
   var oldScreenId = window.__CACHED_SCREENS[data.action].screen.layout.idSet.id;
   window.__MODE = (new Date()).getTime() + " mode";
   window.__CACHED_SCREENS[data.action].screen = determineScreen(data.action, data.state);
   // delete old id
 }
 
-window.__CLEAR_STACK = function (screenName) {
+window.__CLEAR_STACK = function(screenName) {
   window.__SCREEN_STACK = [screenName];
 }
 
-var addToStack = function (screenName, screenData) {
+var addToStack = function(screenName, screenData) {
   if (typeof screenData.screen.shouldStackScreen !== "undefined" && !screenData.screen.shouldStackScreen)
     return;
 
@@ -209,7 +213,7 @@ var addToStack = function (screenName, screenData) {
     window.__SCREEN_STACK.push(screenName);
 }
 
-var renderScreen = function (data) {
+var renderScreen = function(data) {
   JBridge.hideKeyboard();
 
   var screen;
@@ -246,19 +250,19 @@ var renderScreen = function (data) {
   return { screen: screenData.screen, isCached: isCached, takeFromCache: takeFromCache }
 }
 
-var appendToRoot = function (screen) {
+var appendToRoot = function(screen) {
   window.__SCREEN_INDEX++;
   window.__ROOTSCREEN.appendChild(window.__ROOTSCREEN.idSet.root, screen.render(), window.__SCREEN_INDEX, screen.afterRender);
 }
 
-var getDirection = function () {
+var getDirection = function() {
   if (window.__CACHED_SCREENS[window.__CURR_SCREEN].timeStamp >= window.__CACHED_SCREENS[window.__PREV_SCREEN].timeStamp)
     return 1;
 
   return -1;
 }
 
-var handleGoBack = function (data) {
+var handleGoBack = function(data) {
   JBridge.hideKeyboard();
 
   var stackLen = window.__SCREEN_STACK.length;
@@ -297,7 +301,7 @@ var handleGoBack = function (data) {
   }
 }
 
-var handleScreenActions = function (data) {
+var handleScreenActions = function(data) {
   var currView;
   var res;
 

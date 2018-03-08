@@ -41,6 +41,8 @@ class LanguageSelectActivitySt extends View {
     }
 
     afterRender = () => {
+      JBridge.logSettingsScreenEvent("SETTINGS_LANGUAGE");
+
     }
 
     changeLang = () => {
@@ -62,6 +64,7 @@ class LanguageSelectActivitySt extends View {
     }
 
     changeSelectedLang = (langCode) => {
+        JBridge.logLanguageChangeSettingEvent(this.defaultlang,langCode);
         var newArr = [];
         this.langArr.map((item, i) => {
             newArr[i] = {};

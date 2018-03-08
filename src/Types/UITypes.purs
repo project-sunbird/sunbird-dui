@@ -415,7 +415,7 @@ instance decodeGuestInformationActivityAction :: Decode GuestInformationActivity
 instance encodeGuestInformationActivityAction :: Encode GuestInformationActivityAction where encode = defaultEncode
 
 data SettingsScreenActivity = SettingsScreenActivity {profile :: String}
-data SettingsScreenActivityAction = BACK_SettingsScreenActivity | OPEN_LanguageSelectActivitySt {profile::String} | OPEN_AboutUsActivity {profile::String}
+data SettingsScreenActivityAction = BACK_SettingsScreenActivity | OPEN_LanguageSelectActivitySt {profile::String} | OPEN_AboutUsActivity {profile::String} | OPEN_DataSyncScreenActivity
 
 instance settingsScreenActivity :: UIScreen SettingsScreenActivity SettingsScreenActivityAction where
   generateMockEvents _ = [BACK_SettingsScreenActivity]
@@ -458,6 +458,16 @@ derive instance genericAboutUsScreenAction  :: Generic AboutUsScreenAction _
 instance decodeAboutUsScreenAction :: Decode AboutUsScreenAction where decode = defaultDecode
 instance encodeAboutUsScreenAction :: Encode AboutUsScreenAction where encode = defaultEncode
 
+data DataSyncScreenActivity = DataSyncScreenActivity
+data DataSyncScreenActivityAction = BACK_DataSyncScreenActivity
+
+instance dataSyncScreenActivity :: UIScreen DataSyncScreenActivity DataSyncScreenActivityAction where
+  generateMockEvents _ = [BACK_DataSyncScreenActivity]
+  ui x = genericUI x (generateMockEvents x :: Array DataSyncScreenActivityAction)
+
+derive instance genericDataSyncScreenActivityAction  :: Generic DataSyncScreenActivityAction _
+instance decodeDataSyncScreenActivityAction :: Decode DataSyncScreenActivityAction where decode = defaultDecode
+instance encodeDataSyncScreenActivityAction :: Encode DataSyncScreenActivityAction where encode = defaultEncode
 
 data AnnouncementDetailActivity = AnnouncementDetailActivity {announcementData :: String}
 data AnnouncementDetailActivityAction = DummyAnnouncementDetailActivityAction  |

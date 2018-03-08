@@ -176,10 +176,6 @@ mainActivity input whereFrom whatToSendBack = do
             responseData <- getProfileDetail x y
             _ <- sendUpdatedState {response : responseData, responseFor : "API_ProfileFragment", screen:"MainActivity"}
             pure $ "handled"
-        API_Tenant {user_token:x, api_token:y, slug:z} -> do
-          responseData <- getTenantDetail x y z
-          _ <- sendUpdatedState {response : responseData, responseFor : "API_Tenant", screen:"MainActivity"}
-          pure $ "apiDefault"
         _ -> mainActivity input whereFrom whatToSendBack
 
 

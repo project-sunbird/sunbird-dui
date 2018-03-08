@@ -36,14 +36,15 @@ class CourseInfoActivity extends View {
       "downloadProgressText",
       "totalContainer",
       "sharePopupContainer",
-      "enrollButtonId"
+      "enrollButtonId",
+      "readMore"
     ]);
     this.state = state;
     this.screenName = "CourseInfoActivity"
 
     this.menuData = {
       url: [
-        {imageUrl: "ic_action_share_black" },
+        { imageUrl: "ic_action_share_black" },
       ]
     }
 
@@ -57,7 +58,7 @@ class CourseInfoActivity extends View {
 
 
     this.details = JSON.parse(state.data.value0.courseDetails);
-    console.log("data in CIA",this.details);
+    console.log("data in CIA", this.details);
 
     this.localContent = null;
     this.data = {
@@ -77,7 +78,7 @@ class CourseInfoActivity extends View {
 
     if (cb == "onDownloadProgress") {
       var textToShow = ""
-      
+
       data.downloadProgress = data.downloadProgress == undefined ? 0 : data.downloadProgress;
       var downloadedPercent = parseInt(data.downloadProgress);
       downloadedPercent = downloadedPercent < 0 ? 0 : downloadedPercent;
@@ -101,7 +102,7 @@ class CourseInfoActivity extends View {
   renderChildren = (identifier) => {
     var callback1 = callbackMapper.map(function (data) {
       console.log("JBridge.getChildContent data -> ", data);
-      
+
       if (data == "__failed") {
         window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
         _this.onBackPressed();
@@ -117,7 +118,7 @@ class CourseInfoActivity extends View {
   checkContentLocalStatus = (identifier) => {
     console.log("contentType: ", this.details.contentType);
     JBridge.startEventLog(this.details.contentType, identifier, this.details.pkgVersion);
-    var callback = callbackMapper.map(function(data) {
+    var callback = callbackMapper.map(function (data) {
       if (data == "__failed") {
         //TODO implemented hack, actual implementation - get error from SDK
         if (JBridge.isNetworkAvailable()) {
@@ -126,33 +127,35 @@ class CourseInfoActivity extends View {
           window.__Snackbar.show(window.__S.ERROR_NO_INTERNET_MESSAGE);
         }
         _this.onBackPressed();
+        return;
       }
-      _this.localContent  = JSON.parse(utils.decodeBase64(data[0]));
+      _this.localContent = JSON.parse(utils.decodeBase64(data[0]));
       if (_this.localContent.isAvailableLocally == true) {
         JBridge.logCourseDetailScreenEvent(_this.details.identifier, _this.details.pkgVersion, true);
         _this.renderChildren(identifier);
       } else {
         JBridge.logCourseDetailScreenEvent(_this.details.identifier, _this.details.pkgVersion, false);
-         var callback22= callbackMapper.map(function(data){
+        var callback22 = callbackMapper.map(function (data) {
           data = JSON.parse(data)
-          if(data.status==="NOT_FOUND"){
-              if(JBridge.isNetworkAvailable())
-                JBridge.importCourse(identifier,"false", utils.getCallbacks(_this.getSpineStatus, "", _this.getSpineStatus));
-              else
-                window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE)
+          if (data.status === "NOT_FOUND") {
+            if (JBridge.isNetworkAvailable())
+              JBridge.importCourse(identifier, "false", utils.getCallbacks(_this.getSpineStatus, "", _this.getSpineStatus));
+            else
+              window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE)
           }
         })
 
-        JBridge.getContentImportStatus(identifier,callback22)
+        JBridge.getContentImportStatus(identifier, callback22)
       }
+      _this.contentDetails(JSON.parse(utils.decodeBase64(data[0])));
 
     });
-    JBridge.getContentDetails(identifier, callback, true);
+    JBridge.getContentDetails(identifier, callback, false);
   }
 
 
 
-   onStop = () =>{
+  onStop = () => {
     window.__SharePopup.hide();
     console.log("ON STOP IN ResourceDetailActivity")
   }
@@ -179,42 +182,42 @@ class CourseInfoActivity extends View {
   renderCourseChildren = () => {
     console.log("RENDRING BREKAUP", this.courseContent)
     var child;
-    if(this.courseContent.children==undefined){
+    if (this.courseContent.children == undefined) {
       child = (<TextView
-                  height="300"
-                  width="match_parent"
-                  gravity="center"
-                  root="true"
-                  text={window.__S.ERROR_CONTENT_NOT_FOUND} />);
+        height="300"
+        width="match_parent"
+        gravity="center"
+        root="true"
+        text={window.__S.ERROR_CONTENT_NOT_FOUND} />);
     }
-    else{
-       child = (<CourseCurriculum
-                  height="match_parent"
-                  width="match_parent"
-                  root="true"
-                  margin="0,0,0,12"
-                  brief={true}
-                  shouldGoForward={"gone"}
-                  content= {this.courseContent.children}/>);
-        var isVisible = "gone";
-        if(!this.details.isCreator)
-          isVisible = "visible";
-        Android.runInUI(this.set({
-          id : this.idSet.enrollButtonId,
-          visibility :isVisible
-        }),0);
-      }
+    else {
+      child = (<CourseCurriculum
+        height="match_parent"
+        width="match_parent"
+        root="true"
+        margin="0,0,0,12"
+        brief={true}
+        shouldGoForward={"gone"}
+        content={this.courseContent.children} />);
+      var isVisible = "gone";
+      if (!this.details.isCreator)
+        isVisible = "visible";
+      Android.runInUI(this.set({
+        id: this.idSet.enrollButtonId,
+        visibility: isVisible
+      }), 0);
+    }
 
-      var layout = (
-        <LinearLayout
+    var layout = (
+      <LinearLayout
         width="match_parent"
         height="wrap_content"
         orientation="vertical">
 
-          {child}
+        {child}
 
-        </LinearLayout>
-        )
+      </LinearLayout>
+    )
     this.replaceChild(this.idSet.descriptionContainer, layout.render(), 0)
   }
 
@@ -229,8 +232,8 @@ class CourseInfoActivity extends View {
 
   afterRender = () => {
 
-    if(window.__enrolledCourses == undefined){
-      if (window.__loggedInState == "GUEST"){
+    if (window.__enrolledCourses == undefined) {
+      if (window.__loggedInState == "GUEST") {
         window.__enrolledCourses = [];
         this.checkWhetherEnrolledCourse();
       } else {
@@ -239,16 +242,16 @@ class CourseInfoActivity extends View {
         var event = { "tag": "API_EnrolledCoursesList", contents: whatToSend };
         window.__runDuiCallback(event);
       }
-    }else{
+    } else {
       this.checkWhetherEnrolledCourse();
     }
 
-    if(this.details.isCreator){
-      console.log("from creation",this.details.isCreator)
+    if (this.details.isCreator) {
+      console.log("from creation", this.details.isCreator)
       Android.runInUI(this.set({
-        id : this.idSet.enrollButtonId,
-        visibility :"gone"
-      }),0);
+        id: this.idSet.enrollButtonId,
+        visibility: "gone"
+      }), 0);
     }
 
   }
@@ -260,13 +263,13 @@ class CourseInfoActivity extends View {
 
 
     window.__LoaderDialog.hide();
-    var status,response,responseCode,responseUrl;
+    var status, response, responseCode, responseUrl;
 
     // if(state.response != ""){
-     status = res.status;
-     response = res.data; //JSON.parse(utils.decodeBase64(state.response.status[1]));
-     responseCode = res.code;
-     responseUrl = res.url;
+    status = res.status;
+    response = res.data; //JSON.parse(utils.decodeBase64(state.response.status[1]));
+    responseCode = res.code;
+    responseUrl = res.url;
     // }
 
 
@@ -282,12 +285,12 @@ class CourseInfoActivity extends View {
       return;
     }
 
-    console.log("RESPONSE FOR IN COURSE INFO",state.responseFor)
+    console.log("RESPONSE FOR IN COURSE INFO", state.responseFor)
 
     switch (state.responseFor + "") {
       case "API_EnrolledCoursesList":
         window.__enrolledCourses = response.result.courses;
-        console.log("ENROLLED COURSES",window.__enrolledCourses);
+        console.log("ENROLLED COURSES", window.__enrolledCourses);
         window.__LoaderDialog.hide();
         this.checkWhetherEnrolledCourse();
         break;
@@ -302,43 +305,43 @@ class CourseInfoActivity extends View {
 
   }
 
-  shareContent = () =>{
+  shareContent = () => {
 
     console.log("SHARE POP UP CALLED", this.details);
     JBridge.logShareContentInitiateEvent("COURSES", "course", this.details.identifier, this.details.pkgVersion ? this.details.pkgVersion : this.details.contentData.pkgVersion);
 
-    var shareCallback = callbackMapper.map(function(data) {
+    var shareCallback = callbackMapper.map(function (data) {
 
-    window.__LoaderDialog.hide();
-
-
-      if(data[0]!="failure"){
-          var input = [
-                 {
-                    type : "text",
-                    data : window.__deepLinkUrl+"/public/#!/course/"+_this.details.identifier
-                 }
-                ];
+      window.__LoaderDialog.hide();
 
 
-            var sharePopUp = (
-                              <SharePopup
-                              data = {input}
-                              identifier = {_this.details.identifier}
-                              type = "COURSES"
-                              />
-                              )
+      if (data[0] != "failure") {
+        var input = [
+          {
+            type: "text",
+            data: window.__deepLinkUrl + "/public/#!/course/" + _this.details.identifier
+          }
+        ];
 
-            _this.replaceChild(_this.idSet.sharePopupContainer,sharePopUp.render(),0);
 
-            setTimeout(function() {
-               window.__SharePopup.show();
-            }, 200);
-      }else{
+        var sharePopUp = (
+          <SharePopup
+            data={input}
+            identifier={_this.details.identifier}
+            type="COURSES"
+          />
+        )
 
-          JBridge.showToast(window.__S.ERROR_CANT_SHARE_TRY_AGAIN,"short");
+        _this.replaceChild(_this.idSet.sharePopupContainer, sharePopUp.render(), 0);
 
-       }
+        setTimeout(function () {
+          window.__SharePopup.show();
+        }, 200);
+      } else {
+
+        JBridge.showToast(window.__S.ERROR_CANT_SHARE_TRY_AGAIN, "short");
+
+      }
 
     });
 
@@ -350,7 +353,7 @@ class CourseInfoActivity extends View {
 
   handleEnrollClick = (data) => {
     var whatToSend = { "course": this.state.data.value0.courseDetails }
-    var event ={ "tag": "OPEN_ViewBatchActivity", contents: whatToSend};
+    var event = { "tag": "OPEN_ViewBatchActivity", contents: whatToSend };
     window.__runDuiCallback(event);
     return;
   }
@@ -365,57 +368,105 @@ class CourseInfoActivity extends View {
 
   getCurriculumnBrief = () => {
     var json = [];
-    if(this.details.hasOwnProperty("contentTypesCount")){
-        var Curriculum = JSON.parse(this.details.contentTypesCount);
+    if (this.details.hasOwnProperty("contentTypesCount")) {
+      var Curriculum = JSON.parse(this.details.contentTypesCount);
 
-        var index = 0;
-        var json = [];
-        for(var item in Curriculum){
-          json.push({
-            "count" : Curriculum[item],
-            "type" : item
-          })
-        }
+      var index = 0;
+      var json = [];
+      for (var item in Curriculum) {
+        json.push({
+          "count": Curriculum[item],
+          "type": item
+        })
+      }
     }
-    else{
+    else {
       json.push({
-        "count" : "Not",
-        "type" : "Available"
+        "count": "Not",
+        "type": "Available"
       })
     }
 
     var items = json.map((item, i) => {
       return (<TextView
-                style={window.__TextStyle.textStyle.HINT.REGULAR}
-                text ={(i==0?"":" | ") +item.count + " "+item.type}/>)
+        style={window.__TextStyle.textStyle.HINT.REGULAR}
+        text={(i == 0 ? "" : " | ") + item.count + " " + item.type} />)
     })
 
     return (
       <HorizontalScrollView
-      width="match_parent"
-      height="wrap_content">
-      <LinearLayout
-        padding="2,0,2,5"
-        height="wrap_content"
-        width="match_parent">
-        {items}
-      </LinearLayout>
+        width="match_parent"
+        height="wrap_content">
+        <LinearLayout
+          padding="2,0,2,5"
+          height="wrap_content"
+          width="match_parent">
+          {items}
+        </LinearLayout>
       </HorizontalScrollView>);
   }
 
-  handleMenuClick = (url) =>{
-    if(url == "ic_action_share_black"){
+  handleMenuClick = (url) => {
+    if (url == "ic_action_share_black") {
 
       this.shareContent();
 
     }
   }
 
+  contentDetails = (data) => {
+    var contentText = "";
 
-  getBody = () =>{
+    if(data.contentData && data.contentData.description){
+      contentText+="<br>"+data.contentData.description + "<br><br>";
+    }
+    if(data.contentData && data.contentData.gradeLevel){
+      contentText+="GRADE:<br>"+data.contentData.gradeLevel + "<br><br>";
+    }
+    if(data.contentData && data.contentData.subject){
+      contentText+="SUBJECT:<br>"+data.contentData.subject + "<br><br>";
+    }
+    if(data.contentData && data.contentData.board){
+      contentText+="BOARD:<br>"+data.contentData.board + "<br><br>";
+    }
+    if(data.contentData && data.contentData.language){
+      contentText+="MEDIUM:<br>"+data.contentData.language;
+    }
+
+    var layout = (
+      <LinearLayout
+       id={this.idSet.readMore}
+       width="match_parent"
+       height="wrap_content"
+       orientation="vertical">
+      <LinearLayout
+       width="match_parent"
+       height="wrap_content"
+       orientation="vertical"
+       background={window.__Colors.WHITE_F2}>
+       <TextView
+         text={window.__S.ABOUT}
+         margin="16,12,0,12"
+         style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
+        </LinearLayout>
+       <CropParagraph
+         height="match_parent"
+         width="match_parent"
+         margin="16,0,0,16"
+         background={window.__Colors.WHITE_F2}
+         privacyStatus={"false"}
+         charToShow="20"
+         contentText={contentText}
+         editable={"false"} />
+      </LinearLayout>
+      )
+      this.replaceChild(this.idSet.readMore,layout.render(),0);
+  }
+
+  getBody = () => {
     var btn = {
-      text : window.__S.ENROLL_COURSE,
-      onClick : this.handleEnrollClick
+      text: window.__S.ENROLL_COURSE,
+      onClick: this.handleEnrollClick
     }
     var buttonList = [btn];
     return (
@@ -428,89 +479,106 @@ class CourseInfoActivity extends View {
         orientation="vertical">
 
         <SimpleToolbar
-            title=""
-            width="match_parent"
-            height="wrap_content"
-            menuData={this.menuData}
-            onMenuItemClick={this.handleMenuClick}
-            showMenu="true"
-            onBackPress={this.onBackPressed}/>
+          title=""
+          width="match_parent"
+          height="wrap_content"
+          menuData={this.menuData}
+          onMenuItemClick={this.handleMenuClick}
+          showMenu="true"
+          onBackPress={this.onBackPressed} />
 
         <LinearLayout
           id={this.idSet.parentContainer}
           height="match_parent"
           width="match_parent"
           orientation="vertical">
-            <ScrollView
-              height="0"
-              weight="1"
+          <ScrollView
+            height="0"
+            weight="1"
+            width="match_parent"
+            fillViewPort="true">
+            <LinearLayout
+              height="match_parent"
               width="match_parent"
-              fillViewPort="true">
+              orientation="vertical">
+            <LinearLayout
+              height="match_parent"
+              width="match_parent"
+              padding="16,24,16,16"
+              orientation="vertical">
 
-              <LinearLayout
-                height="match_parent"
+              <TextView
+                width="wrap_content"
+                height="wrap_content"
+                margin="0,0,0,7"
+                text={utils.firstLeterCapital(this.data.courseName)}
+                style={window.__TextStyle.textStyle.HEADING.DARK} />
+
+
+              <TextView
+                height="wrap_content"
                 width="match_parent"
-                padding="16,24,16,16"
-                orientation="vertical">
-
-                <TextView
-                  width="wrap_content"
-                  height="wrap_content"
-                  margin="0,0,0,7"
-                  text={utils.firstLeterCapital(this.data.courseName)}
-                  style={window.__TextStyle.textStyle.HEADING.DARK} />
-
-
-                <TextView
-                  height="wrap_content"
-                  width="match_parent"
-                  margin="0,0,0,12"
-                  text={this.data.courseDesc}/>
-
-
-                <TextView
-                  margin="0,0,0,4"
-                  text={window.__S.STRUCTURE}
-                  style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
-
-                  {this.getCurriculumnBrief()}
-
-
+                margin="0,0,0,12"
+                text={this.data.courseDesc}/>
+                </LinearLayout>
 
                 <LinearLayout
-                  id={this.idSet.descriptionContainer}
-                  height="wrap_content"
-                  width="match_parent"
-                  gravity="center"
-                  root="true"
-                  orientation="vertical">
-                      <ProgressBar
-                        height="30"
-                        width="30"
-                        margin="20,20,20,20"/>
-                     <TextView
-                        id={this.idSet.downloadProgressText}
-                        test="Fetching spine"
-                        height="wrap_content"
-                        gravity="center"
-                        width="match_parent"/>
-                </LinearLayout>
-
-                </LinearLayout>
-
-
-             </ScrollView>
+                 id={this.idSet.readMore}/>
                  <LinearLayout
-                 width="match_parent"
-                 height = "wrap_content"
-                 visibility = "gone"
-                  id = {this.idSet.enrollButtonId}>
-                       <PageOption
-                       width="match_parent"
-                       buttonItems={buttonList}/>
-                 </LinearLayout>
+                  width="match_parent"
+                  height="wrap_content"
+                  orientation="vertical"
+                  background={window.__Colors.WHITE_F2}>
+                 <TextView
+                   margin="16,16,0,16"
+                   text={window.__S.STRUCTURE}
+                   style={window.__TextStyle.textStyle.CARD.TITLE.DARK} />
+                   </LinearLayout>
+                 <LinearLayout
+                   height="match_parent"
+                   width="match_parent"
+                   padding="16,24,16,16"
+                   orientation="vertical">
+
+
+              {this.getCurriculumnBrief()}
+
+
+
+              <LinearLayout
+                id={this.idSet.descriptionContainer}
+                height="wrap_content"
+                width="match_parent"
+                gravity="center"
+                root="true"
+                orientation="vertical">
+                <ProgressBar
+                  height="30"
+                  width="30"
+                  margin="20,20,20,20" />
+                <TextView
+                  id={this.idSet.downloadProgressText}
+                  test="Fetching spine"
+                  height="wrap_content"
+                  gravity="center"
+                  width="match_parent" />
+              </LinearLayout>
+
             </LinearLayout>
-            </LinearLayout>);
+            </LinearLayout>
+
+          </ScrollView>
+          <LinearLayout
+            width="match_parent"
+            height="wrap_content"
+            visibility="gone"
+            id={this.idSet.enrollButtonId}>
+            <PageOption
+              width="match_parent"
+              buttonItems={buttonList} />
+          </LinearLayout>
+        </LinearLayout>
+      </LinearLayout>);
 
   }
 
@@ -518,24 +586,24 @@ class CourseInfoActivity extends View {
   render() {
     this.layout = (
 
-     <RelativeLayout
-      width="match_parent"
-      height="match_parent"
-      clickable="true"
-      root="true">
+      <RelativeLayout
+        width="match_parent"
+        height="match_parent"
+        clickable="true"
+        root="true">
 
         <LinearLayout
           background={window.__Colors.WHITE}
           orientation="vertical"
           id={this.idSet.totalContainer}
           width="match_parent"
-          height="match_parent"/>
+          height="match_parent" />
 
 
         <LinearLayout
-         width="match_parent"
-         height="match_parent"
-         id={this.idSet.sharePopupContainer}/>
+          width="match_parent"
+          height="match_parent"
+          id={this.idSet.sharePopupContainer} />
 
 
 

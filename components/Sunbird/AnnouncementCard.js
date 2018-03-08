@@ -12,7 +12,8 @@ class AnnouncementCard extends View {
   constructor(props, children) {
     super(props, children);
     this.setIds([
-      "readBar"
+      "readBar",
+      "parentContainer"
     ]);
 
     this.props=this.props||"";
@@ -235,9 +236,14 @@ class AnnouncementCard extends View {
       );
   }
 
+  afterRender = () => {
+    JBridge.setMapId(this.idSet.parentContainer + "",window.__S.ANNOUNCEMENT, window.__S.ANNOUNCEMENT, "1");
+  }
+
   render() {
     this.layout = (
       <LinearLayout
+        id={this.idSet.parentContainer}
         width="match_parent"
         height="wrap_content"
         root="true"

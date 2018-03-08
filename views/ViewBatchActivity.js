@@ -463,6 +463,7 @@ class ViewBatchActivity extends View {
           clickable="true">
          <HomeQuestionCardStyle
              currComponentLocation={"COURSE"}
+          fromWhere = {"CONTENT_DETAIL"}
           headerText = {window.__S.OVERLAY_LABEL_TAKE_COURSE}
           infoText = {window.__S.OVERLAY_INFO_TEXT_TAKE_COURSE}/>
          </LinearLayout>
@@ -488,26 +489,26 @@ class ViewBatchActivity extends View {
                 onBackPress={this.onBackPressed}
                 width="match_parent"/>
               <RelativeLayout>
+            <LinearLayout
+              orientation="vertical"
+              width="match_parent">
+              {this.getBatchTypeHead()}
+
+              {this.getBatchTypeChoser()}
+              <ScrollView
+                height="match_parent"
+                width="match_parent"
+                fillViewPort="true">
+
                 <LinearLayout
-                  orientation = "vertical"
-                  width = "match_parent">
-                  {this.getBatchTypeHead()}
+                  id={this.idSet.batchListContainer}
+                  height="match_parent"
+                  width="match_parent"
+                  orientation="vertical"
+                  gravity="center"/>
 
-                  {this.getBatchTypeChoser()}
-                  <ScrollView
-                    height="match_parent"
-                    width="match_parent"
-                    fillViewPort="true">
-
-                    <LinearLayout
-                      id={this.idSet.batchListContainer}
-                      height="match_parent"
-                      width="match_parent"
-                      orientation="vertical"
-                      gravity="center"/>
-
-                  </ScrollView>
-                </LinearLayout>
+              </ScrollView>
+            </LinearLayout>
               {this.getSignInOverlay()}
               </RelativeLayout>
           </LinearLayout>

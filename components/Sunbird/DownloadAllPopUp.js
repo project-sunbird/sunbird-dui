@@ -133,7 +133,7 @@ class DownloadAllPopup extends View {
             width = "wrap_content"
             height = "wrap_content"
             gravity="center_vertical"
-            text = {"Download All ?"}
+            text = {window.__S.DOWNLOAD_ALL}
             style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
 
           <ViewWidget

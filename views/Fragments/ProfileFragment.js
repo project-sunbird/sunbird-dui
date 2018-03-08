@@ -27,14 +27,14 @@ var HomeQuestionCardStyle = require('../../components/Sunbird/HomeQuestionCardSt
 var CropParagraph = require('../../components/Sunbird/CropParagraph');
 var CircularLoader = require('../../components/Sunbird/core/CircularLoader');
 var utils = require('../../utils/GenericFunctions');
-const Str = require("../../res/Strings");
+const Str = require("../../res/Strings") ;
 
 
 var _this;
 class ProfileFragment extends View {
   constructor(props, children) {
     super(props, children);
-    console.log("this.props profile fragments", props);
+    console.log("this.props profile fragments",props);
     this.screenName = "ProfileFragment";
     this.props.appendText = this.props.appendText || "";
     this.setIds([
@@ -53,7 +53,7 @@ class ProfileFragment extends View {
           { imageUrl: "ic_action_overflow" }
         ]
       }
-      this.popupMenu = window.__S.CHANGE_LANGUAGE;
+      this.popupMenu = window.__S.SETTINGS;
     } else {
       this.menuData = {
         url: [
@@ -62,7 +62,7 @@ class ProfileFragment extends View {
           { imageUrl: "ic_action_overflow" }
         ]
       }
-      this.popupMenu = window.__S.CHANGE_LANGUAGE + "," + window.__S.LOGOUT + "," + window.__S.SETTINGS;
+      this.popupMenu = window.__S.LOGOUT + "," + window.__S.SETTINGS;
     }
     window.__LanguagePopup.props.buttonClick = this.handleChangeLang;
     window.__refreshProfile = false; //Used to control when the profile fragment needs to be refreshed when the user updates any profile data from the app.
@@ -84,14 +84,14 @@ class ProfileFragment extends View {
 
   handleChangeLang = (lang) => {
     window.__LoaderDialog.show()
-    window.setLanguage(lang);
-    window.__S = Str.strings();
-    window.__LanguagePopup.hide();
-    window.__renderBNavBar(4);
-    window.__reRender();
+     window.setLanguage(lang);
+     window.__S = Str.strings();
+     window.__LanguagePopup.hide();
+     window.__renderBNavBar(4);
+     window.__reRender();
   }
 
-  logout = () => {
+  logout = () =>{
     JBridge.logLogoutInitiate(window.__userToken);
     window.__Logout();
   }
@@ -172,30 +172,31 @@ class ProfileFragment extends View {
 
   getLineSeperator() {
     return (<LinearLayout
-      width="match_parent"
-      height="1"
-      margin="0,16,0,16"
-      background={window.__Colors.PRIMARY_BLACK_22} />)
+            width="match_parent"
+            height="1"
+            margin="0,16,0,16"
+            background={window.__Colors.PRIMARY_BLACK_22}/>)
   }
 
   overFlowCallback = (params) => {
-    if (params == 0) {
-      window.__LanguagePopup.show();
+    if(params == 0){
+      if (window.__loggedInState == "GUEST")
+        this.openSettingsScreen();
+      else
+        this.logout();
     } else if (params == 1) {
-      this.logout();
-    } else if (params == 2) {
       this.openSettingsScreen();
     }
-
   }
 
   openSettingsScreen = () => {
-    if (!JBridge.isNetworkAvailable()) {
+    JBridge.logSettingsClickedEvent("Settings");
+    if(!JBridge.isNetworkAvailable()){
       window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
-      return;
+      return ;
     }
-    var whatToSend = { "profile": JSON.stringify("{}") }
-    var event = { tag: "OPEN_SettingsScreenActivity", contents: whatToSend }
+    var whatToSend = { "profile" : JSON.stringify("{}")}
+    var event ={ tag: "OPEN_SettingsScreenActivity", contents: whatToSend }
     window.__runDuiCallback(event);
   }
 
@@ -229,9 +230,9 @@ class ProfileFragment extends View {
         _this.createdBy = JSON.parse(utils.decodeBase64(data[0]));
         var layout = (
           <ProfileCreations
-            data={_this.createdBy}
-            editable={_this.editable}
-            onCardClick={_this.handleCreatedCardClick} />
+            data = {_this.createdBy}
+            editable = {_this.editable}
+            onCardClick = {_this.handleCreatedCardClick}/>
         );
         _this.replaceChild(_this.idSet.createdByHolder, layout.render(), 0);
       }
@@ -241,10 +242,10 @@ class ProfileFragment extends View {
     else
       console.log("JBridge.searchContent failed, no internet");
     window.__ContentLoadingComponent.hideLoader();
-    if (!JBridge.isNetworkAvailable()) {
+    if(!JBridge.isNetworkAvailable()){
       window.__LoaderDialog.hide();
       window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
-      return;
+      return ;
     }
     window.__LoaderDialog.hide();
   }
@@ -313,7 +314,7 @@ class ProfileFragment extends View {
     } else if (url == "ic_action_search") {
       var searchDetails = { filterDetails: "", searchType: "Profile" }
       var whatToSend = { filterDetails: JSON.stringify(searchDetails) }
-      var event = { tag: "OPEN_CommProfSearchActivity", contents: whatToSend }
+      var event = { tag: "OPEN_CommProfSearchActivity", contents: whatToSend}
       window.__runDuiCallback(event);
     }
   }
@@ -321,90 +322,90 @@ class ProfileFragment extends View {
   handleCreatedCardClick = (item) => {
     item.isCreator = true;
     var itemDetails = JSON.stringify(item);
-    if (item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook") {
+    if(item.contentType.toLowerCase() == "collection" || item.contentType.toLowerCase() == "textbook"){
       if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
-        var whatToSend = { course: itemDetails };
-        var event = { tag: "OPEN_EnrolledCourseActivity", contents: whatToSend }
+        var whatToSend={course:itemDetails};
+        var event={tag:"OPEN_EnrolledCourseActivity",contents:whatToSend}
         window.__runDuiCallback(event);
-      } else {
+      }else{
         this.setPermissions();
       }
-    } else if (item.contentType.toLowerCase() == "course") {
+    }else if(item.contentType.toLowerCase() == "course"){
       if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
-        var whatToSend = { course: itemDetails };
-        var event = { tag: "OPEN_CourseInfoActivity", contents: whatToSend }
+        var whatToSend={course:itemDetails};
+        var event={tag:"OPEN_CourseInfoActivity",contents:whatToSend}
         window.__runDuiCallback(event);
-      } else {
+      }else{
         this.setPermissions();
       }
     } else {
-      var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " [" + utils.formatBytes(item.size) + "]" : "");
+      var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");
       var resDetails = {};
       resDetails['imageUrl'] = item.appIcon;
       resDetails['title'] = item.name;
       resDetails['description'] = item.description;
       resDetails['headFooterTitle'] = headFooterTitle;
       resDetails['identifier'] = item.identifier;
-      resDetails['screenshots'] = item.screenshots || [];
+      resDetails['screenshots'] = item.screenshots || [] ;
       resDetails['content'] = item;
 
-      var whatToSend = { resourceDetails: JSON.stringify(resDetails) }
-      var event = { tag: "OPEN_ResourceDetailActivity", contents: whatToSend }
+      var whatToSend = {resourceDetails:JSON.stringify(resDetails)}
+      var event= {tag:"OPEN_ResourceDetailActivity",contents:whatToSend}
       window.__runDuiCallback(event);
     }
   }
 
-  addSkills = () => {
-    if (!JBridge.isNetworkAvailable()) {
-      window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
-      return;
-    }
+  addSkills = ()=>{
+    if(!JBridge.isNetworkAvailable()){
+          window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
+          return;
+       }
     window.__LoaderDialog.show();
     var whatToSend = {
-      "user_token": window.__user_accessToken,
-      "api_token": window.__apiToken,
+      "user_token" : window.__user_accessToken,
+      "api_token" : window.__apiToken,
     }
-    var event = { "tag": "API_GetSkillsList", contents: whatToSend };
+    var event= { "tag": "API_GetSkillsList", contents: whatToSend };
     setTimeout(() => {
-      if (window.__CustomPopUp.customPopUpVisibility == "visible") return;
-      window.__CustomPopUp.show();
-      window.__LoaderDialog.hide();
-    }, window.__API_TIMEOUT);
-    window.__runDuiCallback(event);
-  }
+             if (window.__CustomPopUp.customPopUpVisibility=="visible") return;
+              window.__CustomPopUp.show();
+              window.__LoaderDialog.hide();
+            }, window.__API_TIMEOUT);
+        window.__runDuiCallback(event);
+    }
 
   checkPrivacy = (name) => {
-    var privateFlag = false;
-    if (this.details.hasOwnProperty("profileVisibility") && this.details.profileVisibility[name] && this.details.profileVisibility[name] == 'private')
-      privateFlag = true;
+    var privateFlag=false;
+    if(this.details.hasOwnProperty("profileVisibility") && this.details.profileVisibility[name] && this.details.profileVisibility[name]=='private')
+       privateFlag=true;
     return privateFlag;
   }
 
-  handleLockClick = (name, locked, label) => {
+  handleLockClick = (name,locked,label) => {
 
     var whatToSend = {
-      user_token: window.__user_accessToken,
-      api_token: window.__apiToken,
-      request: { userId: window.__userToken }
+      user_token : window.__user_accessToken,
+      api_token : window.__apiToken,
+      request:{ userId: window.__userToken }
     };
-    if (locked) {
-      whatToSend.request['public'] = [name];
+    if(locked){
+      whatToSend.request['public']=[name];
     }
     else {
-      whatToSend.request['private'] = [name];
+      whatToSend.request['private']=[name];
     }
-    console.log("whatToSend", whatToSend);
-    whatToSend.request = JSON.stringify(whatToSend.request);
+    console.log("whatToSend",whatToSend);
+    whatToSend.request=JSON.stringify(whatToSend.request);
     var event = { tag: "API_SetProfileVisibility", contents: whatToSend }
     if (JBridge.isNetworkAvailable()) {
-      if (locked)
-        window.__Snackbar.show("Showing " + label + " to all");
+      if(locked)
+        window.__Snackbar.show("Showing "+label+" to all");
       else {
-        window.__Snackbar.show("Hiding " + label + " from all");
+        window.__Snackbar.show("Hiding "+label+" from all");
       }
       window.__runDuiCallback(event);
     }
-    else {
+    else{
       window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
     }
   }
@@ -430,7 +431,7 @@ class ProfileFragment extends View {
             data={this.details}
             textStyle={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK} />
           <GuestAdditionalInfo
-            profileData={this.profileData} />
+            profileData = {this.profileData} />
           {this.getSignInOverlay()}
         </LinearLayout>
       </ScrollView>);
@@ -446,74 +447,74 @@ class ProfileFragment extends View {
         weight="1"
         id={this.idSet.scrollViewContainer}
         width="match_parent">
+      <LinearLayout
+        height="match_parent"
+        width="match_parent"
+        padding="16,8,16,24"
+        orientation="vertical"
+        layoutTransition="true">
+        <ProfileHeader
+          editable={this.isEditable}
+          data={this.details}
+          textStyle={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK} />
+        <ProfileProgress
+          editable={this.isEditable}
+          data={this.details} />
+
+        {this.getDescription()}
+
+        <ProfileExperiences
+          editable={this.isEditable}
+          data={this.education}
+          popUpType={window.__PROFILE_POP_UP_TYPE.EDUCATION}
+          heading={window.__S.TITLE_EDUCATION}
+          privacyStatus={this.checkPrivacy("education")}
+          handleLock={this.handleLockClick} />
+
+        <ProfileExperiences
+          editable={this.isEditable}
+          data={this.jobProfile}
+          popUpType={window.__PROFILE_POP_UP_TYPE.EXPERIENCE}
+          heading={window.__S.TITLE_EXPERIENCE}
+          privacyStatus={this.checkPrivacy("jobProfile")}
+          handleLock={this.handleLockClick} />
+
+
+        <ProfileExperiences
+          editable={this.isEditable}
+          data={this.address}
+          popUpType={window.__PROFILE_POP_UP_TYPE.ADDRESS}
+          heading={window.__S.TITLE_ADDRESS}
+          privacyStatus={this.checkPrivacy("address")}
+          handleLock={this.handleLockClick} />
         <LinearLayout
-          height="match_parent"
-          width="match_parent"
-          padding="16,8,16,24"
-          orientation="vertical"
-          layoutTransition="true">
-          <ProfileHeader
+          height="wrap_content"
+          width="wrap_content"
+          id={this.idSet.skillTagComponent}>
+          <ProfileSkillTags
+            id={window.__userToken}
             editable={this.isEditable}
-            data={this.details}
-            textStyle={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK} />
-          <ProfileProgress
-            editable={this.isEditable}
-            data={this.details} />
-
-          {this.getDescription()}
-
-          <ProfileExperiences
-            editable={this.isEditable}
-            data={this.education}
-            popUpType={window.__PROFILE_POP_UP_TYPE.EDUCATION}
-            heading={window.__S.TITLE_EDUCATION}
-            privacyStatus={this.checkPrivacy("education")}
+            onAddClicked={this.addSkills}
+            data={this.details.skills}
+            privacyStatus={this.checkPrivacy("skills")}
             handleLock={this.handleLockClick} />
-
-          <ProfileExperiences
-            editable={this.isEditable}
-            data={this.jobProfile}
-            popUpType={window.__PROFILE_POP_UP_TYPE.EXPERIENCE}
-            heading={window.__S.TITLE_EXPERIENCE}
-            privacyStatus={this.checkPrivacy("jobProfile")}
-            handleLock={this.handleLockClick} />
-
-
-          <ProfileExperiences
-            editable={this.isEditable}
-            data={this.address}
-            popUpType={window.__PROFILE_POP_UP_TYPE.ADDRESS}
-            heading={window.__S.TITLE_ADDRESS}
-            privacyStatus={this.checkPrivacy("address")}
-            handleLock={this.handleLockClick} />
-          <LinearLayout
-            height="wrap_content"
-            width="wrap_content"
-            id={this.idSet.skillTagComponent}>
-            <ProfileSkillTags
-              id={window.__userToken}
-              editable={this.isEditable}
-              onAddClicked={this.addSkills}
-              data={this.details.skills}
-              privacyStatus={this.checkPrivacy("skills")}
-              handleLock={this.handleLockClick} />
-          </LinearLayout>
-
-          <LinearLayout
-            width="match_parent"
-            id={this.idSet.createdByHolder}>
-
-            <ProfileCreations
-              data={_this.createdBy}
-              editable={_this.editable}
-              onCardClick={_this.handleCreatedCardClick} />
-          </LinearLayout>
-
-
-          <ProfileAdditionalInfo
-            data={this.details}
-            editable={this.isEditable} />
         </LinearLayout>
+
+        <LinearLayout
+          width="match_parent"
+          id={this.idSet.createdByHolder}>
+
+          <ProfileCreations
+            data={_this.createdBy}
+            editable={_this.editable}
+            onCardClick={_this.handleCreatedCardClick} />
+        </LinearLayout>
+
+
+        <ProfileAdditionalInfo
+          data={this.details}
+          editable={this.isEditable} />
+      </LinearLayout>
       </ScrollView>
     );
     this.replaceChild(this.idSet.profileContainer, layout.render(), 0);
@@ -521,21 +522,21 @@ class ProfileFragment extends View {
   }
 
   getSignInOverlay = () => {
-    return (
-      <LinearLayout
-        height="match_parent"
-        width="match_parent"
-        orientation="vertical"
-        background={window.__Colors.WHITE_F2}
-        clickable="true"
-        padding="16,16,16,16">
-        <HomeQuestionCardStyle
+    return(
+    <LinearLayout
+      height="match_parent"
+      width="match_parent"
+      orientation="vertical"
+      background={window.__Colors.WHITE_F2}
+      clickable="true"
+      padding="16,16,16,16">
+      <HomeQuestionCardStyle
           currComponentLocation={"PROFILE"}
-          headerText={window.__S.OVERLAY_LABEL_COMMON}
-          infoText={window.__S.OVERLAY_INFO_TEXT_COMMON}
-          textSize="16"
-          gravity="left" />
-      </LinearLayout>);
+        headerText={window.__S.OVERLAY_LABEL_COMMON}
+        infoText={window.__S.OVERLAY_INFO_TEXT_COMMON}
+        textSize="16"
+        gravity="left" />
+    </LinearLayout>);
   }
 
   render() {
@@ -565,14 +566,14 @@ class ProfileFragment extends View {
             showMenu="true"
             hideBack="true" />
 
-          <LinearLayout
-            id={this.idSet.profileContainer}
-            height="match_parent"
-            width="match_parent"
-            orientation="horizontal"
-            layoutTransition="true">
-            <CircularLoader />
-          </LinearLayout>
+            <LinearLayout
+              id={this.idSet.profileContainer}
+              height="match_parent"
+              width="match_parent"
+              orientation="horizontal"
+              layoutTransition="true">
+              <CircularLoader />
+            </LinearLayout>
         </LinearLayout>
       </RelativeLayout>
     )

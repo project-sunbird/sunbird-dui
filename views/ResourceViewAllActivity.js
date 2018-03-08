@@ -91,7 +91,7 @@ showList = () =>{
                  content={item}
                  index = {i}
                  onResourceClick = {this.handleResourceClick}/>);
-                 this.jsonArray.push({ view: this.getView(layout.render()),value:"",viewType:0});
+                 this.jsonArray.push({ view: this.getView(layout.render()),value:"",viewType:0,name:this.name,id:item.identifier});
      }
     });
     var callback1 = callbackMapper.map(function() {
@@ -131,6 +131,7 @@ showList = () =>{
     if(item.mimeType.toLowerCase() == "application/vnd.ekstep.content-collection"){
       var whatToSend={course:JSON.stringify(item)};
       var event={tag:"OPEN_CourseEnrolled",contents:whatToSend}
+      JBridge.logListViewEvent("LIBRARY");
       window.__runDuiCallback(event);
     }else{
       var name = "",description = "";
@@ -152,6 +153,7 @@ showList = () =>{
 
       var whatToSend = {resourceDetails:JSON.stringify(resDetails)}
       var event = {tag:"OPEN_ResourceInfo",contents:whatToSend}
+      JBridge.logListViewEvent("LIBRARY");
       window.__runDuiCallback(event);
     }
   }
@@ -162,6 +164,7 @@ showList = () =>{
 
   onBackPressed = () => {
     var event = {tag:"BACK_ResourceViewAllActivity",contents: []}
+    JBridge.logListViewEvent("LIBRARY");
     window.__runDuiCallback(event);
   }
 

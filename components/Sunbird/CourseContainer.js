@@ -67,7 +67,7 @@ class CourseContainer extends View {
                   </LinearLayout>)
 
     this.replaceChild(this.idSet.courseContainer,layout.render(),0)
-
+    JBridge.setMapId(this.idSet.parentContainer + "",this.props.title, this.props.sectionId + "", this.props.sectionIndex + "")
   }
 
   checkEnrolledCourse = (identifier) =>{

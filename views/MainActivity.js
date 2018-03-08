@@ -81,7 +81,7 @@ class MainActivity extends View {
 
   onPop = () => {
     console.log("onPop called in MainActivity");
-    
+
     Android.runInUI(this.animateView(), null);
 
     if (window.__pressedLoggedOut) {
@@ -162,7 +162,7 @@ class MainActivity extends View {
 
   handleStateChange = state => {
     if (this.contentLayout && state.screen == this.contentLayout.screenName) {
-      console.log("contentLayout.handleStateChange -> ", this.contentLayout.screenName);      
+      console.log("contentLayout.handleStateChange -> ", this.contentLayout.screenName);
       this.contentLayout.handleStateChange(state);
       return;
     } else if (state.screen != "MainActivity") {
@@ -340,6 +340,7 @@ class MainActivity extends View {
       //   break;
       case 3:
         // if (!data.sendBack) JBridge.logTabClickEvent("PROFILE");
+        JBridge.logTabClickEvent("PROFILE");
         this.contentLayout = (
           <ProfileFragment
             height="match_parent"

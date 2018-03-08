@@ -155,6 +155,10 @@ class AboutUsActivity extends View {
         </LinearLayout>)
     }
 
+    afterRender = () => {
+        JBridge.logSettingsScreenEvent("ABOUT_APP");
+    }
+
     render = () => {
         this.layout = (
             <LinearLayout

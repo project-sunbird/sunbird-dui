@@ -21,7 +21,7 @@ class CropParagraph extends View {
     this.str = this.props.contentText!=undefined ? this.props.contentText : "";
     console.log(this.props)
     // console.log("inside CropParagraph, content : " + this.str);
-    this.len = 50;
+    this.len = parseInt(this.props.charToShow) || 50;
     if(this.str.length > this.len) this.str = this.str.substring(0,this.len) + "...";
 
     this.max = false;
@@ -37,7 +37,7 @@ class CropParagraph extends View {
       })
       cmd += this.set({
         id: this.idSet.paraContainerCroped,
-        text: this.props.contentText
+        textFromHtml: this.props.contentText
       });
       Android.runInUI(cmd, 0);
     } else {
@@ -47,7 +47,7 @@ class CropParagraph extends View {
       })
       cmd += this.set({
         id: this.idSet.paraContainerCroped,
-        text: this.str
+        textFromHtml: this.str
       });
       Android.runInUI(cmd, 0);
     }
@@ -55,26 +55,31 @@ class CropParagraph extends View {
   }
 
   render() {
-
-
     this.layout = (
       <LinearLayout
       background={window.__Colors.WHITE}
       width="match_parent"
-      height="wrap_content"
+      height= "wrap_content"
       margin = {this.props.margin || "0,0,0,0"}
-      visibility = {(this.props.headText==undefined || this.props.headText.length == 0) ? "gone":"visible"}
       layoutTransition="true"
       orientation="vertical">
-
+      <LinearLayout
+        width="match_parent"
+        height="wrap_content"
+        background={this.props.background || window.__Colors.WHITE}>
+      <TextView
+        text = {this.props.headText}
+        style= {window.__TextStyle.textStyle.CARD.TITLE.DARK}
+        margin={this.props.headTextMargin || "0,0,0,8"}
+        visibility = {(this.props.headText==undefined || this.props.headText.length == 0) ? "gone":"visible"}
+        />
+        </LinearLayout>
           <LinearLayout
         height="wrap_content"
         width="wrap_content"
         layout="horizontal">
-            <TextView
-              text = {this.props.headText}
-              style= {window.__TextStyle.textStyle.CARD.TITLE.DARK}
-              margin="0,0,0,8"/>
+
+
 
               <ViewWidget
               height="0"
@@ -113,7 +118,7 @@ class CropParagraph extends View {
 
             <TextView
               id={this.idSet.paraContainerCroped}
-              text = {this.str}
+              textFromHtml = {this.str}
               width="wrap_content"
               height="wrap_content"
               layoutTransition="true"
