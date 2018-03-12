@@ -22,7 +22,20 @@ class CropParagraph extends View {
     console.log(this.props)
     // console.log("inside CropParagraph, content : " + this.str);
     this.len = parseInt(this.props.charToShow) || 50;
-    if(this.str.length > this.len) this.str = this.str.substring(0,this.len) + "...";
+    if(this.props.charToShow){
+      var pattern = "GRADE";
+      if(this.str.indexOf(pattern)>=0) {
+        this.str = this.str.substr(0,this.str.indexOf(pattern));
+        this.str = this.str.replace(/<br>/g,"");
+        this.str = "<br>" + this.str;
+        if(this.str.length > 50) this.str = this.str.substring(0,50) + "...";
+        else this.str = this.str + "<br>";
+
+        this.len = 0;
+
+      }
+    }
+    else if(this.str.length > this.len) this.str = this.str.substring(0,this.len) + "...";
 
     this.max = false;
     this.lockIconVisibility=this.props.privacyStatus;

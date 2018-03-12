@@ -29,15 +29,22 @@ class RatingsPopup extends View {
         this.rating = 0;
         this.pageId = "";
         this.contentVersion = "";
+        this.visibility = false;
     }
 
 
     show = (id) => {
         this.setVisibility("visible", id);
+        this.visibility = true;
     }
 
     hide = (id) => {
         this.setVisibility("gone", id);
+        this.visibility = false;
+    }
+
+    getVisibility = () => {
+      return this.visibility;
     }
 
     initData = (contentId, pageId, contentVersion, rating, comment) => {
@@ -116,7 +123,7 @@ class RatingsPopup extends View {
             }
         });
         return (
-            <LinearLayout   
+            <LinearLayout
                 height = "wrap_content"
                 width = "match_parent"
                 orientation = "horizontal"
@@ -147,7 +154,7 @@ class RatingsPopup extends View {
     getSubmitButton = () => {
         var flag = this.totalRatedStars();
         console.log("getSubmitButton -> ", flag);
-        
+
         if (flag == 0) {
             return (
                 <FeatureButton
@@ -253,7 +260,7 @@ class RatingsPopup extends View {
             {this.getContent()}
         </LinearLayout>)
     }
-    
+
     afterRender = () => {
         this.updateStars(-1);
     }

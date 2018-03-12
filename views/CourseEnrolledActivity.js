@@ -109,7 +109,7 @@ class CourseEnrolledActivity extends View {
     if (window.__currCourseDetails == undefined) {
       window.__currCourseDetails = {};
       window.__currCourseDetails.courseId = this.baseIdentifier;
-      window.__currCourseDetails.moduleName = this.apiDetails.courseName;
+      window.__currCourseDetails.moduleName = this.apiDetails.identifier;
     }
   }
 
@@ -258,11 +258,11 @@ class CourseEnrolledActivity extends View {
         window.__RatingsPopup.initData(_this.courseDetails.identifier, "content-detail", _this.courseDetails.contentData.pkgVersion);
       }
 
-      _this.testCounter++;
-      if(_this.testCounter > 1)
+      _this.asyncCounter++;
+      if(_this.asyncCounter > 1)
         _this.contentDetails(data);
 
-      
+
       if (data.isAvailableLocally == true) {
         _this.logTelelmetry(identifier, data.contentData.pkgVersion, data.isAvailableLocally);
         _this.renderChildren(identifier);
@@ -468,7 +468,7 @@ class CourseEnrolledActivity extends View {
 
   renderCourseChildren = () => {
     var layout;
-    JBridge.logRollupEvent("COURSE",this.apiDetails.courseName ,null,null,null);
+    JBridge.logRollupEvent("COURSE",window.__currCourseDetails.moduleName ,null,null,null);
 
     if (this.courseContent.children == undefined) {
       layout = <TextView
@@ -512,9 +512,13 @@ class CourseEnrolledActivity extends View {
       window.__ContentLoaderDialog.hide();
       return;
     }
+   if (window.__RatingsPopup.getVisibility()) {
+      window.__RatingsPopup.hide();
+    } else {
     JBridge.endEventLog(this.courseDetails.contentType, this.courseDetails.identifier, this.courseDetails.contentData.pkgVersion);
     var event = { tag: 'BACK_CourseEnrolledActivity', contents: [] }
     window.__runDuiCallback(event);
+  }
   }
 
   refeshCourseProgressApi = () => {
@@ -909,7 +913,7 @@ class CourseEnrolledActivity extends View {
                       width="wrap_content"
                       height="wrap_content"
                       id={this.idSet.ratingContainer} />
-                 
+
                     </LinearLayout>
                   <LinearLayout
                    id={this.idSet.readMore}/>

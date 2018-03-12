@@ -358,7 +358,7 @@ class ModuleDetailActivity extends View {
       var result = [];
       var count = 0;
       while(count<4){
-        var moduleName = this.stack[count] ? this.stack[count].moduleName : null;
+        var moduleName = this.stack[count] ? this.stack[count].module.identifier : null;
         result.push(moduleName);
         count++;
       }
@@ -461,6 +461,9 @@ class ModuleDetailActivity extends View {
         JBridge.endEventLog(this.module.contentType, this.module.identifier, this.module.contentData.pkgVersion);
         this.stackPop();
         var top = this.stackTop();
+        if (window.__RatingsPopup.getVisibility()) {
+          window.__RatingsPopup.hide();
+        } else {
         if (!this.stack.length < 1 || top) {
             this.reRender(top.moduleName, top.module);
             window.__ProgressButton.setVisibility("gone")
@@ -469,6 +472,7 @@ class ModuleDetailActivity extends View {
             var event = { "tag": "BACK_ModuleDetailActivity", contents: whatToSend };
             window.__runDuiCallback(event);
         }
+      }
     }
 
     changeOverFlow = () => {

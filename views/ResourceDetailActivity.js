@@ -543,7 +543,9 @@ class ResourceDetailActivity extends View {
       window.__PermissionDeniedDialog.hide();
     } else if (window.__PreviewImagePopup.getVisibility()) {
       window.__PreviewImagePopup.hide();
-    } else {
+    } else if (window.__RatingsPopup.getVisibility()) {
+      window.__RatingsPopup.hide();      
+    }else {
       JBridge.endEventLog(_this.details.content.contentType, _this.details.content.identifier, _this.details.content.pkgVersion);
       var event = { "tag": "BACK_ResourceDetailActivity", contents: [] };
       window.__runDuiCallback(event);
