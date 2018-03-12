@@ -13,6 +13,7 @@ var _this;
 var CardComponent = require('../Sunbird/core/CardComponent');
 var CarouselCards = require('./CarouselCards');
 var CircularLoader = require('../../components/Sunbird/core/CircularLoader');
+const Font = require('../../res/Font');
 
 class Card extends View {
     constructor(props, children) {
@@ -32,9 +33,8 @@ class Card extends View {
         if (this.cardData.selected.length == 0) {
             fLayout = (
                 <TextView
-                    textSize="12"
-                    color={window.__Colors.PRIMARY_ACCENT}
-                    text={this.cardData.option} />
+                    text={this.cardData.option}
+                    style={window.__TextStyle.textStyle.TABBAR.SELECTED} />
             );
         } else {
             visibility = "visible";
@@ -46,7 +46,7 @@ class Card extends View {
             
             fLayout = (
                 <TextView
-                    textSize="12"
+                    textSize="14"
                     text={dispText} />
             );
         }
@@ -62,6 +62,7 @@ class Card extends View {
                 <TextView
                     margin = "8,8,0,0"
                     textSize = "14"
+                    fontStyle={Font.fontStyle.REGULAR}
                     alignParentTop="true, -1"
                     text={this.cardData.question} />
 

@@ -181,12 +181,13 @@ exports.processResponse = (state) => {
 				var response = JSON.parse(exports.decodeBase64(arguments[1]));
 				var statusCode = arguments[2];
 				// console.log("statusCode: " + statusCode + "-- response: " + response);
-				if (status == "failure") window.__Logout();
-				else {
+				if (status == "failure") {
+					window.__Logout();
+				} else {
 					console.log("response ", response);
 					window.__refreshToken = response.refresh_token;
 					window.__user_accessToken = response.access_token;
-					JBridge.setInSharedPrefs("user_token", response.access_token);
+					JBridge.setInSharedPrefs("user_access_token", response.access_token);
 					JBridge.setInSharedPrefs("refresh_token", response.refresh_token);
 					var whatToSend = {"user_token":window.__user_accessToken,"api_token": window.__apiToken}
 					var event = { "tag": state.responseFor, contents: whatToSend };

@@ -182,7 +182,7 @@ class GenericSelectorPopup extends View {
                 orientation="vertical"
                 width="match_parent"
                 root="true"
-                margin="16,0,16,0"
+                margin="8,0,16,0"
                 height="match_parent">
                     {checkBoxes}
             </LinearLayout>
