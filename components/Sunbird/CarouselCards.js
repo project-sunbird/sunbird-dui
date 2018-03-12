@@ -11,6 +11,7 @@ var utils = require("../../utils/GenericFunctions")
 var _this;
 var CardComponent = require('../Sunbird/core/CardComponent');
 var CircularLoader = require('../../components/Sunbird/core/CircularLoader');
+const Font = require('../../res/Font');
 
 class CarouselCards extends View {
     constructor(props, children) {
@@ -47,6 +48,7 @@ class CarouselCards extends View {
                 width="wrap_content"
                 height="wrap_content"
                 textSize="14"
+                fontStyle={Font.fontStyle.REGULAR}
                 text={"Help us get you content thats relevant to you."}/>
         </LinearLayout>)
     }
