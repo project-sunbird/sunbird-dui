@@ -337,13 +337,14 @@ const stringsRes = {
 		ENJOYED_THIS_CONTENT: "Enjoyed this content?",
 		HELP_US_BY_RATING: "Help us by rating this content",
 		FEEDBACK_HINT: "Feedback (optional)",
+		FEEDBACK_HINT_1: "Add a comment here",
 		ABOUT: "About",
 		SUBJECT: "SUBJECT",
 		BOARD: "BOARD",
 		MEDIUM_2: "MEDIUM",
 		VIEW_CREDITS_INFO: "View Credits and Licensing Info",
-		HIDE_CREDITS_INFO: "Hide Credits and Licensing Info"
-
+		HIDE_CREDITS_INFO: "Hide Credits and Licensing Info",
+		TRY_BEFORE_RATING: "Please try the content before rating it."
 	},
 	"hi_IN": {
 		ALREADY_HAVE_ACC: "मौजूदा उपयोगकर्ता, साइन इन करें",

@@ -26,6 +26,7 @@ class RatingsPopup extends View {
         //data to send for the feedback
         this.contentId = "";
         this.comment = "";
+        this.commentHint = ""
         this.rating = 0;
         this.pageId = "";
         this.contentVersion = "";
@@ -53,7 +54,13 @@ class RatingsPopup extends View {
         this.contentVersion = contentVersion;
         this.comment = comment ? comment : "";
         this.rating = Math.floor(rating ? rating : 0);
+        this.commentHint = this.rating == 0 ? window.__S.FEEDBACK_HINT : window.__S.FEEDBACK_HINT_1;
         this.updateStars(this.rating - 1);
+    }
+
+    isRatingsAvailable = () => {
+        if (this.comment != "" || this.rating != 0) return true;
+        else return false;
     }
 
     setVisibility = (data, id) => {
@@ -70,6 +77,7 @@ class RatingsPopup extends View {
 
     submitFeedback = () => {
         this.rating = this.totalRatedStars();
+        this.commentHint = this.rating == 0 ? window.__S.FEEDBACK_HINT : window.__S.FEEDBACK_HINT_1;
         var successCb = callbackMapper.map(() => {
             window.__Snackbar.show("Thank you for rating.");
         });
@@ -144,7 +152,7 @@ class RatingsPopup extends View {
             <EditText
                 width = "match_parent"
                 text={this.comment != "" ? this.comment : null}
-                hint={window.__S.FEEDBACK_HINT}
+                hint={this.commentHint}
                 margin="0, 16, 0, 0"
                 visibility = {flag == 0? "gone" : "visible"}
                 onChange = {this.updateFeedbackText} />

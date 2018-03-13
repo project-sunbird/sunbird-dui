@@ -56,6 +56,7 @@ class ResourceDetailActivity extends View {
     this.creditsAndLicense = "";
     this.showCredits = true;
     this.shouldCacheScreen = false;
+    window.__currResourceAllowRating = false;
 
     this.details = state.data.value0.resourceDetails;
     this.details = JSON.parse(this.details);
@@ -85,6 +86,9 @@ class ResourceDetailActivity extends View {
         window.__RatingsPopup.initData(_this.contentData.identifier, "content-detail", _this.contentData.contentData.pkgVersion, _this.contentData.contentFeedback[0].rating, _this.contentData.contentFeedback[0].comments);
       } else {
         window.__RatingsPopup.initData(_this.contentData.identifier, "content-detail", _this.contentData.contentData.pkgVersion);
+      }
+      if (_this.contentData.hasOwnProperty("contentAccess") && _this.contentData.contentAccess.length != 0 && _this.contentData.contentAccess[0].status == 1) {
+        window.__currResourceAllowRating = true;
       }
       if (_this.contentData.isAvailableLocally == true) {
         _this.localStatus = true;
@@ -418,6 +422,18 @@ class ResourceDetailActivity extends View {
     this.showCredits = !this.showCredits;
   }
 
+  handleRatingsBarClick = () => {
+    if (window.__loggedInState != "GUEST"){
+      if (window.__currResourceAllowRating) {
+        window.__RatingsPopup.show()
+      } else {
+        window.__Snackbar.show(window.__s.TRY_BEFORE_RATING);
+      }
+    } else {
+      window.__Snackbar.show("Sign in to use this feature.");
+    }
+  }
+
   getHeader = () => {
     return (
       <LinearLayout
@@ -466,7 +482,7 @@ class ResourceDetailActivity extends View {
           <LinearLayout
             width="wrap_content"
             height="wrap_content"
-            onClick={() => { window.__RatingsPopup.show() }}>
+            onClick={this.handleRatingsBarClick}>
           <RatingBar
             id={this.idSet.ratingBar}
             width="wrap_content"

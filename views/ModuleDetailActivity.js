@@ -66,6 +66,8 @@ class ModuleDetailActivity extends View {
         this.isPoped = false;
         this.stack = [];
         this.stackPush(this.moduleName, this.module); //the current content is always on the top of the stack
+
+        window.__currContentAllowRating = false;
     }
 
     stackPush = (moduleName, module) => {
@@ -201,6 +203,9 @@ class ModuleDetailActivity extends View {
                     } else {
                         window.__RatingsPopup.initData(_this.localContent.identifier, "content-detail", _this.localContent.contentData.pkgVersion);
                     }
+                    if (_this.localContent.hasOwnProperty("contentAccess") && _this.localContent.contentAccess.length != 0 && _this.localContent.contentAccess[0].status == 1) {
+                        window.__currContentAllowRating = true;
+                    }
                 }
             });
             JBridge.getContentDetails(module.identifier, cb, true);
@@ -212,6 +217,7 @@ class ModuleDetailActivity extends View {
             window.__ProgressButton.checkContentLocalStatus(this.localStatus);
         } else {
             //if the current content had children, get the children data and render the children
+            window.__currContentAllowRating = true;
             var _ = this.isPoped ? "" : JBridge.startEventLog(module.contentType, module.identifier, module.contentData.pkgVersion);
             var callback = callbackMapper.map(function (data) {
                 if (data == "__failed") {
@@ -280,6 +286,7 @@ class ModuleDetailActivity extends View {
 
     reRender = (moduleName, module) => {
         console.log("inside reRender, index : " + module.index);
+        window.__currContentAllowRating = false;
         this.moduleName = moduleName;
         this.module = module;
         var layout = (
@@ -373,13 +380,21 @@ class ModuleDetailActivity extends View {
         )
     }
 
+    handleRatingsBarClick = () => {
+        if (window.__currContentAllowRating) {
+            window.__RatingsPopup.show()
+        } else {
+            window.__Snackbar.show(window.__s.TRY_BEFORE_RATING)
+        }
+    }
+
     updateRatings = (rating) => {
         var r = rating ? rating : 0;
         var layout = (
             <LinearLayout
                 width="wrap_content"
                 height="wrap_content"
-                onClick={() => { window.__RatingsPopup.show() }}>
+                onClick={this.handleRatingsBarClick}>
                 <RatingBar
                     id={this.idSet.ratingBar}
                     width="wrap_content"
@@ -546,6 +561,7 @@ class ModuleDetailActivity extends View {
                             width="match_parent"
                             padding="16,0,16,0"
                             orientation="vertical"
+                            layoutTransition="true"
                             id={this.idSet.renderPage}>
 
                             {this.getHeader()}

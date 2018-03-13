@@ -152,6 +152,9 @@ class ProgressButton extends View {
             data = utils.decodeBase64(data[0]);
             var parsedData = JSON.parse(utils.jsonifyData(data));
             console.log("data from progress", parsedData);
+            window.__currResourceAllowRating = true;
+            window.__currContentAllowRating = true;
+            JBridge.addContentAccess(parsedData.identifier);
             JBridge.playContent(data, parsedData.identifier, parsedData.contentData.pkgVersion, utils.getFuncMapped(_this.checkTelemetry));
           });
           JBridge.getContentDetails(_this.props.identifier, callback, false);
@@ -188,7 +191,7 @@ class ProgressButton extends View {
     console.log("telemetryData.eid", telemetryData.eid);
     if (telemetryData.eid == "END") {
       JBridge.stopTelemetryEvent();
-      window.__RatingsPopup.show();
+      window.__RatingsPopup.isRatingsAvailable() ? "" : window.__RatingsPopup.show();
       var time = new Date();
       var date = utils.formatDate(time);
       var contentProgress = {};

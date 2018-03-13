@@ -836,7 +836,6 @@ class CourseEnrolledActivity extends View {
 
   render() {
     this.layout = (
-
       <RelativeLayout
         height="match_parent"
         width="match_parent"
@@ -898,27 +897,30 @@ class CourseEnrolledActivity extends View {
                   width="match_parent"
                   root="true"
                   orientation="vertical">
+
                   <LinearLayout
                     height="match_parent"
                     width="match_parent"
                     padding="16,24,16,16"
+                    layoutTransition = "true"
                     orientation="vertical">
-                  <LinearLayout
-                    width="match_parent"
-                    id={this.idSet.headerContainer}>
+                    <LinearLayout
+                      width="match_parent"
+                      id={this.idSet.headerContainer}>
 
-                    {this.getHeader()}
-                  </LinearLayout>
+                      {this.getHeader()}
+                    </LinearLayout>
                     <LinearLayout
                       width="wrap_content"
                       height="wrap_content"
+                      layoutTransition="true"
                       id={this.idSet.ratingContainer} />
 
-                    </LinearLayout>
+                  </LinearLayout>
                   <LinearLayout
-                   id={this.idSet.readMore}/>
+                    id={this.idSet.readMore} />
 
-                   <LinearLayout
+                  <LinearLayout
                     width="match_parent"
                     height="wrap_content"
                     orientation="vertical"
@@ -929,35 +931,35 @@ class CourseEnrolledActivity extends View {
                       margin="16,16,0,16"
                       style={window.__TextStyle.textStyle.CARD.TITLE.DARK}
                       text={window.__S.STRUCTURE} />
-                      </LinearLayout>
-                   <LinearLayout
-                     height="match_parent"
-                     width="match_parent"
-                     padding="16,24,16,16"
-                     orientation="vertical">
-
-
+                  </LinearLayout>
                   <LinearLayout
-                    id={this.idSet.descriptionContainer}
                     height="match_parent"
                     width="match_parent"
-                    gravity="center"
-                    root="true"
+                    padding="16,24,16,16"
                     orientation="vertical">
 
-                    <TextView
-                      margin="0,50,0,0"
-                      width="wrap_content"
-                      height="wrap_content"
-                      gravity="center"
-                      text={window.__S.LOADING_CONTENT} />
 
-                    <ProgressBar
-                      margin="0,10,0,0"
+                    <LinearLayout
+                      id={this.idSet.descriptionContainer}
+                      height="match_parent"
+                      width="match_parent"
                       gravity="center"
-                      width="20"
-                      height="20" />
-                  </LinearLayout>
+                      root="true"
+                      orientation="vertical">
+
+                      <TextView
+                        margin="0,50,0,0"
+                        width="wrap_content"
+                        height="wrap_content"
+                        gravity="center"
+                        text={window.__S.LOADING_CONTENT} />
+
+                      <ProgressBar
+                        margin="0,10,0,0"
+                        gravity="center"
+                        width="20"
+                        height="20" />
+                    </LinearLayout>
                   </LinearLayout>
                 </LinearLayout>
               </ScrollView>
