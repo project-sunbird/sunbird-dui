@@ -142,7 +142,7 @@ class CardComponent extends View {
     this.layout = (
       <LinearLayout
         height="wrap_content"
-        width="match_parent"
+        width="wrap_content"
         margin="16,0,0,22"
         onClick={this.handleCardClick}
         afterRender={this.afterRender}
