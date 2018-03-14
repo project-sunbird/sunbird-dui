@@ -42,6 +42,7 @@ class CourseFragment extends View {
     if (window.__CourseFilter) {
       this.menuData = {
         url: [
+          { imageUrl: "ic_scanqr" },
           { imageUrl: "ic_action_search" },
           { imageUrl: "ic_action_filter_applied" }
         ]
@@ -49,6 +50,7 @@ class CourseFragment extends View {
     } else {
       this.menuData = {
         url: [
+          { imageUrl: "ic_scanqr" },
           { imageUrl: "ic_action_search" },
           { imageUrl: "ic_action_filter" }
         ]
@@ -118,7 +120,7 @@ class CourseFragment extends View {
           padding="16,16,16,16">
           <HomeQuestionCardStyle
             currComponentLocation={"COURSE"}
-            fromWhere ={"COURSE"}
+            fromWhere={"COURSE"}
             headerText={window.__S.OVERLAY_LABEL_COMMON}
             infoText={window.__S.OVERLAY_INFO_TEXT_COMMON}
             textSize="16"
@@ -291,7 +293,7 @@ class CourseFragment extends View {
   }
 
   afterRender = () => {
-    JBridge.getViews(this.idSet.scrollViewContainerCourse+"");
+    JBridge.getViews(this.idSet.scrollViewContainerCourse + "");
     if (!window.__CourseFilter) {
       console.log("CF afterRender -> no window.__CourseFilter");
 
@@ -363,6 +365,11 @@ class CourseFragment extends View {
       JBridge.logVisitEvent("COURSES");
       window.__runDuiCallback(event);
 
+    } else if (url == "ic_scanqr") {
+      var whatToSend = []
+      var event = { tag: "OPEN_QRActivity", contents: whatToSend }
+      JBridge.logVisitEvent(window.__S.COURSES_BNAV);
+      window.__runDuiCallback(event);
     } else if (url == "ic_action_filter" || url == "ic_action_filter_applied") {
       JBridge.explicitSearch("COURSE", "FILTER");
       window.__PageFilterPopup.show();

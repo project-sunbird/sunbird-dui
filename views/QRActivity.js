@@ -43,22 +43,22 @@ class QRActivity extends View {
   }
 
   openFrame = () => {
-    var callback = callbackMapper.map(function(data) {
+    var callback = callbackMapper.map(function (data) {
       console.log("Permission callback", data);
       if (data == "android.permission.CAMERA") {
         JBridge.setKey("isPermissionSetCamera", "true");
         QRScanner.openQRScanner(_this.idSet.frameLayout);
       }
-      if(data == "DeniedPermanently"){
+      if (data == "DeniedPermanently") {
         console.log("DENIED DeniedPermanently");
         window.__PermissionDeniedDialog.show("ic_warning_grey", window.__S.CAMERA);
       }
-      if(data == "ERROR"){
+      if (data == "ERROR") {
         console.log("DENIED");
         _this.showErrorPopup("PERMISSION");
       }
     });
-    JBridge.setPermissions(callback,"android.permission.CAMERA");
+    JBridge.setPermissions(callback, "android.permission.CAMERA");
   }
 
   onBackPressed = () => {
@@ -74,16 +74,27 @@ class QRActivity extends View {
     QRScanner.closeQRScanner();
     console.log("barcode data", atob(barcode));
     barcode = atob(barcode);
-    if (!this.isValidBarcode(barcode)) {
+    var keyword = this.getKeyword(barcode);
+    console.log("keyword for qr search ", keyword);
+    if (keyword) {
+      JBridge.logQRScanSuccess(barcode, "SearchResult");
+      var searchDetails = { filterDetails: { query: null }, searchType: "Combined", keywords: [keyword] }
+      var whatToSend = { filterDetails: JSON.stringify(searchDetails) }
+      var event = { tag: "OPEN_SearchActivity_QR", contents: whatToSend }
+      window.__runDuiCallback(event);
+      return;
+    } else if (!this.isValidBarcode(barcode)) {
       JBridge.logQRScanSuccess(barcode, "Unknown");
       this.showErrorPopup("WRONGQR");
       return;
     }
-    var identifier = barcode.substr(barcode.lastIndexOf("/")+1,barcode.length);
-    var callback = callbackMapper.map(function(data){
+
+    var identifier = barcode.substr(barcode.lastIndexOf("/") + 1, barcode.length);
+    identifier = identifier == "" ? "null" : identifier;
+    var callback = callbackMapper.map(function (data) {
       console.log("getContentDetails ", data);
-      if (data[0]=="__failed"){
-        if (JBridge.isNetworkAvailable()){
+      if (data[0] == "__failed") {
+        if (JBridge.isNetworkAvailable()) {
           JBridge.logQRScanSuccess(barcode, "Unknown");
           window.__LoaderDialog.hide();
           _this.showErrorPopup("WRONGQR");
@@ -96,50 +107,50 @@ class QRActivity extends View {
       }
       JBridge.logQRScanSuccess(barcode, "ContentDetail");
       var item = JSON.parse(utils.jsonifyData(utils.decodeBase64(data[0])));
-      console.log("Callback data in QRActivity",item);
+      console.log("Callback data in QRActivity", item);
       window.__LoaderDialog.hide();
-      if(item.contentType.toLowerCase() == "course"){
-            console.log("Content type is course",item.contentData);
-            var whatToSend={course:JSON.stringify(item.contentData)};
-            var event={tag:"OPEN_CourseInfoActivity_QR",contents:whatToSend}
-            window.__runDuiCallback(event);
+      if (item.contentType.toLowerCase() == "course") {
+        console.log("Content type is course", item.contentData);
+        var whatToSend = { course: JSON.stringify(item.contentData) };
+        var event = { tag: "OPEN_CourseInfoActivity_QR", contents: whatToSend }
+        window.__runDuiCallback(event);
 
-      } else if(item.mimeType.toLowerCase() == "application/vnd.ekstep.content-collection"){
-              var itemDetails = JSON.stringify(item.contentData);
-              _this.deepLinkCollectionDetails = itemDetails;
-              console.log("Content type is collecion or TextBook",_this.deepLinkCollectionDetails);
+      } else if (item.mimeType.toLowerCase() == "application/vnd.ekstep.content-collection") {
+        var itemDetails = JSON.stringify(item.contentData);
+        _this.deepLinkCollectionDetails = itemDetails;
+        console.log("Content type is collecion or TextBook", _this.deepLinkCollectionDetails);
 
-              var whatToSend={course:_this.deepLinkCollectionDetails};
-              var event={tag:"OPEN_CourseEnrolledActivity_QR",contents:whatToSend}
-              window.__runDuiCallback(event);
-      }else{
-              var resDetails ={};
-              var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " ["+utils.formatBytes(item.size)+"]" : "");
+        var whatToSend = { course: _this.deepLinkCollectionDetails };
+        var event = { tag: "OPEN_CourseEnrolledActivity_QR", contents: whatToSend }
+        window.__runDuiCallback(event);
+      } else {
+        var resDetails = {};
+        var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " [" + utils.formatBytes(item.size) + "]" : "");
 
-              resDetails['imageUrl'] = item.hasOwnProperty("contentData") ?"file://"+item.basePath+"/"+item.contentData.appIcon : item.appIcon;
-              resDetails['title'] = item.contentData.name;
-              resDetails['description'] = item.description;
-              resDetails['headFooterTitle'] = headFooterTitle;
-              resDetails['identifier'] = item.identifier;
-              resDetails['content'] = item;
+        resDetails['imageUrl'] = item.hasOwnProperty("contentData") ? "file://" + item.basePath + "/" + item.contentData.appIcon : item.appIcon;
+        resDetails['title'] = item.contentData.name;
+        resDetails['description'] = item.description;
+        resDetails['headFooterTitle'] = headFooterTitle;
+        resDetails['identifier'] = item.identifier;
+        resDetails['content'] = item;
 
-              console.log("resourceDetails IN QRActivity",resDetails);
+        console.log("resourceDetails IN QRActivity", resDetails);
 
-              var whatToSend = {resourceDetails:JSON.stringify(resDetails)}
-              var event = {tag:"OPEN_ResourceDetailActivity_QR",contents:whatToSend}
-              window.__runDuiCallback(event);
-            }
+        var whatToSend = { resourceDetails: JSON.stringify(resDetails) }
+        var event = { tag: "OPEN_ResourceDetailActivity_QR", contents: whatToSend }
+        window.__runDuiCallback(event);
+      }
     });
 
     //TODO implement proper error callback
-    JBridge.getContentDetails(identifier,callback, false);
+    JBridge.getContentDetails(identifier, callback, false);
   }
 
   showErrorPopup = (type) => {
     window.__LoaderDialog.hide();
-    console.log("showErrorPopup", type );
+    console.log("showErrorPopup", type);
     var cmd;
-    if (type == "PERMISSION"){
+    if (type == "PERMISSION") {
       cmd += this.set({
         id: this.idSet.permissionSettingsMsg,
         text: window.__S.CAMERA_PERMISSION_DENIED
@@ -149,7 +160,7 @@ class QRActivity extends View {
         visibility: "visible",
         text: window.__S.CAMERA_PERMISSION_SETTINGS.format(JBridge.getAppName())
       });
-    } else if (type == "WRONGQR"){
+    } else if (type == "WRONGQR") {
       cmd += this.set({
         id: this.idSet.permissionSettingsMsg,
         text: window.__S.UNKNOWN_QR
@@ -158,7 +169,7 @@ class QRActivity extends View {
         id: this.idSet.permissionTextHolder,
         visibility: "gone"
       });
-    } else if (type == "NOINTERNET"){
+    } else if (type == "NOINTERNET") {
       cmd += this.set({
         id: this.idSet.permissionSettingsMsg,
         text: window.__S.ERROR_NO_INTERNET_MESSAGE
@@ -176,10 +187,20 @@ class QRActivity extends View {
     Android.runInUI(cmd, null);
   }
 
+  getKeyword = (data) => {
+    for (var a = [], i = data.length; i--;) if (data[i] == "/") a.push(i);
+    console.log("data", data);
+    console.log("a ", a);
+    if (data.substr(a[1] + 1, a[0] - a[1] - 1) == "dial") {
+      return data.substr(a[0] + 1, data.length);
+    }
+    return null;
+  }
+
   isValidBarcode = (data) => {
     var re = new RegExp(JBridge.getApiUrl());
     console.log("regex match - " + re.test(data));
-    if (re.test(data)){
+    if (re.test(data)) {
       return true
     }
     return false;
@@ -188,7 +209,7 @@ class QRActivity extends View {
   handleRetry = () => {
     var cmd = this.set({
       id: this.idSet.errorPopup,
-      visibility:"gone"
+      visibility: "gone"
     });
     Android.runInUI(cmd, null);
     QRScanner.openQRScanner(this.idSet.frameLayout);
@@ -199,37 +220,37 @@ class QRActivity extends View {
   }
 
   getFooter = (type) => {
-    if (type == "PERMISSION"){
+    if (type == "PERMISSION") {
       return (
         <LinearLayout
-          width = "match_parent"
-          height = "wrap_content">
+          width="match_parent"
+          height="wrap_content">
           <Button
             id={this.idSet.openSettingsBtn}
-            type = {"BigButton_Primary_WB"}
+            type={"BigButton_Primary_WB"}
             text={window.__S.OPEN_SETTINGS}
             margin="10,20,10,20"
-            onClick={this.openSettings}/>
-          </LinearLayout>
+            onClick={this.openSettings} />
+        </LinearLayout>
       )
     } else if (type == "WRONGQR" || type == "NOINTERNET") {
       this.goBackBtn = {
-        text : window.__S.CANCEL,
-        id : this.idSet.goBackBtn,
-        isClickable : "true",
-        onClick : this.onBackPressed
+        text: window.__S.CANCEL,
+        id: this.idSet.goBackBtn,
+        isClickable: "true",
+        onClick: this.onBackPressed
       };
 
       this.tryAgainBtn = {
-        text : window.__S.TRY_AGAIN,
-        id : this.idSet.tryAgainBtn,
-        isClickable : "false",
-        onClick : this.handleRetry
+        text: window.__S.TRY_AGAIN,
+        id: this.idSet.tryAgainBtn,
+        isClickable: "false",
+        onClick: this.handleRetry
       }
       return (
         <LinearLayout
-          width = "match_parent"
-          height= "wrap_content"
+          width="match_parent"
+          height="wrap_content"
           margin="0, 16, 0, 0">
           <PageOption
             id={this.idSet.pageOption}
@@ -237,7 +258,7 @@ class QRActivity extends View {
             width="match_parent"
             buttonItems={[this.goBackBtn, this.tryAgainBtn]}
             hideDivider={true}
-            onButtonClick={this.handlePageOption}/>
+            onButtonClick={this.handlePageOption} />
         </LinearLayout>
       )
     }
@@ -253,7 +274,7 @@ class QRActivity extends View {
           height="match_parent"
           clickable="true"
           background="#000000"
-          alpha="0.5"/>
+          alpha="0.5" />
         <LinearLayout
           width="match_parent"
           height="wrap_content"
@@ -266,7 +287,7 @@ class QRActivity extends View {
             height="78"
             margin="0,100,0,0"
             gravity="center_horizontal"
-            imageUrl={"ic_warning_grey"}/>
+            imageUrl={"ic_warning_grey"} />
           <TextView
             width="260"
             height="wrap_content"
@@ -274,18 +295,18 @@ class QRActivity extends View {
             gravity="center_horizontal"
             style={window.__TextStyle.textStyle.HINT.DULL}
             id={this.idSet.permissionSettingsMsg}
-            />
+          />
           <TextView
-           width="wrap_content"
-           height="wrap_content"
-           id={this.idSet.permissionTextHolder}
-           margin="16,80,16,16"
-           gravity="center_horizontal"
-           style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR}/>
+            width="wrap_content"
+            height="wrap_content"
+            id={this.idSet.permissionTextHolder}
+            margin="16,80,16,16"
+            gravity="center_horizontal"
+            style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR} />
           <LinearLayout
             width="match_parent"
             orientation="vertical"
-            id = {this.idSet.footer}/>
+            id={this.idSet.footer} />
         </LinearLayout>
       </RelativeLayout>
     );
@@ -302,49 +323,49 @@ class QRActivity extends View {
         background="#FFFFFF"
         orientation="vertical">
         <RelativeLayout
-        width="match_parent"
-        height="match_parent">
-        <LinearLayout
           width="match_parent"
-          height="match_parent"
-          orientation="vertical"
-          background="#F5F5F7">
-          <SimpleToolbar
-             title={window.__S.SCAN_QR_CODE}
-             width="match_parent"
-             showMenu="true"
-             menuData={this.menuData}
-             onBackPress={this.onBackPressed}/>
-           <TextView
-             padding = "0, 16, 0, 8"
-             width = "match_parent"
-             height = "wrap_content"
-             gravity = "center"
-             text = {window.__S.SCAN_QR_INSTRUCTION}
-             textStyle = {window.__TextStyle.textStyle.CARD.ACTION.BLUE}/>
-          <ImageView
-            margin="0,0, 0,0"
-            width="match_parent"
-            background = "#123123"
-            height = "wrap_content"
-            adjustViewBounds="true"
-            imageUrl="ic_scanqrdemo"/>
-          <FrameLayout
-            id={this.idSet.frameLayout}
-            afterRender = {this.openFrame}
+          height="match_parent">
+          <LinearLayout
             width="match_parent"
             height="match_parent"
-            background="#FFFFFF"/>
-        </LinearLayout>
-        <LinearLayout
-          width="match_parent"
-          height="match_parent"
-          visibility="gone"
-          id = {this.idSet.errorPopup}>
-          {this.getErrorPopup()}
-        </LinearLayout>
-      </RelativeLayout>
-    </LinearLayout>
+            orientation="vertical"
+            background="#F5F5F7">
+            <SimpleToolbar
+              title={window.__S.SCAN_QR_CODE}
+              width="match_parent"
+              showMenu="true"
+              menuData={this.menuData}
+              onBackPress={this.onBackPressed} />
+            <TextView
+              padding="0, 16, 0, 8"
+              width="match_parent"
+              height="wrap_content"
+              gravity="center"
+              text={window.__S.SCAN_QR_INSTRUCTION}
+              textStyle={window.__TextStyle.textStyle.CARD.ACTION.BLUE} />
+            <ImageView
+              margin="0,0, 0,0"
+              width="match_parent"
+              background="#123123"
+              height="wrap_content"
+              adjustViewBounds="true"
+              imageUrl="ic_scanqrdemo" />
+            <FrameLayout
+              id={this.idSet.frameLayout}
+              afterRender={this.openFrame}
+              width="match_parent"
+              height="match_parent"
+              background="#FFFFFF" />
+          </LinearLayout>
+          <LinearLayout
+            width="match_parent"
+            height="match_parent"
+            visibility="gone"
+            id={this.idSet.errorPopup}>
+            {this.getErrorPopup()}
+          </LinearLayout>
+        </RelativeLayout>
+      </LinearLayout>
     )
     return this.layout.render();
   }

@@ -46,6 +46,7 @@ class ResourceComponent extends View {
     if (window.__ResourceFilter) {
       this.menuData = {
         url: [
+          { imageUrl: "ic_scanqr" },
           { imageUrl: "ic_action_search" },
           { imageUrl: "ic_action_filter_applied" }
         ]
@@ -53,6 +54,7 @@ class ResourceComponent extends View {
     } else {
       this.menuData = {
         url: [
+          { imageUrl: "ic_scanqr" },
           { imageUrl: "ic_action_search" },
           { imageUrl: "ic_action_filter" }
         ]
@@ -259,6 +261,11 @@ class ResourceComponent extends View {
       JBridge.explicitSearch("LIBRARY", "FILTER");
       window.__PageFilterPopup.show();
 
+    } else if (url == "ic_scanqr") {
+      var whatToSend = []
+      var event = { tag: "OPEN_QRActivity", contents: whatToSend }
+      JBridge.logVisitEvent(window.__S.LIBRARY_BNAV);
+      window.__runDuiCallback(event);
     } else if (url == "ic_action_search") {
       var searchDetails = { filterDetails: "", searchType: "Library" }
       var whatToSend = { filterDetails: JSON.stringify(searchDetails) }
@@ -275,7 +282,7 @@ class ResourceComponent extends View {
   }
 
   afterRender = () => {
-    JBridge.getViews(this.idSet.scrollViewContainer+"");
+    JBridge.getViews(this.idSet.scrollViewContainer + "");
     this.renderOfflineCard();
     if (!window.__ResourceFilter) {
       this.getResourceData();

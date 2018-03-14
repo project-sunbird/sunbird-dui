@@ -40,13 +40,16 @@ class SearchActivity extends View {
 
     this.tempData = JSON.parse(state.data.value0.filterDetails);
     console.log("SA filterDetails: ", this.tempData);
-    
-    this.filterIcon="ic_action_filter";
+
+    this.filterIcon = "ic_action_filter";
 
 
-    this.filter=[]
+    this.filter = []
     this.filterData = this.tempData.filterDetails;
-    this.searchText = this.tempData.filterDetails.query
+    this.searchText = this.tempData.filterDetails.query;
+    this.searchType = this.tempData.filterType;
+    this.keywords = this.tempData.keywords;
+    this.temp = state.data;
     this.searchType = this.tempData.searchType;
 
 
@@ -58,47 +61,69 @@ class SearchActivity extends View {
 
   afterRender = () => {
 
-    if(this.filterData!=undefined && this.filterData.length != 0){
+    if (this.filterData != undefined && this.filterData.length != 0 && this.filterData.facetFilters) {
       console.log(this.filterData, "filterinsearch");
-      var flag=false;
+      var flag = false;
       var facetFilters = this.filterData.facetFilters
-      var i=0;
-      var j=0;
-      for (i=0;i<facetFilters.length;i++) {
-        for (j=0; j<facetFilters[i].values.length;j++) {
-            if(facetFilters[i].values[j].apply==true) {
-              flag=true;
-              break;
-            }
+      var i = 0;
+      var j = 0;
+      for (i = 0; i < facetFilters.length; i++) {
+        for (j = 0; j < facetFilters[i].values.length; j++) {
+          if (facetFilters[i].values[j].apply == true) {
+            flag = true;
+            break;
+          }
         }
-        if(flag) { break; }
+        if (flag) { break; }
       }
 
-      if(flag) {
-        this.filterIcon="ic_action_filter_applied";
+      if (flag) {
+        this.filterIcon = "ic_action_filter_applied";
       } else {
-        this.filterIcon="ic_action_filter";
+        this.filterIcon = "ic_action_filter";
       }
 
       var cmd = _this.set({
-      id: _this.idSet.filterHolder,
-      visibility: "visible",
-      imageUrl : this.filterIcon
+        id: _this.idSet.filterHolder,
+        visibility: "visible",
+        imageUrl: this.filterIcon
       });
       Android.runInUI(cmd, 0);
-      this.getSearchList(this.searchText);
+      // this.getSearchList(this.searchText);
+
+      var searchData
+      if (typeof this.filterData == 'object') {
+        searchData = this.filterData
+      } else {
+        searchData = JSON.parse(this.filter)
+      }
       window.__LoaderDialog.show();
 
-    } else if(window.search && window.search.type == this.searchType && window.search.res!=undefined && window.search.res!="" && window.search.text!=undefined && window.search.text!=""){
-        _this.renderResult(JSON.parse(window.search.res),window.search.text);
+      this.getSearchList(this.searchText, "true");
+    } else if (window.search && window.search.type == this.searchType && window.search.res != undefined && window.search.res != "" && window.search.text != undefined && window.search.text != "") {
+      console.log("prev res");
+      _this.renderResult(JSON.parse(window.search.res), window.search.text);
+      // window.__LoaderDialog.show();
+    } else if (this.searchText && this.searchText != "") {
+      console.log("handleSeachClick ", this.searchText);
+
+      var cmd = this.set({
+        id: this.idSet.searchHolder,
+        text: this.searchText
+      })
+      Android.runInUI(cmd, 0);
+
+      this.handleSearchClick(this.searchText);
+    } else if (this.keywords) {
+      this.handleSearchClick(null, this.keywords);
     }
 
-    var callback = callbackMapper.map(function(data) {
-      window.searchText=data[0];
+    var callback = callbackMapper.map(function (data) {
+      window.searchText = data[0];
       _this.handleSearchClick(data);
     });
     JBridge.handleImeAction(this.idSet.searchHolder, callback);
-    if (window.searchText == undefined || window.searchText == "" || (window.search.type != this.searchType && window.searchText != "")) {
+    if (!this.keywords && (window.searchText == undefined || window.searchText == "" || (window.search.type != this.searchType && window.searchText != ""))) {
       JBridge.getFocus(this.idSet.searchHolder);
     }
   }
@@ -113,107 +138,107 @@ class SearchActivity extends View {
   getBack = () => {
     return (
       <ImageView
-      margin="0,0,10,0"
-      style={IconStyle}
-      onClick={this.onBackPressed}
-      imageUrl = {"ic_action_arrow_left"}/>)
+        margin="0,0,10,0"
+        style={IconStyle}
+        onClick={this.onBackPressed}
+        imageUrl={"ic_action_arrow_left"} />)
   }
 
   getTitle = () => {
     return (<LinearLayout
-            height="match_parent"
-            width="0"
-            layoutTransition="true"
-            gravity="center_vertical"
-            weight="1">
+      height="match_parent"
+      width="0"
+      layoutTransition="true"
+      gravity="center_vertical"
+      weight="1">
 
-              <EditText
-                  height="match_parent"
-                  width="0"
-                  weight="1"
-                  maxLines="1"
-                  hint={window.__S.SEARCH_HINT}
-                  layoutTransition="true"
-                  gravity="center_vertical"
-                  background="#ffffff"
-                  id={this.idSet.searchHolder}
-                  style={window.__TextStyle.textStyle.TOOLBAR.HEADING}/>
+      <EditText
+        height="match_parent"
+        width="0"
+        weight="1"
+        maxLines="1"
+        hint={window.__S.SEARCH_HINT}
+        layoutTransition="true"
+        gravity="center_vertical"
+        background="#ffffff"
+        id={this.idSet.searchHolder}
+        style={window.__TextStyle.textStyle.TOOLBAR.HEADING} />
 
 
-          </LinearLayout>)
+    </LinearLayout>)
 
   }
 
   getMenu = () => {
     var layout = (<LinearLayout
-                   width="wrap_content"
-                   height="wrap_content">
+      width="wrap_content"
+      height="wrap_content">
 
-                   <ImageView
-                      onClick={this.handleClearClick}
-                      id={this.idSet.clearHolder}
-                      style = {IconStyle}
-                      imageUrl = "ic_action_close"/>
+      <ImageView
+        onClick={this.handleClearClick}
+        id={this.idSet.clearHolder}
+        style={IconStyle}
+        imageUrl="ic_action_close" />
 
-                    <ImageView
-                      onClick={this.handleFilterClick}
-                      id={this.idSet.filterHolder}
-                      style = {IconStyle}
-                      visibility="gone"
-                      imageUrl = {this.filterIcon}/>
+      <ImageView
+        onClick={this.handleFilterClick}
+        id={this.idSet.filterHolder}
+        style={IconStyle}
+        visibility="gone"
+        imageUrl={this.filterIcon} />
 
-                   </LinearLayout>)
+    </LinearLayout>)
     return layout;
 
   }
 
   renderNoResult = () => {
     var cmd = "";
-        cmd += _this.set({
-          id: _this.idSet.filterHolder,
-          visibility: "gone"
-        })
+    cmd += _this.set({
+      id: _this.idSet.filterHolder,
+      visibility: "gone"
+    })
     Android.runInUI(cmd, 0);
 
     var layout = (<LinearLayout
-                   width="match_parent"
-                   height="wrap_content"
-                   root="true"
-                   background="#ffffff"
-                   gravity="center_horizontal"
-                   orientation="vertical">
+      width="match_parent"
+      height="wrap_content"
+      root="true"
+      background="#ffffff"
+      gravity="center_horizontal"
+      orientation="vertical">
 
-                    <TextView
-                      height="wrap_content"
-                      width="wrap_content"
-                      gravity="center_horizontal"
-                      maxLines="1"
-                      margin="16,16,16,16"
-                      style={window.__TextStyle.textStyle.TOOLBAR.HEADING}
-                      text={window.__S.EMPTY_SEARCH_RESULTS}/>
+      <TextView
+        height="wrap_content"
+        width="wrap_content"
+        gravity="center_horizontal"
+        maxLines="1"
+        margin="16,16,16,16"
+        style={window.__TextStyle.textStyle.TOOLBAR.HEADING}
+        text={window.__S.EMPTY_SEARCH_RESULTS} />
 
-                  </LinearLayout>);
+    </LinearLayout>);
 
     this.replaceChild(this.idSet.searchListContainer, layout.render(), 0);
     window.__LoaderDialog.hide();
-
+    JBridge.hideKeyboard();
   }
 
 
-  renderResult = (data,searchText) => {
-    console.log("data from server",data)
+  renderResult = (data, searchText) => {
+    console.log("data from server", data)
     var layout = (<LinearLayout
-                    width="match_parent"
-                    height="wrap_content"
-                    root="true"
-                    background="#ffffff"
-                    orientation="vertical">
-                    <SearchResult
-                      filterData={_this.filterData}
-                      type={this.searchType}
-                      searchText={searchText}
-                      data={data} />
-                  </LinearLayout>)
+      width="match_parent"
+      height="wrap_content"
+      root="true"
+      background="#ffffff"
+      orientation="vertical">
+      <SearchResult
+        filterData={_this.filterData}
+        type={this.searchType}
+        searchText={searchText}
+        data={data} />
+    </LinearLayout>)
 
     this.replaceChild(this.idSet.searchListContainer, layout.render(), 0);
     window.__LoaderDialog.hide();
@@ -223,8 +248,8 @@ class SearchActivity extends View {
     this.searchTextValue = data;
   }
 
-  getSearchList=(searchText)=> {
-    JBridge.hideKeyboard();
+  getSearchList = (searchText, flag, keywords) => {
+
     if (searchText == "") {
       this.renderNoResult();
       window.__LoaderDialog.hide();
@@ -237,28 +262,37 @@ class SearchActivity extends View {
           _this.renderNoResult();
           window.__LoaderDialog.hide();
         } else {
-          data[0] = utils.decodeBase64(data[0])
+          data[0] = utils.decodeBase64(data[0]);
           _this.filterData = data[1];
           if (searchText == "" || data[0] == "[]") {
             _this.renderNoResult();
             window.__LoaderDialog.hide();
           } else {
-            var s = data[0];
-            s = s.replace(/\\n/g, "\\n")
-              .replace(/\\'/g, "\\'")
-              .replace(/\\"/g, '\\"')
-              .replace(/\\&/g, "\\&")
-              .replace(/\\r/g, "\\r")
-              .replace(/\\t/g, "\\t")
-              .replace(/\\b/g, "\\b")
-              .replace(/\\f/g, "\\f");
-            s = s.replace(/[\u0000-\u0019]+/g, "");
-            window.search = {};
-            window.search.res = s;
-            window.search.text = searchText;
-            window.search.type = _this.searchType;
-            _this.renderResult(JSON.parse(s), searchText);
-            window.__LoaderDialog.hide();
+            // data[0] = utils.decodeBase64(data[0])
+            _this.filterData = data[1];
+            if (searchText == "" || data[0] == "[]") {
+              _this.renderNoResult();
+              window.__LoaderDialog.hide();
+
+            } else {
+              var s = data[0];
+              s = s.replace(/\\n/g, "\\n")
+                .replace(/\\'/g, "\\'")
+                .replace(/\\"/g, '\\"')
+                .replace(/\\&/g, "\\&")
+                .replace(/\\r/g, "\\r")
+                .replace(/\\t/g, "\\t")
+                .replace(/\\b/g, "\\b")
+                .replace(/\\f/g, "\\f");
+              s = s.replace(/[\u0000-\u0019]+/g, "");
+              window.search = {};
+              window.search.res = s;
+              window.search.text = searchText;
+              window.search.type = _this.searchType;
+              _this.renderResult(JSON.parse(s), searchText);
+              window.__LoaderDialog.hide();
+
+            }
           }
         }
       }); //end of callback
@@ -273,7 +307,7 @@ class SearchActivity extends View {
         console.log(this.filterData, " filterData ");
         var filterParams = null;
         if (this.filterData != "") { filterParams = JSON.stringify(this.filterData) }
-        JBridge.searchContent(callback, filterParams, searchText, this.searchType, 100, false);
+        JBridge.searchContent(callback, filterParams, searchText, this.searchType, 100, (keywords ? keywords : null), false);
       } else {
         window.__LoaderDialog.hide();
         window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
@@ -286,37 +320,38 @@ class SearchActivity extends View {
 
 
   onBackPressed = () => {
-     JBridge.hideKeyboard();
-     var whatToSend = [];
-     window.search={};
-     var event = { tag: "BACK_SearchActivity", contents: whatToSend }
-     window.__runDuiCallback(event);
-     window.__LoaderDialog.hide();
+    JBridge.hideKeyboard();
+    var whatToSend = [];
+    window.search = {};
+    var event = { tag: "BACK_SearchActivity", contents: whatToSend }
+    window.__runDuiCallback(event);
+    window.__LoaderDialog.hide();
   }
 
-  showFilter = () =>{
-     var cmd = "";
-     cmd += _this.set({
+  showFilter = () => {
+    var cmd = "";
+    cmd += _this.set({
       id: _this.idSet.filterHolder,
       visibility: "visible"
-     });
+    });
 
     Android.runInUI(cmd, 0);
 
   }
 
 
-  handleSearchClick = (searchText) => {
+  handleSearchClick = (searchText, keywords) => {
     JBridge.hideKeyboard();
     this.filterData = "";
     console.log("handlesearchClick: ", this.searchType.toUpperCase());
     JBridge.explicitSearch(this.searchType.toUpperCase(), "SEARCH");
 
-    if(JBridge.isNetworkAvailable()){
+    if (JBridge.isNetworkAvailable()) {
       window.__LoaderDialog.show();
-      this.getSearchList(searchText[0]);
+      this.getSearchList(searchText ? searchText[0] : null, "false", keywords);
     } else {
       window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE)
+      window.__LoaderDialog.hide();
     }
   }
 
@@ -341,11 +376,13 @@ class SearchActivity extends View {
   handleFilterClick = () => {
     JBridge.hideKeyboard();
     JBridge.explicitSearch(this.searchType.toUpperCase(), "FILTER");
-    var filteredData = { filterDetails: this.filterData,
-       filterType: this.searchType ,
-       filterFor : this.searchTextValue}
+    var filteredData = {
+      filterDetails: this.filterData,
+      filterType: this.searchType,
+      filterFor: this.searchTextValue
+    }
     var whatToSend = { filterDetails: JSON.stringify(filteredData) }
-    var event = { tag: "OPEN_FilterActivity", contents: whatToSend}
+    var event = { tag: "OPEN_FilterActivity", contents: whatToSend }
     window.__runDuiCallback(event);
   }
 

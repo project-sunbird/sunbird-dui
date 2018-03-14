@@ -209,7 +209,7 @@ class CourseViewAllActivity extends View {
                 _this.changeViewMoreButtonStatus();
               }
               });
-              JBridge.searchContent(callback, JSON.stringify(this.searchQuery), "", "Course",(_this.start_index+2)*10, true);
+              JBridge.searchContent(callback, JSON.stringify(this.searchQuery), "", "Course",(_this.start_index+2)*10, null, true);
         }else{
           window.__LoaderDialog.hide();
           window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE)

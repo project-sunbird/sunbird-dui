@@ -18,6 +18,7 @@ courseFragment input whereFrom whatToSendBack = do
 		OPEN_EnrolledCourseActivity {course:output} -> enrolledCourseActivity output "CourseFragment" input
 		OPEN_SearchActivity {filterDetails : output} -> searchCourseActivity output "CourseFragment" input
 		OPEN_CourseViewAllActivity {courseListDetails : output} -> courseViewAllActivity output "CourseFragment" input
+		OPEN_QRActivity -> qrActivity "CourseFragment" input
 		API_CourseFragment {user_token:x,api_token:y}-> do
 			responseData <- getCoursesPageApi x y
 			_ <- sendUpdatedState {response : responseData, responseFor : "API_CourseFragment", screen:"CourseFragment"}
@@ -144,3 +145,22 @@ courseFilterActivity input whereFrom whatToSendBack = do
     	"SearchActivity" -> searchCourseActivity input "Terminate" input
     	_ -> searchCourseActivity input "Terminate" input
     _ -> courseFilterActivity input whereFrom whatToSendBack
+
+qrActivity whereFrom whatToSendBack = do
+ event <- ui $ QRActivity
+ case event of
+  OPEN_CourseEnrolledActivity_QR {course : output} -> enrolledCourseActivity output "CourseFragment" whatToSendBack
+  OPEN_ResourceDetailActivity_QR {resourceDetails : output} -> resourceDetailActivity output "CourseFragment" whatToSendBack
+  OPEN_CourseInfoActivity_QR {course : output} -> courseInfoActivity output "CourseFragment" whatToSendBack
+  OPEN_SearchActivity_QR {filterDetails : output} -> searchCourseActivity output "CourseFragment" whatToSendBack
+  BACK_QRActivity -> courseFragment whatToSendBack "Terminate" whatToSendBack
+  _ -> courseFragment whatToSendBack "Terminate" whatToSendBack
+
+resourceDetailActivity input whereFrom whatToSendBack= do
+	event <- ui $ ResourceDetailActivity {resourceDetails : input}
+	case event of
+		BACK_ResourceDetailActivity -> case whereFrom of
+			"CourseSearchActivity" -> searchCourseActivity whatToSendBack "Terminate" input
+			"CourseFragment" -> courseFragment whatToSendBack "Terminate" input
+			_ -> courseFragment whatToSendBack "Terminate" input
+		_ -> resourceDetailActivity input whereFrom whatToSendBack

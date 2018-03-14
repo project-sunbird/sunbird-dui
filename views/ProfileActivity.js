@@ -175,7 +175,7 @@ class ProfileActivity extends View {
         }
       });
       if (JBridge.isNetworkAvailable())
-        JBridge.searchContent(callback, "userToken", this.profileData.id, "Combined", 10, false);
+        JBridge.searchContent(callback, "userToken", this.profileData.id, "Combined", 10, null, false);
       else{
         this.getEmptyLayout();
           }
