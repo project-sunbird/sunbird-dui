@@ -67,14 +67,37 @@ class MainActivity extends View {
 
     // window.handleChangeLang = this.handleChangeLang; //added for testing
 
-    window.__questions = [
+    window.__questions = [];
+    window.__total_questions = 4;
+    window.__allQs = [
       {
-        question: "What grade do you teach?",
-        option: "SELECT GRADES",
-        values: ["K.G.", "Grade1", "Grade2", "Grade3", "Grade4", "Grade5", "Grade6", "Grade7", "Grade8", "Grade9", "Grade10", "Grade11", "Grade12"],
+        question: "What medium/language does your school teach in?",
+        option: "SELECT MEDIUM/LANG",
+        values: ["English", "Hindi", "Assamese", "Bengali", "Gujarati", "Kannada", "Malayalam", "Marathi", "Nepali"],
+        selected: [],
+        isCurr: false,
+        selectorType: "radio"
+      }, {
+        question: "Which subjects are you looking for?",
+        option: "SELECT SUBJECT",
+        values: ["Mathematics", "Physics", "Chemistry", "English", "Hindi", "Computer Science"],
+        selected: [],
+        isCurr: false,
+        selectorType: "checkbox"
+      }, {
+        question: "Which class do you belong to?",
+        option: "SELECT CLASS",
+        values: ["Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5", "Grade 6", "Grade 7", "Grade 8"],
+        selected: [],
+        isCurr: false,
+        selectorType: "radio"
+      }, {
+        question: "Which board does your school follow?",
+        option: "SELECT BOARD",
+        values: ["NCERT", "CBSE", "ICSE", "MSCERT", "Other"],
         selected: [],
         isCurr: true,
-        selectorType: "checkbox"
+        selectorType: "radio"
       }
     ];
   }

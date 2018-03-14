@@ -134,7 +134,7 @@ class CarouselCards extends View {
             console.log("onstop -> ", data);
             var delta = parseInt(data[0]);
             if (delta > 0) {
-                var nextCardIndex = (this.currCardIndex + 1) % this.cards.length;
+                var nextCardIndex = (this.currCardIndex == this.cards.length - 1) ? this.currCardIndex : (this.currCardIndex + 1) % this.cards.length;
                 _this.snapToCard(nextCardIndex);
             } else if (delta < 0) {
                 var prevCardIndex = (this.currCardIndex - 1) % this.cards.length;
@@ -155,19 +155,6 @@ class CarouselCards extends View {
         this.currCardIndex = index;
         console.log("scrollTo pixel -> ", index * (this.cardWidth + 8));
         this.replaceChild(this.idSet.footerContainer, this.getFooter(index).render(), null);
-        // if (cardId == "") {
-        //     this.replaceChild(this.idSet.footerContainer, this.getFooter().render(), null);
-        // } else {
-        //     this.cards.map((item, i) => {
-        //         if (cardId == (item.id + "")) {
-        //             console.log("cardId - " + cardId + ", item.id - " + item.id);
-        //             JBridge.scrollTo(this.idSet.scrollViewContainer, (i * (this.cardWidth + 8)));
-        //             console.log("true pixel -> ", i * (this.cardWidth + 8));
-        //             this.replaceChild(this.idSet.footerContainer, this.getFooter(i).render(), null);
-        //             return;
-        //         }
-        //     });
-        // }
     }
 
     render() {

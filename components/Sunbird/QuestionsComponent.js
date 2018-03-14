@@ -97,34 +97,13 @@ class QuestionsComponent extends View {
             "footerContainer",
             "progressContainer"
         ]);
-        this.cardsArr = window.__questions;
+        this.cardsArr = [];
+        if (window.__questions.length == 0) {
+            this.getNextQuestion();
+        }
         this.screenWidth = JBridge.getScreenWidth()
         this.cardWidth = this.screenWidth < 300 ? (this.screenWidth - 32) : 300;
         this.cardPadding = Math.floor((this.screenWidth - this.cardWidth) / 2);
-        window.__allQs = window.__allQs ? window.__allQs : [
-            {
-                question: "Which subject do you teach?",
-                option: "SELECT SUBJECT",
-                values: ["Mathematics", "Physics", "Chemistry", "English", "Hindi", "Computer Science"],
-                selected: [],
-                isCurr: false,
-                selectorType: "checkbox"
-            }, {
-                question: "Which state do you belong to?",
-                option: "SELECT STATE",
-                values: ["Karnataka", "Maharastra", "Kerala", "Tamil Nadu"],
-                selected: [],
-                isCurr: false,
-                selectorType: "radio"
-            }, {
-                question: "Are you a teacher?",
-                option: "SELECT",
-                values: ["Yes", "No"],
-                selected: [],
-                isCurr: false,
-                selectorType: "radio"
-            }
-        ];
 
         console.log("cardPadding -> ", this.cardPadding);
 
@@ -212,7 +191,7 @@ class QuestionsComponent extends View {
         console.log("nextCardIndex -> ", nextCardIndex);
 
         this.Carousel.updateCards(nextCardIndex, this.renderCards);
-        this.replaceChild(this.idSet.progressContainer, this.getProgress(Math.floor(completed / this.cardsArr.length * 100)).render(), 0);
+        this.replaceChild(this.idSet.progressContainer, this.getProgress(Math.floor(completed / window.__total_questions * 100)).render(), 0);
     }
 
     afterRender = () => {
@@ -232,7 +211,7 @@ class QuestionsComponent extends View {
                 visibility = {this.props.visibility}
                 cardPadding={this.cardPadding + ",0," + this.cardPadding + ",0"}
                 cards={this.renderCards}
-                totalCards = {4} />
+                totalCards={window.__total_questions} />
         );
 
         var layout = (
