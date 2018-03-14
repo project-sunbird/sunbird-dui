@@ -532,8 +532,8 @@ class ProfileFragment extends View {
       padding="16,16,16,16">
       <HomeQuestionCardStyle
           currComponentLocation={"PROFILE"}
-        headerText={window.__S.OVERLAY_LABEL_COMMON}
-        infoText={window.__S.OVERLAY_INFO_TEXT_COMMON}
+          headerText={window.__S.OVERLAY_LABEL_COMMON.format(JBridge.getAppName())}
+          infoText={window.__S.OVERLAY_INFO_TEXT_COMMON.format(JBridge.getAppName())}
         textSize="16"
         gravity="left" />
     </LinearLayout>);

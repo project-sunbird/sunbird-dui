@@ -14,11 +14,8 @@ class HomeQuestionCardStyle extends View {
 	constructor(props, children, state) {
 		super(props, children, state);
 		this.setIds([
-			"LOCK_SIGN_IN",
-			"LOCK_LABEL",
-			"LOCK_INFO_TEXT",
 			"parentId"
-    ]);
+    	]);
 		this.state = state;
 		this.screenName = "HomeQuestionCardStyle";
 		window.__HomeQuestionCardStyle = this;
@@ -85,7 +82,6 @@ class HomeQuestionCardStyle extends View {
 					gravity={this.props.gravity ? this.props.gravity : "center"}
 				/>
 				<TextView
-					id={this.setIds.LOCK_INFO_TEXT}
 					height="match_parent"
 					width="match_parent"
 					padding="0,16,0,16"
