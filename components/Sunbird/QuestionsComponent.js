@@ -100,6 +100,8 @@ class QuestionsComponent extends View {
         this.cardsArr = [];
         if (window.__questions.length == 0) {
             this.getNextQuestion();
+        } else {
+            this.cardsArr = window.__questions;
         }
         this.screenWidth = JBridge.getScreenWidth()
         this.cardWidth = this.screenWidth < 300 ? (this.screenWidth - 32) : 300;
