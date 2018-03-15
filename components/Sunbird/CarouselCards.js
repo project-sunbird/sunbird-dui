@@ -31,26 +31,34 @@ class CarouselCards extends View {
         this.cards = this.props.cards ? this.props.cards : [(<LinearLayout />)];
         this.currCardIndex = 0;
         this.totalCards = Array.from('0'.repeat(this.props.totalCards)); //always this.cards.length >= this.totalCards.length
+        this.height = this.props.height ? this.props.height : "200";
+        this.background = this.props.background ? this.props.background : "#ffffff";
+        this.headerText = this.props.header ? this.props.header : "";
 
         console.log("cardPadding -> ", this.cardPadding);
         
     }
 
     getHeader() {
-        return (<LinearLayout
-            width="match_parent"
-            height="wrap_content"
-            margin="0,16,0,16"
-            orientation="horizontal"
-            gravity="center">
-
-            <TextView
-                width="wrap_content"
+        if (this.headerText != ""){
+            return (<LinearLayout
+                width="match_parent"
                 height="wrap_content"
-                textSize="14"
-                fontStyle={Font.fontStyle.REGULAR}
-                text={"Help us get you content thats relevant to you."}/>
-        </LinearLayout>)
+                margin="0,16,0,16"
+                orientation="horizontal"
+                gravity="center">
+
+                <TextView
+                    width="wrap_content"
+                    height="wrap_content"
+                    textSize="14"
+                    fontStyle={Font.fontStyle.REGULAR}
+                    text={this.headerText} />
+            </LinearLayout>);
+        } else {
+            return (<LinearLayout />);
+        }
+        
     }
 
     getCards = () => {
@@ -160,10 +168,10 @@ class CarouselCards extends View {
     render() {
         this.layout = (
             <LinearLayout
-                height="200"
+                height={this.height}
                 width="match_parent"
                 visibility={this.props.visibility ? this.props.visibility : "visible"}
-                background={window.__Colors.WHITE_F2}
+                background={this.background}
                 orientation="vertical"
                 afterRender = {this.afterRender}>
 

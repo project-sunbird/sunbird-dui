@@ -2,8 +2,7 @@ var dom = require("@juspay/mystique-backend/src/doms/android");
 var Connector = require("@juspay/mystique-backend/src/connectors/screen_connector");
 var debounce = require("debounce");
 var objectAssign = require('object-assign');
-
-
+var FeatureCards = require('../components/Sunbird/FeatureCards');
 var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
 var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
 var RelativeLayout = require("@juspay/mystique-backend/src/android_views/RelativeLayout");
@@ -312,29 +311,15 @@ class UserActivity extends View {
   getTopLayout = () => {
     //Logo and welcome message
     return (<LinearLayout
-      height="wrap_content"
+      height="0"
+      weight="1"
       width="match_parent"
-      padding="12,20,12,20"
+      margin="0,0,0,16"
       gravity="center"
       orientation="vertical">
 
-      <ImageView
-        height="60"
-        width="60"
-        imageUrl={"ic_launcher"} />
-
-      <TextView
-        width="match_parent"
-        text={window.__S.WELCOME_M1.format(JBridge.getAppName())}
-        gravity="center"
-        margin="0,12,0,6"
-        style={window.__TextStyle.textStyle.HEADING.DARK} />
-
-      <TextView
-        width="match_parent"
-        gravity="center"
-        text={window.__S.WELCOME_M2}
-        style={window.__TextStyle.textStyle.HINT.REGULAR} />
+      <FeatureCards
+        height = "match_parent" />
     </LinearLayout>)
   }
 
@@ -396,18 +381,8 @@ class UserActivity extends View {
         padding="0,12,0,0"
         background={window.__Colors.WHITE}
         height="match_parent">
-
-        <LinearLayout
-          height="0"
-          weight="1"
-          root="true"
-          layoutTransition="true"
-          width="match_parent"
-          gravity="center"
-          orientation="vertical">
-
-          {this.getTopLayout()}
-        </LinearLayout>
+        
+        {this.getTopLayout()}
 
         {this.getOptions()}
       </LinearLayout>);

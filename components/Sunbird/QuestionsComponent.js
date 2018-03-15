@@ -213,7 +213,9 @@ class QuestionsComponent extends View {
                 visibility = {this.props.visibility}
                 cardPadding={this.cardPadding + ",0," + this.cardPadding + ",0"}
                 cards={this.renderCards}
-                totalCards={window.__total_questions} />
+                totalCards={window.__total_questions}
+                background={window.__Colors.WHITE_F2}
+                header="Help us get you content thats relevant to you." />
         );
 
         var layout = (
