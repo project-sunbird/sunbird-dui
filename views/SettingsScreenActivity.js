@@ -10,6 +10,7 @@ var EditText = require("@juspay/mystique-backend/src/android_views/EditText");
 var TextInputView = require("../components/Sunbird/core/TextInputView");
 var CircularLoader = require('../components/Sunbird/core/CircularLoader');
 var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
+var ShareFilePopup = require('../components/Sunbird/ShareFilePopup');
 var TextStyle = require("../res/TextStyle.js");
 
 window.R = require("ramda");
@@ -59,12 +60,11 @@ class SettingsScreenActivity extends View {
   }
 
   handleShareClick = () => {
-    JBridge.logSettingsClickedEvent(window.__S.SHARE_THIS);
-    Android.runInUI(this.set({
-      id: this.idSet.popUpContainer,
-      visibility: "visible"
-    }), 0);
-    JBridge.shareApk(this.idSet.linkShareIntents);
+    var cb = (containerId) => {
+      JBridge.logSettingsClickedEvent("Share");
+      JBridge.shareApk(containerId);
+    }
+    this.SharePopup.show(window.__S.SHARE_APP.format(JBridge.getAppName()), cb);
   }
 
   openAboutUsActivity = () => {
@@ -76,96 +76,28 @@ class SettingsScreenActivity extends View {
 
 
   onBackPressed = () => {
-    var whatToSend = [];
-    var event = { tag: "BACK_SettingsScreenActivity", contents: whatToSend};
-    window.__runDuiCallback(event);
-  }
-
-  handleDismissClick = () => {
-    Android.runInUI(this.set({
-      id: this.idSet.popUpContainer,
-      visibility: "gone"
-    }), 0);
+    if (this.SharePopup.getVisibility()){
+      this.SharePopup.hide();
+    } else {
+      var whatToSend = [];
+      var event = { tag: "BACK_SettingsScreenActivity", contents: whatToSend };
+      window.__runDuiCallback(event);
+    }
   }
 
   handleSupportClick = () => {
-    JBridge.logSettingsClickedEvent(window.__S.SUPPORT);
-    JBridge.supportEmail();
+    var cb = (containerId) => {
+      JBridge.logSettingsClickedEvent(window.__S.SUPPORT);
+      JBridge.supportEmail(containerId);
+    }
+    this.SharePopup.show(window.__S.SEND_EMAIL, cb);
   }
 
   getSharePopUP = () => {
-    return (
-      <LinearLayout
-        height="match_parent"
-        width="match_parent"
-        id={this.idSet.popUpContainer}
-        visibility="gone"
-        root="true"
-        background={window.__Colors.PRIMARY_BLACK_44}
-        orientation="vertical">
-
-        <LinearLayout
-          height="0"
-          width="match_parent"
-          onClick={this.handleDismissClick}
-          weight="1" />
-
-        <LinearLayout
-          cornerRadius="2"
-          width="match_parent"
-          height="wrap_content"
-          root="true"
-          visibility="visible"
-          orientation="vertical"
-          clickable="true"
-          padding="16,18,16,16"
-          background="#ffffff">
-
-          <LinearLayout
-            width="match_parent"
-            height="wrap_content"
-            gravity="center_vertical"
-            margin="0,0,0,16">
-
-            <TextView
-              width="wrap_content"
-              height="wrap_content"
-              gravity="center_vertical"
-              text={window.__S.SHARE_APP.format(JBridge.getAppName())}
-              style={window.__TextStyle.textStyle.CARD.TITLE.DARK} />
-
-            <LinearLayout
-              width="0"
-              weight="1"
-              height="0" />
-
-            <ImageView
-              width="18"
-              height="18"
-              onClick={this.handleDismissClick}
-              gravity="center_vertical"
-              imageUrl="ic_action_close" />
-          </LinearLayout>
-
-          <HorizontalScrollView
-            width="wrap_content"
-            height="wrap_content"
-            scrollBarX="false"
-            fillViewport="true">
-
-            <LinearLayout
-              margin="0,8,0,24"
-              width="wrap_content"
-              id={this.idSet.linkShareIntents}
-              height="match_parent">
-
-              <CircularLoader
-                margin="0,0,0,0" />
-            </LinearLayout>
-          </HorizontalScrollView>
-        </LinearLayout>
-      </LinearLayout>
+    this.SharePopup = (
+      <ShareFilePopup />
     );
+    return this.SharePopup;
   }
 
   getLineSeperator() {

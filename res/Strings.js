@@ -344,7 +344,8 @@ const stringsRes = {
 		MEDIUM_2: "MEDIUM",
 		VIEW_CREDITS_INFO: "View Credits and Licensing Info",
 		HIDE_CREDITS_INFO: "Hide Credits and Licensing Info",
-		TRY_BEFORE_RATING: "Please try the content before rating it."
+		TRY_BEFORE_RATING: "Please try the content before rating it.",
+		SEND_EMAIL: "Send Email"
 	},
 	"hi_IN": {
 		ALREADY_HAVE_ACC: "मौजूदा उपयोगकर्ता, साइन इन करें",

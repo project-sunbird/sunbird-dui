@@ -4,6 +4,7 @@ var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
 var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
 var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
 var RelativeLayout = require("@juspay/mystique-backend/src/android_views/RelativeLayout");
+var ShareFilePopup = require('../components/Sunbird/ShareFilePopup');
 
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var EditText = require("@juspay/mystique-backend/src/android_views/EditText");
@@ -25,6 +26,11 @@ class AboutUsActivity extends View {
         this.state = state;
         this.visible = true;
         this.screenName = "AboutUsActivity";
+        this.menuData = {
+            url: [
+                { imageUrl: "ic_action_share_black" }
+            ]
+        };
         _this = this;
     }
 
@@ -33,9 +39,13 @@ class AboutUsActivity extends View {
     }
 
     onBackPressed = () => {
-        var whatToSend = { "profile": JSON.stringify("{}") }
-        var event = { tag: "BACK_AboutUsActivity", contents: whatToSend };
-        window.__runDuiCallback(event);
+        if (this.SharePopup.getVisibility()){
+            this.SharePopup.hide();
+        } else {
+            var whatToSend = { "profile": JSON.stringify("{}") }
+            var event = { tag: "BACK_AboutUsActivity", contents: whatToSend };
+            window.__runDuiCallback(event);
+        }
     }
 
     nextScreen = (section) => {
@@ -52,6 +62,13 @@ class AboutUsActivity extends View {
             height="1"
             margin="0,1,0,0"
             background={window.__Colors.PRIMARY_BLACK_22} />)
+    }
+
+    getSharePopup = () => {
+        this.SharePopup = (
+            <ShareFilePopup />
+        );
+        return this.SharePopup;
     }
 
     getBody = (mainStr, substr) => {
@@ -155,40 +172,57 @@ class AboutUsActivity extends View {
         </LinearLayout>)
     }
 
+    handleMenuClick = (url) => {
+        if (url == "ic_action_share_black") {
+            var cb = (containerId) => {
+                JBridge.shareSupportFile(containerId);
+            }
+            this.SharePopup.show(window.__S.SHARE_THIS, cb);
+        }
+    }
+
     afterRender = () => {
         JBridge.logSettingsScreenEvent("ABOUT_APP");
     }
 
     render = () => {
         this.layout = (
-            <LinearLayout
-                id={this.idSet.parentId}
+            <RelativeLayout
                 root="true"
                 clickable="true"
                 height="match_parent"
-                width="match_parent"
-                orientation="vertical"
-                background={window.__Colors.WHITE_F2}>
-                <SimpleToolbar
-                    title={window.__S.ABOUT_US}
-                    afterRender={this.afterRender}
-                    width="match_parent"
-                    onBackPress={this.onBackPressed} />
+                width="match_parent">
                 <LinearLayout
+                    id={this.idSet.parentId}
+                    height="match_parent"
                     width="match_parent"
-                    height="4"></LinearLayout>
-                {this.getBody(window.__S.DEVICE_ID, JBridge.getDeviceId())}
-                {this.getLineSeperator()}
-                {this.checkUpdates()}
-                <LinearLayout
-                    width="match_parent"
-                    height="8"></LinearLayout>
-                {this.getBody2(window.__S.PRIVACY_POLICY, () => this.nextScreen("PRIVACY_POLICY"))}
-                {this.getLineSeperator()}
-                {this.getBody2(window.__S.TERMS_OF_SERVICE, () => this.nextScreen("TERMS_OF_SERVICE"))}
-                {this.getLineSeperator()}
-                {this.getBody2(window.__S.ABOUT_APPLICATION, () => this.nextScreen("ABOUT"))}
-            </LinearLayout>
+                    orientation="vertical"
+                    background={window.__Colors.WHITE_F2}>
+                    <SimpleToolbar
+                        title={window.__S.ABOUT_US}
+                        afterRender={this.afterRender}
+                        width="match_parent"
+                        menuData={this.menuData}
+                        onMenuItemClick={this.handleMenuClick}
+                        showMenu="true"
+                        onBackPress={this.onBackPressed} />
+                    <LinearLayout
+                        width="match_parent"
+                        height="4"></LinearLayout>
+                    {this.getBody(window.__S.DEVICE_ID, JBridge.getDeviceId())}
+                    {this.getLineSeperator()}
+                    {this.checkUpdates()}
+                    <LinearLayout
+                        width="match_parent"
+                        height="8"></LinearLayout>
+                    {this.getBody2(window.__S.PRIVACY_POLICY, () => this.nextScreen("PRIVACY_POLICY"))}
+                    {this.getLineSeperator()}
+                    {this.getBody2(window.__S.TERMS_OF_SERVICE, () => this.nextScreen("TERMS_OF_SERVICE"))}
+                    {this.getLineSeperator()}
+                    {this.getBody2(window.__S.ABOUT_APPLICATION, () => this.nextScreen("ABOUT"))}
+                </LinearLayout>
+                {this.getSharePopup()}
+            </RelativeLayout>
         );
         return this.layout.render();
     }
