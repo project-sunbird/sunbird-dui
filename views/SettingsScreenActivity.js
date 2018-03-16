@@ -213,9 +213,9 @@ class SettingsScreenActivity extends View {
             height="4"/>
           {this.getBody(window.__S.LANGUAGE_SETTINGS, window.__S.CURRENT_LANGUAGE + this.defaultlang(), this.handleChangeLang)}
           {this.getLineSeperator()}
-          {this.getBody("Data Sync", "Backup your data, Transfer Telemetry", this.datasync)}
+          {this.getBody(window.__S.DATA_SYNC, window.__S.DATA_SYNC_SUB, this.datasync)}
           {this.getLineSeperator()}
-          {this.getBody("Device Tags", "Add/Remove Device Tags", this.handleClick)}
+          {/*this.getBody(window.__S.DEVICE_TAGS, window.__S.DEVICE_TAGS_SUB, this.handleClick)*/}
           <LinearLayout
             width="match_parent"
             height="4" />
