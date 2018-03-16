@@ -83,7 +83,7 @@ if (typeof window !== "undefined") {
       // add the lock file
       // window.__LOCK.lastActionTime = currTime;
 
-      if (timeDiff >= 2000) {
+      if (timeDiff >= 500) {
         console.log("BUTTON_CLICKED_" + window.__CURR_SCREEN);
         window.__PROXY_FN[fName].call(null, ...functionArgs);
         window.__LAST_FN_CALLED.timeStamp = currTime;
