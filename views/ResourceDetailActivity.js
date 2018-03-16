@@ -219,7 +219,7 @@ class ResourceDetailActivity extends View {
   getBody = () => {
     return (
       <LinearLayout
-        height="wrap_content"
+        height="match_parent"
         width="match_parent"
         orientation="vertical">
       <LinearLayout
@@ -251,6 +251,7 @@ class ResourceDetailActivity extends View {
   }
 
   populateAboutSection = () => {
+    var screenWidth = JBridge.getScreenWidth();
     var description = this.contentData.contentData.description || "";
 
     var layout = (<LinearLayout
@@ -258,7 +259,7 @@ class ResourceDetailActivity extends View {
                     height="wrap_content"
                     orientation="vertical">
                   <LinearLayout
-                    width="1000"
+                    width={screenWidth.toString()}
                     height="wrap_content"
                     background={window.__Colors.WHITE_F2}>
                   <TextView
@@ -271,13 +272,14 @@ class ResourceDetailActivity extends View {
                     height="wrap_content">
                     <TextView
                       text={description}
-                      margin="16,8,0,0"/>
+                      margin="16,8,16,0"/>
                       </LinearLayout>
                 </LinearLayout>)
 
     this.replaceChild(this.idSet.aboutSection,layout.render(),0);
 
     if(this.contentData.contentData.gradeLevel){
+      var grades = this.contentData.contentData.gradeLevel.toString().replace(/,/g,", ");
       var gradeLayout = (<LinearLayout
                             width="match_parent"
                             height="wrap_content"
@@ -285,14 +287,15 @@ class ResourceDetailActivity extends View {
                           <TextView
                             text={window.__S.GRADE}
                             typeface="bold"
-                            margin="16,8,0,0"/>
+                            margin="16,8,16,0"/>
                           <TextView
-                            text={this.contentData.contentData.gradeLevel.toString()}
-                            margin="16,0,0,0"/>
+                            text={grades}
+                            margin="16,0,16,0"/>
                           </LinearLayout>)
       this.replaceChild(this.idSet.gradeSection,gradeLayout.render(),0);
     }
     if(this.contentData.contentData.subject){
+      var subject = this.contentData.contentData.subject.toString().replace(/,/g,", ");
       var subjectLayout = (<LinearLayout
                             width="match_parent"
                             height="wrap_content"
@@ -300,14 +303,15 @@ class ResourceDetailActivity extends View {
                           <TextView
                             text={window.__S.SUBJECT}
                             typeface="bold"
-                            margin="16,8,0,0"/>
+                            margin="16,8,16,0"/>
                           <TextView
-                            text={this.contentData.contentData.subject.toString()}
-                            margin="16,0,0,0"/>
+                            text={subject}
+                            margin="16,0,16,0"/>
                           </LinearLayout>)
       this.replaceChild(this.idSet.subjectSection,subjectLayout.render(),0);
     }
     if(this.contentData.contentData.board){
+      var board = this.contentData.contentData.board.toString().replace(/,/g,", ");
       var boardLayout = (<LinearLayout
                             width="match_parent"
                             height="wrap_content"
@@ -315,14 +319,15 @@ class ResourceDetailActivity extends View {
                           <TextView
                             text={window.__S.BOARD}
                             typeface="bold"
-                            margin="16,8,0,0"/>
+                            margin="16,8,16,0"/>
                           <TextView
-                            text={this.contentData.contentData.board.toString()}
-                            margin="16,0,0,0"/>
+                            text={board}
+                            margin="16,0,16,0"/>
                           </LinearLayout>)
       this.replaceChild(this.idSet.boardSection,boardLayout.render(),0);
     }
     if(this.contentData.contentData.language){
+      var language = this.contentData.contentData.language.toString().replace(/,/g,", ");
       var languageLayout = (<LinearLayout
                             width="match_parent"
                             height="wrap_content"
@@ -330,38 +335,42 @@ class ResourceDetailActivity extends View {
                           <TextView
                             text={window.__S.MEDIUM_2}
                             typeface="bold"
-                            margin="16,8,0,0"/>
+                            margin="16,8,16,0"/>
                           <TextView
-                            text={this.contentData.contentData.language.toString()}
-                            margin="16,0,0,0"/>
+                            text={language}
+                            margin="16,0,16,0"/>
                           </LinearLayout>)
       this.replaceChild(this.idSet.mediumSection,languageLayout.render(),0);
     }
     if(this.contentData.contentData.license || this.contentData.contentData.credits){
       if(this.contentData.contentData.credits){
-        this.creditsAndLicense += "<br><b>CREDITS</b><br>"+this.contentData.contentData.credits;
+        this.creditsAndLicense += "<br><b>CREDITS</b><br>"+this.contentData.contentData.credits.toString().replace(/,/,", ");
       }
       if(this.contentData.contentData.license){
         this.creditsAndLicense +="<br><b>LICENSE</b><br>"+this.contentData.contentData.license;
       }
       var creditsLayout = (<LinearLayout
                               width="match_parent"
-                              height="wrap_content"
-                              orientation="vertical">
+                              height="match_parent"
+                              orientation="vertical"
+                              layoutTransition="true">
+
                           <LinearLayout
-                              width="1000"
-                              height="wrap_content"
+                              width={screenWidth.toString()}
+                              height="match_parent"
                               orientation="vertical"
                               margin="0,8,0,0"
-                              background={window.__Colors.WHITE_F2}>
+                              background={window.__Colors.WHITE_F2}
+                              layoutTransition="true">
                           <TextView
                             id={this.idSet.creditsText}
                             textFromHtml={""}
                             visibility="gone"
-                            margin="16,0,0,0"
+                            margin="16,0,16,0"
                             />
                             <LinearLayout
-                              orientation="horizontal">
+                              orientation="horizontal"
+                              layoutTransition="true">
                           <TextView
                             id={this.idSet.viewCreditsButton}
                             text={window.__S.VIEW_CREDITS_INFO}
@@ -373,14 +382,13 @@ class ResourceDetailActivity extends View {
                               height="10"
                               id={this.idSet.upDownBlueArrow}
                               gravity="center_vertical"
-                              margin="8,14,0,8"
+                              margin="8,14,16,8"
                               imageUrl="ic_action_down_blue" />
                               </LinearLayout>
                           </LinearLayout>
                         </LinearLayout>)
         this.replaceChild(this.idSet.creditsSection,creditsLayout.render(),0);
     }
-
   }
 
   viewCreditsButtonClick = () => {
@@ -560,7 +568,7 @@ class ResourceDetailActivity extends View {
     } else if (window.__PreviewImagePopup.getVisibility()) {
       window.__PreviewImagePopup.hide();
     } else if (window.__RatingsPopup.getVisibility()) {
-      window.__RatingsPopup.hide();      
+      window.__RatingsPopup.hide();
     }else {
       JBridge.endEventLog(_this.details.content.contentType, _this.details.content.identifier, _this.details.content.pkgVersion);
       var event = { "tag": "BACK_ResourceDetailActivity", contents: [] };
