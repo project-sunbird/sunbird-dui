@@ -45,6 +45,10 @@ module.exports = function(action, payload, state) {
       localState.isInit = false
       localState.currScreen = "LanguageSelectActivity";
       break;
+    case "RoleSelectionActivity":
+      localState.isInit = false
+      localState.currScreen = "RoleSelectionActivity";
+      break;
     case "WelcomeScreenActivity":
       localState.isInit = false
       localState.currScreen = "WelcomeScreenActivity";

@@ -14,6 +14,7 @@ var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget"
 var TextInputView = require('../components/Sunbird/core/TextInputView');
 var ProgressBar = require("@juspay/mystique-backend/src/android_views/ProgressBar");
 var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
+var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
 var utils = require('../utils/GenericFunctions');
 
 var _this;
@@ -201,16 +202,18 @@ class UserActivity extends View {
   }
 
   onBackPressed = () => {
-    this.backPressCount++;
-    if (this.backPressCount == 1) {
-      window.__Snackbar.show(window.__S.BACK_TO_EXIT)
-    }
-    if (this.backPressCount > 1) {
-      JBridge.closeApp();
-    }
-    setTimeout(() => {
-      this.backPressCount = 0
-    }, 1500)
+    var event = { tag: "BACK_UserActivity", contents: [] };
+    window.__runDuiCallback(event);
+    // this.backPressCount++;
+    // if (this.backPressCount == 1) {
+    //   window.__Snackbar.show(window.__S.BACK_TO_EXIT)
+    // }
+    // if (this.backPressCount > 1) {
+    //   JBridge.closeApp();
+    // }
+    // setTimeout(() => {
+    //   this.backPressCount = 0
+    // }, 1500);
   }
 
 
@@ -306,15 +309,16 @@ class UserActivity extends View {
     this.setLoginPreferences();
     this.performRedirection();
     JBridge.logGuestEvent("LOGIN");
+    // var event = { tag: "OPEN_RoleSelectionActivity", contents: [] };
+    // window.__runDuiCallback(event);
   }
 
   getTopLayout = () => {
     //Logo and welcome message
     return (<LinearLayout
-      height="0"
-      weight="1"
+      height="wrap_content"
       width="match_parent"
-      margin="0,0,0,16"
+      margin="0,0,0,8"
       gravity="center"
       orientation="vertical">
 
@@ -330,6 +334,7 @@ class UserActivity extends View {
         height="wrap_content"
         width="match_parent"
         gravity="center"
+        alignParentBottom = "true, -1"
         orientation="vertical"
         margin="24,0,24,0">
 
@@ -373,19 +378,31 @@ class UserActivity extends View {
 
   getBody = () => {
     return (
-      <LinearLayout
+      <RelativeLayout
         root="true"
-        orientation="vertical"
         width="match_parent"
         clickable="true"
-        padding="0,12,0,0"
-        background={window.__Colors.WHITE}
         height="match_parent">
-        
-        {this.getTopLayout()}
+        <LinearLayout
+          root="true"
+          orientation="vertical"
+          width="match_parent"
+          clickable="true"
+          margin = "0,0,0,100"
+          background={window.__Colors.WHITE}
+          height="match_parent">
 
+          <SimpleToolbar
+            title=""
+            width="match_parent"
+            height="wrap_content"
+            onBackPress={this.onBackPressed} />
+          
+          {this.getTopLayout()}
+
+        </LinearLayout>
         {this.getOptions()}
-      </LinearLayout>);
+      </RelativeLayout>);
   }
 
 
@@ -441,6 +458,8 @@ class UserActivity extends View {
       } else {
         var event = { tag: "OPEN_MainActivity", contents: [] };
         window.__runDuiCallback(event);
+        // var event = { tag: "OPEN_RoleSelectionActivity", contents: [] };
+        // window.__runDuiCallback(event);
       }
     } else {
       this.showLoginOptions();

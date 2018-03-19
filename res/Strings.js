@@ -307,7 +307,7 @@ const stringsRes = {
 		GRADE: "GRADE",
 		BOARD: "Board",
 		DOWNLOADING_1: "Downloading %s",
-		DOWNLOAD_ALL: "Download all contents? %s",
+		DOWNLOAD_ALL: "Download all contents?",
 		DOWNLOAD_COMPLETED: "Download completed",
 		SETTINGS: "Settings",
 		LANGUAGE_SETTINGS: "Language Settings",

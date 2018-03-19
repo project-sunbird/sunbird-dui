@@ -55,6 +55,19 @@ derive instance genericLanguageSelectionActivityAction  :: Generic LanguageSelec
 instance decodeLanguageSelectionActivityAction :: Decode LanguageSelectActivityAction where decode = defaultDecode
 instance encodeLanguageSelectionActivityAction :: Encode LanguageSelectActivityAction where encode = defaultEncode
 
+data RoleSelectionActivity = RoleSelectionActivity
+data RoleSelectionActivityAction = OPEN_MainActivity_RoleSelection | 
+  DummyRoleSelectionActivityAction  |
+  BACK_RoleSelectionActivityAction
+
+instance roleSelectionActivityAction :: UIScreen RoleSelectionActivity RoleSelectionActivityAction where
+  generateMockEvents _ = [DummyRoleSelectionActivityAction , BACK_RoleSelectionActivityAction ]
+  ui x = genericUI x (generateMockEvents x :: Array RoleSelectionActivityAction)
+
+derive instance genericRoleSelectionActivityAction  :: Generic RoleSelectionActivityAction _
+instance decodeRoleSelectionActivityAction :: Decode RoleSelectionActivityAction where decode = defaultDecode
+instance encodeRoleSelectionActivityAction :: Encode RoleSelectionActivityAction where encode = defaultEncode
+
 
 data WelcomeScreenActivity = WelcomeScreenActivity
 data WelcomeScreenActivityAction = DummyWelcomeScreenAction | OPEN_StateSelectActivity
@@ -81,6 +94,7 @@ instance encodeStateSelectActivityAction :: Encode StateSelectActivityAction whe
 
 data UserActivity = UserActivity {whereFrom::String}
 data UserActivityAction = OPEN_MainActivity |
+  OPEN_RoleSelectionActivity |
   OPEN_Deeplink_ResourceDetail {resource :: String} |
   OPEN_Deeplink_CourseEnrolled {course::String}|
   OPEN_DeepLink_CourseInfo {course::String}|
@@ -90,7 +104,8 @@ data UserActivityAction = OPEN_MainActivity |
   API_LogIn {userName::String, userPass::String} |
   API_SignUp {request::String, api_token::String} |
   API_EnrolledCourses {user_token::String, api_token::String} |
-  API_GetProfileData {user_token::String, api_token::String}
+  API_GetProfileData {user_token::String, api_token::String} |
+  BACK_UserActivity
 
 instance userActivity :: UIScreen UserActivity UserActivityAction where
   generateMockEvents _ = [OPEN_MainActivity , API_LogIn {userName:"String",userPass:"String"}]

@@ -70,12 +70,14 @@ userActivity input = do
             _ <- sendUpdatedState {response : responseData, responseFor : "API_EnrolledCourses", screen:"asas"}
             pure $ "apiDefault"
         OPEN_MainActivity -> mainActivity "{}" "UserActivity" "{}"
+        OPEN_RoleSelectionActivity -> roleSelectionActivity input
         OPEN_Deeplink_ResourceDetail {resource:details} ->  resourceDetailActivity details "Deeplink" details
         OPEN_Deeplink_CourseEnrolled {course:details} -> enrolledCourseActivity details "Deeplink" details
         OPEN_DeepLink_CourseInfo {course:details} -> courseInfoActivity details "Deeplink" details
         OPEN_DeepLink_ContentPreview {details:details} -> contentPreviewActivity details "Deeplink" details
         OPEN_Notif_AnnouncementDetail {announcementData:details} -> announcementDetailActivity details "Notif" details
         OPEN_Notif_AnnouncementList -> announcementViewAllActivity "{}" "Notif" "{}"
+        BACK_UserActivity -> languageSelectActivity
         _ -> pure $ "UserActivity"
 
 contentPreviewActivity input whereFrom whatToSendBack = do
@@ -85,7 +87,12 @@ contentPreviewActivity input whereFrom whatToSendBack = do
         OPEN_UserActivityFromPreview -> userActivity "Deeplink"
         _ -> pure $ "default"
 
-
+roleSelectionActivity whatToSendback = do
+    event <- ui $ RoleSelectionActivity
+    case event of
+        OPEN_MainActivity_RoleSelection -> mainActivity "{}" "RoleSelectionActivity" "{}"
+        BACK_RoleSelectionActivityAction -> userActivity whatToSendback
+        _ -> roleSelectionActivity whatToSendback
 
 courseInfoActivity input whereFrom whatToSendBack= do
     event <- ui $ CourseInfoActivity {courseDetails:input}

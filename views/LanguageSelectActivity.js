@@ -19,6 +19,7 @@ class LanguageSelectActivity extends View {
         this.setIds([
             "langContainer"
         ]);
+        this.shouldCacheScreen = false;
         this.langArr = [];
         this.initLangArr();
     }

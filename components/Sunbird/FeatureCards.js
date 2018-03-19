@@ -53,7 +53,7 @@ class Card extends View {
                         gravity="center">
                         <TextView
                             width="wrap_content"
-                            margin="0,32,0,24"
+                            margin="0,8,0,8"
                             textSize="16"
                             fontStyle={Font.fontStyle.SEMIBOLD}
                             text={this.cardData.heading} />
@@ -79,7 +79,7 @@ class Card extends View {
                         <TextView
                             gravity="center"
                             width="wrap_content"
-                            margin="0,24,0,0"
+                            margin="0,8,0,0"
                             padding="24,0,24,0"
                             textSize="14"
                             fontStyle={Font.fontStyle.REGULAR}

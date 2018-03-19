@@ -14,6 +14,7 @@ const reducer = require("@juspay/mystique-backend/src/state_managers").reducer({
 const RootScreen = require("../views/RootScreen");
 const SplashScreenActivity = require("../views/SplashScreenActivity");
 const LanguageSelectActivity = require("../views/LanguageSelectActivity");
+const RoleSelectionActivity = require("../views/RoleSelectionActivity");
 const WelcomeScreenActivity = require("../views/WelcomeScreenActivity");
 const StateSelectActivity = require("../views/StateSelectActivity");
 const SettingsScreenActivity = require("../views/SettingsScreenActivity");
@@ -74,6 +75,9 @@ var determineScreen = (screenName, state) => {
       break;
     case "LanguageSelectActivity":
       screen = new (LanguageSelectActivity(dispatcher, RootScreenActions))(null, null, state);
+      break;
+    case "RoleSelectionActivity":
+      screen = new (RoleSelectionActivity(dispatcher, RootScreenActions))(null, null, state);
       break;
     case "LanguageSelectActivitySt":
       screen = new (LanguageSelectActivitySt(dispatcher, RootScreenActions))(null, null, state);
