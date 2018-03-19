@@ -56,21 +56,51 @@ class DataSyncScreenActivity extends View {
     }
     this.lastSync = JBridge.getFromSharedPrefs("sync_time");
     this.lastSync = this.lastSync == "__failed" ? "" : window.__S.LAST_SYNC + this.lastSync;
-    _this = this;
-    this.initializeData();
+		_this = this;
 
-
+		this.optionTypeValue = [];
+		this.index = -1;
+		this.optionType = JBridge.getFromSharedPrefs("data_sync");
+		this.initializeData();
     // window.__profileData = this.profileData;//testing
   }
 
   initializeData = () => {
-    this.optionTypeValue = [
-          {name:window.__S.OFF,select:"0",icon:"ic_action_radio"},
-          {name:window.__S.OVER_WIFI,select:"0",icon:"ic_action_radio"},
-          {name:window.__S.ALWAYS_ON,select:"0",icon:"ic_action_radio"}
-        ];
 
-    this.index=-1;
+	  if(this.optionType == "Off"){
+			this.index = 0;
+			this.optionTypeValue = [
+				{name:window.__S.OFF,select:"1",icon:"ic_action_radio"},
+				{name:window.__S.OVER_WIFI,select:"0",icon:"ic_action_radio"},
+				{name:window.__S.ALWAYS_ON,select:"0",icon:"ic_action_radio"}
+			];
+		}
+		else if(this.optionType == "Over Wifi"){
+			this.index = 1;
+			this.optionTypeValue = [
+				{name:window.__S.OFF,select:"0",icon:"ic_action_radio"},
+				{name:window.__S.OVER_WIFI,select:"1",icon:"ic_action_radio"},
+				{name:window.__S.ALWAYS_ON,select:"0",icon:"ic_action_radio"}
+			];
+		}
+		else if(this.optionType == "Always On"){
+			this.index = 2;
+			this.optionTypeValue = [
+				{name:window.__S.OFF,select:"0",icon:"ic_action_radio"},
+				{name:window.__S.OVER_WIFI,select:"0",icon:"ic_action_radio"},
+				{name:window.__S.ALWAYS_ON,select:"1",icon:"ic_action_radio"}
+			];
+		}
+		else {
+			this.index = -1;
+			this.optionTypeValue = [
+				{name:window.__S.OFF,select:"0",icon:"ic_action_radio"},
+				{name:window.__S.OVER_WIFI,select:"0",icon:"ic_action_radio"},
+				{name:window.__S.ALWAYS_ON,select:"0",icon:"ic_action_radio"}
+			];
+		}
+
+    //this.index=-1;
   }
 
   handleRadioButtonClick=()=> {

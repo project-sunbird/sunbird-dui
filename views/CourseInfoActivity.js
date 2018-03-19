@@ -9,6 +9,7 @@ var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
 var ScrollView = require("@juspay/mystique-backend/src/android_views/ScrollView");;
 var HorizontalScrollView = require("@juspay/mystique-backend/src/android_views/HorizontalScrollView");
+var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
 var ProgressBar = require("@juspay/mystique-backend/src/android_views/ProgressBar");
 var utils = require('../utils/GenericFunctions');
 
@@ -17,7 +18,7 @@ var objectAssign = require('object-assign');
 window.R = require("ramda");
 
 var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
-var CropParagraph = require('../components/Sunbird/CropParagraph');
+var CropContentDetails = require('../components/Sunbird/CropContentDetails');
 var CourseCurriculum = require('../components/Sunbird/CourseCurriculum');
 var PageOption = require('../components/Sunbird/core/PageOption');
 var CourseProgress = require('../components/Sunbird/CourseProgress');
@@ -37,7 +38,11 @@ class CourseInfoActivity extends View {
       "totalContainer",
       "sharePopupContainer",
       "enrollButtonId",
-      "readMore"
+      "readMore",
+      "creditsSection",
+      "creditsText",
+      "viewCreditsButton",
+      "upDownBlueArrow"
     ]);
     this.state = state;
     this.screenName = "CourseInfoActivity"
@@ -53,6 +58,8 @@ class CourseInfoActivity extends View {
     //to get geneie callback for download of spine
     window.__getDownloadStatus = this.getSpineStatus;
     this.cour = "";
+    this.creditsAndLicense = "";
+    this.showCredits = true;
 
     _this = this;
 
@@ -148,6 +155,7 @@ class CourseInfoActivity extends View {
         JBridge.getContentImportStatus(identifier, callback22)
       }
       _this.contentDetails(JSON.parse(utils.decodeBase64(data[0])));
+      _this.creditsDetail(JSON.parse(utils.decodeBase64(data[0])));
 
     });
     JBridge.getContentDetails(identifier, callback, false);
@@ -415,22 +423,22 @@ class CourseInfoActivity extends View {
   }
 
   contentDetails = (data) => {
+    var screenWidth = JBridge.getScreenWidth().toString();
     var contentText = "";
-
     if(data.contentData && data.contentData.description){
       contentText+="<br>"+data.contentData.description + "<br><br>";
     }
     if(data.contentData && data.contentData.gradeLevel){
-      contentText+="GRADE:<br>"+data.contentData.gradeLevel + "<br><br>";
+      contentText+="GRADE:<br>"+data.contentData.gradeLevel.toString().replace(/,/g,", ") + "<br><br>";
     }
     if(data.contentData && data.contentData.subject){
-      contentText+="SUBJECT:<br>"+data.contentData.subject + "<br><br>";
+      contentText+="SUBJECT:<br>"+data.contentData.subject.toString().replace(/,/g,", ") + "<br><br>";
     }
     if(data.contentData && data.contentData.board){
-      contentText+="BOARD:<br>"+data.contentData.board + "<br><br>";
+      contentText+="BOARD:<br>"+data.contentData.board.toString().replace(/,/g,", ") + "<br><br>";
     }
     if(data.contentData && data.contentData.language){
-      contentText+="MEDIUM:<br>"+data.contentData.language;
+      contentText+="MEDIUM:<br>"+data.contentData.language.toString().replace(/,/g,", ");
     }
 
     var layout = (
@@ -440,7 +448,7 @@ class CourseInfoActivity extends View {
        height="wrap_content"
        orientation="vertical">
       <LinearLayout
-       width="match_parent"
+       width={screenWidth}
        height="wrap_content"
        orientation="vertical"
        background={window.__Colors.WHITE_F2}>
@@ -449,18 +457,101 @@ class CourseInfoActivity extends View {
          margin="16,12,0,12"
          style={window.__TextStyle.textStyle.CARD.TITLE.DARK}/>
         </LinearLayout>
-       <CropParagraph
+       <CropContentDetails
          height="match_parent"
          width="match_parent"
-         margin="16,0,0,16"
-         background={window.__Colors.WHITE_F2}
-         privacyStatus={"false"}
-         charToShow="20"
-         contentText={contentText}
-         editable={"false"} />
+         margin="16,0,16,16"
+         contentDescription={data.contentData.description ? data.contentData.description : " "}
+         contentText={contentText}/>
       </LinearLayout>
       )
       this.replaceChild(this.idSet.readMore,layout.render(),0);
+  }
+
+  creditsDetail = (data) => {
+    if(data.contentData.license || data.contentData.credits){
+      if(data.contentData.credits){
+        this.creditsAndLicense += "<br><b>CREDITS</b><br>"+data.contentData.credits.toString().replace(/,/g,", ");
+      }
+      if(data.contentData.license){
+        this.creditsAndLicense +="<br><b>LICENSE</b><br>"+data.contentData.license;
+      }
+      var creditsLayout = (<LinearLayout
+                              width="match_parent"
+                              height="wrap_content"
+                              orientation="vertical"
+                              visibility="visible">
+                          <LinearLayout
+                              width="1000"
+                              height="wrap_content"
+                              orientation="vertical"
+                              margin="0,8,0,0"
+                              background={window.__Colors.WHITE_F2}>
+                          <TextView
+                            id={this.idSet.creditsText}
+                            textFromHtml={""}
+                            visibility="gone"
+                            margin="16,0,0,0"
+                            />
+                            <LinearLayout
+                              orientation="horizontal">
+                          <TextView
+                            id={this.idSet.viewCreditsButton}
+                            text={window.__S.VIEW_CREDITS_INFO}
+                            margin="16,8,0,8"
+                            color={"#FF0079FF"}
+                            onClick={this.viewCreditsButtonClick}/>
+                            <ImageView
+                              width="10"
+                              height="10"
+                              id={this.idSet.upDownBlueArrow}
+                              gravity="center_vertical"
+                              margin="8,14,0,8"
+                              imageUrl="ic_action_down_blue" />
+                              </LinearLayout>
+                          </LinearLayout>
+                        </LinearLayout>)
+        this.replaceChild(this.idSet.creditsSection,creditsLayout.render(),0);
+    }
+  }
+
+  viewCreditsButtonClick = () => {
+    if(!this.showCredits){
+      var cmd = this.set({
+        id: this.idSet.creditsText,
+        textFromHtml: "",
+        visibility: "gone"
+      })
+        cmd+= this.set({
+        id: this.idSet.viewCreditsButton,
+        text: window.__S.VIEW_CREDITS_INFO
+      })
+      cmd+= this.set({
+        id: this.idSet.upDownBlueArrow,
+        visibility:"visible",
+        imageUrl:"ic_action_down_blue"
+      })
+
+      Android.runInUI(cmd, 0);
+    } else{
+      var cmd = this.set({
+        id: this.idSet.creditsText,
+        textFromHtml: this.creditsAndLicense,
+        visibility: "visible"
+      })
+     cmd+= this.set({
+        id: this.idSet.viewCreditsButton,
+        text: window.__S.HIDE_CREDITS_INFO
+      })
+    cmd+= this.set({
+      id: this.idSet.upDownBlueArrow,
+      visibility:"visible",
+      imageUrl: "ic_action_up_blue"
+    })
+
+      Android.runInUI(cmd, 0);
+    }
+    this.showCredits = !this.showCredits;
   }
 
   getBody = () => {
@@ -510,16 +601,24 @@ class CourseInfoActivity extends View {
               <TextView
                 width="wrap_content"
                 height="wrap_content"
-                margin="0,0,0,7"
+                margin="0,0,0,0"
                 text={utils.firstLeterCapital(this.data.courseName)}
                 style={window.__TextStyle.textStyle.HEADING.DARK} />
-
+                <LinearLayout
+                  orientation="horizontal">
+              <TextView
+                height="wrap_content"
+                width="match_parent"
+                margin="0,4,0,0"
+                text={window.__S.BY}
+                style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
               <TextView
                 height="wrap_content"
                 width="match_parent"
-                margin="0,0,0,12"
-                text={this.data.courseDesc}/>
+                margin="0,4,0,0"
+                text={" Test User"}/>
+                </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
@@ -533,6 +632,7 @@ class CourseInfoActivity extends View {
                    margin="16,16,0,16"
                    text={window.__S.STRUCTURE}
                    style={window.__TextStyle.textStyle.CARD.TITLE.DARK} />
+
                    </LinearLayout>
                  <LinearLayout
                    height="match_parent"
@@ -543,8 +643,6 @@ class CourseInfoActivity extends View {
 
               {this.getCurriculumnBrief()}
 
-
-
               <LinearLayout
                 id={this.idSet.descriptionContainer}
                 height="wrap_content"
@@ -552,6 +650,7 @@ class CourseInfoActivity extends View {
                 gravity="center"
                 root="true"
                 orientation="vertical">
+
                 <ProgressBar
                   height="30"
                   width="30"
@@ -562,9 +661,14 @@ class CourseInfoActivity extends View {
                   height="wrap_content"
                   gravity="center"
                   width="match_parent" />
+
               </LinearLayout>
 
             </LinearLayout>
+            <LinearLayout
+              width="match_parent"
+              height="match_parent"
+              id={this.idSet.creditsSection} />
             </LinearLayout>
 
           </ScrollView>

@@ -21,21 +21,9 @@ class CropParagraph extends View {
     this.str = this.props.contentText!=undefined ? this.props.contentText : "";
     console.log(this.props)
     // console.log("inside CropParagraph, content : " + this.str);
-    this.len = parseInt(this.props.charToShow) || 50;
-    if(this.props.charToShow){
-      var pattern = "GRADE";
-      if(this.str.indexOf(pattern)>=0) {
-        this.str = this.str.substr(0,this.str.indexOf(pattern));
-        this.str = this.str.replace(/<br>/g,"");
-        this.str = "<br>" + this.str;
-        if(this.str.length > 50) this.str = this.str.substring(0,50) + "...";
-        else this.str = this.str + "<br>";
+    this.len = 50;
 
-        this.len = 0;
-
-      }
-    }
-    else if(this.str.length > this.len) this.str = this.str.substring(0,this.len) + "...";
+    if(this.str.length > this.len) this.str = this.str.substring(0,this.len) + "...";
 
     this.max = false;
     this.lockIconVisibility=this.props.privacyStatus;
@@ -50,7 +38,7 @@ class CropParagraph extends View {
       })
       cmd += this.set({
         id: this.idSet.paraContainerCroped,
-        textFromHtml: this.props.contentText
+        text: this.props.contentText
       });
       Android.runInUI(cmd, 0);
     } else {
@@ -60,7 +48,7 @@ class CropParagraph extends View {
       })
       cmd += this.set({
         id: this.idSet.paraContainerCroped,
-        textFromHtml: this.str
+        text: this.str
       });
       Android.runInUI(cmd, 0);
     }
@@ -75,6 +63,7 @@ class CropParagraph extends View {
       height= "wrap_content"
       margin = {this.props.margin || "0,0,0,0"}
       layoutTransition="true"
+      visibility = {(this.props.headText==undefined || this.props.headText.length == 0) ? "gone":"visible"}
       orientation="vertical">
       <LinearLayout
         width="match_parent"
@@ -84,7 +73,6 @@ class CropParagraph extends View {
         text = {this.props.headText}
         style= {window.__TextStyle.textStyle.CARD.TITLE.DARK}
         margin={this.props.headTextMargin || "0,0,0,8"}
-        visibility = {(this.props.headText==undefined || this.props.headText.length == 0) ? "gone":"visible"}
         />
         </LinearLayout>
           <LinearLayout
@@ -131,7 +119,7 @@ class CropParagraph extends View {
 
             <TextView
               id={this.idSet.paraContainerCroped}
-              textFromHtml = {this.str}
+              text = {this.str}
               width="wrap_content"
               height="wrap_content"
               layoutTransition="true"
