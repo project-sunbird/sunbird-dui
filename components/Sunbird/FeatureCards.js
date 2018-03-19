@@ -60,15 +60,13 @@ class Card extends View {
                     </LinearLayout>
 
                     <LinearLayout
-                        height= "180"
-                        width="180"
+                        height= "wrap_content"
+                        width="match_parent"
                         padding="0,8,0,8"
-                        gravity="center"
-                        background={window.__Colors.WHITE_F2}
-                        cornerRadius = "100">
+                        gravity="center">
                         <ImageView
-                            width="100"
-                            height="100"
+                            width="match_parent"
+                            height="match_parent"
                             margin="0,0,0,0"
                             imageUrl={this.cardData.illustration} />
                     </LinearLayout>
@@ -108,15 +106,15 @@ class FeatureCards extends View {
         this.cardsArr = [
             {
                 heading: "Get Content On-the-Go",
-                illustration: "ic_launcher",
+                illustration: "ic_content_otg",
                 desc: "Browse and consume content from our growing collection of free courses and resources."
             }, {
                 heading: "Scan QR Codes for Quick Access",
-                illustration: "ic_launcher",
+                illustration: "ic_scan_qr",
                 desc: "Scan QR Codes using the Sunbird app to quickly get access to related content and resources."
             }, {
                 heading: "Connect with Peers and Experts",
-                illustration: "ic_launcher",
+                illustration: "ic_connect_with_peers",
                 desc: "Join communities and speak to peers and experts. Learn and share your knowledge."
             }
         ];
