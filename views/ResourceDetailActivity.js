@@ -449,24 +449,29 @@ class ResourceDetailActivity extends View {
         height="wrap_content"
         margin="16,16,16,0"
         orientation="vertical">
-        <LinearLayout
-          width="80"
-          height="50"
-          cornerRadius="4"
-          background={window.__Colors.PRIMARY_BLACK_66}>
-          <ImageView
-            width="80"
-            height="50"
-            circularImageUrl={"4," + (this.details.imageUrl ? this.details.imageUrl : "ic_launcher")} />
-        </LinearLayout>
+        
         <TextView
           width="wrap_content"
           height="wrap_content"
-          padding="8,0,0,0"
+          padding="0,0,0,0"
           style={window.__TextStyle.textStyle.CARD.TITLE.DARK}
           text={this.details.title} />
+          <LinearLayout
+            margin="0,4,0,0"
+            width="match_parent"
+            height="wrap_content">
+          <TextView
+            width="wrap_content"
+            height="wrap_content"
+            text={window.__S.BY}
+            style={window.__TextStyle.textStyle.HINT.REGULAR}/>
+          <TextView
+            width="wrap_content"
+            height="wrap_content"
+            text={ " " + this.details.content.createdBy}/>
+            </LinearLayout>
         <LinearLayout
-          margin="0,12,0,0"
+          margin="0,4,0,0"
           width="match_parent"
           height="wrap_content">
           <TextView
@@ -484,7 +489,7 @@ class ResourceDetailActivity extends View {
             style={window.__TextStyle.textStyle.HINT.DULL} />
         </LinearLayout>
         <LinearLayout
-          margin="0,2,0,0"
+          margin="0,4,0,0"
           width="match_parent"
           height="wrap_content">
           <LinearLayout

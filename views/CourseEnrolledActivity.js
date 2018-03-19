@@ -306,7 +306,7 @@ class CourseEnrolledActivity extends View {
     window.__runDuiCallback(event);
   }
 
-  getBatchDetailSection = (name, description, createdBy) => {
+  /*getBatchDetailSection = (name, description, createdBy) => {
     return (<LinearLayout
       width="match_parent"
       height="wrap_content"
@@ -342,7 +342,7 @@ class CourseEnrolledActivity extends View {
           style={window.__TextStyle.textStyle.CARD.TITLE.DARK_14} />
       </LinearLayout>
     </LinearLayout>)
-  }
+  }*/
 
   handleStateChange = (state) => {
 
@@ -423,6 +423,7 @@ class CourseEnrolledActivity extends View {
         this.batchCreatedBy = userName;
         this.contentDetails();
 
+        this.replaceChild(this.idSet.headerContainer, this.getHeader().render(), 0);
         //this.replaceChild(_this.idSet.batchDetailsContainer, _this.getBatchDetailSection(this.batchName, this.batchDescription, userName).render(), 0);
         if (window.__currCourseDetails && window.__currCourseDetails.hasOwnProperty("reload") && window.__currCourseDetails.reload) {
           this.refeshCourseProgressApi();
@@ -460,12 +461,15 @@ class CourseEnrolledActivity extends View {
   }
 
   getHeader = () => {
+    var isTextbook = this.apiDetails.contentType == "textbook";
     return (
       <CourseProgress
         height="wrap_content"
         width="wrap_content"
         content={this.data}
+        textbook={isTextbook}
         title={this.data.courseName || this.apiDetails.name || this.apiDetails.contentData.name}
+        batchCreatedBy={this.batchCreatedBy || "Test User"}
         onResumeClick={this.handleCourseResume}
         visibility={this.showProgress} />
     );

@@ -601,16 +601,24 @@ class CourseInfoActivity extends View {
               <TextView
                 width="wrap_content"
                 height="wrap_content"
-                margin="0,0,0,7"
+                margin="0,0,0,0"
                 text={utils.firstLeterCapital(this.data.courseName)}
                 style={window.__TextStyle.textStyle.HEADING.DARK} />
-
+                <LinearLayout
+                  orientation="horizontal">
+              <TextView
+                height="wrap_content"
+                width="match_parent"
+                margin="0,4,0,0"
+                text={window.__S.BY}
+                style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
               <TextView
                 height="wrap_content"
                 width="match_parent"
-                margin="0,0,0,12"
-                text={this.data.courseDesc}/>
+                margin="0,4,0,0"
+                text={" Test User"}/>
+                </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout

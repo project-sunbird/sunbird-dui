@@ -34,7 +34,7 @@ class CourseProgress extends View {
     return (<LinearLayout
       visibility={this.props.visibility}
       width="match_parent"
-      margin="0,0,0,0">
+      margin="0,0,0,4">
 
       <TextView
         style={window.__TextStyle.textStyle.HINT.REGULAR}
@@ -58,10 +58,38 @@ class CourseProgress extends View {
           weight="1"
           height="match_parent"
           orientation="vertical">
+          <LinearLayout
+            orientation="horizontal">
           <TextView
             text={utils.firstLeterCapital(this.props.title || this.props.name || "No title")}
             style={window.__TextStyle.textStyle.HEADING.DARK}
-            margin="0,0,0,8" />
+            margin="0,0,0,4" />
+            <ImageView
+              width="16"
+              height="16"
+              visibility={this.props.textbook ? "visible":"gone"}
+              gravity="left"
+              margin="8,6,0,4"
+              imageUrl="ic_check_circle"/>
+              </LinearLayout>
+
+            <LinearLayout
+              orientation="horizontal"
+              visibility={this.props.batchCreatedBy? "visible":"gone"}>
+
+              <TextView
+                height="wrap_content"
+                width="match_parent"
+                margin="0,0,0,4"
+                text={window.__S.BY}
+                style={window.__TextStyle.textStyle.HINT.REGULAR}/>
+
+              <TextView
+                height="wrap_content"
+                width="match_parent"
+                margin="0,0,0,4"
+                text={" "+this.props.batchCreatedBy}/>
+                </LinearLayout>
 
           {this.getProgressStatus()}
 

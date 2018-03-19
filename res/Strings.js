@@ -111,7 +111,7 @@ const stringsRes = {
 		WELCOME_M2: "Structured education for the educators",
 		WELCOME_ON_BOARD: "Welcome to %s, %s ",
 		WHAT_WENT_WRONG: "What went wrong?",
-		YOUR_PROGRESS: "Your Progress: %s%",
+		YOUR_PROGRESS: "%s% Complete",
 		FLAG: "Report",
 		ERROR_EMPTY_RESULT: "Search results unavailable",
 		ERROR_FLAG_CONTENT_MIN_REASON: "Select atleast one reason to flag the content",
@@ -348,7 +348,8 @@ const stringsRes = {
 		VIEW_CREDITS_INFO: "View Credits and Licensing Info",
 		HIDE_CREDITS_INFO: "Hide Credits and Licensing Info",
 		TRY_BEFORE_RATING: "Please try the content before rating it.",
-		SEND_EMAIL: "Send Email"
+		SEND_EMAIL: "Send Email",
+		BY: "By"
 	},
 	"hi_IN": {
 		ALREADY_HAVE_ACC: "मौजूदा उपयोगकर्ता, साइन इन करें",
