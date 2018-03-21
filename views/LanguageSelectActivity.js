@@ -20,6 +20,7 @@ class LanguageSelectActivity extends View {
         this.setIds([
             "langContainer"
         ]);
+        this.backPressCount = 0;
         this.shouldCacheScreen = false;
         this.langArr = [];
         this.initLangArr();
@@ -176,6 +177,19 @@ class LanguageSelectActivity extends View {
                 </RelativeLayout>
             </LinearLayout>
         );
+    }
+
+    onBackPressed = () => {
+        this.backPressCount++;
+        if (this.backPressCount == 1) {
+          window.__Snackbar.show(window.__S.BACK_TO_EXIT)
+        }
+        if (this.backPressCount > 1) {
+          JBridge.closeApp();
+        }
+        setTimeout(() => {
+          this.backPressCount = 0
+        }, 1500);
     }
 
     render() {

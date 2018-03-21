@@ -265,8 +265,15 @@ exports.setLoginPreferences = () => {
 		JBridge.setInSharedPrefs("logged_in", "GUEST");
 		if (window.__userToken == "__failed") {
 			JBridge.setProfile("", true);
-			var guestData = JSON.parse(exports.decodeBase64(JBridge.getCurrentProfileData()));
-			JBridge.setInSharedPrefs("user_token", guestData.uid);
+			setTimeout(() => {
+				console.log("setting in sharedPref userToken");
+				
+				var guestData = JSON.parse(exports.decodeBase64(JBridge.getCurrentProfileData()));
+				window.__userToken = guestData.uid;
+				JBridge.setInSharedPrefs("user_token", guestData.uid);
+			}, 1000);
+		} else {
+			JBridge.setProfile(window.__userToken, true);
 		}
 	} else if (window.__loggedInState == "YES") {
 		JBridge.setInSharedPrefs("logged_in", "YES");
