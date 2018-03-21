@@ -251,7 +251,7 @@ class GuestInformationActivity extends View {
    console.log("values -> " + selectedMedium + " " + selectedGrade + " " + selectedBoard + " " + selectedSyllabus);
 
    JBridge.setInSharedPrefs(window.__S.SUBJECTS, selectedSyllabus);
-   JBridge.updateProfile(this.profileData.handle, selectedMedium, selectedGrade, selectedBoard);
+   JBridge.updateProfile(this.profileData.handle, [selectedMedium], [selectedGrade], [selectedBoard]);
    this.onBackPressed();
  }
 
