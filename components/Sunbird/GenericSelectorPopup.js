@@ -59,8 +59,12 @@ class GenericSelectorPopup extends View {
         this.hide();
     }
 
-    checkSelected = (item, list) => {
-        if (list.indexOf(item) > -1){
+    checkSelected = (ele, list) => {
+        var flag = -1;
+        list.map((item)=>{
+            if (item.code == ele.code) flag = 1;
+        });
+        if (flag != -1){
             return true;
         }
         return false;
@@ -89,7 +93,7 @@ class GenericSelectorPopup extends View {
     }
 
     removeFromArr = (array, element) => {
-        return array.filter(e => e !== element);
+        return array.filter(e => e.code !== element.code);
     }
 
     getHeader = () => {
@@ -174,7 +178,7 @@ class GenericSelectorPopup extends View {
             return (<CheckBox
                 onCheckChange={(value) => { this.handleCheckBoxValueChange(item, value) }}
                 checked={this.checkSelected(item, this.data.selected)}
-                text={item}
+                text={item.name}
                 index={index} />)
         });
         this.totalBar = (
@@ -195,7 +199,7 @@ class GenericSelectorPopup extends View {
         var leftBar = [];
         leftBar = this.data.values.map((item, index) => {
             var op = this.checkSelected(item, this.data.selected) ? "1" : "0";
-            return { name: item, select: op, icon: "ic_action_radio" };
+            return { name: item.name, select: op, icon: "ic_action_radio" };
         });
         console.log("radio btns -> ", leftBar);
         

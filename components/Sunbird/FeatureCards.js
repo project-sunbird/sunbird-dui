@@ -119,7 +119,7 @@ class FeatureCards extends View {
             }
         ];
         this.cardWidth = JBridge.getScreenWidth();
-        this.cardHeight = JBridge.getScreenHeight() - 200;
+        this.cardHeight = JBridge.getScreenHeight() - 250;
         this.cardPadding = Math.floor((this.screenWidth - this.cardWidth) / 2);
 
         console.log("cardPadding -> ", this.cardPadding);
@@ -142,7 +142,7 @@ class FeatureCards extends View {
         var visibility = "visible;"
         this.Carousel = (
             <CarouselCards
-                height="match_parent"
+                height={JBridge.getScreenHeight() - 200 + ""}
                 cardPadding={"0,0,0,0"}
                 cards={this.renderCards}
                 cardWidth={this.cardWidth}

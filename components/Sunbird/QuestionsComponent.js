@@ -15,78 +15,6 @@ var CarouselCards = require('./CarouselCards');
 var CircularLoader = require('../../components/Sunbird/core/CircularLoader');
 const Font = require('../../res/Font');
 
-class Card extends View {
-    constructor(props, children) {
-        super(props, children);
-        this.setIds([
-            "card"
-        ]);
-        this.height = this.props.height ? this.props.height : "106";
-        this.width = this.props.width ? this.props.width : "200";
-        this.cardData = this.props.data;
-        this.id = this.idSet.card; //important feild
-    }
-
-    render() {
-        var fLayout = "";
-        var visibility = "gone";
-        if (this.cardData.selected.length == 0) {
-            fLayout = (
-                <TextView
-                    text={this.cardData.option}
-                    style={window.__TextStyle.textStyle.TABBAR.SELECTED} />
-            );
-        } else {
-            visibility = "visible";
-            var dispText = this.cardData.selected.map((item, i) => {
-                return item;
-            });
-            dispText = dispText.splice(0, 2).join(", ");
-            dispText = dispText + (this.cardData.selected.length > 2 ? "..." : "");
-            
-            fLayout = (
-                <TextView
-                    textSize="14"
-                    text={dispText} />
-            );
-        }
-        var layout = (
-            <RelativeLayout
-                id={this.idSet.card}
-                height={this.height}
-                width={this.width}
-                background="#FFFFFF"
-                margin="4,0,4,0"
-                padding="8,8,8,8">
-
-                <TextView
-                    margin = "8,8,0,0"
-                    textSize = "14"
-                    fontStyle={Font.fontStyle.REGULAR}
-                    alignParentTop="true, -1"
-                    text={this.cardData.question} />
-
-                <LinearLayout
-                    alignParentBottom="true, -1"
-                    width="wrap_content"
-                    padding="8,8,8,8"
-                    onClick={this.props.onClick}
-                    gravity = "center_vertical">
-                    {fLayout}
-                    <ImageView 
-                        width = "11"
-                        height = "11"
-                        visibility={visibility}
-                        margin = "4,0,0,0"
-                        imageUrl= "ic_action_edit_blue" />
-                </LinearLayout>
-            </RelativeLayout>
-        );
-        return layout.render();
-    }
-}
-
-
 class QuestionsComponent extends View {
     constructor(props, children) {
         super(props, children);
@@ -98,11 +26,7 @@ class QuestionsComponent extends View {
             "progressContainer"
         ]);
         this.cardsArr = [];
-        if (window.__questions.length == 0) {
-            this.getNextQuestion();
-        } else {
-            this.cardsArr = window.__questions;
-        }
+        this.getNextQuestion();
         this.screenWidth = JBridge.getScreenWidth()
         this.cardWidth = this.screenWidth < 300 ? (this.screenWidth - 32) : 300;
         this.cardPadding = Math.floor((this.screenWidth - this.cardWidth) / 2);
@@ -130,19 +54,42 @@ class QuestionsComponent extends View {
     onCardAnswered = (index, data) => {
         console.log("updated data -> ", data);
 
-        window.__questions[index] = data;
         window.__GenericSelectorPopup.hide();
-
+        window.__questionStore.setAnswer(index, data);
+        this.saveToProfile(index, data);
         this.getNextQuestion();
         this.updateToCurrentState();
     }
+
+    saveToProfile = (index, data) => {
+        var profile = JSON.parse(utils.decodeBase64(JBridge.getCurrentProfileData()));
+        var qs = window.__questionStore.getAllQs();
+        var item = qs[index];
+        var selected = [];
+        item.selected.map((item) => { selected.push(item.name) });
+        console.log("current saved value -> ", item);
+        if (selected.length != 0) {
+            switch (item.code) {
+                case "board":
+                    profile.board = selected;
+                    break;
+                case "gradeLevel":
+                    profile.grade = selected;
+                    break;
+                case "subject":
+                    JBridge.setInSharedPrefs(window.__S.SUBJECTS, selected.join(","));
+                    break;
+                case "medium":
+                    profile.medium = selected;
+                    break;
+            }
+            JBridge.updateProfile(profile.handle, profile.medium, profile.grade, profile.board);
+        }
+    }
     
     getNextQuestion = () => {
-        var ele = window.__allQs.pop();
-        if (ele) {
-            window.__questions.push(ele);
-            this.cardsArr = window.__questions;
-        }
+        window.__questionStore.addNextQ();
+        this.cardsArr = window.__questionStore.getAllQs();
         this.renderCards = this.cardsArr.map((item, i) => {
             return (
                 <Card
@@ -151,7 +98,6 @@ class QuestionsComponent extends View {
                     onClick={() => { this.handleCardOptionClick(i, item) }} />
             );
         });
-        console.log("window.__allQs -> ", window.__allQs);
         console.log("this.cardsArr -> ", this.cardsArr);        
     }
 
@@ -193,7 +139,7 @@ class QuestionsComponent extends View {
         console.log("nextCardIndex -> ", nextCardIndex);
 
         this.Carousel.updateCards(nextCardIndex, this.renderCards);
-        this.replaceChild(this.idSet.progressContainer, this.getProgress(Math.floor(completed / window.__total_questions * 100)).render(), 0);
+        this.replaceChild(this.idSet.progressContainer, this.getProgress(Math.floor(completed / window.__questionStore.getTotalQs() * 100)).render(), 0);
     }
 
     afterRender = () => {
@@ -201,19 +147,13 @@ class QuestionsComponent extends View {
     }
 
     render() {
-        var flag = 0;
-        window.__questions.map((item) => {
-            if(item.selected.length == 0) flag = 1;
-        });
-        // var visibility = flag == 0 ? "gone" : "visible";
-        //TODO remove when integrating with content framework
         var visibility = "visible;"
         this.Carousel = (
             <CarouselCards
-                visibility = {this.props.visibility}
+                visibility = {this.props.visibility ? this.props.visibility : "visible"}
                 cardPadding={this.cardPadding + ",0," + this.cardPadding + ",0"}
                 cards={this.renderCards}
-                totalCards={window.__total_questions}
+                totalCards={window.__questionStore.getTotalQs()}
                 background={window.__Colors.WHITE_F2}
                 header="Help us get you content thats relevant to you." />
         );
@@ -242,3 +182,74 @@ class QuestionsComponent extends View {
 }
 
 module.exports = QuestionsComponent;
+
+class Card extends View {
+    constructor(props, children) {
+        super(props, children);
+        this.setIds([
+            "card"
+        ]);
+        this.height = this.props.height ? this.props.height : "106";
+        this.width = this.props.width ? this.props.width : "200";
+        this.cardData = this.props.data;
+        this.id = this.idSet.card; //important feild
+    }
+
+    render() {
+        var fLayout = "";
+        var visibility = "gone";
+        if (this.cardData.selected.length == 0) {
+            fLayout = (
+                <TextView
+                    text={this.cardData.option}
+                    style={window.__TextStyle.textStyle.TABBAR.SELECTED} />
+            );
+        } else {
+            visibility = "visible";
+            var dispText = this.cardData.selected.map((item, i) => {
+                return item.name;
+            });
+            dispText = dispText.splice(0, 2).join(", ");
+            dispText = dispText + (this.cardData.selected.length > 2 ? "..." : "");
+
+            fLayout = (
+                <TextView
+                    textSize="14"
+                    text={dispText} />
+            );
+        }
+        var layout = (
+            <RelativeLayout
+                id={this.idSet.card}
+                height={this.height}
+                width={this.width}
+                background="#FFFFFF"
+                margin="4,0,4,0"
+                padding="8,8,8,8">
+
+                <TextView
+                    margin="8,8,0,0"
+                    textSize="14"
+                    fontStyle={Font.fontStyle.REGULAR}
+                    alignParentTop="true, -1"
+                    text={this.cardData.question} />
+
+                <LinearLayout
+                    alignParentBottom="true, -1"
+                    width="wrap_content"
+                    padding="8,8,8,8"
+                    onClick={this.props.onClick}
+                    gravity="center_vertical">
+                    {fLayout}
+                    <ImageView
+                        width="11"
+                        height="11"
+                        visibility={visibility}
+                        margin="4,0,0,0"
+                        imageUrl="ic_action_edit_blue" />
+                </LinearLayout>
+            </RelativeLayout>
+        );
+        return layout.render();
+    }
+}
