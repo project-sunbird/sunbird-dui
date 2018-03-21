@@ -256,3 +256,20 @@ exports.getFuncMapped = (func) => {
 		func(data);
 	});
 }
+
+exports.setLoginPreferences = () => {
+	window.__userToken = JBridge.getFromSharedPrefs("user_token");
+	window.__refreshToken = JBridge.getFromSharedPrefs("refresh_token");
+	window.__user_accessToken = JBridge.getFromSharedPrefs("user_access_token");
+	if (window.__loggedInState == "GUEST") {
+		JBridge.setInSharedPrefs("logged_in", "GUEST");
+		if (window.__userToken == "__failed") {
+			JBridge.setProfile("", true);
+			var guestData = JSON.parse(exports.decodeBase64(JBridge.getCurrentProfileData()));
+			JBridge.setInSharedPrefs("user_token", guestData.uid);
+		}
+	} else if (window.__loggedInState == "YES") {
+		JBridge.setInSharedPrefs("logged_in", "YES");
+		JBridge.setProfile(window.__userToken, false);
+	}
+}

@@ -4,27 +4,42 @@ var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
 var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
 var RelativeLayout = require("@juspay/mystique-backend/src/android_views/RelativeLayout");
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
+var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
 var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
 var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
 var utils = require('../utils/GenericFunctions');
 window.R = require("ramda");
+const Font = require('../res/Font');
 
 class RoleSelectionActivity extends View {
 
     constructor(props, children, state) {
         super(props, children, state);
         this.setIds([
-            "cardsContainer"
+            "cardsContainer",
+            "continueBtn"
         ]);
         this.options = [{
             role: "Teacher",
-            selected: true,
+            selected: false,
             desc: "1. Browse through courses\n2. Find relevant resources\n3. Browse through groups"
         }, {
             role: "Student",
             selected: false,
             desc: "1. Browse through resources"
         }];
+        this.shouldCacheScreen = false;
+    }
+
+    handleRoleSelect = () => {
+        var role = "";
+        this.options.map((item) => {
+            if (item.selected) role = item.role;
+        });
+        if (role != "") {
+            JBridge.setInSharedPrefs("role", role);
+            this.setAsGuestUser();
+        }
     }
 
     handleCardClick = (index) => {
@@ -50,20 +65,22 @@ class RoleSelectionActivity extends View {
     getContinueBtn = () => {
         return (
             <LinearLayout
+                id = {this.idSet.continueBtn}
                 height={"48"}
                 width={"match_parent"}
                 orientation="horizontal"
                 gravity="center_vertical"
                 background={"#FF0076FE"}
                 cornerRadius="4"
-                margin={"0,0,0,0"}
                 alignParentBottom = "true,-1"
-                clickable="true">
+                margin="20,58,20,16"
+                clickable="true"
+                visibility="gone">
                 <RelativeLayout
                     height="match_parent"
                     width="match_parent"
                     gravity="center_vertical"
-                    onClick={this.changeLang}>
+                    onClick={this.handleRoleSelect}>
                     <TextView
                         width="match_parent"
                         textAllCaps="true"
@@ -88,7 +105,9 @@ class RoleSelectionActivity extends View {
     }
 
     getCards = () => {
-        return this.options.map((item, i) => {
+        var flag = -1;
+        var layout = this.options.map((item, i) => {
+            if (item.selected) flag = 0;
             return (
                 <LinearLayout
                     width="match_parent"
@@ -96,7 +115,7 @@ class RoleSelectionActivity extends View {
                     background={"#f2f2f2"}
                     orientation="horizontal"
                     root="true"
-                    margin="8,8,8,16"
+                    margin="20,8,20,8"
                     padding="16,16,16,16"
                     cornerRadius="5"
                     stroke={item.selected ? "4," + window.__Colors.PRIMARY_ACCENT : null}>
@@ -135,9 +154,33 @@ class RoleSelectionActivity extends View {
                 </LinearLayout>
             );
         });
+        if (flag != -1) {
+            var cmd = this.set({
+                id: this.idSet.continueBtn,
+                visibility: "visible"
+            });
+            Android.runInUI(cmd, 0);
+        }
+        return layout;
+    }
+
+    onBackPressed = () => {
+        var event = { tag: "BACK_RoleSelectionActivityAction", contents: [] };
+        window.__runDuiCallback(event);
     }
 
     afterRender = () => {
+        if (JBridge.getFromSharedPrefs("role") != "__failed") {
+            this.setAsGuestUser();
+        }
+    }
+
+    setAsGuestUser = () => {
+        window.__loggedInState = "GUEST";
+        JBridge.setInSharedPrefs("logged_in", "GUEST");
+        utils.setLoginPreferences();
+        var event = { tag: "OPEN_MainActivity_RoleSelection", contents: [] };
+        window.__runDuiCallback(event);
     }
 
     render() {
@@ -146,18 +189,28 @@ class RoleSelectionActivity extends View {
                 root="true"
                 width="match_parent"
                 height="match_parent"
+                clickable="true"
                 background={window.__Colors.WHITE}
                 orientation="vertical">
             
                 <LinearLayout
                     width = "match_parent"
                     height = "wrap_content"
-                    orientation = "vertical">
+                    orientation = "vertical"
+                    gravity="center">
+
+                    <SimpleToolbar
+                        title=""
+                        width="match_parent"
+                        height="wrap_content"
+                        onBackPress={this.onBackPressed} />
                     <TextView
                         width = "wrap_content"
                         height = "wrap_content"
-                        text = "You are a"
-                        margin = "0,0,0,16" />
+                        text="You are a" 
+                        textSize="16"
+                        fontStyle={Font.fontStyle.SEMIBOLD}
+                        margin = "0,16,0,16" />
                     <LinearLayout
                         id = {this.idSet.cardsContainer}
                         width = "match_parent"

@@ -15,7 +15,8 @@ class LanguageSelectActivity extends View {
         super(props, children, state);
         this.languages = window.__RootScreen.languageMap;
         console.log("Default language -> ", JBridge.getLocalLang());
-        this.defaultlang = JBridge.getLocalLang();
+        this.devicelang = JBridge.getLocalLang();
+        this.defaultlang = window.__CurrentLanguage;
         this.setIds([
             "langContainer"
         ]);
@@ -115,7 +116,7 @@ class LanguageSelectActivity extends View {
                     <TextView
                         height="20"
                         weight="2"
-                        text={language + (this.defaultlang == langCode ? " (" + window.__S.DETECTED + ")": "")}
+                        text={language + (this.devicelang == langCode ? " (" + window.__S.DETECTED + ")": "")}
                         gravity="left" />
                     <LinearLayout
                         weight="1" />

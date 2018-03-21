@@ -201,6 +201,19 @@ class ResourceComponent extends View {
     return layout;
   }
 
+  getQuestionsComponent = () => {
+    if (!window.__questionStore.isAllQsAnsweredAtInit() && window.__loggedInState == "GUEST") {
+      return (
+        <QuestionsComponent
+          visibility = "visible" />
+      );
+    } else {
+      return (
+        <LinearLayout />
+      );
+    }
+  }
+
   getBody = () => {
     return (
       <LinearLayout
@@ -229,8 +242,7 @@ class ResourceComponent extends View {
             background={window.__Colors.WHITE}
             orientation="vertical">
 
-            <QuestionsComponent
-              visibility={window.__loggedInState == "GUEST" ? "visible" : "gone"} />
+            {this.getQuestionsComponent()}
 
             <LinearLayout
               id={this.idSet.offlineContainer}

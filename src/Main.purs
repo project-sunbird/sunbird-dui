@@ -91,7 +91,7 @@ roleSelectionActivity whatToSendback = do
     event <- ui $ RoleSelectionActivity
     case event of
         OPEN_MainActivity_RoleSelection -> mainActivity "{}" "RoleSelectionActivity" "{}"
-        BACK_RoleSelectionActivityAction -> userActivity whatToSendback
+        BACK_RoleSelectionActivityAction -> userActivity "RoleSelectionActivity"
         _ -> roleSelectionActivity whatToSendback
 
 courseInfoActivity input whereFrom whatToSendBack= do

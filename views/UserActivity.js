@@ -25,23 +25,11 @@ class UserActivity extends View {
   constructor(props, children, state) {
     super(props, children, state);
     this.state = state;
+    console.log("UA in state -> ", this.state);
 
     this.screenName = "UserActivity"
 
     this.setIds([
-      "userForumContainer",
-      "tabLayoutContainer",
-      "firstNameHolder",
-      "languageHolder",
-      "alreadyHaveAccHolder",
-      "userNameHolder",
-      "passwordHolder",
-      "needAccHolder",
-      "forgotPasswordHolder",
-      "signInHolder",
-      "signUpHolder",
-      "mobileNumberHolder",
-      "emailHolder",
       "parentContainer",
       "importEcarLayout",
       "importEcarText"
@@ -53,7 +41,8 @@ class UserActivity extends View {
     _this = this;
 
     this.deepLinkCollectionDetails = "";
-
+    this.whereFrom = this.state.data.value0.whereFrom;
+    
     window.__LoaderDialog.hide();
     window.__loggedInState = JBridge.getFromSharedPrefs("logged_in")
   }
@@ -79,7 +68,7 @@ class UserActivity extends View {
         if (window.__loggedInState != "GUEST" && window.__loggedInState != "YES") {
           this.showLoginOptions();
         } else {
-          this.setLoginPreferences();
+          utils.setLoginPreferences();
           var event = { tag: "OPEN_MainActivity", contents: [] };
           window.__runDuiCallback(event);
         }
@@ -90,7 +79,7 @@ class UserActivity extends View {
       if (window.__loggedInState != "GUEST" && window.__loggedInState != "YES") {
         this.showLoginOptions();
       } else {
-        this.setLoginPreferences();
+        utils.setLoginPreferences();
         var event = { tag: "OPEN_MainActivity", contents: [] };
         window.__runDuiCallback(event);
       }
@@ -194,7 +183,7 @@ class UserActivity extends View {
     window.__patchCallback = (data) => {
       console.log("login patch call", data);
     }
-    this.setLoginPreferences();
+    utils.setLoginPreferences();
     JBridge.patchApi(window.__loginUrl + "/api/user/v1/update/logintime", JSON.stringify(body), window.__user_accessToken, window.__apiToken);
     var whatToSend = []
     var event = { tag: "OPEN_MainActivity", contents: whatToSend };
@@ -268,7 +257,7 @@ class UserActivity extends View {
     var notifData = JBridge.getFromSharedPrefs("intentNotification");
     //Handle notification redirection only if the user is logged in, else just open HomeFragment
     if (notifData != "__failed" && window.__loggedInState == "YES") {
-      this.setLoginPreferences();
+      utils.setLoginPreferences();
       notifData = JSON.parse(utils.decodeBase64(notifData));
       console.log("notifData ", notifData);
       switch (JBridge.getFromSharedPrefs("screenToOpen")) {
@@ -303,14 +292,10 @@ class UserActivity extends View {
 
   handleBrowseAsGuest = () => {
     console.log("handleBrowseAsGuest");
-    window.__loggedInState = "GUEST";
     window.__enrolledCourses = [];
-    JBridge.setInSharedPrefs("logged_in", "GUEST");
-    this.setLoginPreferences();
-    this.performRedirection();
     JBridge.logGuestEvent("LOGIN");
-    // var event = { tag: "OPEN_RoleSelectionActivity", contents: [] };
-    // window.__runDuiCallback(event);
+    var event = { tag: "OPEN_RoleSelectionActivity", contents: [] };
+    window.__runDuiCallback(event);
   }
 
   getTopLayout = () => {
@@ -405,24 +390,6 @@ class UserActivity extends View {
       </RelativeLayout>);
   }
 
-
-  setLoginPreferences = () => {
-    window.__userToken = JBridge.getFromSharedPrefs("user_token");
-    window.__refreshToken = JBridge.getFromSharedPrefs("refresh_token");
-    window.__user_accessToken = JBridge.getFromSharedPrefs("user_access_token");
-    if (window.__loggedInState == "GUEST") {
-      JBridge.setInSharedPrefs("logged_in", "GUEST");
-      if(window.__userToken == "__failed") {
-        JBridge.setProfile("", true);
-        var guestData = JSON.parse(utils.decodeBase64(JBridge.getCurrentProfileData()));
-        JBridge.setInSharedPrefs("user_token", guestData.uid);
-      }
-    } else if (window.__loggedInState == "YES") {
-      JBridge.setInSharedPrefs("logged_in", "YES");
-      JBridge.setProfile(window.__userToken, false);
-    }
-  }
-
   clearIntentLinkPath = () => {
     JBridge.setInSharedPrefs("intentLinkPath", "__failed");
   }
@@ -448,7 +415,7 @@ class UserActivity extends View {
 
   performRedirection = () => {
     console.log("performRedirection");
-    this.setLoginPreferences();
+    utils.setLoginPreferences();
     if (window.__loggedInState == "YES" || window.__loggedInState == "GUEST") {
       if ("__failed" != JBridge.getFromSharedPrefs("intentNotification")) {
         console.log("Assuming user has logged in, notification data: ", JBridge.getFromSharedPrefs("intentNotification"));
@@ -458,8 +425,6 @@ class UserActivity extends View {
       } else {
         var event = { tag: "OPEN_MainActivity", contents: [] };
         window.__runDuiCallback(event);
-        // var event = { tag: "OPEN_RoleSelectionActivity", contents: [] };
-        // window.__runDuiCallback(event);
       }
     } else {
       this.showLoginOptions();
