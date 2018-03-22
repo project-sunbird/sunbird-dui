@@ -81,6 +81,7 @@ class CourseProgress extends View {
                 height="wrap_content"
                 width="match_parent"
                 margin="0,0,0,4"
+                visibility={this.props.batchCreatedBy!="" ? "visible":"gone"}
                 text={window.__S.BY}
                 style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
@@ -88,6 +89,7 @@ class CourseProgress extends View {
                 height="wrap_content"
                 width="match_parent"
                 margin="0,0,0,4"
+                visibility={this.props.batchCreatedBy!="" ? "visible":"gone"}
                 text={" "+this.props.batchCreatedBy}/>
                 </LinearLayout>
 

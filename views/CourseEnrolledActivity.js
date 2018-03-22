@@ -469,7 +469,7 @@ class CourseEnrolledActivity extends View {
         content={this.data}
         textbook={isTextbook}
         title={this.data.courseName || this.apiDetails.name || this.apiDetails.contentData.name}
-        batchCreatedBy={this.batchCreatedBy || "Test User"}
+        batchCreatedBy={this.apiDetails.owner || ""}
         onResumeClick={this.handleCourseResume}
         visibility={this.showProgress} />
     );
@@ -477,7 +477,7 @@ class CourseEnrolledActivity extends View {
 
   renderCourseChildren = () => {
     var layout;
-    JBridge.logRollupEvent("COURSE",window.__currCourseDetails.moduleName ,null,null,null);
+    JBridge.logRollupEvent("COURSE",window.__currCourseDetails.moduleName ,"","","");
 
     if (this.courseContent.children == undefined) {
       layout = <TextView

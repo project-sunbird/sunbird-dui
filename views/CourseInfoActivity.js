@@ -610,6 +610,7 @@ class CourseInfoActivity extends View {
                 height="wrap_content"
                 width="match_parent"
                 margin="0,4,0,0"
+                visibility={this.data.owner ? "visible":"gone"}
                 text={window.__S.BY}
                 style={window.__TextStyle.textStyle.HINT.REGULAR}/>
 
@@ -617,7 +618,8 @@ class CourseInfoActivity extends View {
                 height="wrap_content"
                 width="match_parent"
                 margin="0,4,0,0"
-                text={" Test User"}/>
+                visibility={this.data.owner ? "visible":"gone"}
+                text={this.data.owner}/>
                 </LinearLayout>
                 </LinearLayout>
 

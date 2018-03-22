@@ -84,6 +84,7 @@ class SearchResult extends View {
                     width="16"
                     height="16"
                     gravity="left"
+                    visibility="gone"
                     margin="4,10,0,0"
                     imageUrl="ic_check_circle"/>
               </LinearLayout>
