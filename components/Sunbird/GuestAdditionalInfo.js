@@ -23,10 +23,10 @@ class GuestAdditionalInfo extends View {
     this.profileData = this.props.profileData;
     this.maxLen = 30;
     this.handle = this.profileData.handle;
-    this.medium = this.profileData.medium;
-    this.grade = this.initGrade();
-    this.board = this.profileData.board;
-    this.subjects = JBridge.getFromSharedPrefs(window.__S.SUBJECTS);
+    this.medium = this.profileData.medium ? this.profileData.medium.join(", ") : "";
+    this.grade = this.profileData.grade ? this.profileData.grade.join(", ") : "";
+    this.board = this.profileData.board ? this.profileData.board.join(", ") : "";
+    this.subjects = this.profileData.subject ? this.profileData.subject.join(", ") : "";
 
     if (this.subjects == "__failed") {
       this.subjects = "";
@@ -50,24 +50,7 @@ class GuestAdditionalInfo extends View {
        }];
   }
 
-  initGrade = () => {
-    var gradeList = JSON.parse(utils.decodeBase64(JBridge.getGrades()));
-    var grade = this.profileData.grade;
-    if(grade == -1){
-      this.profileData.grade = "";
-      return this.profileData.grade;
-    }else{
-    gradeList.map((item, i) => {
-      if (item.value == grade) {
-        this.profileData.grade = item.label;
-      }
-    });
-    //this.profileData.grade = "Others" ? "" : this.profileData.grade + "";
-    return this.profileData.grade;
-  }
-  }
-
-  getRows = (input)=> {
+  getRows = ()=> {
     var rows = this.info.map((item, i) => {
       return (<LinearLayout
         width="wrap_content"

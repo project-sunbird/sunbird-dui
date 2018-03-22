@@ -309,7 +309,7 @@ class CourseFragment extends View {
   }
 
   getQuestionsComponent = () => {
-    if (!window.__questionStore.isAllQsAnsweredAtInit() && window.__loggedInState == "GUEST") {
+    if (window.__questionStore && !window.__questionStore.isAllQsAnsweredAtInit() && window.__loggedInState == "GUEST") {
       return (
         <QuestionsComponent
           visibility="visible" />

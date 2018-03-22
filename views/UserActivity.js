@@ -193,16 +193,6 @@ class UserActivity extends View {
   onBackPressed = () => {
     var event = { tag: "BACK_UserActivity", contents: [] };
     window.__runDuiCallback(event);
-    // this.backPressCount++;
-    // if (this.backPressCount == 1) {
-    //   window.__Snackbar.show(window.__S.BACK_TO_EXIT)
-    // }
-    // if (this.backPressCount > 1) {
-    //   JBridge.closeApp();
-    // }
-    // setTimeout(() => {
-    //   this.backPressCount = 0
-    // }, 1500);
   }
 
 

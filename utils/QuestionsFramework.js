@@ -766,6 +766,11 @@ class QuestionsFramework {
         }
     }
 
+    resetArr = (arr) => {
+        this.questions = arr;
+        JBridge.setInSharedPrefs("answeredQs", JSON.stringify(this.questions));
+    }
+
     getAllQs = () => {
         return this.questions;
     }

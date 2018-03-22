@@ -56,19 +56,22 @@ class QuestionsComponent extends View {
 
         window.__GenericSelectorPopup.hide();
         window.__questionStore.setAnswer(index, data);
-        this.saveToProfile(index, data);
+        this.saveToProfile();
         this.getNextQuestion();
         this.updateToCurrentState();
     }
 
-    saveToProfile = (index, data) => {
+    saveToProfile = () => {
         var profile = JSON.parse(utils.decodeBase64(JBridge.getCurrentProfileData()));
+        profile.board = [];
+        profile.grade = [];
+        profile.subject = [];
+        profile.medium = [];
         var qs = window.__questionStore.getAllQs();
-        var item = qs[index];
-        var selected = [];
-        item.selected.map((item) => { selected.push(item.name) });
-        console.log("current saved value -> ", item);
-        if (selected.length != 0) {
+        qs.map((item) => {
+            var selected = [];
+            item.selected.map((item) => { selected.push(item.name) });
+            console.log("current saved value -> ", item);
             switch (item.code) {
                 case "board":
                     profile.board = selected;
@@ -77,14 +80,17 @@ class QuestionsComponent extends View {
                     profile.grade = selected;
                     break;
                 case "subject":
-                    JBridge.setInSharedPrefs(window.__S.SUBJECTS, selected.join(","));
+                    // JBridge.setInSharedPrefs(window.__S.SUBJECTS, selected.join(","));
+                    profile.subject = selected
                     break;
                 case "medium":
                     profile.medium = selected;
                     break;
             }
-            JBridge.updateProfile(profile.handle, profile.medium, profile.grade, profile.board);
-        }
+        });
+        console.log("profile while updating -> ", profile);
+        
+        JBridge.updateProfile(profile.handle, profile.medium, profile.grade, profile.board, profile.subject);
     }
     
     getNextQuestion = () => {
