@@ -155,7 +155,7 @@ class ProgressButton extends View {
             window.__currResourceAllowRating = true;
             window.__currContentAllowRating = true;
             JBridge.addContentAccess(parsedData.identifier);
-            JBridge.playContent(data, parsedData.identifier, parsedData.contentData.pkgVersion, utils.getFuncMapped(_this.checkTelemetry));
+            JBridge.playContent(data, parsedData.identifier, parsedData.contentData.pkgVersion, utils.getFuncMapped(_this.checkTelemetry), _this.props.rollUpData);
           });
           JBridge.getContentDetails(_this.props.identifier, callback, false);
 
@@ -180,7 +180,7 @@ class ProgressButton extends View {
 
   checkTelemetry = (telemetryData) => {
     console.log("telemetry data in ProgressButton -> ", telemetryData);
-    
+
     var cb = telemetryData[0];
     var id = telemetryData[1];
     var data = JSON.parse(utils.decodeBase64(telemetryData[2]));
@@ -240,13 +240,13 @@ class ProgressButton extends View {
         if (data[0] == "true") {
           console.log("in patch", body)
           window.__patchCallback = (data) => {
-            console.log("patchApiCb -> ", data); 
+            console.log("patchApiCb -> ", data);
           }
           if (window.__currCourseDetails && window.__currCourseDetails != {} && window.__currCourseDetails.endDate) {
             var eEndTime = (new Date(window.__currCourseDetails.endDate)).getTime();
             var eCurrTime = (new Date()).getTime();
             console.log("epochs -> "+ eEndTime + ", " + eCurrTime);
-            
+
             if (eCurrTime < eEndTime){
               window.__currCourseDetails.reload = true;
               JBridge.patchApi(url, JSON.stringify(body), window.__user_accessToken, window.__apiToken);

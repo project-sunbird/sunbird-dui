@@ -65,6 +65,7 @@ class ModuleDetailActivity extends View {
         //stack to maintain child traversal
         this.isPoped = false;
         this.stack = [];
+        this.rollUpData = {};
         this.stackPush(this.moduleName, this.module); //the current content is always on the top of the stack
 
         window.__currContentAllowRating = false;
@@ -365,10 +366,18 @@ class ModuleDetailActivity extends View {
       var result = [];
       var count = 0;
       while(count<4){
-        var moduleName = this.stack[count] ? this.stack[count].module.identifier : null;
+        var moduleName = this.stack[count] ? this.stack[count].module.identifier : "";
         result.push(moduleName);
         count++;
       }
+      //Updating the rollupJSON for ProgressButton
+      this.rollUpData = {
+        "l1":window.__currCourseDetails.moduleName,
+        "l2":result[0],
+        "l3":result[1],
+        "l4":result[2]
+      }
+
       return result;
     }
 
@@ -507,12 +516,14 @@ class ModuleDetailActivity extends View {
     }
 
     getProgressButton = () => {
+      this.getBottomThreeElements();
         return (
             <ProgressButton
                 id={this.idSet.playButtonContainer}
                 width="match_parent"
                 visibility="gone"
                 isCourse="true"
+                rollUpData={JSON.stringify(this.rollUpData)}
                 playContent={this.props.localContent}
                 contentDetails={this.module}
                 changeOverFlowMenu={this.handleOverFlowClick}

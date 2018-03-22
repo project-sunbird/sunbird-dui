@@ -64,6 +64,16 @@ class ResourceDetailActivity extends View {
     JBridge.logResourceDetailScreenEvent(_this.details.content.identifier, _this.details.content.pkgVersion, _this.details.isAvailableLocally);
     JBridge.startEventLog(_this.details.content.contentType, _this.details.content.identifier, _this.details.content.pkgVersion);
     this.localStatus = false;
+    this.rollUpData = {};
+  }
+
+  updateRollUpData = (identifier) => {
+    this.rollUpData = {
+      "l1":identifier,
+      "l2":null,
+      "l3":null,
+      "l4":null
+    }
   }
 
   checkLocalStatus = (data) => {
@@ -80,6 +90,7 @@ class ResourceDetailActivity extends View {
         return;
       }
       _this.contentData = JSON.parse(utils.decodeBase64(data[0]));
+      _this.updateRollUpData(_this.contentData.identifier.toString())
       _this.populateAboutSection();
       console.log("this.contentData: ", _this.contentData);
       if (_this.contentData.hasOwnProperty("contentFeedback") && _this.contentData.contentFeedback.length != 0) {
@@ -99,6 +110,7 @@ class ResourceDetailActivity extends View {
             playContent={_this.contentData}
             contentDetail={_this.contentData.contentData}
             buttonText={window.__S.PLAY}
+            rollUpData={JSON.stringify(_this.rollUpData)}
             localStatus={_this.localStatus}
             identifier={_this.contentData.identifier}
             changeOverFlowMenu={_this.changeOverFlow} />)
@@ -111,6 +123,7 @@ class ResourceDetailActivity extends View {
             isCourse="false"
             contentDetail={_this.contentData.contentData}
             buttonText={window.__S.DOWNLOAD}
+            rollUpData={JSON.stringify(_this.rollUpData)}
             playContent={null}
             localStatus={_this.localStatus}
             identifier={_this.contentData.identifier}
@@ -176,6 +189,14 @@ class ResourceDetailActivity extends View {
       JBridge.setRating(this.idSet.ratingBar, this.details.content.contentData.me_averageRating);
     } else {
       JBridge.setRating(this.idSet.ratingBar, 0);
+    }
+
+    //for rollup telemetry
+    if(this.details && this.details.content && this.details.content.identifier){
+      JBridge.logRollupEvent("RESOURCE",this.details.content.identifier, "" , "" , "");
+    }
+    else if(this.details && this.details.content && this.details.content.contentData && this.details.content.contentData.identifier){
+      JBridge.logRollupEvent("RESOURCE",this.details.content.contentData.identifier,"" ,"" ,"" );
     }
   }
 
@@ -449,7 +470,7 @@ class ResourceDetailActivity extends View {
         height="wrap_content"
         margin="16,16,16,0"
         orientation="vertical">
-        
+
         <TextView
           width="wrap_content"
           height="wrap_content"
@@ -468,7 +489,7 @@ class ResourceDetailActivity extends View {
           <TextView
             width="wrap_content"
             height="wrap_content"
-            text={ " " + this.details.content.createdBy}/>
+            text={ " " + this.details.content.owner}/>
             </LinearLayout>
         <LinearLayout
           margin="0,4,0,0"
