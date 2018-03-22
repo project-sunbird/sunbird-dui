@@ -33,21 +33,21 @@ class GuestAdditionalInfo extends View {
     }
 
     this.info = [{
-      name: window.__S.MEDIUM_GUEST,
-      value: this.medium
+      name: window.__S.BOARD,
+      value: this.board
     },
     {
       name: window.__S.GRADE,
       value: this.grade
     },
     {
-      name: window.__S.BOARD,
-      value: this.board
-    },
-    {
       name: window.__S.SUBJECTS,
       value: this.subjects
-       }];
+    },
+    {
+      name: window.__S.MEDIUM_GUEST,
+      value: this.medium
+    }];
   }
 
   getRows = ()=> {
