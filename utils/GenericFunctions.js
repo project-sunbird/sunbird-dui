@@ -261,22 +261,25 @@ exports.setLoginPreferences = () => {
 	window.__userToken = JBridge.getFromSharedPrefs("user_token");
 	window.__refreshToken = JBridge.getFromSharedPrefs("refresh_token");
 	window.__user_accessToken = JBridge.getFromSharedPrefs("user_access_token");
+	var setProfileCb = callbackMapper.map((data) => {
+		console.log("setProfile -> ", data);
+	});
 	if (window.__loggedInState == "GUEST") {
 		JBridge.setInSharedPrefs("logged_in", "GUEST");
 		if (window.__userToken == "__failed") {
-			JBridge.setProfile("", true);
-			setTimeout(() => {
-				console.log("setting in sharedPref userToken");
-				
+			var cb = callbackMapper.map((data) => {
+				console.log("setProfile -> ", data);
+
 				var guestData = JSON.parse(exports.decodeBase64(JBridge.getCurrentProfileData()));
 				window.__userToken = guestData.uid;
 				JBridge.setInSharedPrefs("user_token", guestData.uid);
-			}, 1000);
+			});
+			JBridge.setProfile("", true, cb);
 		} else {
-			JBridge.setProfile(window.__userToken, true);
+			JBridge.setProfile(window.__userToken, true, setProfileCb);
 		}
 	} else if (window.__loggedInState == "YES") {
 		JBridge.setInSharedPrefs("logged_in", "YES");
-		JBridge.setProfile(window.__userToken, false);
+		JBridge.setProfile(window.__userToken, false, setProfileCb);
 	}
 }
