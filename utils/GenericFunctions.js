@@ -276,7 +276,7 @@ exports.setLoginPreferences = () => {
 			});
 			JBridge.setProfile("", true, cb);
 		} else {
-			JBridge.setProfile(window.__userToken, true, setProfileCb);
+			//JBridge.setProfile(window.__userToken, true, setProfileCb);
 		}
 	} else if (window.__loggedInState == "YES") {
 		JBridge.setInSharedPrefs("logged_in", "YES");

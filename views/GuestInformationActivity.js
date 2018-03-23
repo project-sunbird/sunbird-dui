@@ -60,6 +60,11 @@ class GuestInformationActivity extends View {
     //this.handle = this.profileData.handle;
 		this.profileData = JSON.parse(utils.decodeBase64(JBridge.getCurrentProfileData()));
 
+		console.log("\n\nGuestProfileData",this.profileData);
+
+		if(this.profileData.grade.length == 1 && this.profileData.grade[0] == "")
+			this.profileData.grade = null;
+
 		this.boardList = this.allQs[0].values.map(item => item.name);
 		this.gradeList = this.allQs.length > 1 ? this.allQs[1].values.map(item => item.name) : [];
     this.subjectList = this.allQs.length > 2 ? this.allQs[2].values.map(item => item.name) : [];
@@ -72,32 +77,8 @@ class GuestInformationActivity extends View {
 
 		this.screenWidth = JBridge.getScreenWidth();
 
-    //this.initData();
   }
 
-  /*initData = () => {
-    this.profileData = JSON.parse(utils.decodeBase64(JBridge.getCurrentProfileData()));
-    this.mediumListData = JSON.parse(utils.decodeBase64(JBridge.getMediums()));
-    this.gradeListData = JSON.parse(utils.decodeBase64(JBridge.getGrades()));
-    this.boardListData = JSON.parse(utils.decodeBase64(JBridge.getBoards()));
-    this.subjectListData = JSON.parse(utils.decodeBase64(JBridge.getSubjects()));
-
-    this.mediumList = this.extractLabels(this.mediumListData);
-    this.gradeList = this.extractLabels(this.gradeListData);
-    this.boardList = this.extractLabels(this.boardListData);
-    this.subjectList = this.extractLabels(this.subjectListData);
-    this.profileData.grade = this.profileData.grade == -1 ? "" : this.gradeList[this.profileData.grade];
-  }
-*/
-  extractLabels = (list) => {
-    var labels = [];
-    list.map((item, i) => {
-      labels[i] = item.label;
-    });
-    return labels;
-  }
-
-	onPop = () => {}
 
   getBody = () =>{
     return (
@@ -318,20 +299,6 @@ class GuestInformationActivity extends View {
    );
  }
 
- extractValue = (masterList, key) => {
-   console.log("masterList -> ", masterList);
-
-   var ret;
-   masterList.map((item, i) => {
-     if (item.label == key) {
-       console.log("item -> " + key, item);
-       ret = item.value;
-     }
-   });
-   console.log("final value -> ", ret);
-   return ret;
- }
-
  handleSaveClick =()=>{
    //console.log("values -> " + this.profileData.medium + " " + this.profileData.grade + " " + this.profileData.board + " " + this.profileData.subjects);
    //console.log("values -> " + selectedMedium + " " + selectedGrade + " " + selectedBoard + " " + selectedSyllabus);
@@ -378,18 +345,6 @@ class GuestInformationActivity extends View {
  }
 
  afterRender = () => {
-  // this.profileData = this.setDefault(this.profileData, "medium", this.mediumList);
-  // this.profileData = this.setDefault(this.profileData, "grade", this.gradeList);
-  //  this.profileData = this.setDefault(this.profileData, "board", this.boardList);
-  //  this.profileData.subjects = JBridge.getFromSharedPrefs(window.__S.SUBJECTS);
-  //
-  //  if (this.profileData.subjects == "__failed" || this.profileData.subjects == "undefined")
-  //    this.profileData.subjects = "";
-  //
-  //  JBridge.selectSpinnerItem(this.idSet.mediumOfInstructionSpinner, this.profileData.medium != "" ? this.mediumList.indexOf(this.profileData.medium) : 0);
-  //  JBridge.selectSpinnerItem(this.idSet.gradeSpinner, this.profileData.grade != "" ? this.gradeList.indexOf(this.profileData.grade) : 0);
-  //  JBridge.selectSpinnerItem(this.idSet.boardSpinner, this.profileData.board != "" ? this.boardList.indexOf(this.profileData.board) : 0);
-  //  JBridge.selectSpinnerItem(this.idSet.subjectSpinner, this.profileData.subjects != "" ? this.subjectList.indexOf(this.profileData.subjects) : 0);
  }
 
   render() {

@@ -110,6 +110,7 @@ class SearchResult extends View {
                     height="12"
                     gravity="left"
                     margin="4,6,0,0"
+                    visibility={item.me_averageRating? "visible":"gone"}
                     imageUrl="ic_grey_star"/>
 
                     <TextView
@@ -117,7 +118,8 @@ class SearchResult extends View {
                        padding="4,4,0,0"
                        gravity="left"
                        width="wrap_content"
-                       text={"4.0"}
+                       visibility={item.me_averageRating ? "visible":"gone"}
+                       text={item.me_averageRating ? parseInt(item.me_averageRating).toString() : ""}
                        style={window.__TextStyle.textStyle.HINT.SEMI} />
 
 
@@ -126,6 +128,7 @@ class SearchResult extends View {
                     height="10"
                     gravity="left"
                     margin="4,7,0,0"
+                    visibility={item.me_averageRating? "visible":"gone"}
                     imageUrl="ic_dot_lightgrey"/>
 
                     <TextView
