@@ -68,7 +68,20 @@ class MainActivity extends View {
 
     // window.handleChangeLang = this.handleChangeLang; //added for testing
     
-    window.__questionStore = new questionsF();
+    var cb = callbackMapper.map((data) => {
+      console.log("framework -> ", data[0]);      
+      if (data[0] != "__failed") {
+        var framework = JSON.parse(data[0]);
+        console.log("framework -> ", framework);
+        window.__questionStore = new questionsF(framework);
+        if (_this.contentLayout && _this.contentLayout.getQuestionsComponent) {
+          _this.contentLayout.getQuestionsComponent();
+          console.log("called to render in current screen");
+          
+        }
+      }
+    });
+    JBridge.getFrameworkDetails(cb);
   }
 
   onPop = () => {

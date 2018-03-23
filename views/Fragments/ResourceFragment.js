@@ -37,7 +37,8 @@ class ResourceComponent extends View {
       "viewallContainer",
       "offlineContainer",
       "scrollViewContainer",
-      "resourceContentContainer"
+      "resourceContentContainer",
+      "questionsComponentContainer"
     ]);
     _this = this;
 
@@ -201,17 +202,34 @@ class ResourceComponent extends View {
     return layout;
   }
 
+  // getQuestionsComponent = () => {
+  //   if (window.__questionStore && !window.__questionStore.isAllQsAnsweredAtInit() && window.__loggedInState == "GUEST") {
+  //     return (
+  //       <QuestionsComponent
+  //         visibility = "visible" />
+  //     );
+  //   } else {
+  //     return (
+  //       <LinearLayout />
+  //     );
+  //   }
+  // }
+
   getQuestionsComponent = () => {
+    console.log("getQuestionsComponent render");
+
+    var layout;
     if (window.__questionStore && !window.__questionStore.isAllQsAnsweredAtInit() && window.__loggedInState == "GUEST") {
-      return (
+      layout = (
         <QuestionsComponent
-          visibility = "visible" />
+          visibility="visible" />
       );
     } else {
-      return (
+      layout = (
         <LinearLayout />
       );
     }
+    this.replaceChild(this.idSet.questionsComponentContainer, layout.render(), null);
   }
 
   getBody = () => {
@@ -242,7 +260,10 @@ class ResourceComponent extends View {
             background={window.__Colors.WHITE}
             orientation="vertical">
 
-            {this.getQuestionsComponent()}
+            <LinearLayout
+              height="wrap_content"
+              width="match_parent"
+              id={this.idSet.questionsComponentContainer} />
 
             <LinearLayout
               id={this.idSet.offlineContainer}
@@ -295,6 +316,7 @@ class ResourceComponent extends View {
 
   afterRender = () => {
     JBridge.getViews(this.idSet.scrollViewContainer + "");
+    this.getQuestionsComponent();
     this.renderOfflineCard();
     if (!window.__ResourceFilter) {
       this.getResourceData();

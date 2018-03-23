@@ -47,9 +47,9 @@ class SearchActivity extends View {
     this.filter = []
     this.filterData = this.tempData.filterDetails;
     this.searchText = this.tempData.filterDetails.query;
-    this.searchType = this.tempData.filterType;
+    // this.searchType = this.tempData.filterType;
     this.keywords = this.tempData.keywords;
-    this.temp = state.data;
+    // this.temp = state.data;
     this.searchType = this.tempData.searchType;
 
 
@@ -61,7 +61,7 @@ class SearchActivity extends View {
 
   afterRender = () => {
 
-    if (this.filterData != undefined && this.filterData.length != 0 && this.filterData.facetFilters) {
+    if (this.filterData && this.filterData.length != 0 && this.filterData.facetFilters) {
       console.log(this.filterData, "filterinsearch");
       var flag = false;
       var facetFilters = this.filterData.facetFilters
@@ -91,15 +91,19 @@ class SearchActivity extends View {
       Android.runInUI(cmd, 0);
       // this.getSearchList(this.searchText);
 
-      var searchData
-      if (typeof this.filterData == 'object') {
-        searchData = this.filterData
-      } else {
-        searchData = JSON.parse(this.filter)
-      }
+      // var searchData
+      // if (typeof this.filterData == 'object') {
+      //   searchData = this.filterData
+      // } else {
+      //   searchData = JSON.parse(this.filter)
+      // }
       window.__LoaderDialog.show();
-
-      this.getSearchList(this.searchText, "true");
+      if (window.search && window.search.etb && window.search.keywords) {
+        this.handleSearchClick(null, window.search.keywords);
+        // this.getSearchList(this.searchText, "false", window.search.keywords);
+      } else {
+        this.getSearchList(this.searchText, "true");
+      }
     } else if (window.search && window.search.type == this.searchType && window.search.res != undefined && window.search.res != "" && window.search.text != undefined && window.search.text != "") {
       console.log("prev res");
       _this.renderResult(JSON.parse(window.search.res), window.search.text);
@@ -125,6 +129,58 @@ class SearchActivity extends View {
     JBridge.handleImeAction(this.idSet.searchHolder, callback);
     if (!this.keywords && (window.searchText == undefined || window.searchText == "" || (window.search.type != this.searchType && window.searchText != ""))) {
       JBridge.getFocus(this.idSet.searchHolder);
+    }
+  }
+
+  handleItemClick = (item, index, searchText) => {
+    console.log("itemClicked ", item);
+
+    var itemDetails = JSON.stringify(item);
+    if (this.searchType.toLowerCase() == "combined")
+      JBridge.logContentClickEvent("HOME", index + 1, searchText, item.identifier, item.pkgVersion)
+    else if (this.searchType.toLowerCase() == "course")
+      JBridge.logContentClickEvent("COURSES", index + 1, searchText, item.identifier, item.pkgVersion)
+    else if (this.searchType.toLowerCase() == "resource")
+      JBridge.logContentClickEvent("LIBRARY", index + 1, searchText, item.identifier, item.pkgVersion)
+
+
+    if (item.hasOwnProperty("data") && item.data.hasOwnProperty("education")) {
+      console.log("item data", item);
+      var whatToSend = { profile: JSON.stringify(item) };
+      var event = { tag: "OPEN_ProfileActivity_SEARCH", contents: whatToSend }
+      window.__runDuiCallback(event);
+    } else if (item.contentType.toLowerCase() == "course") {
+
+      if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
+        var whatToSend = { course: itemDetails };
+        var event = { tag: "OPEN_CourseInfoActivity_SEARCH", contents: whatToSend }
+        window.__runDuiCallback(event);
+      } else {
+        utils.setPermissions();
+      }
+    } else if (item.mimeType.toLowerCase() == "application/vnd.ekstep.content-collection" || utils.checkEnrolledCourse(item.identifier)) {
+
+      if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
+        var whatToSend = { course: itemDetails };
+        var event = { tag: "OPEN_CourseEnrolledActivity_SEARCH", contents: whatToSend }
+        window.__runDuiCallback(event);
+      } else {
+        utils.setPermissions();
+      }
+    } else {
+      var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " [" + utils.formatBytes(item.size) + "]" : "");
+      var resDetails = {};
+      resDetails['imageUrl'] = item.appIcon;
+      resDetails['title'] = item.name;
+      resDetails['description'] = item.description;
+      resDetails['headFooterTitle'] = headFooterTitle;
+      resDetails['identifier'] = item.identifier;
+      resDetails['screenshots'] = item.screenshots || [];
+      resDetails['content'] = item;
+
+      var whatToSend = { resourceDetails: JSON.stringify(resDetails) }
+      var event = { tag: "OPEN_ResourceDetailActivity_SEARCH", contents: whatToSend }
+      window.__runDuiCallback(event);
     }
   }
 
@@ -192,6 +248,201 @@ class SearchActivity extends View {
 
   }
 
+  getContents = (content, index, searchText) => {
+    return (
+      <LinearLayout
+        width= "match_parent"
+        height="wrap_content"
+        padding="16,16,16,16"
+        margin = "0,0,0,0"
+        onClick = {() => {this.handleItemClick(content, index, searchText)}}>
+
+        <LinearLayout
+          width= "wrap_content"
+          height= "wrap_content"
+          gravity= "center">
+
+          <ImageView
+            width = "37"
+            height = "37"
+            margin = "0,0,8,0"
+            circularImageUrl={"0," + "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR1X3cm5xzR4D1W9oPb2QWioKlrfLVd0DvXFUNqSjZfg-M0bpc"} />
+        </LinearLayout>
+
+        <LinearLayout
+          width = "0"
+          weight = "1"
+          height = "wrap_content"
+          orientation = "vertical">
+
+          <TextView
+            width = "match_parent"
+            height = "wrap_content"
+            text={content.name}
+            style={window.__TextStyle.textStyle.CARD.HEADING} />
+
+          <LinearLayout
+            width = "match_parent"
+            height = "wrap_content"
+            gravity = "center_vertical">
+
+            <TextView
+              width="wrap_content"
+              height="wrap_content"
+              text={content.contentType}
+              style={window.__TextStyle.textStyle.HINT.SEMI}  />
+
+            <ImageView
+              width="10"
+              height="10"
+              margin="4,0,4,0"
+              imageUrl="ic_dot_lightgrey" />
+
+            <TextView
+              width="wrap_content"
+              height="wrap_content"
+              text={content.hasOwnProperty("size") ? utils.formatBytes(content.size) : " "}
+              style={window.__TextStyle.textStyle.HINT.SEMI} />
+          </LinearLayout>
+
+          <LinearLayout
+            orientation="horizontal"
+            padding="10,0,0,0">
+
+            <TextView
+              height="wrap_content"
+              id={this.idSet.gradeTextView}
+              width={content.gradeLevel && content.gradeLevel.length > 2 && content.subject ? halfWidth + "" : "wrap_content"}
+              padding={content.subject ? "0,4,0,10" : "0,4,16,10"}
+              gravity="left"
+              enableEllipse="true"
+              singleLine="true"
+              scrollHorizontally="true"
+              visibility={content.gradeLevel ? "visible" : "gone"}
+              text={content.gradeLevel ? content.gradeLevel.toString().replace(/,/g, ", ") : ""}
+              style={window.__TextStyle.textStyle.HINT.SEMI} />
+
+
+            <ImageView
+              width="10"
+              height="10"
+              visibility={content.gradeLevel && content.subject ? "visible" : "gone"}
+              gravity="left"
+              margin="4,7,0,0"
+              imageUrl="ic_dot_lightgrey" />
+
+            <TextView
+              height="wrap_content"
+              padding="4,3,16,10"
+              gravity="left"
+              width="wrap_content"
+              enableEllipse="true"
+              singleLine="true"
+              visibility={content.subject ? "visible" : "gone"}
+              text={content.subject ? content.subject.toString() : ""}
+              style={window.__TextStyle.textStyle.HINT.SEMI} />
+          </LinearLayout>
+        </LinearLayout>
+      </LinearLayout>
+    );
+  }
+
+  getGroup = (collection, contents, index, searchText) => {
+    let contentsList = [];
+    console.log("creating grp for -> ", collection);
+    
+    collection.childNodes.map((item) => {
+      var content = utils.findObjOnProp(contents, "identifier", item);
+      if (content) {
+        contentsList.push(content);
+      }
+    });
+    let contentsLayout = contentsList.map((item, i) => {
+      var dividerVisibility = (contents.length - 1 == i) ? "gone" : "visible";
+      return (
+        <LinearLayout
+          width = "match_parent"
+          height = "wrap_content"
+          orientation="vertical">
+          {this.getContents(item, i, searchText)}
+          <LinearLayout
+            width="match_parent"
+            height="5"
+            margin = "16,0,16,0"
+            visibility={dividerVisibility} />
+        </LinearLayout>
+      );
+    });
+    return (
+      <LinearLayout
+        width = "match_parent"
+        height = "wrap_content"
+        orientation = "vertical">
+
+        <LinearLayout
+          width="match_parent"
+          height="wrap_content"
+          orientation="vertical"
+          onClick={() => { this.handleItemClick(collection, index, searchText) }}> 
+
+          <LinearLayout
+            width="match_parent"
+            height="wrap_content"
+            margin="16,16,16,0">
+
+            <TextView
+              width="wrap_content"
+              height="wrap_content"
+              textSize = "14"
+              text={"From "} />
+
+            <TextView
+              width="wrap_content"
+              height="wrap_content"
+              style={window.__TextStyle.textStyle.CARD.HEADING}
+              text={collection.name} />
+          </LinearLayout>
+          <TextView
+            width="match_parent"
+            height="wrap_content"
+            text={"View " + collection.contentType + " >"}
+            style={window.__TextStyle.textStyle.TABBAR.SELECTED}
+            margin = "16,0,16,0" />
+        </LinearLayout>
+        {contentsLayout}
+      </LinearLayout>
+    );
+  }
+
+  renderEtbContent = (collection, contents, searchText) => {
+    var groups = collection.map((item, i) => {
+      return this.getGroup(item, contents, i, searchText);
+    });
+    let contentsLayout = contents.map((item, i) => {
+      return this.getContents(item, i, searchText);
+    });
+    var layout = (<LinearLayout
+      width="match_parent"
+      height="wrap_content"
+      root="true"
+      background="#ffffff"
+      orientation="vertical">
+      {groups}
+      <LinearLayout
+        height = "5"
+        width = "match_parent"
+        background = "#f2f2f2" />
+      <LinearLayout
+        width = "match_parent"
+        height = "wrap_content">
+        {contentsLayout}
+      </LinearLayout>
+    </LinearLayout>)
+
+    this.replaceChild(this.idSet.searchListContainer, layout.render(), 0);
+    window.__LoaderDialog.hide();
+  }
+
   renderNoResult = () => {
     var cmd = "";
     cmd += _this.set({
@@ -236,8 +487,8 @@ class SearchActivity extends View {
       <SearchResult
         filterData={_this.filterData}
         type={this.searchType}
-        searchText={searchText}
-        data={data} />
+        data={data}
+        onClick={(item, index) => { this.handleItemClick(item, index, searchText)}} />
     </LinearLayout>)
 
     this.replaceChild(this.idSet.searchListContainer, layout.render(), 0);
@@ -255,12 +506,31 @@ class SearchActivity extends View {
       window.__LoaderDialog.hide();
     } else {
       var callback = callbackMapper.map(function (data) {
-        console.log("callback data", data);
+        console.log("callback data", JSON.parse(utils.decodeBase64(data[2])));
         if (data[0] == "error") {
           console.log("Error at callback", data[1]);
           window.__Snackbar.show("" + data[1])
           _this.renderNoResult();
           window.__LoaderDialog.hide();
+
+        } else if (JSON.parse(utils.decodeBase64(data[2]))){ 
+          console.log("inside collectiondata");
+          var collection = JSON.parse(utils.decodeBase64(data[2]));
+          _this.filterData = data[1];
+          window.search = {};
+          window.search.etb = collection;
+          window.search.keywords = keywords;
+          window.search.text = searchText;
+          window.search.type = _this.searchType;
+          data[0] = utils.decodeBase64(data[0]);
+          var s = utils.formatJSON(data[0]);
+          var contents = JSON.parse(s);
+          console.log("contents -> ", contents);
+          
+          // _this.renderResult(JSON.parse(s), searchText);
+          _this.renderEtbContent(collection, contents, searchText);
+          window.__LoaderDialog.hide();
+
         } else {
           data[0] = utils.decodeBase64(data[0]);
           _this.filterData = data[1];
@@ -268,23 +538,13 @@ class SearchActivity extends View {
             _this.renderNoResult();
             window.__LoaderDialog.hide();
           } else {
-            // data[0] = utils.decodeBase64(data[0])
             _this.filterData = data[1];
             if (searchText == "" || data[0] == "[]") {
               _this.renderNoResult();
               window.__LoaderDialog.hide();
 
             } else {
-              var s = data[0];
-              s = s.replace(/\\n/g, "\\n")
-                .replace(/\\'/g, "\\'")
-                .replace(/\\"/g, '\\"')
-                .replace(/\\&/g, "\\&")
-                .replace(/\\r/g, "\\r")
-                .replace(/\\t/g, "\\t")
-                .replace(/\\b/g, "\\b")
-                .replace(/\\f/g, "\\f");
-              s = s.replace(/[\u0000-\u0019]+/g, "");
+              var s = utils.formatJSON(data[0]);
               window.search = {};
               window.search.res = s;
               window.search.text = searchText;
@@ -297,11 +557,11 @@ class SearchActivity extends View {
         }
       }); //end of callback
 
-      if (this.filterData != undefined && this.filterData.length == 0) {
-        status = "false";
-      } else {
-        status = "true";
-      }
+      // if (this.filterData != undefined && this.filterData.length == 0) {
+      //   status = "false";
+      // } else {
+      //   status = "true";
+      // }
 
       if (JBridge.isNetworkAvailable()) {
         console.log(this.filterData, " filterData ");
@@ -384,10 +644,6 @@ class SearchActivity extends View {
     var whatToSend = { filterDetails: JSON.stringify(filteredData) }
     var event = { tag: "OPEN_FilterActivity", contents: whatToSend }
     window.__runDuiCallback(event);
-  }
-
-  onItemClick = (params) => {
-    console.log("parmas are", params);
   }
 
   getToolbar = () => {

@@ -48,7 +48,7 @@ class SearchResult extends View {
           height="warp_content"
           orientation="vertical"
           margin="16,0,16,0"
-          onClick={() => { this.handleItemClick(item, index) }}>
+          onClick={() => { this.props.onClick(item, index)}}>
 
           <LinearLayout
             width="match_parent"
@@ -213,76 +213,6 @@ class SearchResult extends View {
       "",
       1
     );
-  }
-
-  handleItemClick = (item, index) => {
-    console.log("itemClicked ", item);
-
-    var itemDetails = JSON.stringify(item);
-    if (this.props.type.toLowerCase() == "combined")
-      JBridge.logContentClickEvent("HOME", index + 1, this.props.searchText, item.identifier, item.pkgVersion)
-    else if (this.props.type.toLowerCase() == "course")
-      JBridge.logContentClickEvent("COURSES", index + 1, this.props.searchText, item.identifier, item.pkgVersion)
-    else if (this.props.type.toLowerCase() == "resource")
-      JBridge.logContentClickEvent("LIBRARY", index + 1, this.props.searchText, item.identifier, item.pkgVersion)
-
-
-    if (item.hasOwnProperty("data") && item.data.hasOwnProperty("education")) {
-      console.log("item data", item);
-      var whatToSend = { profile: JSON.stringify(item) };
-      var event = { tag: "OPEN_ProfileActivity_SEARCH", contents: whatToSend }
-      window.__runDuiCallback(event);
-    } else if (item.contentType.toLowerCase() == "course") {
-
-      if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
-        var whatToSend = { course: itemDetails };
-        var event = { tag: "OPEN_CourseInfoActivity_SEARCH", contents: whatToSend }
-        window.__runDuiCallback(event);
-      } else {
-        this.setPermissions();
-      }
-    } else if (item.mimeType.toLowerCase() == "application/vnd.ekstep.content-collection" || utils.checkEnrolledCourse(item.identifier)) {
-
-      if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
-        var whatToSend = { course: itemDetails };
-        var event = { tag: "OPEN_CourseEnrolledActivity_SEARCH", contents: whatToSend }
-        window.__runDuiCallback(event);
-      } else {
-        this.setPermissions();
-      }
-    }
-
-
-    else {
-      var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " [" + utils.formatBytes(item.size) + "]" : "");
-      var resDetails = {};
-      resDetails['imageUrl'] = item.appIcon;
-      resDetails['title'] = item.name;
-      resDetails['description'] = item.description;
-      resDetails['headFooterTitle'] = headFooterTitle;
-      resDetails['identifier'] = item.identifier;
-      resDetails['screenshots'] = item.screenshots || [];
-      resDetails['content'] = item;
-
-      var whatToSend = { resourceDetails: JSON.stringify(resDetails) }
-      var event = { tag: "OPEN_ResourceDetailActivity_SEARCH", contents: whatToSend }
-      window.__runDuiCallback(event);
-    }
-  }
-
-  setPermissions = () => {
-    var callback = callbackMapper.map(function (data) {
-
-      if (data == "android.permission.WRITE_EXTERNAL_STORAGE") {
-        JBridge.setKey("isPermissionSetWriteExternalStorage", "true");
-      }
-      if (data == "DeniedPermanently") {
-        console.log("DENIED DeniedPermanently");
-        JBridge.hideKeyboard();
-        window.__PermissionDeniedDialog.show("ic_warning_grey", window.__S.STORAGE);
-      }
-    });
-    JBridge.setPermissions(callback, "android.permission.WRITE_EXTERNAL_STORAGE");
   }
 
   render() {

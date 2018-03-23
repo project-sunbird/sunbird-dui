@@ -35,7 +35,8 @@ class CourseFragment extends View {
       "viewallContainer",
       "fetchingHolder",
       "scrollViewContainerCourse",
-      "courseContentContainer"
+      "courseContentContainer",
+      "questionsComponentContainer"
     ]);
     _this = this;
 
@@ -294,6 +295,7 @@ class CourseFragment extends View {
 
   afterRender = () => {
     JBridge.getViews(this.idSet.scrollViewContainerCourse + "");
+    this.getQuestionsComponent();
     if (!window.__CourseFilter) {
       console.log("CF afterRender -> no window.__CourseFilter");
 
@@ -309,16 +311,20 @@ class CourseFragment extends View {
   }
 
   getQuestionsComponent = () => {
+    console.log("getQuestionsComponent render");
+    
+    var layout;
     if (window.__questionStore && !window.__questionStore.isAllQsAnsweredAtInit() && window.__loggedInState == "GUEST") {
-      return (
+      layout = (
         <QuestionsComponent
           visibility="visible" />
       );
     } else {
-      return (
+      layout = (
         <LinearLayout />
       );
     }
+    this.replaceChild(this.idSet.questionsComponentContainer, layout.render(), null);
   }
 
   getBody = () => {
@@ -348,7 +354,10 @@ class CourseFragment extends View {
             background={window.__Colors.WHITE}
             orientation="vertical">
 
-            {this.getQuestionsComponent()}
+            <LinearLayout
+              height="wrap_content"
+              width="match_parent"
+              id = {this.idSet.questionsComponentContainer} />
 
             {this.getCourseInProgressContainer()}
 

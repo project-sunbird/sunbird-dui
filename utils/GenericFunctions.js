@@ -283,3 +283,44 @@ exports.setLoginPreferences = () => {
 		JBridge.setProfile(window.__userToken, false, setProfileCb);
 	}
 }
+
+exports.formatJSON = (json) => {
+	var s = json;
+	s = s.replace(/\\n/g, "\\n")
+		.replace(/\\'/g, "\\'")
+		.replace(/\\"/g, '\\"')
+		.replace(/\\&/g, "\\&")
+		.replace(/\\r/g, "\\r")
+		.replace(/\\t/g, "\\t")
+		.replace(/\\b/g, "\\b")
+		.replace(/\\f/g, "\\f");
+	s = s.replace(/[\u0000-\u0019]+/g, "");
+	return s;
+}
+
+exports.eqObjProp = (obj1, obj2, prop) => {
+	if (obj1[prop] === obj2[prop]) return true;
+	else return false;
+}
+
+exports.findObjOnProp = (objArr, prop, val) => {
+	for(let obj of objArr) {
+		if (obj[prop] == val) return obj;
+	}
+	return null;
+}
+
+exports.setPermissions = () => {
+	var callback = callbackMapper.map(function (data) {
+
+		if (data == "android.permission.WRITE_EXTERNAL_STORAGE") {
+			JBridge.setKey("isPermissionSetWriteExternalStorage", "true");
+		}
+		if (data == "DeniedPermanently") {
+			console.log("DENIED DeniedPermanently");
+			JBridge.hideKeyboard();
+			window.__PermissionDeniedDialog.show("ic_warning_grey", window.__S.STORAGE);
+		}
+	});
+	JBridge.setPermissions(callback, "android.permission.WRITE_EXTERNAL_STORAGE");
+}
