@@ -70,9 +70,9 @@ class ResourceDetailActivity extends View {
   updateRollUpData = (identifier) => {
     this.rollUpData = {
       "l1":identifier,
-      "l2":null,
-      "l3":null,
-      "l4":null
+      "l2":"",
+      "l3":"",
+      "l4":""
     }
   }
 
