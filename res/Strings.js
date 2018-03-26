@@ -351,7 +351,8 @@ const stringsRes = {
 		SEND_EMAIL: "Send Email",
 		BY: "By",
 		PROFILE_UPDATE_SUCCESS: "Profile is updated successfully.",
-		PROFILE_UPDATE_FAILED: "Updating profile failed, try again later"
+		PROFILE_UPDATE_FAILED: "Updating profile failed, try again later",
+		THANK_FOR_RATING: "Thank you for rating"
 	},
 	"hi_IN": {
 		ALREADY_HAVE_ACC: "मौजूदा उपयोगकर्ता, साइन इन करें",
