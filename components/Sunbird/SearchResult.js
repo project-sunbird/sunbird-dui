@@ -42,6 +42,10 @@ class SearchResult extends View {
       } else {
         appIcon = item.hasOwnProperty("appIcon") ? item.appIcon : "ic_launcher";
       }
+      var avgRating = "";
+      if(item.me_averageRating && parseFloat(item.me_averageRating) > 0.0){
+        avgRating = item.me_averageRating;
+      }
       var resultLayout = (
         <LinearLayout
           width="match_parent"
@@ -110,7 +114,7 @@ class SearchResult extends View {
                     height="12"
                     gravity="left"
                     margin="4,6,0,0"
-                    visibility={item.me_averageRating? "visible":"gone"}
+                    visibility={(avgRating != "") ? "visible":"gone"}
                     imageUrl="ic_grey_star"/>
 
                     <TextView
@@ -118,8 +122,8 @@ class SearchResult extends View {
                        padding="4,4,0,0"
                        gravity="left"
                        width="wrap_content"
-                       visibility={item.me_averageRating ? "visible":"gone"}
-                       text={item.me_averageRating ? parseInt(item.me_averageRating).toString() : ""}
+                       visibility={(avgRating != "") ? "visible":"gone"}
+                       text={avgRating}
                        style={window.__TextStyle.textStyle.HINT.SEMI} />
 
 
@@ -128,7 +132,7 @@ class SearchResult extends View {
                     height="10"
                     gravity="left"
                     margin="4,7,0,0"
-                    visibility={item.me_averageRating? "visible":"gone"}
+                    visibility={(avgRating != "")? "visible":"gone"}
                     imageUrl="ic_dot_lightgrey"/>
 
                     <TextView
