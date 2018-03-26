@@ -232,6 +232,7 @@ const logoutUser = () => {
     JBridge.setInSharedPrefs("intentFilePath", "__failed");
     JBridge.setInSharedPrefs("intentLinkPath", "__failed");
     JBridge.setInSharedPrefs("logged_in","__failed");
+    JBridge.setInSharedPrefs("role","__failed");
     JBridge.setInSharedPrefs("user_id", "__failed");
     JBridge.setInSharedPrefs("user_name",  "__failed");
     JBridge.setInSharedPrefs("user_token", "__failed");

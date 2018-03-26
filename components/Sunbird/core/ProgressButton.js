@@ -191,7 +191,7 @@ class ProgressButton extends View {
     console.log("telemetryData.eid", telemetryData.eid);
     if (telemetryData.eid == "END") {
       JBridge.stopTelemetryEvent();
-      window.__RatingsPopup.isRatingsAvailable() ? "" : window.__RatingsPopup.show();
+      var _ = (window.__RatingsPopup.isRatingsAvailable() || window.__loggedInState == "GUEST") ? "" : window.__RatingsPopup.show();
       var time = new Date();
       var date = utils.formatDate(time);
       var contentProgress = {};

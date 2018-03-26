@@ -758,7 +758,7 @@ class CourseEnrolledActivity extends View {
       <LinearLayout
         width="wrap_content"
         height="wrap_content"
-        onClick={() => { window.__RatingsPopup.show() }}>
+        onClick={() => { if (window.__loggedInState != "GUEST") {window.__RatingsPopup.show()} else {window.__Snackbar.show("Sign in to use this feature.") }}}>
         <RatingBar
           id={this.idSet.ratingBar}
           width="wrap_content"

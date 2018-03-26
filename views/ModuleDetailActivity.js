@@ -390,10 +390,14 @@ class ModuleDetailActivity extends View {
     }
 
     handleRatingsBarClick = () => {
-        if (window.__currContentAllowRating) {
-            window.__RatingsPopup.show()
+        if (window.__loggedInState != "GUEST") {
+            if (window.__currContentAllowRating) {
+                window.__RatingsPopup.show()
+            } else {
+                window.__Snackbar.show(window.__s.TRY_BEFORE_RATING)
+            }
         } else {
-            window.__Snackbar.show(window.__s.TRY_BEFORE_RATING)
+            window.__Snackbar.show("Sign in to use this feature.");
         }
     }
 
