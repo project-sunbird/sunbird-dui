@@ -17,7 +17,8 @@ class RoleSelectionActivity extends View {
         super(props, children, state);
         this.setIds([
             "cardsContainer",
-            "continueBtn"
+            "continueBtn",
+            "whiteArrow"
         ]);
         this.options = [{
             role: "Teacher",
@@ -94,6 +95,7 @@ class RoleSelectionActivity extends View {
                         padding="0,0,16,0"
                         gravity="right">
                         <ImageView
+                            id={this.idSet.whiteArrow}
                             height="20"
                             width="20"
                             imageUrl="ic_white_arrow"
@@ -131,7 +133,7 @@ class RoleSelectionActivity extends View {
                             margin="8,8,8,8"
                             layout_gravity="center"
                             circularImageUrl={"0," + "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR1X3cm5xzR4D1W9oPb2QWioKlrfLVd0DvXFUNqSjZfg-M0bpc"} />
-                        
+
                         <LinearLayout
                             width = "0"
                             weight = "1"
@@ -173,6 +175,8 @@ class RoleSelectionActivity extends View {
         if (JBridge.getFromSharedPrefs("role") != "__failed") {
             this.setAsGuestUser();
         }
+        JBridge.animateImageView(this.idSet.whiteArrow + "");
+        
     }
 
     setAsGuestUser = () => {
@@ -192,7 +196,7 @@ class RoleSelectionActivity extends View {
                 clickable="true"
                 background={window.__Colors.WHITE}
                 orientation="vertical">
-            
+
                 <LinearLayout
                     width = "match_parent"
                     height = "wrap_content"
@@ -207,7 +211,7 @@ class RoleSelectionActivity extends View {
                     <TextView
                         width = "wrap_content"
                         height = "wrap_content"
-                        text="You are a" 
+                        text="You are a"
                         textSize="16"
                         fontStyle={Font.fontStyle.SEMIBOLD}
                         margin = "0,16,0,16" />

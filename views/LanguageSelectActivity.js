@@ -18,7 +18,8 @@ class LanguageSelectActivity extends View {
         this.devicelang = JBridge.getLocalLang();
         this.defaultlang = window.__CurrentLanguage;
         this.setIds([
-            "langContainer"
+            "langContainer",
+            "whiteArrow"
         ]);
         this.backPressCount = 0;
         this.shouldCacheScreen = false;
@@ -41,7 +42,9 @@ class LanguageSelectActivity extends View {
     }
 
     afterRender = () => {
+      JBridge.animateImageView(this.idSet.whiteArrow + "");
     }
+
 
     changeLang = () => {
         this.langArr.map((item) => {
@@ -89,7 +92,7 @@ class LanguageSelectActivity extends View {
 
     getLanguageLabels = () => {
         console.log("getLanguageLabels -> ", this.langArr);
-        
+
         var size = this.langArr.length;
         return this.langArr.map((item, i) => {
             return this.getLabels(item.lang, item.langCode, item.isSelected, (size - 1 - i)==0 );
@@ -98,7 +101,7 @@ class LanguageSelectActivity extends View {
 
     getLabels = (language, langCode, isSelected, isLast) => {
         console.log("label -> " + language, isSelected);
-        
+
         return (
             <LinearLayout
                 height="36"
@@ -169,6 +172,7 @@ class LanguageSelectActivity extends View {
                         padding="0,0,16,0"
                         gravity="right">
                         <ImageView
+                            id={this.idSet.whiteArrow}
                             height="20"
                             width="20"
                             imageUrl="ic_white_arrow"
@@ -226,9 +230,9 @@ class LanguageSelectActivity extends View {
                         background={"#FFF8F8F8"}
                         id={this.idSet.langContainer}
                         cornerRadius="0">
-                        
+
                             {this.getLanguageLabels()}
-                        
+
                     </LinearLayout>
                     <LinearLayout
                         weight="1"/>

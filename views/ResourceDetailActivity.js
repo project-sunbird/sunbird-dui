@@ -293,7 +293,7 @@ class ResourceDetailActivity extends View {
                     height="wrap_content">
                     <TextView
                       text={description}
-                      margin="16,8,16,0"/>
+                      margin="16,16,16,0"/>
                       </LinearLayout>
                 </LinearLayout>)
 
@@ -308,7 +308,7 @@ class ResourceDetailActivity extends View {
                           <TextView
                             text={window.__S.GRADE}
                             typeface="bold"
-                            margin="16,8,16,0"/>
+                            margin="16,16,16,0"/>
                           <TextView
                             text={grades}
                             margin="16,0,16,0"/>
@@ -324,7 +324,7 @@ class ResourceDetailActivity extends View {
                           <TextView
                             text={window.__S.SUBJECT}
                             typeface="bold"
-                            margin="16,8,16,0"/>
+                            margin="16,16,16,0"/>
                           <TextView
                             text={subject}
                             margin="16,0,16,0"/>
@@ -340,7 +340,7 @@ class ResourceDetailActivity extends View {
                           <TextView
                             text={window.__S.BOARD}
                             typeface="bold"
-                            margin="16,8,16,0"/>
+                            margin="16,16,16,0"/>
                           <TextView
                             text={board}
                             margin="16,0,16,0"/>
@@ -356,7 +356,7 @@ class ResourceDetailActivity extends View {
                           <TextView
                             text={window.__S.MEDIUM_2}
                             typeface="bold"
-                            margin="16,8,16,0"/>
+                            margin="16,16,16,0"/>
                           <TextView
                             text={language}
                             margin="16,0,16,0"/>
@@ -380,7 +380,7 @@ class ResourceDetailActivity extends View {
                               width={screenWidth.toString()}
                               height="match_parent"
                               orientation="vertical"
-                              margin="0,8,0,0"
+                              margin="0,16,0,0"
                               background={window.__Colors.WHITE_F2}
                               layoutTransition="true">
                           <TextView
@@ -456,7 +456,7 @@ class ResourceDetailActivity extends View {
       if (window.__currResourceAllowRating) {
         window.__RatingsPopup.show()
       } else {
-        window.__Snackbar.show(window.__s.TRY_BEFORE_RATING);
+        window.__Snackbar.show(window.__S.TRY_BEFORE_RATING);
       }
     } else {
       window.__Snackbar.show("Sign in to use this feature.");
@@ -464,6 +464,11 @@ class ResourceDetailActivity extends View {
   }
 
   getHeader = () => {
+    var owner = "";
+    if(this.details && this.details.content && this.details.content.owner)
+     owner = this.details.content.owner;
+     else if(this.details && this.details.content && this.details.content.contentData && this.details.content.contentData.owner)
+      owner = this.details.content.contentData.owner;
     return (
       <LinearLayout
         width="match_parent"
@@ -484,12 +489,14 @@ class ResourceDetailActivity extends View {
           <TextView
             width="wrap_content"
             height="wrap_content"
+            visibility={(owner !="")? "visible":"gone"}
             text={window.__S.BY}
             style={window.__TextStyle.textStyle.HINT.REGULAR}/>
           <TextView
             width="wrap_content"
             height="wrap_content"
-            text={ " " + this.details.content.owner}/>
+            visibility={(owner !="")? "visible":"gone"}
+            text={ " " + owner}/>
             </LinearLayout>
         <LinearLayout
           margin="0,4,0,0"

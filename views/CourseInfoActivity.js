@@ -12,6 +12,8 @@ var HorizontalScrollView = require("@juspay/mystique-backend/src/android_views/H
 var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
 var ProgressBar = require("@juspay/mystique-backend/src/android_views/ProgressBar");
 var utils = require('../utils/GenericFunctions');
+var RatingBar = require("@juspay/mystique-backend/src/android_views/RatingBar");
+
 
 var objectAssign = require('object-assign');
 
@@ -31,6 +33,8 @@ class CourseInfoActivity extends View {
     super(props, children, state);
 
     this.setIds([
+      "ratingContainer",
+      "ratingBar",
       "parentContainer",
       "pageOption",
       "descriptionContainer",
@@ -66,7 +70,6 @@ class CourseInfoActivity extends View {
 
     this.details = JSON.parse(state.data.value0.courseDetails);
     console.log("data in CIA", this.details);
-
     this.localContent = null;
     this.data = {
       courseName: this.details ? this.details.name : "",
@@ -137,6 +140,13 @@ class CourseInfoActivity extends View {
         return;
       }
       _this.localContent = JSON.parse(utils.decodeBase64(data[0]));
+
+      if (_this.localContent.hasOwnProperty("contentData") && _this.localContent.contentData.hasOwnProperty("me_averageRating")) {
+        _this.updateRatings(_this.localContent.contentData.me_averageRating);
+      } else {
+        _this.updateRatings(0);
+      }
+
       if (_this.localContent.isAvailableLocally == true) {
         JBridge.logCourseDetailScreenEvent(_this.details.identifier, _this.details.pkgVersion, true);
         _this.renderChildren(identifier);
@@ -158,7 +168,7 @@ class CourseInfoActivity extends View {
       _this.creditsDetail(JSON.parse(utils.decodeBase64(data[0])));
 
     });
-    JBridge.getContentDetails(identifier, callback, false);
+    JBridge.getContentDetails(identifier, callback, true);
   }
 
 
@@ -366,6 +376,22 @@ class CourseInfoActivity extends View {
     return;
   }
 
+  updateRatings = (rating) => {
+    var r = rating ? rating : 0;
+    var layout = (
+      <LinearLayout
+        width="wrap_content"
+        height="wrap_content">
+        <RatingBar
+          id={this.idSet.ratingBar}
+          width="wrap_content"
+          height="wrap_content" />
+      </LinearLayout>
+    );
+    _this.replaceChild(_this.idSet.ratingContainer, layout.render(), 0);
+    JBridge.setRating(this.idSet.ratingBar, r);
+  }
+
 
   onBackPressed = () => {
     JBridge.endEventLog(this.details.contentType, this.details.identifier, this.details.pkgVersion);
@@ -429,16 +455,16 @@ class CourseInfoActivity extends View {
       contentText+="<br>"+data.contentData.description + "<br><br>";
     }
     if(data.contentData && data.contentData.gradeLevel){
-      contentText+="GRADE:<br>"+data.contentData.gradeLevel.toString().replace(/,/g,", ") + "<br><br>";
+      contentText+="<b>" + window.__S.GRADE + "</b><br>"+data.contentData.gradeLevel.toString().replace(/,/g,", ") + "<br><br>";
     }
     if(data.contentData && data.contentData.subject){
-      contentText+="SUBJECT:<br>"+data.contentData.subject.toString().replace(/,/g,", ") + "<br><br>";
+      contentText+="<b>" + window.__S.SUBJECT + "</b><br>"+data.contentData.subject.toString().replace(/,/g,", ") + "<br><br>";
     }
     if(data.contentData && data.contentData.board){
-      contentText+="BOARD:<br>"+data.contentData.board.toString().replace(/,/g,", ") + "<br><br>";
+      contentText+="<b>" + window.__S.BOARD + "</b><br>"+data.contentData.board.toString().replace(/,/g,", ") + "<br><br>";
     }
     if(data.contentData && data.contentData.language){
-      contentText+="MEDIUM:<br>"+data.contentData.language.toString().replace(/,/g,", ");
+      contentText+="<b>" + window.__S.MEDIUM_2 + "</b><br>"+data.contentData.language.toString().replace(/,/g,", ");
     }
 
     var layout = (
@@ -621,6 +647,11 @@ class CourseInfoActivity extends View {
                 visibility={this.data.owner ? "visible":"gone"}
                 text={this.data.owner}/>
                 </LinearLayout>
+                <LinearLayout
+                  width="wrap_content"
+                  height="wrap_content"
+                  layoutTransition="true"
+                  id={this.idSet.ratingContainer} />
                 </LinearLayout>
 
                 <LinearLayout

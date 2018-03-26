@@ -462,6 +462,14 @@ class CourseEnrolledActivity extends View {
 
   getHeader = () => {
     var isTextbook = this.apiDetails.contentType == "textbook";
+    var batchCreatedBy = "";
+    if(this.apiDetails && this.apiDetails.owner)
+     batchCreatedBy = this.apiDetails.owner;
+     else if(this.data && this.data.owner)
+      batchCreatedBy = this.apiDetails.owner;
+     else if(this.apiDetails && this.apiDetails.contentData && this.apiDetails.contentData.owner)
+      batchCreatedBy = this.apiDetails.contentData.owner;
+
     return (
       <CourseProgress
         height="wrap_content"
@@ -469,7 +477,7 @@ class CourseEnrolledActivity extends View {
         content={this.data}
         textbook={isTextbook}
         title={this.data.courseName || this.apiDetails.name || this.apiDetails.contentData.name}
-        batchCreatedBy={this.apiDetails.owner || ""}
+        batchCreatedBy={batchCreatedBy}
         onResumeClick={this.handleCourseResume}
         visibility={this.showProgress} />
     );
@@ -799,19 +807,19 @@ class CourseEnrolledActivity extends View {
       contentText+="<br>"+data.contentData.description + "<br><br>";
     }
     if(data.contentData && data.contentData.gradeLevel){
-      contentText+="GRADE:<br>"+data.contentData.gradeLevel.toString().replace(/,/g,", ") + "<br><br>";
+      contentText+="<b>" + window.__S.GRADE + "</b><br>"+data.contentData.gradeLevel.toString().replace(/,/g,", ") + "<br><br>";
     }
     if(data.contentData && data.contentData.subject){
-      contentText+="SUBJECT:<br>"+data.contentData.subject.toString().replace(/,/g,", ") + "<br><br>";
+      contentText+="<b>" + window.__S.SUBJECT + "</b><br>"+data.contentData.subject.toString().replace(/,/g,", ") + "<br><br>";
     }
     if(data.contentData && data.contentData.board){
-      contentText+="BOARD:<br>"+data.contentData.board.toString().replace(/,/g,", ") + "<br><br>";
+      contentText+="<b>" + window.__S.BOARD + "</b><br>"+data.contentData.board.toString().replace(/,/g,", ") + "<br><br>";
     }
     if(data.contentData && data.contentData.language){
-      contentText+="MEDIUM:<br>"+data.contentData.language.toString().replace(/,/g,", ");
+      contentText+="<b>" + window.__S.MEDIUM_2 + "</b><br>"+data.contentData.language.toString().replace(/,/g,", ");
     }
     if(this.batchName != "" && this.batchDescription != "" && this.batchCreatedBy != ""){
-      contentText+="<br><br><b>Batch Details</b><br>"+this.batchName+"<br>"+this.batchDescription+"<br>"+window.__S.CREATED_BY_SMALL+" "+this.batchCreatedBy;
+      contentText+="<br><br><b>" + window.__S.BATCH_DETAILS + "</b><br>"+this.batchName+"<br>"+this.batchDescription+"<br>"+window.__S.CREATED_BY_SMALL+" "+this.batchCreatedBy;
     }
     var layout = (
       <LinearLayout
