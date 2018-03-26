@@ -23,6 +23,7 @@ class Card extends View {
         ]);
         this.height = this.props.height ? this.props.height : "106";
         this.width = this.props.width ? this.props.width : "200";
+        this.imageHeight = this.height * 0.5;
         this.cardData = this.props.data;
         this.id = this.idSet.card; //important feild
     }
@@ -66,7 +67,8 @@ class Card extends View {
                         gravity="center">
                         <ImageView
                             width="match_parent"
-                            height="match_parent"
+                            height={this.imageHeight + ""}
+                            scaleType="fixXY"
                             margin="0,0,0,0"
                             imageUrl={this.cardData.illustration} />
                     </LinearLayout>
