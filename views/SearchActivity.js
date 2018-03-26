@@ -410,6 +410,10 @@ class SearchActivity extends View {
             margin = "16,0,16,0" />
         </LinearLayout>
         {contentsLayout}
+        <LinearLayout
+          height="5"
+          width="match_parent"
+          background="#f2f2f2" />
       </LinearLayout>
     );
   }
@@ -428,10 +432,6 @@ class SearchActivity extends View {
       background="#ffffff"
       orientation="vertical">
       {groups}
-      <LinearLayout
-        height = "5"
-        width = "match_parent"
-        background = "#f2f2f2" />
       <LinearLayout
         width = "match_parent"
         height = "wrap_content">

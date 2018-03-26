@@ -394,7 +394,7 @@ class ModuleDetailActivity extends View {
             if (window.__currContentAllowRating) {
                 window.__RatingsPopup.show()
             } else {
-                window.__Snackbar.show(window.__s.TRY_BEFORE_RATING)
+                window.__Snackbar.show(window.__S.TRY_BEFORE_RATING)
             }
         } else {
             window.__Snackbar.show("Sign in to use this feature.");
