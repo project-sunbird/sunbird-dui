@@ -79,7 +79,7 @@ class RatingsPopup extends View {
         this.rating = this.totalRatedStars();
         this.commentHint = this.rating == 0 ? window.__S.FEEDBACK_HINT : window.__S.FEEDBACK_HINT_1;
         var successCb = callbackMapper.map(() => {
-            window.__Snackbar.show("Thank you for rating.");
+            window.__Snackbar.show(window.__S.THANK_FOR_RATING);
         });
         JBridge.sendFeedback(successCb, this.contentId, this.comment, this.rating, this.pageId, this.contentVersion);
         this.hide();

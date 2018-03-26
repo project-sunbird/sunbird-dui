@@ -215,11 +215,13 @@ class AboutUsActivity extends View {
                     <LinearLayout
                         width="match_parent"
                         height="8"></LinearLayout>
+                    {/*
                     {this.getBody2(window.__S.PRIVACY_POLICY, () => this.nextScreen("PRIVACY_POLICY"))}
                     {this.getLineSeperator()}
                     {this.getBody2(window.__S.TERMS_OF_SERVICE, () => this.nextScreen("TERMS_OF_SERVICE"))}
                     {this.getLineSeperator()}
                     {this.getBody2(window.__S.ABOUT_APPLICATION, () => this.nextScreen("ABOUT"))}
+                    */}
                 </LinearLayout>
                 {this.getSharePopup()}
             </RelativeLayout>

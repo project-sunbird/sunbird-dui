@@ -352,7 +352,8 @@ const stringsRes = {
 		BY: "By",
 		PROFILE_UPDATE_SUCCESS: "Profile is updated successfully.",
 		PROFILE_UPDATE_FAILED: "Updating profile failed, try again later",
-		BATCH_DETAILS: "Batch Details"
+		BATCH_DETAILS: "Batch Details",
+		THANK_FOR_RATING: "Thank you for rating"
 	},
 	"hi_IN": {
 		ALREADY_HAVE_ACC: "मौजूदा उपयोगकर्ता, साइन इन करें",
