@@ -897,30 +897,30 @@ class AdditionalInformationActivity extends View{
  }
 }
 
-  getPatchCallback = (data) =>{
-    data=JSON.parse(data);
-    if(this.responseCame){
-      return;
-    }
-
-   window.__LoaderDialog.hide();
-   this.responseCame=true;
-   console.log(data)
-   if(data.result.response=="SUCCESS"){
-    if(!this.checkPrivacySameData())
-     {
-       console.log("making privacy call");
-       this.privacyStatusApiCall();
-     }
-     else{
-        // window.__BNavFlowRestart();
-      window.__changePureScriptFlow();
-        // this.onBackPressed();
-     }
-   }else{
-     window.__Snackbar.show(data.params.errmsg);
-   }
+getPatchCallback = (data) => {
+  data = JSON.parse(data);
+  if (this.responseCame) {
+    return;
   }
+
+  window.__LoaderDialog.hide();
+  this.responseCame = true;
+  console.log(data)
+  if (data.result.response == "SUCCESS") {
+    window.__Snackbar.show(window.__S.PROFILE_UPDATE_SUCCESS);
+    if (!this.checkPrivacySameData()) {
+      console.log("making privacy call");
+      this.privacyStatusApiCall();
+    }
+    else {
+      // window.__BNavFlowRestart();
+      window.__changePureScriptFlow();
+      // this.onBackPressed();
+    }
+  } else {
+    window.__Snackbar.show(data.params.errmsg ? data.params.errmsg : window.__S.PROFILE_UPDATE_FAILED);
+  }
+}
 
 privacyStatusApiCall = () => {
     var fields=["email","location","phone" ,"language","dob","gender","profileSummary","grade","subject","webPages"];

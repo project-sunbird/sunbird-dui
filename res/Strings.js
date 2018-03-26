@@ -349,7 +349,9 @@ const stringsRes = {
 		HIDE_CREDITS_INFO: "Hide Credits and Licensing Info",
 		TRY_BEFORE_RATING: "Please try the content before rating it.",
 		SEND_EMAIL: "Send Email",
-		BY: "By"
+		BY: "By",
+		PROFILE_UPDATE_SUCCESS: "Profile is updated successfully.",
+		PROFILE_UPDATE_FAILED: "Updating profile failed, try again later"
 	},
 	"hi_IN": {
 		ALREADY_HAVE_ACC: "मौजूदा उपयोगकर्ता, साइन इन करें",
