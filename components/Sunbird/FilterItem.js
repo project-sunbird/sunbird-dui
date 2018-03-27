@@ -28,7 +28,7 @@ class FilterItem extends View {
 
     this.selectedList=this.content.selected==undefined ? [] : this.content.selected;
     this.filterList = this.content.values;
-    this.filterLable = this.content.name;
+    this.filterLable = this.content.displayName;
 
     this.isForPageApi= this.props.forPage ? this.props.forPage:false;
     console.log("FITLER ITEM PARAMA", this.content);
@@ -98,18 +98,18 @@ class FilterItem extends View {
     var formatted = [];
     for(var i= 0;i<unformatted.length;i++){
         if(unformatted[i] == unformatted[i].toUpperCase()){
-          formatted.push(" "+unformatted[i]);  
+          formatted.push(" "+unformatted[i]);
         }else{
-          formatted.push(unformatted[i]);    
+          formatted.push(unformatted[i]);
         }
-        
+
       }
       return formatted.join("");
       }*/
 
   render() {
 
-      
+
       var label = this.filterLable;//getPrettifiedLabel(); for future use
 
     this.layout = (

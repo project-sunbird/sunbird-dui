@@ -40,7 +40,7 @@ exports.filterParamsResource =[
 
 },
 {
-  name : "content types",
+  name : "contentType",
   displayName : "Content Types",
   values : [ "Book",
             "Collection",
