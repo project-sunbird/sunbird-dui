@@ -266,7 +266,7 @@ class SearchActivity extends View {
             width = "37"
             height = "37"
             margin = "0,0,8,0"
-            circularImageUrl={"0," + "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR1X3cm5xzR4D1W9oPb2QWioKlrfLVd0DvXFUNqSjZfg-M0bpc"} />
+            circularImageUrl={"0," + "ic_launcher"} />
         </LinearLayout>
 
         <LinearLayout
@@ -506,14 +506,16 @@ class SearchActivity extends View {
       window.__LoaderDialog.hide();
     } else {
       var callback = callbackMapper.map(function (data) {
-        console.log("callback data", JSON.parse(utils.decodeBase64(data[2])));
+        console.log("searchContent data -> ", data);
+        
         if (data[0] == "error") {
           console.log("Error at callback", data[1]);
           window.__Snackbar.show("" + data[1])
           _this.renderNoResult();
           window.__LoaderDialog.hide();
-
+          
         } else if (JSON.parse(utils.decodeBase64(data[2]))){ 
+          console.log("callback data", JSON.parse(utils.decodeBase64(data[2])));
           console.log("inside collectiondata");
           var collection = JSON.parse(utils.decodeBase64(data[2]));
           _this.filterData = data[1];
@@ -562,15 +564,21 @@ class SearchActivity extends View {
       // } else {
       //   status = "true";
       // }
-
+      var filterParams = null;
+      if (this.filterData != "") { filterParams = JSON.stringify(this.filterData) }
       if (JBridge.isNetworkAvailable()) {
         console.log(this.filterData, " filterData ");
-        var filterParams = null;
-        if (this.filterData != "") { filterParams = JSON.stringify(this.filterData) }
         JBridge.searchContent(callback, filterParams, searchText, this.searchType, 100, (keywords ? keywords : null), false);
       } else {
-        window.__LoaderDialog.hide();
-        window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
+        console.log("keywords -> ", keywords);
+        
+        if (keywords) {
+          console.log("search cont -> ", keywords);
+          JBridge.searchContent(callback, filterParams, searchText, this.searchType, 100, (keywords ? keywords : null), false);
+        } else {
+          window.__LoaderDialog.hide();
+          window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
+        }
       }
 
       this.showFilter();
@@ -610,8 +618,13 @@ class SearchActivity extends View {
       window.__LoaderDialog.show();
       this.getSearchList(searchText ? searchText[0] : null, "false", keywords);
     } else {
-      window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE)
-      window.__LoaderDialog.hide();
+      console.log("keywords -> ", keywords);
+      if (keywords) {
+        this.getSearchList(searchText ? searchText[0] : null, "false", keywords);
+      } else {
+        window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE)
+        window.__LoaderDialog.hide();
+      }
     }
   }
 
