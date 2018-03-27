@@ -43,7 +43,7 @@ class SettingsScreenActivity extends View {
   }
 
   datasync = () => {
-      JBridge.logSettingsClickedEvent(window.__S.DATA_SYNC);
+      JBridge.logSettingsClickedEvent("Data Sync");
       var whatToSend = [];
       var event = { tag: "OPEN_DataSyncScreenActivity", contents: whatToSend};
       window.__runDuiCallback(event);
@@ -53,7 +53,7 @@ class SettingsScreenActivity extends View {
     }
 
   handleChangeLang = () => {
-    JBridge.logSettingsClickedEvent(window.__S.LANGUAGE_SETTINGS);
+    JBridge.logSettingsClickedEvent("Language Settings");
     var whatToSend = { "profile" : JSON.stringify("{}")}
     var event = { tag: "OPEN_LanguageSelectActivitySt", contents: whatToSend }
     window.__runDuiCallback(event);
@@ -68,7 +68,7 @@ class SettingsScreenActivity extends View {
   }
 
   openAboutUsActivity = () => {
-    JBridge.logSettingsClickedEvent(window.__S.ABOUT_APP);
+    JBridge.logSettingsClickedEvent("About the app");
     var whatToSend = { "profile" : JSON.stringify("{}")}
     var event = { tag: "OPEN_AboutUsActivity", contents: whatToSend }
     window.__runDuiCallback(event);
@@ -87,7 +87,7 @@ class SettingsScreenActivity extends View {
 
   handleSupportClick = () => {
     var cb = (containerId) => {
-      JBridge.logSettingsClickedEvent(window.__S.SUPPORT);
+      JBridge.logSettingsClickedEvent("Support");
       JBridge.supportEmail(containerId);
     }
     this.SharePopup.show(window.__S.SEND_EMAIL, cb);
