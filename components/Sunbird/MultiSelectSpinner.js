@@ -105,7 +105,7 @@ class MultiSelectSpinner extends View {
         height="wrap_content"
         cornerRadius="4"
         padding="0,8,8,8"
-        margin="4,0,4,0"
+        margin={this.props.spinnerComponentMargin || "4,0,4,0"}
         stroke={"2,"+window.__Colors.PRIMARY_BLACK_66}>
 
         <Spinner
@@ -148,7 +148,7 @@ class MultiSelectSpinner extends View {
         return (this.props.addLayout);
       }
       return (
-        <LinearLayout/> 
+        <LinearLayout/>
       );
   }
   getUi() {
