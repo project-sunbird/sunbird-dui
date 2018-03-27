@@ -29,9 +29,9 @@ class DataSyncScreenActivity extends View {
 	constructor(props, children, state) {
 		super(props, children, state);
     this.OPTION_TYPE = [
-      "Off",
-      "Over Wifi",
-      "Always On"
+      window.__S.OFF,
+      window.__S.OVER_WIFI,
+      window.__S.ALWAYS_ON
     ]
 		this.setIds([
 			"parentId",
@@ -54,8 +54,14 @@ class DataSyncScreenActivity extends View {
       isClickable : "true",
       onClick :  this.handleSaveClick
     }
-    this.lastSync = JBridge.getFromSharedPrefs("sync_time");
-    this.lastSync = this.lastSync == "__failed" ? "" : window.__S.LAST_SYNC + this.lastSync;
+
+		this.lastSync = "";
+		if(JBridge.getFromSharedPrefs("sync_time") !="__failed")	{
+			var longTime = parseFloat(JBridge.getFromSharedPrefs("sync_time"))
+    	this.lastSync = new Date(longTime).toLocaleString();
+	  	}
+
+    this.lastSync = this.lastSync == "" ? "" : window.__S.LAST_SYNC + this.lastSync;
 		_this = this;
 
 		this.optionTypeValue = [];
@@ -67,7 +73,7 @@ class DataSyncScreenActivity extends View {
 
   initializeData = () => {
 
-	  if(this.optionType == "Off"){
+	  if(this.optionType == window.__S.OFF){
 			this.index = 0;
 			this.optionTypeValue = [
 				{name:window.__S.OFF,select:"1",icon:"ic_action_radio"},
@@ -75,7 +81,7 @@ class DataSyncScreenActivity extends View {
 				{name:window.__S.ALWAYS_ON,select:"0",icon:"ic_action_radio"}
 			];
 		}
-		else if(this.optionType == "Over Wifi"){
+		else if(this.optionType == window.__S.OVER_WIFI){
 			this.index = 1;
 			this.optionTypeValue = [
 				{name:window.__S.OFF,select:"0",icon:"ic_action_radio"},
@@ -83,7 +89,7 @@ class DataSyncScreenActivity extends View {
 				{name:window.__S.ALWAYS_ON,select:"0",icon:"ic_action_radio"}
 			];
 		}
-		else if(this.optionType == "Always On"){
+		else if(this.optionType == window.__S.ALWAYS_ON){
 			this.index = 2;
 			this.optionTypeValue = [
 				{name:window.__S.OFF,select:"0",icon:"ic_action_radio"},
@@ -157,8 +163,8 @@ class DataSyncScreenActivity extends View {
  }
 
  getSyncNowTextView = () => {
-
-	 this.lastSync = window.__S.LAST_SYNC + JBridge.getFromSharedPrefs("sync_time");
+	 var longTime = parseFloat(JBridge.getFromSharedPrefs("sync_time"));
+	 this.lastSync = window.__S.LAST_SYNC + (new Date(longTime).toLocaleString());
 	 return (
 		 <LinearLayout
 		 	height="match_parent"
@@ -166,9 +172,9 @@ class DataSyncScreenActivity extends View {
 			>
 		 <TextView
 			 id={this.idSet.lastSyncTextView}
-			 height="17"
-			 width="208"
-			 margin="18,26,134,0"
+			 height="wrap_content"
+			 width="wrap_content"
+			 margin="4,26,0,0"
 			 text={this.lastSync}
 			 textSize={"12"}
 			 color={"#FF969696"}
@@ -219,7 +225,7 @@ shareTelemetry = () => {
 				height="match_parent"
 				width="match_parent"
 				orientation="vertical"
-				padding="0,11,0,0"
+				padding="0,0,0,0"
 				background={"#FFFFFFFF"}
 				cornerRadius="0"
 				clickable="true">
@@ -229,9 +235,9 @@ shareTelemetry = () => {
         width="match_parent"
         onBackPress={this.onBackPressed}/>
 				<TextView
-					height="20"
-					width="136"
-					margin="16,29,208,0"
+					height="wrap_content"
+					width="wrap_content"
+					margin="16,16,0,8"
 					text={window.__S.AUTOMATIC_SYNC}
 					textSize={"12"}
 					color={"#FF969696"}
@@ -258,36 +264,38 @@ shareTelemetry = () => {
 						orientation="vertical"
 						padding="16,0,0,0">
 				<TextView
-					height="17"
-					width="208"
-					margin="18,26,134,0"
+					height="wrap_content"
+					width="wrap_content"
+					margin="0,26,0,0"
 					text={this.lastSync}
 					textSize={"12"}
 					color={"#FF969696"}
 					gravity="left"/>
 					</LinearLayout>
 				<LinearLayout
-					height="38"
+					height="wrap_content"
 					width="match_parent"
 					orientation="horizontal"
 					gravity="center"
 					margin="16,10,16,0">
 					<LinearLayout
-						height="38"
+						height="wrap_content"
 						width="match_parent"
 						orientation="horizontal"
 						gravity="center"
 						background={"#FF007AFF"}
+						clickable="true"
 						cornerRadius="4"
             >
 						<TextView
-							height="19"
-							width="68"
+							height="match_parent"
+							width="match_parent"
 							text={window.__S.SYNC_NOW}
 							textSize={"14"}
-              onClick={this.onSyncNowClick}
+							padding = "0,10,0,10"
 							color={"#FFFFFFFF"}
-							gravity="left"/>
+							onClick={this.onSyncNowClick}
+							gravity="center"/>
 					</LinearLayout>
 				</LinearLayout>
 				<LinearLayout
@@ -296,20 +304,24 @@ shareTelemetry = () => {
 					background={"#FFD7D7D7"}
 					margin="16,16,16,0"
 					cornerRadius="0"/>
+					<LinearLayout
+						width="wrap_content"
+						onClick={this.shareTelemetry}
+						height="wrap_content">
 				<TextView
-					height="17"
-					width="108"
-					margin="16,16,236,0"
-					onClick={this.shareTelemetry}
+					height="match_parent"
+					width="match_parent"
+					margin="16,16,16,16"
 					text={window.__S.SHARE_TELEMETRY}
 					textSize={"12"}
 					color={"#FF0079FF"}
 					gravity="left"/>
+					</LinearLayout>
 				<LinearLayout
 						height="match_parent"
 					width="match_parent"
 					background={"#FFF2F2F2"}
-					margin="0,16,0,0"
+					margin="0,0,0,0"
 					cornerRadius="0"/>
 
 			</LinearLayout>
