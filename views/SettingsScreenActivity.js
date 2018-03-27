@@ -43,7 +43,7 @@ class SettingsScreenActivity extends View {
   }
 
   datasync = () => {
-      JBridge.logSettingsClickedEvent("Data Sync");
+      JBridge.logSettingsClickedEvent("SETTINGS_DATASYNC");
       var whatToSend = [];
       var event = { tag: "OPEN_DataSyncScreenActivity", contents: whatToSend};
       window.__runDuiCallback(event);
@@ -53,7 +53,7 @@ class SettingsScreenActivity extends View {
     }
 
   handleChangeLang = () => {
-    JBridge.logSettingsClickedEvent("Language Settings");
+    JBridge.logSettingsClickedEvent("SETTINGS_LANGUAGE");
     var whatToSend = { "profile" : JSON.stringify("{}")}
     var event = { tag: "OPEN_LanguageSelectActivitySt", contents: whatToSend }
     window.__runDuiCallback(event);
@@ -61,14 +61,14 @@ class SettingsScreenActivity extends View {
 
   handleShareClick = () => {
     var cb = (containerId) => {
-      JBridge.logSettingsClickedEvent("Share");
+      JBridge.logSettingsClickedEvent("SETTINGS_SHARE");
       JBridge.shareApk(containerId);
     }
     this.SharePopup.show(window.__S.SHARE_APP.format(JBridge.getAppName()), cb);
   }
 
   openAboutUsActivity = () => {
-    JBridge.logSettingsClickedEvent("About the app");
+    JBridge.logSettingsClickedEvent("ABOUT_APP");
     var whatToSend = { "profile" : JSON.stringify("{}")}
     var event = { tag: "OPEN_AboutUsActivity", contents: whatToSend }
     window.__runDuiCallback(event);
@@ -87,7 +87,7 @@ class SettingsScreenActivity extends View {
 
   handleSupportClick = () => {
     var cb = (containerId) => {
-      JBridge.logSettingsClickedEvent("Support");
+      JBridge.logSettingsClickedEvent("SETTINGS_SUPPORT");
       JBridge.supportEmail(containerId);
     }
     this.SharePopup.show(window.__S.SEND_EMAIL, cb);

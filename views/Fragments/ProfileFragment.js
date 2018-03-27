@@ -190,7 +190,7 @@ class ProfileFragment extends View {
   }
 
   openSettingsScreen = () => {
-    JBridge.logSettingsClickedEvent("Settings");
+    JBridge.logSettingsClickedEvent("SETTINGS");
     var whatToSend = { "profile" : JSON.stringify("{}")}
     var event ={ tag: "OPEN_SettingsScreenActivity", contents: whatToSend }
     window.__runDuiCallback(event);
