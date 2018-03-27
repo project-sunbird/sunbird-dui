@@ -1,5 +1,6 @@
 var dom = require("@juspay/mystique-backend/src/doms/android");
 var Connector = require("@juspay/mystique-backend/src/connectors/screen_connector");
+var RelativeLayout = require("@juspay/mystique-backend/src/android_views/RelativeLayout");
 var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
 var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
@@ -37,10 +38,12 @@ class SearchResult extends View {
     this.props.data.map((item, index) => {
       var halfWidth = Math.floor(((this.screenWidth-100)/2));
       var appIcon = "ic_launcher";
+      var stroke = false;
       if (this.type == "Profile") {
         appIcon = (item.data && item.data.avatar) ? item.data.avatar : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR1X3cm5xzR4D1W9oPb2QWioKlrfLVd0DvXFUNqSjZfg-M0bpc";
       } else {
         appIcon = item.hasOwnProperty("appIcon") ? item.appIcon : "ic_launcher";
+        stroke = true;
       }
       var avgRating = "";
       if(item.me_averageRating && parseFloat(item.me_averageRating) > 0.0){
@@ -58,13 +61,24 @@ class SearchResult extends View {
             width="match_parent"
             height="wrap_content">
 
-            <ImageView
-              width="37"
-              height="37"
-              margin={item.subject || item.gradeLevel? "10,22,0,22":"10,12,0,12"}
-              scaleType="fixXY"
-              gravity="center"
-              circularImageUrl={"0," + appIcon} />
+            <RelativeLayout
+              width="wrap_content"
+              height="wrap_content"
+              margin={item.subject || item.gradeLevel ? "10,22,0,22" : "10,12,0,12"}
+              gravity = "center">
+
+              <LinearLayout
+                width="37"
+                height="37"
+                visibility = {stroke ? "visible" : "gone"}
+                stroke={"2," + window.__Colors.DARK_GRAY_44}
+                cornerRadius = "50"/>
+              <ImageView
+                width="37"
+                height="37"
+                scaleType="fixXY"
+                circularImageUrl={"0," + appIcon} />
+            </RelativeLayout>
 
             <LinearLayout
               width="match_parent"
