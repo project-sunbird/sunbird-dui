@@ -86,7 +86,7 @@ class GuestInformationActivity extends View {
     height="match_parent"
     width="match_parent"
     orientation="vertical"
-    padding="0,0,0,70">
+    padding="0,0,0,0">
       <ScrollView
        width="match_parent"
        height="match_parent"
@@ -94,28 +94,13 @@ class GuestInformationActivity extends View {
         <LinearLayout
         width="match_parent"
         height="match_parent"
-        padding="11,15,15,15"
+        padding="16,16,16,0"
         orientation="vertical">
             {this.getEditTextView(this.idSet.nameText, window.__S.FULL_NAME, this.profileData.handle, this.handleOnChange)}
 						{this.getMultiSelectSpinner(this.idSet.boardSpinner, window.__S.BOARD, this.boardList, this.handleBoardChange, this.profileData.board)}
-						<LinearLayout
-							width="match_parent"
-		        	height="match_parent"
-							id={this.idSet.gradeLayout}>
-						{this.getMultiSelectSpinner(this.idSet.gradeSpinner, window.__S.GRADE, this.gradeList, this.handleGradeChange, this.profileData.grade)}
-						</LinearLayout>
-						<LinearLayout
-							width="match_parent"
-							height="match_parent"
-						  id={this.idSet.subjectLayout}>
-						{this.getMultiSelectSpinner(this.idSet.subjectSpinner, window.__S.SUBJECTS, this.subjectList, this.handleSubjectChange, this.profileData.subject)}
-						</LinearLayout>
-						<LinearLayout
-							width="match_parent"
-							height="match_parent"
-						  id={this.idSet.mediumLayout}>
-						{this.getMultiSelectSpinner(this.idSet.mediumOfInstructionSpinner, window.__S.MEDIUM_OF_INSTRUCTION, this.mediumList, this.handleMediumChange , this.profileData.medium)}
-						</LinearLayout>
+						{this.getMultiSelectSpinner(this.idSet.gradeLayout, window.__S.GRADE, this.gradeList, this.handleGradeChange, this.profileData.grade)}
+						{this.getMultiSelectSpinner(this.idSet.subjectLayout, window.__S.SUBJECTS, this.subjectList, this.handleSubjectChange, this.profileData.subject)}
+						{this.getMultiSelectSpinner(this.idSet.mediumLayout, window.__S.MEDIUM_OF_INSTRUCTION, this.mediumList, this.handleMediumChange , this.profileData.medium)}
         </LinearLayout>
       </ScrollView>
   </LinearLayout>)
@@ -137,13 +122,13 @@ class GuestInformationActivity extends View {
 
  populateMultiSpinner = (index) => {
 	 if(index>2)
-	 this.replaceChild(this.idSet.gradeLayout, this.getMultiSelectSpinner(this.idSet.gradeSpinner, window.__S.GRADE, this.gradeList, this.handleGradeChange , null).render(),0)
+	 this.replaceChild(this.idSet.gradeLayout, this.getMultiSelectSpinner(this.idSet.gradeLayout, window.__S.GRADE, this.gradeList, this.handleGradeChange , null).render(),0)
 
 	 if(index>1)
-	 this.replaceChild(this.idSet.subjectLayout, this.getMultiSelectSpinner(this.idSet.subjectSpinner, window.__S.SUBJECTS, this.subjectList, this.handleSubjectChange, null).render(),0)
+	 this.replaceChild(this.idSet.subjectLayout, this.getMultiSelectSpinner(this.idSet.subjectLayout, window.__S.SUBJECTS, this.subjectList, this.handleSubjectChange, null).render(),0)
 
 	 if(index>0)
-	 this.replaceChild(this.idSet.mediumLayout, this.getMultiSelectSpinner(this.idSet.mediumOfInstructionSpinner, window.__S.MEDIUM_OF_INSTRUCTION, this.mediumList, this.handleMediumChange, null).render(),0)
+	 this.replaceChild(this.idSet.mediumLayout, this.getMultiSelectSpinner(this.idSet.mediumLayout, window.__S.MEDIUM_OF_INSTRUCTION, this.mediumList, this.handleMediumChange, null).render(),0)
 
  }
 
@@ -172,6 +157,8 @@ class GuestInformationActivity extends View {
 
 		this.gradeList = this.allQs.length > 1 ? this.allQs[1].values.map(item => item.name) : [];
 		this.gradeList.unshift(window.__S.SELECT);
+		this.subjectList = [window.__S.SELECT];
+		this.mediumList = [window.__S.SELECT];
 		this.populateMultiSpinner(3);
   }
 
@@ -185,6 +172,7 @@ class GuestInformationActivity extends View {
 
 		this.subjectList = this.allQs.length > 2 ? this.allQs[2].values.map(item => item.name) : [];
 		this.subjectList.unshift(window.__S.SELECT);
+		this.mediumList = [window.__S.SELECT];
 		this.populateMultiSpinner(2);
 
 	}
@@ -212,7 +200,7 @@ class GuestInformationActivity extends View {
          height="wrap_content"
          width="match_parent"
          labelText={label.toUpperCase(label)}
-         margin="0,0,0,18"
+         margin="0,0,0,16"
          editTextPadding="4,4,41,10"
          _onChange={onChange}
          text={text}
@@ -235,7 +223,8 @@ class GuestInformationActivity extends View {
      width={width.toString()}
      height="wrap_content"
      orientation="vertical"
-     margin="4,0,0,18">
+		 id={id}
+     margin="0,0,0,16">
         {this.getLabel(label)}
         <LinearLayout
           width={width.toString()}
@@ -244,29 +233,22 @@ class GuestInformationActivity extends View {
           <LinearLayout
           height="match_parent"
 					width={width.toString()}
-          padding="0,6,0,0"
+          padding="0,0,0,0"
           weight="1">
            <MultiSelectSpinner
              width={width.toString()}
-             height="24"
+             height="wrap_content"
              style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK}
-             id={id}
 						 selectedData={selectedData}
              onItemChange={spinnerHandler}
-             data={values} />
+             data={values}
+						 spinnerComponentMargin="0,0,4,0" />
          </LinearLayout>
         </LinearLayout>
       </LinearLayout>
    )
  }
 
- getLineSeperator = () => {
-   return (<LinearLayout
-           width="match_parent"
-           margin="4,0,0,0"
-           height="1"
-           background={window.__Colors.PRIMARY_BLACK}/>)
- }
 
  getLabel = (label) =>{
    return (
