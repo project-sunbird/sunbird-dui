@@ -28,7 +28,7 @@ class FilterItem extends View {
 
     this.selectedList=this.content.selected==undefined ? [] : this.content.selected;
     this.filterList = this.content.values;
-    this.filterLable = this.content.displayName;
+    this.filterLable = this.content.name;
 
     this.isForPageApi= this.props.forPage ? this.props.forPage:false;
     console.log("FITLER ITEM PARAMA", this.content);

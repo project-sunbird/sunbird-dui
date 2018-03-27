@@ -40,7 +40,6 @@ class DataSyncScreenActivity extends View {
 			"lastSyncTextView",
 			"sharePopupContainer"
     ]);
-    JBridge.getLastTelemetrySyncTime();
 
 		this.state = state;
     this.shouldCacheScreen = false;
@@ -54,12 +53,10 @@ class DataSyncScreenActivity extends View {
       isClickable : "true",
       onClick :  this.handleSaveClick
     }
-
 		this.lastSync = "";
-		if(JBridge.getFromSharedPrefs("sync_time") !="__failed")	{
-			var longTime = parseFloat(JBridge.getFromSharedPrefs("sync_time"))
-    	this.lastSync = new Date(longTime).toLocaleString();
-	  	}
+		var longTime = JBridge.getLastTelemetrySyncTime();
+		if(longTime != 0)
+		this.lastSync = new Date(longTime).toLocaleString();
 
     this.lastSync = this.lastSync == "" ? "" : window.__S.LAST_SYNC + this.lastSync;
 		_this = this;
@@ -150,21 +147,24 @@ class DataSyncScreenActivity extends View {
 	 window.__LoaderDialog.show();
 
 	 var callback = callbackMapper.map(function (data) {
-		 var postSyncMessage = JBridge.getFromSharedPrefs("sync_time_error");
+		 console.log("SYNC TELEMETRY data",data.toString());
+		 if(data[0] == "SUCCESS"){
+		 	window.__Snackbar.show(window.__S.DATA_SYNC + " : " + data[0]);
+			_this.replaceChild(_this.idSet.lastSyncTextView, _this.getSyncNowTextView(data[1]).render(), 0);
+		}
 
-		 if(postSyncMessage != "__failed")
-		 	window.__Snackbar.show(window.__S.DATA_SYNC + ": " + postSyncMessage);
+		else if (data[0] == "FAILURE") {
+			window.__Snackbar.show(window.__S.DATA_SYNC + " : " + data[1]);
+		}
 
-		 _this.replaceChild(_this.idSet.lastSyncTextView, _this.getSyncNowTextView().render(), 0);
-		 window.__LoaderDialog.hide();
+		window.__LoaderDialog.hide();
 	 });//end of callback
    JBridge.syncTelemetryNow(callback);
 
  }
 
- getSyncNowTextView = () => {
-	 var longTime = parseFloat(JBridge.getFromSharedPrefs("sync_time"));
-	 this.lastSync = window.__S.LAST_SYNC + (new Date(longTime).toLocaleString());
+ getSyncNowTextView = (longTime) => {
+	 this.lastSync = window.__S.LAST_SYNC + (new Date(parseFloat(longTime)).toLocaleString());
 	 return (
 		 <LinearLayout
 		 	height="match_parent"
