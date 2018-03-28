@@ -383,6 +383,7 @@ class ResourceComponent extends View {
         <LinearLayout
           background={window.__Colors.WHITE_F2}
           clickable="true"
+          width="match_parent"
           padding="16,16,16,16">
           <HomeQuestionCardStyle
             currComponentLocation={"LIBRARY"}

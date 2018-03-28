@@ -107,17 +107,17 @@ class FeatureCards extends View {
         ]);
         this.cardsArr = [
             {
-                heading: "Get Content On-the-Go",
+                heading: window.__S.GET_CONTENT_TITLE,
                 illustration: "ic_content_otg",
-                desc: "Browse and consume content from our growing collection of free courses and resources."
+                desc: window.__S.GET_CONTENT_DESC
             }, {
-                heading: "Scan QR Codes for Quick Access",
+                heading: window.__S.SCAN_QR_TITLE,
                 illustration: "ic_scan_qr",
-                desc: "Scan QR Codes using the Sunbird app to quickly get access to related content and resources."
+                desc: window.__S.SCAN_QR_DESC
             }, {
-                heading: "Connect with Peers and Experts",
+                heading: window.__S.CONNECT_WITH_PEERS_TITLE,
                 illustration: "ic_connect_with_peers",
-                desc: "Join communities and speak to peers and experts. Learn and share your knowledge."
+                desc: window.__S.CONNECT_WITH_PEERS_DESC
             }
         ];
         this.cardWidth = JBridge.getScreenWidth();

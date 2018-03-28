@@ -161,7 +161,7 @@ class QuestionsComponent extends View {
                 cards={this.renderCards}
                 totalCards={window.__questionStore.getTotalQs()}
                 background={window.__Colors.WHITE_F2}
-                header="Help us get you content thats relevant to you." />
+                header={window.__S.ONBOARDING_CARDS_HEADING} />
         );
 
         var layout = (

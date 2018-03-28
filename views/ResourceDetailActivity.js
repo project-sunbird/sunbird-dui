@@ -365,10 +365,10 @@ class ResourceDetailActivity extends View {
     }
     if(this.contentData.contentData.license || this.contentData.contentData.credits){
       if(this.contentData.contentData.credits){
-        this.creditsAndLicense += "<br><b>CREDITS</b><br>"+this.contentData.contentData.credits.toString().replace(/,/,", ");
+        this.creditsAndLicense += "<br><b>" + window.__S.CREDITS + "</b><br>"+this.contentData.contentData.credits.toString().replace(/,/,", ");
       }
       if(this.contentData.contentData.license){
-        this.creditsAndLicense +="<br><b>LICENSE</b><br>"+this.contentData.contentData.license;
+        this.creditsAndLicense +="<br><b>" + window.__S.LICENSE + "</b><br>"+this.contentData.contentData.license;
       }
       var creditsLayout = (<LinearLayout
                               width="match_parent"
@@ -459,7 +459,7 @@ class ResourceDetailActivity extends View {
         window.__Snackbar.show(window.__S.TRY_BEFORE_RATING);
       }
     } else {
-      window.__Snackbar.show("Sign in to use this feature.");
+      window.__Snackbar.show(window.__S.SIGNIN_TO_USE_FEATURE);
     }
   }
 

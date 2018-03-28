@@ -204,7 +204,7 @@ class SettingsScreenActivity extends View {
           width="match_parent"
           height="match_parent">
           <SimpleToolbar
-            title="Settings"
+            title={window.__S.SETTINGS}
             afterRender={this.afterRender}
             width="match_parent"
             onBackPress={this.onBackPressed} />

@@ -19,20 +19,20 @@ class QuestionsFramework {
 
         this.questionMap = {
             "board": {
-                question: "Which board does your school follow?"
-                , option: "SELECT BOARD"
+                question: window.__S.BOARD_QUESTION
+                , option: window.__S.BOARD_OPTION_TEXT
             }
             , "gradeLevel": {
-                question: "Which class do you belong to?"
-                , option: "SELECT CLASS"
+                question: window.__S.GRADE_QUESTION
+                , option: window.__S.GRADE_OPTION_TEXT
             }
             , "subject": {
-                question: "Which subjects are you looking for?"
-                , option: "SELECT SUBJECT"
+                question: window.__S.SUBJECT_QUESTION
+                , option: window.__S.SUBJECT_OPTION_TEXT
             }
             , "medium": {
-                question: "What medium/language does your school teach in?"
-                , option: "SELECT MEDIUM/LANG"
+                question: window.__S.MEDIUM_QUESTION
+                , option: window.__S.MEDIUM_OPTION_TEXT
             }
         };
     }

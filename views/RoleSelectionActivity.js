@@ -21,13 +21,13 @@ class RoleSelectionActivity extends View {
             "whiteArrow"
         ]);
         this.options = [{
-            role: "Teacher",
+            role: window.__S.TEACHER_ROLE,
             selected: false,
-            desc: "1. Browse through courses\n2. Find relevant resources\n3. Browse through groups"
+            desc: window.__S.TEACHER_ROLE_DESC
         }, {
-            role: "Student",
+            role: window.__S.STUDENT_ROLE,
             selected: false,
-            desc: "1. Browse through resources"
+            desc: window.__S.STUDENT_ROLE_DESC
         }];
         this.shouldCacheScreen = false;
     }
@@ -211,7 +211,7 @@ class RoleSelectionActivity extends View {
                     <TextView
                         width = "wrap_content"
                         height = "wrap_content"
-                        text="You are a"
+                        text={window.__S.ROLE_SELECTOR_QUERY}
                         textSize="16"
                         fontStyle={Font.fontStyle.SEMIBOLD}
                         margin = "0,16,0,16" />

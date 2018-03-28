@@ -397,7 +397,7 @@ class ModuleDetailActivity extends View {
                 window.__Snackbar.show(window.__S.TRY_BEFORE_RATING)
             }
         } else {
-            window.__Snackbar.show("Sign in to use this feature.");
+            window.__Snackbar.show(window.__S.SIGNIN_TO_USE_FEATURE);
         }
     }
 

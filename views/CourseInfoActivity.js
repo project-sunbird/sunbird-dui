@@ -497,10 +497,10 @@ class CourseInfoActivity extends View {
   creditsDetail = (data) => {
     if(data.contentData.license || data.contentData.credits){
       if(data.contentData.credits){
-        this.creditsAndLicense += "<br><b>CREDITS</b><br>"+data.contentData.credits.toString().replace(/,/g,", ");
+        this.creditsAndLicense += "<br><b>" + window.__S.CREDITS + "</b><br>"+data.contentData.credits.toString().replace(/,/g,", ");
       }
       if(data.contentData.license){
-        this.creditsAndLicense +="<br><b>LICENSE</b><br>"+data.contentData.license;
+        this.creditsAndLicense += "<br><b>" + window.__S.LICENSE + "</b><br>"+data.contentData.license;
       }
       var creditsLayout = (<LinearLayout
                               width="match_parent"
