@@ -90,7 +90,8 @@ class GuestInformationActivity extends View {
       <ScrollView
        width="match_parent"
        height="match_parent"
-       weight="1">
+       weight="1"
+       margin = "0,0,0,85">
         <LinearLayout
         width="match_parent"
         height="match_parent"
