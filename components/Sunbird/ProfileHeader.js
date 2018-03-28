@@ -18,7 +18,7 @@ class ProfileHeader extends View {
     console.log("this.props.data", this.props.data);
     this.isEditable = this.props.editable;
     this.userName = this.props.data.userName ? this.props.data.userName : "";
-    this.imageUrl = this.props.data.avatar ? this.props.data.avatar : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR1X3cm5xzR4D1W9oPb2QWioKlrfLVd0DvXFUNqSjZfg-M0bpc";
+    this.imageUrl = this.props.data.avatar ? this.props.data.avatar : "ic_anonymous";
     this.firstName = this.props.data.firstName ? this.props.data.firstName : this.userName
     this.lastName = this.props.data.lastName ? this.props.data.lastName : ""
     this.address = (this.props.data.address && this.props.data.address.length > 0) ? this.props.data.address : ""

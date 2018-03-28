@@ -4,6 +4,7 @@ var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
 var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
 var RelativeLayout = require("@juspay/mystique-backend/src/android_views/RelativeLayout");
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
+var ScrollView = require("@juspay/mystique-backend/src/android_views/ScrollView");
 var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
 var callbackMapper = require("@juspay/mystique-backend/src/helpers/android/callbackMapper");
 var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
@@ -18,7 +19,8 @@ class RoleSelectionActivity extends View {
         this.setIds([
             "cardsContainer",
             "continueBtn",
-            "whiteArrow"
+            "whiteArrow",
+            "scrollViewContainer"
         ]);
         this.options = [{
             role: window.__S.TEACHER_ROLE,
@@ -74,7 +76,7 @@ class RoleSelectionActivity extends View {
                 background={"#FF0076FE"}
                 cornerRadius="4"
                 alignParentBottom = "true,-1"
-                margin="20,58,20,16"
+                margin="20,16,20,16"
                 clickable="true"
                 visibility="gone">
                 <RelativeLayout
@@ -132,7 +134,7 @@ class RoleSelectionActivity extends View {
                             width="90"
                             margin="8,8,8,8"
                             layout_gravity="center"
-                            circularImageUrl={"0," + "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR1X3cm5xzR4D1W9oPb2QWioKlrfLVd0DvXFUNqSjZfg-M0bpc"} />
+                            circularImageUrl={"0,ic_anonymous"} />
 
                         <LinearLayout
                             width = "0"
@@ -160,6 +162,10 @@ class RoleSelectionActivity extends View {
             var cmd = this.set({
                 id: this.idSet.continueBtn,
                 visibility: "visible"
+            });
+            cmd += this.set({
+                id: this.idSet.scrollViewContainer,
+                margin: "0,0,0,80"
             });
             Android.runInUI(cmd, 0);
         }
@@ -208,21 +214,36 @@ class RoleSelectionActivity extends View {
                         width="match_parent"
                         height="wrap_content"
                         onBackPress={this.onBackPressed} />
-                    <TextView
-                        width = "wrap_content"
-                        height = "wrap_content"
-                        text={window.__S.ROLE_SELECTOR_QUERY}
-                        textSize="16"
-                        fontStyle={Font.fontStyle.SEMIBOLD}
-                        margin = "0,16,0,16" />
-                    <LinearLayout
-                        id = {this.idSet.cardsContainer}
-                        width = "match_parent"
-                        height = "wrap_content"
-                        orientation="vertical"
-                        gravity="center">
-                        {this.getCards()}
-                    </LinearLayout>
+
+                    <ScrollView
+                        height="0"
+                        weight="1"
+                        width="match_parent"
+                        id={this.idSet.scrollViewContainer}>
+
+                        <LinearLayout
+                            width = "match_parent"
+                            height = "wrap_content"
+                            orientation = "vertical"
+                            gravity="center">
+
+                            <TextView
+                                width="wrap_content"
+                                height="wrap_content"
+                                text={window.__S.ROLE_SELECTOR_QUERY}
+                                textSize="16"
+                                fontStyle={Font.fontStyle.SEMIBOLD}
+                                margin="0,16,0,16" />
+                            <LinearLayout
+                                id = {this.idSet.cardsContainer}
+                                width = "match_parent"
+                                height = "wrap_content"
+                                orientation="vertical"
+                                gravity="center">
+                                {this.getCards()}
+                            </LinearLayout>
+                        </LinearLayout>
+                    </ScrollView>
                 </LinearLayout>
                 {this.getContinueBtn()}
             </RelativeLayout>

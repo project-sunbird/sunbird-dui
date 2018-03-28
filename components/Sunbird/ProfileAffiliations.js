@@ -22,15 +22,15 @@ class ProfileCreations extends View {
     this.data=[
       {
         "name":"VYASA",
-        "imageUrl":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR1X3cm5xzR4D1W9oPb2QWioKlrfLVd0DvXFUNqSjZfg-M0bpc"
+        "imageUrl":"ic_anonymous"
       },
       {
         "name":"IITE",
-        "imageUrl":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR1X3cm5xzR4D1W9oPb2QWioKlrfLVd0DvXFUNqSjZfg-M0bpc"
+        "imageUrl":"ic_anonymous"
       },
       {
         "name":"NCTE",
-        "imageUrl":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR1X3cm5xzR4D1W9oPb2QWioKlrfLVd0DvXFUNqSjZfg-M0bpc"
+        "imageUrl":"ic_anonymous"
       },
       {
         "name":"Teach for India",

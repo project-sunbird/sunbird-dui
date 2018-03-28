@@ -132,7 +132,7 @@ class ProfileCreations extends View {
         padding = "10, 3, 10, 3"
         stroke ={ "2," + window.__Colors.PRIMARY_ACCENT}>
         <ImageView
-          imageFromUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR1X3cm5xzR4D1W9oPb2QWioKlrfLVd0DvXFUNqSjZfg-M0bpc"
+          imageUrl= "ic_anonymous"
           height = "10"
           width = "10" />
         <ViewWidget

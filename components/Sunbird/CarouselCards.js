@@ -27,7 +27,7 @@ class CarouselCards extends View {
         
         this.screenWidth = JBridge.getScreenWidth()
         this.cardWidth = this.props.cardWidth ? this.props.cardWidth : this.screenWidth < 300 ? (this.screenWidth - 32) : 300;
-        this.cardPadding = this.props.cardPadding ? this.props.cardPadding : Math.floor((this.screenWidth - this.cardWidth) / 2);
+        this.cardPadding = this.props.cardPadding ? this.props.cardPadding : Math.floor((this.screenWidth - this.cardWidth) / 2) + "";
         this.cards = this.props.cards ? this.props.cards : [(<LinearLayout />)];
         this.currCardIndex = 0;
         this.totalCards = Array.from('0'.repeat(this.props.totalCards)); //always this.cards.length >= this.totalCards.length

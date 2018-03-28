@@ -39,7 +39,7 @@ class Card extends View {
                 background="#FFFFFF"
                 margin="0,0,0,0"
                 gravity="center"
-                padding="24,0,24,0">
+                padding="8,0,8,0">
 
                 <LinearLayout
                     height = "match_parent"
@@ -76,13 +76,13 @@ class Card extends View {
                     <LinearLayout
                         width="match_parent"
                         height="0"
-                        weight="1"
+                        weight="2"
                         gravity="center">
                         <TextView
                             gravity="center"
                             width="wrap_content"
                             margin="0,8,0,0"
-                            padding="24,0,24,0"
+                            padding="0,0,0,0"
                             textSize="14"
                             fontStyle={Font.fontStyle.REGULAR}
                             text={this.cardData.desc} />
@@ -122,9 +122,6 @@ class FeatureCards extends View {
         ];
         this.cardWidth = JBridge.getScreenWidth();
         this.cardHeight = JBridge.getScreenHeight() - 250;
-        this.cardPadding = Math.floor((this.screenWidth - this.cardWidth) / 2);
-
-        console.log("cardPadding -> ", this.cardPadding);
 
         this.renderCards = this.cardsArr.map((item, i) => {
             return (

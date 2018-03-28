@@ -3,6 +3,7 @@ var dom = require("@juspay/mystique-backend/src/doms/android");
 var Connector = require("@juspay/mystique-backend/src/connectors/screen_connector");
 var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
 var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
+var ScrollView = require("@juspay/mystique-backend/src/android_views/ScrollView");
 var RelativeLayout = require("@juspay/mystique-backend/src/android_views/RelativeLayout");
 var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
@@ -153,7 +154,8 @@ class LanguageSelectActivity extends View {
                 background={"#FF0076FE"}
                 cornerRadius="4"
                 margin={"0,0,0,0"}
-                clickable="true">
+                clickable="true"
+                alignParentBottom="true,-1">
                 <RelativeLayout
                     height="match_parent"
                     width="match_parent"
@@ -213,29 +215,41 @@ class LanguageSelectActivity extends View {
                     padding="20,58,20,16"
                     background={"#FFFFFFFF"}
                     cornerRadius="0">
-                    <TextView
-                        height="22"
-                        width="253"
-                        margin="34,0,33,0"
-                        text={window.__S.CHOOSE_LANGUAGE}
-                        textSize={"16"}
-                        color={"#FF333333"}
-                        gravity="center" />
-                    <LinearLayout
-                        height="wrap_content"
+
+                    <ScrollView
+                        height="0"
+                        weight="1"
                         width="match_parent"
-                        orientation="vertical"
-                        padding="16,16,16,16"
-                        margin="0,18,0,0"
-                        background={"#FFF8F8F8"}
-                        id={this.idSet.langContainer}
-                        cornerRadius="0">
+                        margin = "0,0,0,0">
 
-                            {this.getLanguageLabels()}
+                        <LinearLayout
+                            width="match_parent"
+                            height="match_parent"
+                            orientation="vertical"
+                            gravity="center">
 
-                    </LinearLayout>
-                    <LinearLayout
-                        weight="1"/>
+                            <TextView
+                                height="22"
+                                width="253"
+                                margin="34,0,33,0"
+                                text={window.__S.CHOOSE_LANGUAGE}
+                                textSize={"16"}
+                                color={"#FF333333"}
+                                gravity="center" />
+                            <LinearLayout
+                                height="wrap_content"
+                                width="match_parent"
+                                orientation="vertical"
+                                padding="16,16,16,16"
+                                margin="0,18,0,0"
+                                background={"#FFF8F8F8"}
+                                id={this.idSet.langContainer}
+                                cornerRadius="0">
+
+                                    {this.getLanguageLabels()}
+                            </LinearLayout>
+                        </LinearLayout>
+                    </ScrollView>
                     {this.getContinueBtn()}
                 </LinearLayout>
             </LinearLayout>

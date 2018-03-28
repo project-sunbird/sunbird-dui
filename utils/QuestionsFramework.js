@@ -11,11 +11,6 @@ class QuestionsFramework {
             this.questions = JSON.parse(answeredQs);
             this.currIndex = this.questions.length - 1;            
         }
-        var numberSelected = 0;
-        this.questions.map((item) => {
-            if (item.selected.length != 0) numberSelected ++;
-        });
-        this.answeredAll = this.totalCards == numberSelected;
 
         this.questionMap = {
             "board": {
@@ -100,8 +95,11 @@ class QuestionsFramework {
     }
 
     isAllQsAnsweredAtInit = () => {
-        //updated only when initialized
-        return this.answeredAll;
+        var numberSelected = 0;
+        this.questions.map((item) => {
+            if (item.selected.length != 0) numberSelected++;
+        });
+        return this.totalCards == numberSelected;
     }
 
     getEleAtIndex = (arr, index) => {

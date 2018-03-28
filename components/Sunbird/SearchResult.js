@@ -40,7 +40,7 @@ class SearchResult extends View {
       var appIcon = "ic_launcher";
       var stroke = false;
       if (this.type == "Profile") {
-        appIcon = (item.data && item.data.avatar) ? item.data.avatar : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR1X3cm5xzR4D1W9oPb2QWioKlrfLVd0DvXFUNqSjZfg-M0bpc";
+        appIcon = (item.data && item.data.avatar) ? item.data.avatar : "ic_anonymous";
       } else {
         appIcon = item.hasOwnProperty("appIcon") ? item.appIcon : "ic_launcher";
         stroke = true;

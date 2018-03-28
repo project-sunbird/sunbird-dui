@@ -216,7 +216,7 @@ class HomeFragment extends View {
         break;
       default: this.profileUpdateCardVisibility = "gone";
     }
-    this.avatarImageUrl = data.avatar ? data.avatar : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR1X3cm5xzR4D1W9oPb2QWioKlrfLVd0DvXFUNqSjZfg-M0bpc";
+    this.avatarImageUrl = data.avatar ? data.avatar : "ic_anonymous";
     return (
       <LinearLayout
         width="200"

@@ -202,19 +202,6 @@ class ResourceComponent extends View {
     return layout;
   }
 
-  // getQuestionsComponent = () => {
-  //   if (window.__questionStore && !window.__questionStore.isAllQsAnsweredAtInit() && window.__loggedInState == "GUEST") {
-  //     return (
-  //       <QuestionsComponent
-  //         visibility = "visible" />
-  //     );
-  //   } else {
-  //     return (
-  //       <LinearLayout />
-  //     );
-  //   }
-  // }
-
   getQuestionsComponent = () => {
     console.log("getQuestionsComponent render");
 
@@ -276,8 +263,7 @@ class ResourceComponent extends View {
               id={this.idSet.resourceContentContainer}
               width="match_parent"
               orientation="vertical"
-              weight="1"
-              layoutTransition="true">
+              weight="1">
 
               <CircularLoader
                 margin="0,16,0,0" />
