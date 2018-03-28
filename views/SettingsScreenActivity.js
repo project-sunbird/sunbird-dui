@@ -11,6 +11,7 @@ var TextInputView = require("../components/Sunbird/core/TextInputView");
 var CircularLoader = require('../components/Sunbird/core/CircularLoader');
 var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
 var ShareFilePopup = require('../components/Sunbird/ShareFilePopup');
+var ScrollView = require("@juspay/mystique-backend/src/android_views/ScrollView");
 var TextStyle = require("../res/TextStyle.js");
 
 window.R = require("ramda");
@@ -22,7 +23,8 @@ class SettingsScreenActivity extends View {
     this.setIds([
       "linkShareIntents",
       "popUpContainer",
-      "parentId"
+      "parentId",
+      "scrollViewContainerCourse"
     ]);
     this.shouldCacheScreen = false;
     window.__SettingsScreenActivity = this;
@@ -208,6 +210,15 @@ class SettingsScreenActivity extends View {
             afterRender={this.afterRender}
             width="match_parent"
             onBackPress={this.onBackPressed} />
+            <ScrollView
+              height="0"
+              weight="1"
+              id={this.idSet.scrollViewContainerCourse}
+              width="match_parent">
+              <LinearLayout
+              height="match_parent"
+              width="match_parent"
+              orientation="vertical">
           <LinearLayout
             width="match_parent"
             height="4"/>
@@ -224,6 +235,8 @@ class SettingsScreenActivity extends View {
           {this.getBody2(window.__S.SHARE_APP.format(JBridge.getAppName()), this.handleShareClick)}
           {this.getLineSeperator()}
           {this.getBody2(window.__S.ABOUT_APP, this.openAboutUsActivity)}
+          </LinearLayout>
+          </ScrollView>
         </LinearLayout>
         {this.getSharePopUP()}
       </RelativeLayout>

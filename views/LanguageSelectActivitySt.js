@@ -6,6 +6,7 @@ var RelativeLayout = require("@juspay/mystique-backend/src/android_views/Relativ
 var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var SimpleToolbar = require('../components/Sunbird/core/SimpleToolbar');
+var ScrollView = require("@juspay/mystique-backend/src/android_views/ScrollView");
 var utils = require('../utils/GenericFunctions');
 window.R = require("ramda");
 
@@ -18,7 +19,8 @@ class LanguageSelectActivitySt extends View {
         this.devicelang = JBridge.getLocalLang();
         this.defaultlang = window.__CurrentLanguage;
         this.setIds([
-            "langContainer"
+            "langContainer",
+            "scrollViewContainerCourse"
         ]);
         this.langArr = [];
         this.initLangArr();
@@ -170,6 +172,11 @@ class LanguageSelectActivitySt extends View {
                       afterRender={this.afterRender}
                       width="match_parent"
                       onBackPress={this.onBackPressed}/>
+                      <ScrollView
+                        height="0"
+                        width="match_parent"
+                        weight="1"
+                        id={this.idSet.scrollViewContainerCourse}>
                     <LinearLayout
                         height="wrap_content"
                         width="match_parent"
@@ -183,6 +190,7 @@ class LanguageSelectActivitySt extends View {
                             {this.getLanguageLabels()}
 
                     </LinearLayout>
+                    </ScrollView>
                 </LinearLayout>
             </LinearLayout>
         );
