@@ -312,7 +312,7 @@ class CourseFragment extends View {
 
   getQuestionsComponent = () => {
     console.log("getQuestionsComponent render");
-    
+
     var layout;
     if (window.__questionStore && !window.__questionStore.isAllQsAnsweredAtInit() && window.__loggedInState == "GUEST") {
       layout = (
@@ -389,7 +389,7 @@ class CourseFragment extends View {
     } else if (url == "ic_scanqr") {
       var whatToSend = []
       var event = { tag: "OPEN_QRActivity", contents: whatToSend }
-      JBridge.logVisitEvent(window.__S.COURSES_BNAV);
+      JBridge.logVisitEvent("COURSES");
       window.__runDuiCallback(event);
     } else if (url == "ic_action_filter" || url == "ic_action_filter_applied") {
       JBridge.explicitSearch("COURSE", "FILTER");

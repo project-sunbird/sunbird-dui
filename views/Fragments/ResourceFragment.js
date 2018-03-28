@@ -297,7 +297,7 @@ class ResourceComponent extends View {
     } else if (url == "ic_scanqr") {
       var whatToSend = []
       var event = { tag: "OPEN_QRActivity", contents: whatToSend }
-      JBridge.logVisitEvent(window.__S.LIBRARY_BNAV);
+      JBridge.logVisitEvent("LIBRARY");
       window.__runDuiCallback(event);
     } else if (url == "ic_action_search") {
       var searchDetails = { filterDetails: "", searchType: "Library" }
