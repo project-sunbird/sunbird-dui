@@ -18,9 +18,9 @@ class MultiSelectSpinner extends View {
       "horizontalScrollContainer",
       "selectedValueContainer"
     ]);
-
     this.hint = props.hint;
     this.data = props.data;
+    this.referenceData = JSON.parse(JSON.stringify(props.data));
     this.selectedData = props.selectedData ? props.selectedData : new Array();
     this.addLayout=props.addLayout;
 
@@ -47,7 +47,8 @@ class MultiSelectSpinner extends View {
 
   handleRemoveClick = (item) => {
     this.selectedData.splice(this.selectedData.indexOf(item), 1);
-    this.data.push(item);
+    var index = this.referenceData.indexOf(item);
+    this.data.splice(index,0,item);
 
     this.replaceChild(this.idSet.spinnerContainer, this.getUi().render(), 0);
     this.onItemChange(this.selectedData);

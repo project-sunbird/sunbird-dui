@@ -72,6 +72,9 @@ class GuestAdditionalInfo extends View {
         <TextView
           width="wrap_content"
           height="wrap_content"
+          enableEllipse="true"
+          padding = "16,0,0,0"
+          maxLines = "1"
           text={item.value}
           style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK} />
       </LinearLayout>);
