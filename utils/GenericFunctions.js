@@ -305,10 +305,11 @@ exports.eqObjProp = (obj1, obj2, prop) => {
 }
 
 exports.findObjOnProp = (objArr, prop, val) => {
-	for(let obj of objArr) {
-		if (obj[prop] == val) return obj;
-	}
-	return null;
+	var index = -1;
+	objArr.map((item, i) => {
+		if (item[prop] == val && index == -1) index = i;
+	});
+	return index;
 }
 
 exports.setPermissions = () => {

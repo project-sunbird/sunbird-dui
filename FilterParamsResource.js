@@ -8,25 +8,12 @@ exports.filterParamsResource =[
 {
   name : "grade",
   displayName : "Grade",
-  values : [  "Grade 1",
-              "Grade 2",
-              "Grade 3",
-              "Grade 4",
-              "Grade 5",
-              "Grade 6",
-              "Grade 7",
-              "Grade 8",
-              "Grade 9" ]
+  values: ["Kindergarten", "Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5", "Grade 6", "Grade 7", "Grade 8", "Grade 9", "Grade 10", "Grade 11", "Grade 12", "Other" ]
 },
 {
   name : "subject",
   displayName : "Subject",
-  values : [ "Mathematics",
-            "Environmental Studies",
-            "Geography",
-            "History and Civics",
-            "Civics and Administration",
-            "Science and Technology" ]
+  values: ["Mathematics", "English", "Tamil", "Telugu", "Geography", "Urdu", "Kannada", "Assamese", "Physics", "Chemistry", "Hindi", "Marathi", "Environmental Studies", "Political Science", "Bengali", "History", "Gujarati", "Biology", "Oriya", "Punjabi", "Nepali", "Malayalam" ]
 
 },
 {

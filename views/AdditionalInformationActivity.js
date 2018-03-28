@@ -71,7 +71,13 @@ class AdditionalInformationActivity extends View{
     this.currentData={};
     this.screenName="AdditionalInformationActivity"
 
-    this.subjectDictionary=["Select","Assamese","Bengali","English","Gujarati","Hindi","Kannada","Malayalam","Marathi","Maths","Nepali","Oriya","Punjabi","Tamil","Telugu","Urdu"];
+    let frameworkSub = window.__questionStore.getSubjectsFromFramework();
+    if (window.__questionStore && frameworkSub.length != 0) {
+      this.subjectDictionary = ["Select"];
+      this.subjectDictionary = this.subjectDictionary.concat(frameworkSub);
+    } else {
+      this.subjectDictionary = ["Select", "Mathematics", "English", "Tamil", "Telugu", "Geography", "Urdu", "Kannada", "Assamese", "Physics", "Chemistry", "Hindi", "Marathi", "Environmental Studies", "Political Science", "Bengali", "History", "Gujarati", "Biology", "Oriya", "Punjabi", "Nepali", "Malayalam"];
+    }
     this.currentData.selectedSubjects=[];
     this.currentData.email = "";
     this.currentData.mobile = "";
@@ -106,8 +112,16 @@ class AdditionalInformationActivity extends View{
     }
     this.currentData.lockStatus= Object.assign({}, this.prevData.lockStatus);
     this.GenderArray=["Select","Male","Female","Transgender"];
-    this.LanguageArray=["Select","Assamese","Bengali","English","Gujarati","Hindi","Kannada","Marathi","Punjabi","Tamil","Telugu"]
-    this.GradeArray=["Select","Kindergarten","Grade 1","Grade 2","Grade 3","Grade 4","Grade 5","Grade 6","Grade 7"];
+    this.LanguageArray=["Select","Assamese","Bengali","English","Gujarati","Hindi","Kannada","Marathi","Punjabi","Tamil","Telugu"];
+
+    let frameworkGrade = window.__questionStore.getGradesFromFramework();
+    if (window.__questionStore && frameworkGrade.length != 0) {
+      this.GradeArray = ["Select"];
+      this.GradeArray = this.GradeArray.concat(frameworkGrade);
+      
+    } else {
+      this.GradeArray = ["Select", "Kindergarten", "Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5", "Grade 6", "Grade 7", "Grade 8", "Grade 9", "Grade 10", "Grade 11", "Grade 12", "Other"];
+    }
 
     this.data = JSON.parse(this.state.data.value0.profile);
     console.log("Info State  ----->", this.state);

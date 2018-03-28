@@ -1,3 +1,5 @@
+var utils = require("../utils/GenericFunctions");
+
 class QuestionsFramework {
     constructor(framework) {
         this.frameworkJSON = framework;
@@ -139,6 +141,34 @@ class QuestionsFramework {
         this.questions[index] = data;
         this.questions = this.questions.slice(0, index + 1);
         JBridge.setInSharedPrefs("answeredQs", JSON.stringify(this.questions));
+    }
+
+    getGradesFromFramework = () => {
+        var gradesArr = [];
+        try {
+            var index = utils.findObjOnProp(this.categories, "code", "gradeLevel");
+            var gradesObj = index == -1 ? {} : this.categories[index];
+            gradesObj.terms.map((item) => {
+                gradesArr.push(item.name);
+            });
+        } catch(err) {
+            console.log("Error getGradesFromFramework -> ", err);
+        }
+        return gradesArr;
+    }
+
+    getSubjectsFromFramework = () => {
+        var subjectArr = [];
+        try {
+            var index = utils.findObjOnProp(this.categories, "code", "subject");
+            var subjectObj = index == -1 ? {} : this.categories[index];
+            subjectObj.terms.map((item) => {
+                subjectArr.push(item.name);
+            });
+        } catch (err) {
+            console.log("Error getSubjectsFromFramework -> ", err);
+        }
+        return subjectArr;
     }
 }
 

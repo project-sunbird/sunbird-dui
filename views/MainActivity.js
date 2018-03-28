@@ -68,8 +68,7 @@ class MainActivity extends View {
 
     // window.handleChangeLang = this.handleChangeLang; //added for testing
     
-    var cb = callbackMapper.map((data) => {
-      console.log("framework -> ", data[0]);      
+    var cb = callbackMapper.map((data) => {     
       if (data[0] != "__failed") {
         var framework = JSON.parse(data[0]);
         console.log("framework -> ", framework);
@@ -81,7 +80,7 @@ class MainActivity extends View {
         }
       }
     });
-    JBridge.getFrameworkDetails(cb);
+    var _ = window.__questionStore ? "" : JBridge.getFrameworkDetails(cb);
   }
 
   onPop = () => {

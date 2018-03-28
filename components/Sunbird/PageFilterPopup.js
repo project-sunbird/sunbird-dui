@@ -17,6 +17,7 @@ var Styles = require("../../res/Styles");
 var FilterParamsCourse = require("../../FilterParamsCourse")
 var FilterParamsResource = require("../../FilterParamsResource")
 var utils = require("../../src/Utils")
+var utilsFunc = require("../../utils/GenericFunctions");
 
 let IconStyle = Styles.Params.IconStyle;
 
@@ -34,7 +35,10 @@ class PageFilterPopup extends View {
 
     window.__PageFilterPopup = this;
     this.filterListCourse=FilterParamsCourse.filterParamsCourse;
+
+    //Resourse filters
     this.filterListResource=FilterParamsResource.filterParamsResource;
+    
     this.isForResouce=false;
     this.cancelBtnState = {
       text : window.__S.CANCEL,
@@ -50,6 +54,35 @@ class PageFilterPopup extends View {
       onClick : this.onConfirm,
       visibility : "visible",
     };
+  }
+
+  modifyResourceFilterParams = () => {
+    //Replace grade from framework if available
+    let index = utilsFunc.findObjOnProp(this.filterListResource, "name", "grade");
+    if (index != -1) {
+      let frameworkGrade = window.__questionStore.getGradesFromFramework();
+      if (frameworkGrade.length != 0) {
+        this.filterListResource[index] = {
+          displayName: "Grade",
+          name: "grade",
+          values: frameworkGrade
+        }
+      }
+    }
+
+    //Replace subject from framework if available
+    index = utilsFunc.findObjOnProp(this.filterListResource, "name", "subject");
+    if (index != -1) {
+      let frameworkSub = window.__questionStore.getSubjectsFromFramework();
+      if (frameworkSub.length != 0) {
+        this.filterListResource[index] = {
+          displayName: "Subject",
+          name: "subject",
+          values: frameworkSub
+        }
+      }
+    }
+    console.log("FilterParams in PFP -> ", this.filterListResource);
   }
 
   show = () => {
@@ -193,6 +226,7 @@ class PageFilterPopup extends View {
       this.isForResouce=false;
     }else{
       this.isForResouce=true;
+      this.modifyResourceFilterParams();
     }
 
     this.filter={};

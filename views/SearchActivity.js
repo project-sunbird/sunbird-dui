@@ -352,7 +352,7 @@ class SearchActivity extends View {
     console.log("creating grp for -> ", collection);
     
     collection.childNodes.map((item) => {
-      var content = utils.findObjOnProp(contents, "identifier", item);
+      var content = contents[utils.findObjOnProp(contents, "identifier", item)];
       if (content) {
         contentsList.push(content);
       }
