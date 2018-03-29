@@ -24,7 +24,6 @@ class SearchResult extends View {
       'listContainer',
       "gradeTextView"
     ]);
-    this.handleItemClick = debounce(this.handleItemClick, 50);
     this.screenWidth = JBridge.getScreenWidth();
   }
   getData = () => {

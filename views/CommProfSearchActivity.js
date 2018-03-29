@@ -40,6 +40,13 @@ class CommProfSearchActivity extends View {
     _this = this;
   }
 
+  handleItemClick = (item) => {
+    console.log("itemClicked ", item);
+    var whatToSend = { profile: JSON.stringify(item) };
+    var event = { tag: "OPEN_ProfileActivity_SEARCH", contents: whatToSend }
+    window.__runDuiCallback(event);
+  }
+
   handleStateChange = (state) => {
     var res = utils.processResponse(state);
 
@@ -238,6 +245,7 @@ class CommProfSearchActivity extends View {
   renderResult = (data) => {
 
     var layout = (<SearchResult
+                    onClick={(item, index) => { this.handleItemClick(item) }}
                     data={data}
                     type = "Profile" />
                     );
