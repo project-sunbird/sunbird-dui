@@ -120,6 +120,7 @@ class SearchResult extends View {
                   width="10"
                   height="10"
                   gravity="left"
+                  visibility={(item.contentType && (avgRating != "" || item.hasOwnProperty("size"))) ? "visible" : "gone"}
                   margin="4,7,0,0"
                   imageUrl="ic_dot_lightgrey"/>
 
