@@ -1,5 +1,6 @@
 var dom = require("@juspay/mystique-backend/src/doms/android");
 var Connector = require("@juspay/mystique-backend/src/connectors/screen_connector");
+var RelativeLayout = require("@juspay/mystique-backend/src/android_views/RelativeLayout");
 var LinearLayout = require("@juspay/mystique-backend/src/android_views/LinearLayout");
 var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
 var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget");
@@ -53,30 +54,40 @@ class GuestAdditionalInfo extends View {
   getRows = ()=> {
     var rows = this.info.map((item, i) => {
       return (<LinearLayout
-        width="wrap_content"
+        width="match_parent"
         height="wrap_content"
         margin="0,16,0,0"
         visibility={(item.value && item.value != "") ? "visible" : "gone"}>
+
+        <RelativeLayout
+         width="wrap_content"
+         gravity="left">
 
         <TextView
           width="wrap_content"
           height="wrap_content"
           textAllCaps="true"
+          gravity="left"
           text={item.name}
           style={window.__TextStyle.textStyle.HINT.SEMI} />
 
-        <ViewWidget
-          height="0"
-          weight="1" />
+          </RelativeLayout>
+
+          <RelativeLayout
+          width="match_parent"
+          gravity="right">
 
         <TextView
           width="wrap_content"
           height="wrap_content"
           enableEllipse="true"
+          gravity="right"
           padding = "16,0,0,0"
           maxLines = "1"
           text={item.value}
           style={window.__TextStyle.textStyle.CARD.BODY.DARK.REGULAR_BLACK} />
+          </RelativeLayout>
+          
       </LinearLayout>);
     });
 
@@ -85,7 +96,7 @@ class GuestAdditionalInfo extends View {
 
   getBody = () => {
     return (<LinearLayout
-      width="wrap_content"
+      width="match_parent"
       height="wrap_content"
       margin="0,0,0,16"
       orientation="vertical">
@@ -98,7 +109,8 @@ class GuestAdditionalInfo extends View {
     return (<LinearLayout
       width="wrap_content"
       height="wrap_content"
-      padding="0,16,0,0">
+      padding="0,16,0,0"
+      gravity="center">
 
       <TextView
         width="wrap_content"
@@ -140,8 +152,7 @@ class GuestAdditionalInfo extends View {
         height="wrap_content"
         margin="0,0,0,0"
         orientation="vertical"
-        id={this.idSet.holder}
-        gravity="center">
+        id={this.idSet.holder}>
 
         {this.getLineSeperator()}
         {this.getHeader()}
