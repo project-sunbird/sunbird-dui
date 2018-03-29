@@ -6,6 +6,7 @@ var View = require("@juspay/mystique-backend/src/base_views/AndroidBaseView");
 var ViewWidget = require("@juspay/mystique-backend/src/android_views/ViewWidget");
 var TextView = require("@juspay/mystique-backend/src/android_views/TextView");
 var ImageView = require("@juspay/mystique-backend/src/android_views/ImageView");
+var utils = require('../../utils/GenericFunctions');
 var CropParagraph = require('../../components/Sunbird/CropParagraph');
 
 
@@ -181,7 +182,7 @@ class ProfileExperiences extends View {
   getTitle = (input) => {
     var title = input.jobName ? input.jobName : input.name;
     if (this.props.popUpType == window.__PROFILE_POP_UP_TYPE.ADDRESS) {
-      title = input.addType;
+      title = utils.firstLeterCapital(input.addType);
     }
     return title;
   }
