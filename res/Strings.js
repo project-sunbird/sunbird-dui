@@ -369,7 +369,9 @@ const stringsRes = {
 		"SUBJECT_OPTION_TEXT": "SELECT SUBJECT",
 		"MEDIUM_QUESTION": "What medium/language does your school teach in?",
 		"MEDIUM_OPTION_TEXT": "SELECT MEDIUM/LANG",
-		"ONBOARDING_CARDS_HEADING": "Help us get you content thats relevant to you."
+		"ONBOARDING_CARDS_HEADING": "Help us get you content thats relevant to you.",
+		"PRIVACY_HIDE_TEXT": "Hiding %s from all",
+		"PRIVACY_SHOW_TEXT": "Showing %s from all"
 	},
 	"hi_IN": {
 		"ABOUT": "बारे में",

@@ -385,9 +385,9 @@ class AdditionalInformationActivity extends View{
        );
     this.replaceChild(id,tempLayout.render(), 0);
     if(this.currentData.lockStatus[lockName]=="private"){
-      window.__Snackbar.show("Hiding "+label+" from all");
+      window.__Snackbar.show(window.__S.PRIVACY_HIDE_TEXT.format(label));
     }else{
-      window.__Snackbar.show("Showing "+label+" to all");
+      window.__Snackbar.show(window.__S.PRIVACY_SHOW_TEXT.format(label));
     }
 
   }

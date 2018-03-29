@@ -94,7 +94,7 @@ class CardComponent extends View {
     <LinearLayout
       margin="0,8,0,0"
       width="200"
-      height="wrap_content">
+      height="50">
       <LinearLayout
         weight="1"
         height="wrap_content"
