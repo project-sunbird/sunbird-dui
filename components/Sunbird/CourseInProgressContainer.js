@@ -134,10 +134,9 @@ afterRender = () => {
 
   getCardLayout =(item,index) => {
     console.log("item in progress container",item)
-     var pDone= (item.progress == undefined || !Number.isInteger(item.progress)) ? 0 : item.progress;
-     var pTotal = (item.leafNodesCount == undefined || !Number.isInteger(item.leafNodesCount)) ? 0 : item.leafNodesCount;
-     var progressCount = (pDone / pTotal)*100;
-     progressCount = isNaN(progressCount) ? 0 : parseInt(progressCount);
+    var pDone= (item.progress == undefined || !Number.isInteger(item.progress)) ? 0 : item.progress;
+    var pTotal = (item.leafNodesCount == undefined || !Number.isInteger(item.leafNodesCount)) ? 0 : item.leafNodesCount;
+    var progressCount = utils.getCompletedPercentage(pDone, pTotal);
 
      console.log("GET CARD LAYOUT",item)
 
@@ -145,7 +144,6 @@ afterRender = () => {
         imageUrl: (item.courseLogoUrl ? item.courseLogoUrl : "ic_action_course"),
         title: item.courseName,
         actionText:  window.__S.RESUME,
-        // footerTitle: (isNaN(pDone/pTotal)?"0":(pDone/pTotal)) +"% done",
         footerTitle: window.__S.COURSE_PROGRESS_COMPLETED.format(progressCount),
         progressPercent : progressCount,
         footerSubTitle:  "",

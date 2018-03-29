@@ -510,7 +510,9 @@ class SearchActivity extends View {
         
         if (data[0] == "error") {
           console.log("Error at callback", data[1]);
-          window.__Snackbar.show("" + data[1])
+          if(!JBridge.isNetworkAvailable()) {
+            window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
+          }
           _this.renderNoResult();
           window.__LoaderDialog.hide();
           

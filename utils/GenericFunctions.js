@@ -326,3 +326,20 @@ exports.setPermissions = () => {
 	});
 	JBridge.setPermissions(callback, "android.permission.WRITE_EXTERNAL_STORAGE");
 }
+
+exports.getCompletedPercentage = (progess, leafNodesCount) => {
+	console.log("progress -> ", progess);
+	console.log("leafNodesCount -> ", leafNodesCount);
+	
+	let nodes = leafNodesCount ? leafNodesCount : 0;
+	let p = progess ? progess : 0;
+	let percentage = 0;
+	if (p > 0 && nodes > 0) {
+		percentage = p / nodes * 100;
+	}
+	if (isNaN(percentage)) percentage = 0;
+	if (percentage > 100) percentage = 100;
+	console.log("percentage -> ", percentage);
+	
+	return parseInt(percentage);
+}

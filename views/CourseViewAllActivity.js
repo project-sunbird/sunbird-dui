@@ -59,8 +59,7 @@ class CourseViewAllActivity extends View {
       var progressCount = 0;
       var pDone= (item.progress == undefined || !Number.isInteger(item.progress)) ? 0 : item.progress;
       var pTotal = (item.leafNodesCount == undefined || !Number.isInteger(item.leafNodesCount)) ? 0 : item.leafNodesCount;
-      var progressCount = (pDone / pTotal)*100;
-      progressCount = isNaN(progressCount) ? 0 : parseInt(progressCount);
+      var progressCount = utils.getCompletedPercentage(pDone, pTotal);
       var appIcon,name,isProgress,size,actionText,type;
       if(item.courseId){
         appIcon = item.courseLogoUrl ? item.courseLogoUrl : "ic_action_course";

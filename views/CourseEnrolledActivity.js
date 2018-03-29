@@ -100,9 +100,8 @@ class CourseEnrolledActivity extends View {
           this.enrolledCourses = item;
         }
       })
-      if (this.enrolledCourses && this.enrolledCourses.leafNodesCount != null && this.enrolledCourses.progress <= this.enrolledCourses.leafNodesCount) {
-        this.downloadProgress = this.apiDetails.leafNodesCount == null ? 0 : (this.enrolledCourses.progress / this.enrolledCourses.leafNodesCount) * 100;
-        this.downloadProgress = parseInt(isNaN(this.downloadProgress) ? 0 : this.downloadProgress);
+      if (this.enrolledCourses && this.enrolledCourses.leafNodesCount != null) {
+        this.downloadProgress = utils.getCompletedPercentage(this.apiDetails.progress, this.apiDetails.leafNodesCount)
       }
     }
 
@@ -434,12 +433,9 @@ class CourseEnrolledActivity extends View {
         var progress = 0;
         course_details.courses.map((item, i) => {
           if (item.courseId == this.baseIdentifier) {
-            if (item.leafNodesCount != null && item.progress <= item.leafNodesCount) {
-              progress = item.leafNodesCount == null ? 0 : (item.progress / item.leafNodesCount) * 100;
-              progress = parseInt(isNaN(progress) ? 0 : progress);
-              this.data.completedProgress = progress;
-              window.__currCourseDetails.progress = progress;
-            }
+            progress = utils.getCompletedPercentage(item.progress, item.leafNodesCount);
+            this.data.completedProgress = progress;
+            window.__currCourseDetails.progress = progress;
           }
         });
         window.__currCourseDetails.reload = false;
