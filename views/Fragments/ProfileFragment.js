@@ -121,6 +121,7 @@ class ProfileFragment extends View {
           this.createdBy = {};
         } else {
           console.log("profileData", responseData);
+          JBridge.saveData(this.profileDataTag, utils.encodeBase64(JSON.stringify(state)));
           window.__userName = responseData.result.response.userName;
           this.details = responseData.result.response;
           this.description = this.details.profileSummary ? this.details.profileSummary : ""
