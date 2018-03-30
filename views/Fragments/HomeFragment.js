@@ -47,7 +47,8 @@ class HomeFragment extends View {
     this.setIds([
       "announcementContainer",
       "scrollViewContainerHome",
-      "parentId"
+      "parentId",
+      "CIPContainer"
     ]);
     JBridge.clearMapId();
   }
@@ -295,6 +296,21 @@ class HomeFragment extends View {
     )
   }
 
+  replaceToDoCards = () => {
+    try {
+      this.profileData = JSON.parse(utils.decodeBase64(JBridge.getSavedData("savedProfile")));
+      this.profileData = JSON.parse(utils.decodeBase64(this.profileData.response.status[1]));
+      var data = this.profileData.result.response;
+      if (!(data.completeness == 100 || data.completeness == undefined)) {
+        console.log("updated todo cards");
+        
+        this.replaceChild(this.idSet.CIPContainer, this.getCourseInProgressContainer().render(), null);
+      } 
+    } catch (error) {
+      
+    }
+  }
+
   handleAnnouncementClick = (id, index) => {
     console.log("handleAnnouncementClick", index);
     JBridge.logAnnouncementClicked("HOME", id, index + 1);
@@ -470,7 +486,12 @@ class HomeFragment extends View {
               height="match_parent"
               width="match_parent"
               orientation="vertical">
-              {this.getCourseInProgressContainer()}
+              <LinearLayout
+                height="wrap_content"
+                width="match_parent"
+                id = {this.idSet.CIPContainer} >
+                {this.getCourseInProgressContainer()}
+              </LinearLayout>
               <LineSpacer />
               <LinearLayout
                 height="match_parent"

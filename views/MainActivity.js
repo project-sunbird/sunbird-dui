@@ -181,6 +181,9 @@ class MainActivity extends View {
       console.log("Saving state");
       var data = utils.encodeBase64(JSON.stringify(state));
       JBridge.saveData(this.profileDataTag, data);
+      if (this.contentLayout && this.contentLayout.hasOwnProperty("replaceToDoCards")){
+        this.contentLayout.replaceToDoCards();
+      }
     }
 
     this.currentPageIndex = isNaN(this.currentPageIndex) ? 0 : this.currentPageIndex;
