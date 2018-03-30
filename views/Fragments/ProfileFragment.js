@@ -140,7 +140,7 @@ class ProfileFragment extends View {
           window.__Snackbar.show(window.__S.SKILLS_ADDED_SUCCESSFULLY);
           this.populateProfileData();
         }
-        // window.__BNavFlowRestart();
+        window.__BNavFlowRestart();
         return;
       case "API_GetSkillsList":
         window.__PopulateSkillsList = [];
@@ -166,7 +166,7 @@ class ProfileFragment extends View {
           }
         } else {
           this.populateProfileData();
-          // window.__BNavFlowRestart();
+          window.__BNavFlowRestart();
         }
     }
   }
