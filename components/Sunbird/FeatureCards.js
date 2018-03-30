@@ -113,7 +113,7 @@ class FeatureCards extends View {
             }, {
                 heading: window.__S.SCAN_QR_TITLE,
                 illustration: "ic_scan_qr",
-                desc: window.__S.SCAN_QR_DESC
+                desc: window.__S.SCAN_QR_DESC.format(JBridge.getAppName())
             }, {
                 heading: window.__S.CONNECT_WITH_PEERS_TITLE,
                 illustration: "ic_connect_with_peers",
