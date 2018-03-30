@@ -23,7 +23,7 @@ class ProfileSkillTags extends View {
     _this = this;
     this.isEditable = this.props.editable;
     this.data = this.props.data;
-    this.endorseSkillResponseCame = false; 
+    this.endorseSkillResponseCame = false;
     this.lockIconVisibility=this.props.privacyStatus;
   }
 
@@ -59,7 +59,7 @@ class ProfileSkillTags extends View {
                     <ImageView
                     height="14"
                     width="14"
-                    onClick={()=>{this.props.handleLock("skills",this.lockIconVisibility)}}
+                    onClick={()=>{this.props.handleLock("skills",this.lockIconVisibility, window.__S.SKILL_TAGS)}}
                     id={this.idSet.lockIcon}
                     visibility={this.lockIconVisibility?"visible":"gone"}
                     imageUrl="ic_action_lock"/>
@@ -200,7 +200,7 @@ class ProfileSkillTags extends View {
 
 
   render() {
-    this.endorseSkillResponseCame = true;        
+    this.endorseSkillResponseCame = true;
       this.layout = (
         <LinearLayout
                   width="wrap_content"
