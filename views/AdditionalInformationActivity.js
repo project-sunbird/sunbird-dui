@@ -112,7 +112,7 @@ class AdditionalInformationActivity extends View{
     }
     this.currentData.lockStatus= Object.assign({}, this.prevData.lockStatus);
     this.GenderArray=["Select","Male","Female","Transgender"];
-    this.LanguageArray=["Select","Assamese","Bengali","English","Gujarati","Hindi","Kannada","Marathi","Punjabi","Tamil","Telugu"];
+    this.LanguageArray = ["Select", "Assamese", "Bengali", "English", "Gujarati", "Hindi", "Kannada", "Marathi", "Punjabi", "Tamil", "Telugu", "Urdu"];
 
     let frameworkGrade = window.__questionStore.getGradesFromFramework();
     if (window.__questionStore && frameworkGrade.length != 0) {
