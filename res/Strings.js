@@ -69,7 +69,7 @@ const stringsRes = {
 		"CREATOR_NAME_NOT_AVAILABLE": "Creator's name unavailable",
 		"CREATOR_OF": "Created by",
 		"CURRENT": "Current Address",
-		"CURRENT_LANGUAGE": "Current Language : ",
+		"CURRENT_LANGUAGE": "Current Language :",
 		"CURRENT_LOCATION": "Current Location",
 		"DATA_SYNC": "Data Sync",
 		"DATA_SYNC_SUB": "Backup your data, Transfer Telemetry",
