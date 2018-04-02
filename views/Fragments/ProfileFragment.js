@@ -143,17 +143,18 @@ class ProfileFragment extends View {
         window.__BNavFlowRestart();
         return;
       case "API_GetSkillsList":
+        window.__getSkillsList = true;
         window.__PopulateSkillsList = [];
         if (isErr) {
         } else {
           try {
             console.log("skills ", responseData.result.skills);
             window.__PopulateSkillsList = responseData.result.skills;
+            window.__CustomPopUp.show();
           } catch (e) {
             console.log("Exception : ", e);
           }
         }
-        window.__CustomPopUp.show();
         return;
       case "API_SetProfileVisibility":
         if (isErr) {
@@ -363,8 +364,9 @@ class ProfileFragment extends View {
       "api_token" : window.__apiToken,
     }
     var event= { "tag": "API_GetSkillsList", contents: whatToSend };
+    window.__getSkillsList = false;
     setTimeout(() => {
-             if (window.__CustomPopUp.customPopUpVisibility=="visible") return;
+             if (window.__getSkillsList) return;
               window.__CustomPopUp.show();
               window.__LoaderDialog.hide();
             }, window.__API_TIMEOUT);

@@ -222,7 +222,7 @@ class SettingsScreenActivity extends View {
           <LinearLayout
             width="match_parent"
             height="4"/>
-          {this.getBody(window.__S.LANGUAGE_SETTINGS, window.__S.CURRENT_LANGUAGE + this.defaultlang(), this.handleChangeLang)}
+          {this.getBody(window.__S.LANGUAGE_SETTINGS, window.__S.CURRENT_LANGUAGE + " " + this.defaultlang(), this.handleChangeLang)}
           {this.getLineSeperator()}
           {this.getBody(window.__S.DATA_SYNC, window.__S.DATA_SYNC_SUB, this.datasync)}
           {this.getLineSeperator()}
