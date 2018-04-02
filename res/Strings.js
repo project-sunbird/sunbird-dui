@@ -371,7 +371,8 @@ const stringsRes = {
 		"MEDIUM_OPTION_TEXT": "SELECT MEDIUM/LANG",
 		"ONBOARDING_CARDS_HEADING": "Help us get you content thats relevant to you.",
 		"PRIVACY_HIDE_TEXT": "Hiding %s from all",
-		"PRIVACY_SHOW_TEXT": "Showing %s from all"
+		"PRIVACY_SHOW_TEXT": "Showing %s from all",
+		"NO_APP_FOR_INTENT": "No app available to open the file"
 	},
 	"hi_IN": {
 		"ABOUT": "बारे में",

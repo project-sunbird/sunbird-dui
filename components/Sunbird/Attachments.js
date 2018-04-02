@@ -62,6 +62,8 @@ class Attachments extends View {
           visibility:"gone"
         });
         Android.runInUI(cmd, 0);
+      } else if (data[0] == "no_app") {
+        JBridge.showToast(window.__S.NO_APP_FOR_INTENT, "short");
       }
     });
     JBridge.downloadAndOpen(url,path,callback,this.props.index);
