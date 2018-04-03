@@ -97,7 +97,7 @@ class DownloadAllProgressButton extends View {
       });
       if (this.enqueuedForDownload.length == 0) {
         this.btnState = this.BTN_STATES.IDLE;
-        window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_FOUND);
+        window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
         this.isDownloaded = false;
         this.setCancelButtonVisibility("gone");
         _this.replaceChild(_this.idSet.downloadBarContainer, _this.getButtons(0, this.props.buttonText).render(), 0);
