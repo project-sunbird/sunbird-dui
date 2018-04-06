@@ -67,8 +67,8 @@ class MainActivity extends View {
     this.profAPIerrCount = 0;
 
     // window.handleChangeLang = this.handleChangeLang; //added for testing
-    
-    var cb = callbackMapper.map((data) => {     
+
+    var cb = callbackMapper.map((data) => {
       if (data[0] != "__failed") {
         var framework = JSON.parse(data[0]);
         console.log("framework -> ", framework);
@@ -76,7 +76,7 @@ class MainActivity extends View {
         if (_this.contentLayout && _this.contentLayout.getQuestionsComponent) {
           _this.contentLayout.getQuestionsComponent();
           console.log("called to render in current screen");
-          
+
         }
       }
     });
@@ -469,11 +469,31 @@ class MainActivity extends View {
   };
 
   handleBottomNavBarAction = index => {
+    this.logVisitEvent(this.currentPageIndex)
     if (index == undefined) index = 0;
     this.currentPageIndex = index;
     window.__BottomNavBar.handleNavigationChange(this.currentPageIndex);
     this.setupDuiCallback();
   };
+
+  logVisitEvent = (index) => {
+    if(index == 0){
+      JBridge.logVisitEvent("HOME")
+    }
+    else if(index == 1){
+      JBridge.logVisitEvent("COURSES")
+    }
+    else if (index == 2) {
+      JBridge.logVisitEvent("LIBRARY")
+    }
+    else if (index == 3) {
+      JBridge.logVisitEvent("GROUPS")
+    }
+    else if (index == 4) {
+      JBridge.logVisitEvent("PROFILE")
+    }
+
+  }
 
   getBottomNavBar = () => {
     var tabValues = [
