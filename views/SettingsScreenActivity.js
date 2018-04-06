@@ -191,6 +191,7 @@ class SettingsScreenActivity extends View {
   }
 
   afterRender = () => {
+    JBridge.setInSharedPrefs("env", "settings");
     JBridge.logSettingsScreenEvent("SETTINGS");
   }
 

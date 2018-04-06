@@ -74,6 +74,7 @@ class SplashScreenActivity extends View {
   }
 
   afterRender = () => {
+    JBridge.setInSharedPrefs("env", "home");
     JBridge.makeEntryInSunbirdSupportFile();
     var epoch = JBridge.epochTime();
     var connectionType = JBridge.checkConnectionType();

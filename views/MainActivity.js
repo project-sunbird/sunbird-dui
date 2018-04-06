@@ -447,21 +447,26 @@ class MainActivity extends View {
     switch (this.currentPageIndex) {
       case 0:
         event = { tag: "OPEN_HomeFragment", contents: [] };
+        JBridge.setInSharedPrefs("env", "home");
         break;
       case 1:
         event = { tag: "OPEN_CourseFragment", contents: [] };
+        JBridge.setInSharedPrefs("env", "course");
         break;
       case 2:
         event = { tag: "OPEN_ResourceFragment", contents: [] };
+        JBridge.setInSharedPrefs("env", "library");
         break;
       // case 3:
       //   event = { tag: "OPEN_CommunityFragment", contents: [] };
       //   break;
       case 3:
         event = { tag: "OPEN_ProfileFragment", contents: [] };
+        JBridge.setInSharedPrefs("env", "user");
         break;
       default:
         event = { tag: "OPEN_HomeFragment", contents: [] };
+        JBridge.setInSharedPrefs("env", "home");
         break;
     }
     this.switchContent(this.currentPageIndex);
