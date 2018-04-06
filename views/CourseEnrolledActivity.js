@@ -293,7 +293,7 @@ class CourseEnrolledActivity extends View {
     } else {
       JBridge.logCourseDetailScreenEvent(id, pkgVersion, isAvailableLocally);
     }
-    JBridge.startEventLog(this.courseDetails.contentType, id, pkgVersion);
+    JBridge.startEventLog(this.courseDetails.contentType, this.courseDetails.mimeType, id, pkgVersion);
   }
 
   handleModuleClick = (moduleName, module) => {

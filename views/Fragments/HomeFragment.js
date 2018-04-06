@@ -138,7 +138,7 @@ class HomeFragment extends View {
       JBridge.logVisitEvent("HOME");
       window.__runDuiCallback(event);
     } else if (url == "ic_scanqr") {
-      JBridge.logQRIconClicked();
+      JBridge.logQRIconClicked("home");
       var whatToSend = []
       var event = { tag: "OPEN_QRActivity", contents: whatToSend }
       JBridge.logVisitEvent("HOME");

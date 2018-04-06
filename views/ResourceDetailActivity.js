@@ -62,7 +62,7 @@ class ResourceDetailActivity extends View {
     this.details = JSON.parse(this.details);
     console.log("RDA", this.details);
     JBridge.logResourceDetailScreenEvent(_this.details.content.identifier, _this.details.content.pkgVersion, _this.details.isAvailableLocally);
-    JBridge.startEventLog(_this.details.content.contentType, _this.details.content.identifier, _this.details.content.pkgVersion);
+    JBridge.startEventLog(_this.details.content.contentType, _this.details.content.mimeType, _this.details.content.identifier, _this.details.content.pkgVersion);
     this.localStatus = false;
     this.rollUpData = {};
   }

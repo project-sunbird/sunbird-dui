@@ -127,7 +127,7 @@ class CourseInfoActivity extends View {
 
   checkContentLocalStatus = (identifier) => {
     console.log("contentType: ", this.details.contentType);
-    JBridge.startEventLog(this.details.contentType, identifier, this.details.pkgVersion);
+    JBridge.startEventLog(this.details.contentType, this.details.mimeType, identifier, this.details.pkgVersion);
     var callback = callbackMapper.map(function (data) {
       if (data == "__failed") {
         //TODO implemented hack, actual implementation - get error from SDK

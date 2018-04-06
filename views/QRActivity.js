@@ -70,6 +70,7 @@ class QRActivity extends View {
   }
 
   barcodeResult = (barcode) => {
+    JBridge.qrEndEventLog(barcode); //qrstartevent added in JSInterface
     window.__LoaderDialog.show();
     QRScanner.closeQRScanner();
     console.log("barcode data", atob(barcode));

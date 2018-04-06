@@ -23,10 +23,12 @@ class RoleSelectionActivity extends View {
             "scrollViewContainer"
         ]);
         this.options = [{
+            id: 1,
             role: window.__S.TEACHER_ROLE,
             selected: false,
             desc: window.__S.TEACHER_ROLE_DESC
         }, {
+            id: 2,
             role: window.__S.STUDENT_ROLE,
             selected: false,
             desc: window.__S.STUDENT_ROLE_DESC
@@ -37,10 +39,11 @@ class RoleSelectionActivity extends View {
     handleRoleSelect = () => {
         var role = "";
         this.options.map((item) => {
-            if (item.selected) role = item.role;
+            if (item.selected) role = item.id == 1 ? "teacher" : "student";
         });
         if (role != "") {
             JBridge.setInSharedPrefs("role", role);
+            JBridge.logUserTypeSelection(role);
             this.setAsGuestUser();
         }
     }
@@ -182,7 +185,7 @@ class RoleSelectionActivity extends View {
             this.setAsGuestUser();
         }
         JBridge.animateImageView(this.idSet.whiteArrow + "");
-        
+        JBridge.logUserTypeScreenEvent();
     }
 
     setAsGuestUser = () => {

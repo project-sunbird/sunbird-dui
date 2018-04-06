@@ -37,6 +37,7 @@ class RatingsPopup extends View {
     show = (id) => {
         this.setVisibility("visible", id);
         this.visibility = true;
+        JBridge.logRatingsPopupScreenEvent(this.pageId);
     }
 
     hide = (id) => {

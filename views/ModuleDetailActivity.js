@@ -210,7 +210,7 @@ class ModuleDetailActivity extends View {
                 }
             });
             JBridge.getContentDetails(module.identifier, cb, true);
-            var _ = this.isPoped ? "" : JBridge.startEventLog(module.contentType, module.identifier, module.contentData.pkgVersion);
+            var _ = this.isPoped ? "" : JBridge.startEventLog(module.contentType, module.mimeType, module.identifier, module.contentData.pkgVersion);
             this.localStatus = false;
             window.__ProgressButton.setLocalStatus(false);
             window.__ProgressButton.setVisibility("visible");
@@ -219,7 +219,7 @@ class ModuleDetailActivity extends View {
         } else {
             //if the current content had children, get the children data and render the children
             window.__currContentAllowRating = true;
-            var _ = this.isPoped ? "" : JBridge.startEventLog(module.contentType, module.identifier, module.contentData.pkgVersion);
+            var _ = this.isPoped ? "" : JBridge.startEventLog(module.contentType, module.mimeType, module.identifier, module.contentData.pkgVersion);
             var callback = callbackMapper.map(function (data) {
                 if (data == "__failed") {
                     window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
