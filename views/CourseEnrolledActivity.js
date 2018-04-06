@@ -259,9 +259,9 @@ class CourseEnrolledActivity extends View {
       }
 
       if (_this.courseDetails.hasOwnProperty("contentFeedback") && _this.courseDetails.contentFeedback.length != 0) {
-        window.__RatingsPopup.initData(_this.courseDetails.identifier, "content-detail", _this.courseDetails.contentData.pkgVersion, _this.courseDetails.contentFeedback[0].rating, _this.courseDetails.contentFeedback[0].comments);
+        window.__RatingsPopup.initData(_this.courseDetails.identifier, "content-detail", _this.courseDetails.contentData.pkgVersion, _this.courseDetails.contentFeedback[0].rating, _this.courseDetails.contentFeedback[0].comments, _this.courseDetails.contentType || "");
       } else {
-        window.__RatingsPopup.initData(_this.courseDetails.identifier, "content-detail", _this.courseDetails.contentData.pkgVersion);
+        window.__RatingsPopup.initData(_this.courseDetails.identifier, "content-detail", _this.courseDetails.contentData.pkgVersion, _this.courseDetails.contentType || "");
       }
 
 
@@ -762,7 +762,7 @@ class CourseEnrolledActivity extends View {
       <LinearLayout
         width="wrap_content"
         height="wrap_content"
-        onClick={() => { if (window.__loggedInState != "GUEST") { window.__RatingsPopup.show() } else { window.__Snackbar.show(window.__S.SIGNIN_TO_USE_FEATURE) }}}>
+        onClick={() => { if (window.__loggedInState != "GUEST") { this.ratingBarClickEvent(); window.__RatingsPopup.show() } else { window.__Snackbar.show(window.__S.SIGNIN_TO_USE_FEATURE) }}}>
         <RatingBar
           id={this.idSet.ratingBar}
           width="wrap_content"
@@ -771,6 +771,10 @@ class CourseEnrolledActivity extends View {
     );
     _this.replaceChild(_this.idSet.ratingContainer, layout.render(), 0);
     JBridge.setRating(this.idSet.ratingBar, r);
+  }
+
+  ratingBarClickEvent = () => {
+    JBridge.ratingBarClickEvent(this.courseDetails.identifier,"course-detail",this.courseDetails.contentData.pkgVersion,this.courseDetails.contentType);
   }
 
   getDownloadAll = (size) => {

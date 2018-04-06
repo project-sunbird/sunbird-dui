@@ -200,9 +200,9 @@ class ModuleDetailActivity extends View {
                         _this.updateRatings(0);
                     }
                     if (_this.localContent.hasOwnProperty("contentFeedback") && _this.localContent.contentFeedback.length != 0) {
-                        window.__RatingsPopup.initData(_this.localContent.identifier, "content-detail", _this.localContent.contentData.pkgVersion, _this.localContent.contentFeedback[0].rating, _this.localContent.contentFeedback[0].comments);
+                        window.__RatingsPopup.initData(_this.localContent.identifier, "content-detail", _this.localContent.contentData.pkgVersion, _this.localContent.contentFeedback[0].rating, _this.localContent.contentFeedback[0].comments, _this.localContent.contentType || "");
                     } else {
-                        window.__RatingsPopup.initData(_this.localContent.identifier, "content-detail", _this.localContent.contentData.pkgVersion);
+                        window.__RatingsPopup.initData(_this.localContent.identifier, "content-detail", _this.localContent.contentData.pkgVersion, _this.localContent.contentType || "");
                     }
                     if (_this.localContent.hasOwnProperty("contentAccess") && _this.localContent.contentAccess.length != 0 && _this.localContent.contentAccess[0].status == 1) {
                         window.__currContentAllowRating = true;
@@ -234,9 +234,9 @@ class ModuleDetailActivity extends View {
                     _this.updateRatings(0);
                 }
                 if (_this.localContent.hasOwnProperty("contentFeedback") && _this.localContent.contentFeedback.length != 0) {
-                    window.__RatingsPopup.initData(_this.localContent.identifier, "content-detail", _this.localContent.contentData.pkgVersion, _this.localContent.contentFeedback[0].rating, _this.localContent.contentFeedback[0].comments);
+                    window.__RatingsPopup.initData(_this.localContent.identifier, "content-detail", _this.localContent.contentData.pkgVersion, _this.localContent.contentFeedback[0].rating, _this.localContent.contentFeedback[0].comments, _this.localContent.contentType || "");
                 } else {
-                    window.__RatingsPopup.initData(_this.localContent.identifier, "content-detail", _this.localContent.contentData.pkgVersion);
+                    window.__RatingsPopup.initData(_this.localContent.identifier, "content-detail", _this.localContent.contentData.pkgVersion, _this.localContent.contentType || "");
                 }
                 if (_this.localContent.isAvailableLocally == true) {
                     _this.renderModuleChildren(module);

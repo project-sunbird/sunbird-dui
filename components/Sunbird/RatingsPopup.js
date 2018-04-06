@@ -24,6 +24,7 @@ class RatingsPopup extends View {
         window.__RatingsPopup = this;
 
         //data to send for the feedback
+        this.contentType = "";
         this.contentId = "";
         this.comment = "";
         this.commentHint = ""
@@ -49,12 +50,13 @@ class RatingsPopup extends View {
       return this.visibility;
     }
 
-    initData = (contentId, pageId, contentVersion, rating, comment) => {
+    initData = (contentId, pageId, contentVersion, contentType, rating, comment) => {
         this.contentId = contentId;
         this.pageId = pageId;
         this.contentVersion = contentVersion;
         this.comment = comment ? comment : "";
         this.rating = Math.floor(rating ? rating : 0);
+        this.contentType = contentType
         this.commentHint = this.rating == 0 ? window.__S.FEEDBACK_HINT : window.__S.FEEDBACK_HINT_1;
         this.updateStars(this.rating - 1);
     }
@@ -82,7 +84,7 @@ class RatingsPopup extends View {
         var successCb = callbackMapper.map(() => {
             window.__Snackbar.show(window.__S.THANK_FOR_RATING);
         });
-        JBridge.sendFeedback(successCb, this.contentId, this.comment, this.rating, this.pageId, this.contentVersion);
+        JBridge.sendFeedback(successCb, this.contentId, this.comment, this.rating, this.pageId, this.contentVersion, this.contentType);
         this.hide();
     }
 

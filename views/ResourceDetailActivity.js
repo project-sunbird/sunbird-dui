@@ -94,9 +94,9 @@ class ResourceDetailActivity extends View {
       _this.populateAboutSection();
       console.log("this.contentData: ", _this.contentData);
       if (_this.contentData.hasOwnProperty("contentFeedback") && _this.contentData.contentFeedback.length != 0) {
-        window.__RatingsPopup.initData(_this.contentData.identifier, "content-detail", _this.contentData.contentData.pkgVersion, _this.contentData.contentFeedback[0].rating, _this.contentData.contentFeedback[0].comments);
+        window.__RatingsPopup.initData(_this.contentData.identifier, "content-detail", _this.contentData.contentData.pkgVersion, _this.contentData.contentFeedback[0].rating, _this.contentData.contentFeedback[0].comments, _this.contentData.contentType || "");
       } else {
-        window.__RatingsPopup.initData(_this.contentData.identifier, "content-detail", _this.contentData.contentData.pkgVersion);
+        window.__RatingsPopup.initData(_this.contentData.identifier, "content-detail", _this.contentData.contentData.pkgVersion, _this.contentData.contentType || "");
       }
       if (_this.contentData.hasOwnProperty("contentAccess") && _this.contentData.contentAccess.length != 0 && _this.contentData.contentAccess[0].status == 1) {
         window.__currResourceAllowRating = true;
@@ -454,6 +454,7 @@ class ResourceDetailActivity extends View {
   handleRatingsBarClick = () => {
     if (window.__loggedInState != "GUEST"){
       if (window.__currResourceAllowRating) {
+        JBridge.ratingBarClickEvent(this.contentData.identifier,"content-detail",this.contentData.contentData.pkgVersion,this.contentData.contentType);
         window.__RatingsPopup.show()
       } else {
         window.__Snackbar.show(window.__S.TRY_BEFORE_RATING);

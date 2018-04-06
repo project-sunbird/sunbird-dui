@@ -44,6 +44,7 @@ class LanguageSelectActivity extends View {
 
     afterRender = () => {
       JBridge.animateImageView(this.idSet.whiteArrow + "");
+      JBridge.logLanguageScreenEvent();
     }
 
 
@@ -53,6 +54,7 @@ class LanguageSelectActivity extends View {
                 window.__RootScreen.handleChangeLang(item.langCode);
             }
         });
+        JBridge.logLanguageChangeEvent("onboard","",window.__CurrentLanguage,"home");
         JBridge.setInSharedPrefs("isUserOnboarded", "true");
         var event = { tag: "OPEN_UserActivity_1", contents: [] }
         window.__runDuiCallback(event);
