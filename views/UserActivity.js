@@ -42,7 +42,7 @@ class UserActivity extends View {
 
     this.deepLinkCollectionDetails = "";
     this.whereFrom = this.state.data.value0.whereFrom;
-    
+
     window.__LoaderDialog.hide();
     window.__loggedInState = JBridge.getFromSharedPrefs("logged_in")
   }
@@ -372,7 +372,7 @@ class UserActivity extends View {
             width="match_parent"
             height="wrap_content"
             onBackPress={this.onBackPressed} />
-          
+
           {this.getTopLayout()}
 
         </LinearLayout>
@@ -427,6 +427,8 @@ class UserActivity extends View {
     console.log("SHARED PREFERENCES FOR link", JBridge.getFromSharedPrefs("intentLinkPath"));
     console.log("SHARED PREFERENCES FOR file", JBridge.getFromSharedPrefs("intentFilePath"));
     this.performRedirection();
+    JBridge.logFeatureCardEvent();
+    
   }
 
   showLoginOptions = () => {
