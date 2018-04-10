@@ -73,6 +73,7 @@ const stringsRes = {
 		"CURRENT_LOCATION": "Current Location",
 		"DATA_SYNC": "Data Sync",
 		"DATA_SYNC_SUB": "Backup your data, Transfer Telemetry",
+		"DATA_SYNC_FAILURE": "FAILED. Please try again later.",
 		"DATE_OF_BIRTH": "Birth date",
 		"DEGREE": "Degree",
 		"DELETE": "Delete",
@@ -337,7 +338,8 @@ const stringsRes = {
 		"WARNING_INVALID_YEAR_OF_PASSING": "Invalid pass year. Enter four (yyyy) digits for year of passing",
 		"WARNING_PLEASE_ADD_MANDATORY_DETAILS": "Enter mandatory details",
 		"WARNING_PLEASE_MAKE_SOME_CHANGES": "Make changes",
-		"WEBLINKS": "Social media links",
+		"WEBLINKS": "Weblinks",
+		"SOCIAL_MEDIA_LINKS" : "Social media links",
 		"WELCOME_BACK": "WELCOME BACK %s",
 		"WELCOME_M1": "Welcome to %s",
 		"WELCOME_M2": "Structured education for the educators",
@@ -372,7 +374,8 @@ const stringsRes = {
 		"ONBOARDING_CARDS_HEADING": "Help us get you content thats relevant to you.",
 		"PRIVACY_HIDE_TEXT": "Hiding %s from all",
 		"PRIVACY_SHOW_TEXT": "Showing %s from all",
-		"NO_APP_FOR_INTENT": "No app available to open the file"
+		"NO_APP_FOR_INTENT": "No app available to open the file",
+		"SUCCESS" : "SUCCESS"
 	},
 	"hi_IN": {
 		"ABOUT": "बारे में",

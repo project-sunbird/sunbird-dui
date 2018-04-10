@@ -118,7 +118,7 @@ class AdditionalInformationActivity extends View{
     if (window.__questionStore && frameworkGrade.length != 0) {
       this.GradeArray = ["Select"];
       this.GradeArray = this.GradeArray.concat(frameworkGrade);
-      
+
     } else {
       this.GradeArray = ["Select", "Kindergarten", "Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5", "Grade 6", "Grade 7", "Grade 8", "Grade 9", "Grade 10", "Grade 11", "Grade 12", "Other"];
     }
@@ -572,14 +572,14 @@ class AdditionalInformationActivity extends View{
                       height="wrap_content"
                       width="wrap_content"
                       style={window.__TextStyle.textStyle.HINT.SEMI}
-                      text={window.__S.WEBLINKS}
+                      text={window.__S.SOCIAL_MEDIA_LINKS}
                       textAllCaps = "true"
                       />
                       <LinearLayout
                       height="0"
                       weight="1"
                       />
-                      {this.getLockIcon(this.idSet.webLinksLI,true,"webPages",window.__S.WEBLINKS,"8,0,8,16")}
+                      {this.getLockIcon(this.idSet.webLinksLI,true,"webPages",window.__S.SOCIAL_MEDIA_LINKS,"8,0,8,16")}
                   </LinearLayout>
                   {this.getEditTextView(this.idSet.fbText,window.__S.FACEBOOK,this.currentData.fb,"",true,this.setFb,undefined,false,this.idSet.fbLI,"8,8,8,8")}
                   {this.getEditTextView(this.idSet.twitterText,window.__S.TWITTER,this.currentData.twitter,"",true,this.setTwitter,undefined,false,this.idSet.twitterLI,"8,8,8,8")}

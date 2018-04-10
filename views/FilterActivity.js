@@ -112,7 +112,7 @@ class FilterActivity extends View {
     var data= {
       filterDetails : this.data,
       filterFor : this.searchedFor,
-      searcheType : this.searchedType
+      searchType : this.searchedType
     }
     console.log("data in filter to search",data)
     var whatToSend = {

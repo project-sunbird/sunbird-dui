@@ -149,12 +149,12 @@ class DataSyncScreenActivity extends View {
 	 var callback = callbackMapper.map(function (data) {
 		 console.log("SYNC TELEMETRY data",data.toString());
 		 if(data[0] == "SUCCESS"){
-		 	window.__Snackbar.show(window.__S.DATA_SYNC + " : " + data[0]);
+		 	window.__Snackbar.show(window.__S.DATA_SYNC + " : " + window.__S.SUCCESS);
 			_this.replaceChild(_this.idSet.lastSyncTextView, _this.getSyncNowTextView(data[1]).render(), 0);
 		}
 
 		else if (data[0] == "FAILURE") {
-			window.__Snackbar.show(window.__S.DATA_SYNC + " : " + data[1]);
+			window.__Snackbar.show(window.__S.DATA_SYNC + " : " + window.__S.DATA_SYNC_FAILURE);
 		}
 
 		window.__LoaderDialog.hide();
