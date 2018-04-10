@@ -189,11 +189,18 @@ class CourseEnrolledActivity extends View {
         window.__ContentLoaderDialog.setClickCallback(this.handleContentLoaderCancelClick)
         window.__ContentLoaderDialog.updateProgressBar(downloadedPercent);
       }
-    } else if (cb == "onContentImportResponse" && data.status == "IMPORT_COMPLETED") {
-      window.__ContentLoaderDialog.updateProgressBar(100);
-      window.__ContentLoaderDialog.hide();
-      this.renderChildren(this.baseIdentifier);
-      this.gotSpine = true;
+    } else if (cb == "onContentImportResponse") {
+      if (data.status == "NOT_FOUND") {
+        window.__ContentLoaderDialog.hide();
+        window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
+        this.onBackPressed();
+        return;
+      } else if (data.status == "IMPORT_COMPLETED") {
+        window.__ContentLoaderDialog.updateProgressBar(100);
+        window.__ContentLoaderDialog.hide();
+        this.renderChildren(this.baseIdentifier);
+        this.gotSpine = true;
+      }
     }
   }
 
@@ -840,7 +847,7 @@ class CourseEnrolledActivity extends View {
          height="wrap_content"
          width="match_parent"
          margin="16,0,16,16"
-         contentDescription={data.contentData.description ? data.contentData.description : " "}
+         contentDescription={(data.contentData && data.contentData.description) ? data.contentData.description : " "}
          contentText={contentText}/>
       </LinearLayout>
       )

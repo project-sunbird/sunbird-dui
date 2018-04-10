@@ -97,7 +97,7 @@ class CourseInfoActivity extends View {
         text: window.__S.FETCHING_CONTENTS.format(downloadedPercent)
       })
       Android.runInUI(cmd, 0);
-    } else if (cb == "onContentImportResponse" && data.status == "IMPORT_COMPLETED") {
+    } else if (cb == "onContentImportResponse") {
       if (data.status == "NOT_FOUND") {
         window.__ContentLoaderDialog.hide();
         window.__Snackbar.show(window.__S.ERROR_CONTENT_NOT_AVAILABLE);
@@ -487,7 +487,7 @@ class CourseInfoActivity extends View {
          height="match_parent"
          width="match_parent"
          margin="16,0,16,16"
-         contentDescription={data.contentData.description ? data.contentData.description : " "}
+         contentDescription={(data.contentData && data.contentData.description) ? data.contentData.description : " "}
          contentText={contentText}/>
       </LinearLayout>
       )
