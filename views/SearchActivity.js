@@ -52,6 +52,8 @@ class SearchActivity extends View {
     // this.temp = state.data;
     this.searchType = this.tempData.searchType;
 
+    this.contentStack = []; //to hide the contents whick are already present in the collections.
+
 
     _this = this;
 
@@ -132,9 +134,12 @@ class SearchActivity extends View {
     }
   }
 
-  handleItemClick = (item, index, searchText) => {
+  handleItemClick = (item, index, searchText, parentContent) => {
     console.log("itemClicked ", item);
-
+    if(parentContent){
+    console.log("itemClicked parentContent",parentContent);
+    item.parentContent = parentContent;
+  }
     var itemDetails = JSON.stringify(item);
     if (this.searchType.toLowerCase() == "combined")
       JBridge.logContentClickEvent("HOME", index + 1, searchText, item.identifier, item.pkgVersion)
@@ -248,14 +253,15 @@ class SearchActivity extends View {
 
   }
 
-  getContents = (content, index, searchText) => {
+  getContents = (content, index, searchText, collection) => {
+
     return (
       <LinearLayout
         width= "match_parent"
         height="wrap_content"
         padding="16,16,16,16"
         margin = "0,0,0,0"
-        onClick = {() => {this.handleItemClick(content, index, searchText)}}>
+        onClick = {() => {this.handleItemClick(content, index, searchText, collection)}}>
 
         <LinearLayout
           width= "wrap_content"
@@ -350,8 +356,9 @@ class SearchActivity extends View {
   getGroup = (collection, contents, index, searchText) => {
     let contentsList = [];
     console.log("creating grp for -> ", collection);
-    
+
     collection.childNodes.map((item) => {
+      this.contentStack.push(item);
       var content = contents[utils.findObjOnProp(contents, "identifier", item)];
       if (content) {
         contentsList.push(content);
@@ -364,7 +371,7 @@ class SearchActivity extends View {
           width = "match_parent"
           height = "wrap_content"
           orientation="vertical">
-          {this.getContents(item, i, searchText)}
+          {this.getContents(item, i, searchText, collection)}
           <LinearLayout
             width="match_parent"
             height="5"
@@ -383,7 +390,7 @@ class SearchActivity extends View {
           width="match_parent"
           height="wrap_content"
           orientation="vertical"
-          onClick={() => { this.handleItemClick(collection, index, searchText) }}> 
+          onClick={() => { this.handleItemClick(collection, index, searchText) }}>
 
           <LinearLayout
             width="match_parent"
@@ -422,9 +429,16 @@ class SearchActivity extends View {
     var groups = collection.map((item, i) => {
       return this.getGroup(item, contents, i, searchText);
     });
+
     let contentsLayout = contents.map((item, i) => {
+      for(var i = 0; i<this.contentStack.length; i++){
+        if(this.contentStack[i] == item.identifier){
+          return (<LinearLayout/>);
+        }
+      }
       return this.getContents(item, i, searchText);
     });
+
     var layout = (<LinearLayout
       width="match_parent"
       height="wrap_content"
@@ -507,7 +521,7 @@ class SearchActivity extends View {
     } else {
       var callback = callbackMapper.map(function (data) {
         console.log("searchContent data -> ", data);
-        
+
         if (data[0] == "error") {
           console.log("Error at callback", data[1]);
           if(!JBridge.isNetworkAvailable()) {
@@ -515,8 +529,8 @@ class SearchActivity extends View {
           }
           _this.renderNoResult();
           window.__LoaderDialog.hide();
-          
-        } else if (JSON.parse(utils.decodeBase64(data[2]))){ 
+
+        } else if (JSON.parse(utils.decodeBase64(data[2]))){
           console.log("callback data", JSON.parse(utils.decodeBase64(data[2])));
           console.log("inside collectiondata");
           var collection = JSON.parse(utils.decodeBase64(data[2]));
@@ -530,7 +544,7 @@ class SearchActivity extends View {
           var s = utils.formatJSON(data[0]);
           var contents = JSON.parse(s);
           console.log("contents -> ", contents);
-          
+
           // _this.renderResult(JSON.parse(s), searchText);
           _this.renderEtbContent(collection, contents, searchText);
           window.__LoaderDialog.hide();
@@ -573,7 +587,7 @@ class SearchActivity extends View {
         JBridge.searchContent(callback, filterParams, searchText, this.searchType, 100, (keywords ? keywords : null), false);
       } else {
         console.log("keywords -> ", keywords);
-        
+
         if (keywords) {
           console.log("search cont -> ", keywords);
           JBridge.searchContent(callback, filterParams, searchText, this.searchType, 100, (keywords ? keywords : null), false);

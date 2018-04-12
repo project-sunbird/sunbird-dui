@@ -67,7 +67,7 @@ class CourseProgress extends View {
             <ImageView
               width="16"
               height="16"
-              visibility={this.props.textbook ? "visible":"gone"}
+              visibility={"gone"}
               gravity="left"
               margin="8,6,0,4"
               imageUrl="ic_check_circle"/>

@@ -375,7 +375,9 @@ const stringsRes = {
 		"PRIVACY_HIDE_TEXT": "Hiding %s from all",
 		"PRIVACY_SHOW_TEXT": "Showing %s from all",
 		"NO_APP_FOR_INTENT": "No app available to open the file",
-		"SUCCESS" : "SUCCESS"
+		"SUCCESS" : "SUCCESS",
+		"UPGRADE_APP" : "Upgrade the app",
+		"UPGRADE" : "Upgrade"
 	},
 	"hi_IN": {
 		"ABOUT": "बारे में",

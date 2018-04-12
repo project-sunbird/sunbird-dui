@@ -52,7 +52,8 @@ class ForceUpgradePopup extends View {
         afterRender={this.afterRender}
         root="true"
         background = { window.__Colors.PRIMARY_BLACK_44}
-        orientation="vertical">
+        orientation="vertical"
+        clickable="true">
 
           <LinearLayout
             height="0"
@@ -71,12 +72,12 @@ class ForceUpgradePopup extends View {
               height="wrap_content"
               width="wrap_content"
               margin="0,0,0,16"
-              text="Upgrade the app"/>
+              text={window.__S.UPGRADE_APP}/>
 
             <Button
               height="wrap_content"
               width="wrap_content"
-              text="Upgrade"
+              text={window.__S.UPGRADE}
               margin="16, 0, 16, 0"
               onClick={this.onUpgrade} />
           </LinearLayout>

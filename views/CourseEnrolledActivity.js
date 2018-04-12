@@ -170,6 +170,9 @@ class CourseEnrolledActivity extends View {
     var cb = res[0];
     var id = res[1];
     var data = JSON.parse(res[2]);
+
+    // if(!this.apiDetails.parentContent)  download size getting changed
+
     if (id != this.baseIdentifier || this.gotSpine || this.cancelled) return;
 
     if (cb == "onDownloadProgress") {
@@ -202,6 +205,7 @@ class CourseEnrolledActivity extends View {
         this.gotSpine = true;
       }
     }
+
   }
 
   handleContentLoaderCancelClick = () => {
@@ -275,23 +279,36 @@ class CourseEnrolledActivity extends View {
         _this.contentDetails();
 
       _this.creditsDetail(data);
-
-
+      console.log("\nlocally available",data.isAvailableLocally);
       if (data.isAvailableLocally == true) {
         _this.logTelelmetry(identifier, data.contentData.pkgVersion, data.isAvailableLocally);
         _this.renderChildren(identifier);
       } else {
+
         _this.logTelelmetry(identifier, data.contentData.pkgVersion, data.isAvailableLocally);
+
         if (JBridge.isNetworkAvailable()) {
+          if(_this.apiDetails && _this.apiDetails.parentContent){
+            JBridge.importCourse(_this.apiDetails.parentContent.identifier, "false", utils.getCallbacks(_this.getSpineStatus, "", _this.getSpineStatus));
+            JBridge.getContentDetails(_this.apiDetails.parentContent.identifier, callback, true);
+            _this.changeOverFlow();
+        }else {
           JBridge.importCourse(identifier, "false", utils.getCallbacks(_this.getSpineStatus, "", _this.getSpineStatus));
           _this.changeOverFlow();
+        }
+
         } else {
           window.__Snackbar.show(window.__S.ERROR_OFFLINE_MODE);
           _this.onBackPressed();
         }
       }
     });
+
+    if( this.apiDetails && this.apiDetails.parentContent){
+    JBridge.getContentDetails(this.apiDetails.parentContent.identifier, callback, true);
+  }else {
     JBridge.getContentDetails(identifier, callback, true);
+  }
   }
 
   logTelelmetry = (id, pkgVersion, isAvailableLocally) => {
