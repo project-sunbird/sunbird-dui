@@ -142,7 +142,8 @@ class ProfileImagePopUp extends View {
   }
 
   loadImage = () => {
-    JBridge.loadImageForProfileAvatar();
+    // JBridge.loadImageForProfileAvatar();
+    window.__Snackbar.show(window.__S.COMING_SOON);
   }
 
   removeImage = () => {
