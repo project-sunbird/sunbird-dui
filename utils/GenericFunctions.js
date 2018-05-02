@@ -258,6 +258,7 @@ exports.getFuncMapped = (func) => {
 }
 
 exports.setLoginPreferences = () => {
+	console.log("\n in setLoginPreferences");
 	window.__userToken = JBridge.getFromSharedPrefs("user_token");
 	window.__refreshToken = JBridge.getFromSharedPrefs("refresh_token");
 	window.__user_accessToken = JBridge.getFromSharedPrefs("user_access_token");
@@ -266,20 +267,31 @@ exports.setLoginPreferences = () => {
 	});
 	if (window.__loggedInState == "GUEST") {
 		JBridge.setInSharedPrefs("logged_in", "GUEST");
+
+		if (window.__userToken == "__failed"){
+			 window.__userToken = JBridge.getFromSharedPrefs("user_token_guest");
+			 console.log("user_token_guest ",window.__userToken);
+			 JBridge.setInSharedPrefs("user_token", window.__userToken);
+		 }
+
+
 		if (window.__userToken == "__failed") {
 			var cb = callbackMapper.map((data) => {
 				console.log("setProfile -> ", data);
 
-				var guestData = JSON.parse(exports.decodeBase64(JBridge.getCurrentProfileData()));
+				var guestData = JSON.parse(data[2]);
 				window.__userToken = guestData.uid;
 				JBridge.setInSharedPrefs("user_token", guestData.uid);
+				JBridge.setInSharedPrefs("user_token_guest", guestData.uid);
 			});
+			console.log("creating new guest profile");
 			JBridge.setProfile("", true, cb);
 		} else {
-			//JBridge.setProfile(window.__userToken, true, setProfileCb);
+			console.log("\nsetting guest profile");
+			JBridge.setProfile(window.__userToken, true, setProfileCb);
 		}
 	} else if (window.__loggedInState == "YES") {
-		JBridge.setInSharedPrefs("answeredQs", "__failed");
+		// JBridge.setInSharedPrefs("answeredQs", "__failed");
 		JBridge.setInSharedPrefs("logged_in", "YES");
 		JBridge.setProfile(window.__userToken, false, setProfileCb);
 	}
@@ -330,7 +342,7 @@ exports.setPermissions = () => {
 exports.getCompletedPercentage = (progess, leafNodesCount) => {
 	console.log("progress -> ", progess);
 	console.log("leafNodesCount -> ", leafNodesCount);
-	
+
 	let nodes = leafNodesCount ? leafNodesCount : 0;
 	let p = progess ? progess : 0;
 	let percentage = 0;
@@ -340,6 +352,6 @@ exports.getCompletedPercentage = (progess, leafNodesCount) => {
 	if (isNaN(percentage)) percentage = 0;
 	if (percentage > 100) percentage = 100;
 	console.log("percentage -> ", percentage);
-	
+
 	return parseInt(percentage);
 }
