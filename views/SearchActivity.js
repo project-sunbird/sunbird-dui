@@ -166,11 +166,31 @@ class SearchActivity extends View {
     } else if (item.mimeType.toLowerCase() == "application/vnd.ekstep.content-collection" || utils.checkEnrolledCourse(item.identifier)) {
 
       if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
+        console.log("OPEN_CourseEnrolledActivity_SEARCH called");
         var whatToSend = { course: itemDetails };
         var event = { tag: "OPEN_CourseEnrolledActivity_SEARCH", contents: whatToSend }
         window.__runDuiCallback(event);
       } else {
-        utils.setPermissions();
+        console.log("setPermissions called");
+
+        var callbackToSwitchScreen = callbackMapper.map(function (data) {
+      		if (data == "android.permission.WRITE_EXTERNAL_STORAGE") {
+      			JBridge.setKey("isPermissionSetWriteExternalStorage", "true");
+      		}
+      		if (data == "DeniedPermanently") {
+      			console.log("DENIED DeniedPermanently");
+      			JBridge.hideKeyboard();
+      			window.__PermissionDeniedDialog.show("ic_warning_grey", window.__S.STORAGE);
+      		}
+          if (JBridge.getKey("isPermissionSetWriteExternalStorage", "false") == "true") {
+            console.log("OPEN_CourseEnrolledActivity_SEARCH called");
+            var whatToSend = { course: itemDetails };
+            var event = { tag: "OPEN_CourseEnrolledActivity_SEARCH", contents: whatToSend }
+            window.__runDuiCallback(event);
+          }
+      	});
+        JBridge.setPermissions(callbackToSwitchScreen, "android.permission.WRITE_EXTERNAL_STORAGE");
+
       }
     } else {
       var headFooterTitle = item.contentType + (item.hasOwnProperty("size") ? " [" + utils.formatBytes(item.size) + "]" : "");
