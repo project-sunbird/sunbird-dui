@@ -291,7 +291,10 @@ exports.setLoginPreferences = () => {
 			JBridge.setProfile(window.__userToken, true, setProfileCb);
 		}
 	} else if (window.__loggedInState == "YES") {
-		// JBridge.setInSharedPrefs("answeredQs", "__failed");
+
+		if(JBridge.getFromSharedPrefs("user_token_guest") == "__failed")
+			JBridge.setInSharedPrefs("answeredQs", "__failed");
+
 		JBridge.setInSharedPrefs("logged_in", "YES");
 		JBridge.setProfile(window.__userToken, false, setProfileCb);
 	}
