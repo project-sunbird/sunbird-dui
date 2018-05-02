@@ -171,9 +171,11 @@ class CourseEnrolledActivity extends View {
     var id = res[1];
     var data = JSON.parse(res[2]);
 
-    // if(!this.apiDetails.parentContent)  download size getting changed
+    if(this.apiDetails.parentContent){
+      if(id != this.apiDetails.parentContent.identifier || this.gotSpine || this.cancelled) return;
+    }
 
-    if (id != this.baseIdentifier || this.gotSpine || this.cancelled) return;
+    else if (id != this.baseIdentifier || this.gotSpine || this.cancelled) return;
 
     if (cb == "onDownloadProgress") {
       var textToShow = ""
@@ -290,7 +292,6 @@ class CourseEnrolledActivity extends View {
         if (JBridge.isNetworkAvailable()) {
           if(_this.apiDetails && _this.apiDetails.parentContent){
             JBridge.importCourse(_this.apiDetails.parentContent.identifier, "false", utils.getCallbacks(_this.getSpineStatus, "", _this.getSpineStatus));
-            JBridge.getContentDetails(_this.apiDetails.parentContent.identifier, callback, true);
             _this.changeOverFlow();
         }else {
           JBridge.importCourse(identifier, "false", utils.getCallbacks(_this.getSpineStatus, "", _this.getSpineStatus));

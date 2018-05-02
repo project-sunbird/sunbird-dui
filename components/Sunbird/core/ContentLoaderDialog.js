@@ -12,7 +12,8 @@ class ContentLoaderDialog extends View {
     this.setIds([
       'progressContainer',
       "parentContainer",
-      "btnContainer"
+      "btnContainer",
+      "loadingContentText"
     ]);
 
     this.state = state;
@@ -63,6 +64,7 @@ class ContentLoaderDialog extends View {
 
   updateProgressBar = (pStatus) => {
     this.replaceChild(this.idSet.progressContainer, this.getProgressBar(pStatus).render(), 0);
+    this.replaceChild(this.idSet.loadingContentText, this.getLoadingContentText(pStatus).render(), 0);
     if (pStatus > 0 && pStatus < 100) {
       if (!this.isButtonVisible) {
         this.isButtonVisible = true;
@@ -121,6 +123,26 @@ class ContentLoaderDialog extends View {
     </LinearLayout>)
   }
 
+  getLoadingContentText = (pStatus) => {
+    var loadingPercentage = window.__S.LOADING_CONTENT;
+    if( pStatus > 0 && pStatus <= 100)
+      loadingPercentage+=" ("+pStatus+"%)";
+    return (
+      <LinearLayout
+        width="match_parent"
+        height="match_parent"
+        orientation="vertical"
+        gravity="center">
+      <TextView
+        width="wrap_content"
+        height="wrap_content"
+        margin="0,0,0,32"
+        text={loadingPercentage } />
+        </LinearLayout>
+    )
+
+  }
+
   render() {
     this.layout = (
       <RelativeLayout
@@ -139,11 +161,20 @@ class ContentLoaderDialog extends View {
           background={window.__Colors.WHITE}
           gravity="center">
 
+          <LinearLayout
+            height="wrap_content"
+            width="match_parent"
+            gravity="center"
+            orientation="vertical"
+            id={this.idSet.loadingContentText}>
+
           <TextView
             width="wrap_content"
             height="wrap_content"
             margin="0,0,0,32"
             text={window.__S.LOADING_CONTENT} />
+
+            </LinearLayout>
 
           <LinearLayout
             height="wrap_content"
